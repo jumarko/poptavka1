@@ -1,0 +1,41 @@
+<!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
+<!--
+                                Root category
+                          /          |               \
+                  Cat 1             Cat 2             Cat 3                                # first level
+                  |               /    |   \               \
+               Cat 11       Cat 21 Cat 22  Cat 23           Cat 31                         # second level
+             /    |    \                                   /      \
+      Cat 111  Cat 112  Cat 113                         Cat 311    Cat 312                 # third level
+                         /     \
+                   Cat 1131     Cat 1132                                                   # fourth level
+
+-->
+<dataset>
+    <!-- root category -->
+    <CATEGORY ID="1" CODE="0"  NAME="Root Category" DESCRIPTION="Common ancestor for all categories" LEVEL="0"  PARENT_ID="[NULL]" LEFTSIBLING="1" RIGHTSIBLING="32" />
+
+    <!-- first level of categories -->
+    <CATEGORY ID="2" CODE="1"  NAME="Category 1" DESCRIPTION="Category desc 1" LEVEL="1"  PARENT_ID="1" LEFTSIBLING="2" RIGHTSIBLING="15" />
+    <CATEGORY ID="3" CODE="2"  NAME="Category 2" DESCRIPTION="Category desc 2" LEVEL="2"  PARENT_ID="1" LEFTSIBLING="16" RIGHTSIBLING="23" />
+    <CATEGORY ID="4" CODE="3"  NAME="Category 3" DESCRIPTION="Category desc 3" LEVEL="3"  PARENT_ID="1" LEFTSIBLING="24" RIGHTSIBLING="31" />
+
+    <!-- Second level -->
+    <CATEGORY ID="5" CODE="11"  NAME="Category 11" DESCRIPTION="Category desc 11" LEVEL="2"  PARENT_ID="2" LEFTSIBLING="3" RIGHTSIBLING="14" />
+    <CATEGORY ID="6" CODE="21"  NAME="Category 21" DESCRIPTION="Category desc 21" LEVEL="2"  PARENT_ID="3" LEFTSIBLING="17" RIGHTSIBLING="18" />
+    <CATEGORY ID="7" CODE="22"  NAME="Category 22" DESCRIPTION="Category desc 22" LEVEL="2"  PARENT_ID="3" LEFTSIBLING="19" RIGHTSIBLING="20" />
+    <CATEGORY ID="8" CODE="23"  NAME="Category 23" DESCRIPTION="Category desc 23" LEVEL="2"  PARENT_ID="3" LEFTSIBLING="21" RIGHTSIBLING="22" />
+    <CATEGORY ID="9" CODE="31"  NAME="Category 31" DESCRIPTION="Category desc 31" LEVEL="2"  PARENT_ID="4" LEFTSIBLING="25" RIGHTSIBLING="30" />
+
+    <!-- Third level -->
+    <CATEGORY ID="10" CODE="111"  NAME="Category 111" DESCRIPTION="Category desc 111" LEVEL="3"  PARENT_ID="5" LEFTSIBLING="4" RIGHTSIBLING="5" />
+    <CATEGORY ID="11" CODE="112"  NAME="Category 112" DESCRIPTION="Category desc 112" LEVEL="3"  PARENT_ID="5" LEFTSIBLING="6" RIGHTSIBLING="7" />
+    <CATEGORY ID="12" CODE="113"  NAME="Category 113" DESCRIPTION="Category desc 113" LEVEL="3"  PARENT_ID="5" LEFTSIBLING="8" RIGHTSIBLING="13" />
+    <CATEGORY ID="13" CODE="311"  NAME="Category 311" DESCRIPTION="Category desc 311" LEVEL="3"  PARENT_ID="9" LEFTSIBLING="26" RIGHTSIBLING="27" />
+    <CATEGORY ID="14" CODE="312"  NAME="Category 312" DESCRIPTION="Category desc 312" LEVEL="3"  PARENT_ID="9" LEFTSIBLING="28" RIGHTSIBLING="29" />
+
+    <!-- Fourth level -->
+    <CATEGORY ID="15" CODE="1131"  NAME="Category 1131" DESCRIPTION="Category desc 1131" LEVEL="4"  PARENT_ID="12" LEFTSIBLING="9" RIGHTSIBLING="10" />
+    <CATEGORY ID="16" CODE="1132"  NAME="Category 1132" DESCRIPTION="Category desc 1132" LEVEL="4"  PARENT_ID="12" LEFTSIBLING="11" RIGHTSIBLING="12" />
+
+</dataset>

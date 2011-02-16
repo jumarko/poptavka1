@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Hosted mode</actionName>
+            <displayName>Hosted mode</displayName>
+            <goals>
+                <goal>gwt:run</goal>
+                
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-Create i18n</actionName>
+            <displayName>Create i18n</displayName>
+            <goals>
+                <goal>gwt:i18n</goal>
+            </goals>
+        </action>
+    </actions>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- Dao -->
+    <bean id="clientDao"
+          class="cz.poptavka.sample.dao.client.ClientDaoImpl"/>
+
+    <bean id="demandDao"
+          class="cz.poptavka.sample.dao.demand.DemandDaoImpl">
+        <property name="treeItemDao" ref="treeItemDao" />
+    </bean>
+
+    <bean id="auditDao"
+          class="cz.poptavka.sample.dao.audit.AuditDaoImpl" />
+
+    <bean id="treeItemDao"
+          class="cz.poptavka.sample.dao.common.TreeItemDaoImpl" />
+
+    <bean id="localityDao"
+          class="cz.poptavka.sample.dao.address.LocalityDaoImpl" />
+
+    <bean id="categoryDao"
+          class="cz.poptavka.sample.dao.demand.CategoryDaoImpl" />
+
+    <bean id="supplierDao"
+          class="cz.poptavka.sample.dao.user.SupplierDaoImpl">
+        <property name="treeItemDao" ref="treeItemDao" />
+    </bean>
+
+
+
+    <!-- Service -->
+    <bean id="treeItemService"
+          class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
+        <property name="treeItemDao" ref="treeItemDao" />
+    </bean>
+
+    <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl ">
+        <property name="categoryDao" ref="categoryDao" />
+    </bean>
+
+    <bean id="clientService"
+          class="cz.poptavka.sample.service.user.ClientServiceImpl">
+        <property name="dao" ref="clientDao"/>
+    </bean>
+
+    <bean id="demandService"
+          class="cz.poptavka.sample.service.demand.DemandServiceImpl">
+        <property name="dao" ref="demandDao"/>
+        <property name="demandDao" ref="demandDao"/>
+    </bean>
+
+    <bean id="localityService"
+          class="cz.poptavka.sample.service.address.LocalityServiceImpl">
+        <property name="localityDao" ref="localityDao"/>
+    </bean>
+
+    <bean id="auditService"
+          class="cz.poptavka.sample.service.audit.AuditServiceImpl">
+        <property name="auditDao" ref="auditDao" />
+    </bean>
+
+    <bean id="loginService" class="cz.poptavka.sample.service.user.LoginServiceImpl"/>
+
+    <bean id="supplierService" class="cz.poptavka.sample.service.user.SupplierServiceImpl">
+        <property name="supplierDao" ref="supplierDao" />
+    </bean>
+
+
+    <!-- Other -->
+    <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>
+
+    <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
+
+     <!-- Gilead configuration -->
+    <bean id="persistenceUtil" class="net.sf.gilead.core.hibernate.jpa.HibernateJpaUtil">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <bean id="proxyStore" class="net.sf.gilead.core.store.stateful.HttpSessionProxyStore">
+        <property name="persistenceUtil" ref="persistenceUtil"/>
+    </bean>
+
+    <bean id="beanManager" class="net.sf.gilead.core.PersistentBeanManager">
+        <property name="proxyStore" ref="proxyStore"/>
+        <property name="persistenceUtil" ref="persistenceUtil"/>
+    </bean>
+
+</beans>

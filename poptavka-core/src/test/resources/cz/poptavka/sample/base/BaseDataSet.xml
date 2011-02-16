@@ -1,0 +1,69 @@
+<!DOCTYPE dataset SYSTEM "../../../../test.dtd">
+<dataset >
+
+    <!--############################################### localities ##################################################-->
+    <!--
+                                           CZ
+                                    /           \
+                                  loc1           loc2
+                                /    \                  \
+                             loc11    loc12              loc21
+                           /   |          \         /     |     \       \
+                     loc111   loc121    loc121  loc211  loc212 loc213 loc214
+                                |
+                              loc1214
+
+
+    -->
+    <LOCALITY TYPE="COUNTRY" ID="111111" LEVEL="0" CODE="CZ" NAME="Czech Republic" PARENT_ID="[NULL]" LEFTSIBLING="1" RIGHTSIBLING="26" />
+
+    <LOCALITY TYPE="REGION" ID="1" LEVEL="1" CODE="loc1" NAME="locality1" PARENT_ID="111111" LEFTSIBLING="2" RIGHTSIBLING="13"/>
+    <LOCALITY TYPE="REGION" ID="2" LEVEL="1" CODE="loc2" NAME="locality2" PARENT_ID="111111" LEFTSIBLING="14" RIGHTSIBLING="25"/>
+
+    <!-- districts within first region -->
+    <LOCALITY TYPE="DISTRICT" ID="3" LEVEL="2" CODE="loc11" NAME="locality11" PARENT_ID="1" LEFTSIBLING="3" RIGHTSIBLING="6"/>
+    <LOCALITY TYPE="DISTRICT" ID="4" LEVEL="2" CODE="loc12" NAME="locality12" PARENT_ID="1" LEFTSIBLING="7" RIGHTSIBLING="12"/>
+    <LOCALITY TYPE="DISTRICT" ID="8" LEVEL="2" CODE="loc21" NAME="locality21" PARENT_ID="2" LEFTSIBLING="15" RIGHTSIBLING="24"/>
+
+    <!-- towhships for districts -->
+    <LOCALITY TYPE="TOWNSHIP" ID="5" LEVEL="3" CODE="loc111" NAME="locality111" PARENT_ID="3" LEFTSIBLING="4" RIGHTSIBLING="5"/>
+    <LOCALITY TYPE="TOWNSHIP" ID="6" LEVEL="3" CODE="loc121" NAME="locality121" PARENT_ID="4" LEFTSIBLING="8" RIGHTSIBLING="11"/>
+    <LOCALITY TYPE="TOWNSHIP" ID="9" LEVEL="2" CODE="loc211" NAME="locality211" PARENT_ID="8" LEFTSIBLING="16" RIGHTSIBLING="17"/>
+    <LOCALITY TYPE="TOWNSHIP" ID="10" LEVEL="2" CODE="loc212" NAME="locality212" PARENT_ID="8" LEFTSIBLING="18" RIGHTSIBLING="19"/>
+    <LOCALITY TYPE="TOWNSHIP" ID="11" LEVEL="2" CODE="loc213" NAME="locality213" PARENT_ID="8" LEFTSIBLING="20" RIGHTSIBLING="21"/>
+    <LOCALITY TYPE="TOWNSHIP" ID="12" LEVEL="2" CODE="loc214" NAME="locality214" PARENT_ID="8" LEFTSIBLING="22" RIGHTSIBLING="23"/>
+
+    <!-- city for township -->
+    <LOCALITY TYPE="CITY" ID="7" LEVEL="4" CODE="loc1211" NAME="locality1211" PARENT_ID="1" LEFTSIBLING="9" RIGHTSIBLING="10"/>
+
+
+    <!--############################################ demands ########################################################-->
+    <DEMANDTYPE ID="1" CODE="normal" />
+    <DEMANDTYPE ID="2" CODE="attractive" />
+    <DEMANDTYPE ID="3" CODE="all" />
+
+    <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."/>
+    <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."/>
+    <DEMAND ID="3" TYPE_ID="3" TITLE="Demand 3"  DESCRIPTION="3: All request for java application."/>
+    <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."/>
+    <DEMAND ID="5" TYPE_ID="2" TITLE="Demand 5" DESCRIPTION="5: Attractive request for java application."/>
+    <DEMAND ID="6" TYPE_ID="3" TITLE="Demand 6" DESCRIPTION="6: All request for java application."/>
+    <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."/>
+    <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."/>
+    <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."/>
+    <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application."/>
+
+
+    <!--########################################## demands for localities ###########################################-->
+    <DEMAND_LOCALITY ID="1" DEMAND_ID="1" LOCALITY_ID="1" />
+    <DEMAND_LOCALITY ID="2" DEMAND_ID="2" LOCALITY_ID="2" />
+    <DEMAND_LOCALITY ID="3" DEMAND_ID="3" LOCALITY_ID="2" />
+    <DEMAND_LOCALITY ID="4" DEMAND_ID="4" LOCALITY_ID="3" />
+    <DEMAND_LOCALITY ID="5" DEMAND_ID="5" LOCALITY_ID="3" />
+    <DEMAND_LOCALITY ID="6" DEMAND_ID="6" LOCALITY_ID="3" />
+    <DEMAND_LOCALITY ID="7" DEMAND_ID="7" LOCALITY_ID="3" />
+    <DEMAND_LOCALITY ID="8" DEMAND_ID="8" LOCALITY_ID="6" />
+    <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="7" />
+    <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />
+
+</dataset>

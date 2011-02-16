@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.poptavka</groupId>
+    <artifactId>poptavka-web</artifactId>
+    <packaging>war</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>poptavka-web</name>
+    <url>http://maven.apache.org</url>
+    <parent>
+        <groupId>cz.poptavka</groupId>
+        <artifactId>poptavka</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>cz.poptavka</groupId>
+            <artifactId>poptavka-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>cglib</artifactId>
+                    <groupId>cglib</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>dom4j</artifactId>
+                    <groupId>dom4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <!-- Google Web Toolkit -->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp</artifactId>
+        </dependency>
+
+        <!-- GIN injection -->
+        <dependency>
+            <groupId>com.googlecode.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>${google-gin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assisted-inject</artifactId>
+        </dependency>
+
+        <!-- Gilead (Hibernate4GWT) -->
+        <dependency>
+            <groupId>net.sf.gilead</groupId>
+            <artifactId>gilead4gwt</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>poptavka</finalName>
+        <outputDirectory>${project.build.directory}/poptavka/WEB-INF/classes</outputDirectory>
+        <plugins>
+            <!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.1.0-1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateAsync</goal>
+                            <goal>i18n</goal>
+                            <goal>compile</goal>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <i18nConstantsBundles>
+                        <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
+                    </i18nConstantsBundles>
+                    <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern>
+                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                    <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>remove-javax</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <tasks>
+                        <delete dir="${project.build.directory}/classes/javax"/>
+                    </tasks>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+        <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+        <runTarget>Poptavka.html</runTarget>
+    </properties>
+</project>
+

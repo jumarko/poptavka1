@@ -1,0 +1,7 @@
+This file is used only for testing various svn hooks that should by applied.
+When testing is completed this file will be removed.
+
+1) non-empty messages
+  - echo test 3
+
+2) checkstyle

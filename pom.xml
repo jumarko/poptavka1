@@ -1,0 +1,446 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>cz.poptavka</groupId>
+    <artifactId>poptavka</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1-SNAPSHOT</version>
+    <name>Poptavka</name>
+    <url>http://maven.apache.org</url>
+    <modules>
+        <module>poptavka-core</module>
+        <module>poptavka-web</module>
+    </modules>
+
+    <properties>
+        <gwt.version>2.1.0</gwt.version>
+        <spring.version>3.0.5.RELEASE</spring.version>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <google-gin.version>1.3.7</google-gin.version>
+        <mysql.version>5.1.13</mysql.version>
+        <commons-lang.version>2.5</commons-lang.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <joda-time.version>1.6.2</joda-time.version>
+        <joda-time-hibernate.version>1.2</joda-time-hibernate.version>
+        <hsqldb.version>1.8.0.10</hsqldb.version>
+        <junit.version>4.8.2</junit.version>
+        <p6spy.version>1.3</p6spy.version>
+        <guava.version>r07</guava.version>
+        <hibernate.version>3.5.5-Final</hibernate.version>
+        <hibernate-jpamodelgen.version>1.0.0.Final</hibernate-jpamodelgen.version>
+        <ehcache.version>1.2.3</ehcache.version>
+        <ehcache-spring-annotations.version>1.1.2</ehcache-spring-annotations.version>
+        <mockito.version>1.8.5</mockito.version>
+        <powermock.version>1.4.7</powermock.version>
+    </properties>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gwt-maven.snapshots</id>
+            <url>http://nexus.codehaus.org/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+        </pluginRepository>
+
+        <!-- IF YOU WANT STAY TUNED ON UPDATE -->
+        <pluginRepository>
+            <id>maven-annotation-plugin</id>
+            <url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+
+    </pluginRepositories>
+
+    <repositories>
+        <repository>
+            <id>Nexus</id>
+            <name>JBoss Maven repository</name>
+            <layout>default</layout>
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+        </repository>
+        <repository>
+            <id>mvnrepository</id>
+            <name>Maven repository</name>
+            <layout>default</layout>
+            <url>http://mvnrepository.com/</url>
+        </repository>
+        <repository>
+            <id>GWTPlatform</id>
+            <name>GWT Platform repository</name>
+            <url>http://maven.gwt-platform.googlecode.com/hg/</url>
+        </repository>
+        <repository>
+            <id>GileadRepository</id>
+            <name>Gilead repository</name>
+            <url>https://gilead.svn.sourceforge.net/svnroot/gilead/gilead/maven-repo/</url>
+        </repository>
+        <repository>
+            <id>codehaus</id>
+            <name>Maven Codehaus repository</name>
+            <url>http://repository.codehaus.org/</url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>cz.poptavka</groupId>
+                <artifactId>poptavka-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cz.poptavka</groupId>
+                <artifactId>poptavka-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>2.5</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet.jsp</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>2.1</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- common useful dependencies -->
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons-collections.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time-hibernate</artifactId>
+                <version>${joda-time-hibernate.version}</version>
+                <exclusions>
+                    <!-- we must exclude hibernate dependency othewise strange "Incompatible class error" occurs-->
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- JDBC driver wrapper for logging the sql statements -->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.googlecode.ehcache-spring-annotations</groupId>
+                <artifactId>ehcache-spring-annotations</artifactId>
+                <version>${ehcache-spring-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-ehcache</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+
+            <!-- Hibernate -->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-envers</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>concurrent</groupId>
+                <artifactId>concurrent</artifactId>
+                <version>1.3.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>4.1.0.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-jpamodelgen</artifactId>
+                <version>${hibernate-jpamodelgen.version}</version>
+            </dependency>
+
+            <!--logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1.1</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>1.6.1</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>0.9.26</version>
+            </dependency>
+
+            <!-- Database -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hsqldb</groupId>
+                <artifactId>hsqldb</artifactId>
+                <version>${hsqldb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>1.4</version>
+            </dependency>
+
+            <!-- Spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <!-- Google Web Toolkit -->
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-servlet</artifactId>
+                <version>${gwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${gwt.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp</artifactId>
+                <version>0.4</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- GIN injection -->
+            <dependency>
+                <groupId>com.googlecode.gwt.inject</groupId>
+                <artifactId>gin</artifactId>
+                <scope>provided</scope>
+                <version>${google-gin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <scope>provided</scope>
+                <version>1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject.extensions</groupId>
+                <artifactId>guice-assisted-inject</artifactId>
+                <scope>provided</scope>
+                <version>2.0</version>
+            </dependency>
+
+            <!-- Gilead (Hibernate4GWT) -->
+            <dependency>
+                <groupId>net.sf.gilead</groupId>
+                <artifactId>gilead4gwt</artifactId>
+                <version>1.3.2</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>spring</artifactId>
+                        <groupId>org.springframework</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>hibernate</artifactId>
+                        <groupId>org.hibernate</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>ejb3-persistence</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.ejb3</groupId>
+                        <artifactId>jboss-ejb3-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.jpa</groupId>
+                        <artifactId>jboss-jpa-deployers</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>log4j</artifactId>
+                        <groupId>log4j</groupId>
+                    </exclusion>
+                    <!-- included in hibernate dependencies -->
+                    <exclusion>
+                        <artifactId>javassist</artifactId>
+                        <groupId>jboss</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- Testing -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>3.0.4.RELEASE</version>
+                <type>jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- The maven-compiler-plugin approach has the disadvantage that the maven compiler plugin
+                        does currently not allow to specify multiple compiler arguments
+                    (disable annotation processing) -->
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <!-- source output directory -->
+                            <outputDirectory>target/metamodel</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/metamodel</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+
+</project>
