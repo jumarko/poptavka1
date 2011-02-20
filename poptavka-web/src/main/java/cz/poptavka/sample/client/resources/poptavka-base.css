@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.layout-container {
+    min-width: 800px;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    position:relative;
+}
+
+.header-container {
+    height: 150px;
+    background-color: #E0F0FF;
+}
+
+.footer-container {
+    height: 150px;
+    background-color: #D0D0D0;
+}
+
+.main-menu-container {
+    height: 50px;
+    width: 100%;
+    background-color: #7FB0F0;
+}
+
+.side-menu-container {
+    width: 200px;
+    background-color: #E9E9E9;
+}
+
+.body-container {
+    min-height: 200px;
+    background-color: #F1F1F1;
+}
+
+/* experimental class */
+.closed {
+    display: none;
+}

@@ -26,6 +26,26 @@
         <url-pattern>/poptavka/service/cs</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>LocalityRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.locality.LocalityRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LocalityRPCService</servlet-name>
+        <url-pattern>/poptavka/service/locality</url-pattern>
+    </servlet-mapping>
+
+<!-- AJAX Crawlability filter - start -->
+    <filter>
+        <filter-name>Crawlfilter</filter-name>
+        <filter-class>cz.poptavka.sample.server.CrawlServlet</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Crawlfilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- AJAX Crawlability filter - end -->
+
 
     <session-config>
         <session-timeout>

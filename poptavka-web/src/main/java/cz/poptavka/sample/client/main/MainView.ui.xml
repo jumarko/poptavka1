@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <g:HTMLPanel ui:field="layoutMaster">
+        <g:HTMLPanel ui:field='headerHolder'></g:HTMLPanel>
+        <g:HTMLPanel ui:field='bodyHolder'>
+            <div id='top-menu'></div>
+            <div id='left-menu'></div>
+            <div id='right-menu'></div>
+            <div id='center'></div>
+        </g:HTMLPanel>
+        <g:HTMLPanel ui:field='footerHolder'></g:HTMLPanel>
+
+    </g:HTMLPanel>
+</ui:UiBinder>

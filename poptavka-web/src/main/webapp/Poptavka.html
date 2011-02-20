@@ -1,13 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
-        <meta name='gwt:module' content='cz.poptavka.sample.Poptavka=cz.poptavka.sample.Poptavka'>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!--        <meta name='gwt:module' content='cz.poptavka.sample.Poptavka=cz.poptavka.sample.Poptavka'> -->
 <!--        <meta name="gwt:property" content="locale=cs">-->
         <title>Poptavka</title>
-    </head>
-    <body>
         <script type="text/javascript"  src="poptavka/poptavka.nocache.js"></script>
+        <script type="text/javascript">
+        function hideLoading() {
+            document.getElementById("loading").style.display = "none";
+        }
+        </script>
+    </head>
+    <body onload="hideLoading()">
+        <div id="loading" style="background: url('images/loader.gif') center no-repeat; height: 500px;"></div>
+        <div id="gwt-container"></div>
 
-         <iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
+        <iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
     </body>
 </html>
