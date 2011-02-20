@@ -13,21 +13,10 @@
     <inherits name='net.sf.gilead.Gilead4Gwt'/>
     <inherits name='com.mvp4g.Mvp4gModule'/>
 
-    <!--  useless
-    <inherits name='com.gwtplatform.mvp.Mvp' />
-    <inherits name='com.gwtplatform.dispatch.Dispatch' />
-
-    <define-configuration-property name="gin.ginjector"
-                                   is-multi-valued="false" />
-    <set-configuration-property name="gin.ginjector"
-                                value="cz.poptavka.sample.client.gin.PoptavkaGinjector" />
-    -->
-
     <entry-point class="cz.poptavka.sample.client.Poptavka"/>
 
     <source path="client"/>
     <source path="shared"/>
-    <source path="domain"/>
 
     <!-- Localization -->
     <!--<extend-property name="locale" values="en"/>-->

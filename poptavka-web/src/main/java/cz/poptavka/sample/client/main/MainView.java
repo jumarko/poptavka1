@@ -1,11 +1,9 @@
 package cz.poptavka.sample.client.main;
 
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -13,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.address.Locality;
+import java.util.List;
 
 public class MainView extends Composite implements MainPresenter.MainViewInterface {
 
@@ -44,13 +43,13 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
         table.setText(0, 1, "District Code");
     }
 
-    public void setData(ArrayList<Locality> data) {
+    @Override
+    public void setData(List<Locality> data) {
 //        // TODO Auto-generated method stub
-//        for (int i = 0; i < data.size(); i++) {
-//            table.setText(i + 1, 0, data.get(i).getName());
-//            table.setText(i + 1, 1, data.get(i).getCode());
-//        }
-        Window.alert("Test");
+        for (int i = 0; i < data.size(); i++) {
+            table.setText(i + 1, 0, data.get(i).getName());
+            table.setText(i + 1, 1, data.get(i).getCode());
+        }
     }
 
 }

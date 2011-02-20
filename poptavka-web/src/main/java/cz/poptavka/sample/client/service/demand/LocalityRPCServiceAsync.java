@@ -1,15 +1,15 @@
 package cz.poptavka.sample.client.service.demand;
 
-import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
+import java.util.List;
 
 public interface LocalityRPCServiceAsync {
 
     void getLocalities(LocalityType type,
-            AsyncCallback<ArrayList<Locality>> callback);
+            AsyncCallback<List<Locality>> callback);
 
 }

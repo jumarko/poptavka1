@@ -60,7 +60,7 @@
 
     <bean id="localityService"
           class="cz.poptavka.sample.service.address.LocalityServiceImpl">
-        <property name="localityDao" ref="localityDao"/>
+        <property name="dao" ref="localityDao"/>
     </bean>
 
     <bean id="auditService"

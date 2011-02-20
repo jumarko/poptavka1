@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.main;
 
-import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -11,10 +10,13 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
+import java.util.List;
+import java.util.logging.Logger;
 
 @EventHandler
 public class MainHandler extends BaseEventHandler<MainEventBus> {
 
+    private static final Logger LOGGER = Logger.getLogger(MainHandler.class.getName());
     @Inject
     public MainHandler() {
     }
@@ -22,10 +24,11 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
     private LocalityRPCServiceAsync service = null;
 
     public void onStart() {
-        service.getLocalities(LocalityType.DISTRICT, new AsyncCallback<ArrayList<Locality>>() {
+        service.getLocalities(LocalityType.DISTRICT, new AsyncCallback<List<Locality>>() {
 
             @Override
-            public void onSuccess(ArrayList<Locality> result) {
+            public void onSuccess(List<Locality> result) {
+                LOGGER.info("result " + result);
                 // TODO Auto-generated method stub
                 eventBus.setData(result);
             }

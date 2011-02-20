@@ -14,8 +14,6 @@ import javax.servlet.ServletException;
  * From http://pgt.de/2009/07/17/non-invasive-gwt-and-spring-integration-reloaded/
  */
 public abstract class AutoinjectingRemoteService extends PersistentRemoteService  {
-//vyskusajte len podedenie z RemoteService - nebude fungovat kvoli prenosu entit server -> klient
-//public abstract class AutoinjectingRemoteService extends RemoteServiceServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {

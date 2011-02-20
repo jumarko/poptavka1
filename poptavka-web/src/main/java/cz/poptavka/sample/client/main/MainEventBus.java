@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.main;
 
-import java.util.ArrayList;
 
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -8,6 +7,7 @@ import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.domain.address.Locality;
+import java.util.List;
 
 @Events(startView = MainView.class, historyOnStart = true)
 public interface MainEventBus extends EventBus {
@@ -22,7 +22,7 @@ public interface MainEventBus extends EventBus {
     void start();
 
     @Event(handlers = MainPresenter.class)
-    void setData(ArrayList<Locality> data);
+    void setData(List<Locality> data);
 
 //    @Event(handlers = MainPresenter.class)
 //    void setHolderWidget(boolean bodyContainer, Widget content);

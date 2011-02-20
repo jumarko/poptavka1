@@ -18,19 +18,13 @@ import java.util.List;
  */
 public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDao> implements LocalityService {
 
-    private LocalityDao localityDao;
-
-    public void setLocalityDao(LocalityDao localityDao) {
-        this.localityDao = localityDao;
-    }
-
     @Override
     public Locality getLocality(String code) {
-        return this.localityDao.getLocality(code);
+        return getDao().getLocality(code);
     }
 
     @Override
     public List<Locality> getLocalities(LocalityType localityType) {
-        return this.localityDao.getLocalities(localityType);
+        return getDao().getLocalities(localityType);
     }
 }

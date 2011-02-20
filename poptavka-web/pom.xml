@@ -219,6 +219,52 @@
             <artifactId>gilead4gwt</artifactId>
         </dependency>
     </dependencies>
+        <profiles>
+        <profile>
+            <id>jrebel</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>gwt-maven-plugin</artifactId>
+                        <version>2.1.0-1</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>i18n</goal>
+                                    <goal>compile</goal>
+                                    <goal>test</goal>
+                                </goals>
+                            </execution>
+
+                        </executions>
+                        <configuration>
+                            <i18nConstantsBundles>
+                                <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
+                            </i18nConstantsBundles>
+
+                            <extraJvmArgs>-noverify -javaagent:${REBEL_HOME}/jrebel.jar -Xmx768m -Xms512m -XX:MaxPermSize=512m</extraJvmArgs>
+                            <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.zeroturnaround</groupId>
+                        <artifactId>jrebel-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-rebel-xml</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
     <build>
         <finalName>poptavka</finalName>
         <outputDirectory>${project.build.directory}/poptavka/WEB-INF/classes</outputDirectory>
@@ -249,7 +295,7 @@
                     <i18nConstantsBundles>
                         <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
                     </i18nConstantsBundles>
-                    <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern>
+<!--                    <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern>-->
                     <extraJvmArgs>-Xmx512m</extraJvmArgs>
                     <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
                 </configuration>

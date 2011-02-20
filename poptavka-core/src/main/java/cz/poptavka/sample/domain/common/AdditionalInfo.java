@@ -27,6 +27,8 @@ public class AdditionalInfo implements Serializable {
      */
     private Long suppliersCount;
 
+    private AdditionalInfo() {
+    }
 
     public AdditionalInfo(Long demandsCount, Long suppliersCount) {
         this.demandsCount = demandsCount;
