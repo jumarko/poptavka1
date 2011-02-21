@@ -148,7 +148,7 @@
                 <artifactId>joda-time-hibernate</artifactId>
                 <version>${joda-time-hibernate.version}</version>
                 <exclusions>
-                    <!-- we must exclude hibernate dependency othewise strange "Incompatible class error" occurs-->
+                    <!-- we must hibernate dependency othewise strange "Incompatible class error" occurs-->
                     <exclusion>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate</artifactId>
@@ -173,6 +173,20 @@
                 <groupId>com.googlecode.ehcache-spring-annotations</groupId>
                 <artifactId>ehcache-spring-annotations</artifactId>
                 <version>${ehcache-spring-annotations.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
