@@ -13,15 +13,15 @@
     </modules>
 
     <properties>
+        <!-- for gwt-2.2.0 need new version of mvp4g, can wait till mvp4g-1.3 -->
         <gwt.version>2.1.0</gwt.version>
         <spring.version>3.0.5.RELEASE</spring.version>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.version>0.1</project.version>
         <google-gin.version>1.3.7</google-gin.version>
         <mysql.version>5.1.13</mysql.version>
-        <commons-lang.version>2.5</commons-lang.version>
-        <commons-collections.version>3.2.1</commons-collections.version>
         <joda-time.version>1.6.2</joda-time.version>
         <joda-time-hibernate.version>1.2</joda-time-hibernate.version>
         <hsqldb.version>1.8.0.10</hsqldb.version>
@@ -34,6 +34,29 @@
         <ehcache-spring-annotations.version>1.1.2</ehcache-spring-annotations.version>
         <mockito.version>1.8.5</mockito.version>
         <powermock.version>1.4.7</powermock.version>
+        <mvp4g.version>1.2.0</mvp4g.version>
+        <aopalliance.version>1.0</aopalliance.version>
+        <commons-lang.version>2.5</commons-lang.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-configuration.version>1.6</commons-configuration.version>
+        <gwt.inject.version>1.0</gwt.inject.version>
+        <guice.version>1.0</guice.version>
+        <html-unit.version>2.8</html-unit.version>
+        <commons-codec.version>1.4</commons-codec.version>
+        <commons-io.version>1.4</commons-io.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
+        <unit-core.version>2.8</unit-core.version>
+        <css-parser.version>0.9.5</css-parser.version>
+        <nehohtml.version>1.9.14</nehohtml.version>
+        <httpcomponents-client.version>4.0.1</httpcomponents-client.version>
+        <httpcomponents-httpmime.version>4.0.1</httpcomponents-httpmime.version>
+        <xalan.version>2.7.1</xalan.version>
+        <xerces.version>2.9.1</xerces.version>
+        <httpcomponents-httpcore.version>4.0.1</httpcomponents-httpcore.version>
+        <apache-mime4j.version>0.6</apache-mime4j.version>
+        <sac.version>1.3</sac.version>
+        <serializer.version>2.7.1</serializer.version>
+        <xml-apis.version>1.3.04</xml-apis.version>
     </properties>
 
     <pluginRepositories>
@@ -97,6 +120,17 @@
             <name>Maven Codehaus repository</name>
             <url>http://repository.codehaus.org/</url>
         </repository>
+        
+        <!-- will we include GWT-FX?? -->
+        <!--
+        <repository>
+                <id>gwt-maven-rewraps</id>
+                <url>http://gwt-maven-rewraps.googlecode.com/hg/</url>
+            </repository>
+        </repositories>
+
+        TODO uncomment dependency as well
+        -->
     </repositories>
 
     <dependencyManagement>
@@ -298,32 +332,128 @@
                 <version>${gwt.version}</version>
                 <scope>provided</scope>
             </dependency>
+
+            <!-- Mvp4g -->
             <dependency>
-                <groupId>com.gwtplatform</groupId>
-                <artifactId>gwtp</artifactId>
-                <version>0.4</version>
-                <scope>provided</scope>
+                <groupId>com.googlecode.mvp4g</groupId>
+                <artifactId>mvp4g</artifactId>
+                <version>${mvp4g.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>aopalliance</groupId>
+                <artifactId>aopalliance</artifactId>
+                <version>${aopalliance.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt.inject</groupId>
+                <artifactId>gin</artifactId>
+                <version>${gwt.inject.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.guice</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
             </dependency>
 
-            <!-- GIN injection -->
+            <!-- HTMLUnit 2.8 needed for ajax crawling -->
             <dependency>
-                <groupId>com.googlecode.gwt.inject</groupId>
-                <artifactId>gin</artifactId>
-                <scope>provided</scope>
-                <version>${google-gin.version}</version>
+                <groupId>net.sourceforge.htmlunit</groupId>
+                <artifactId>htmlunit</artifactId>
+                <version>${html-unit.version}</version>
             </dependency>
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <scope>provided</scope>
-                <version>1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.inject.extensions</groupId>
-                <artifactId>guice-assisted-inject</artifactId>
-                <scope>provided</scope>
-                <version>2.0</version>
-            </dependency>
+            <!-- HTMLUnit dependencies -->
+            <!-- START list -->
+                <dependency>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                    <version>${commons-codec.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>commons-collections</groupId>
+                    <artifactId>commons-collections</artifactId>
+                    <version>${commons-collections.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                    <version>${commons-io.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                    <version>${commons-logging.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>net.sourceforge.htmlunit</groupId>
+                    <artifactId>htmlunit-core-js</artifactId>
+                    <version>${unit-core.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>net.sourceforge.cssparser</groupId>
+                    <artifactId>cssparser</artifactId>
+                    <version>${css-parser.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>net.sourceforge.nekohtml</groupId>
+                    <artifactId>nekohtml</artifactId>
+                    <version>${nehohtml.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                    <version>${httpcomponents-client.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpmime</artifactId>
+                    <version>${httpcomponents-httpmime.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>xalan</groupId>
+                    <artifactId>xalan</artifactId>
+                    <version>${xalan.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                    <version>${xerces.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpcore</artifactId>
+                    <version>${httpcomponents-httpcore.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.james</groupId>
+                    <artifactId>apache-mime4j</artifactId>
+                    <version>${apache-mime4j.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.w3c.css</groupId>
+                    <artifactId>sac</artifactId>
+                    <version>${sac.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>xalan</groupId>
+                    <artifactId>serializer</artifactId>
+                    <version>${serializer.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                    <version>${xml-apis.version}</version>
+                </dependency>
+            <!-- END list -->
 
             <!-- Gilead (Hibernate4GWT) -->
             <dependency>
