@@ -6,11 +6,11 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
-import org.hibernate.Query;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,10 +24,11 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
 
     @Override
     public long getSuppliersCount(Category... categories) {
-        final Query getSuppliersCountQuery = getHibernateSession().getNamedQuery("getSuppliersCountForCategories");
-        return (Long) getSuppliersCountQuery.setParameterList("categoriesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class))
-                .uniqueResult();
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
+                Category.class));
+        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForCategories", params);
+        return allSuppliersCount;
     }
 
     @Override
@@ -36,19 +37,19 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
             return Collections.emptySet();
         }
 
-        final List<Supplier> supplierList = getHibernateSession().getNamedQuery("getSuppliersForCategories")
-                .setParameterList("categoriesIds",
-                        this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class))
-                .list();
-        return CollectionsHelper.converToSet(supplierList);
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
+                Category.class));
+        return toSet(runNamedQuery("getSuppliersForCategories", params));
     }
 
     @Override
     public long getSuppliersCount(Locality... localities) {
-        final Query getSuppliersCountQuery = getHibernateSession().getNamedQuery("getSuppliersCountForLocalities");
-        return (Long) getSuppliersCountQuery.setParameterList("localitiesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class))
-                .uniqueResult();
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
+                Locality.class));
+        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForLocalities", params);
+        return allSuppliersCount;
     }
 
 
@@ -58,11 +59,10 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
             return Collections.emptySet();
         }
 
-        final List<Supplier> suppliersList = getHibernateSession().getNamedQuery("getSuppliersForLocalities")
-                .setParameterList("localitiesIds",
-                        this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class))
-                .list();
-        return CollectionsHelper.converToSet(suppliersList);
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
+                Locality.class));
+        return toSet(runNamedQuery("getSuppliersForLocalities", params));
     }
 
 

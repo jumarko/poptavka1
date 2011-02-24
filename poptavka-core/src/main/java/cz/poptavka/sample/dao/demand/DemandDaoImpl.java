@@ -11,11 +11,11 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
-import org.hibernate.Query;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,23 +38,20 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
             return Collections.emptySet();
         }
 
-        final Query getDemandsQuery = getHibernateSession().getNamedQuery("getDemandsForLocalities");
-        final List<Demand> demandsList = getDemandsQuery.setParameterList("localitiesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class))
-                .list();
-
-        return CollectionsHelper.converToSet(demandsList);
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
+                Locality.class));
+        return toSet(runNamedQuery("getDemandsForLocalities", params));
     }
 
 
     /** {@inheritDoc} */
     @Override
     public long getDemandsCount(Locality... localities) {
-        final Query getDemandsQuery = getHibernateSession().getNamedQuery("getDemandsCountForLocalities");
-        final long allDemandsCount = (Long) getDemandsQuery.setParameterList("localitiesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class))
-                .uniqueResult();
-
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
+                Locality.class));
+        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForLocalities", params);
         return allDemandsCount;
     }
 
@@ -66,22 +63,19 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
             return Collections.emptySet();
         }
 
-        final Query getDemandsQuery = getHibernateSession().getNamedQuery("getDemandsForCategories");
-        final List<Demand> demandsList = getDemandsQuery.setParameterList("categoriesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class))
-                .list();
-
-        return CollectionsHelper.converToSet(demandsList);
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
+                Category.class));
+        return toSet(runNamedQuery("getDemandsForCategories", params));
     }
 
      /** {@inheritDoc} */
     @Override
     public long getDemandsCount(Category... categories) {
-        final Query getDemandsQuery = getHibernateSession().getNamedQuery("getDemandsCountForCategories");
-        final long allDemandsCount = (Long) getDemandsQuery.setParameterList("categoriesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class))
-                .uniqueResult();
-
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
+                Category.class));
+        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForCategories", params);
         return allDemandsCount;
     }
 

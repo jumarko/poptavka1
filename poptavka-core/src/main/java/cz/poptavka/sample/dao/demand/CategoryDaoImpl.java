@@ -3,6 +3,9 @@ package cz.poptavka.sample.dao.demand;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.domain.demand.Category;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * @author Juraj Martinka
@@ -13,9 +16,9 @@ public class CategoryDaoImpl extends GenericHibernateDao<Category> implements Ca
     /** {@inheritDoc} */
     @Override
     public Category getCategory(String code) {
-        return (Category) getHibernateSession().getNamedQuery("getCategoryByCode")
-                .setParameter("code", code)
-                .uniqueResult();
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("code", code);
+        return (Category) runNamedQueryForSingleResult("getCategoryByCode", params);
     }
 
 }
