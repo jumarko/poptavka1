@@ -64,6 +64,15 @@
         <servlet-name>LocalityRPCService</servlet-name>
         <url-pattern>/poptavka/service/locality</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>CategoryRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.category.CategoryRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CategoryRPCService</servlet-name>
+        <url-pattern>/poptavka/service/category</url-pattern>
+    </servlet-mapping>
 
 <!-- AJAX Crawlability filter - start -->
     <filter>
