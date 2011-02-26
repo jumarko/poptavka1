@@ -24,4 +24,7 @@ public interface PoptavkaBaseStyle extends CssResource {
 
     @ClassName("closed")
     String closedWidget();
+
+    @ClassName("login-area")
+    String loginArea();
 }

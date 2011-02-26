@@ -1,53 +1,42 @@
 package cz.poptavka.sample.client.main;
 
 
-import java.util.List;
-
-import com.google.gwt.user.client.Window;
-import com.mvp4g.client.annotation.InjectService;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-
-import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.demand.Category;
 
 @Presenter(view = MainView.class)
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
 
-    //testing
-    private LocalityRPCServiceAsync service = null;
-    private CategoryRPCServiceAsync categoryService = null;
-
     public interface MainViewInterface {
-        void setData(List<Locality> data);
-        void setCategories(List<Category> categories);
+        void setBodyWidget(Widget body);
+
+        void setLoginWidget(Widget login);
     }
 
+    /**
+     * Initial Event. Calls all default modules to load: LoginModule, HomeModule
+     */
     public void onStart() {
+        eventBus.initLogin();
+        eventBus.initHome();
     }
 
-    public void onSetData(List<Locality> data) {
-        if (data == null) {
-            Window.alert("null data");
-        } else {
-            getView().setData(data);
-        }
-        //view.setData(data);
+    /**
+     * Sets widget to View's body section. Body section can hold one widget only.
+     *
+     * @param body widget to be inserted
+     */
+    public void onSetBodyHolderWidget(Widget body) {
+        view.setBodyWidget(body);
     }
 
-    public void onSetCategories(List<Category> data) {
-        if (data == null) {
-            Window.alert("null data");
-        } else {
-            getView().setCategories(data);
-        }
-        //view.setData(data);
-    }
-
-    @InjectService
-    public void setService(LocalityRPCServiceAsync service) {
-        this.service = service;
+    /**
+     * Sets widget to login-area.
+     *
+     * @param login login widget
+     */
+    public void onSetLoginWidget(Widget login) {
+        view.setLoginWidget(login);
     }
 }

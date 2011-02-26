@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <g:HTMLPanel ui:field="container">
+        <!-- menu -->
+        <g:HorizontalPanel>
+            <g:Button ui:field="button1">Button 1</g:Button>
+            <g:Button ui:field="button2">Button 2</g:Button>
+            <g:Button ui:field="button3">Button 3</g:Button>
+            <g:Button ui:field="button4">Button 4</g:Button>
+            <g:Button ui:field="button5">Button 5</g:Button>
+        </g:HorizontalPanel>
+        <!-- menu -->
+        <div id="first"></div>
+        <div id="second"></div>
+        <div id="third"></div>
+    </g:HTMLPanel>
+</ui:UiBinder>
