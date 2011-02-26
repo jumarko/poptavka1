@@ -8,8 +8,8 @@ import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @EventHandler
 public class HomeHandler extends BaseEventHandler<HomeEventBus> {
@@ -22,14 +22,29 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
     }
 
     public void onGetLocalities(final LocalityType type) {
-        localityService.getLocalities(type, new AsyncCallback<List<Locality>>() {
+        localityService.getLocalities(type, new AsyncCallback<List<LocalityDetail>>() {
             @Override
-            public void onSuccess(List<Locality> list) {
+            public void onSuccess(List<LocalityDetail> list) {
                 eventBus.displayLocalityList(type, list);
             }
+
             @Override
             public void onFailure(Throwable arg0) {
                 //empty
+            }
+        });
+    }
+
+    public void onGetChildLocalities(final LocalityType type, String locCode) {
+        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onSuccess(List<LocalityDetail> list) {
+                eventBus.displayLocalityList(type, list);
             }
         });
     }

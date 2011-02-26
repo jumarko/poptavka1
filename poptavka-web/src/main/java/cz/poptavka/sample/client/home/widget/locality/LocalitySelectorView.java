@@ -3,16 +3,16 @@ package cz.poptavka.sample.client.home.widget.locality;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 public class LocalitySelectorView extends Composite implements LocalitySelectorPresenter.LocalitySelectorInterface {
 
@@ -24,51 +24,51 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     private static final int VISIBLE_COUNT = 10;
 
     @UiField
-    ListBox regionList;
-    @UiField
     ListBox districtList;
     @UiField
     ListBox townshipList;
-
+    @UiField
+    ListBox cityList;
     @UiField
     HTML loader;
+    @UiField
+    Label selected;
 
     public LocalitySelectorView() {
         initWidget(uiBinder.createAndBindUi(this));
 
-        loader.setVisible(false);
+        //loader.setVisible(false);
 
-        regionList.setVisibleItemCount(VISIBLE_COUNT);
-        districtList.setVisible(false);
         districtList.setVisibleItemCount(VISIBLE_COUNT);
         townshipList.setVisible(false);
         townshipList.setVisibleItemCount(VISIBLE_COUNT);
+        cityList.setVisible(false);
+        cityList.setVisibleItemCount(VISIBLE_COUNT);
     }
 
     @Override
-    public void setLocalities(LocalityType type, List<Locality> list) {
+    public void setLocalities(LocalityType type, List<LocalityDetail> list) {
         switch (type) {
-            case REGION:
-                setData(regionList, list);
-                break;
             case DISTRICT:
                 setData(districtList, list);
-                toggleLoader();
-                districtList.setVisible(true);
                 break;
             case TOWNSHIP:
-                toggleLoader();
                 setData(townshipList, list);
-                townshipList.setVisible(true);
+                break;
+            case CITY:
+                setData(cityList, list);
+                break;
             default:
                 break;
         }
     }
 
-    private void setData(ListBox box, List<Locality> list) {
+    private void setData(ListBox box, List<LocalityDetail> list) {
+        box.clear();
         for (int i = 0; i < list.size(); i++) {
             box.addItem(list.get(i).getName(), list.get(i).getCode());
         }
+        toggleLoader();
         box.setVisible(true);
     }
 
@@ -78,27 +78,38 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     }
 
     @Override
-    public HasChangeHandlers getDistrictList() {
+    public ListBox getDistrictList() {
         return districtList;
     }
 
     @Override
-    public HasChangeHandlers getRegionList() {
-        return regionList;
-    }
-
-    @Override
-    public HasChangeHandlers getTownshipList() {
+    public ListBox getTownshipList() {
         return townshipList;
     }
 
     @Override
-    public String getSelectedItem() {
-        return townshipList.getValue(townshipList.getSelectedIndex());
+    public ListBox getCityList() {
+        return cityList;
+    }
+
+    @Override
+    public String getSelectedItem(LocalityType type) {
+        switch (type) {
+            case DISTRICT:
+                return districtList.getValue(districtList.getSelectedIndex());
+            case TOWNSHIP:
+                return townshipList.getValue(townshipList.getSelectedIndex());
+            default:
+                return cityList.getValue(cityList.getSelectedIndex());
+        }
     }
 
     public void toggleLoader() {
         loader.setVisible(!loader.isVisible());
+    }
+
+    public void setSelectedItem() {
+        selected.setText(cityList.getValue(cityList.getSelectedIndex()));
     }
 
 }
