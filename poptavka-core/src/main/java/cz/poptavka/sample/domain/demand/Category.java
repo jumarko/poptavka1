@@ -16,6 +16,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @NamedQueries({
+        @NamedQuery(name = "getRootCategories", query = "from Category c where c.parent is null order by c.name"),
         @NamedQuery(name = "getCategoryByCode", query = "from Category c where c.code = :code")
 })
 public class Category extends TreeItem implements AdditionalInfoAware {

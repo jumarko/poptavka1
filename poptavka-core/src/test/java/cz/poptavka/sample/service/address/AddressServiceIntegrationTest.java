@@ -7,7 +7,6 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
  *         Date: 5.2.11
  */
 @DataSet(path = "classpath:cz/poptavka/sample/base/BaseDataSet.xml", dtd = "classpath:test.dtd")
-@DirtiesContext
 public class AddressServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired

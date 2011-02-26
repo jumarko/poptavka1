@@ -6,9 +6,11 @@
 package cz.poptavka.sample.service.user;
 
 import com.googlecode.ehcache.annotations.Cacheable;
-import cz.poptavka.sample.dao.client.ClientDao;
+import cz.poptavka.sample.dao.user.ClientDao;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,8 +26,14 @@ public class ClientServiceImpl extends GenericServiceImpl<Client, ClientDao> imp
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public List<Client> searchByCriteria(ClientSearchCriteria clientSearchCritera) {
         return this.getDao().searchByCriteria(clientSearchCritera);
+    }
+
+    @Override
+    public Client create(Client client) {
+        return super.create(client);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
 }

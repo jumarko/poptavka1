@@ -4,6 +4,7 @@ import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.domain.demand.Category;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -12,6 +13,12 @@ import java.util.Map;
  *         Date: 6.2.11
  */
 public class CategoryDaoImpl extends GenericHibernateDao<Category> implements CategoryDao {
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Category> getRootCategories() {
+        return runNamedQuery("getRootCategories", null);
+    }
 
     /** {@inheritDoc} */
     @Override

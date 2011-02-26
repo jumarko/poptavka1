@@ -10,9 +10,10 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 /**
+ * @deprecated {@link AdditionalInfoLoadListener is not used anymore}
+ *
  * @author Juraj Martinka
  *         Date: 13.2.11
  */
@@ -21,8 +22,7 @@ import org.springframework.test.annotation.DirtiesContext;
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
-@DirtiesContext
-@Ignore
+@Ignore // this test is deprecated
 public class AdditionalInfoLoadListenerTest extends DBUnitBaseTest {
 
     private static final String ROOT_CATEGORY_CODE = "0";

@@ -3,6 +3,7 @@ package cz.poptavka.sample.service.client;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Assert;
@@ -52,7 +53,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertTrue("Elvíra".equals(clients2.get(1).getPerson().getFirstName()));
 
 
-        final Client hovnoClient = clientService.getById(4L);
+        final Client hovnoClient = clientService.getById(111111114L);
         Assert.assertTrue("hovna".equals(hovnoClient.getCompany().getTaxId()));
     }
 
@@ -66,5 +67,19 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         final Client clientToModify = clients.get(0);
         clientToModify.getPerson().setLastName("Krokovic");
         this.clientService.update(clientToModify);
+    }
+
+
+    @Test
+    public void testCreateClient() {
+        final Client newClient = new Client();
+        newClient.setEmail("new@client.com");
+        newClient.setPerson(new Person("New", "Client"));
+        this.clientService.create(newClient);
+
+        final List<Client> peristedClient = this.clientService.searchByCriteria(
+                new ClientSearchCriteria("New", "Client"));
+        Assert.assertNotNull(peristedClient);
+        Assert.assertEquals("new@client.com", peristedClient.get(0).getEmail());
     }
 }

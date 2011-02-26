@@ -10,8 +10,11 @@
 
 
     <!-- Dao -->
+    <bean id="personDao"
+          class="cz.poptavka.sample.dao.user.PersonDaoImpl"/>
+
     <bean id="clientDao"
-          class="cz.poptavka.sample.dao.client.ClientDaoImpl"/>
+          class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
 
     <bean id="demandDao"
           class="cz.poptavka.sample.dao.demand.DemandDaoImpl">
@@ -45,6 +48,11 @@
 
     <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl ">
         <property name="categoryDao" ref="categoryDao" />
+    </bean>
+
+    <bean id="personService"
+          class="cz.poptavka.sample.service.user.PersonServiceImpl">
+        <property name="dao" ref="personDao"/>
     </bean>
 
     <bean id="clientService"

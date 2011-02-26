@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,8 @@ import java.util.List;
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 // must be transactional to roll-back the created data after each test
 @Transactional
+// the majority of tests must be marked as dirty otherwise strange consequences can occur.
+@DirtiesContext
 public abstract class DBUnitBaseTest {
 
     /** Default suffix which will be used when constructing default name of xml file. **/

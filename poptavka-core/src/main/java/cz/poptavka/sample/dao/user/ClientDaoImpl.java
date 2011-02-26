@@ -1,4 +1,4 @@
-package cz.poptavka.sample.dao.client;
+package cz.poptavka.sample.dao.user;
 
 import com.google.common.base.Preconditions;
 import cz.poptavka.sample.dao.GenericHibernateDao;

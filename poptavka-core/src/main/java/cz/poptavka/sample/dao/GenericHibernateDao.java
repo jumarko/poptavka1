@@ -297,9 +297,13 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         if (query == null) {
             throw new IllegalStateException("Query doesn't exist!");
         }
-        for (Map.Entry<String, Object> param : params.entrySet()) {
-            query.setParameter(param.getKey(), param.getValue());
+
+        if (params != null) {
+            for (Map.Entry<String, Object> param : params.entrySet()) {
+                query.setParameter(param.getKey(), param.getValue());
+            }
         }
+
         return query.getResultList();
     }
 

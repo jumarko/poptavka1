@@ -25,7 +25,7 @@ import java.util.List;
  * This class uses TABLE_PER_CLASS strategy because there is a references to the parent - this case is not allowed
  * to be presented in @MappedSuperclass.
  *
- * See <a href="http://opensource.atlassian.com/projects/hibernate/browse/EJB-199">this jira discussion</a></code>
+ * See <a href="http://opensource.atlassian.com/projects/hibernate/browse/EJB-199">this jira discussion</a>
  * for further explanation.
  *
  * @author Juraj Martinka
@@ -47,11 +47,11 @@ public abstract class TreeItem extends DomainObject {
     private List<TreeItem> children;
 
     /** Reference to the left sibling - at the same level. */
-    @Column(name = "leftSibling")
+    @Column(name = "leftBound")
     private Long leftBound;
 
     /** Reference to the right sibling - at the same level. */
-    @Column(name = "rightSibling")
+    @Column(name = "rightBound")
     private Long rightBound;
 
 

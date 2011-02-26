@@ -10,7 +10,6 @@ import cz.poptavka.sample.service.demand.CategoryService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Set;
 
@@ -23,7 +22,6 @@ import java.util.Set;
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
-@DirtiesContext
 public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cz.poptavka.sample.dao.client;
+package cz.poptavka.sample.dao.user;
 
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.user.Client;

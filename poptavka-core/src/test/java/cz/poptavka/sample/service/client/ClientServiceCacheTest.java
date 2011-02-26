@@ -1,7 +1,7 @@
 package cz.poptavka.sample.service.client;
 
 import static org.mockito.Mockito.times;
-import cz.poptavka.sample.dao.client.ClientDao;
+import cz.poptavka.sample.dao.user.ClientDao;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Before;
 import org.junit.Test;

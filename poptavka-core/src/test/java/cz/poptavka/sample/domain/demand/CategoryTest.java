@@ -8,7 +8,6 @@ import cz.poptavka.sample.service.common.TreeItemService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
 
@@ -16,8 +15,7 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 6.2.11
  */
-@DataSet(path = "CategoryDataSet.xml", dtd = "classpath:test.dtd")
-@DirtiesContext
+@DataSet(path = "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml", dtd = "classpath:test.dtd")
 public class CategoryTest extends DBUnitBaseTest {
 
     @Autowired

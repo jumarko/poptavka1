@@ -5,6 +5,8 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
+
 /**
  * @author Juraj Martinka
  *         Date: 13.2.11
@@ -12,6 +14,13 @@ import org.apache.commons.lang.StringUtils;
 public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements  CategoryService {
 
     private CategoryDao categoryDao;
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Category> getRootCategories() {
+        return categoryDao.getRootCategories();
+    }
 
     /** {@inheritDoc} */
     @Override

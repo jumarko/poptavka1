@@ -109,7 +109,7 @@ public interface GenericDao<T extends DomainObject> {
      * Runs named query.
      *
      * @param name   of the query
-     * @param params
+     * @param params can be null. In that case no parameters are set.
      * @return
      */
     List runNamedQuery(String name, Map<String, Object> params);

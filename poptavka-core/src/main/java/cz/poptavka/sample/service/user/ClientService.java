@@ -1,6 +1,6 @@
 package cz.poptavka.sample.service.user;
 
-import cz.poptavka.sample.dao.client.ClientDao;
+import cz.poptavka.sample.dao.user.ClientDao;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.service.GenericService;
 
