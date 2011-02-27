@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.demand;
 
+import com.googlecode.ehcache.annotations.Cacheable;
 import cz.poptavka.sample.dao.demand.CategoryDao;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.GenericServiceImpl;
@@ -18,12 +19,14 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
+    @Cacheable(cacheName = "cache5h")
     public List<Category> getRootCategories() {
         return categoryDao.getRootCategories();
     }
 
     /** {@inheritDoc} */
     @Override
+    @Cacheable(cacheName = "cache5h")
     public Category getCategory(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
