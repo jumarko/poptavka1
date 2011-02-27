@@ -20,7 +20,6 @@
         <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.version>0.1</project.version>
-        <google-gin.version>1.3.7</google-gin.version>
         <mysql.version>5.1.13</mysql.version>
         <joda-time.version>1.6.2</joda-time.version>
         <joda-time-hibernate.version>1.2</joda-time-hibernate.version>
