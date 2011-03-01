@@ -1,11 +1,11 @@
 package cz.poptavka.sample.client.service.demand;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 public interface CategoryRPCServiceAsync {
-    void getCategories(AsyncCallback<List<Category>> callback);
+    void getCategories(AsyncCallback<ArrayList<CategoryDetail>> callback);
 }

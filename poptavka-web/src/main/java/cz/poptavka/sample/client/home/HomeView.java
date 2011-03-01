@@ -1,5 +1,8 @@
 package cz.poptavka.sample.client.home;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -10,12 +13,20 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 
+/**
+ * Main view for home/unlogged user aka public section.
+ *
+ * @author Beho
+ *
+ */
 public class HomeView extends Composite implements HomePresenter.HomeInterface {
 
     private static HomeViewUiBinder uiBinder = GWT.create(HomeViewUiBinder.class);
 
     interface HomeViewUiBinder extends UiBinder<Widget, HomeView> {
     }
+
+    private Map<AnchorEnum, Widget> widgetMap = new HashMap<AnchorEnum, Widget>();
 
     @UiField
     HTMLPanel container;
@@ -36,25 +47,40 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
     public void setContent(AnchorEnum anchor, Widget body) {
+        shouldRemoveWidget(anchor);
         switch (anchor) {
             case FIRST:
                 container.add(body, "first");
                 break;
             case SECOND:
-                container.addAndReplaceElement(body, "second");
+                container.add(body, "second");
                 break;
             case THIRD:
-                container.addAndReplaceElement(body, "third");
+                container.add(body, "third");
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * Returns this view instance.
+     */
     @Override
     public Widget getWidgetView() {
         return this;
     }
+
+    /**
+     * check and eventually remove widget from anchor.
+     *
+     * @param anchor
+     */
+    private void shouldRemoveWidget(AnchorEnum anchor) {
+        if (widgetMap.containsKey(anchor)) {
+            widgetMap.remove(anchor);
+        }
+    }
+
 }

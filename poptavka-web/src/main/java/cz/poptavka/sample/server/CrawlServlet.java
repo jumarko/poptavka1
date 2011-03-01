@@ -24,6 +24,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 public final class CrawlServlet implements Filter {
 
     private static final int TIMEOUT = 3000;
+    private static final int ESCAPED_LENGTH_LONGER = 20;
+    private static final int ESCAPED_LENGTH = 19;
 
     private static final String FRAGMENT = "_escaped_fragment_";
 
@@ -35,7 +37,8 @@ public final class CrawlServlet implements Filter {
             StringBuilder tmpSb = new StringBuilder(queryStringSb.substring(0, i));
             tmpSb.append("#!");
             try {
-                tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + 20, queryStringSb.length()), "UTF-8"));
+                tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + ESCAPED_LENGTH_LONGER,
+                        queryStringSb.length()), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -48,7 +51,8 @@ public final class CrawlServlet implements Filter {
             StringBuilder tmpSb = new StringBuilder(queryStringSb.substring(0, i));
             tmpSb.append("#!");
             try {
-                tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + 19, queryStringSb.length()), "UTF-8"));
+                tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + ESCAPED_LENGTH,
+                        queryStringSb.length()), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
                 e.printStackTrace();

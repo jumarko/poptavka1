@@ -1,12 +1,16 @@
 package cz.poptavka.sample.client.main;
 
 
+import java.util.logging.Logger;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 @Presenter(view = MainView.class)
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
+
+    private static final Logger LOGGER = Logger.getLogger(MainPresenter.class.getName());
 
     public interface MainViewInterface {
         void setBodyWidget(Widget body);
@@ -18,6 +22,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      * Initial Event. Calls all default modules to load: LoginModule, HomeModule
      */
     public void onStart() {
+        LOGGER.info("Starting main presenter...");
         eventBus.initLogin();
         eventBus.initHome();
     }

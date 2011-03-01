@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.home;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -10,29 +11,52 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.widget.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 public interface HomeEventBus extends EventBus {
 
+    /**
+     * init method
+     */
     @Event(handlers = HomePresenter.class)
     void initHome();
 
+    /**
+     * Display HomeView - parent Widget for public section
+     *
+     * @param body
+     */
     @Event(forwardToParent = true)
     void setBodyHolderWidget(Widget body);
 
+    /**
+     * Assign widget to selected part
+     *
+     * @param anchor to be connected to
+     * @param content
+     */
     @Event(handlers = HomePresenter.class)
     void setAnchorWidget(AnchorEnum anchor, Widget content);
 
+    /* locality methods */
     @Event(handlers = LocalitySelectorPresenter.class)
     void displayLocalityList(LocalityType type, List<LocalityDetail> list);
 
     @Event(handlers = LocalitySelectorPresenter.class)
     void initLocalitySelector(AnchorEnum anchor);
-
+    /* handler methods for locality */
     @Event(handlers = HomeHandler.class)
     void getLocalities(LocalityType type);
 
     @Event(handlers = HomeHandler.class)
     void getChildLocalities(LocalityType type, String locCode);
+
+    /* categories */
+    @Event(handlers = HomeHandler.class)
+    void getRootCategories();
+
+    @Event
+    void displayRootCategories(ArrayList<CategoryDetail> lis);
 }

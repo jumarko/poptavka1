@@ -9,6 +9,7 @@
             <g:HTML ui:field='loader' ><img src="images/loader.gif" /></g:HTML>
         </g:HorizontalPanel>
         <br />
+        <!-- no need to display selected items -->
         <g:Label ui:field='selected'></g:Label>
     </g:HTMLPanel>
 </ui:UiBinder>
