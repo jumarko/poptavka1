@@ -49,6 +49,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
 
     public void setContent(AnchorEnum anchor, Widget body) {
         shouldRemoveWidget(anchor);
+        widgetMap.put(anchor, body);
         switch (anchor) {
             case FIRST:
                 container.add(body, "first");
