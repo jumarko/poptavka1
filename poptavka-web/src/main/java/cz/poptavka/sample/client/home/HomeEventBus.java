@@ -9,6 +9,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.client.home.widget.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.home.widget.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -57,6 +58,9 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomeHandler.class)
     void getRootCategories();
 
-    @Event
-    void displayRootCategories(ArrayList<CategoryDetail> lis);
+    @Event(handlers = CategorySelectorPresenter.class)
+    void displayRootCategories(ArrayList<CategoryDetail> list);
+
+    @Event(handlers = CategorySelectorPresenter.class)
+    void initCategorySelector(AnchorEnum anchor);
 }

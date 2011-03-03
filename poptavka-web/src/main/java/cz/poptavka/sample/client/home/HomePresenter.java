@@ -33,6 +33,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         //locality selector testing
         eventBus.initLocalitySelector(AnchorEnum.FIRST);
+
     }
 
     /**
