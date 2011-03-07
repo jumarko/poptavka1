@@ -27,4 +27,19 @@ public interface PoptavkaBaseStyle extends CssResource {
 
     @ClassName("login-area")
     String loginArea();
+
+    @ClassName("creation-hidden")
+    String creationHidden();
+
+    @ClassName("creation-second")
+    String displaySecondPart();
+
+    @ClassName("creation-third")
+    String displayThirdPart();
+
+    @ClassName("creation-fourth")
+    String displayFourthPart();
+
+    @ClassName("solid-back")
+    String solidBackground();
 }

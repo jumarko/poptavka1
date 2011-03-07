@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -32,7 +33,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     HTMLPanel container;
     //menu section
     @UiField
-    Button button1;
+    Button btnCreateDemand;
     @UiField
     Button button2;
     @UiField
@@ -82,6 +83,11 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         if (widgetMap.containsKey(anchor)) {
             widgetMap.remove(anchor);
         }
+    }
+
+    @Override
+    public HasClickHandlers getCreateDemandBtn() {
+        return btnCreateDemand;
     }
 
 }

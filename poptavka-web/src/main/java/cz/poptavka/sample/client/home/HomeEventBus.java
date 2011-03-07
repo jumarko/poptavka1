@@ -6,8 +6,11 @@ import java.util.List;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.module.ChildModule;
+import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.common.creation.CreationModule;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.widget.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.home.widget.locality.LocalitySelectorPresenter;
@@ -16,6 +19,9 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
+@ChildModules({
+        @ChildModule(moduleClass = CreationModule.class, autoDisplay = false, async = true)
+        })
 public interface HomeEventBus extends EventBus {
 
     /**
@@ -63,4 +69,7 @@ public interface HomeEventBus extends EventBus {
 
     @Event(handlers = CategorySelectorPresenter.class)
     void initCategorySelector(AnchorEnum anchor);
+
+    @Event(modulesToLoad = CreationModule.class)
+    void initDemandCreation();
 }

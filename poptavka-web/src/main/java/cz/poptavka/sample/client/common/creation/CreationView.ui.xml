@@ -1,0 +1,152 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:p="urn:import:cz.poptavka.sample.client.common.creation">
+
+    <!-- injecting style resources -->
+    <ui:with field='style' type='cz.poptavka.sample.client.resources.StyleResource'/>
+
+    <g:AbsolutePanel width="100%" height="460px" ui:field='absolutePanel'>
+        <g:at left="0" top="0">
+            <g:VerticalPanel ui:field="part1">
+                <g:HTML wordWrap="true"><strong>#1 Demand Description</strong></g:HTML>
+                <g:Grid>
+                    <g:row>
+                        <g:cell>
+                            Title
+                        </g:cell>
+                        <g:customCell>
+                            <g:TextBox ui:field="titleBox"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:HTML wordWrap="true">A1</g:HTML>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:TextBox ui:field="paramOne"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:HTML wordWrap="true">A2</g:HTML>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:TextBox ui:field="paramTwo"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:HTML wordWrap="true">A3</g:HTML>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:TextBox ui:field="paramThree"/>
+                        </g:customCell>
+                    </g:row>
+                </g:Grid>
+                <g:Grid>
+                    <g:row>
+                        <g:customCell>
+                            <p:RichTextToolbar ui:field="toolbar"/>
+                        </g:customCell>
+                        <!--
+
+                        -->
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:RichTextArea ui:field="description"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:FileUpload/>
+                        </g:customCell>
+                    </g:row>
+                </g:Grid>
+                <g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
+                    <g:HTMLPanel>
+                    <g:Button ui:field="btnToSecond">Next</g:Button>
+                </g:HTMLPanel>
+                </g:Cell>
+            </g:VerticalPanel>
+        </g:at>
+        <g:at left="0" top="465">
+            <g:VerticalPanel height="440px" ui:field="part2" width="60%" styleName='{style.cssBase.solidBackground}'>
+                <g:HTML wordWrap="true"><strong>#2 Locality selection</strong></g:HTML>
+                <g:Label text="LocalitySeelctor"/>
+                <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
+                    <g:HTMLPanel>
+                        <g:HorizontalPanel>
+                            <g:Button ui:field="btnBackFirst">Back</g:Button>
+                            <g:Button ui:field="btnToThird">Next</g:Button>
+                        </g:HorizontalPanel>
+                    </g:HTMLPanel>
+                </g:Cell>
+            </g:VerticalPanel>
+        </g:at>
+        <g:at left="0" top="465">
+            <g:VerticalPanel ui:field="part3" width="60%" height="420px" styleName='{style.cssBase.solidBackground}'>
+                <g:HTML wordWrap="true"><strong>#3 Category selection</strong></g:HTML>
+                <g:Label text="Category selector"/>
+                <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
+                    <g:HTMLPanel>
+                    <g:HorizontalPanel>
+                        <g:Button ui:field="btnBackSecond">Back</g:Button>
+                        <g:Button ui:field="btnToFourth">Next</g:Button>
+                    </g:HorizontalPanel>
+                </g:HTMLPanel>
+                </g:Cell>
+            </g:VerticalPanel>
+        </g:at>
+        <g:at left="0" top="465">
+            <g:VerticalPanel ui:field="part4" width="60%" height="400px" styleName='{style.cssBase.solidBackground}'>
+                <g:HTML wordWrap="true"><strong>#4 Your Personal Details</strong></g:HTML>
+                <g:HorizontalPanel>
+                    <g:Label text="Already registered?"/>
+                    <g:Button>Sign Up</g:Button>
+                </g:HorizontalPanel>
+                <g:HTML wordWrap="true"><hr /></g:HTML>
+                <g:Label text="New User"/>
+                <g:Grid>
+                    <g:row>
+                        <g:customCell>
+                            <g:RadioButton name="new name" text="Person"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:RadioButton name="new name" text="Company"/>
+                        </g:customCell>
+                    </g:row>
+                </g:Grid>
+                <g:VerticalPanel>
+                    <g:Grid>
+                        <g:row>
+                            <g:customCell>
+                                <g:Label text="Name"/>
+                            </g:customCell>
+                            <g:customCell>
+                                <g:TextBox readOnly="true" ui:field="userNameBox"/>
+                            </g:customCell>
+                        </g:row>
+                        <g:row>
+                            <g:customCell>
+                                <g:Label text="Other"/>
+                            </g:customCell>
+                            <g:customCell>
+                                <g:TextBox readOnly="true" ui:field="userOtherBox"/>
+                            </g:customCell>
+                        </g:row>
+                    </g:Grid>
+                </g:VerticalPanel>
+                <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
+                    <g:HTMLPanel>
+                    <g:HorizontalPanel>
+                        <g:Button ui:field="btnBackThird">Back</g:Button>
+                        <g:Button ui:field="btnCreate">Create</g:Button>
+                    </g:HorizontalPanel>
+                </g:HTMLPanel>
+                </g:Cell>
+            </g:VerticalPanel>
+        </g:at>
+    </g:AbsolutePanel>
+</ui:UiBinder>

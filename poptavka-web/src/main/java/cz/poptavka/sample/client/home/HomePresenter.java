@@ -2,6 +2,9 @@ package cz.poptavka.sample.client.home;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -18,13 +21,20 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public interface HomeInterface extends LazyView {
 
+        HasClickHandlers getCreateDemandBtn();
+
         void setContent(AnchorEnum anchor, Widget content);
 
         Widget getWidgetView();
     }
 
     public void bindView() {
-
+        view.getCreateDemandBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                eventBus.initDemandCreation();
+            }
+        });
     }
 
     public void onInitHome() {
@@ -32,7 +42,11 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         eventBus.setBodyHolderWidget(view.getWidgetView());
 
         //locality selector testing
-        eventBus.initLocalitySelector(AnchorEnum.FIRST);
+        //eventBus.initLocalitySelector(AnchorEnum.FIRST);
+
+        //demand creation
+//        LOGGER.info("demand creation called...");
+//        eventBus.initDemandCreation();
 
     }
 

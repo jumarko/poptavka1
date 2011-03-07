@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.module.AfterLoadChildModule;
+import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
@@ -41,7 +43,7 @@ public interface MainEventBus extends EventBus {
     void initHome();
 
 //    /**
-//     * Init user module (Logged user)
+//     * Init user module (logged user)
 //     */
 //    @Event(modulesToLoad = UserModule.class)
 //    void initUser();
@@ -61,4 +63,12 @@ public interface MainEventBus extends EventBus {
      */
     @Event (handlers = MainPresenter.class)
     void setLoginWidget(Widget login);
+
+    @BeforeLoadChildModule
+    @Event(handlers = MainPresenter.class)
+    void beforeLoad();
+
+    @AfterLoadChildModule
+    @Event(handlers = MainPresenter.class)
+    void afterLoad();
 }

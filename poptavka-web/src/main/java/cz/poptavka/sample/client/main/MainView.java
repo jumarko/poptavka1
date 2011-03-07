@@ -26,20 +26,16 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     HTMLPanel footerHolder;
 
     /**
-     * Constructor of parent view with some basic styling
+     * Constructor of parent view with some basic styling.
      */
     public MainView() {
         initWidget(BINDER.createAndBindUi(this));
-        //styling layout
+        //styling layout - styled in UiBinder
         StyleResource.INSTANCE.cssBase().ensureInjected();
-        layoutMaster.setStylePrimaryName(StyleResource.INSTANCE.cssBase().layoutContainer());
-        headerHolder.setStylePrimaryName(StyleResource.INSTANCE.cssBase().headerContainer());
-        bodyHolder.setStylePrimaryName(StyleResource.INSTANCE.cssBase().bodyContainer());
-        footerHolder.setStylePrimaryName(StyleResource.INSTANCE.cssBase().footerContainer());
     }
 
     /**
-     * Sets widget to Body section widget, Body section can hold one widget only
+     * Sets widget to Body section widget, Body section can hold one widget only.
      *
      * @param body widget to be inserted
      */

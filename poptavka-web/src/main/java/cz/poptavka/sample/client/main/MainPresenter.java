@@ -3,6 +3,8 @@ package cz.poptavka.sample.client.main;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -43,5 +45,15 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      */
     public void onSetLoginWidget(Widget login) {
         view.setLoginWidget(login);
+    }
+
+    public void onBeforeLoad() {
+        Document.get().getElementById("gwt-modules-loading").getStyle().setDisplay(Display.BLOCK);
+        Document.get().getElementById("loading").getStyle().setDisplay(Display.BLOCK);
+    }
+
+    public void onAfterLoad() {
+        Document.get().getElementById("gwt-modules-loading").getStyle().setDisplay(Display.NONE);
+        Document.get().getElementById("loading").getStyle().setDisplay(Display.NONE);
     }
 }
