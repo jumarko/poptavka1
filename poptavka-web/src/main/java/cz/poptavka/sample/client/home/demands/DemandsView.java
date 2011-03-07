@@ -33,4 +33,8 @@ public class DemandsView extends Composite implements DemandsPresenter.DemandsVi
             verticalContent.add(demandView);
         }
     }
+
+    public Widget getWidgetView() {
+        return this;
+    }
 }

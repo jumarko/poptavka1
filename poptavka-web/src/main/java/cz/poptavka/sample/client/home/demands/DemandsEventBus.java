@@ -1,14 +1,13 @@
 package cz.poptavka.sample.client.home.demands;
 
-import java.util.List;
-
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.annotation.Events;
 
-import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 
-@Events(startView = DemandsView.class)
+@Events(startView = DemandsView.class, module = DemandsModule.class)
 public interface DemandsEventBus extends EventBus {
 
     /**
@@ -22,6 +21,8 @@ public interface DemandsEventBus extends EventBus {
      * @param result - retrieved demands
      */
     @Event(handlers = DemandsPresenter.class)
-    void displayDemands(List<Demand> result);
+    void displayDemands();
 
+    @Event(forwardToParent = true)
+    void setAnchorWidget(AnchorEnum anchor, Widget content);
 }

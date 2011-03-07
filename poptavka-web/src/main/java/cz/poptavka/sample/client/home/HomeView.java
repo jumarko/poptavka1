@@ -35,7 +35,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField
     Button btnCreateDemand;
     @UiField
-    Button button2;
+    Button displayDemands;
     @UiField
     Button button3;
     @UiField
@@ -90,4 +90,8 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         return btnCreateDemand;
     }
 
+    @Override
+    public HasClickHandlers getDisplayDemandsBtn() {
+        return displayDemands;
+    }
 }

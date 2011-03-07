@@ -5,7 +5,7 @@
         <!-- menu -->
         <g:HorizontalPanel>
             <g:Button ui:field="btnCreateDemand">Create Demand</g:Button>
-            <g:Button ui:field="button2">Button 2</g:Button>
+            <g:Button ui:field="displayDemands">Display Demands</g:Button>
             <g:Button ui:field="button3">Button 3</g:Button>
             <g:Button ui:field="button4">Button 4</g:Button>
             <g:Button ui:field="button5">Button 5</g:Button>

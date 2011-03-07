@@ -14,13 +14,16 @@ import cz.poptavka.sample.client.common.creation.CreationModule;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.widget.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.home.widget.locality.LocalitySelectorPresenter;
+import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
+
 @Events(startView = HomeView.class, module = HomeModule.class)
 @ChildModules({
-        @ChildModule(moduleClass = CreationModule.class, autoDisplay = false, async = true)
+        @ChildModule(moduleClass = CreationModule.class, autoDisplay = false, async = true),
+        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true)
         })
 public interface HomeEventBus extends EventBus {
 
@@ -72,4 +75,7 @@ public interface HomeEventBus extends EventBus {
 
     @Event(modulesToLoad = CreationModule.class)
     void initDemandCreation();
+
+    @Event(modulesToLoad = DemandsModule.class)
+    void displayDemands();
 }

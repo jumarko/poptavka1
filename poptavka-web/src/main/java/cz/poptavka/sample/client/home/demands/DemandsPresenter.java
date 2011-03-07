@@ -2,10 +2,14 @@ package cz.poptavka.sample.client.home.demands;
 
 import java.util.List;
 import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.client.annotation.Presenter;
+
+import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -32,6 +36,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
     public interface DemandsViewInterface {
         void displayDemands(List<Demand> result);
+        Widget getWidgetView();
     }
 
     /**
@@ -50,9 +55,10 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void onSuccess(List<Demand> result) {
-                eventBus.displayDemands(result);
+                view.displayDemands(result);
             }
         });
+        eventBus.setAnchorWidget(AnchorEnum.FIRST, view.getWidgetView());
     }
 
     /**
@@ -60,7 +66,8 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
      *
      * @param result
      */
-    public void onDisplayDemands(List<Demand> result) {
-        view.displayDemands(result);
+    public void onDisplayDemands() {
+        //view.displayDemands(result);
+        onStart();
     }
 }
