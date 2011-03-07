@@ -1,0 +1,66 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+  <ui:style>
+    .important {
+      font-weight: bold;
+    }
+
+  </ui:style>
+    <g:HTMLPanel>
+    <g:DisclosurePanel ui:field="panelDisclousure" open="false">
+      <g:HorizontalPanel>
+        <g:VerticalPanel>
+          <g:HTMLPanel>
+            <table>
+              <td>
+                <tr>ID:</tr>
+                <tr>Description:</tr>
+                <tr>Price:</tr>
+                <tr>Valid To:</tr>
+                <tr>End Date:</tr>
+                <tr>Status:</tr>
+                <tr>Type:</tr>
+                <tr>Client:</tr>
+                <tr>Localities:</tr>
+                <tr>Categories:</tr>
+                <tr>Suppliers:</tr>
+                <tr>Exclude Suppliers:</tr>
+                <tr>Min Rating Suppl.:</tr>
+                <tr>Max Suppliers:</tr>
+              </td>
+              <td>
+                <tr><g:Label ui:field="id"></g:Label></tr>
+                <tr><g:Label ui:field="description"></g:Label></tr>
+                <tr><g:Label ui:field="price"></g:Label></tr>
+                <tr><g:Label ui:field="validTo"></g:Label></tr>
+                <tr><g:Label ui:field="endDate"></g:Label></tr>
+                <tr><g:Label ui:field="status"></g:Label></tr>
+                <tr><g:Label ui:field="type"></g:Label></tr>
+                <tr><g:Label ui:field="client"></g:Label></tr>
+                <tr><g:Label ui:field="localities"></g:Label></tr>
+                <tr><g:Label ui:field="categories"></g:Label></tr>
+                <tr><g:Label ui:field="suppliers"></g:Label></tr>
+                <tr><g:Label ui:field="excSuppliers"></g:Label></tr>
+                <tr><g:Label ui:field="minRating"></g:Label></tr>
+                <tr><g:Label ui:field="maxSuppliers"></g:Label></tr>
+              </td>
+            </table>
+          </g:HTMLPanel>
+          <g:TextArea ui:field="textArea" text="textArea" />
+        </g:VerticalPanel>
+        <g:VerticalPanel>
+          <p1:CellList ui:field="cellList"/>
+          <g:Button ui:field="buttonAttachments">Attachments</g:Button>
+        </g:VerticalPanel>
+        <g:VerticalPanel>
+          <g:Label ui:field="label1" text="Reagovat?" />
+          <g:Button ui:field="buttonLogin">Log in</g:Button>
+          <g:Label ui:field="label2" text="Not in system?" />
+          <g:Button ui:field="buttonRegister">Register</g:Button>
+        </g:VerticalPanel>
+      </g:HorizontalPanel>
+    </g:DisclosurePanel>
+  </g:HTMLPanel>
+</ui:UiBinder>
