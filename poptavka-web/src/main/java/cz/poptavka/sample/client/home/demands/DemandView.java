@@ -24,9 +24,7 @@ public class DemandView extends Composite {
 
     private static DemandViewUiBinder uiBinder = GWT.create(DemandViewUiBinder.class);
 
-    interface DemandViewUiBinder extends UiBinder<Widget, DemandView> {
-        void setDemand(Demand demand);
-    }
+    interface DemandViewUiBinder extends UiBinder<Widget, DemandView> { }
 
     public DemandView() {
         initWidget(uiBinder.createAndBindUi(this));
