@@ -58,7 +58,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                 view.displayDemands(result);
             }
         });
-        eventBus.setAnchorWidget(AnchorEnum.FIRST, view.getWidgetView());
+        eventBus.setHomeWidget(AnchorEnum.FIRST, view.getWidgetView(), true);
     }
 
     /**

@@ -24,5 +24,5 @@ public interface DemandsEventBus extends EventBus {
     void displayDemands();
 
     @Event(forwardToParent = true)
-    void setAnchorWidget(AnchorEnum anchor, Widget content);
+    void setHomeWidget(AnchorEnum anchor, Widget content, boolean clearOthers);
 }
