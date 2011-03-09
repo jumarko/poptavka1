@@ -1,16 +1,17 @@
-package cz.poptavka.sample.client.home.widget.locality;
+package cz.poptavka.sample.client.common.locality;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Singleton;
 
 import cz.poptavka.sample.domain.address.LocalityType;
 
+@Singleton
 public class LocalitySelectorView extends Composite implements LocalitySelectorPresenter.LocalitySelectorInterface {
 
     private static LocalitySelectorUiBinder uiBinder = GWT.create(LocalitySelectorUiBinder.class);
@@ -28,8 +29,6 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     ListBox cityList;
     @UiField
     HTML loader;
-    @UiField
-    Label selected;
 
     public LocalitySelectorView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -80,10 +79,4 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     public void toggleLoader() {
         loader.setVisible(!loader.isVisible());
     }
-
-    //debug
-    public void setSelectedItem() {
-        selected.setText(cityList.getValue(cityList.getSelectedIndex()));
-    }
-
 }

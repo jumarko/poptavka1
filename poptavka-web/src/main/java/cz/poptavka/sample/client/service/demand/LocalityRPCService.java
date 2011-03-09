@@ -1,13 +1,13 @@
 package cz.poptavka.sample.client.service.demand;
 
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-
-import java.util.List;
 
 @RemoteServiceRelativePath("service/locality")
 public interface LocalityRPCService extends RemoteService {
@@ -18,7 +18,7 @@ public interface LocalityRPCService extends RemoteService {
      * @param type
      * @return list locality list according to type
      */
-    List<LocalityDetail> getLocalities(LocalityType type);
+    ArrayList<LocalityDetail> getLocalities(LocalityType type);
 
     /**
      * Returns locality list.
@@ -26,6 +26,6 @@ public interface LocalityRPCService extends RemoteService {
      * @param locCode
      * @return list locality children list
      */
-    List<LocalityDetail> getLocalities(String locCode);
+    ArrayList<LocalityDetail> getLocalities(String locCode);
 
 }

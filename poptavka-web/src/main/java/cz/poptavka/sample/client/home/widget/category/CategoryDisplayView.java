@@ -8,18 +8,18 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.home.widget.category.item.CategoryItemView;
 
-public class CategorySelectorView extends Composite implements CategorySelectorPresenter.CategorySelectorInterface {
+public class CategoryDisplayView extends Composite implements CategoryDisplayPresenter.CategorySelectorInterface {
 
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
 
-    interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {
+    interface CategorySelectorUiBinder extends UiBinder<Widget, CategoryDisplayView> {
     }
 
     @UiField
     CategoryItemView categoryItem;
 
 
-    public CategorySelectorView() {
+    public CategoryDisplayView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 

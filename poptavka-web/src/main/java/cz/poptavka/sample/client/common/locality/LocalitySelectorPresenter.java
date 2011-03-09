@@ -1,25 +1,26 @@
-package cz.poptavka.sample.client.home.widget.locality;
+package cz.poptavka.sample.client.common.locality;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.home.HomeEventBus;
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.client.common.CommonEventBus;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Presenter(view = LocalitySelectorView.class)
 public class LocalitySelectorPresenter
-    extends BasePresenter<LocalitySelectorPresenter.LocalitySelectorInterface, HomeEventBus> {
+    extends BasePresenter<LocalitySelectorPresenter.LocalitySelectorInterface, CommonEventBus> {
 
+    /** View interface methods. **/
     public interface LocalitySelectorInterface  {
         ListBox getDistrictList();
 
@@ -30,13 +31,11 @@ public class LocalitySelectorPresenter
         String getSelectedItem(LocalityType type);
 
         void toggleLoader();
-        //debug
-        void setSelectedItem();
 
         Widget getWidgetView();
     }
 
-    private static final Logger LOGGER = Logger.getLogger(LocalitySelectorPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger("LocalitySelectorPresenter");
 
     public void bind() {
         view.getDistrictList().addChangeHandler(new ChangeHandler() {
@@ -56,21 +55,16 @@ public class LocalitySelectorPresenter
                 eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.TOWNSHIP));
             }
         });
-        view.getCityList().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                //debug
-                view.setSelectedItem();
-            }
-        });
     }
 
-    public void onInitLocalitySelector(AnchorEnum anchor) {
-        eventBus.getLocalities(LocalityType.DISTRICT);
-        eventBus.setAnchorWidget(anchor, view.getWidgetView());
+    public void onInitLocalityWidget(HasOneWidget embedWidget) {
+        LOGGER.info("launching Locality service RPC call ... ");
+        eventBus.getLocalities();
+        LOGGER.info("Initializing widget view... ");
+        embedWidget.setWidget(view.getWidgetView());
     }
 
-    public void onDisplayLocalityList(LocalityType type, List<LocalityDetail> list) {
+    public void onSetLocalityData(LocalityType type, ArrayList<LocalityDetail> list) {
         switch (type) {
             case DISTRICT:
                 setData(view.getDistrictList(), list);
@@ -88,7 +82,7 @@ public class LocalitySelectorPresenter
         }
     }
 
-    private void setData(final ListBox box, final List<LocalityDetail> list) {
+    private void setData(final ListBox box, final ArrayList<LocalityDetail> list) {
         box.clear();
         box.setVisible(true);
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {

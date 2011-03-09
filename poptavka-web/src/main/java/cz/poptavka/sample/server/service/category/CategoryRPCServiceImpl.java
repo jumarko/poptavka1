@@ -2,9 +2,8 @@ package cz.poptavka.sample.server.service.category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -20,13 +19,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
 
     private CategoryService categoryService;
     private TreeItemService treeItemService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryRPCServiceImpl.class);
-
-    @Override
-    public ArrayList<CategoryDetail> getCategories() {
-        List<Category> categories = categoryService.getRootCategories();
-        return createCategoryDetailList(categories);
-    }
+    private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 
     @Autowired
     @Required
@@ -40,13 +33,42 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         this.treeItemService = treeItemService;
     }
 
+    @Override
+    public ArrayList<CategoryDetail> getCategories() {
+        List<Category> categories = categoryService.getRootCategories();
+        System.out.println("Root category count: " + categories.size());
+        return createCategoryDetailList(categories);
+    }
+
+    @Override
+    public ArrayList<CategoryDetail> getCategoryChildren(String category) {
+        System.out.println("Getting children categories");
+        try {
+            Category cat = categoryService.getCategory(category);
+
+            List<Category> cats = treeItemService.getAllChildren(cat, Category.class);
+
+            return createCategoryDetailList(cats);
+        } catch (NullPointerException ex) {
+            LOGGER.info("NullPointerException while executing getCategoryChildren");
+        }
+        return new ArrayList<CategoryDetail>();
+    }
+
+    /** Inner method for transforming domain Entity to front-end representation. **/
     private ArrayList<CategoryDetail> createCategoryDetailList(List<Category> categories) {
         ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
 
+        int i = 0;
         for (Category cat : categories) {
             categoryDetails.add(new CategoryDetail(cat.getId(), cat.getName(), 0, 0));
+            i++;
+            if (i > 25) {
+                return categoryDetails;
+            }
         }
 
+        //returning only sublist of 25 items
         return categoryDetails;
     }
 

@@ -48,8 +48,14 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public void setContent(AnchorEnum anchor, Widget body) {
-        shouldRemoveWidget(anchor);
+    public void setContent(AnchorEnum anchor, Widget body, boolean clearOthers) {
+        if (clearOthers) {
+            for (AnchorEnum anchorToClear : AnchorEnum.values()) {
+                shouldRemoveWidget(anchorToClear);
+            }
+        } else {
+            shouldRemoveWidget(anchor);
+        }
         widgetMap.put(anchor, body);
         switch (anchor) {
             case FIRST:

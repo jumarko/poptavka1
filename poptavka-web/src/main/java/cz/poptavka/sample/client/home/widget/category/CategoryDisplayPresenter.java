@@ -17,9 +17,9 @@ import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.widget.category.item.CategoryItemView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
-@Presenter(view = CategorySelectorView.class)
-public class CategorySelectorPresenter
-    extends BasePresenter<CategorySelectorPresenter.CategorySelectorInterface, HomeEventBus> {
+@Presenter(view = CategoryDisplayView.class)
+public class CategoryDisplayPresenter
+    extends BasePresenter<CategoryDisplayPresenter.CategorySelectorInterface, HomeEventBus> {
 
     public interface CategorySelectorInterface  {
         CategoryItemView getCategoryItem();
@@ -27,7 +27,7 @@ public class CategorySelectorPresenter
         Widget getWidgetView();
     }
 
-    private static final Logger LOGGER = Logger.getLogger(CategorySelectorPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CategoryDisplayPresenter.class.getName());
 
     public void bind() {
 
@@ -35,8 +35,8 @@ public class CategorySelectorPresenter
 
 
     public void onInitCategorySelector(AnchorEnum anchor) {
-        eventBus.getRootCategories();
-        eventBus.setAnchorWidget(anchor, view.getWidgetView());
+//        eventBus.getRootCategories();
+        eventBus.setHomeWidget(anchor, view.getWidgetView(), false);
     }
 
     public void onDisplayRootCategories(ArrayList<CategoryDetail> list) {

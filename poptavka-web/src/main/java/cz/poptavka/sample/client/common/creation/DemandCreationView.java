@@ -11,17 +11,19 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class CreationView extends Composite implements CreationPresenter.CreationViewInterface {
+public class DemandCreationView extends Composite implements DemandCreationPresenter.CreationViewInterface {
+
+
 
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
-    interface CreationViewUiBinder extends UiBinder<Widget, CreationView> {    }
+    interface CreationViewUiBinder extends UiBinder<Widget, DemandCreationView> {    }
 
-    private static final Logger LOGGER = Logger.getLogger(CreationView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger("    DemandCreationView");
 
     protected enum TopPanel {
         SECOND, THIRD, FOURTH, REMOVE
@@ -34,7 +36,7 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
     private static final int END_SECOND_VALUE = 20;
     private static final int END_THIRD_VALUE = 40;
     private static final int END_FOURTH_VALUE = 60;
-    private static final int SECOND = 1000;
+    private static final int ONE_SECOND = 1000;
 
     private MoveAnimation anim;
 
@@ -47,19 +49,18 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
     @UiField TextBox paramOne;
     @UiField TextBox paramTwo;
     @UiField TextBox paramThree;
-    @UiField(provided = true) RichTextToolbar toolbar;
-    @UiField RichTextArea description;
+    @UiField(provided = true) RichTextToolbarWidget richText;
     //place for uploadFiles button
     //place for addNextAttachment button
     @UiField Button btnToSecond;
 
     @UiField VerticalPanel part2;
-    private String selectedLocality;
+    @UiField SimplePanel localityHolder;
     @UiField Button btnBackFirst;
     @UiField Button btnToThird;
 
     @UiField VerticalPanel part3;
-    private String selectedCategory;
+    @UiField SimplePanel categoryHolder;
     @UiField Button btnBackSecond;
     @UiField Button btnToFourth;
 
@@ -70,13 +71,9 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
     @UiField Button btnCreate;
 
     public void createView() {
-
-        LOGGER.info("creating Rich Text Toolbar ... is visible?");
-        //UNCOMMENT BELOW !!!
-        description = new RichTextArea();
-        toolbar = new RichTextToolbar(description);
-        LOGGER.info("YES, it is ... creation successful");
-        LOGGER.info("initializing creation view ... ");
+        LOGGER.info("initializing part: Rich Text Toolbar ... ");
+        richText = new RichTextToolbarWidget();
+        LOGGER.info("initializing part: COMPLETE widget ... ");
         initWidget(uiBinder.createAndBindUi(this));
 
         anim = new MoveAnimation();
@@ -116,7 +113,7 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
     }
 
     /**
-     * Handling method for toggle display of current block
+     * Handling method for toggle display of current block.
      *
      * @param newPanel block to toggle display
      */
@@ -136,8 +133,7 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
                 endValue = END_FOURTH_VALUE;
                 break;
             case REMOVE:
-                anim.setObject(endValue, START_VALUE, topPanel.remove(topPanel.size() - 1));
-                anim.run(SECOND);
+                anim.setAndRun(endValue, START_VALUE, topPanel.remove(topPanel.size() - 1), ONE_SECOND);
                 //because it's the nominal value of space
                 endValue -= END_SECOND_VALUE;
                 showNext = false;
@@ -146,13 +142,22 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
                 break;
         }
         if (showNext) {
-            anim.setObject(START_VALUE, endValue, topPanel.get(topPanel.size() - 1));
-            anim.run(SECOND);
+            anim.setAndRun(START_VALUE, endValue, topPanel.get(topPanel.size() - 1), ONE_SECOND);
         }
     }
 
+    @Override
+    public SimplePanel getLocalityHolder() {
+        return localityHolder;
+    }
+
+    @Override
+    public SimplePanel getCategoryHolder() {
+        return categoryHolder;
+    }
+
     /**
-     * For block animation purpose.
+     * For block animation (show/hide) purpose.
      *
      * @author Beho
      */
@@ -164,10 +169,14 @@ public class CreationView extends Composite implements CreationPresenter.Creatio
         public MoveAnimation() {
         }
 
-        public void setObject(int start, int end, VerticalPanel obj) {
+        //Initialize currently animated object
+        public void setAndRun(int start, int end, VerticalPanel obj, int duration) {
             object = obj;
             startY = start;
             distance = start - end;
+
+            //run it
+            this.run(duration);
         }
 
         @Override

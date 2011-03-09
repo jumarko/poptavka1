@@ -9,10 +9,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+
 @Presenter(view = MainView.class)
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger(MainPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger("MainPresenter");
 
     public interface MainViewInterface {
         void setBodyWidget(Widget body);
@@ -24,8 +26,10 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      * Initial Event. Calls all default modules to load: LoginModule, HomeModule
      */
     public void onStart() {
-        LOGGER.info("Starting main presenter...");
+        LOGGER.info("Initializing application ... ");
+        LOGGER.info("    > Login Module");
         eventBus.initLogin();
+        LOGGER.info("    > Home Module");
         eventBus.initHome();
     }
 
@@ -36,6 +40,22 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      */
     public void onSetBodyHolderWidget(Widget body) {
         view.setBodyWidget(body);
+    }
+
+    /**
+     * Crossroad method for placing widget from common package.
+     *
+     * @param homeSection boolean if target section si home section
+     * @param anchor actual anchor where to place the content
+     * @param content content to be placed
+     * @param clearOthers boolean if widgets from others anchors should be removed
+     */
+    public void onSetAnchorWidget(boolean homeSection, AnchorEnum anchor, Widget content, boolean clearOthers) {
+        if (homeSection) {
+            eventBus.setHomeWidget(anchor, content, clearOthers);
+        } else {
+//            eventBus.setUserWidget(anchor, content, clearOthers);
+        }
     }
 
     /**

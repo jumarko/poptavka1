@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:p="urn:import:cz.poptavka.sample.client.common.creation">
+    xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation"
+    xmlns:cl="urn:import:cz.poptavka.sample.client.common.locality">
 
     <!-- injecting style resources -->
     <ui:with field='style' type='cz.poptavka.sample.client.resources.StyleResource'/>
@@ -44,26 +45,7 @@
                         </g:customCell>
                     </g:row>
                 </g:Grid>
-                <g:Grid>
-                    <g:row>
-                        <g:customCell>
-                            <p:RichTextToolbar ui:field="toolbar"/>
-                        </g:customCell>
-                        <!--
-
-                        -->
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:RichTextArea ui:field="description"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:FileUpload/>
-                        </g:customCell>
-                    </g:row>
-                </g:Grid>
+                <cc:RichTextToolbarWidget ui:field="richText"/>
                 <g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
                     <g:HTMLPanel>
                     <g:Button ui:field="btnToSecond">Next</g:Button>
@@ -75,6 +57,8 @@
             <g:VerticalPanel height="440px" ui:field="part2" width="60%" styleName='{style.cssBase.solidBackground}'>
                 <g:HTML wordWrap="true"><strong>#2 Locality selection</strong></g:HTML>
                 <g:Label text="LocalitySeelctor"/>
+                <g:SimplePanel ui:field="localityHolder"/>
+                <!-- <cl:LocalitySelectorView ui:field="localityWidget"/> -->
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                         <g:HorizontalPanel>
@@ -89,6 +73,7 @@
             <g:VerticalPanel ui:field="part3" width="60%" height="420px" styleName='{style.cssBase.solidBackground}'>
                 <g:HTML wordWrap="true"><strong>#3 Category selection</strong></g:HTML>
                 <g:Label text="Category selector"/>
+                <g:SimplePanel ui:field="categoryHolder"/>
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                     <g:HorizontalPanel>

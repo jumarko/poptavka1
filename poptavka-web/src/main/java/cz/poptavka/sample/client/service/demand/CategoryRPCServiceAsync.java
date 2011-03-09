@@ -8,4 +8,7 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 public interface CategoryRPCServiceAsync {
     void getCategories(AsyncCallback<ArrayList<CategoryDetail>> callback);
+
+    void getCategoryChildren(String category,
+            AsyncCallback<ArrayList<CategoryDetail>> callback);
 }

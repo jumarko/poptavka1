@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -26,13 +27,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.resources.richtext.RichTextStrings;
 
-public class RichTextToolbar extends Composite {
+public class RichTextToolbarWidget extends Composite {
     /** Local CONSTANTS **/
     //ImageMap and CSS related
     private static final String ICONS = "images/rich_text_icons.gif";
         //"http://blog.elitecoderz.net/wp-includes/js/tinymce/themes/advanced/img/icons.gif";
-    //private static final String CSS_ROOT_NAME = "RichTextToolbar";
-
     private static RichTextStrings msgs = GWT.create(RichTextStrings.class);
 
     //Color and Fontlists - First Value (key) is the Name to display, Second Value (value) is the HTML-Definition
@@ -80,36 +79,8 @@ public class RichTextToolbar extends Composite {
     //HTML Related (styles without closing Tag)
     private static final String HTML_STYLE_HLINE = "<hr style=\"width: 100%; height: 2px;\">";
 
-    //GUI Related stuff
-//    private static final String GUI_DIALOG_INSERTURL = msgs.linkURL();
-//    private static final String GUI_DIALOG_IMAGEURL = msgs.imageURL();
-//
-//    private static final String GUI_LISTNAME_COLORS = msgs.color();
-//    private static final String GUI_LISTNAME_FONTS = msgs.font();
-//
-//    private static final String GUI_HOVERTEXT_SWITCHVIEW = msgs.switchView();
-//    private static final String GUI_HOVERTEXT_REMOVEFORMAT = msgs.removeFormat();
-//    private static final String GUI_HOVERTEXT_IMAGE = msgs.image();
-//    private static final String GUI_HOVERTEXT_HLINE = msgs.hline();
-//    private static final String GUI_HOVERTEXT_BREAKLINK = msgs.breakLink();
-//    private static final String GUI_HOVERTEXT_LINK = msgs.link();
-//    private static final String GUI_HOVERTEXT_IDENTLEFT = msgs.indentLeft();
-//    private static final String GUI_HOVERTEXT_IDENTRIGHT = msgs.indentRight();
-//    private static final String GUI_HOVERTEXT_UNORDERLIST = msgs.unorderList();
-//    private static final String GUI_HOVERTEXT_ORDERLIST = msgs.orderList();
-//    private static final String GUI_HOVERTEXT_ALIGNRIGHT = msgs.alignRight();
-//    private static final String GUI_HOVERTEXT_ALIGNCENTER = msgs.alignCenter();
-//    private static final String GUI_HOVERTEXT_ALIGNLEFT = msgs.alignRight();
-//    private static final String GUI_HOVERTEXT_SUPERSCRIPT = msgs.superscript();
-//    private static final String GUI_HOVERTEXT_SUBSCRIPT = msgs.subscript();
-//    private static final String GUI_HOVERTEXT_STROKE = msgs.stroke();
-//    private static final String GUI_HOVERTEXT_UNDERLINE = msgs.underline();
-//    private static final String GUI_HOVERTEXT_ITALIC = msgs.italic();
-//    private static final String GUI_HOVERTEXT_BOLD = msgs.bold();
-
     /** Private Variables. **/
     //The main (Vertical)-Panel and the two inner (Horizontal)-Panels
-    private VerticalPanel outer;
     private HorizontalPanel topPanel;
     private HorizontalPanel bottomPanel;
 
@@ -145,9 +116,9 @@ public class RichTextToolbar extends Composite {
     private ListBox colorlist;
 
     /** Constructor of the Toolbar. **/
-    public RichTextToolbar(RichTextArea richtext) {
+    public RichTextToolbarWidget() {
         //Initialize the main-panel
-        outer = new VerticalPanel();
+        VerticalPanel outer = new VerticalPanel();
 
         //Initialize the two inner panels
         topPanel = new HorizontalPanel();
@@ -156,9 +127,8 @@ public class RichTextToolbar extends Composite {
         topPanel.setStyleName(StyleResource.INSTANCE.richTextCss().richTextToolbar());
         bottomPanel.setStyleName(StyleResource.INSTANCE.richTextCss().richTextToolbar());
 
-        //Save the reference to the RichText area we refer to and get the interfaces to the stylings
-
-        styleText = richtext;
+        //Initalize the RichText area and get the interfaces to the stylings
+        styleText = new RichTextArea();
         styleTextFormatter = styleText.getFormatter();
 
         //Set some graphical options, so this toolbar looks how we like it.
@@ -172,7 +142,13 @@ public class RichTextToolbar extends Composite {
         //Some graphical stuff to the main panel and the initialisation of the new widget
         outer.setWidth("100%");
         outer.setStyleName(StyleResource.INSTANCE.richTextCss().richTextToolbar());
-        initWidget(outer);
+        styleText.setWidth("100%");
+
+        //Initialize container for toolbar and text area
+        Grid wrapper = new Grid(2, 1);
+        wrapper.setWidget(0, 0, outer);
+        wrapper.setWidget(1, 0, styleText);
+        initWidget(wrapper);
 
         //
         evHandler = new EventHandler();
@@ -277,39 +253,37 @@ public class RichTextToolbar extends Composite {
                 if (!isHTMLMode()) {
                     styleTextFormatter.removeLink();
                 }
-            //ripped off part
+            } else if (event.getSource().equals(insertimage)) {
+                String url = Window.prompt(msgs.imageURL(), "http://");
+                if (url != null) {
+                    if (isHTMLMode()) {
+                        changeHtmlStyle("<img src=\"" + url + "\">", "");
+                    } else {
+                        styleTextFormatter.insertImage(url);
+                    }
+                }
+            }  else if (event.getSource().equals(insertline)) {
+                if (isHTMLMode()) {
+                    changeHtmlStyle(HTML_STYLE_HLINE, "");
+                } else {
+                    styleTextFormatter.insertHorizontalRule();
+                }
+            } else if (event.getSource().equals(removeformatting)) {
+                if (!isHTMLMode()) {
+                    styleTextFormatter.removeFormat();
+                }
+            } else if (event.getSource().equals(texthtml)) {
+                if (texthtml.isDown()) {
+                    styleText.setText(styleText.getHTML());
+                } else {
+                    styleText.setHTML(styleText.getText());
+                }
             } else if (event.getSource().equals(styleText)) {
                 //Change invoked by the richtextArea
             }
+
             updateStatus();
         }
-
-/* RIPPED OFF PART */
-//    } else if (event.getSource().equals(insertimage)) {
-//        String url = Window.prompt(msgs.imageURL(), "http://");
-//        if (url != null) {
-//            if (isHTMLMode()) {
-//                changeHtmlStyle("<img src=\"" + url + "\">", "");
-//            } else {
-//                styleTextFormatter.insertImage(url);
-//            }
-//        }
-//    }  else if (event.getSource().equals(insertline)) {
-//        if (isHTMLMode()) {
-//            changeHtmlStyle(HTML_STYLE_HLINE, "");
-//        } else {
-//            styleTextFormatter.insertHorizontalRule();
-//        }
-//    } else if (event.getSource().equals(removeformatting)) {
-//        if (!isHTMLMode()) {
-//            styleTextFormatter.removeFormat();
-//        }
-//    } else if (event.getSource().equals(texthtml)) {
-//        if (texthtml.isDown()) {
-//            styleText.setText(styleText.getHTML());
-//        } else {
-//            styleText.setHTML(styleText.getText());
-//        }
 
         public void onKeyUp(KeyUpEvent event) {
             updateStatus();
@@ -334,7 +308,7 @@ public class RichTextToolbar extends Composite {
         }
     }
 
-    /** Native JavaScript that returns the selected text and position of the start **/
+    /** Native JavaScript that returns the selected text and position of the start. **/
     public static native JsArrayString getSelection(Element elem)
     /*-{
         var txt = "";
@@ -455,7 +429,7 @@ public class RichTextToolbar extends Composite {
         bottomPanel.add(colorlist);
     }
 
-    /** Method to create a Toggle button for the toolbar **/
+    /** Method to create a Toggle button for the toolbar. **/
     private ToggleButton createToggleButton(String url, Integer top,
             Integer left, Integer width, Integer height, String tip) {
         Image extract = new Image(url, left, top, width, height);
@@ -510,4 +484,15 @@ public class RichTextToolbar extends Composite {
 
         return mylistBox;
     }
+
+    /** Method to return formatted text. **/
+    public String getText() {
+        return styleText.getHTML();
+    }
+
+    /** Method to expose setSize for inner textArea. **/
+    public void setAreaSize(String width, String height) {
+        styleText.setSize(width, height);
+    }
+
 }

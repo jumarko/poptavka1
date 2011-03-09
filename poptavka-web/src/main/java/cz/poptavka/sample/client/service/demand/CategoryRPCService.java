@@ -12,5 +12,5 @@ public interface CategoryRPCService extends RemoteService {
 
     ArrayList<CategoryDetail> getCategories();
 
-
+    ArrayList<CategoryDetail> getCategoryChildren(String category);
 }

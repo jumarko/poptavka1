@@ -20,12 +20,13 @@ import com.mvp4g.client.Mvp4gModule;
  */
 public class Poptavka implements EntryPoint {
 
-    private static final Logger LOGGER = Logger.getLogger(Poptavka.class.getName());
+    private static final Logger LOGGER = Logger.getLogger("poptavka");
     @Override
     public void onModuleLoad() {
+        LOGGER.info("Loading ...");
         Mvp4gModule module =  GWT.create(Mvp4gModule.class);
         module.createAndStartModule();
-        LOGGER.info("Loading module...");
+        LOGGER.info("Loading done ... ");
         RootPanel.get("gwt-container").add((Widget) module.getStartView());
     }
 }
