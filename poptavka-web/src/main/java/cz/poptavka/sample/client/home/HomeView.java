@@ -60,12 +60,15 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         switch (anchor) {
             case FIRST:
                 container.add(body, "first");
+                widgetMap.put(anchor, body);
                 break;
             case SECOND:
                 container.add(body, "second");
+                widgetMap.put(anchor, body);
                 break;
             case THIRD:
                 container.add(body, "third");
+                widgetMap.put(anchor, body);
                 break;
             default:
                 break;
@@ -87,6 +90,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
      */
     private void shouldRemoveWidget(AnchorEnum anchor) {
         if (widgetMap.containsKey(anchor)) {
+            container.remove(widgetMap.get(anchor));
             widgetMap.remove(anchor);
         }
     }
