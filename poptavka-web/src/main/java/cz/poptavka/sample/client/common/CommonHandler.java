@@ -79,6 +79,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             @Override
             public void onSuccess(ArrayList<CategoryDetail> list) {
                 eventBus.setCategoryData(CategoryType.ROOT, list);
+                eventBus.setCategoryDisplayData(CategoryType.ROOT, list);
             }
         });
     }

@@ -51,12 +51,13 @@ public class CategoryItemView extends Composite implements CategoryItemPresenter
         return itemImage;
     }
 
-    public void setItemCount(Label itemCount) {
-        this.itemCount = itemCount;
+    public void setItemCount(String itemCount) {
+        this.itemCount.setText(itemCount);
     }
 
-    public void setItemLink(Anchor itemLink) {
-        this.itemLink = itemLink;
+    public void setItemLink(String itemLink) {
+        this.itemLink.setHref(itemLink);
+        this.itemLink.setHTML(itemLink);
     }
 
     public void setItemImage(Image itemImage) {

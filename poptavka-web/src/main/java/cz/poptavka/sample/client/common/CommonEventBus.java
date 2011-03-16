@@ -48,6 +48,9 @@ public interface CommonEventBus extends EventBus {
     @Event(handlers = CategorySelectorPresenter.class)
     void setCategoryData(CategoryType type, ArrayList<CategoryDetail> list);
 
+    @Event(forwardToParent = true)
+    void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
+
     @Event(handlers = CommonHandler.class)
     void getRootCategories();
 

@@ -51,6 +51,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     public void onInitHome() {
         LOGGER.info(" on init view ...");
         eventBus.setBodyHolderWidget(view.getWidgetView());
+        eventBus.initCategoryDisplay(AnchorEnum.THIRD);
 
     }
 

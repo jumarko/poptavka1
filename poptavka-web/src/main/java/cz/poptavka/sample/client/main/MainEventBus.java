@@ -1,6 +1,8 @@
 package cz.poptavka.sample.client.main;
 
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -12,9 +14,11 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.common.CommonModule;
+import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.home.HomeModule;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.login.LoginModule;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Events(startView = MainView.class, historyOnStart = true)
 @ChildModules({
@@ -86,4 +90,10 @@ public interface MainEventBus extends EventBus {
     @AfterLoadChildModule
     @Event(handlers = MainPresenter.class)
     void afterLoad();
+
+    @Event(modulesToLoad = CommonModule.class)
+    void getRootCategories();
+
+    @Event(modulesToLoad = HomeModule.class)
+    void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
 }

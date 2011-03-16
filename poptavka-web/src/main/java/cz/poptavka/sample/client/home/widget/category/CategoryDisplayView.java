@@ -4,11 +4,10 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.home.widget.category.item.CategoryItemView;
-
-public class CategoryDisplayView extends Composite implements CategoryDisplayPresenter.CategorySelectorInterface {
+public class CategoryDisplayView extends Composite implements CategoryDisplayPresenter.CategoryDisplayInterface {
 
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
 
@@ -16,7 +15,7 @@ public class CategoryDisplayView extends Composite implements CategoryDisplayPre
     }
 
     @UiField
-    CategoryItemView categoryItem;
+    HTML categoryView;
 
 
     public CategoryDisplayView() {
@@ -31,11 +30,10 @@ public class CategoryDisplayView extends Composite implements CategoryDisplayPre
     }
 
 
-
     @Override
-    public CategoryItemView getCategoryItem() {
+    public HTML getCategoryView() {
         // TODO Auto-generated method stub
-        return categoryItem;
+        return categoryView;
     }
 
 

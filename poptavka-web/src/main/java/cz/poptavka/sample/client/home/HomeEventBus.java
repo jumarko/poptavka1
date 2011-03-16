@@ -9,6 +9,7 @@ import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
@@ -48,11 +49,18 @@ public interface HomeEventBus extends EventBus {
     void displayRootCategories(ArrayList<CategoryDetail> list);
 
     @Event(handlers = CategoryDisplayPresenter.class)
-    void initCategorySelector(AnchorEnum anchor);
+    void initCategoryDisplay(AnchorEnum anchor);
 
     @Event(forwardToParent = true)
     void initDemandCreation(boolean homeSection);
 
     @Event(modulesToLoad = DemandsModule.class)
     void displayDemands();
+
+    @Event(forwardToParent = true)
+    void getRootCategories();
+
+    @Event(handlers = CategoryDisplayPresenter.class)
+    void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
+
 }

@@ -2,8 +2,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:c="urn:import:cz.poptavka.sample.client.home.widget.category.item">
     <g:HTMLPanel>
-        <g:HorizontalPanel>
-			<c:CategoryItemView ui:field="categoryItem"/>
-        </g:HorizontalPanel>
+        <g:FlowPanel>
+			<g:HTML ui:field="categoryView"/>
+        </g:FlowPanel>
     </g:HTMLPanel>
 </ui:UiBinder>
