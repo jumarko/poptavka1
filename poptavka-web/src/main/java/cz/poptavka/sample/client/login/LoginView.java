@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.login;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -30,7 +29,7 @@ public class LoginView extends Composite implements LoginPresenter.LoginInterfac
     }
 
     @Override
-    public HasClickHandlers getLoginButton() {
+    public Anchor getLoginButton() {
         return loginButton;
     }
 

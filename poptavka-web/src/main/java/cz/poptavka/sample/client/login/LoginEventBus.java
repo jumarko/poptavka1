@@ -14,6 +14,12 @@ public interface LoginEventBus extends EventBus {
     @Event(handlers = LoginPresenter.class)
     void initLogin();
 
+    @Event(forwardToParent = true)
+    void initHome();
+
+    @Event(forwardToParent = true)
+    void initUser();
+
     /**
      * Send widget to parent to display it.
      *

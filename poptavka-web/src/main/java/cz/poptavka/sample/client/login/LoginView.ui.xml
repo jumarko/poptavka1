@@ -4,5 +4,7 @@
 
     <g:HTMLPanel>
         <g:Anchor ui:field="loginButton" text="Log In" />
+        <a href="#">Help</a>
+        <a href="#">About</a>
     </g:HTMLPanel>
 </ui:UiBinder>

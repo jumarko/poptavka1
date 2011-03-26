@@ -18,13 +18,15 @@ import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.Categ
 import cz.poptavka.sample.client.home.HomeModule;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.login.LoginModule;
+import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Events(startView = MainView.class, historyOnStart = true)
 @ChildModules({
     @ChildModule(moduleClass = LoginModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = CommonModule.class, autoDisplay = false, async = true),
-    @ChildModule(moduleClass = HomeModule.class, async = true, autoDisplay = false)
+    @ChildModule(moduleClass = HomeModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false)
     })
 public interface MainEventBus extends EventBus {
 
@@ -55,11 +57,11 @@ public interface MainEventBus extends EventBus {
     @Event(modulesToLoad = HomeModule.class)
     void initHome();
 
-//    /**
-//     * Init user module (logged user)
-//     */
-//    @Event(modulesToLoad = UserModule.class)
-//    void initUser();
+    /**
+     * Init user module (logged user)
+     */
+    @Event(modulesToLoad = UserModule.class)
+    void initUser();
 //
 //    @Event(modulesToLoad = UserModule.class)
 //    void setUserWidget(AnchorEnum anchor, Widget content, boolean clearOthers);
