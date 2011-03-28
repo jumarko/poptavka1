@@ -8,7 +8,7 @@ package cz.poptavka.sample.domain.demand;
  */
 public enum DemandStatus {
 
-    NEW("new");
+    NEW("NEW");
 
 
     private final String value;
