@@ -58,7 +58,7 @@ public interface MainEventBus extends EventBus {
     void initHome();
 
     /**
-     * Init user module (logged user)
+     * Init user module (logged user).
      */
     @Event(modulesToLoad = UserModule.class)
     void initUser();

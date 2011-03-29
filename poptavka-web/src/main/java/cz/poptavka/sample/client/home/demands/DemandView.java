@@ -57,7 +57,6 @@ public class DemandView extends Composite {
     @UiField DisclosurePanel panelDisclousure;
     @UiField(provided = true) CellList<Object> cellList = new CellList<Object>(new AbstractCell<Object>() {
 
-        @Override
         public void render(Object value, Object key, SafeHtmlBuilder sb) {
 
         }
