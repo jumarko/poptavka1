@@ -34,6 +34,11 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
+    public Category getCategory(String code) {
+        return categoryService.getCategory(code);
+    }
+
+    @Override
     public ArrayList<CategoryDetail> getCategories() {
         List<Category> categories = categoryService.getRootCategories();
         System.out.println("Root category count: " + categories.size());
@@ -71,5 +76,4 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         //returning only sublist of 25 items
         return categoryDetails;
     }
-
 }

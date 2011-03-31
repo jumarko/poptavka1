@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  <ui:style>
+    .important {
+      font-weight: bold;
+    }
+  </ui:style>
+  <g:HTMLPanel>
+    <g:VerticalPanel ui:field="verticalContent">
+      <g:FlexTable ui:field="flexTable" />
+      <g:HorizontalPanel>
+        <g:Button ui:field="begin">begin</g:Button>
+        <g:Button ui:field="less">less</g:Button>
+        <g:Label ui:field="pagerLabel" />
+        <g:Button ui:field="more">more</g:Button>
+        <g:Button ui:field="end">end</g:Button>
+        <g:ListBox ui:field="pagesize" />
+        <g:Label text="on site" />
+      </g:HorizontalPanel>
+    </g:VerticalPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>

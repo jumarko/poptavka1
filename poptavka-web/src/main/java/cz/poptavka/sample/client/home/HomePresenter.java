@@ -37,13 +37,21 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
                 eventBus.initDemandCreation(true);
             }
         });
+        view.getDisplayDemandsBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                eventBus.start();
+            }
+        });
     }
 
     public void bindDisplay() {
-        view.getCreateDemandBtn().addClickHandler(new ClickHandler() {
+        LOGGER.info("bindDisplay");
+        view.getDisplayDemandsBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.displayDemands();
+                LOGGER.info("clicked");
+                eventBus.start();
             }
         });
     }

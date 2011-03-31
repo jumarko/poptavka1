@@ -55,7 +55,7 @@ public interface HomeEventBus extends EventBus {
     void initDemandCreation(boolean homeSection);
 
     @Event(modulesToLoad = DemandsModule.class)
-    void displayDemands();
+    void start();
 
     @Event(forwardToParent = true)
     void getRootCategories();
