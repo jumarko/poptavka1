@@ -13,7 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -38,7 +37,6 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
     @ManyToMany(mappedBy = "localities")
     private List<Demand> demands;
 
-    @Transient
     private AdditionalInfo additionalInfo;
 
 

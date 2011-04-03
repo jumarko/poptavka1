@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -37,7 +36,6 @@ public class Category extends TreeItem implements AdditionalInfoAware {
 
     private String description;
 
-    @Transient
     private AdditionalInfo additionalInfo;
 
 

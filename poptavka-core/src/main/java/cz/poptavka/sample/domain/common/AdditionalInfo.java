@@ -1,6 +1,6 @@
 package cz.poptavka.sample.domain.common;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
 
 /**
  * Represents additional information that can be gattered for domain object, especially for
@@ -13,7 +13,8 @@ import java.io.Serializable;
  * @author Juraj Martinka
  *         Date: 12.2.11
  */
-public class AdditionalInfo implements Serializable {
+@Entity
+public class AdditionalInfo extends DomainObject {
 
     /**
      * Number of demands related to the associated domain object.
@@ -27,7 +28,7 @@ public class AdditionalInfo implements Serializable {
      */
     private Long suppliersCount;
 
-    private AdditionalInfo() {
+    public AdditionalInfo() {
     }
 
     public AdditionalInfo(Long demandsCount, Long suppliersCount) {
@@ -62,4 +63,5 @@ public class AdditionalInfo implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
 }
