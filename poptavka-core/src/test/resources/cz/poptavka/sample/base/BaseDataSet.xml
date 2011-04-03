@@ -8,10 +8,10 @@
                                   loc1           loc2
                                 /    \                  \
                              loc11    loc12              loc21
-                           /   |          \         /     |     \       \
-                     loc111   loc121    loc121  loc211  loc212 loc213 loc214
-                                |
-                              loc1214
+                           /         \         /     |     \       \
+                     loc111         loc121  loc211  loc212 loc213 loc214
+                                      |
+                                   loc1211
 
 
     -->
@@ -34,7 +34,7 @@
     <LOCALITY TYPE="TOWNSHIP" ID="12" LEVEL="2" CODE="loc214" NAME="locality214" PARENT_ID="8" LEFTBOUND="22" RIGHTBOUND="23"/>
 
     <!-- city for township -->
-    <LOCALITY TYPE="CITY" ID="7" LEVEL="4" CODE="loc1211" NAME="locality1211" PARENT_ID="1" LEFTBOUND="9" RIGHTBOUND="10"/>
+    <LOCALITY TYPE="CITY" ID="7" LEVEL="4" CODE="loc1211" NAME="locality1211" PARENT_ID="6" LEFTBOUND="9" RIGHTBOUND="10"/>
 
 
     <!--############################################ demands ########################################################-->

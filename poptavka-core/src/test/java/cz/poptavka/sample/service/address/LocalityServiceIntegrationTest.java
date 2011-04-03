@@ -4,6 +4,7 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.service.common.TreeItemService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private LocalityService localityService;
+
+    @Autowired
+    private TreeItemService treeItemService;
 
 
     @Test
@@ -38,6 +42,16 @@ public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
         checkLocalitiesByType(LocalityType.CITY, 1);
 
         checkLocalitiesByType(null, 0);
+    }
+
+
+    @Test
+    public void testGetAllLocalitiesForParent() {
+        final Locality czechRepublic = this.localityService.getLocality("CZ");
+        final List<Locality> allLocalitiesInCzechRepublic = this.treeItemService.getAllChildren(czechRepublic,
+                Locality.class);
+
+        Assert.assertEquals(12, allLocalitiesInCzechRepublic.size());
     }
 
 
