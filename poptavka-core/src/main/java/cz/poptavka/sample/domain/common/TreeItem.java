@@ -1,13 +1,9 @@
 package cz.poptavka.sample.domain.common;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.List;
+import javax.persistence.MappedSuperclass;
 
 /**
  * Base class that enables working with tree data structure. Objects that extends this class can be placed
@@ -22,6 +18,10 @@ import java.util.List;
  * for more information.
  *
  * <p>
+ *     The descendant of this class must override abstract methods and maps related fields. These fields cannot
+ *     be mapped in this supperclass because then the strange errors occurs - e.g. the method {@@link #getChildren()}
+ *     returns both categories and localities when called on Locality object.
+ *
  * This class uses TABLE_PER_CLASS strategy because there is a references to the parent - this case is not allowed
  * to be presented in @MappedSuperclass.
  *
@@ -31,20 +31,14 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 31.1.11
  */
-@Entity
+//@Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class TreeItem extends DomainObject {
 
     /** The depth from root TreeItem. */
     private int level;
 
-    /** Reference to the parent tree item. */
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TreeItem parent;
-
-    /** All children of this tree item in tree structure. */
-    @OneToMany(mappedBy = "parent")
-    private List<TreeItem> children;
 
     /** Reference to the left sibling - at the same level. */
     @Column(name = "leftBound")
@@ -63,22 +57,6 @@ public abstract class TreeItem extends DomainObject {
         this.level = level;
     }
 
-    public TreeItem getParent() {
-        return parent;
-    }
-
-    public void setParent(TreeItem parent) {
-        this.parent = parent;
-    }
-
-    public List<TreeItem> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<TreeItem> children) {
-        this.children = children;
-    }
-
     public Long getLeftBound() {
         return leftBound;
     }
@@ -94,5 +72,15 @@ public abstract class TreeItem extends DomainObject {
     public void setRightBound(Long rightBound) {
         this.rightBound = rightBound;
     }
+
+
+//    //--------------------- abstract methods to enforce implementation of problematic fields in subclass -------------
+//    public abstract T getParent();
+//
+//    public abstract void setParent(T parent);
+//
+//    public abstract List<T> getChildren();
+//
+//    public abstract void setChildren(List<T> children);
 
 }

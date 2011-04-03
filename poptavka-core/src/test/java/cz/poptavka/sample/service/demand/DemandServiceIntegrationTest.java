@@ -37,7 +37,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         checkDemands(2, "loc121");
 
         // check combination of localities - the result is NOT always the sum of demands related to the localities
-        // because duplicating of demands in result is not allowed!
+        // because duplication of demands in result is not allowed!
         checkDemands(10, "loc1", "loc2");
         checkDemands(10, "loc1", "loc2", "loc11");
         checkDemands(5, "loc121", "loc2");
@@ -63,6 +63,12 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         checkDemandType(1L, DemandType.Type.NORMAL);
         checkDemandType(2L, DemandType.Type.ATTRACTIVE);
         checkDemandType(3L, DemandType.Type.ALL);
+    }
+
+
+    @Test
+    public void testGetAllDemands() {
+        Assert.assertEquals(10, this.demandService.getAll().size());
     }
 
 

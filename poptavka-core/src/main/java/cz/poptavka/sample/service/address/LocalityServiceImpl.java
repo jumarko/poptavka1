@@ -5,6 +5,7 @@ import cz.poptavka.sample.dao.address.LocalityDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     @Override
     @Cacheable(cacheName = "cache5h")
+    @Transactional(readOnly = true)
     public Locality getLocality(String code) {
         return getDao().getLocality(code);
     }
@@ -28,6 +30,7 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     @Override
     @Cacheable(cacheName = "cache5h")
+    @Transactional(readOnly = true)
     public List<Locality> getLocalities(LocalityType localityType) {
         return getDao().getLocalities(localityType);
     }

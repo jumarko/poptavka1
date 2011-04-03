@@ -9,7 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import java.util.List;
 
@@ -18,6 +21,8 @@ import java.util.List;
  * Typical examples can be country, region ,district, etc.
  * @author Juraj Martinka
  *         Date: 29.1.11
+ *
+ * @see TreeItem
  */
 @Entity
 public class Locality extends TreeItem implements AdditionalInfoAware {
@@ -113,4 +118,31 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
         sb.append('}');
         return sb.toString();
     }
+
+
+    //---------------------- Locality attributes and methods -----------------------------------------------------------
+    /** Reference to the parent tree item. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Locality parent;
+
+    /** All children of this tree item in tree structure. */
+    @OneToMany(mappedBy = "parent")
+    private List<Locality> children;
+
+    public Locality getParent() {
+        return parent;
+    }
+
+    public void setParent(Locality parent) {
+        this.parent = parent;
+    }
+
+    public List<Locality> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Locality> children) {
+        this.children = children;
+    }
+
 }

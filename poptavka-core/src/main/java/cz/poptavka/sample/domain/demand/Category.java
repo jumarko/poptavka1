@@ -6,13 +6,19 @@ import cz.poptavka.sample.domain.common.TreeItem;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * @author Juraj Martinka
  *         Date: 31.1.11
+ *
+ * @see TreeItem
  */
 @Entity
 @NamedQueries({
@@ -77,6 +83,32 @@ public class Category extends TreeItem implements AdditionalInfoAware {
         sb.append(", additionalInfo=").append(additionalInfo);
         sb.append('}');
         return sb.toString();
+    }
+
+
+    //---------------------- TreeItem attributes and methods ----------------------------------------------------------
+    /** Reference to the parent tree item. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category parent;
+
+    /** All children of this tree item in tree structure. */
+    @OneToMany(mappedBy = "parent")
+    private List<Category> children;
+
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
+    }
+
+    public List<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Category> children) {
+        this.children = children;
     }
 }
 

@@ -2,18 +2,18 @@ package cz.poptavka.sample.base.integration;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
-import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CompositeDataSet;
+import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
+import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +36,10 @@ import java.util.List;
  * E.g. for class <code>ClientIntegrationTest</code> the path would be <code>ClientIntegrationTest.xml</code>.
  *
  * <p>
- * It is very suitable to specify also DTD file - for our projects we use the common "test.dtd" file.
+ * It is highly recommended to specify DTD file too - for our projects we use the common "test.dtd" file.
  * This file is generated from DB schema every time the integration tests are invoked.
  *
+ * @see SpringDatabaseDataSourceConnection custom connection class used to NOT commit data into DB
  * @author Juraj Martinka
  *         Date: 9.1.11
  */
@@ -46,8 +47,6 @@ import java.util.List;
 @ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 // must be transactional to roll-back the created data after each test
 @Transactional
-// the majority of tests must be marked as dirty otherwise strange consequences can occur.
-@DirtiesContext
 public abstract class DBUnitBaseTest {
 
     /** Default suffix which will be used when constructing default name of xml file. **/
@@ -83,22 +82,6 @@ public abstract class DBUnitBaseTest {
                     + ", DTD: " + this.dataSetDtdFilePath
                     + ". Check the paths to the xml and DTD and verify that DTD is correctly bind to the xml.");
         }
-    }
-
-
-    @After
-    public void cleanData() {
-        // TODO martinka: this does not works as expected - probably because of data definition order
-        // e.g. in BaseDataSet.xml
-//        try {
-//            DatabaseOperation.DELETE.execute(getConnection(), getDataSet());
-//        } catch (Exception e) {
-//            throw new IllegalStateException("An exception occured while cleaning test data from the database"
-//                    + ", cause: " + e.getMessage()
-//                    + ", DataSet: " + this.dataSetsFilePaths
-//                    + ", DTD: " + this.dataSetDtdFilePath
-//                    + ". Check the paths to the xml and DTD and verify that DTD is correctly bind to the xml.");
-//        }
     }
 
 
@@ -153,7 +136,9 @@ public abstract class DBUnitBaseTest {
 
 
     private IDatabaseConnection getConnection() throws Exception {
-        return new DatabaseDataSourceConnection(this.dataSource);
+        return new SpringDatabaseDataSourceConnection(this.dataSource);
+
+//        return new DatabaseDataSourceConnection(this.dataSource);
     }
 
 
@@ -174,12 +159,16 @@ public abstract class DBUnitBaseTest {
             dataSetBuilder.setMetaDataSetFromDtd(dtdResourceStream);
         }
 
+        // sequenceFilter for automatically ordering order tables by their foreign keys to avoid "FK constraint errors"
+        // @see http://www.dbunit.org/faq.html#tableseq
+        ITableFilter sequenceFilter = new DatabaseSequenceFilter(getConnection());
+
         final List<IDataSet> dataSets = new ArrayList<IDataSet>();
         for (String dataSetPath : this.dataSetsFilePaths) {
             final ReplacementDataSet dataSet = new ReplacementDataSet(dataSetBuilder.build(
                 getResourceStream(dataSetPath)));
             dataSet.addReplacementObject(NULL_REPLACEMENT_VALUE, null);
-            dataSets.add(dataSet);
+            dataSets.add(new FilteredDataSet(sequenceFilter,  dataSet));
         }
 
         return new CompositeDataSet(dataSets.toArray(new IDataSet[dataSets.size()]));

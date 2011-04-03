@@ -3,7 +3,6 @@ package cz.poptavka.sample.domain.demand;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.dao.demand.CategoryDao;
-import cz.poptavka.sample.domain.common.TreeItem;
 import cz.poptavka.sample.service.common.TreeItemService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,7 +53,7 @@ public class CategoryTest extends DBUnitBaseTest {
         Assert.assertNotNull(cat);
 
         // check children
-        final List<TreeItem> catChildren = cat.getChildren();
+        final List<Category> catChildren = cat.getChildren();
         Assert.assertEquals(expectedChildrenCount, catChildren.size());
         for (String childCode : expectedChildrenCodes) {
             checkIsCategoryChild(parentCategoryCode, catChildren, childCode);
@@ -62,11 +61,11 @@ public class CategoryTest extends DBUnitBaseTest {
 
     }
 
-    private void checkIsCategoryChild(String parentCategoryCode, List<TreeItem> categoryChildren, String childCode) {
+    private void checkIsCategoryChild(String parentCategoryCode, List<Category> categoryChildren, String childCode) {
         boolean isCatChild = false;
 
-        for (TreeItem catChild : categoryChildren) {
-            if (((Category) catChild).getCode().equals(childCode)) {
+        for (Category catChild : categoryChildren) {
+            if (catChild.getCode().equals(childCode)) {
                 isCatChild = true;
                 break;
             }

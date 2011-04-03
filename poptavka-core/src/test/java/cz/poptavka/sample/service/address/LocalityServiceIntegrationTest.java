@@ -16,7 +16,7 @@ import java.util.List;
  *         Date: 5.2.11
  */
 @DataSet(path = "classpath:cz/poptavka/sample/base/BaseDataSet.xml", dtd = "classpath:test.dtd")
-public class AddressServiceIntegrationTest extends DBUnitBaseTest {
+public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private LocalityService localityService;

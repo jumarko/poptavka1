@@ -5,6 +5,7 @@ import cz.poptavka.sample.dao.demand.CategoryDao;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     /** {@inheritDoc} */
     @Override
     @Cacheable(cacheName = "cache5h")
+    @Transactional(readOnly = true)
     public List<Category> getRootCategories() {
         return categoryDao.getRootCategories();
     }
@@ -27,6 +29,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     /** {@inheritDoc} */
     @Override
     @Cacheable(cacheName = "cache5h")
+    @Transactional(readOnly = true)
     public Category getCategory(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
