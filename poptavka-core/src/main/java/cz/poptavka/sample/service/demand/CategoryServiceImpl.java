@@ -15,15 +15,13 @@ import java.util.List;
  */
 public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements  CategoryService {
 
-    private CategoryDao categoryDao;
-
 
     /** {@inheritDoc} */
     @Override
     @Cacheable(cacheName = "cache5h")
     @Transactional(readOnly = true)
     public List<Category> getRootCategories() {
-        return categoryDao.getRootCategories();
+        return getDao().getRootCategories();
     }
 
     /** {@inheritDoc} */
@@ -35,13 +33,8 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
             return null;
         }
 
-        return this.categoryDao.getCategory(code);
+        return getDao().getCategory(code);
     }
 
-
-    //------------------------------------ GETTERS AND SETTERS ---------------------------------------------------------
-    public void setCategoryDao(CategoryDao categoryDao) {
-        this.categoryDao = categoryDao;
-    }
 
 }

@@ -3,6 +3,7 @@ package cz.poptavka.sample.service.demand;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -31,35 +32,69 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     @Autowired
     private LocalityService localityService;
 
+    @Autowired
+    private CategoryService categoryService;
+
 
     @Test
-    public void testGetDemands() {
-        checkDemands(3, "loc2");
-        checkDemands(7, "loc1");
-        checkDemands(4, "loc11");
-        checkDemands(0, "loc0111");
-        checkDemands(2, "loc121");
+    public void testGetDemandsByLocality() {
+        checkDemandsByLocality(3, "loc2");
+        checkDemandsByLocality(7, "loc1");
+        checkDemandsByLocality(4, "loc11");
+        checkDemandsByLocality(0, "loc0111");
+        checkDemandsByLocality(2, "loc121");
 
         // check combination of localities - the result is NOT always the sum of demands related to the localities
         // because duplication of demands in result is not allowed!
-        checkDemands(10, "loc1", "loc2");
-        checkDemands(10, "loc1", "loc2", "loc11");
-        checkDemands(5, "loc121", "loc2");
+        checkDemandsByLocality(10, "loc1", "loc2");
+        checkDemandsByLocality(10, "loc1", "loc2", "loc11");
+        checkDemandsByLocality(5, "loc121", "loc2");
     }
 
 
 
     @Test
-    public void testGetDemandsCount() {
-        checkDemandCount("loc1", 7);
-        checkDemandCount("loc2", 3);
-        checkDemandCount("loc11", 4);
-        checkDemandCount("loc121", 2);
+    public void testGetDemandsCountByLocality() {
+        checkDemandCountByLocality("loc1", 7);
+        checkDemandCountByLocality("loc2", 3);
+        checkDemandCountByLocality("loc11", 4);
+        checkDemandCountByLocality("loc121", 2);
 
-        checkDemandCount("loc12", 2);
-        checkDemandCount("loc111", 0);
-        checkDemandCount("loc1211", 1);
+        checkDemandCountByLocality("loc12", 2);
+        checkDemandCountByLocality("loc111", 0);
+        checkDemandCountByLocality("loc1211", 1);
     }
+
+
+    @Test
+    public void testGetDemandsByCategory() {
+        checkDemandsByCategory(10, "cat0");
+        checkDemandsByCategory(5, "cat1");
+        checkDemandsByCategory(1, "cat2");
+        checkDemandsByCategory(3, "cat3");
+        checkDemandsByCategory(4, "cat11");
+        checkDemandsByCategory(2, "cat31");
+        checkDemandsByCategory(1, "cat312");
+        checkDemandsByCategory(1, "cat1132");
+
+        // check if same demands are not presented twice
+        checkDemandsByCategory(4, "cat11", "cat1132");
+    }
+
+
+
+    @Test
+    public void testGetDemandsCountByCategory() {
+        checkDemandCountByCategory("cat0", 10);
+        checkDemandCountByCategory("cat1", 5);
+        checkDemandCountByCategory("cat2", 1);
+        checkDemandCountByCategory("cat3", 3);
+        checkDemandCountByCategory("cat11", 4);
+        checkDemandCountByCategory("cat31", 2);
+        checkDemandCountByCategory("cat312", 1);
+        checkDemandCountByCategory("cat1132", 1);
+    }
+
 
 
     @Test
@@ -78,7 +113,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
 
-    private void checkDemands(int expectedDemandsNumber, String... localityCodes) {
+    private void checkDemandsByLocality(int expectedDemandsNumber, String... localityCodes) {
         if (localityCodes.length == 0) {
             throw new IllegalArgumentException("No localities for testing!");
         }
@@ -94,12 +129,37 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(message, expectedDemandsNumber, demandsForLocalities.size());
     }
 
-    private void checkDemandCount(String localityCode, int expectedCount) {
+    private void checkDemandCountByLocality(String localityCode, int expectedCount) {
         final String message = "Locality code [" + localityCode + "]";
         Assert.assertEquals(message,
                 expectedCount,
                 this.demandService.getDemandsCount(this.localityService.getLocality(localityCode)));
     }
+
+
+    private void checkDemandsByCategory(int expectedDemandsNumber, String... categoryCodes) {
+        if (categoryCodes.length == 0) {
+            throw new IllegalArgumentException("No categories for testing!");
+        }
+
+        List<Category> categories = new ArrayList<Category>();
+        for (String categoryCode : categoryCodes) {
+            categories.add(this.categoryService.getCategory(categoryCode));
+        }
+        final Collection<Demand> demandsForCategories = this.demandService.getDemands(
+                categories.toArray(new Category[categories.size()]));
+        final String message = "Category codes [" + categoryCodes + "]";
+        Assert.assertNotNull(message, demandsForCategories);
+        Assert.assertEquals(message, expectedDemandsNumber, demandsForCategories.size());
+    }
+
+    private void checkDemandCountByCategory(String categoryCode, int expectedCount) {
+        final String message = "Category code [" + categoryCode + "]";
+        Assert.assertEquals(message,
+                expectedCount,
+                this.demandService.getDemandsCount(this.categoryService.getCategory(categoryCode)));
+    }
+
 
 
     private void checkDemandType(long demandId, DemandType.Type expectedType) {

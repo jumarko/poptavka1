@@ -31,16 +31,16 @@
     <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />
 
     <!--########################################## demands for categories ###########################################-->
-    <DEMAND_CATEGORY ID="1" DEMAND_ID="1" CATEGORY_ID="1" />
-    <DEMAND_CATEGORY ID="2" DEMAND_ID="2" CATEGORY_ID="2" />
-    <DEMAND_CATEGORY ID="3" DEMAND_ID="3" CATEGORY_ID="2" />
-    <DEMAND_CATEGORY ID="4" DEMAND_ID="4" CATEGORY_ID="3" />
-    <DEMAND_CATEGORY ID="5" DEMAND_ID="5" CATEGORY_ID="3" />
-    <DEMAND_CATEGORY ID="6" DEMAND_ID="6" CATEGORY_ID="3" />
-    <DEMAND_CATEGORY ID="7" DEMAND_ID="7" CATEGORY_ID="3" />
-    <DEMAND_CATEGORY ID="8" DEMAND_ID="8" CATEGORY_ID="6" />
-    <DEMAND_CATEGORY ID="9" DEMAND_ID="9" CATEGORY_ID="7" />
-    <DEMAND_CATEGORY ID="10" DEMAND_ID="10" CATEGORY_ID="2" />
+    <DEMAND_CATEGORY ID="1" DEMAND_ID="1" CATEGORY_ID="1" /> <!-- "Root category" -->
+    <DEMAND_CATEGORY ID="2" DEMAND_ID="2" CATEGORY_ID="2" /> <!-- "Category 1" -->
+    <DEMAND_CATEGORY ID="3" DEMAND_ID="3" CATEGORY_ID="3" /> <!-- "Category 2" -->
+    <DEMAND_CATEGORY ID="4" DEMAND_ID="4" CATEGORY_ID="4" /> <!-- "Category 3" -->
+    <DEMAND_CATEGORY ID="5" DEMAND_ID="5" CATEGORY_ID="5" /> <!-- "Category 11" -->
+    <DEMAND_CATEGORY ID="6" DEMAND_ID="6" CATEGORY_ID="5" /> <!-- "Category 11" -->
+    <DEMAND_CATEGORY ID="7" DEMAND_ID="7" CATEGORY_ID="9" /> <!-- "Category 31" -->
+    <DEMAND_CATEGORY ID="8" DEMAND_ID="8" CATEGORY_ID="11" /> <!-- "Category 112" -->
+    <DEMAND_CATEGORY ID="9" DEMAND_ID="9" CATEGORY_ID="14" /> <!-- "Category 312" -->
+    <DEMAND_CATEGORY ID="10" DEMAND_ID="10" CATEGORY_ID="16" /> <!-- "Category 1132" -->
 
 
 

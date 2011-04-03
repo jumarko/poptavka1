@@ -26,6 +26,6 @@ public class CategoryServiceTest extends DBUnitBaseTest {
         Assert.assertNotNull(rootCategories);
         Assert.assertEquals(1, rootCategories.size());
         Assert.assertEquals("Root Category", rootCategories.get(0).getName());
-        Assert.assertEquals("0", rootCategories.get(0).getCode());
+        Assert.assertEquals("cat0", rootCategories.get(0).getCode());
     }
 }

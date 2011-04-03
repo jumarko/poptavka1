@@ -46,10 +46,6 @@
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl ">
-        <property name="categoryDao" ref="categoryDao" />
-    </bean>
-
     <bean id="personService"
           class="cz.poptavka.sample.service.user.PersonServiceImpl">
         <property name="dao" ref="personDao"/>
@@ -64,6 +60,11 @@
           class="cz.poptavka.sample.service.demand.DemandServiceImpl">
         <property name="dao" ref="demandDao"/>
         <property name="demandDao" ref="demandDao"/>
+    </bean>
+
+
+    <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl ">
+        <property name="dao" ref="categoryDao" />
     </bean>
 
     <bean id="localityService"
