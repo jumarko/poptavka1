@@ -9,6 +9,10 @@ import org.junit.Ignore;
  *         Date: 12.2.11
  */
 @Ignore
-@DataSet(path = "classpath:cz/poptavka/sample/base/BaseDataSet.xml", dtd = "classpath:test.dtd")
+@DataSet(path = {
+        "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
+        dtd = "classpath:test.dtd")
 public class TreeItemServiceIntegrationTest extends DBUnitBaseTest {
 }

@@ -2,13 +2,13 @@
 <!--
                                 Root category
                           /          |               \
-                  Cat 1             Cat 2             Cat 3                                # first level
+                  cat1             cat2             cat3                                 # first level
                   |               /    |   \               \
-               Cat 11       Cat 21 Cat 22  Cat 23           Cat 31                         # second level
+               cat11         cat21   cat22  cat23           cat31                        # second level
              /    |    \                                   /      \
-      Cat 111  Cat 112  Cat 113                         Cat 311    Cat 312                 # third level
+      cat111  cat112  cat113                         cat311    cat312                    # third level
                          /     \
-                   Cat 1131     Cat 1132                                                   # fourth level
+                   cat1131     cat1132                                                   # fourth level
 
 -->
 <dataset>
@@ -16,26 +16,26 @@
     <CATEGORY ID="1" CODE="0"  NAME="Root Category" DESCRIPTION="Common ancestor for all categories" LEVEL="0"  PARENT_ID="[NULL]" LEFTBOUND="1" RIGHTBOUND="32" />
 
     <!-- first level of categories -->
-    <CATEGORY ID="2" CODE="1"  NAME="Category 1" DESCRIPTION="Category desc 1" LEVEL="1"  PARENT_ID="1" LEFTBOUND="2" RIGHTBOUND="15" />
-    <CATEGORY ID="3" CODE="2"  NAME="Category 2" DESCRIPTION="Category desc 2" LEVEL="2"  PARENT_ID="1" LEFTBOUND="16" RIGHTBOUND="23" />
-    <CATEGORY ID="4" CODE="3"  NAME="Category 3" DESCRIPTION="Category desc 3" LEVEL="3"  PARENT_ID="1" LEFTBOUND="24" RIGHTBOUND="31" />
+    <CATEGORY ID="2" CODE="cat1"  NAME="Category 1" DESCRIPTION="Category desc 1" LEVEL="1"  PARENT_ID="1" LEFTBOUND="2" RIGHTBOUND="15" />
+    <CATEGORY ID="3" CODE="cat2"  NAME="Category 2" DESCRIPTION="Category desc 2" LEVEL="2"  PARENT_ID="1" LEFTBOUND="16" RIGHTBOUND="23" />
+    <CATEGORY ID="4" CODE="cat3"  NAME="Category 3" DESCRIPTION="Category desc 3" LEVEL="3"  PARENT_ID="1" LEFTBOUND="24" RIGHTBOUND="31" />
 
     <!-- Second level -->
-    <CATEGORY ID="5" CODE="11"  NAME="Category 11" DESCRIPTION="Category desc 11" LEVEL="2"  PARENT_ID="2" LEFTBOUND="3" RIGHTBOUND="14" />
-    <CATEGORY ID="6" CODE="21"  NAME="Category 21" DESCRIPTION="Category desc 21" LEVEL="2"  PARENT_ID="3" LEFTBOUND="17" RIGHTBOUND="18" />
-    <CATEGORY ID="7" CODE="22"  NAME="Category 22" DESCRIPTION="Category desc 22" LEVEL="2"  PARENT_ID="3" LEFTBOUND="19" RIGHTBOUND="20" />
-    <CATEGORY ID="8" CODE="23"  NAME="Category 23" DESCRIPTION="Category desc 23" LEVEL="2"  PARENT_ID="3" LEFTBOUND="21" RIGHTBOUND="22" />
-    <CATEGORY ID="9" CODE="31"  NAME="Category 31" DESCRIPTION="Category desc 31" LEVEL="2"  PARENT_ID="4" LEFTBOUND="25" RIGHTBOUND="30" />
+    <CATEGORY ID="5" CODE="cat11"  NAME="Category 11" DESCRIPTION="Category desc 11" LEVEL="2"  PARENT_ID="2" LEFTBOUND="3" RIGHTBOUND="14" />
+    <CATEGORY ID="6" CODE="cat21"  NAME="Category 21" DESCRIPTION="Category desc 21" LEVEL="2"  PARENT_ID="3" LEFTBOUND="17" RIGHTBOUND="18" />
+    <CATEGORY ID="7" CODE="cat22"  NAME="Category 22" DESCRIPTION="Category desc 22" LEVEL="2"  PARENT_ID="3" LEFTBOUND="19" RIGHTBOUND="20" />
+    <CATEGORY ID="8" CODE="cat23"  NAME="Category 23" DESCRIPTION="Category desc 23" LEVEL="2"  PARENT_ID="3" LEFTBOUND="21" RIGHTBOUND="22" />
+    <CATEGORY ID="9" CODE="cat31"  NAME="Category 31" DESCRIPTION="Category desc 31" LEVEL="2"  PARENT_ID="4" LEFTBOUND="25" RIGHTBOUND="30" />
 
     <!-- Third level -->
-    <CATEGORY ID="10" CODE="111"  NAME="Category 111" DESCRIPTION="Category desc 111" LEVEL="3"  PARENT_ID="5" LEFTBOUND="4" RIGHTBOUND="5" />
-    <CATEGORY ID="11" CODE="112"  NAME="Category 112" DESCRIPTION="Category desc 112" LEVEL="3"  PARENT_ID="5" LEFTBOUND="6" RIGHTBOUND="7" />
-    <CATEGORY ID="12" CODE="113"  NAME="Category 113" DESCRIPTION="Category desc 113" LEVEL="3"  PARENT_ID="5" LEFTBOUND="8" RIGHTBOUND="13" />
-    <CATEGORY ID="13" CODE="311"  NAME="Category 311" DESCRIPTION="Category desc 311" LEVEL="3"  PARENT_ID="9" LEFTBOUND="26" RIGHTBOUND="27" />
-    <CATEGORY ID="14" CODE="312"  NAME="Category 312" DESCRIPTION="Category desc 312" LEVEL="3"  PARENT_ID="9" LEFTBOUND="28" RIGHTBOUND="29" />
+    <CATEGORY ID="10" CODE="cat111"  NAME="Category 111" DESCRIPTION="Category desc 111" LEVEL="3"  PARENT_ID="5" LEFTBOUND="4" RIGHTBOUND="5" />
+    <CATEGORY ID="11" CODE="cat112"  NAME="Category 112" DESCRIPTION="Category desc 112" LEVEL="3"  PARENT_ID="5" LEFTBOUND="6" RIGHTBOUND="7" />
+    <CATEGORY ID="12" CODE="cat113"  NAME="Category 113" DESCRIPTION="Category desc 113" LEVEL="3"  PARENT_ID="5" LEFTBOUND="8" RIGHTBOUND="13" />
+    <CATEGORY ID="13" CODE="cat311"  NAME="Category 311" DESCRIPTION="Category desc 311" LEVEL="3"  PARENT_ID="9" LEFTBOUND="26" RIGHTBOUND="27" />
+    <CATEGORY ID="14" CODE="cat312"  NAME="Category 312" DESCRIPTION="Category desc 312" LEVEL="3"  PARENT_ID="9" LEFTBOUND="28" RIGHTBOUND="29" />
 
     <!-- Fourth level -->
-    <CATEGORY ID="15" CODE="1131"  NAME="Category 1131" DESCRIPTION="Category desc 1131" LEVEL="4"  PARENT_ID="12" LEFTBOUND="9" RIGHTBOUND="10" />
-    <CATEGORY ID="16" CODE="1132"  NAME="Category 1132" DESCRIPTION="Category desc 1132" LEVEL="4"  PARENT_ID="12" LEFTBOUND="11" RIGHTBOUND="12" />
+    <CATEGORY ID="15" CODE="cat1131"  NAME="Category 1131" DESCRIPTION="Category desc 1131" LEVEL="4"  PARENT_ID="12" LEFTBOUND="9" RIGHTBOUND="10" />
+    <CATEGORY ID="16" CODE="cat1132"  NAME="Category 1132" DESCRIPTION="Category desc 1132" LEVEL="4"  PARENT_ID="12" LEFTBOUND="11" RIGHTBOUND="12" />
 
 </dataset>

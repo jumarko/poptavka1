@@ -18,8 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         Date: 13.2.11
  */
 @DataSet(path = {
-        "classpath:cz/poptavka/sample/base/BaseDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
 @Ignore // this test is deprecated
@@ -39,14 +40,14 @@ public class AdditionalInfoLoadListenerTest extends DBUnitBaseTest {
     @Test
     public void testCategories() {
         checkCategoryCounts(ROOT_CATEGORY_CODE, 0L, 4L);
-        checkCategoryCounts("1", 0L, 2L);
-        checkCategoryCounts("2", 0L, 0L);
-        checkCategoryCounts("3", 0L, 2L);
-        checkCategoryCounts("11", 0L, 2L);
-        checkCategoryCounts("111", 0L, 0L);
-        checkCategoryCounts("113", 0L, 1L);
-        checkCategoryCounts("31", 0L, 1L);
-        checkCategoryCounts("312", 0L, 1L);
+        checkCategoryCounts("cat1", 0L, 2L);
+        checkCategoryCounts("cat2", 0L, 0L);
+        checkCategoryCounts("cat3", 0L, 2L);
+        checkCategoryCounts("cat11", 0L, 2L);
+        checkCategoryCounts("cat111", 0L, 0L);
+        checkCategoryCounts("cat113", 0L, 1L);
+        checkCategoryCounts("cat31", 0L, 1L);
+        checkCategoryCounts("cat312", 0L, 1L);
     }
 
 

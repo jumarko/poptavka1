@@ -26,23 +26,23 @@ public class CategoryTest extends DBUnitBaseTest {
 
     @Test
     public void testGetChildren() {
-        checkGetCategoryChildren("1", 1, "11");
-        checkGetCategoryChildren("2", 3, "21", "22", "23");
-        checkGetCategoryChildren("3", 1, "31");
+        checkGetCategoryChildren("cat1", 1, "cat11");
+        checkGetCategoryChildren("cat2", 3, "cat21", "cat22", "cat23");
+        checkGetCategoryChildren("cat3", 1, "cat31");
 
-        checkGetCategoryChildren("11", 3, "111", "112", "113");
-        checkGetCategoryChildren("113", 2, "1131", "1132");
+        checkGetCategoryChildren("cat11", 3, "cat111", "cat112", "cat113");
+        checkGetCategoryChildren("cat113", 2, "cat1131", "cat1132");
 
-        checkGetCategoryChildren("31", 2, "311", "312");
+        checkGetCategoryChildren("cat31", 2, "cat311", "cat312");
     }
 
 
     @Test
     public void testGetAllChildren() {
         checkGetAllCategoryChildren(null, 16);
-        checkGetAllCategoryChildren("11", 5);
-        checkGetAllCategoryChildren("113", 2);
-        checkGetAllCategoryChildren("2", 3);
+        checkGetAllCategoryChildren("cat11", 5);
+        checkGetAllCategoryChildren("cat113", 2);
+        checkGetAllCategoryChildren("cat2", 3);
     }
 
 

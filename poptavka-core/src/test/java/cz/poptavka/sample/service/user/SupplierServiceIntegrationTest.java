@@ -18,8 +18,9 @@ import java.util.Set;
  *         Date: 12.2.11
  */
 @DataSet(path = {
-        "classpath:cz/poptavka/sample/base/BaseDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
@@ -58,21 +59,21 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testGetSuppliersForCategories() {
-        checkSuppliersForCategories(2, "11");
-        checkSuppliersForCategories(2, "3");
-        checkSuppliersForCategories(1, "113");
-        checkSuppliersForCategories(1, "312");
-        checkSuppliersForCategories(0, "2");
+        checkSuppliersForCategories(2, "cat11");
+        checkSuppliersForCategories(2, "cat3");
+        checkSuppliersForCategories(1, "cat113");
+        checkSuppliersForCategories(1, "cat312");
+        checkSuppliersForCategories(0, "cat2");
     }
 
     @Test
     public void testGetSuppliersCountForCategories() {
 //        checkSuppliersCountForCategories(2, "11");
-        checkSuppliersCountForCategories(2, "3");
-        checkSuppliersCountForCategories(1, "31");
-        checkSuppliersCountForCategories(1, "113");
-        checkSuppliersCountForCategories(1, "312");
-        checkSuppliersCountForCategories(0, "2");
+        checkSuppliersCountForCategories(2, "cat3");
+        checkSuppliersCountForCategories(1, "cat31");
+        checkSuppliersCountForCategories(1, "cat113");
+        checkSuppliersCountForCategories(1, "cat312");
+        checkSuppliersCountForCategories(0, "cat2");
     }
 
 

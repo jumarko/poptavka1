@@ -16,7 +16,7 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 5.2.11
  */
-@DataSet(path = "classpath:cz/poptavka/sample/base/BaseDataSet.xml", dtd = "classpath:test.dtd")
+@DataSet(path = "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml", dtd = "classpath:test.dtd")
 public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
