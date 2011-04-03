@@ -1,14 +1,6 @@
 package cz.poptavka.sample.server.service.locality;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-
 import cz.poptavka.sample.client.service.demand.LocalityRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -16,6 +8,13 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implements LocalityRPCService {
 
@@ -46,12 +45,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public ArrayList<LocalityDetail> getLocalities(String locCode) {
         LOGGER.info("Getting children localities ");
-
-        Locality locality = localityService.getLocality(locCode);
-
-        List<Locality> locs = treeItemService.getAllChildren(locality, Locality.class);
-
-        return createLocalityDetails(locs);
+        return createLocalityDetails(localityService.getLocality(locCode).getChildren());
     }
 
     /** converts domain entities to front-end classes. **/
