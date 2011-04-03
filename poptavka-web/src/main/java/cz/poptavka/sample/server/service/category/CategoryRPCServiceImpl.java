@@ -1,18 +1,17 @@
 package cz.poptavka.sample.server.service.category;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-
 import cz.poptavka.sample.client.service.demand.CategoryRPCService;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
@@ -50,10 +49,9 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         System.out.println("Getting children categories");
         try {
             Category cat = categoryService.getCategory(category);
-
-            List<Category> cats = treeItemService.getAllChildren(cat, Category.class);
-
-            return createCategoryDetailList(cats);
+            if (cat != null) {
+                return createCategoryDetailList(cat.getChildren());
+            }
         } catch (NullPointerException ex) {
             LOGGER.info("NullPointerException while executing getCategoryChildren");
         }

@@ -45,7 +45,11 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public ArrayList<LocalityDetail> getLocalities(String locCode) {
         LOGGER.info("Getting children localities ");
-        return createLocalityDetails(localityService.getLocality(locCode).getChildren());
+        final Locality locality = localityService.getLocality(locCode);
+        if (locality != null) {
+            return createLocalityDetails(locality.getChildren());
+        }
+        return new ArrayList<LocalityDetail>();
     }
 
     /** converts domain entities to front-end classes. **/
