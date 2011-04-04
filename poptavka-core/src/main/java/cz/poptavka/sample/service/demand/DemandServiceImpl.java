@@ -11,6 +11,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import java.util.Set;
  *
  * @author Excalibur
  */
+@Transactional(readOnly = true)
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
 

@@ -13,7 +13,7 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 8.1.11
  */
-@Transactional
+@Transactional(readOnly = true)
 public class AuditServiceImpl implements AuditService {
     @Autowired
     private AuditDao auditDao;

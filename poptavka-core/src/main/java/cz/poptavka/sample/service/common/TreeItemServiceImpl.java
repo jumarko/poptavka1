@@ -11,7 +11,7 @@ import java.util.Set;
  * @author Juraj Martinka
  *         Date: 8.2.11
  */
-@Transactional
+@Transactional(readOnly = true)
 public class TreeItemServiceImpl implements TreeItemService {
 
     private TreeItemDao treeItemDao;
@@ -22,7 +22,6 @@ public class TreeItemServiceImpl implements TreeItemService {
 
     /** {@inheritDoc} */
     @Override
-    @Transactional(readOnly = true)
     public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass) {
         return this.treeItemDao.getAllChildren(parentNode, treeItemClass);
     }

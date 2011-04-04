@@ -18,11 +18,12 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 5.2.11
  */
+@Transactional(readOnly = true)
 public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDao> implements LocalityService {
+
 
     @Override
     @Cacheable(cacheName = "cache5h")
-    @Transactional(readOnly = true)
     public Locality getLocality(String code) {
         return getDao().getLocality(code);
     }
@@ -30,7 +31,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     @Override
     @Cacheable(cacheName = "cache5h")
-    @Transactional(readOnly = true)
     public List<Locality> getLocalities(LocalityType localityType) {
         return getDao().getLocalities(localityType);
     }

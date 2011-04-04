@@ -26,7 +26,6 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "cache5min")
     public long getSuppliersCount(Locality... localities) {
         return this.supplierDao.getSuppliersCount(localities);
     }

@@ -39,7 +39,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
 
     @Override
     public ArrayList<CategoryDetail> getCategories() {
-        List<Category> categories = categoryService.getRootCategories();
+        final List<Category> categories = categoryService.getRootCategories();
         System.out.println("Root category count: " + categories.size());
         return createCategoryDetailList(categories);
     }
@@ -48,9 +48,11 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     public ArrayList<CategoryDetail> getCategoryChildren(String category) {
         System.out.println("Getting children categories");
         try {
-            Category cat = categoryService.getCategory(category);
-            if (cat != null) {
-                return createCategoryDetailList(cat.getChildren());
+            if (category != null) {
+                final Category cat = categoryService.getById(Long.valueOf(category));
+                if (cat != null) {
+                    return createCategoryDetailList(cat.getChildren());
+                }
             }
         } catch (NullPointerException ex) {
             LOGGER.info("NullPointerException while executing getCategoryChildren");
@@ -60,7 +62,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
 
     /** Inner method for transforming domain Entity to front-end representation. **/
     private ArrayList<CategoryDetail> createCategoryDetailList(List<Category> categories) {
-        ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
+        final ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
 
         int i = 0;
         for (Category cat : categories) {

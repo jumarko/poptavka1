@@ -13,13 +13,13 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 13.2.11
  */
+@Transactional(readOnly = true)
 public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements  CategoryService {
 
 
     /** {@inheritDoc} */
     @Override
     @Cacheable(cacheName = "cache5h")
-    @Transactional(readOnly = true)
     public List<Category> getRootCategories() {
         return getDao().getRootCategories();
     }
@@ -27,7 +27,6 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     /** {@inheritDoc} */
     @Override
     @Cacheable(cacheName = "cache5h")
-    @Transactional(readOnly = true)
     public Category getCategory(String code) {
         if (StringUtils.isBlank(code)) {
             return null;
