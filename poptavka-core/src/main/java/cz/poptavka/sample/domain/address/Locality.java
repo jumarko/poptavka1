@@ -4,6 +4,8 @@ import cz.poptavka.sample.domain.common.AdditionalInfo;
 import cz.poptavka.sample.domain.common.AdditionalInfoAware;
 import cz.poptavka.sample.domain.common.TreeItem;
 import cz.poptavka.sample.domain.demand.Demand;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
@@ -37,6 +40,8 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
     @ManyToMany(mappedBy = "localities")
     private List<Demand> demands;
 
+    @OneToOne
+    @Cascade(CascadeType.ALL)
     private AdditionalInfo additionalInfo;
 
 

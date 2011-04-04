@@ -3,6 +3,8 @@ package cz.poptavka.sample.domain.demand;
 import cz.poptavka.sample.domain.common.AdditionalInfo;
 import cz.poptavka.sample.domain.common.AdditionalInfoAware;
 import cz.poptavka.sample.domain.common.TreeItem;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
@@ -36,6 +39,8 @@ public class Category extends TreeItem implements AdditionalInfoAware {
 
     private String description;
 
+    @OneToOne
+    @Cascade(CascadeType.ALL)
     private AdditionalInfo additionalInfo;
 
 
