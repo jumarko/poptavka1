@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
@@ -32,6 +33,8 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField
     HTMLPanel container;
     //menu section
+    @UiField Hyperlink linkHome;
+    @UiField Hyperlink linkCreateDemand;
     @UiField
     Button btnCreateDemand;
     @UiField
@@ -103,5 +106,14 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @Override
     public HasClickHandlers getDisplayDemandsBtn() {
         return displayDemands;
+    }
+
+    @Override
+    public void setCreateDemandToken(String token) {
+        linkCreateDemand.setTargetHistoryToken(token);
+    }
+
+    public void setHomeToken(String token) {
+        linkHome.setTargetHistoryToken(token);
     }
 }

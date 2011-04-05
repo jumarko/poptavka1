@@ -3,16 +3,19 @@ package cz.poptavka.sample.client.common;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
-import com.mvp4g.client.annotation.InjectService;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 /**
@@ -21,23 +24,29 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
  * @author Beho
  *
  */
+@SuppressWarnings("deprecation")
 @EventHandler
 public class CommonHandler extends BaseEventHandler<CommonEventBus> {
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
+    private DemandRPCServiceAsync demandService = null;
 
     private static final Logger LOGGER = Logger.getLogger("CommonHandler");
 
-
-    @InjectService
+    @Inject
     public void setLocalityService(LocalityRPCServiceAsync service) {
         localityService = service;
     }
 
-    @InjectService
+    @Inject
     public void setCategoryService(CategoryRPCServiceAsync service) {
         categoryService = service;
+    }
+
+    @Inject
+    void setDemandService(DemandRPCServiceAsync service) {
+        demandService = service;
     }
 
     public void onGetLocalities() {
@@ -100,5 +109,20 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             }
         });
         LOGGER.info("ending category service call");
+    }
+
+    public void onCreateDemand(DemandDetail detail, Long clientId) {
+        demandService.createNewDemand(detail, clientId, new AsyncCallback<String>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                Window.alert(result);
+            }
+        });
+        LOGGER.info("submitting new demand");
     }
 }

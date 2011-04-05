@@ -1,0 +1,58 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        .important {
+            font-weight: bold;
+        }
+    </ui:style>
+
+    <g:Grid>
+        <g:row>
+            <g:customCell>
+                <g:Label text="Maximalny pocet ponuk"/>
+            </g:customCell>
+            <g:customCell>
+                <g:IntegerBox ui:field="maxOffersBox"></g:IntegerBox>
+            </g:customCell>
+        </g:row>
+        <g:row>
+            <g:customCell>
+                <g:Label text="Hodnotenie dodavatelov"/>
+            </g:customCell>
+            <g:customCell>
+                <g:IntegerBox ui:field="minRatingBox"></g:IntegerBox>
+            </g:customCell>
+        </g:row>
+        <g:row>
+            <g:customCell>
+                <g:Label text="Vyclenit dodavatela"/>
+            </g:customCell>
+            <g:customCell>
+                <g:SuggestBox/>
+            </g:customCell>
+            <g:customCell>
+                <g:Button ui:field="excludeBtn">Vyclenit</g:Button>
+            </g:customCell>
+        </g:row>
+        <g:row>
+            <g:customCell>
+                <g:Label text="Zoznam vyclenenych dodavatelov" width="70"/>
+            </g:customCell>
+            <g:customCell>
+                <g:ListBox ui:field="excludedList" visibleItemCount="5" width="148px"/>
+            </g:customCell>
+        </g:row>
+        <g:row>
+            <g:customCell>
+                <g:Label text="typ poptavky"/>
+            </g:customCell>
+            <g:customCell>
+                <g:VerticalPanel>
+                    <g:RadioButton name="demandType" ui:field="classicRadio" checked="true" text="Klasicka poptavka"/>
+                    <g:RadioButton name="demandType" ui:field="attractiveRadio" text="Atraktivna poptavka"/>
+                </g:VerticalPanel>
+            </g:customCell>
+        </g:row>
+    </g:Grid>
+</ui:UiBinder>

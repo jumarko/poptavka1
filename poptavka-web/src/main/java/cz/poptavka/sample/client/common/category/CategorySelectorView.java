@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.common.category;
 
+import java.util.HashSet;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -7,11 +9,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Singleton;
 
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 
-@Singleton
+//@Singleton
 public class CategorySelectorView extends Composite implements CategorySelectorPresenter.CategorySelectorInterface {
 
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
@@ -19,7 +20,7 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
     interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {
     }
 
-    private static final int VISIBLE_COUNT = 10;
+    private HashSet<String> selectedListStrings = new HashSet<String>();
 
     @UiField
     ListBox rootCategoryList;
@@ -30,17 +31,11 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
     @UiField
     HTML loader;
 
-    public CategorySelectorView() {
-        initWidget(uiBinder.createAndBindUi(this));
+    @UiField ListBox selectedList;
 
-        loader.setVisible(false);
-
-        rootCategoryList.setVisibleItemCount(VISIBLE_COUNT);
-        categoryList.setVisible(false);
-        categoryList.setVisibleItemCount(VISIBLE_COUNT);
-        subCategoryList.setVisible(false);
-        subCategoryList.setVisibleItemCount(VISIBLE_COUNT);
-    }
+//    public CategorySelectorView() {
+//        initWidget(uiBinder.createAndBindUi(this));
+//    }
 
     @Override
     public String getSelectedItem(CategoryType list) {
@@ -77,6 +72,34 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
     @Override
     public ListBox getSubCategoryList() {
         return subCategoryList;
+    }
+
+    @Override
+    public ListBox getSelectedList() {
+        return selectedList;
+    }
+
+    @Override
+    public void addToSelectedList() {
+        int index = subCategoryList.getSelectedIndex();
+        String itemText = subCategoryList.getItemText(index);
+        if (!selectedListStrings.contains(itemText)) {
+            selectedList.addItem(subCategoryList.getItemText(index), subCategoryList.getValue(index));
+            selectedListStrings.add(itemText);
+        }
+    }
+
+    @Override
+    public void removeFromSelectedList() {
+        int index = selectedList.getSelectedIndex();
+        String item = selectedList.getItemText(index);
+        selectedListStrings.remove(item);
+        selectedList.removeItem(index);
+    }
+
+    @Override
+    public void createView() {
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
 }

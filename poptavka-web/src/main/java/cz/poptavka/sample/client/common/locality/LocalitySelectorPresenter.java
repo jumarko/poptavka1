@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,9 +30,15 @@ public class LocalitySelectorPresenter
 
         ListBox getTownshipList();
 
+        ListBox getSelectedList();
+
         String getSelectedItem(LocalityType type);
 
         void toggleLoader();
+
+        void addToSelectedList();
+
+        void removeFromSelectedList();
 
         Widget getWidgetView();
     }
@@ -55,12 +63,23 @@ public class LocalitySelectorPresenter
                 eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.TOWNSHIP));
             }
         });
+        view.getCityList().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                view.addToSelectedList();
+            }
+        });
+        view.getSelectedList().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                view.removeFromSelectedList();
+            }
+        });
     }
 
     public void onInitLocalityWidget(HasOneWidget embedWidget) {
-        LOGGER.info("launching Locality service RPC call ... ");
+        LOGGER.info("Initializing widget view, RPC call... ");
         eventBus.getLocalities();
-        LOGGER.info("Initializing widget view... ");
         embedWidget.setWidget(view.getWidgetView());
     }
 
@@ -96,6 +115,15 @@ public class LocalitySelectorPresenter
             }
 
         });
+    }
+
+    public void onGetSelectedLocalityCodes() {
+        ListBox tmp = view.getSelectedList();
+        ArrayList<String> codes = new ArrayList<String>();
+        for (int i = 0; i < tmp.getItemCount(); i++) {
+            codes.add(tmp.getValue(i));
+        }
+        eventBus.pushSelectedLocalityCodes(codes);
     }
 
 }

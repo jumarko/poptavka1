@@ -1,0 +1,51 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        .important {
+            font-weight: bold;
+        }
+    </ui:style>
+    <g:HTMLPanel>
+        <g:Grid>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">email</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="mailBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">heslo</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:PasswordTextBox ui:field="passBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML></g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:Button ui:field="loginBtn">Prihlasit</g:Button>
+                </g:customCell>
+            </g:row>
+        </g:Grid>
+        <g:Grid>
+            <g:row>
+                <g:customCell>
+                    <g:HTML visible="false" ui:field="errorMsg">
+                        <strong>Wrong username/password</strong>
+                    </g:HTML>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:Button ui:field="registerBtn">Register for FREE</g:Button>
+                </g:customCell>
+            </g:row>
+        </g:Grid>
+    </g:HTMLPanel>
+</ui:UiBinder>

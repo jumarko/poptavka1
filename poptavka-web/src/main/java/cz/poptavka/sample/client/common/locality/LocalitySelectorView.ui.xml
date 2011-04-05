@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+
     <g:HTMLPanel>
         <g:HorizontalPanel>
-            <g:ListBox ui:field='districtList'></g:ListBox>
-            <g:ListBox ui:field='townshipList'></g:ListBox>
-            <g:ListBox ui:field='cityList'></g:ListBox>
-            <g:HTML ui:field='loader' ><img src="images/loader.gif" /></g:HTML>
+            <g:ListBox ui:field='districtList' visibleItemCount='10' width="200"></g:ListBox>
+            <g:ListBox ui:field='townshipList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
+            <g:ListBox ui:field='cityList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
+            <g:HTML ui:field='loader' visible='false' styleName='{res.cssBase.commonListLoader}' />
         </g:HorizontalPanel>
+        <strong><ui:msg key="selected">Selected:</ui:msg></strong><br />
+        <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>
     </g:HTMLPanel>
 </ui:UiBinder>

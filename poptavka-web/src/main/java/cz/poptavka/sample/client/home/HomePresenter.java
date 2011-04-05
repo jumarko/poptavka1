@@ -21,6 +21,10 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public interface HomeInterface extends LazyView {
 
+        void setHomeToken(String token);
+
+        void setCreateDemandToken(String token);
+
         HasClickHandlers getCreateDemandBtn();
 
         void setContent(AnchorEnum anchor, Widget content, boolean clearOthers);
@@ -31,12 +35,10 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     }
 
     public void bindView() {
-        view.getCreateDemandBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                eventBus.initDemandCreation(true);
-            }
-        });
+        view.setHomeToken(getTokenGenerator().atHome());
+
+        view.setCreateDemandToken(getTokenGenerator().atCreateDemand(true));
+
         view.getDisplayDemandsBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
@@ -45,22 +47,14 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         });
     }
 
-    public void bindDisplay() {
-        LOGGER.info("bindDisplay");
-        view.getDisplayDemandsBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                LOGGER.info("clicked");
-                eventBus.start();
-            }
-        });
-    }
-
-    public void onInitHome() {
+    public void onAtHome() {
         LOGGER.info(" on init view ...");
         eventBus.setBodyHolderWidget(view.getWidgetView());
         eventBus.initCategoryDisplay(AnchorEnum.THIRD);
+    }
 
+    public void onDisplayMenu() {
+        eventBus.setBodyHolderWidget(view.getWidgetView());
     }
 
     /**

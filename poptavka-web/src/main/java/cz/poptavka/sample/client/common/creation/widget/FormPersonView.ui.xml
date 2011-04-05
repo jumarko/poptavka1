@@ -1,0 +1,81 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <g:HorizontalPanel >
+        <g:VerticalPanel>
+        <g:HTML wordWrap="true" horizontalAlignment="ALIGN_CENTER">Kontaktna osoba</g:HTML>
+        <g:Grid>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">Meno</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="nameBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">Priezvisko</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="surnameBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">Telefon</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="phoneBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">Email</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="mailBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">WWW</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="websiteBox"/>
+                </g:customCell>
+            </g:row>
+        </g:Grid>
+        </g:VerticalPanel>
+        <g:VerticalPanel>
+        <g:HTML wordWrap="true" horizontalAlignment="ALIGN_CENTER">Adresa </g:HTML>
+        <g:Grid>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">Ulica</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="streetBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">Mesto</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="cityBox"/>
+                </g:customCell>
+            </g:row>
+            <g:row>
+                <g:customCell>
+                    <g:HTML wordWrap="true">PSC</g:HTML>
+                </g:customCell>
+                <g:customCell>
+                    <g:TextBox ui:field="zipBox"/>
+                </g:customCell>
+            </g:row>
+        </g:Grid>
+        </g:VerticalPanel>
+    </g:HorizontalPanel>
+</ui:UiBinder>

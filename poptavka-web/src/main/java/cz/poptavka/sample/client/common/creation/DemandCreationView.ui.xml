@@ -1,133 +1,101 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation"
-    xmlns:cl="urn:import:cz.poptavka.sample.client.common.locality">
+    xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation.widget"
+    xmlns:cl="urn:import:cz.poptavka.sample.client.common.locality"
+    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
+    >
 
     <!-- injecting style resources -->
-    <ui:with field='style' type='cz.poptavka.sample.client.resources.StyleResource'/>
+    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <g:AbsolutePanel width="100%" height="460px" ui:field='absolutePanel'>
+    <ui:style>
+        .clickable {
+            cursor: pointer;
+        }
+        .clickable div:hover {
+            background-color: #EEE;
+        }
+        .hiddenField {
+            display: none;
+        }
+    </ui:style>
+
+    <g:AbsolutePanel width="600px" height="460px" ui:field='absolutePanel' styleName='{res.cssBase.solidBackground}'>
         <g:at left="0" top="0">
-            <g:VerticalPanel ui:field="part1">
-                <g:HTML wordWrap="true"><strong>#1 Demand Description</strong></g:HTML>
-                <g:Grid>
-                    <g:row>
-                        <g:cell>
-                            Title
-                        </g:cell>
-                        <g:customCell>
-                            <g:TextBox ui:field="titleBox"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML wordWrap="true">A1</g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:TextBox ui:field="paramOne"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML wordWrap="true">A2</g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:TextBox ui:field="paramTwo"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML wordWrap="true">A3</g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:TextBox ui:field="paramThree"/>
-                        </g:customCell>
-                    </g:row>
-                </g:Grid>
-                <cc:RichTextToolbarWidget ui:field="richText"/>
-                <g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
+        <!-- STEP ONE -->
+            <g:VerticalPanel ui:field="stepOne">
+                <g:HTML styleName='{style.clickable}'><div><strong>#1 Demand Description</strong></div></g:HTML>
+                <g:SimplePanel ui:field="basicInfoHolder"/>
                     <g:HTMLPanel>
-                    <g:Button ui:field="btnToSecond">Next</g:Button>
-                </g:HTMLPanel>
-                </g:Cell>
-            </g:VerticalPanel>
-        </g:at>
-        <g:at left="0" top="465">
-            <g:VerticalPanel height="440px" ui:field="part2" width="60%" styleName='{style.cssBase.solidBackground}'>
-                <g:HTML wordWrap="true"><strong>#2 Locality selection</strong></g:HTML>
-                <g:Label text="LocalitySeelctor"/>
-                <g:SimplePanel ui:field="localityHolder"/>
-                <!-- <cl:LocalitySelectorView ui:field="localityWidget"/> -->
-                <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
-                    <g:HTMLPanel>
+                        <div style="position:absolute; bottom: 0px; right: 0px;">
                         <g:HorizontalPanel>
-                            <g:Button ui:field="btnBackFirst">Back</g:Button>
-                            <g:Button ui:field="btnToThird">Next</g:Button>
+                            <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
+                                <g:Button ui:field="btnOneNext">Next</g:Button>
+                            </g:Cell>
                         </g:HorizontalPanel>
+                        </div>
                     </g:HTMLPanel>
-                </g:Cell>
             </g:VerticalPanel>
         </g:at>
+        <!-- STEP TWO -->
         <g:at left="0" top="465">
-            <g:VerticalPanel ui:field="part3" width="60%" height="420px" styleName='{style.cssBase.solidBackground}'>
-                <g:HTML wordWrap="true"><strong>#3 Category selection</strong></g:HTML>
-                <g:Label text="Category selector"/>
+            <g:VerticalPanel ui:field="stepTwo" width="600px" height="440px" styleName='{res.cssBase.solidBackground}'>
+                <g:HTML styleName='{style.clickable}'><div><strong>#2 Category selection</strong></div></g:HTML>
                 <g:SimplePanel ui:field="categoryHolder"/>
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                     <g:HorizontalPanel>
-                        <g:Button ui:field="btnBackSecond">Back</g:Button>
-                        <g:Button ui:field="btnToFourth">Next</g:Button>
+                        <g:Button ui:field="btnTwoBack">Back</g:Button>
+                        <g:Button ui:field="btnTwoNext">Next</g:Button>
                     </g:HorizontalPanel>
                 </g:HTMLPanel>
                 </g:Cell>
             </g:VerticalPanel>
         </g:at>
+        <!-- STEP THREE -->
         <g:at left="0" top="465">
-            <g:VerticalPanel ui:field="part4" width="60%" height="400px" styleName='{style.cssBase.solidBackground}'>
-                <g:HTML wordWrap="true"><strong>#4 Your Personal Details</strong></g:HTML>
-                <g:HorizontalPanel>
-                    <g:Label text="Already registered?"/>
-                    <g:Button>Sign Up</g:Button>
-                </g:HorizontalPanel>
-                <g:HTML wordWrap="true"><hr /></g:HTML>
-                <g:Label text="New User"/>
-                <g:Grid>
-                    <g:row>
-                        <g:customCell>
-                            <g:RadioButton name="new name" text="Person"/>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:RadioButton name="new name" text="Company"/>
-                        </g:customCell>
-                    </g:row>
-                </g:Grid>
-                <g:VerticalPanel>
-                    <g:Grid>
-                        <g:row>
-                            <g:customCell>
-                                <g:Label text="Name"/>
-                            </g:customCell>
-                            <g:customCell>
-                                <g:TextBox readOnly="true" ui:field="userNameBox"/>
-                            </g:customCell>
-                        </g:row>
-                        <g:row>
-                            <g:customCell>
-                                <g:Label text="Other"/>
-                            </g:customCell>
-                            <g:customCell>
-                                <g:TextBox readOnly="true" ui:field="userOtherBox"/>
-                            </g:customCell>
-                        </g:row>
-                    </g:Grid>
-                </g:VerticalPanel>
+            <g:VerticalPanel height="420px" ui:field="stepThree" width="600px" styleName='{res.cssBase.solidBackground}'>
+                <g:HTML styleName='{style.clickable}'><div><strong>#3 Locality selection</strong></div></g:HTML>
+                <g:SimplePanel ui:field="localityHolder"/>
+                <!-- <cl:LocalitySelectorView ui:field="localityWidget"/> -->
+                <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
+                    <g:HTMLPanel>
+                        <g:HorizontalPanel>
+                            <g:Button ui:field="btnThreeBack">Back</g:Button>
+                            <g:Button ui:field="btnThreeNext">Next</g:Button>
+                        </g:HorizontalPanel>
+                    </g:HTMLPanel>
+                </g:Cell>
+            </g:VerticalPanel>
+        </g:at>
+        <!-- STEP FOUR -->
+        <g:at left="0" top="465">
+            <g:VerticalPanel height="400px" width="600px" ui:field="stepFour" styleName='{res.cssBase.solidBackground}'>
+                <g:HTML styleName='{style.clickable}'><div><strong>#4 Rozsirene moznosti nastavenia poptavky</strong></div></g:HTML>
+                <g:SimplePanel ui:field="advInfoHolder"/>
+                <g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
+                    <g:HTMLPanel>
+                        <g:HorizontalPanel>
+                            <g:Button ui:field="btnFourBack">Back</g:Button>
+                            <g:Button ui:field="btnFourNext">Next</g:Button>
+                        </g:HorizontalPanel>
+                    </g:HTMLPanel>
+                </g:Cell>
+            </g:VerticalPanel>
+        </g:at>
+        <!-- STEP FIVE -->
+        <g:at left="0" top="465">
+            <g:VerticalPanel ui:field="stepFive" width="600px" height="380px" styleName='{res.cssBase.solidBackground}' >
+                <g:HTML styleName='{style.clickable}'><div><strong>#5 Prihlasenie do systemu / Registracia noveho uzivatela</strong></div></g:HTML>
+                <g:Cell verticalAlignment="ALIGN_TOP">
+                  <g:SimplePanel ui:field="userFormHolder"></g:SimplePanel>
+                </g:Cell>
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                     <g:HorizontalPanel>
-                        <g:Button ui:field="btnBackThird">Back</g:Button>
-                        <g:Button ui:field="btnCreate">Create</g:Button>
+                        <g:Button ui:field="btnFiveBack">Back</g:Button>
+                        <g:Button ui:field="btnFiveCreate">Create</g:Button>
                     </g:HorizontalPanel>
                 </g:HTMLPanel>
                 </g:Cell>

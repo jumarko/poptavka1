@@ -1,0 +1,71 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation.widget"
+    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+
+       <ui:style>
+        .clickable {
+            cursor: pointer;
+        }
+        .clickable div:hover {
+            background-color: #EEE;
+        }
+        .hiddenField {
+            display: none;
+        }
+    </ui:style>
+
+    <g:HTMLPanel>
+                <g:Grid>
+                    <g:row>
+                        <g:customCell>
+                            <g:Label text="Nazov"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:TextBox ui:field="titleBox"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:Label text="Popis"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <cc:RichTextToolbarWidget ui:field="descriptionBox"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:Label text="Cena"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:LongBox ui:field="priceBox"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:Label text="Termin dokoncenia"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <p1:DateBox ui:field="finishDateBox"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:Label text="Platnost poptavky"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <p1:DateBox ui:field="expireDateBox"/>
+                        </g:customCell>
+                    </g:row>
+                    <g:row>
+                        <g:customCell>
+                            <g:Label text="Priloha"/>
+                        </g:customCell>
+                        <g:customCell>
+                            <g:FileUpload/>
+                        </g:customCell>
+                    </g:row>
+                </g:Grid>
+    </g:HTMLPanel>
+</ui:UiBinder>

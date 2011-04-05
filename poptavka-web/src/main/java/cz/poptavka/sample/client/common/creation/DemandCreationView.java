@@ -8,17 +8,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DemandCreationView extends Composite implements DemandCreationPresenter.CreationViewInterface {
-
-
 
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
     interface CreationViewUiBinder extends UiBinder<Widget, DemandCreationView> {    }
@@ -26,7 +25,9 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     private static final Logger LOGGER = Logger.getLogger("    DemandCreationView");
 
     protected enum TopPanel {
-        SECOND, THIRD, FOURTH, REMOVE
+        SECOND, THIRD, FOURTH, FIFTH, REMOVE
+
+
     }
 
     @UiField AbsolutePanel absolutePanel;
@@ -36,80 +37,52 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     private static final int END_SECOND_VALUE = 20;
     private static final int END_THIRD_VALUE = 40;
     private static final int END_FOURTH_VALUE = 60;
+    private static final int END_FIFTH_VALUE = 80;
     private static final int ONE_SECOND = 1000;
-
-    private MoveAnimation anim;
 
     //initial topPanel
     private ArrayList<VerticalPanel> topPanel = new ArrayList<VerticalPanel>();
     private int endValue = 0;
 
-    @UiField VerticalPanel part1;
-    @UiField TextBox titleBox;
-    @UiField TextBox paramOne;
-    @UiField TextBox paramTwo;
-    @UiField TextBox paramThree;
-    @UiField(provided = true) RichTextToolbarWidget richText;
-    //place for uploadFiles button
-    //place for addNextAttachment button
-    @UiField Button btnToSecond;
-
-    @UiField VerticalPanel part2;
-    @UiField SimplePanel localityHolder;
-    @UiField Button btnBackFirst;
-    @UiField Button btnToThird;
-
-    @UiField VerticalPanel part3;
+    //step1
+    @UiField VerticalPanel stepOne;
+    @UiField SimplePanel basicInfoHolder;
+    @UiField Button btnOneNext;
+    //step2
+    @UiField VerticalPanel stepTwo;
     @UiField SimplePanel categoryHolder;
-    @UiField Button btnBackSecond;
-    @UiField Button btnToFourth;
+    @UiField Button btnTwoBack, btnTwoNext;
+    //step3
+    @UiField VerticalPanel stepThree;
+    @UiField SimplePanel localityHolder;
+    @UiField Button btnThreeBack, btnThreeNext;
+    //step4
+    @UiField VerticalPanel stepFour;
+    @UiField SimplePanel advInfoHolder;
+    @UiField Button btnFourBack, btnFourNext;
+    //step5
+    @UiField VerticalPanel stepFive;
+    @UiField SimplePanel userFormHolder;
 
-    @UiField VerticalPanel part4;
-    @UiField TextBox userNameBox;
-    @UiField TextBox userOtherBox;
-    @UiField Button btnBackThird;
-    @UiField Button btnCreate;
+    @UiField Button btnFiveBack, btnFiveCreate;
+
+
 
     public void createView() {
         LOGGER.info("initializing part: Rich Text Toolbar ... ");
-        richText = new RichTextToolbarWidget();
+//        description = new RichTextToolbarWidget();
         LOGGER.info("initializing part: COMPLETE widget ... ");
         initWidget(uiBinder.createAndBindUi(this));
-
-        anim = new MoveAnimation();
+        stepFive.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
+//        stepOne.add(new FormDemandBasicView());
+//        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
+//        finishDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+//        expireDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
     }
 
     @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    public HasClickHandlers firstNextButton() {
-        return btnToSecond;
-    }
-
-    public HasClickHandlers secondNextButton() {
-        return btnToThird;
-    }
-
-    public HasClickHandlers thirdNextButton() {
-        return btnToFourth;
-    }
-
-    public HasClickHandlers secondBackButton() {
-        return btnBackFirst;
-    }
-
-    public HasClickHandlers thirdBackButton() {
-        return btnBackSecond;
-    }
-
-    public HasClickHandlers fourthBackButton() {
-        return btnBackThird;
-    }
-
-    public HasClickHandlers createDemandButton() {
-        return btnCreate;
     }
 
     /**
@@ -121,19 +94,23 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
         boolean showNext = true;
         switch (newPanel) {
             case SECOND:
-                topPanel.add(part2);
+                topPanel.add(stepTwo);
                 endValue = END_SECOND_VALUE;
                 break;
             case THIRD:
-                topPanel.add(part3);
+                topPanel.add(stepThree);
                 endValue = END_THIRD_VALUE;
                 break;
             case FOURTH:
-                topPanel.add(part4);
+                topPanel.add(stepFour);
                 endValue = END_FOURTH_VALUE;
                 break;
+            case FIFTH:
+                topPanel.add(stepFive);
+                endValue = END_FIFTH_VALUE;
+                break;
             case REMOVE:
-                anim.setAndRun(endValue, START_VALUE, topPanel.remove(topPanel.size() - 1), ONE_SECOND);
+                new MoveAnimation().setAndRun(endValue, START_VALUE, topPanel.remove(topPanel.size() - 1), ONE_SECOND);
                 //because it's the nominal value of space
                 endValue -= END_SECOND_VALUE;
                 showNext = false;
@@ -142,7 +119,7 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
                 break;
         }
         if (showNext) {
-            anim.setAndRun(START_VALUE, endValue, topPanel.get(topPanel.size() - 1), ONE_SECOND);
+            new MoveAnimation().setAndRun(START_VALUE, endValue, topPanel.get(topPanel.size() - 1), ONE_SECOND);
         }
     }
 
@@ -156,6 +133,15 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
         return categoryHolder;
     }
 
+    @Override
+    public SimplePanel getBasicInfoHolder() {
+        return basicInfoHolder;
+    }
+
+    @Override
+    public SimplePanel getAdvInfoHolder() {
+        return advInfoHolder;
+    }
     /**
      * For block animation (show/hide) purpose.
      *
@@ -184,6 +170,79 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
             double value = startY - (progress * distance);
             absolutePanel.setWidgetPosition(object, 0, (int) value);
         }
+    }
+
+    @Override
+    public HasClickHandlers oneNextButton() {
+        return btnOneNext;
+    }
+
+    @Override
+    public HasClickHandlers twoBackButton() {
+        return btnTwoBack;
+    }
+
+    @Override
+    public HasClickHandlers twoNextButton() {
+        return btnTwoNext;
+    }
+
+    @Override
+    public HasClickHandlers threeBackButton() {
+        return btnThreeBack;
+    }
+
+    @Override
+    public HasClickHandlers threeNextButton() {
+        return btnThreeNext;
+    }
+
+    @Override
+    public HasClickHandlers fourBackButton() {
+        return btnFourBack;
+    }
+
+    @Override
+    public HasClickHandlers fourNextButton() {
+        return btnFourNext;
+    }
+
+    @Override
+    public HasClickHandlers fiveBackButton() {
+        return btnFiveBack;
+    }
+
+    @Override
+    public HasClickHandlers fiveCreateButton() {
+        return btnFiveCreate;
+    }
+
+    @Override
+    public VerticalPanel getVerticalPanel() {
+        return stepTwo;
+    }
+
+    @Override
+    public void cascadeTogglePanel(final TopPanel second) {
+        int panelOnTop = topPanel.size();
+        LOGGER.fine("top panel is " + panelOnTop + " and ordinal is: " + second.ordinal());
+        if ((second.ordinal() + 1) < panelOnTop) {
+            toggleVisiblePanel(TopPanel.REMOVE);
+            Timer timer = new Timer() {
+
+                @Override
+                public void run() {
+                    cascadeTogglePanel(second);
+                }
+            };
+            timer.schedule(100);
+        }
+
+    }
+
+    @Override
+    public SimplePanel getUserFormHolder() {
+        return userFormHolder;
     }
 
 }

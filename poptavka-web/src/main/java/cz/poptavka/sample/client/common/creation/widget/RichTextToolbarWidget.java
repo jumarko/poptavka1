@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.common.creation;
+package cz.poptavka.sample.client.common.creation.widget;
 
 import java.util.HashMap;
 
@@ -11,10 +11,13 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
@@ -27,7 +30,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.resources.richtext.RichTextStrings;
 
-public class RichTextToolbarWidget extends Composite {
+public class RichTextToolbarWidget extends Composite implements HasValue {
     /** Local CONSTANTS **/
     //ImageMap and CSS related
     private static final String ICONS = "images/rich_text_icons.gif";
@@ -486,7 +489,7 @@ public class RichTextToolbarWidget extends Composite {
     }
 
     /** Method to return formatted text. **/
-    public String getText() {
+    public String getValue() {
         return styleText.getHTML();
     }
 
@@ -494,5 +497,23 @@ public class RichTextToolbarWidget extends Composite {
     public void setAreaSize(String width, String height) {
         styleText.setSize(width, height);
     }
+
+    public void setValue(Object text) {
+        styleText.setHTML((String) text);
+    }
+
+    @Override
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler arg0) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void setValue(Object arg0, boolean arg1) {
+        // TODO Auto-generated method stub
+
+    }
+
+
 
 }

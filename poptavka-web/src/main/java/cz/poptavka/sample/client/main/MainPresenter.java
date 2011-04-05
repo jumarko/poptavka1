@@ -30,7 +30,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         LOGGER.info("    > Login Module");
         eventBus.initLogin();
         LOGGER.info("    > Home Module");
-        eventBus.initHome();
+        eventBus.atHome();
 //        LOGGER.info("    > User Module");
 //        eventBus.initUser();
     }

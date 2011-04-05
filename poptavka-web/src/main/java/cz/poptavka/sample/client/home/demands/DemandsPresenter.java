@@ -131,7 +131,7 @@ public class DemandsPresenter extends
         });
     }
 
-    void onDisplayDemandsByCategory(Category category) {
+    public void onDisplayDemandsByCategory(Category category) {
         Category[] categories = {category};
         demandService.getDemands(categories, new AsyncCallback<Set<Demand>>() {
 

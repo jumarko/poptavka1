@@ -13,7 +13,7 @@
     </modules>
 
     <properties>
-        <gwt.version>2.1.0</gwt.version>
+        <gwt.version>2.1.1</gwt.version>
         <spring.version>3.0.5.RELEASE</spring.version>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>

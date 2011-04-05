@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.common.locality;
 
+import java.util.HashSet;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -19,7 +21,7 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     interface LocalitySelectorUiBinder extends UiBinder<Widget, LocalitySelectorView> {
     }
 
-    private static final int VISIBLE_COUNT = 10;
+    private HashSet<String> selectedListStrings = new HashSet<String>();
 
     @UiField
     ListBox districtList;
@@ -30,19 +32,11 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     @UiField
     HTML loader;
 
+    @UiField ListBox selectedList;
+
     public LocalitySelectorView() {
         initWidget(uiBinder.createAndBindUi(this));
-
-        loader.setVisible(false);
-
-        districtList.setVisibleItemCount(VISIBLE_COUNT);
-        townshipList.setVisible(false);
-        townshipList.setVisibleItemCount(VISIBLE_COUNT);
-        cityList.setVisible(false);
-        cityList.setVisibleItemCount(VISIBLE_COUNT);
     }
-
-
 
     @Override
     public Widget getWidgetView() {
@@ -64,6 +58,10 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
         return cityList;
     }
 
+    public void toggleLoader() {
+        loader.setVisible(!loader.isVisible());
+    }
+
     @Override
     public String getSelectedItem(LocalityType type) {
         switch (type) {
@@ -76,7 +74,25 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
         }
     }
 
-    public void toggleLoader() {
-        loader.setVisible(!loader.isVisible());
+    public void addToSelectedList() {
+        int index = cityList.getSelectedIndex();
+        String itemText = cityList.getItemText(index);
+        if (!selectedListStrings.contains(itemText)) {
+            selectedList.addItem(cityList.getItemText(index), cityList.getValue(index));
+            selectedListStrings.add(itemText);
+        }
+    }
+
+    @Override
+    public ListBox getSelectedList() {
+        return selectedList;
+    }
+
+    @Override
+    public void removeFromSelectedList() {
+        int index = selectedList.getSelectedIndex();
+        String item = selectedList.getItemText(index);
+        selectedListStrings.remove(item);
+        selectedList.removeItem(index);
     }
 }

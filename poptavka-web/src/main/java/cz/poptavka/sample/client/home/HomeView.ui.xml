@@ -4,6 +4,8 @@
     <g:HTMLPanel ui:field="container">
         <!-- menu -->
         <g:HorizontalPanel>
+            <g:Hyperlink ui:field="linkHome">Home</g:Hyperlink>
+            <g:Hyperlink ui:field="linkCreateDemand">Create Demand</g:Hyperlink>
             <g:Button ui:field="btnCreateDemand">Create Demand</g:Button>
             <g:Button ui:field="displayDemands">Display Demands</g:Button>
             <g:Button ui:field="button3">Button 3</g:Button>

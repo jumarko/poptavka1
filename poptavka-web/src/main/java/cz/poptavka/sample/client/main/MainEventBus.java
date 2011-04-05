@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.main;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -55,7 +56,7 @@ public interface MainEventBus extends EventBus {
      * Init home module (unlogged user).
      */
     @Event(modulesToLoad = HomeModule.class)
-    void initHome();
+    void atHome();
 
     /**
      * Init user module (logged user).
@@ -67,7 +68,12 @@ public interface MainEventBus extends EventBus {
 //    void setUserWidget(AnchorEnum anchor, Widget content, boolean clearOthers);
 
     @Event(modulesToLoad = CommonModule.class)
-    void initDemandCreation(boolean homeSection);
+    void atCreateDemand(boolean homeSection);
+
+    //working on - delete after Beho 30.3.
+    @Event(modulesToLoad = CommonModule.class)
+    void initCategoryWidget(HasOneWidget embedToWidget);
+//    void initLocalityWidget(HasOneWidget embedToWidget);
 
     /**
      * Sets widget to View's body section. Body section can hold one widget only.

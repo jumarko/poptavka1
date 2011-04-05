@@ -1,14 +1,15 @@
 package cz.poptavka.sample.server.service.client;
 
-import cz.poptavka.sample.client.service.demand.ClientRPCService;
-import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
-import cz.poptavka.sample.service.user.ClientService;
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import cz.poptavka.sample.client.service.demand.ClientRPCService;
+import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -16,10 +17,11 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
 
     @Override
-    public List<Client> getAllClients() {
+    public ArrayList<ClientDetail> getAllClients() {
         // TODO Auto-generated method stub
         LOGGER.info("Getting fake clients");
-        return clientService.getAll();
+//        return clientService.getAll();
+        return null;
     }
 
 
@@ -30,6 +32,13 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+
+    @Override
+    public void sendClientId(long id) {
+        // TODO Auto-generated method stub
+
     }
 
 }

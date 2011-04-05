@@ -1,14 +1,16 @@
 package cz.poptavka.sample.client.service.demand;
 
+import java.util.ArrayList;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import cz.poptavka.sample.domain.user.Client;
 
-import java.util.List;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 
 
 @RemoteServiceRelativePath("service/cs")
 public interface ClientRPCService extends RemoteService {
-    List<Client> getAllClients();
+    ArrayList<ClientDetail> getAllClients();
 
+    void sendClientId(long id);
 }

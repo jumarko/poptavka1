@@ -53,11 +53,11 @@ public class CategoryDisplayPresenter
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                LOGGER.info("Filling list...");
+//                LOGGER.info("Filling list...");
                 StringBuilder htmlString = new StringBuilder();
                 for (int i = 0; i < list.size(); i++) {
                     CategoryDetail detail = list.get(i);
-                    LOGGER.info("detail" + detail.getName());
+//                    LOGGER.info("detail" + detail.getName());
                     Anchor categoryAnchor = new Anchor();
                     categoryAnchor.setText(detail.getName());
                     Label categoryLabel = new Label();
@@ -65,7 +65,7 @@ public class CategoryDisplayPresenter
                     htmlString.append("<a href=" + detail.getName() + ">" + detail.getName() + "</a>"
                             + detail.getDemands());
                 }
-                LOGGER.info("List filled");
+//                LOGGER.info("List filled");
                 categoryView.setHTML(htmlString.toString());
             }
         });

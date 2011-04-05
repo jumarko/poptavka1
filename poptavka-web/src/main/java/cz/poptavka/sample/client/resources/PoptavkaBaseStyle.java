@@ -42,4 +42,7 @@ public interface PoptavkaBaseStyle extends CssResource {
 
     @ClassName("solid-back")
     String solidBackground();
+
+    @ClassName("common-list-loader")
+    String commonListLoader();
 }

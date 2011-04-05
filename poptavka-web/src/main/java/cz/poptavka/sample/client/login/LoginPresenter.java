@@ -27,7 +27,7 @@ public class LoginPresenter extends LazyPresenter<LoginPresenter.LoginInterface,
         view.getLoginButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent arg0) {
                 if (loggedIn) {
-                    eventBus.initHome();
+                    eventBus.atHome();
                     view.getLoginButton().setText("Log In");
                 } else {
                     eventBus.initUser();

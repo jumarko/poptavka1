@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.main;
 
+import java.util.logging.Logger;
+
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -9,21 +11,26 @@ import com.mvp4g.client.history.HistoryConverter;
  *
  * @author Beho
  */
-//mvp4g 1.3.0
-@History(type = HistoryConverterType.NONE)
 
-//mvp4g 1.2.0
-//@History(convertParams = false)
+@History(type = HistoryConverterType.NONE)
 public class MainHistoryConverter implements HistoryConverter<MainEventBus> {
 
+    private static final Logger LOGGER = Logger.getLogger(MainHistoryConverter.class.getName());
+
     @Override
-    public void convertFromToken(String eventType, String param, MainEventBus eventBus) {
-        //TODO
+    public void convertFromToken(String historyName, String param,
+            MainEventBus eventBus) {
+        LOGGER.fine("historyName: " + historyName);
+        LOGGER.fine("param: " + param);
     }
 
     @Override
     public boolean isCrawlable() {
         return true;
     }
+
+
+
+
 
 }

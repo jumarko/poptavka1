@@ -23,8 +23,12 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 public interface HomeEventBus extends EventBus {
 
     /** init method. **/
-    @Event(handlers = HomePresenter.class)
-    void initHome();
+    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
+    String atHome();
+
+    /** init method. **/
+    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
+    void displayMenu();
 
     /**
      * Display HomeView - parent Widget for public section.
@@ -51,9 +55,6 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void initCategoryDisplay(AnchorEnum anchor);
 
-    @Event(forwardToParent = true)
-    void initDemandCreation(boolean homeSection);
-
     @Event(modulesToLoad = DemandsModule.class)
     void start();
 
@@ -62,5 +63,8 @@ public interface HomeEventBus extends EventBus {
 
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
+
+    @Event(forwardToParent = true, historyConverter = HomeHistoryConverter.class)
+    String atCreateDemand(boolean homeSection);
 
 }

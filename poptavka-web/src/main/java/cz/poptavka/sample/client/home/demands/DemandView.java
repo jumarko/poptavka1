@@ -53,7 +53,10 @@ public class DemandView extends Composite {
 
     @UiField(provided = true) CellList<Object> cellList = new CellList<Object>(new AbstractCell<Object>() {
 
-        public void render(Object value, Object key, SafeHtmlBuilder sb) {
+        @Override
+        public void render(com.google.gwt.cell.client.Cell.Context arg0,
+                Object arg1, SafeHtmlBuilder arg2) {
+            // TODO Auto-generated method stub
 
         }
 

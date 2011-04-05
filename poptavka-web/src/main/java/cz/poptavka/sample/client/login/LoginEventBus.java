@@ -15,7 +15,7 @@ public interface LoginEventBus extends EventBus {
     void initLogin();
 
     @Event(forwardToParent = true)
-    void initHome();
+    void atHome();
 
     @Event(forwardToParent = true)
     void initUser();
