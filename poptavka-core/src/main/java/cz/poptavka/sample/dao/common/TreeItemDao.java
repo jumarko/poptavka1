@@ -38,4 +38,12 @@ public interface TreeItemDao {
      */
     <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<? extends TreeItem> treeItems,
                                                                   Class<T> treeItemClass);
+
+    /**
+     * Get IDs of all leaves in hierarchical structure.
+     * A node in a tree is considered to be a leaf if there is no other node which has parent reference to the node.
+     *
+     * @return
+     */
+    List<Long> getAllLeavesIds(Class<? extends TreeItem> treeItemClazz);
 }

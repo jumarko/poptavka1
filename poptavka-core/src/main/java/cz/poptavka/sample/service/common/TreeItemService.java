@@ -21,4 +21,8 @@ public interface TreeItemService {
      * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildItemsIdsRecursively(java.util.List, Class)
      */
     <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems, Class<T> treeItemClass);
+
+
+    /** @see cz.poptavka.sample.dao.common.TreeItemDao#getAllLeavesIds() */
+    List<Long> getAllLeavesIds(Class<? extends TreeItem> treeItemClazz);
 }

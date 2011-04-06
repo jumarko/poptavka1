@@ -27,9 +27,17 @@ public class TreeItemServiceImpl implements TreeItemService {
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems,
                                                                          Class<T> treeItemClass) {
         return this.treeItemDao.getAllChildItemsIdsRecursively(treeItems, treeItemClass);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Long> getAllLeavesIds(Class<? extends TreeItem> treeItemClazz) {
+        return treeItemDao.getAllLeavesIds(treeItemClazz);
     }
 }

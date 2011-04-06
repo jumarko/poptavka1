@@ -54,6 +54,13 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
         return getTreeItemsIds(allTreeItemsCriteria.list());
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public List<Long> getAllLeavesIds(Class<? extends TreeItem> treeItemClazz) {
+        final String hql = "select t.id from " + treeItemClazz.getSimpleName() + " t where "
+                         + "   not exists (from " + treeItemClazz.getSimpleName() + " t2 where t2.parent = t)";
+        return createQuery(hql).getResultList();
+    }
 
     //------------------------------------------- HELPER METHODS -------------------------------------------------------
     private Set<Long> getTreeItemsIds(List<TreeItem> allTreeItems) {
