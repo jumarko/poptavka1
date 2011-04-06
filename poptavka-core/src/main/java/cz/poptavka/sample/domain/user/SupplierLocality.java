@@ -19,12 +19,26 @@ import javax.persistence.Table;
         @NamedQuery(name = "getSuppliersForLocalities", query = "select supplierLocality.supplier"
                 + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE),
         @NamedQuery(name = "getSuppliersCountForLocalities", query = "select count(distinct supplierLocality.supplier)"
-                + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE)
+                + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE),
+        @NamedQuery(name = "getSuppliersCountForLocality", query = "select count(distinct supplierLocality.supplier)"
+                + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_QUICK_FW_CLAUSE),
+        /**
+         * Get count of all suppliers that belongs directly to the specified locality. No suppliers belonging to
+         * any sublocality are included!
+         */
+        @NamedQuery(name = "getSuppliersCountForLocalityWithoutChildren",
+                query = "select count(supplierLocality.supplier) "
+                + " from SupplierLocality supplierLocality where supplierLocality.locality = :locality")
+
 })
 public class SupplierLocality extends DomainObject {
 
     static final String SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE = " from SupplierLocality supplierLocality"
                 + " where supplierLocality.locality.id in (:localitiesIds)";
+
+    static final String SUPPLIERS_FOR_LOCALITIES_QUICK_FW_CLAUSE = " from SupplierLocality supplierLocality"
+                + " where supplierLocality.locality.id = :localityId "
+            + "or (supplierLocality.locality.leftBound between :leftBound and :rightBound)";
 
     @ManyToOne
     private Supplier supplier;

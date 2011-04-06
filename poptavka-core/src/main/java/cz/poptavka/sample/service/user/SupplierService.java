@@ -39,6 +39,24 @@ public interface SupplierService {
 
 
     /**
+     * Similar to the {@link #getSuppliersCount(cz.poptavka.sample.domain.address.Locality...)}
+     * but restricted to the one locality and with better performance.
+     *
+     * @param locality
+     * @return
+     */
+    long getSuppliersCountQuick(Locality locality);
+
+
+    /**
+     *  @see cz.poptavka.sample.dao.user.SupplierDao#
+     *  getSuppliersCountWithoutChildren(cz.poptavka.sample.domain.address.Locality)
+     */
+    long getSuppliersCountWithoutChildren(Locality locality);
+
+
+
+    /**
      * Load all suppliers associated to the given category (-ies).
      *
      * @param categories
@@ -57,4 +75,21 @@ public interface SupplierService {
      * @return number of suppliers related to the <code>category</code>(-ies).
      */
     long getSuppliersCount(Category... categories);
+
+
+    /**
+     * Similar to the {@link #getSuppliersCount(cz.poptavka.sample.domain.demand.Category...)}
+     * but restricted to the one category and with better performance.
+     *
+     * @param category
+     * @return
+     */
+    long getSuppliersCountQuick(Category category);
+
+
+    /**
+     *  @see cz.poptavka.sample.dao.user.SupplierDao#
+     *  getSuppliersCountWithoutChildren(cz.poptavka.sample.domain.demand.Category)
+     */
+    long getSuppliersCountWithoutChildren(Category category);
 }

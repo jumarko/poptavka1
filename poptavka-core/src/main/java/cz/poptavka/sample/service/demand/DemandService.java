@@ -42,6 +42,20 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
 
 
     /**
+     * Similar to the {@link #getDemandsCount(cz.poptavka.sample.domain.address.Locality...)}
+     * but with better performance.
+     * This includes restriction to the one locality.
+     *
+     * @param locality
+     * @return
+     */
+    long getDemandsCountQuick(Locality locality);
+
+     /** @see DemandDao#getDemandsCountWithoutChildren(cz.poptavka.sample.domain.address.Locality)  */
+    long getDemandsCountWithoutChildren(Locality locality);
+
+
+    /**
      * Load all demands associated to the given category (-ies).
      *
      * @param categories
@@ -61,5 +75,17 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     long getDemandsCount(Category... categories);
 
+     /**
+     * Similar to the {@link #getDemandsCount(cz.poptavka.sample.domain.demand.Category...)}
+     * but with better performance.
+     * This includes restriction to the one category.
+     *
+     * @param category
+     * @return
+     */
+    long getDemandsCountQuick(Category category);
 
+
+    /** @see DemandDao#getDemandsCountWithoutChildren(cz.poptavka.sample.domain.demand.Category) */
+    long getDemandsCountWithoutChildren(Category category);
 }

@@ -44,6 +44,19 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return this.demandDao.getDemandsCount(localities);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountQuick(Locality locality) {
+        return this.demandDao.getDemandsCountQuick(locality);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountWithoutChildren(Locality locality) {
+        return this.demandDao.getDemandsCountWithoutChildren(locality);
+    }
+
     /** {@inheritDoc} */
     @Override
     public Set<Demand> getDemands(Category... categories) {
@@ -59,6 +72,18 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Cacheable(cacheName = "cache5min")
     public long getDemandsCount(Category... categories) {
         return this.demandDao.getDemandsCount(categories);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountQuick(Category category) {
+        return this.demandDao.getDemandsCountQuick(category);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountWithoutChildren(Category category) {
+        return this.demandDao.getDemandsCountWithoutChildren(category);
     }
 
     //--------------------- GETTERS AND SETTERS ------------------------------------------------------------------------

@@ -54,6 +54,22 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     long getDemandsCount(Locality... localities);
 
+    /**
+     * Similar to the {@link #getDemandsCount(cz.poptavka.sample.domain.address.Locality...)}
+     * but with better performance.
+     * This includes restriction to the one locality.
+     *
+     * @param locality
+     * @return
+     */
+    long getDemandsCountQuick(Locality locality);
+
+    /**
+     * Get count of all demands that belongs directly to the specified locality. No demands belonging to
+     * any sublocality are included!
+     */
+    long getDemandsCountWithoutChildren(Locality locality);
+
 
     /**
      * Load all demands for given categories. This methods works recursively, that means that really ALL demands
@@ -75,4 +91,21 @@ public interface DemandDao extends GenericDao<Demand> {
      * @see #getDemands(cz.poptavka.sample.domain.address.Locality...)
      */
     long getDemandsCount(Category... categories);
+
+    /**
+     * Similar to the {@link #getDemandsCount(cz.poptavka.sample.domain.demand.Category...)}
+     * but with better performance.
+     * This includes restriction to the one category.
+     *
+     * @param category
+     * @return
+     */
+    long getDemandsCountQuick(Category category);
+
+    /**
+     * Get count of all demands that belongs directly to the specified category. No demands belonging to
+     * any subcategory are included!
+     */
+    long getDemandsCountWithoutChildren(Category category);
+
 }

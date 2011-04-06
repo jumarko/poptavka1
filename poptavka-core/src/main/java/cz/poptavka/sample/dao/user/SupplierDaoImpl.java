@@ -31,6 +31,27 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         return allSuppliersCount;
     }
 
+
+    @Override
+    public long getSuppliersCountQuick(Category category) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoryId", category.getId());
+        params.put("leftBound", category.getLeftBound());
+        params.put("rightBound", category.getRightBound());
+        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForCategory", params);
+        return allSuppliersCount;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSuppliersCountWithoutChildren(Category category) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("category", category);
+        return (Long) runNamedQueryForSingleResult("getSuppliersCountForCategoryWithoutChildren", params);
+    }
+
+
     @Override
     public Set<Supplier> getSuppliers(Category... categories) {
         if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
@@ -51,6 +72,27 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForLocalities", params);
         return allSuppliersCount;
     }
+
+    @Override
+    public long getSuppliersCountQuick(Locality locality) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localityId", locality.getId());
+        params.put("leftBound", locality.getLeftBound());
+        params.put("rightBound", locality.getRightBound());
+        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForLocality",
+                params);
+        return allSuppliersCount;
+    }
+
+
+     /** {@inheritDoc} */
+    @Override
+    public long getSuppliersCountWithoutChildren(Locality locality) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("locality", locality);
+        return (Long) runNamedQueryForSingleResult("getSuppliersCountForLocalityWithoutChildren", params);
+    }
+
 
 
     @Override

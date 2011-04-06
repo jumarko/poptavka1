@@ -55,8 +55,26 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return allDemandsCount;
     }
 
-
      /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountQuick(Locality locality) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localityId", locality.getId());
+        params.put("leftBound", locality.getLeftBound());
+        params.put("rightBound", locality.getRightBound());
+        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForLocality", params);
+        return allDemandsCount;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountWithoutChildren(Locality locality) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("locality", locality);
+        return (Long) runNamedQueryForSingleResult("getDemandsCountForLocalityWithoutChildren", params);
+    }
+
+    /** {@inheritDoc} */
     @Override
     public Set<Demand> getDemands(Category... categories) {
         if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
@@ -79,6 +97,25 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return allDemandsCount;
     }
 
+     /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountQuick(Category category) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoryId", category.getId());
+        params.put("leftBound", category.getLeftBound());
+        params.put("rightBound", category.getRightBound());
+        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForCategory", params);
+        return allDemandsCount;
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public long getDemandsCountWithoutChildren(Category category) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("category", category);
+        return (Long) runNamedQueryForSingleResult("getDemandsCountForCategoryWithoutChildren", params);
+    }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
     public void setTreeItemDao(TreeItemDao treeItemDao) {

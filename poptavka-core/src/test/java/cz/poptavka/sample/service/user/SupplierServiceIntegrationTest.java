@@ -56,6 +56,20 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
+    @Test
+    public void testSuppliersCountWithoutChildrenByLocality() {
+        checkSuppliersCountWithoutChildrenByLocality("loc1", 1);
+        checkSuppliersCountWithoutChildrenByLocality("loc2", 1);
+        checkSuppliersCountWithoutChildrenByLocality("loc11", 1);
+        checkSuppliersCountWithoutChildrenByLocality("loc21", 1);
+        checkSuppliersCountWithoutChildrenByLocality("loc213", 1);
+
+        checkSuppliersCountWithoutChildrenByLocality("CZ", 0);
+        checkSuppliersCountWithoutChildrenByLocality("loc211", 0);
+        checkSuppliersCountWithoutChildrenByLocality("loc1211", 0);
+        checkSuppliersCountWithoutChildrenByLocality("loc12", 0);
+    }
+
 
     @Test
     public void testGetSuppliersForCategories() {
@@ -74,6 +88,22 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         checkSuppliersCountForCategories(1, "cat113");
         checkSuppliersCountForCategories(1, "cat312");
         checkSuppliersCountForCategories(0, "cat2");
+    }
+
+
+    @Test
+    public void testSuppliersCountWithoutChildrenByCategory() {
+        checkSuppliersCountWithoutChildrenByCategory("cat3", 1);
+        checkSuppliersCountWithoutChildrenByCategory("cat11", 1);
+        checkSuppliersCountWithoutChildrenByCategory("cat113", 1);
+        checkSuppliersCountWithoutChildrenByCategory("cat312", 1);
+
+        checkSuppliersCountWithoutChildrenByCategory("cat1", 0);
+        checkSuppliersCountWithoutChildrenByCategory("cat2", 0);
+        checkSuppliersCountWithoutChildrenByCategory("cat22", 0);
+        checkSuppliersCountWithoutChildrenByCategory("cat111", 0);
+        checkSuppliersCountWithoutChildrenByCategory("cat1131", 0);
+        checkSuppliersCountWithoutChildrenByCategory("cat1132", 0);
     }
 
 
@@ -97,6 +127,15 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         return localities;
     }
 
+
+    private void checkSuppliersCountWithoutChildrenByLocality(String localityCode, int expectedCount) {
+        final String message = "Locality code [" + localityCode + "]";
+        Assert.assertEquals(message,
+                expectedCount,
+                this.supplierService.getSuppliersCountWithoutChildren(this.localityService.getLocality(localityCode)));
+    }
+
+
     private void checkSuppliersForCategories(int expectedCount, String... categoriesCodes) {
         final Set<Supplier> suppliers = this.supplierService.getSuppliers(getCategories(categoriesCodes));
         Assert.assertNotNull(suppliers);
@@ -106,6 +145,13 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
     private void checkSuppliersCountForCategories(int expectedCount, String... categoriesCodes) {
         Assert.assertEquals(expectedCount,
                 this.supplierService.getSuppliersCount(getCategories(categoriesCodes)));
+    }
+
+    private void checkSuppliersCountWithoutChildrenByCategory(String categoryCode, int expectedCount) {
+        final String message = "Category code [" + categoryCode + "]";
+        Assert.assertEquals(message,
+                expectedCount,
+                this.supplierService.getSuppliersCountWithoutChildren(this.categoryService.getCategory(categoryCode)));
     }
 
     private Category[] getCategories(String[] categoriesCodes) {

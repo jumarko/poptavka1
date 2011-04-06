@@ -19,12 +19,26 @@ import javax.persistence.Table;
         @NamedQuery(name = "getDemandsForLocalities", query = "select demandLocality.demand"
                         + DemandLocality.DEMANDS_FOR_LOCALITIES_FW_CLAUSE),
         @NamedQuery(name = "getDemandsCountForLocalities", query = "select count(distinct demandLocality.demand)"
-                        + DemandLocality.DEMANDS_FOR_LOCALITIES_FW_CLAUSE)
+                        + DemandLocality.DEMANDS_FOR_LOCALITIES_FW_CLAUSE),
+        @NamedQuery(name = "getDemandsCountForLocality", query = "select count(distinct demandLocality.demand)"
+                + DemandLocality.DEMANDS_FOR_LOCALITIES_QUICK_FW_CLAUSE),
+        /**
+         * Get count of all demands that belongs directly to the specified locality. No demands belonging to
+         * any sublocality are included!
+         */
+        @NamedQuery(name = "getDemandsCountForLocalityWithoutChildren", query = "select count(demandLocality.demand) "
+                + " from DemandLocality demandLocality where demandLocality.locality = :locality")
 })
 public class DemandLocality extends DomainObject {
 
     static final String DEMANDS_FOR_LOCALITIES_FW_CLAUSE = " from DemandLocality demandLocality"
-                        + " where demandLocality.locality.id in (:localitiesIds)";
+            + " where demandLocality.locality.id in (:localitiesIds)";
+
+    static final String DEMANDS_FOR_LOCALITIES_QUICK_FW_CLAUSE = " from DemandLocality demandLocality"
+            + " where demandLocality.locality.id = :localityId "
+            + "or (demandLocality.locality.leftBound between :leftBound and :rightBound)";
+
+
 
     @ManyToOne
     private Demand demand;

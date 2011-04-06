@@ -32,6 +32,18 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
 
     /** {@inheritDoc} */
     @Override
+    public long getSuppliersCountQuick(Locality locality) {
+        return this.supplierDao.getSuppliersCountQuick(locality);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSuppliersCountWithoutChildren(Locality locality) {
+        return this.supplierDao.getSuppliersCountWithoutChildren(locality);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Set<Supplier> getSuppliers(Category... categories) {
         return this.supplierDao.getSuppliers(categories);
     }
@@ -41,6 +53,18 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     @Cacheable(cacheName = "cache5min")
     public long getSuppliersCount(Category... categories) {
         return this.supplierDao.getSuppliersCount(categories);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSuppliersCountQuick(Category category) {
+        return this.supplierDao.getSuppliersCountQuick(category);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getSuppliersCountWithoutChildren(Category category) {
+        return this.supplierDao.getSuppliersCountWithoutChildren(category);
     }
 
     //---------------------------------- GETTERS and SETTERS -----------------------------------------------------------

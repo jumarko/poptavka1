@@ -36,6 +36,15 @@ public interface SupplierDao extends GenericDao<Supplier> {
     long getSuppliersCount(Locality... localities);
 
 
+    long getSuppliersCountQuick(Locality locality);
+
+    /**
+     * Get count of all suppliers that belongs directly to the specified locality. No suppliers belonging to
+     * any sublocality are included!
+     */
+    long getSuppliersCountWithoutChildren(Locality locality);
+
+
     /**
      * Load all suppliers associated to the given category (-ies).
      *
@@ -55,4 +64,13 @@ public interface SupplierDao extends GenericDao<Supplier> {
      * @return number of suppliers related to the <code>category</code>(-ies).
      */
     long getSuppliersCount(Category... categories);
+
+
+    long getSuppliersCountQuick(Category category);
+
+    /**
+     * Get count of all suppliers that belongs directly to the specified category. No suppliers belonging to
+     * any subcategory are included!
+     */
+    long getSuppliersCountWithoutChildren(Category category);
 }

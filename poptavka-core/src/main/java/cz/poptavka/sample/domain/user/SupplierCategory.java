@@ -21,7 +21,18 @@ import javax.persistence.Table;
                         + " where supplierCategory.category.id in (:categoriesIds)"),
         @NamedQuery(name = "getSuppliersCountForCategories", query = "select count(distinct supplierCategory.supplier)"
                         + " from SupplierCategory supplierCategory"
-                        + " where supplierCategory.category.id in (:categoriesIds)")
+                        + " where supplierCategory.category.id in (:categoriesIds)"),
+        @NamedQuery(name = "getSuppliersCountForCategory", query = "select count(distinct supplierCategory.supplier)"
+                        + " from SupplierCategory supplierCategory"
+                        + " where supplierCategory.category.id = :categoryId "
+                + "or (supplierCategory.category.leftBound  between :leftBound and :rightBound)"),
+        /**
+         * Get count of all suppliers that belongs directly to the specified cateogy. No suppliers belonging to
+         * any subcategory are included!
+         */
+        @NamedQuery(name = "getSuppliersCountForCategoryWithoutChildren",
+                query = "select count(supplierCategory.supplier) "
+                + " from SupplierCategory supplierCategory where supplierCategory.category = :category")
 
 })
 public class SupplierCategory extends DomainObject {

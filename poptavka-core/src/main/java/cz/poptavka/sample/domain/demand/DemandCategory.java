@@ -16,14 +16,26 @@ import javax.persistence.Table;
 @Table(name = "DEMAND_CATEGORY")
 @NamedQueries({
         @NamedQuery(name = "getDemandsForCategories", query = "select demandCategory.demand"
-                        + DemandCategory.DEMANDS_FOR_CATEGORIES_FW_CLAUSE),
+                + DemandCategory.DEMANDS_FOR_CATEGORIES_FW_CLAUSE),
         @NamedQuery(name = "getDemandsCountForCategories", query = "select count(distinct demandCategory.demand)"
-                        + DemandCategory.DEMANDS_FOR_CATEGORIES_FW_CLAUSE)
+                + DemandCategory.DEMANDS_FOR_CATEGORIES_FW_CLAUSE),
+        @NamedQuery(name = "getDemandsCountForCategory", query = "select count(distinct demandCategory.demand)"
+                + DemandCategory.DEMANDS_FOR_CATEGORIES_QUICK_FW_CLAUSE),
+        /**
+         * Get count of all demands that belongs directly to the specified cateogy. No demands belonging to
+         * any subcategory are included!
+         */
+        @NamedQuery(name = "getDemandsCountForCategoryWithoutChildren", query = "select count(demandCategory.demand) "
+                + " from DemandCategory demandCategory where demandCategory.category = :category")
 })
 public class DemandCategory extends DomainObject {
 
     static final String DEMANDS_FOR_CATEGORIES_FW_CLAUSE = " from DemandCategory demandCategory"
-                        + " where demandCategory.category.id in (:categoriesIds)";
+            + " where demandCategory.category.id in (:categoriesIds)";
+
+    static final String DEMANDS_FOR_CATEGORIES_QUICK_FW_CLAUSE = " from DemandCategory demandCategory"
+            + " where demandCategory.category.id = :categoryId "
+            + "or (demandCategory.category.leftBound between :leftBound and :rightBound)";
 
     @ManyToOne
     private Demand demand;

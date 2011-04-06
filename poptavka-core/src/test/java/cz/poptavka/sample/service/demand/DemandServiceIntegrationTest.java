@@ -65,6 +65,14 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         checkDemandCountByLocality("loc1211", 1);
     }
 
+    @Test
+    public void getDemandsCountWithoutChildrenByLocality() {
+        checkDemandCountWithoutChildrenByLocality("loc1", 1);
+        checkDemandCountWithoutChildrenByLocality("loc2", 3);
+        checkDemandCountWithoutChildrenByLocality("loc1211", 1);
+        checkDemandCountWithoutChildrenByLocality("loc211", 0);
+    }
+
 
     @Test
     public void testGetDemandsByCategory() {
@@ -93,6 +101,24 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         checkDemandCountByCategory("cat31", 2);
         checkDemandCountByCategory("cat312", 1);
         checkDemandCountByCategory("cat1132", 1);
+    }
+
+
+    @Test
+    public void getDemandsCountWithoutChildrenByCategory() {
+        checkDemandCountWithoutChildrenByCategory("cat0", 1);
+        checkDemandCountWithoutChildrenByCategory("cat1", 1);
+        checkDemandCountWithoutChildrenByCategory("cat2", 1);
+        checkDemandCountWithoutChildrenByCategory("cat21", 0);
+        checkDemandCountWithoutChildrenByCategory("cat22", 0);
+        checkDemandCountWithoutChildrenByCategory("cat23", 0);
+        checkDemandCountWithoutChildrenByCategory("cat3", 1);
+        checkDemandCountWithoutChildrenByCategory("cat11", 2);
+        checkDemandCountWithoutChildrenByCategory("cat31", 1);
+        checkDemandCountWithoutChildrenByCategory("cat112", 1);
+        checkDemandCountWithoutChildrenByCategory("cat311", 0);
+        checkDemandCountWithoutChildrenByCategory("cat312", 1);
+        checkDemandCountWithoutChildrenByCategory("cat1132", 1);
     }
 
 
@@ -136,6 +162,13 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
                 this.demandService.getDemandsCount(this.localityService.getLocality(localityCode)));
     }
 
+    private void checkDemandCountWithoutChildrenByLocality(String localityCode, int expectedCount) {
+        final String message = "Locality code [" + localityCode + "]";
+        Assert.assertEquals(message,
+                expectedCount,
+                this.demandService.getDemandsCountWithoutChildren(this.localityService.getLocality(localityCode)));
+    }
+
 
     private void checkDemandsByCategory(int expectedDemandsNumber, String... categoryCodes) {
         if (categoryCodes.length == 0) {
@@ -158,6 +191,14 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(message,
                 expectedCount,
                 this.demandService.getDemandsCount(this.categoryService.getCategory(categoryCode)));
+    }
+
+
+    private void checkDemandCountWithoutChildrenByCategory(String categoryCode, int expectedCount) {
+        final String message = "Category code [" + categoryCode + "]";
+        Assert.assertEquals(message,
+                expectedCount,
+                this.demandService.getDemandsCountWithoutChildren(this.categoryService.getCategory(categoryCode)));
     }
 
 
