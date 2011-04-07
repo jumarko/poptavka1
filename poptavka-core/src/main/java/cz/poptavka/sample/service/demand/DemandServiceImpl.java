@@ -13,6 +13,9 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,6 +35,24 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     public Set<Demand> getDemands(Locality... localities) {
         return this.demandDao.getDemands(localities);
     }
+
+
+    /** {@inheritDoc} */
+    public Map<Locality, Long> getDemandsCountForAllLocalities() {
+        final List<Map<String, Object>> demandsCountForAllLocalities = this.demandDao.getDemandsCountForAllLocalities();
+
+        // convert to suitable Map: <locality, demandsCountForLocality>
+        final Map<Locality, Long> demandsCountForLocalitiesMap =
+                new HashMap<Locality, Long>(ESTIMATED_NUMBER_OF_LOCALITIES);
+        for (Map<String, Object> demandsCountForLocality : demandsCountForAllLocalities) {
+            demandsCountForLocalitiesMap.put((Locality) demandsCountForLocality.get("locality"),
+                    (Long) demandsCountForLocality.get("demandsCount"));
+        }
+
+        return demandsCountForLocalitiesMap;
+    }
+
+
 
     /**
      * {@inheritDoc}
@@ -61,6 +82,22 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     public Set<Demand> getDemands(Category... categories) {
         return this.demandDao.getDemands(categories);
+    }
+
+
+    /** {@inheritDoc} */
+    public Map<Category, Long> getDemandsCountForAllCategories() {
+        final List<Map<String, Object>> demandsCountForAllCategories = this.demandDao.getDemandsCountForAllCategories();
+
+        // convert to suitable Map: <locality, demandsCountForLocality>
+        final Map<Category, Long> demandsCountForCategoriesMap =
+                new HashMap<Category, Long>(ESTIMATED_NUMBER_OF_CATEGORIES);
+        for (Map<String, Object> demandsCountForCategory : demandsCountForAllCategories) {
+            demandsCountForCategoriesMap.put((Category) demandsCountForCategory.get("category"),
+                    (Long) demandsCountForCategory.get("demandsCount"));
+        }
+
+        return demandsCountForCategoriesMap;
     }
 
     /**

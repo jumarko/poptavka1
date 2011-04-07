@@ -20,8 +20,22 @@ import javax.persistence.Table;
                         + DemandLocality.DEMANDS_FOR_LOCALITIES_FW_CLAUSE),
         @NamedQuery(name = "getDemandsCountForLocalities", query = "select count(distinct demandLocality.demand)"
                         + DemandLocality.DEMANDS_FOR_LOCALITIES_FW_CLAUSE),
-        @NamedQuery(name = "getDemandsCountForLocality", query = "select count(distinct demandLocality.demand)"
-                + DemandLocality.DEMANDS_FOR_LOCALITIES_QUICK_FW_CLAUSE),
+        @NamedQuery(name = "getDemandsCountForLocality",
+                query = "select count(distinct demandLocality.demand)"
+                        + " from DemandLocality demandLocality"
+                        + " where demandLocality.locality.leftBound between :leftBound and :rightBound"),
+        /**
+         * In one query compute demands count for each locality and return it as a list of pairs
+         * <localityId, demandsCountForLocality>.
+         */
+        @NamedQuery(name = "getDemandsCountForAllLocalities",
+                query = "select new map(l AS locality, "
+                        + "  (select count(distinct demandLocality.demand)"
+                        + "    from DemandLocality demandLocality"
+                        + "    where demandLocality.locality.leftBound "
+                        + "          between l.leftBound and l.rightBound)"
+                        + "   AS demandsCount)"
+                        + " from Locality l"),
         /**
          * Get count of all demands that belongs directly to the specified locality. No demands belonging to
          * any sublocality are included!
@@ -33,11 +47,6 @@ public class DemandLocality extends DomainObject {
 
     static final String DEMANDS_FOR_LOCALITIES_FW_CLAUSE = " from DemandLocality demandLocality"
             + " where demandLocality.locality.id in (:localitiesIds)";
-
-    static final String DEMANDS_FOR_LOCALITIES_QUICK_FW_CLAUSE = " from DemandLocality demandLocality"
-            + " where demandLocality.locality.id = :localityId "
-            + "or (demandLocality.locality.leftBound between :leftBound and :rightBound)";
-
 
 
     @ManyToOne

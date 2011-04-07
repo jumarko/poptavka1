@@ -8,9 +8,11 @@ import cz.poptavka.sample.domain.common.AdditionalInfo;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
+import cz.poptavka.sample.service.jobs.base.JobTask;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * @author Juraj Martinka
@@ -25,7 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AdditionalInfoFillerTest extends DBUnitBaseTest {
 
     @Autowired
-    private AdditionalInfoFiller additionalInfoFiller;
+    @Qualifier(value = "additionalInfoFiller")
+    private JobTask additionalInfoFiller;
 
     @Autowired
     private LocalityService localityService;

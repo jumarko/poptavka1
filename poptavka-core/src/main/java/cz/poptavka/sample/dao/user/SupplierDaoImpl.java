@@ -10,6 +10,7 @@ import cz.poptavka.sample.util.collection.CollectionsHelper;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,10 +33,15 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
     }
 
 
+
+    @Override
+    public List<Map<String, Object>> getSuppliersCountForAllCategories() {
+        return  runNamedQuery("getSuppliersCountForAllCategories", Collections.EMPTY_MAP);
+    }
+
     @Override
     public long getSuppliersCountQuick(Category category) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("categoryId", category.getId());
         params.put("leftBound", category.getLeftBound());
         params.put("rightBound", category.getRightBound());
         final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForCategory", params);
@@ -64,6 +70,14 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         return toSet(runNamedQuery("getSuppliersForCategories", params));
     }
 
+
+    /** {@inheritDoc} */
+    public List<Map<String, Object>> getSuppliersCountForAllLocalities() {
+        return  runNamedQuery("getSuppliersCountForAllLocalities", Collections.EMPTY_MAP);
+    }
+
+
+
     @Override
     public long getSuppliersCount(Locality... localities) {
         final Map<String, Object> params = new HashMap<String, Object>();
@@ -76,7 +90,6 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
     @Override
     public long getSuppliersCountQuick(Locality locality) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("localityId", locality.getId());
         params.put("leftBound", locality.getLeftBound());
         params.put("rightBound", locality.getRightBound());
         final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForLocality",

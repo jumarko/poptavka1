@@ -19,8 +19,25 @@ import javax.persistence.Table;
                 + DemandCategory.DEMANDS_FOR_CATEGORIES_FW_CLAUSE),
         @NamedQuery(name = "getDemandsCountForCategories", query = "select count(distinct demandCategory.demand)"
                 + DemandCategory.DEMANDS_FOR_CATEGORIES_FW_CLAUSE),
-        @NamedQuery(name = "getDemandsCountForCategory", query = "select count(distinct demandCategory.demand)"
-                + DemandCategory.DEMANDS_FOR_CATEGORIES_QUICK_FW_CLAUSE),
+        @NamedQuery(name = "getDemandsCountForCategory",
+                query = "select count(distinct demandCategory.demand)"
+                        + " from DemandCategory demandCategory"
+
+                        + " where demandCategory.category.leftBound between :leftBound and :rightBound"),
+
+        /**
+         * In one query compute demands count for each locality and return it as a list of pairs
+         * <localityId, demandsCountForLocality>.
+         */
+        @NamedQuery(name = "getDemandsCountForAllCategories",
+                query = "select new map(c AS category, "
+                        + "  (select count(distinct demandCategory.demand)"
+                        + "    from DemandCategory demandCategory"
+                        + "    where demandCategory.category.leftBound "
+                        + "          between c.leftBound and c.rightBound)"
+                        + "   AS demandsCount)"
+                        + " from Category c"),
+
         /**
          * Get count of all demands that belongs directly to the specified cateogy. No demands belonging to
          * any subcategory are included!
@@ -33,9 +50,6 @@ public class DemandCategory extends DomainObject {
     static final String DEMANDS_FOR_CATEGORIES_FW_CLAUSE = " from DemandCategory demandCategory"
             + " where demandCategory.category.id in (:categoriesIds)";
 
-    static final String DEMANDS_FOR_CATEGORIES_QUICK_FW_CLAUSE = " from DemandCategory demandCategory"
-            + " where demandCategory.category.id = :categoryId "
-            + "or (demandCategory.category.leftBound between :leftBound and :rightBound)";
 
     @ManyToOne
     private Demand demand;

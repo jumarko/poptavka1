@@ -20,8 +20,24 @@ import javax.persistence.Table;
                 + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE),
         @NamedQuery(name = "getSuppliersCountForLocalities", query = "select count(distinct supplierLocality.supplier)"
                 + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE),
-        @NamedQuery(name = "getSuppliersCountForLocality", query = "select count(distinct supplierLocality.supplier)"
-                + SupplierLocality.SUPPLIERS_FOR_LOCALITIES_QUICK_FW_CLAUSE),
+        @NamedQuery(name = "getSuppliersCountForLocality",
+                query = "select count(distinct supplierLocality.supplier)"
+                        + " from SupplierLocality supplierLocality "
+                        +  "where supplierLocality.locality.leftBound between :leftBound and :rightBound"),
+
+        /**
+         * In one query compute suppliers count for each locality and return it as a list of pairs
+         * <localityId, suppliersCountForLocality>.
+         */
+        @NamedQuery(name = "getSuppliersCountForAllLocalities",
+                query = "select new map(l AS locality, "
+                        + "  (select count(distinct supplierLocality.supplier)"
+                        + "    from SupplierLocality supplierLocality"
+                        + "    where supplierLocality.locality.leftBound "
+                        + "          between l.leftBound and l.rightBound)"
+                        + "   AS suppliersCount)"
+                        + " from Locality l"),
+
         /**
          * Get count of all suppliers that belongs directly to the specified locality. No suppliers belonging to
          * any sublocality are included!
@@ -36,9 +52,6 @@ public class SupplierLocality extends DomainObject {
     static final String SUPPLIERS_FOR_LOCALITIES_FW_CLAUSE = " from SupplierLocality supplierLocality"
                 + " where supplierLocality.locality.id in (:localitiesIds)";
 
-    static final String SUPPLIERS_FOR_LOCALITIES_QUICK_FW_CLAUSE = " from SupplierLocality supplierLocality"
-                + " where supplierLocality.locality.id = :localityId "
-            + "or (supplierLocality.locality.leftBound between :leftBound and :rightBound)";
 
     @ManyToOne
     private Supplier supplier;

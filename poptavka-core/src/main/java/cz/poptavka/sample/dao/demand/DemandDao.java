@@ -10,6 +10,8 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -43,6 +45,15 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     Set<Demand> getDemands(Locality... localities);
 
+
+    /**
+     * Optmized method for loading demands count for all localities in one query!
+     *
+     * @return list of maps, each map containing only 2 items ("locality" => locality, "demandsCount" => demandsCount)
+     */
+    List<Map<String, Object>> getDemandsCountForAllLocalities();
+
+
     /**
      * Get count of ALL demands associated to the some locality from given <code>localities</code>
      *
@@ -70,6 +81,13 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     long getDemandsCountWithoutChildren(Locality locality);
 
+
+    /**
+     * Optmized method for loading demands count for all categories in one query!
+     *
+     * @return list of maps, each map containing only 2 items ("category" => category, "demandsCount" => demandsCount)
+     */
+    List<Map<String, Object>> getDemandsCountForAllCategories();
 
     /**
      * Load all demands for given categories. This methods works recursively, that means that really ALL demands

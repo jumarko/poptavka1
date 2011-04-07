@@ -6,7 +6,11 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import cz.poptavka.sample.service.demand.DemandService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,6 +19,7 @@ import java.util.Set;
  */
 public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDao> implements SupplierService {
 
+
     private SupplierDao supplierDao;
 
 
@@ -22,6 +27,22 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     @Override
     public Set<Supplier> getSuppliers(Locality... localities) {
         return this.supplierDao.getSuppliers(localities);
+    }
+
+    /** {@inheritDoc} */
+    public Map<Locality, Long> getSuppliersCountForAllLocalities() {
+        final List<Map<String, Object>> suppliersCountForAllLocalities =
+                this.supplierDao.getSuppliersCountForAllLocalities();
+
+        // convert to suitable Map: <locality, suppliersCountForLocality>
+        final Map<Locality, Long> suppliersCountForLocalitiesMap =
+                new HashMap<Locality, Long>(DemandService.ESTIMATED_NUMBER_OF_LOCALITIES);
+        for (Map<String, Object> suppliersCountForLocality : suppliersCountForAllLocalities) {
+            suppliersCountForLocalitiesMap.put((Locality) suppliersCountForLocality.get("locality"),
+                    (Long) suppliersCountForLocality.get("suppliersCount"));
+        }
+
+        return suppliersCountForLocalitiesMap;
     }
 
     /** {@inheritDoc} */
@@ -46,6 +67,23 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     @Override
     public Set<Supplier> getSuppliers(Category... categories) {
         return this.supplierDao.getSuppliers(categories);
+    }
+
+
+    /** {@inheritDoc} */
+    public Map<Category, Long> getSuppliersCountForAllCategories() {
+        final List<Map<String, Object>> suppliersCountForAllCategories =
+                this.supplierDao.getSuppliersCountForAllCategories();
+
+        // convert to suitable Map: <locality, suppliersCountForLocality>
+        final Map<Category, Long> suppliersCountForCategoriesMap =
+                new HashMap<Category, Long>(DemandService.ESTIMATED_NUMBER_OF_CATEGORIES);
+        for (Map<String, Object> suppliersCountForCategory : suppliersCountForAllCategories) {
+            suppliersCountForCategoriesMap.put((Category) suppliersCountForCategory.get("category"),
+                    (Long) suppliersCountForCategory.get("suppliersCount"));
+        }
+
+        return suppliersCountForCategoriesMap;
     }
 
     /** {@inheritDoc} */

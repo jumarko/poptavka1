@@ -4,6 +4,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,6 +25,13 @@ public interface SupplierService {
      * @return
      */
     Set<Supplier> getSuppliers(Locality... localities);
+
+    /**
+     * Highly optimized method for getting number of suppliers for all localities.
+     *
+     * @return map which contains pairs <locality, suppliersCountForLocality>
+     */
+    Map<Locality, Long> getSuppliersCountForAllLocalities();
 
     /**
      * Evaluate the number of suppliers associated to the given <code>locality</code>(-ies).
@@ -63,6 +71,13 @@ public interface SupplierService {
      * @return
      */
     Set<Supplier> getSuppliers(Category... categories);
+
+    /**
+     * Highly optimized method for getting number of suppliers for all categories.
+     *
+     * @return map which contains pairs <category, suppliersCountForCategory>
+     */
+    Map<Category, Long> getSuppliersCountForAllCategories();
 
     /**
      * Evaluate the number of suppliers associated to the given <code>category</code>(-ies).

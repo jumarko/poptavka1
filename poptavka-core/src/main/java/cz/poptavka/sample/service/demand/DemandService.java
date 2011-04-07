@@ -11,12 +11,18 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.service.GenericService;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Juraj Martinka
  */
 public interface DemandService extends GenericService<Demand, DemandDao> {
+
+    int ESTIMATED_NUMBER_OF_LOCALITIES = 10000;
+    int ESTIMATED_NUMBER_OF_CATEGORIES = 10000;
+
+
 
     /**
      * Load all demands associated to the given locality (-ies).
@@ -27,6 +33,15 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(Locality... localities);
+
+
+    /**
+     * Highly optimized method for getting number of demands for all localities.
+     *
+     * @return map which contains pairs <locality, demandsCountForLocality>
+     */
+    Map<Locality, Long> getDemandsCountForAllLocalities();
+
 
     /**
      * Evaluate the number of demands associated to the given <code>locality</code>(-ies).
@@ -62,6 +77,14 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(Category... categories);
+
+
+    /**
+     * Highly optimized method for getting number of demands for all categories.
+     *
+     * @return map which contains pairs <category, demandsCountForCategory>
+     */
+    Map<Category, Long> getDemandsCountForAllCategories();
 
     /**
      * Evaluate the number of demands associated to the given <code>category</code>(-ies).

@@ -22,10 +22,24 @@ import javax.persistence.Table;
         @NamedQuery(name = "getSuppliersCountForCategories", query = "select count(distinct supplierCategory.supplier)"
                         + " from SupplierCategory supplierCategory"
                         + " where supplierCategory.category.id in (:categoriesIds)"),
-        @NamedQuery(name = "getSuppliersCountForCategory", query = "select count(distinct supplierCategory.supplier)"
+        @NamedQuery(name = "getSuppliersCountForCategory",
+                query = "select count(distinct supplierCategory.supplier)"
                         + " from SupplierCategory supplierCategory"
-                        + " where supplierCategory.category.id = :categoryId "
-                + "or (supplierCategory.category.leftBound  between :leftBound and :rightBound)"),
+                        + " where supplierCategory.category.leftBound  between :leftBound and :rightBound"),
+
+        /**
+         * In one query compute suppliers count for each locality and return it as a list of pairs
+         * <localityId, suppliersCountForLocality>.
+         */
+        @NamedQuery(name = "getSuppliersCountForAllCategories",
+                query = "select new map(c AS category, "
+                        + "  (select count(distinct supplierCategory.supplier)"
+                        + "    from SupplierCategory supplierCategory"
+                        + "    where supplierCategory.category.leftBound "
+                        + "          between c.leftBound and c.rightBound)"
+                        + "   AS suppliersCount)"
+                        + " from Category c"),
+
         /**
          * Get count of all suppliers that belongs directly to the specified cateogy. No suppliers belonging to
          * any subcategory are included!

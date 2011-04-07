@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juraj Martinka
@@ -52,6 +53,36 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
+    @Test
+    public void testGetDemandsCountForAllLocalities() {
+        final Map<Locality, Long> demandsCountForAllLocalities = this.demandService.getDemandsCountForAllLocalities();
+        Assert.assertEquals(13, demandsCountForAllLocalities.size());
+
+        checkDemandCountForLocality("loc1", 7L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc2", 3L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc11", 4L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc121", 2L, demandsCountForAllLocalities);
+
+        checkDemandCountForLocality("loc12", 2L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc111", 0L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc1211", 1L, demandsCountForAllLocalities);
+    }
+
+
+    @Test
+    public void testGetDemandsCountForAllCategories() {
+        final Map<Category, Long> demandsCountForAllCategories = this.demandService.getDemandsCountForAllCategories();
+        Assert.assertEquals(16, demandsCountForAllCategories.size());
+
+        checkDemandsForCategory("cat0", 10L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat1", 5L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat2", 1L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat3", 3L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat11", 4L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat31", 2L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat312", 1L, demandsCountForAllCategories);
+        checkDemandsForCategory("cat1132", 1L, demandsCountForAllCategories);
+    }
 
     @Test
     public void testGetDemandsCountByLocality() {
@@ -201,6 +232,16 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
                 this.demandService.getDemandsCountWithoutChildren(this.categoryService.getCategory(categoryCode)));
     }
 
+    private void checkDemandCountForLocality(String localityCode, Long expectedDemandsCount,
+                                             Map<Locality, Long> demandsCountForAllLocalities) {
+        final String message = "Locality code [" + localityCode + "]";
+        Assert.assertEquals(message,
+                expectedDemandsCount,
+                demandsCountForAllLocalities.get(this.localityService.getLocality(localityCode)));
+    }
+
+
+
 
 
     private void checkDemandType(long demandId, DemandType.Type expectedType) {
@@ -208,5 +249,12 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(expectedType, demand.getType().getType());
     }
 
+    private void checkDemandsForCategory(String categoryCode, Long expectedDemandsCount,
+                                         Map<Category, Long> demandsCountForAllCategories) {
+        final String message = "Category code [" + categoryCode + "]";
+        Assert.assertEquals(message,
+                expectedDemandsCount,
+                demandsCountForAllCategories.get(this.categoryService.getCategory(categoryCode)));
+    }
 
 }

@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -45,6 +46,19 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
+    @Test
+    public void testGetSuppliersCountForAllLocalities() {
+
+        final Map<Locality, Long> suppliersCountForAllLocalities =
+                this.supplierService.getSuppliersCountForAllLocalities();
+        Assert.assertEquals(13, suppliersCountForAllLocalities.size());
+
+        checkSuppliersCountForLocality("loc1", 2L, suppliersCountForAllLocalities);
+        checkSuppliersCountForLocality("loc11", 1L, suppliersCountForAllLocalities);
+        checkSuppliersCountForLocality("loc121", 0L, suppliersCountForAllLocalities);
+        checkSuppliersCountForLocality("loc2", 3L, suppliersCountForAllLocalities);
+        checkSuppliersCountForLocality("loc214", 0L, suppliersCountForAllLocalities);
+    }
 
     @Test
     public void testGetSuppliersCountForLocalities() {
@@ -79,6 +93,20 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         checkSuppliersForCategories(1, "cat312");
         checkSuppliersForCategories(0, "cat2");
     }
+
+    @Test
+    public void testGetSuppliersForAllCategories() {
+        final Map<Category, Long> suppliersCountForAllCategories =
+                this.supplierService.getSuppliersCountForAllCategories();
+        Assert.assertEquals(16, suppliersCountForAllCategories.size());
+
+        checkSuppliersForCategory("cat11", 2L, suppliersCountForAllCategories);
+        checkSuppliersForCategory("cat3", 2L, suppliersCountForAllCategories);
+        checkSuppliersForCategory("cat113", 1L, suppliersCountForAllCategories);
+        checkSuppliersForCategory("cat312", 1L, suppliersCountForAllCategories);
+        checkSuppliersForCategory("cat2", 0L, suppliersCountForAllCategories);
+    }
+
 
     @Test
     public void testGetSuppliersCountForCategories() {
@@ -160,5 +188,24 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
             categories[i] = this.categoryService.getCategory(categoriesCodes[i]);
         }
         return categories;
+    }
+
+
+    private void checkSuppliersCountForLocality(String localityCode, Long expectedSupplierCount,
+                                                Map<Locality, Long> suppliersCountForAllLocalities) {
+        final String message = "Locality code [" + localityCode + "]";
+        Assert.assertEquals(message,
+                expectedSupplierCount,
+                suppliersCountForAllLocalities.get(this.localityService.getLocality(localityCode)));
+    }
+
+
+
+    private void checkSuppliersForCategory(String categoryCode, Long expectedSuppliersCount,
+                                           Map<Category, Long> suppliersCountForAllCategories) {
+        final String message = "Category code [" + categoryCode + "]";
+        Assert.assertEquals(message,
+                expectedSuppliersCount,
+                suppliersCountForAllCategories.get(this.categoryService.getCategory(categoryCode)));
     }
 }

@@ -15,6 +15,7 @@ import cz.poptavka.sample.util.collection.CollectionsHelper;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,12 @@ import java.util.Set;
 public class DemandDaoImpl extends GenericHibernateDao<Demand> implements DemandDao {
 
     private TreeItemDao treeItemDao;
+
+
+    /** {@inheritDoc} */
+    public List<Map<String, Object>> getDemandsCountForAllLocalities() {
+        return  runNamedQuery("getDemandsCountForAllLocalities", Collections.EMPTY_MAP);
+    }
 
 
     /**
@@ -59,7 +66,6 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     @Override
     public long getDemandsCountQuick(Locality locality) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("localityId", locality.getId());
         params.put("leftBound", locality.getLeftBound());
         params.put("rightBound", locality.getRightBound());
         final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForLocality", params);
@@ -72,6 +78,15 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("locality", locality);
         return (Long) runNamedQueryForSingleResult("getDemandsCountForLocalityWithoutChildren", params);
+    }
+
+
+    //------------------------------------- Categories -----------------------------------------------------------------
+
+
+    @Override
+    public List<Map<String, Object>> getDemandsCountForAllCategories() {
+        return  runNamedQuery("getDemandsCountForAllCategories", Collections.EMPTY_MAP);
     }
 
     /** {@inheritDoc} */
@@ -101,7 +116,6 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     @Override
     public long getDemandsCountQuick(Category category) {
         final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("categoryId", category.getId());
         params.put("leftBound", category.getLeftBound());
         params.put("rightBound", category.getRightBound());
         final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForCategory", params);

@@ -5,6 +5,8 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -22,6 +24,14 @@ public interface SupplierDao extends GenericDao<Supplier> {
      * @return
      */
     Set<Supplier> getSuppliers(Locality... localities);
+
+     /**
+     * Optmized method for loading suppliers count for all localities in one query!
+     *
+     * @return list of maps, each map containing only 2 items
+      *         ("locality" => locality, "suppliersCount" => suppliersCount)
+     */
+    List<Map<String, Object>> getSuppliersCountForAllLocalities();
 
     /**
      * Evaluate the number of suppliers associated to the given <code>locality</code>(-ies).
@@ -52,6 +62,15 @@ public interface SupplierDao extends GenericDao<Supplier> {
      * @return
      */
     Set<Supplier> getSuppliers(Category... categories);
+
+
+    /**
+     * Optmized method for loading suppliers count for all categories in one query!
+     *
+     * @return list of maps, each map containing only 2 items
+     *              ("category" => category, "suppliersCount" => suppliersCount)
+     */
+    List<Map<String, Object>> getSuppliersCountForAllCategories();
 
     /**
      * Evaluate the number of suppliers associated to the given <code>category</code>(-ies).
