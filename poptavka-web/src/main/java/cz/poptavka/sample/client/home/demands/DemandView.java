@@ -11,6 +11,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
@@ -31,20 +32,7 @@ public class DemandView extends Composite {
     @UiField Button buttonLogin;
     @UiField Button buttonRegister;
 
-    @UiField Label id;
-    @UiField Label description;
-    @UiField Label price;
-//    @UiField Label validTo;
-//    @UiField Label endDate;
-//    @UiField Label status;
-//    @UiField Label type;
-//    @UiField Label client;
-//    @UiField Label localities;
-//    @UiField Label categories;
-//    @UiField Label suppliers;
-//    @UiField Label excSuppliers;
-//    @UiField Label minRating;
-//    @UiField Label maxSuppliers;
+    @UiField FlexTable infoTable;
 
     @UiField Label label1;
     @UiField Label label2;
@@ -54,8 +42,7 @@ public class DemandView extends Composite {
     @UiField(provided = true) CellList<Object> cellList = new CellList<Object>(new AbstractCell<Object>() {
 
         @Override
-        public void render(com.google.gwt.cell.client.Cell.Context arg0,
-                Object arg1, SafeHtmlBuilder arg2) {
+        public void render(Object value, Object key, SafeHtmlBuilder sb) {
             // TODO Auto-generated method stub
 
         }
@@ -83,19 +70,25 @@ public class DemandView extends Composite {
     }
 
     public void setDemand(Demand demand) {
-        id.setText(Long.toString(demand.getId()));
-        description.setText(demand.getDescription());
-        price.setText(demand.getPrice().toString());
-//        validTo.setText(demand.getValidTo().toString());
-//        endDate.setText(demand.getEndDate().toString());
-//        status.setText(demand.getStatus().toString());
-//        type.setText(demand.getType().toString());
-//        client.setText(demand.getClient().getLogin());
-//        localities.setText(demand.getLocalities().toString());
-//        categories.setText(demand.getCategories().toString());
-//        suppliers.setText(demand.getSuppliers().toString());
-//        excSuppliers.setText(demand.getExcludedSuppliers().toString());
-//        minRating.setText(demand.getMinRating().toString());
-//        maxSuppliers.setText(demand.getMaxSuppliers().toString());
+        int row = 0;
+        infoTable.setWidget(row, 0, new Label("Title: "));
+        infoTable.setWidget(row, 1, new Label(demand.getTitle()));
+
+        infoTable.setWidget(row++, 0, new Label("Price: "));
+        infoTable.setWidget(row, 1, new Label(demand.getPrice().toString()));
+
+        infoTable.setWidget(row++, 0, new Label("End Date: "));
+        infoTable.setWidget(row, 1, new Label(demand.getEndDate().toString()));
+
+        infoTable.setWidget(row++, 0, new Label("Type: "));
+        infoTable.setWidget(row, 1, new Label(demand.getType().getDescription()));
+
+        infoTable.setWidget(row++, 0, new Label("Categories: "));
+        infoTable.setWidget(row, 1, new Label(demand.getCategories().toString()));
+
+        infoTable.setWidget(row++, 0, new Label("Client: "));
+        infoTable.setWidget(row, 1, new Label(demand.getClient().getLogin()));
+
+
     }
 }

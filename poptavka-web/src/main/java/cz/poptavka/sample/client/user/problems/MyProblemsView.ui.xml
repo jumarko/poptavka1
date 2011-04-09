@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.cellview.client">
+  <ui:style>
+    .important {
+      font-weight: bold;
+    }
+  </ui:style>
+  <g:HTMLPanel>
+    <g:DecoratorPanel>
+      <g:VerticalPanel>
+        <g:HorizontalPanel>
+          <g:Label>Moje Problemy</g:Label>
+          <g:Button ui:field="respond">Odpovedat</g:Button>
+          <g:Button ui:field="edit">Upravit</g:Button>
+          <g:Button ui:field="close">Uzavriet</g:Button>
+          <g:Button ui:field="cancel">Zrusit</g:Button>
+          <g:Button ui:field="activate">Aktivovat</g:Button>
+          <g:Button ui:field="deny">Zamietnut</g:Button>
+          <g:ListBox/>
+        </g:HorizontalPanel>
+        <p1:CellTable ui:field="cellTable" />
+      </g:VerticalPanel>
+    </g:DecoratorPanel>
+    <br/>
+    <g:DecoratorPanel>
+      <g:VerticalPanel>
+        Tu bude text.
+      </g:VerticalPanel>
+    </g:DecoratorPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>

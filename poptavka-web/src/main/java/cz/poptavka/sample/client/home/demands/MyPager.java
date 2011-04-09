@@ -21,7 +21,11 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.domain.demand.Demand;
-
+/**
+ *
+ * @author Martin Slavkovsky
+ *
+ */
 public class MyPager extends Composite implements
         DemandsPresenter.DemandsPagerInterface {
 
@@ -184,12 +188,10 @@ public class MyPager extends Composite implements
 
         DisclosurePanel panel = (DisclosurePanel) flexTable.getWidget(
                 clickedCell.getRowIndex(), 0);
-
         Demand demand = new Demand();
         demand.setId(100L);
         demand.setDescription(this.demands.get(clickedCell.getRowIndex()).getDescription());
         demand.setPrice(new BigDecimal(10000));
-
         dem.setDemand(demand);
 
         panel.setContent(dem);

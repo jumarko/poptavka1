@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.home.demands;
 
 import java.util.List;
 import java.util.Set;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -12,7 +11,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.demand.Demand;
-
+/**
+ *
+ * @author Martin Slavkovsky
+ *
+ */
 public class DemandsView extends Composite implements
         DemandsPresenter.DemandsViewInterface {
 
@@ -27,7 +30,7 @@ public class DemandsView extends Composite implements
     ListBox category;
     @UiField
     ListBox locality;
-    // @UiField
+
     private MyPager myPager;
 
     public DemandsView() {

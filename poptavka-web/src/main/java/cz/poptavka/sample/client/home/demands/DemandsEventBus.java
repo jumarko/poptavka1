@@ -12,7 +12,11 @@ import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-
+/**
+ *
+ * @author Martin Slavkovsky
+ *
+ */
 @Events(startView = DemandsView.class, module = DemandsModule.class)
 public interface DemandsEventBus extends EventBus {
 
@@ -44,6 +48,9 @@ public interface DemandsEventBus extends EventBus {
 
     @Event(handlers = DemandsPresenter.class)
     void filterByCategory(String code);
+
+    @Event(handlers = DemandsPresenter.class)
+    void filterByLocality(String code);
 
     @Event(handlers = DemandsPresenter.class)
     void setCategoryData(ListBox box, ArrayList<CategoryDetail> list);

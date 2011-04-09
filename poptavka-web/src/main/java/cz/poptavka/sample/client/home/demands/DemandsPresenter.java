@@ -19,11 +19,17 @@ import com.mvp4g.client.annotation.Presenter;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
+import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-
+/**
+ *
+ * @author Martin Slavkovsky
+ *
+ */
 @Presenter(view = DemandsView.class)
 public class DemandsPresenter extends
         BasePresenter<DemandsPresenter.DemandsViewInterface, DemandsEventBus> {
@@ -57,9 +63,12 @@ public class DemandsPresenter extends
     private DemandRPCServiceAsync demandService;
     @Inject
     private CategoryRPCServiceAsync categoryService;
-//    @Inject
-//    private CategoryRPCServiceAsync localityService;
+    @Inject
+    private LocalityRPCServiceAsync localityService;
 
+    /**
+     * Bind objects and theirs action handlers.
+     */
     public void bind() {
         view.getCategoryList().addChangeHandler(new ChangeHandler() {
             @Override
@@ -78,7 +87,8 @@ public class DemandsPresenter extends
     }
 
     /**
-     * Try retrieve demand from server and display them on Success.
+     * Try retrieve and display all demands.
+     * Get all categories and localities to display in listBoxes for later filtering.
      *
      */
     public void onStart() {
@@ -92,10 +102,29 @@ public class DemandsPresenter extends
         eventBus.setHomeWidget(AnchorEnum.FIRST, view.getWidgetView(), true);
     }
 
+    /**
+     * Get all localities. Used for display in listBox localities.
+     */
     public void onGetLocalities() {
+        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                LOGGER.info("onFailureGetLocalities - regions");
+
+            }
+
+            @Override
+            public void onSuccess(ArrayList<LocalityDetail> result) {
+                eventBus.setLocalityData(view.getLocalityList(), result);
+            }
+        });
 
     }
 
+    /**
+     * Get all categories. Used for display in listBox categories.
+     */
     public void onGetCategories() {
         categoryService
                 .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
@@ -112,7 +141,12 @@ public class DemandsPresenter extends
                 });
     }
 
+    /**
+     * Get category by its code.
+     * @param code - String representing code
+     */
     public void onFilterByCategory(String code) {
+        LOGGER.info("FilterByCategory: " + code);
         categoryService.getCategory(code, new AsyncCallback<Category>() {
 
             @Override
@@ -123,16 +157,24 @@ public class DemandsPresenter extends
 
             @Override
             public void onSuccess(Category result) {
+                LOGGER.info("category found: " + result);
                 if (result != null) {
-                    LOGGER.info("category found: ");
                     eventBus.displayDemandsByCategory(result);
                 }
             }
         });
+        LOGGER.info("End of method filter by category");
     }
 
+    public void onFilterByLocality(String code) { }
+
+    /**
+     * Get demands by given category and its child subCategories.
+     * @param category - given category
+     */
     public void onDisplayDemandsByCategory(Category category) {
-        Category[] categories = {category};
+        LOGGER.info("Display demand by category: " + category.getName());
+        Category[] categories = (Category[]) category.getChildren().toArray();
         demandService.getDemands(categories, new AsyncCallback<Set<Demand>>() {
 
             @Override
@@ -147,6 +189,11 @@ public class DemandsPresenter extends
         });
     }
 
+    /**
+     * Fills category listBox with given list of localities.
+     * @param box - listBox to be filled
+     * @param list - data (categories)
+     */
     public void onSetCategoryData(final ListBox box,
             final ArrayList<CategoryDetail> list) {
         box.clear();
@@ -166,6 +213,11 @@ public class DemandsPresenter extends
         });
     }
 
+    /**
+     * Fills locality listBox with given list of localities.
+     * @param box - listBox to be filled
+     * @param list - data (localities)
+     */
     public void onSetLocalityData(final ListBox box,
             final ArrayList<LocalityDetail> list) {
         box.clear();
@@ -185,137 +237,23 @@ public class DemandsPresenter extends
     }
 
     /**
-     * Call DemandsView to display given list of demands.
+     * Get all demand from database.
      *
      * @param result
      */
     public void onDisplayDemands() {
-        //Nefunguje zatial
-//        demandService.getAllDemands(new AsyncCallback<List<Demand>>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                LOGGER.info("onFailureDisplayDemands");
-//            }
-//
-//            @Override
-//            public void onSuccess(List<Demand> result) {
-//                LOGGER.info("List: " + result);
-//                view.displayDemandsList(result);
-//            }
-//        });
+        demandService.getAllDemands(new AsyncCallback<List<Demand>>() {
 
-        view.displayDemandsList(this.getDemands());
-    }
+            @Override
+            public void onFailure(Throwable caught) {
+                LOGGER.info("onFailureDisplayDemands");
+            }
 
-    private ArrayList<Demand> getDemands() {
-        ArrayList<Demand> demands = new ArrayList<Demand>();
-
-        Demand d1 = new Demand();
-        d1.setTitle("demand 1");
-        d1.setDescription("poptavka d1");
-        demands.add(d1);
-
-        Demand d2 = new Demand();
-        d2.setTitle("demand 2");
-        d2.setDescription("poptavka d1");
-        demands.add(d2);
-
-        Demand d3 = new Demand();
-        d3.setTitle("demand 3");
-        d3.setDescription("poptavka d1");
-        demands.add(d3);
-
-        Demand d4 = new Demand();
-        d4.setTitle("demand 4");
-        d4.setDescription("poptavka d1");
-        demands.add(d4);
-
-        Demand d5 = new Demand();
-        d5.setTitle("demand 5");
-        d5.setDescription("poptavka d1");
-        demands.add(d5);
-
-        Demand d6 = new Demand();
-        d6.setTitle("demand 6");
-        d6.setDescription("poptavka d1");
-        demands.add(d6);
-
-        Demand d7 = new Demand();
-        d7.setTitle("demand 7");
-        d7.setDescription("poptavka d1");
-        demands.add(d7);
-
-        Demand d8 = new Demand();
-        d8.setTitle("demand 8");
-        d8.setDescription("poptavka d1");
-        demands.add(d8);
-
-        Demand d9 = new Demand();
-        d9.setTitle("demand 9");
-        d9.setDescription("poptavka d1");
-        demands.add(d9);
-
-        Demand d10 = new Demand();
-        d10.setTitle("demand 01");
-        d10.setDescription("poptavka d1");
-        demands.add(d10);
-
-        Demand d11 = new Demand();
-        d11.setTitle("demand 11");
-        d11.setDescription("poptavka d1");
-        demands.add(d11);
-
-        Demand d12 = new Demand();
-        d12.setTitle("demand 12");
-        d12.setDescription("poptavka d1");
-        demands.add(d12);
-
-        Demand d13 = new Demand();
-        d13.setTitle("demand 13");
-        d13.setDescription("poptavka d1");
-        demands.add(d13);
-
-        Demand d14 = new Demand();
-        d14.setTitle("demand 14");
-        d14.setDescription("poptavka d1");
-        demands.add(d14);
-
-        Demand d15 = new Demand();
-        d15.setTitle("demand 15");
-        d15.setDescription("poptavka d1");
-        demands.add(d15);
-
-        Demand d16 = new Demand();
-        d16.setTitle("demand 16");
-        d16.setDescription("poptavka d1");
-        demands.add(d16);
-
-        Demand d17 = new Demand();
-        d17.setTitle("demand 17");
-        d17.setDescription("poptavka d1");
-        demands.add(d17);
-
-        Demand d18 = new Demand();
-        d18.setTitle("demand 18");
-        d18.setDescription("poptavka d1");
-        demands.add(d18);
-
-        Demand d19 = new Demand();
-        d19.setTitle("demand 19");
-        d19.setDescription("poptavka d1");
-        demands.add(d19);
-
-        Demand d20 = new Demand();
-        d20.setTitle("demand 20");
-        d20.setDescription("poptavka d1");
-        demands.add(d20);
-
-        Demand d21 = new Demand();
-        d21.setTitle("demand 21");
-        d21.setDescription("poptavka d1");
-        demands.add(d21);
-
-        return demands;
+            @Override
+            public void onSuccess(List<Demand> result) {
+                LOGGER.info("onSuccessDisplayDemands");
+                view.displayDemandsList(result);
+            }
+        });
     }
 }

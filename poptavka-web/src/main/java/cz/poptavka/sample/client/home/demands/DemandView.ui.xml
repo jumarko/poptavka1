@@ -9,28 +9,7 @@
   <g:HTMLPanel>
     <g:HorizontalPanel>
       <g:VerticalPanel>
-        <g:HTMLPanel>
-          <table>
-            <tr>
-              <td>ID:</td>
-              <td>
-                <g:Label ui:field="id"></g:Label>
-              </td>
-            </tr>
-            <tr>
-              <td>Description:</td>
-              <td>
-                <g:Label ui:field="description"></g:Label>
-              </td>
-            </tr>
-            <tr>
-              <td>Price:</td>
-              <td>
-                <g:Label ui:field="price"></g:Label>
-              </td>
-            </tr>
-          </table>
-        </g:HTMLPanel>
+        <g:FlexTable ui:field="infoTable"/>
         <g:TextArea ui:field="textArea" text="textArea" />
       </g:VerticalPanel>
       <g:VerticalPanel>
