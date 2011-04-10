@@ -54,6 +54,7 @@
         <sac.version>1.3</sac.version>
         <serializer.version>2.7.1</serializer.version>
         <xml-apis.version>1.3.04</xml-apis.version>
+        <aspectj.version>1.6.10</aspectj.version>
     </properties>
 
     <pluginRepositories>
@@ -312,6 +313,20 @@
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+
+            <!-- AOP -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjtools</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+
 
             <!-- Google Web Toolkit -->
             <dependency>

@@ -21,6 +21,10 @@
 
     <import resource="beans.xml" />
 
+    <!-- enable automatic generation of proxies (e.g. for automatic exception logging) -->
+    <aop:aspectj-autoproxy />
+
+
     <!-- Task scheduling -->
     <task:annotation-driven />
 </beans>

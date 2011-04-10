@@ -89,6 +89,11 @@
         <property name="supplierService" ref="supplierService" />
     </bean>
 
+    <!-- aspects -->
+    <bean id="exceptionLoggerAspect" class="cz.poptavka.sample.application.logging.ExceptionLoggerAspect" />
+    <bean id="executionTimeLoggerAspect" class="cz.poptavka.sample.application.logging.ExecutionTimeLoggerAspect" />
+
+
     <!-- Other -->
     <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>
 
