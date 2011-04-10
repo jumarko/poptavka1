@@ -153,7 +153,6 @@ public class MyProblemsView extends Composite implements
  */
 class SelectorCell extends AbstractCell<String> {
 
-    // TODO Martin Slavkovsky - fix compile errors
     // @Override
     public void render(String value, Object key, SafeHtmlBuilder sb) {
         /*
@@ -178,13 +177,6 @@ class SelectorCell extends AbstractCell<String> {
             sb.appendHtmlConstant("</option>");
         }
         sb.appendHtmlConstant("</select>");
-
-    }
-
-    // TODO Martin Slavkovsky - fix compile errors
-    @Override
-    public void render(Context context, String s, SafeHtmlBuilder safeHtmlBuilder) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
 

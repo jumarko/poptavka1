@@ -13,7 +13,7 @@
         <g:TextArea ui:field="textArea" text="textArea" />
       </g:VerticalPanel>
       <g:VerticalPanel>
-        <p1:CellList ui:field="cellList" />
+        <!--  <p1:CellList ui:field="cellList" /> -->
         <g:Button ui:field="buttonAttachments">Attachments</g:Button>
       </g:VerticalPanel>
       <g:VerticalPanel>
