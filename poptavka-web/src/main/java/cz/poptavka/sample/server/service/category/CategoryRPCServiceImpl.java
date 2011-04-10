@@ -3,7 +3,6 @@ package cz.poptavka.sample.server.service.category;
 import cz.poptavka.sample.client.service.demand.CategoryRPCService;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
-import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +16,12 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
 
     private CategoryService categoryService;
-    private TreeItemService treeItemService;
     private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 
     @Autowired
     @Required
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
-    }
-
-    @Autowired
-    @Required
-    public void setTreeItemService(TreeItemService treeItemService) {
-        this.treeItemService = treeItemService;
     }
 
     @Override

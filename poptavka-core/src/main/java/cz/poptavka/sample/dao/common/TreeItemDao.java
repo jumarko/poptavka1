@@ -13,7 +13,7 @@ public interface TreeItemDao {
 
     /**
      *
-     * Get all descendants (recursievely) of given <code>parentNode</code>.
+     * Get all descendants (recursively) of given <code>parentNode</code>.
      * If parent node is not specified then method returns all tree items of specified class.
      * <p>
      * Completely all children are returned, not only direct descendants!

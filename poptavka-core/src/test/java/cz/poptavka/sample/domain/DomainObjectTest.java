@@ -65,8 +65,8 @@ public class DomainObjectTest {
      */
     @BeforeClass
     public static void setUp() throws Exception {
-        final ClassPathScanningCandidateComponentProvider provider
-            = new ClassPathScanningCandidateComponentProvider(true);
+        final ClassPathScanningCandidateComponentProvider provider =
+            new ClassPathScanningCandidateComponentProvider(true);
         // do not check abstract classes
         provider.addIncludeFilter(new AbstractClassTestingTypeFilter() {
             @Override
@@ -137,10 +137,8 @@ public class DomainObjectTest {
                             if (publicMethod.getName().startsWith(GETTER_PREFIX)
                                     || publicMethod.getName().startsWith(GETTER_BOOLEAN_PREFIX)) {
                                 hasGetter = true;
-                                continue;
                             } else if (publicMethod.getName().startsWith(SETTER_PREFIX)) {
                                 hasSetter = true;
-                                continue;
                             }
                         }
                     }
@@ -178,7 +176,7 @@ public class DomainObjectTest {
      */
     @Test
     public void testRestrictedDomainObjectsDependencies() {
-         // contains all violations to checked rules in following form:
+        // contains all violations to checked rules in following form:
         // for each class the corrupted fields and each field has an error message assigned
         Map<Class, Map<Field, String>> violations = new HashMap<Class, Map<Field, String>>();
 
@@ -244,7 +242,7 @@ public class DomainObjectTest {
                 } else if (! domainObjectClass.equals(toStringMethod.getDeclaringClass())) {
                     // toString() method  is not overriden directly in domainObjectClass - inform user
                     System.err.println("Class [" + domainObjectClass.getName() + "] does not override"
-                        + " 'toString()' method.");
+                            + " 'toString()' method.");
                 }
             } catch (NoSuchMethodException e) {
                 violationClasses.add(domainObjectClass);
@@ -260,7 +258,7 @@ public class DomainObjectTest {
     //------------------------------------------------------------------------------------------------------------------
     private static boolean isInProhibitedPackage(Class<?> fieldType) {
         if (fieldType.getName().startsWith(POPTAVKA_CORE_PACKAGE)) {
-                // this is poptavka's class - check if it is in domain package
+            // this is poptavka's class - check if it is in domain package
             return ! fieldType.getName().startsWith(DOMAIN_PACKAGE_NAME);
         }
 
@@ -327,12 +325,8 @@ public class DomainObjectTest {
             return false;
         }
 
-        if (aClass.getAnnotation(javax.persistence.Entity.class) == null
-                && aClass.getAnnotation(org.hibernate.annotations.Entity.class) == null) {
-            // this is not an entity class!
-            return false;
-        }
+        return !(aClass.getAnnotation(Entity.class) == null
+                && aClass.getAnnotation(org.hibernate.annotations.Entity.class) == null);
 
-        return true;
     }
 }

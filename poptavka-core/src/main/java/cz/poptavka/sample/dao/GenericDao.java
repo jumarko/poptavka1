@@ -101,7 +101,7 @@ public interface GenericDao<T extends DomainObject> {
     <T> T refresh(T entity);
 
     /**
-     * flushes the cachce to the database.
+     * flushes the cache to the database.
      */
     void flush();
 

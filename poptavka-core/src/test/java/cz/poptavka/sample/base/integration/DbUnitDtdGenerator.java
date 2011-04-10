@@ -46,7 +46,7 @@ public final class DbUnitDtdGenerator {
         if (dataSource == null) {
             dataSource = (DataSource) ApplicationContextHolder.getApplicationContext().getBean("poptavkaDataSource");
         }
-        Preconditions.checkState(dataSource != null, "Data source must be defined for dtd generationg");
+        Preconditions.checkState(dataSource != null, "Data source must be defined for dtd generation.");
 
         try {
             // quite ugly to get resource and write to it, but it is guaranteed that this resource is a file in project

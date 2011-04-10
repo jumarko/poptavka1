@@ -55,8 +55,8 @@ public class AdditionalInfoFillerTest extends DBUnitBaseTest {
     /**
      * Check if category with given <code>categoryCode</code> has assigned additional info with expected counts.
      *
-     * @param categoryCode
-     * @param expectedAdditionalInfo
+     * @param categoryCode unique code of category
+     * @param expectedAdditionalInfo additional info that should be set for given category
      */
     private void checkCategory(String categoryCode, AdditionalInfo expectedAdditionalInfo) {
         final Category category = this.categoryService.getCategory(categoryCode);

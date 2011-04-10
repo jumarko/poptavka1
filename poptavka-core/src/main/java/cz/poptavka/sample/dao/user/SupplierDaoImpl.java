@@ -28,8 +28,7 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
                 Category.class));
-        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForCategories", params);
-        return allSuppliersCount;
+        return (Long) runNamedQueryForSingleResult("getSuppliersCountForCategories", params);
     }
 
 
@@ -44,8 +43,7 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("leftBound", category.getLeftBound());
         params.put("rightBound", category.getRightBound());
-        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForCategory", params);
-        return allSuppliersCount;
+        return (Long) runNamedQueryForSingleResult("getSuppliersCountForCategory", params);
     }
 
 
@@ -83,8 +81,7 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
                 Locality.class));
-        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForLocalities", params);
-        return allSuppliersCount;
+        return (Long) runNamedQueryForSingleResult("getSuppliersCountForLocalities", params);
     }
 
     @Override
@@ -92,9 +89,7 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("leftBound", locality.getLeftBound());
         params.put("rightBound", locality.getRightBound());
-        final long allSuppliersCount = (Long) runNamedQueryForSingleResult("getSuppliersCountForLocality",
-                params);
-        return allSuppliersCount;
+        return (Long) runNamedQueryForSingleResult("getSuppliersCountForLocality", params);
     }
 
 

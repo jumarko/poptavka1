@@ -58,7 +58,7 @@ public class Script {
     /**
      * Creates new script which source code will be retrieved from <code>scriptFileName</code>.
      * File name is considered to be relative to current package (directory) of this class.
-     * <p>IT IS PREFFERED to use 3-parametric constructor with non-empty source code.
+     * <p>IT IS PREFERRED to use 3-parametric constructor with non-empty source code.
      *
      * @param scriptFileName
      * @param scriptEngine

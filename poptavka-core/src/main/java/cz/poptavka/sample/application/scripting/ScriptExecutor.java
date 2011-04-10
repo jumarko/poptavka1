@@ -18,7 +18,7 @@ public final class ScriptExecutor {
 
     private static final ScriptExecutor INSTANCE = new ScriptExecutor();
 
-    final ScriptEngineManager mgr = new ScriptEngineManager();
+    private final ScriptEngineManager mgr = new ScriptEngineManager();
 
 
     private ScriptExecutor() {

@@ -63,7 +63,7 @@
     </bean>
 
 
-    <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl ">
+    <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl">
         <property name="dao" ref="categoryDao" />
     </bean>
 
@@ -87,9 +87,6 @@
     <bean id="additionalInfoFiller" class="cz.poptavka.sample.service.jobs.AdditionalInfoFiller">
         <property name="demandService" ref="demandService" />
         <property name="supplierService" ref="supplierService" />
-        <property name="treeItemService" ref="treeItemService" />
-        <property name="localityService" ref="localityService" />
-        <property name="categoryService" ref="categoryService" />
     </bean>
 
     <!-- Other -->

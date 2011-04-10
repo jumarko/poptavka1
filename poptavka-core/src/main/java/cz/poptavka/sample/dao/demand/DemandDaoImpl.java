@@ -58,8 +58,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
                 Locality.class));
-        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForLocalities", params);
-        return allDemandsCount;
+        return (Long) runNamedQueryForSingleResult("getDemandsCountForLocalities", params);
     }
 
      /** {@inheritDoc} */
@@ -68,8 +67,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("leftBound", locality.getLeftBound());
         params.put("rightBound", locality.getRightBound());
-        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForLocality", params);
-        return allDemandsCount;
+        return (Long) runNamedQueryForSingleResult("getDemandsCountForLocality", params);
     }
 
     /** {@inheritDoc} */
@@ -108,8 +106,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
                 Category.class));
-        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForCategories", params);
-        return allDemandsCount;
+        return (Long) runNamedQueryForSingleResult("getDemandsCountForCategories", params);
     }
 
      /** {@inheritDoc} */
@@ -118,8 +115,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("leftBound", category.getLeftBound());
         params.put("rightBound", category.getRightBound());
-        final long allDemandsCount = (Long) runNamedQueryForSingleResult("getDemandsCountForCategory", params);
-        return allDemandsCount;
+        return (Long) runNamedQueryForSingleResult("getDemandsCountForCategory", params);
     }
 
 

@@ -6,12 +6,10 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +17,12 @@ import java.util.List;
 public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implements LocalityRPCService {
 
     private LocalityService localityService;
-    private TreeItemService treeItemService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalityRPCServiceImpl.class);
 
     @Autowired
-    @Required
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
-    }
-
-    @Autowired
-    @Required
-    public void setTreeItemService(TreeItemService treeItemService) {
-        this.treeItemService = treeItemService;
     }
 
     @Override

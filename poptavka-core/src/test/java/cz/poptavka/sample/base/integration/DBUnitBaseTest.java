@@ -30,7 +30,7 @@ import java.util.List;
  * Base class for all integration tests in project.
  * <p>
  * It prepares data for tests, the only one thing the client (subclass) must specify is the path to the xml file
- * which contains data to be loaded to the database. This path is specified through {@liuk @DataSet} annotation.
+ * which contains data to be loaded to the database. This path is specified through {@link @DataSet} annotation.
  * <p>
  * Even if no path has been specified, we try to load the file with name by convetion "UnqualifiedClassName.xml".
  * E.g. for class <code>ClientIntegrationTest</code> the path would be <code>ClientIntegrationTest.xml</code>.

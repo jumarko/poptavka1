@@ -48,4 +48,9 @@ public enum BusinessType {
     BusinessType(String value) {
         this.value = value;
     }
+
+
+    public String getValue() {
+        return value;
+    }
 }

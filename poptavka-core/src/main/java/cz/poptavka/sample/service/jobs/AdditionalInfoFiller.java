@@ -2,9 +2,6 @@ package cz.poptavka.sample.service.jobs;
 
 import cz.poptavka.sample.domain.common.AdditionalInfo;
 import cz.poptavka.sample.domain.common.AdditionalInfoAware;
-import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.common.TreeItemService;
-import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.jobs.base.JobTask;
 import cz.poptavka.sample.service.user.SupplierService;
@@ -40,13 +37,9 @@ public class AdditionalInfoFiller implements JobTask {
     private DemandService demandService;
     private SupplierService supplierService;
 
-    private TreeItemService treeItemService;
-    private LocalityService localityService;
-    private CategoryService categoryService;
 
 
-
-    @Scheduled(fixedRate = 2 * HOUR)
+    @Scheduled(cron = EVERY_MIDNIGHT)
     @Transactional
     public void execute() {
         LOGGER.info("Job AdditionalInfoFiller is being executed...");
@@ -101,17 +94,5 @@ public class AdditionalInfoFiller implements JobTask {
 
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
-    }
-
-    public void setTreeItemService(TreeItemService treeItemService) {
-        this.treeItemService = treeItemService;
-    }
-
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
-
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
     }
 }

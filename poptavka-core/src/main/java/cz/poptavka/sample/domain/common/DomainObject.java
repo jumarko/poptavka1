@@ -37,11 +37,8 @@ public abstract class DomainObject implements Serializable {
 
         final DomainObject that = (DomainObject) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
+        return !(id != null ? !id.equals(that.id) : that.id != null);
 
-        return true;
     }
 
     @Override

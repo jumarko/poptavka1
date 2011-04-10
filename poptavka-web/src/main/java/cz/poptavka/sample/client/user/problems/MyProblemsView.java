@@ -1,8 +1,5 @@
 package cz.poptavka.sample.client.user.problems;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.DateCell;
@@ -11,13 +8,17 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 
 public class MyProblemsView extends Composite implements
@@ -152,7 +153,8 @@ public class MyProblemsView extends Composite implements
  */
 class SelectorCell extends AbstractCell<String> {
 
-    @Override
+    // TODO Martin Slavkovsky - fix compile errors
+    // @Override
     public void render(String value, Object key, SafeHtmlBuilder sb) {
         /*
          * Always do a null check on the value. Cell widgets can pass null to
@@ -177,6 +179,12 @@ class SelectorCell extends AbstractCell<String> {
         }
         sb.appendHtmlConstant("</select>");
 
+    }
+
+    // TODO Martin Slavkovsky - fix compile errors
+    @Override
+    public void render(Context context, String s, SafeHtmlBuilder safeHtmlBuilder) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
 

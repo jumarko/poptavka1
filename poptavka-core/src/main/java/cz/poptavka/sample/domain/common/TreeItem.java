@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
  * withing n-ary trees.
  *
  * <p>
- * The class implements the optimalization which uses <code>leftBound</code> and <code>rightBound</code>.
+ * The class implements the optimization which uses <code>leftBound</code> and <code>rightBound</code>.
  * Instead of simply working with tree we use the "Subset" view where all children of some tree time
  * are within its bounds - i.e. they are between tree item's <code>leftBound</code> and <code>rightBound</code>.
  *
@@ -19,7 +19,7 @@ import javax.persistence.MappedSuperclass;
  *
  * <p>
  *     The descendant of this class must override abstract methods and maps related fields. These fields cannot
- *     be mapped in this supperclass because then the strange errors occurs - e.g. the method {@@link #getChildren()}
+ *     be mapped in this superclass because then the strange errors occurs - e.g. the method {@@link #getChildren()}
  *     returns both categories and localities when called on Locality object.
  *
  * This class uses TABLE_PER_CLASS strategy because there is a references to the parent - this case is not allowed

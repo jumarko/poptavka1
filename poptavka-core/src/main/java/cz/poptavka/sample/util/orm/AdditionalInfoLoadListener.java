@@ -63,7 +63,7 @@ public class AdditionalInfoLoadListener implements PostLoadEventListener {
      */
     @Override
     public void onPostLoad(PostLoadEvent event) {
-        ensureServicesIntialization();
+        ensureServicesInitialization();
 
         if (event.getEntity() instanceof AdditionalInfoAware) {
             final AdditionalInfoAware entityWithAddionalInfo = (AdditionalInfoAware) event.getEntity();
@@ -112,7 +112,7 @@ public class AdditionalInfoLoadListener implements PostLoadEventListener {
      * This must be done manually because JPA configuration ("entityManagerFactory") does not allowed to inject
      * dependencies into the listeners.
      */
-    private void ensureServicesIntialization() {
+    private void ensureServicesInitialization() {
         if (! servicesInitialized) {
             this.demandService =
                     (DemandService) ApplicationContextHolder.getApplicationContext().getBean("demandService");

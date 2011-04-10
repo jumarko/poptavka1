@@ -80,7 +80,7 @@ public interface AuditService {
      * Get the date, at which a revision was created.
      *
      * @param revision Number of the revision for which to get the date.
-     * @return Date of commiting the given revision.
+     * @return Date of committing the given revision.
      * @throws IllegalArgumentException If revision is less or equal to 0.
      * @throws org.hibernate.envers.exception.RevisionDoesNotExistException
      *                                  If the revision does not exist.

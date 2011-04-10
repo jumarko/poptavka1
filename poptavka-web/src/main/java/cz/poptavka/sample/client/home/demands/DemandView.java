@@ -15,7 +15,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
-
 import cz.poptavka.sample.domain.demand.Demand;
 
 public class DemandView extends Composite {
@@ -41,12 +40,17 @@ public class DemandView extends Composite {
 
     @UiField(provided = true) CellList<Object> cellList = new CellList<Object>(new AbstractCell<Object>() {
 
+        // TODO Martin Slavkovsky - fix compile errors
+//        @Override
+//        public void render(Object value, Object key, SafeHtmlBuilder sb) {
+//            // TODO Auto-generated method stub
+//
+//        }
+
         @Override
-        public void render(Object value, Object key, SafeHtmlBuilder sb) {
-            // TODO Auto-generated method stub
-
+        public void render(Context context, Object o, SafeHtmlBuilder safeHtmlBuilder) {
+            //To change body of implemented methods use File | Settings | File Templates.
         }
-
     });
 
 
