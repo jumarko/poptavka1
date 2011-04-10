@@ -10,11 +10,14 @@ import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.jobs.base.JobTask;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
+ * Test of job that fills counts of demands and suppliers in db.
+ *
  * @author Juraj Martinka
  *         Date: 3.4.11
  */
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
         "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
+@Ignore
 public class AdditionalInfoFillerTest extends DBUnitBaseTest {
 
     @Autowired
