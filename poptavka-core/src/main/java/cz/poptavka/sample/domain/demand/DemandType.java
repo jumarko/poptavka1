@@ -26,11 +26,7 @@ public class DemandType extends DomainObject {
         NORMAL("normal"),
 
         /** Special demand at top positions. */
-        ATTRACTIVE("attractive"),
-
-        /** Encapsulates all other types of demands. */
-        ALL("all");
-
+        ATTRACTIVE("attractive");
 
         private final String value;
 

@@ -39,11 +39,11 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testGetDemandsByLocality() {
-        checkDemandsByLocality(3, "loc2");
-        checkDemandsByLocality(7, "loc1");
+        checkDemandsByLocality(4, "loc2");
+        checkDemandsByLocality(6, "loc1");
         checkDemandsByLocality(4, "loc11");
         checkDemandsByLocality(0, "loc0111");
-        checkDemandsByLocality(2, "loc121");
+        checkDemandsByLocality(1, "loc121");
 
         // check combination of localities - the result is NOT always the sum of demands related to the localities
         // because duplication of demands in result is not allowed!
@@ -56,16 +56,15 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetDemandsCountForAllLocalities() {
         final Map<Locality, Long> demandsCountForAllLocalities = this.demandService.getDemandsCountForAllLocalities();
-        Assert.assertEquals(13, demandsCountForAllLocalities.size());
+        Assert.assertEquals(12, demandsCountForAllLocalities.size());
 
-        checkDemandCountForLocality("loc1", 7L, demandsCountForAllLocalities);
-        checkDemandCountForLocality("loc2", 3L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc1", 6L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc2", 4L, demandsCountForAllLocalities);
         checkDemandCountForLocality("loc11", 4L, demandsCountForAllLocalities);
-        checkDemandCountForLocality("loc121", 2L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc121", 1L, demandsCountForAllLocalities);
 
-        checkDemandCountForLocality("loc12", 2L, demandsCountForAllLocalities);
+        checkDemandCountForLocality("loc12", 1L, demandsCountForAllLocalities);
         checkDemandCountForLocality("loc111", 0L, demandsCountForAllLocalities);
-        checkDemandCountForLocality("loc1211", 1L, demandsCountForAllLocalities);
     }
 
 
@@ -86,21 +85,21 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testGetDemandsCountByLocality() {
-        checkDemandCountByLocality("loc1", 7);
-        checkDemandCountByLocality("loc2", 3);
+        checkDemandCountByLocality("loc1", 6);
+        checkDemandCountByLocality("loc2", 4);
         checkDemandCountByLocality("loc11", 4);
-        checkDemandCountByLocality("loc121", 2);
+        checkDemandCountByLocality("loc121", 1);
 
-        checkDemandCountByLocality("loc12", 2);
+        checkDemandCountByLocality("loc12", 1);
         checkDemandCountByLocality("loc111", 0);
-        checkDemandCountByLocality("loc1211", 1);
+        checkDemandCountByLocality("loc21", 1);
     }
 
     @Test
     public void getDemandsCountWithoutChildrenByLocality() {
         checkDemandCountWithoutChildrenByLocality("loc1", 1);
         checkDemandCountWithoutChildrenByLocality("loc2", 3);
-        checkDemandCountWithoutChildrenByLocality("loc1211", 1);
+        checkDemandCountWithoutChildrenByLocality("loc21", 1);
         checkDemandCountWithoutChildrenByLocality("loc211", 0);
     }
 
@@ -158,7 +157,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     public void testDemandTypes() {
         checkDemandType(1L, DemandType.Type.NORMAL);
         checkDemandType(2L, DemandType.Type.ATTRACTIVE);
-        checkDemandType(3L, DemandType.Type.ALL);
+        checkDemandType(3L, DemandType.Type.NORMAL);
     }
 
 

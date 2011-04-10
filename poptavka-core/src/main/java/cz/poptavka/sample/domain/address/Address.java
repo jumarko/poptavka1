@@ -24,8 +24,6 @@ public class Address extends DomainObject {
     @ManyToOne
     private Locality district;
     @ManyToOne
-    private Locality township;
-    @ManyToOne
     private Locality city;
 
     private String street;
@@ -56,14 +54,6 @@ public class Address extends DomainObject {
 
     public void setDistrict(Locality district) {
         this.district = district;
-    }
-
-    public Locality getTownship() {
-        return township;
-    }
-
-    public void setTownship(Locality township) {
-        this.township = township;
     }
 
     public Locality getCity() {
@@ -123,7 +113,6 @@ public class Address extends DomainObject {
         sb.append(", country=").append(country);
         sb.append(", region=").append(region);
         sb.append(", district=").append(district);
-        sb.append(", township=").append(township);
         sb.append(", city=").append(city);
         sb.append(", street='").append(street).append('\'');
         sb.append(", zipCode='").append(zipCode).append('\'');

@@ -38,8 +38,7 @@ public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
         checkLocalitiesByType(LocalityType.COUNTRY, 1);
         checkLocalitiesByType(LocalityType.REGION, 2);
         checkLocalitiesByType(LocalityType.DISTRICT, 3);
-        checkLocalitiesByType(LocalityType.TOWNSHIP, 6);
-        checkLocalitiesByType(LocalityType.CITY, 1);
+        checkLocalitiesByType(LocalityType.CITY, 6);
 
         checkLocalitiesByType(null, 0);
     }
@@ -51,7 +50,7 @@ public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
         final List<Locality> allLocalitiesInCzechRepublic = this.treeItemService.getAllChildren(czechRepublic,
                 Locality.class);
 
-        Assert.assertEquals(12, allLocalitiesInCzechRepublic.size());
+        Assert.assertEquals(11, allLocalitiesInCzechRepublic.size());
     }
 
 

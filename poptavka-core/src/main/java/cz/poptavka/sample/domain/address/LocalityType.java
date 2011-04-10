@@ -8,12 +8,10 @@ package cz.poptavka.sample.domain.address;
  */
 public enum LocalityType {
     COUNTRY,
-    /** In Czech Republic "oblast".*/
+    /** "kraj" in the Czech Republic.*/
     REGION,
-    /** In Czech Republic "kraj".*/
+    /** "okres" in the Czech Republic.*/
     DISTRICT,
-    /** In Czech Republic "okres".*/
-    TOWNSHIP,
-    /** In Czech Republic "obec".*/
+    /** "obec in the Czech Republic.*/
     CITY
 }

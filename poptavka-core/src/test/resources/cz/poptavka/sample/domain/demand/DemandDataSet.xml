@@ -8,10 +8,10 @@
 
     <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."/>
     <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."/>
-    <DEMAND ID="3" TYPE_ID="3" TITLE="Demand 3"  DESCRIPTION="3: All request for java application."/>
+    <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3"  DESCRIPTION="3: All request for java application."/>
     <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."/>
     <DEMAND ID="5" TYPE_ID="2" TITLE="Demand 5" DESCRIPTION="5: Attractive request for java application."/>
-    <DEMAND ID="6" TYPE_ID="3" TITLE="Demand 6" DESCRIPTION="6: All request for java application."/>
+    <DEMAND ID="6" TYPE_ID="1" TITLE="Demand 6" DESCRIPTION="6: All request for java application."/>
     <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."/>
     <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."/>
     <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."/>
@@ -27,7 +27,7 @@
     <DEMAND_LOCALITY ID="6" DEMAND_ID="6" LOCALITY_ID="3" />
     <DEMAND_LOCALITY ID="7" DEMAND_ID="7" LOCALITY_ID="3" />
     <DEMAND_LOCALITY ID="8" DEMAND_ID="8" LOCALITY_ID="6" />
-    <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="7" />
+    <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="8" />
     <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />
 
     <!--########################################## demands for categories ###########################################-->

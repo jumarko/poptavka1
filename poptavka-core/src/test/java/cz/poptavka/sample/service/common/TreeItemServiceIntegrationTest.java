@@ -28,7 +28,7 @@ public class TreeItemServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testGetAllLeavesIdsForLocalities() {
-        checkLeaves(Locality.class, 6, new Long[] {5L, 7L, 9L, 10L, 11L, 12L});
+        checkLeaves(Locality.class, 6, new Long[] {5L, 6L, 9L, 10L, 11L, 12L});
     }
 
 

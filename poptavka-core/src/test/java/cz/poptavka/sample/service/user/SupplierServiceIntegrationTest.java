@@ -51,7 +51,7 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
 
         final Map<Locality, Long> suppliersCountForAllLocalities =
                 this.supplierService.getSuppliersCountForAllLocalities();
-        Assert.assertEquals(13, suppliersCountForAllLocalities.size());
+        Assert.assertEquals(12, suppliersCountForAllLocalities.size());
 
         checkSuppliersCountForLocality("loc1", 2L, suppliersCountForAllLocalities);
         checkSuppliersCountForLocality("loc11", 1L, suppliersCountForAllLocalities);
