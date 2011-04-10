@@ -52,7 +52,7 @@ public class LocalitySelectorPresenter
                 view.toggleLoader();
                 view.getTownshipList().setVisible(false);
                 view.getCityList().setVisible(false);
-                eventBus.getChildLocalities(LocalityType.TOWNSHIP, view.getSelectedItem(LocalityType.DISTRICT));
+                eventBus.getChildLocalities(LocalityType.DISTRICT, view.getSelectedItem(LocalityType.REGION));
             }
         });
         view.getTownshipList().addChangeHandler(new ChangeHandler() {
@@ -60,7 +60,7 @@ public class LocalitySelectorPresenter
             public void onChange(ChangeEvent event) {
                 view.toggleLoader();
                 view.getCityList().setVisible(false);
-                eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.TOWNSHIP));
+                eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.DISTRICT));
             }
         });
         view.getCityList().addClickHandler(new ClickHandler() {
@@ -85,10 +85,10 @@ public class LocalitySelectorPresenter
 
     public void onSetLocalityData(LocalityType type, ArrayList<LocalityDetail> list) {
         switch (type) {
-            case DISTRICT:
+            case REGION:
                 setData(view.getDistrictList(), list);
                 break;
-            case TOWNSHIP:
+            case DISTRICT:
                 view.toggleLoader();
                 setData(view.getTownshipList(), list);
                 break;

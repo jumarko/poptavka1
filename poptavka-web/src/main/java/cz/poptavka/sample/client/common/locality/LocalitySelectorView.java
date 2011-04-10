@@ -24,9 +24,9 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     private HashSet<String> selectedListStrings = new HashSet<String>();
 
     @UiField
-    ListBox districtList;
+    ListBox regionList;
     @UiField
-    ListBox townshipList;
+    ListBox districtList;
     @UiField
     ListBox cityList;
     @UiField
@@ -45,12 +45,12 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
 
     @Override
     public ListBox getDistrictList() {
-        return districtList;
+        return regionList;
     }
 
     @Override
     public ListBox getTownshipList() {
-        return townshipList;
+        return districtList;
     }
 
     @Override
@@ -65,10 +65,10 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
     @Override
     public String getSelectedItem(LocalityType type) {
         switch (type) {
+            case REGION:
+                return regionList.getValue(regionList.getSelectedIndex());
             case DISTRICT:
                 return districtList.getValue(districtList.getSelectedIndex());
-            case TOWNSHIP:
-                return townshipList.getValue(townshipList.getSelectedIndex());
             default:
                 return cityList.getValue(cityList.getSelectedIndex());
         }

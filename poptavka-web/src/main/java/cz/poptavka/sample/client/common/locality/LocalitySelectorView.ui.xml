@@ -6,8 +6,8 @@
 
     <g:HTMLPanel>
         <g:HorizontalPanel>
-            <g:ListBox ui:field='districtList' visibleItemCount='10' width="200"></g:ListBox>
-            <g:ListBox ui:field='townshipList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
+            <g:ListBox ui:field='regionList' visibleItemCount='10' width="200"></g:ListBox>
+            <g:ListBox ui:field='districtList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
             <g:ListBox ui:field='cityList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
             <g:HTML ui:field='loader' visible='false' styleName='{res.cssBase.commonListLoader}' />
         </g:HorizontalPanel>
