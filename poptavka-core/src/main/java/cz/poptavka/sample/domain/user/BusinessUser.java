@@ -1,6 +1,9 @@
 package cz.poptavka.sample.domain.user;
 
+import cz.poptavka.sample.domain.address.Address;
+import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.settings.Settings;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
@@ -43,6 +46,12 @@ public class BusinessUser extends User {
     @Cascade(value = CascadeType.ALL)
     private Person person;
 
+
+    /** All user's addresses. */
+    @OneToMany
+    @NotAudited
+    private List<Address> addresses;
+
     /** Flag if user has already been verified. If true then it is a "permanent" user, otherwise it is temporary user.*/
     private boolean verified;
 
@@ -50,8 +59,16 @@ public class BusinessUser extends User {
     @NotAudited
     private List<UserService> userServices;
 
+
     @OneToMany
-    private List<ProblemReport> problemReports;
+    @NotAudited
+    private List<Invoice> invoices;
+
+
+    @OneToOne
+    @NotAudited
+    private Settings settings;
+
 
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
@@ -79,6 +96,14 @@ public class BusinessUser extends User {
         this.person = person;
     }
 
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
     public boolean isVerified() {
         return verified;
     }
@@ -95,13 +120,22 @@ public class BusinessUser extends User {
         this.userServices = userServices;
     }
 
-    public List<ProblemReport> getProblemReports() {
-        return problemReports;
+    public List<Invoice> getInvoices() {
+        return invoices;
     }
 
-    public void setProblemReports(List<ProblemReport> problemReports) {
-        this.problemReports = problemReports;
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
     }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
 
     //-------------------------- End of GETTERS AND SETTERS ------------------------------------------------------------
 

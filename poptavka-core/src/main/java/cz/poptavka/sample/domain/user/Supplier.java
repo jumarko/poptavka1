@@ -7,7 +7,6 @@ package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
-import cz.poptavka.sample.domain.demand.Rating;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -15,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
@@ -44,11 +42,11 @@ public class Supplier extends BusinessUser {
     )
     private List<Category> categories;
 
+    /** Flag indicates wheter supplier is certified or not. TODO: the type of ceritification should be available!*/
+    private Boolean certified;
 
-    /** All suppliers ratings. */
-    @OneToMany
-    @NotAudited
-    private List<Rating> ratings;
+    /** Total rating of supplier for all his "processed" demands .*/
+    private Integer overalRating;
 
 
     public List<Locality> getLocalities() {
@@ -67,12 +65,19 @@ public class Supplier extends BusinessUser {
         this.categories = categories;
     }
 
-
-    public List<Rating> getRatings() {
-        return ratings;
+    public boolean isCertified() {
+        return certified;
     }
 
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
+    public void setCertified(boolean certified) {
+        this.certified = certified;
+    }
+
+    public Integer getOveralRating() {
+        return overalRating;
+    }
+
+    public void setOveralRating(Integer overalRating) {
+        this.overalRating = overalRating;
     }
 }

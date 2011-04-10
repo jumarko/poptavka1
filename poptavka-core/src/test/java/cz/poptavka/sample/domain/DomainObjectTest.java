@@ -84,14 +84,13 @@ public class DomainObjectTest {
         for (BeanDefinition domainObject : domainObjects) {
             final Class<?> domainObjectClass =
                     DomainObjectTest.class.getClassLoader().loadClass(domainObject.getBeanClassName());
-            if (domainObjectClass.isEnum() || isTestClass(domainObjectClass)) {
+            if (domainObjectClass.isEnum() || isTestClass(domainObjectClass) || isAspectjClosure(domainObjectClass)) {
                 continue;
             }
             domainObjects.add(domainObject);
             domainObjectsClasses.add(domainObjectClass);
         }
     }
-
 
     /**
      * Tests if all persistent entities inherit from base class {@link DomainObject}.
@@ -271,6 +270,11 @@ public class DomainObjectTest {
         return TestCase.class.isAssignableFrom(aClass)
                 || aClass.getName().endsWith("Test");
     }
+
+    private static boolean isAspectjClosure(Class<?> aClass) {
+        return aClass.getName().contains("AjcClosure");
+    }
+
 
 
     private static String getAccessorsViolationsMessage(Map<Class, Map<Field, String>> violations) {

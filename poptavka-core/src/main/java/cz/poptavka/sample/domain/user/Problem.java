@@ -11,7 +11,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @Audited
-public class ProblemReport extends DomainObject {
+public class Problem extends DomainObject {
 
     private String text;
 

@@ -3,12 +3,14 @@ package cz.poptavka.sample.domain.demand;
 import cz.poptavka.sample.domain.common.DomainObject;
 
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Date;
 
 /**
  * The rating of supply of some demand.
+ * There are two perspectives of rating>
+ * <ul>
+ *   <li>from client's point of view</li>
+ *   <li>from supplier's point of view</li>
+ * </ul>
  *
  * @author Juraj Martinka
  *         Date: 12.2.11
@@ -16,46 +18,43 @@ import java.util.Date;
 @Entity
 public class Rating extends DomainObject {
 
-    private int rating;
+    private Integer supplierRating;
+    private String supplierMessage;
 
-    private String message;
-
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    private String reply;
+    private Integer clientRating;
+    private String clientMessage;
 
 
-    public int getRating() {
-        return rating;
+    public Integer getSupplierRating() {
+        return supplierRating;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setSupplierRating(Integer supplierRating) {
+        this.supplierRating = supplierRating;
     }
 
-    public String getMessage() {
-        return message;
+    public String getSupplierMessage() {
+        return supplierMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setSupplierMessage(String supplierMessage) {
+        this.supplierMessage = supplierMessage;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Integer getClientRating() {
+        return clientRating;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setClientRating(Integer clientRating) {
+        this.clientRating = clientRating;
     }
 
-    public String getReply() {
-        return reply;
+    public String getClientMessage() {
+        return clientMessage;
     }
 
-    public void setReply(String reply) {
-        this.reply = reply;
+    public void setClientMessage(String clientMessage) {
+        this.clientMessage = clientMessage;
     }
 
 
@@ -63,10 +62,10 @@ public class Rating extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Rating");
-        sb.append("{rating=").append(rating);
-        sb.append(", message='").append(message).append('\'');
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", reply='").append(reply).append('\'');
+        sb.append("{supplierRating=").append(supplierRating);
+        sb.append(", supplierMessage='").append(supplierMessage).append('\'');
+        sb.append(", clientRating=").append(clientRating);
+        sb.append(", clientMessage='").append(clientMessage).append('\'');
         sb.append('}');
         return sb.toString();
     }

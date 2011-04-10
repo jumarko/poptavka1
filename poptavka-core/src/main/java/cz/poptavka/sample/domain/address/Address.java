@@ -8,6 +8,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 /**
+ * Represents an address in the system, e.g. client's permanent address.
+ * From all localities it contains reference only to the {@link LocalityType#CITY} - other levels
+ * such as district, region and country can be found easily by city.
+ *
  * @author Juraj Martinka
  *         Date: 29.1.11
  */
@@ -18,43 +22,12 @@ public class Address extends DomainObject {
     private AddressType addressType;
 
     @ManyToOne
-    private Locality country;
-    @ManyToOne
-    private Locality region;
-    @ManyToOne
-    private Locality district;
-    @ManyToOne
     private Locality city;
 
     private String street;
     private String zipCode;
     private String houseNum;
     private String flatNum;
-
-
-    public Locality getCountry() {
-        return country;
-    }
-
-    public void setCountry(Locality country) {
-        this.country = country;
-    }
-
-    public Locality getRegion() {
-        return region;
-    }
-
-    public void setRegion(Locality region) {
-        this.region = region;
-    }
-
-    public Locality getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(Locality district) {
-        this.district = district;
-    }
 
     public Locality getCity() {
         return city;
@@ -110,9 +83,6 @@ public class Address extends DomainObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("Address");
         sb.append("{addressType=").append(addressType);
-        sb.append(", country=").append(country);
-        sb.append(", region=").append(region);
-        sb.append(", district=").append(district);
         sb.append(", city=").append(city);
         sb.append(", street='").append(street).append('\'');
         sb.append(", zipCode='").append(zipCode).append('\'');

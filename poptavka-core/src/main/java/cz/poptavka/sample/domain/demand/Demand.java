@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.math.BigDecimal;
@@ -101,6 +102,11 @@ public class Demand extends DomainObject {
      *
      * The maximum number of suppliers that can participate in this demand. */
     private Integer maxSuppliers;
+
+    /** Demand rating, that means evalution from supplier and client as well. */
+    @OneToOne
+    @NotAudited
+    private Rating rating;
 
 
     public String getTitle() {
@@ -246,6 +252,14 @@ public class Demand extends DomainObject {
 
     public void setMaxSuppliers(Integer maxSuppliers) {
         this.maxSuppliers = maxSuppliers;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     @Override

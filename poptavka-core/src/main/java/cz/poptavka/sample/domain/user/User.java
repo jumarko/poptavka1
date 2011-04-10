@@ -1,5 +1,6 @@
 package cz.poptavka.sample.domain.user;
 
+import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
 import org.hibernate.envers.Audited;
@@ -11,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
@@ -41,6 +43,11 @@ public class User extends DomainObject {
     /** User's preferences for improving user's experience. */
     @OneToMany
     private List<Preference> preferences;
+
+
+    @OneToOne
+    @NotAudited
+    private EmailActivation emailActivation;
 
 
     public User() {
@@ -109,6 +116,13 @@ public class User extends DomainObject {
         this.preferences = preferences;
     }
 
+    public EmailActivation getEmailActivation() {
+        return emailActivation;
+    }
+
+    public void setEmailActivation(EmailActivation emailActivation) {
+        this.emailActivation = emailActivation;
+    }
 
     @Override
     public String toString() {

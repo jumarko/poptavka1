@@ -1,10 +1,12 @@
-package cz.poptavka.sample.domain.accounting;
+package cz.poptavka.sample.domain.invoice;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.product.UserService;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,7 +18,8 @@ import java.util.List;
  * Represents invoice sent to the customer.
  * Only one invoice is sent to the customer for all his services - {@link }.
  * <p>
- * It might seems important to audit this entity, however, inovoice is created once and then is not normally edited.
+ * It might seems to be important to audit this entity,
+ * however, invoice is created only once and then is not normally edited.
  * If any error occurs then that invoice should be discarded and new invoice will be issued.
  *
  * <p>
@@ -86,6 +89,10 @@ public class Invoice extends DomainObject {
 
     /** Total price (VAT included). */
     private BigDecimal totalPrice;
+
+
+    @ManyToOne
+    private PaymentMethod paymentMethod;
 
 
 
@@ -190,8 +197,18 @@ public class Invoice extends DomainObject {
         return totalPrice;
     }
 
+
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
 

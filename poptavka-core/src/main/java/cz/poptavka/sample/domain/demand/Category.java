@@ -5,6 +5,7 @@ import cz.poptavka.sample.domain.common.AdditionalInfoAware;
 import cz.poptavka.sample.domain.common.TreeItem;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +43,10 @@ public class Category extends TreeItem implements AdditionalInfoAware {
     @OneToOne
     @Cascade(CascadeType.ALL)
     private AdditionalInfo additionalInfo;
+
+    @ManyToOne
+    @NotAudited
+    private Template template;
 
 
     public String getCode() {
@@ -112,6 +117,14 @@ public class Category extends TreeItem implements AdditionalInfoAware {
 
     public void setChildren(List<Category> children) {
         this.children = children;
+    }
+
+    public Template getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(Template template) {
+        this.template = template;
     }
 }
 
