@@ -178,6 +178,13 @@ class SelectorCell extends AbstractCell<String> {
         }
         sb.appendHtmlConstant("</select>");
     }
+
+    @Override
+    public void render(com.google.gwt.cell.client.Cell.Context arg0,
+            String arg1, SafeHtmlBuilder arg2) {
+        // TODO Auto-generated method stub
+
+    }
 }
 
 /**
