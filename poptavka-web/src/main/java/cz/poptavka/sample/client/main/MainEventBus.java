@@ -88,6 +88,9 @@ public interface MainEventBus extends EventBus {
      *
      * @param login login widget
      */
+    @Event(handlers = MainPresenter.class)
+    void listOfDemandsWidget(Widget body);
+
     @Event (handlers = MainPresenter.class)
     void setLoginWidget(Widget login);
 

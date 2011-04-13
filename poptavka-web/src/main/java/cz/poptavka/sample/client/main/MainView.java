@@ -25,6 +25,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     @UiField
     HTMLPanel footerHolder;
 
+
     /**
      * Constructor of parent view with some basic styling.
      */
@@ -41,6 +42,10 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
      */
     public void setBodyWidget(Widget body) {
         bodyHolder.setWidget(body);
+    }
+
+    public void setListOfDemands(Widget demands) {
+        bodyHolder.setWidget(demands);
     }
 
     /**

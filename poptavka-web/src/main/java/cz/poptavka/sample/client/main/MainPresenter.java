@@ -20,6 +20,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         void setBodyWidget(Widget body);
 
         void setLoginWidget(Widget login);
+
+        void setListOfDemands(Widget demands);
     }
 
     /**
@@ -43,7 +45,14 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public void onSetBodyHolderWidget(Widget body) {
         view.setBodyWidget(body);
     }
-
+    /**
+     * Sets widget to View's demands list section. Demands list section can hold one widget only.
+     *
+     * @param demands list widget to be inserted
+     */
+    public void onListOfDemandsWidget(Widget demands) {
+        view.setListOfDemands(demands);
+    }
     /**
      * Crossroad method for placing widget from common package.
      *
