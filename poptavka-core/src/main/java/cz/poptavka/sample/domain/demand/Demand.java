@@ -7,8 +7,10 @@ package cz.poptavka.sample.domain.demand;
 
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import javax.persistence.OneToMany;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -34,7 +36,6 @@ import java.util.List;
 @Entity
 @Audited
 public class Demand extends DomainObject {
-
     @Column(length = 100, nullable = false)
     private String title;
 
@@ -108,6 +109,9 @@ public class Demand extends DomainObject {
     @NotAudited
     private Rating rating;
 
+    @OneToMany(mappedBy = "demand")
+    @NotAudited
+    private List<Offer> offers;
 
     public String getTitle() {
         return title;
@@ -260,6 +264,14 @@ public class Demand extends DomainObject {
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
     }
 
     @Override
