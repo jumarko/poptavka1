@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:VerticalPanel ui:field="header" >
+			<g:HTML><h1>Moje Poptávky</h1></g:HTML>			
+			<g:Button ui:field="answerButton">Odpovedať</g:Button>
+			<g:Button ui:field="editButton">Upraviť</g:Button>
+			<g:Button ui:field="closeButton">Zavrieť</g:Button>
+			<g:Button ui:field="cancelButton">Zrušiť</g:Button>
+			<g:ListBox ui:field="actionSelectButton" />
+		</g:VerticalPanel>
+		<g:VerticalPanel ui:field="table" >
+		    <g:FlexTable ui:field="demandsTable"></g:FlexTable>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

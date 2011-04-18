@@ -21,8 +21,6 @@ public class UserPresenter extends BasePresenter<UserPresenter.UserViewInterface
         //init
         LOGGER.info("init user widget ...");
         eventBus.setBodyHolderWidget(view.getWidgetView());
-
-        eventBus.setListOfDemandsWidget();
     }
 
     public void onSetTabWidget(Widget tabBody) {
