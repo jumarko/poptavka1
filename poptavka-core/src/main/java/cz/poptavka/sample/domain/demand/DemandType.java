@@ -57,6 +57,15 @@ public class DemandType extends DomainObject {
     private String description;
 
 
+    public DemandType() {
+    }
+
+    public DemandType(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
+
+
     public String getCode() {
         return code;
     }
