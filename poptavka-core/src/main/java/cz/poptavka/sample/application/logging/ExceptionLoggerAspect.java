@@ -1,7 +1,7 @@
 package cz.poptavka.sample.application.logging;
 
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
+//import org.aspectj.lang.annotation.AfterThrowing;
+//import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,14 +11,14 @@ import org.slf4j.LoggerFactory;
  * @author Juraj Martinka
  *         Date: 10.4.11
  */
-@Aspect
+//@Aspect
 public class ExceptionLoggerAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionTimeLoggerAspect.class);
 
-    @AfterThrowing(
-            pointcut = "execution(* cz.poptavka.sample..*.*(..)) "
-                    + " and ! execution(* cz.poptavka.sample.application.logging.*.*(..))",
-            throwing = "exception")
+//    @AfterThrowing(
+//            pointcut = "execution(* cz.poptavka.sample..*.*(..)) "
+//                    + " && ! execution(* cz.poptavka.sample.application.logging.*.*(..))",
+//            throwing = "exception")
     public void logExceptionMethod(Exception exception) {
         LOGGER.error("An exception has been thrown.", exception);
     }

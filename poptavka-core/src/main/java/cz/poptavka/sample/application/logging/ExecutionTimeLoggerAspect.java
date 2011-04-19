@@ -1,8 +1,8 @@
 package cz.poptavka.sample.application.logging;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
+//import org.aspectj.lang.annotation.Around;
+//import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
@@ -16,12 +16,12 @@ import org.springframework.util.StopWatch;
  * @author Juraj Martinka
  *         Date: 10.4.11
  */
-@Aspect
+//@Aspect
 public class ExecutionTimeLoggerAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionTimeLoggerAspect.class);
 
-    @Around("execution(* cz.poptavka.sample..*.*(..)) "
-            + " and ! execution(* cz.poptavka.sample.application.logging.*.*(..))")
+//    @Around("execution(* cz.poptavka.sample..*.*(..)) "
+//            + " && ! execution(* cz.poptavka.sample.application.logging.*.*(..))")
     public Object logTimeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 
         final StopWatch stopWatch = new StopWatch();
@@ -32,7 +32,7 @@ public class ExecutionTimeLoggerAspect {
         stopWatch.stop();
 
         final StringBuffer logMessage = new StringBuffer();
-        logMessage.append(joinPoint.getTarget().getClass().getName());
+        logMessage.append(joinPoint.getSignature().getDeclaringType().getName());
         logMessage.append(".");
         logMessage.append(joinPoint.getSignature().getName());
         logMessage.append("(");
