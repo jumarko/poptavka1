@@ -23,6 +23,8 @@ import javax.persistence.NamedQuery;
  *
  * </ul>
  *
+ * @see wiki: <a href="http://www.webgres.cz/trac/poptavka/wiki/Settings">Settings on wiki</a>
+ *
  * @author Juraj Martinka
  *         Date: 4.2.11
  */
