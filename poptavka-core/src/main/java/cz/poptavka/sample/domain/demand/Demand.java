@@ -10,7 +10,6 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
-import javax.persistence.OneToMany;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -22,6 +21,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -112,6 +112,18 @@ public class Demand extends DomainObject {
     @OneToMany(mappedBy = "demand")
     @NotAudited
     private List<Offer> offers;
+
+    //----------------------------------  Attributes for demands gathered from external systems ------------------------
+    //----------------------------------  such epoptavka.cz, aaapoptavka.cz, etc. --------------------------------------
+
+    /** Arbitrary category specification for demands gathered from external system */
+    private String foreingCategory;
+
+    /** Arbitrary URL that represents the link to the original demand gathered from external system */
+    private String foreignLink;
+
+    @OneToOne
+    private DemandOrigin origin;
 
     public String getTitle() {
         return title;
@@ -272,6 +284,30 @@ public class Demand extends DomainObject {
 
     public void setOffers(List<Offer> offers) {
         this.offers = offers;
+    }
+
+    public String getForeingCategory() {
+        return foreingCategory;
+    }
+
+    public void setForeingCategory(String foreingCategory) {
+        this.foreingCategory = foreingCategory;
+    }
+
+    public String getForeignLink() {
+        return foreignLink;
+    }
+
+    public void setForeignLink(String foreignLink) {
+        this.foreignLink = foreignLink;
+    }
+
+    public DemandOrigin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(DemandOrigin origin) {
+        this.origin = origin;
     }
 
     @Override
