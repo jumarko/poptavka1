@@ -123,6 +123,7 @@ public class Demand extends DomainObject {
     private String foreignLink;
 
     @OneToOne
+    @NotAudited
     private DemandOrigin origin;
 
     public String getTitle() {
