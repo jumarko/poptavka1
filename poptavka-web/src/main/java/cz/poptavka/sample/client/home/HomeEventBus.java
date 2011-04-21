@@ -13,12 +13,14 @@ import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.Categ
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
+import cz.poptavka.sample.client.user.problems.MyProblemsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @ChildModules({
-        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true)
+        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true),
+        @ChildModule(moduleClass = MyProblemsModule.class, autoDisplay = false, async = true)
         })
 public interface HomeEventBus extends EventBus {
 
@@ -57,6 +59,9 @@ public interface HomeEventBus extends EventBus {
 
     @Event(modulesToLoad = DemandsModule.class)
     void start();
+
+    @Event(modulesToLoad = MyProblemsModule.class)
+    void displayMyProblems();
 
     @Event(forwardToParent = true)
     void getRootCategories();

@@ -32,6 +32,8 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         Widget getWidgetView();
 
         HasClickHandlers getDisplayDemandsBtn();
+
+        HasClickHandlers getButton3Btn();
     }
 
     public void bindView() {
@@ -43,6 +45,12 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
             @Override
             public void onClick(ClickEvent arg0) {
                 eventBus.start();
+            }
+        });
+        view.getButton3Btn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                eventBus.displayMyProblems();
             }
         });
     }

@@ -109,6 +109,11 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     }
 
     @Override
+    public HasClickHandlers getButton3Btn() {
+        return button3;
+    }
+
+    @Override
     public void setCreateDemandToken(String token) {
         linkCreateDemand.setTargetHistoryToken(token);
     }

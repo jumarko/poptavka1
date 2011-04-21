@@ -19,6 +19,7 @@ import com.google.gwt.view.client.SelectionModel;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class MyProblemsView extends Composite implements
@@ -26,6 +27,8 @@ public class MyProblemsView extends Composite implements
 
     private static MyProblemsUiBinder uiBinder = GWT
             .create(MyProblemsUiBinder.class);
+
+    private static final Logger LOGGER = Logger.getLogger(MyProblemsView.class.getName());
 
     @UiField
     CellTable<ContactInfo> cellTable;
@@ -42,6 +45,16 @@ public class MyProblemsView extends Composite implements
     Button activate;
     @UiField
     Button deny;
+
+    @Override
+    public void createView() {
+        //initWidget(uiBinder.createAndBindUi(this));
+        // Add a selection model so we can select cells.
+        SelectionModel<ContactInfo> selectionModel = new MultiSelectionModel<ContactInfo>();
+        cellTable.setSelectionModel(selectionModel);
+        this.initTableColumns(selectionModel);
+        this.setData();
+    }
 
     interface MyProblemsUiBinder extends UiBinder<Widget, MyProblemsView> {
     }
