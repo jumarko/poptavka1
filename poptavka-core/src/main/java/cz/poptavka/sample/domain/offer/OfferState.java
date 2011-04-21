@@ -6,6 +6,7 @@
 package cz.poptavka.sample.domain.offer;
 
 import cz.poptavka.sample.domain.common.DomainObject;
+
 import javax.persistence.Entity;
 
 /**
@@ -35,4 +36,14 @@ public class OfferState extends DomainObject {
         this.name = name;
     }
 
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("OfferState");
+        sb.append("{name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

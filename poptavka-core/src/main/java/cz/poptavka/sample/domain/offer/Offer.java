@@ -8,13 +8,15 @@ package cz.poptavka.sample.domain.offer;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Supplier;
-import java.math.BigDecimal;
-import java.util.Date;
+import cz.poptavka.sample.util.strings.ToStringUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  *
@@ -88,4 +90,17 @@ public class Offer extends DomainObject {
     }
 
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Offer");
+        sb.append("{price=").append(price);
+        sb.append(", state=").append(state);
+        sb.append(", created=").append(created);
+        sb.append(", finishDate=").append(finishDate);
+        sb.append(", demand=").append(ToStringUtils.printId(demand));
+        sb.append(", supplier=").append(ToStringUtils.printId(supplier));
+        sb.append('}');
+        return sb.toString();
+    }
 }

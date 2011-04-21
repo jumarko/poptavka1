@@ -6,6 +6,8 @@
 package cz.poptavka.sample.domain.mail;
 
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.util.strings.ToStringUtils;
+
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -18,14 +20,19 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class MessageTreeItem extends DomainObject {
+
     /* the first message in the thread, i.e. the original question */
     Message threadRoot;
-    /* immedate parent of this message - to what this message is a reply */
+
+    /* immediate parent of this message - to what this message is a reply */
     Message parent;
+
     /* the first child of this message - the first reply to rhis message */
     Message firstBorn;
+
     /* the next reply to this message's parent */
     Message nextSibling;
+
 
     public Message getFirstBorn() {
         return firstBorn;
@@ -59,4 +66,16 @@ public class MessageTreeItem extends DomainObject {
         this.threadRoot = threadRoot;
     }
 
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("MessageTreeItem");
+        sb.append("{threadRoot=").append(ToStringUtils.printId(threadRoot));
+        sb.append(", parent=").append(ToStringUtils.printId(parent));
+        sb.append(", firstBorn=").append(ToStringUtils.printId(firstBorn));
+        sb.append(", nextSibling=").append(ToStringUtils.printId(nextSibling));
+        sb.append('}');
+        return sb.toString();
+    }
 }
