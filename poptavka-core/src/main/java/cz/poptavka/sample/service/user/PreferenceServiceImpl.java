@@ -1,7 +1,7 @@
 package cz.poptavka.sample.service.user;
 
 import cz.poptavka.sample.dao.user.PreferenceDao;
-import cz.poptavka.sample.domain.user.Preference;
+import cz.poptavka.sample.domain.settings.Preference;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 

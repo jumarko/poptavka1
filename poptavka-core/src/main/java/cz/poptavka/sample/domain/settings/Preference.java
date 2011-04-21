@@ -1,4 +1,4 @@
-package cz.poptavka.sample.domain.user;
+package cz.poptavka.sample.domain.settings;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.hibernate.envers.Audited;
@@ -36,6 +36,8 @@ public class Preference extends DomainObject {
 
     private String value;
 
+    private String description;
+
 
     public String getKey() {
         return key;
@@ -53,6 +55,13 @@ public class Preference extends DomainObject {
         this.value = value;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
@@ -60,6 +69,7 @@ public class Preference extends DomainObject {
         sb.append("Preference");
         sb.append("{key='").append(key).append('\'');
         sb.append(", value='").append(value).append('\'');
+        sb.append(", description='").append(description).append('\'');
         sb.append('}');
         return sb.toString();
     }

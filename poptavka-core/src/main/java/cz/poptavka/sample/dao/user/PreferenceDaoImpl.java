@@ -1,7 +1,7 @@
 package cz.poptavka.sample.dao.user;
 
 import cz.poptavka.sample.dao.GenericHibernateDao;
-import cz.poptavka.sample.domain.user.Preference;
+import cz.poptavka.sample.domain.settings.Preference;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;

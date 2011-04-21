@@ -2,6 +2,7 @@ package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.settings.Preference;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
