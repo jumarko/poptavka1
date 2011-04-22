@@ -8,11 +8,11 @@
     }
   </ui:style>
   <g:HTMLPanel>
-    <p:MyHorizontalPanel ui:field="panelHeader">
+    <p:MyHorizontalPanel ui:field="panelHeader" width="1000px">
       <g:Image ui:field="logo" width="16px" height="16px" />
-      <g:Label ui:field="from" text="UserName" width="80px" />
-      <g:Label ui:field="shortText" width="80px" />
-      <g:DisclosurePanel ui:field="panelDetail">
+      <g:Label ui:field="from" text="UserName" width="150px" />
+      <g:Label ui:field="shortText" width="500px"/>
+      <g:DisclosurePanel ui:field="panelDetail" visible="false">
         <g:header>Details</g:header>
         <g:VerticalPanel>
           <g:Label>text</g:Label>
@@ -22,7 +22,7 @@
           <g:Label>text4</g:Label>
         </g:VerticalPanel>
       </g:DisclosurePanel>
-      <g:Label ui:field="date" width="90px" />
+      <g:Label ui:field="date"/>
     </p:MyHorizontalPanel>
 
     <g:DisclosurePanel ui:field="panelBody">

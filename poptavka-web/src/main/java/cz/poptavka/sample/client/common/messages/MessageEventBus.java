@@ -21,7 +21,4 @@ public interface MessageEventBus extends EventBus {
 
     @Event(handlers = MessagePresenter.class)
     void discard();
-
-    @Event(handlers = MessagePresenter.class)
-    void displayBody();
 }

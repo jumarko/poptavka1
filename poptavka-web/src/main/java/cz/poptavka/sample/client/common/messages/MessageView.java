@@ -4,9 +4,11 @@ package cz.poptavka.sample.client.common.messages;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
@@ -22,7 +24,7 @@ import cz.poptavka.sample.domain.mail.Message;
 public class MessageView extends Composite
         implements MessagePresenter.MessageViewInterface {
 
-    private static final Logger LOGGER = Logger.getLogger(MessagesView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MessageView.class.getName());
 
     private static MessagesUiBinder uiBinder = GWT
             .create(MessagesUiBinder.class);
@@ -71,8 +73,8 @@ public class MessageView extends Composite
         this.from.setText(message.getSender().getEmail());
         this.date.setText(message.getSent().toString());
         messageText.add(this.getArea(message.getBody()));
-        if (message.getBody().length() > 100) {
-            this.shortText.setText(message.getBody().substring(0, 100) + "...");
+        if (message.getBody().length() > 50) {
+            this.shortText.setText(message.getBody().substring(0, 50) + "...");
         } else {
             this.shortText.setText(message.getBody());
         }
@@ -118,23 +120,23 @@ public class MessageView extends Composite
     public DisclosurePanel getPanelBody() {
         return panelBody;
     }
-//
-//    /**
-//     * Displays message body.
-//     * @param event
-//     */
-//    @UiHandler("panelHeader")
-//    public void onClickPanelInfo(ClickEvent event) {
-//        if (panelBody.isOpen()) {
-//            panelBody.setOpen(false);
-//            panelFooter2.setVisible(false);
-//            panelDetail.setVisible(true);
-//        } else {
-//            panelBody.setOpen(true);
-//            panelFooter2.setVisible(true);
-//            panelDetail.setVisible(false);
-//        }
-//    }
+
+    /**
+     * Displays message body. Just GUI. Not working if through eventBus and presenter.
+     * @param event
+     */
+    @UiHandler("panelHeader")
+    public void onClickHeaderPanel(ClickEvent click) {
+        if (panelBody.isOpen()) {
+            panelBody.setOpen(false);
+            panelFooter2.setVisible(false);
+            panelDetail.setVisible(false);
+        } else {
+            panelBody.setOpen(true);
+            panelFooter2.setVisible(true);
+            panelDetail.setVisible(true);
+        }
+    }
 
     @Override
     public HasClickHandlers getReplyMessageBtn() {
@@ -157,12 +159,6 @@ public class MessageView extends Composite
     public HasClickHandlers getDeleteMessageBtn() {
         return buttonDiscard;
     }
-
-    @Override
-    public MyHorizontalPanel getPanelHeader() {
-        return panelHeader;
-    }
-
     /**
      * Returns this view instance.
      */

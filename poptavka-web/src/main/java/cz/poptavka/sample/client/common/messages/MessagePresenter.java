@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.common.messages;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -9,8 +11,10 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 
-@Presenter(view = MessagesView.class)
+@Presenter(view = MessageView.class)
 public class MessagePresenter extends BasePresenter<MessagePresenter.MessageViewInterface, MessageEventBus> {
+
+    private static final Logger LOGGER = Logger.getLogger(MessagePresenter.class.getName());
 
     public interface MessageViewInterface {
 
@@ -27,8 +31,6 @@ public class MessagePresenter extends BasePresenter<MessagePresenter.MessageView
         DisclosurePanel getPanelBody();
 
         Widget getWidgetView();
-
-        MyHorizontalPanel getPanelHeader();
     }
 
     /**
@@ -65,12 +67,6 @@ public class MessagePresenter extends BasePresenter<MessagePresenter.MessageView
                 eventBus.discard();
             }
         });
-        view.getPanelHeader().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                eventBus.displayBody();
-            }
-        });
     }
 
     /**
@@ -97,9 +93,6 @@ public class MessagePresenter extends BasePresenter<MessagePresenter.MessageView
     }
 
     public void onDelete() {
-
-    }
-    public void onDisplayBody() {
 
     }
 }

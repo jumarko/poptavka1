@@ -12,9 +12,13 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
+
+import cz.poptavka.sample.client.common.messages.MessageView;
+import cz.poptavka.sample.domain.mail.Message;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -32,6 +36,9 @@ public class MyProblemsView extends Composite implements
 
     @UiField
     CellTable<ContactInfo> cellTable;
+
+    @UiField
+    VerticalPanel messagesPanel;
 
     @UiField
     Button respond;
@@ -150,6 +157,21 @@ public class MyProblemsView extends Composite implements
         };
 
         cellTable.addColumn(price, "Price");
+    }
+
+    @Override
+    public void displayMessages(List<Message> messages) {
+        int i = 0;
+        MessageView message;
+        for (Message m : messages) {
+            message = new MessageView(m);
+            if (i == messages.size() - 1) {
+                message.getPanelBody().setOpen(true);
+            }
+            LOGGER.info("Adding to Panel");
+            messagesPanel.add(message);
+            i++;
+        }
     }
 
     @Override
