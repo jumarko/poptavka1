@@ -42,6 +42,12 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         return new ArrayList<LocalityDetail>();
     }
 
+    //TODO fix to correct working
+    public Locality getLocality(String code) {
+        //Brno test only
+        return localityService.getById(80);
+    }
+
     /** converts domain entities to front-end classes. **/
     private ArrayList<LocalityDetail> createLocalityDetails(List<Locality> localities) {
         ArrayList<LocalityDetail> localityDetails = new ArrayList<LocalityDetail>();

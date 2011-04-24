@@ -13,7 +13,7 @@
                     <g:HTML wordWrap="true">Email/Login <span style="color: red;">*</span></g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="mailBox"/>
+                    <g:TextBox ui:field="mailBox">novy@user.cz</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -21,7 +21,7 @@
                     <g:HTML wordWrap="true">Heslo <span style="color: red;">*</span></g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:PasswordTextBox ui:field="passBox"/>
+                    <g:PasswordTextBox ui:field="passBox">heslo</g:PasswordTextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -29,7 +29,7 @@
                     <g:HTML wordWrap="true">Heslo znovu</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:PasswordTextBox ui:field="passConfirmBox"/>
+                    <g:PasswordTextBox ui:field="passConfirmBox">heslo</g:PasswordTextBox>
                 </g:customCell>
             </g:row>
         </g:Grid>
@@ -44,7 +44,7 @@
                     <g:HTML wordWrap="true">Meno</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="nameBox"/>
+                    <g:TextBox ui:field="nameBox">Meno</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -52,7 +52,7 @@
                     <g:HTML wordWrap="true">Priezvisko</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="surnameBox"/>
+                    <g:TextBox ui:field="surnameBox">Priezvisko</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -60,7 +60,7 @@
                     <g:HTML wordWrap="true">Telefon</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="phoneBox"/>
+                    <g:TextBox ui:field="phoneBox">123456789</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -68,7 +68,7 @@
                     <g:HTML wordWrap="true">WWW</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="websiteBox"/>
+                    <g:TextBox ui:field="websiteBox">www.sss.zzz</g:TextBox>
                 </g:customCell>
             </g:row>
         </g:Grid>
@@ -84,7 +84,7 @@
                     <g:HTML wordWrap="true">Ulica</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="streetBox"/>
+                    <g:TextBox ui:field="streetBox">ulica</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -92,7 +92,7 @@
                     <g:HTML wordWrap="true">Mesto</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="cityBox"/>
+                    <g:TextBox ui:field="cityBox">Brno</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -100,7 +100,7 @@
                     <g:HTML wordWrap="true">PSC</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="zipBox"/>
+                    <g:TextBox ui:field="zipBox">60200</g:TextBox>
                 </g:customCell>
             </g:row>
         </g:Grid>

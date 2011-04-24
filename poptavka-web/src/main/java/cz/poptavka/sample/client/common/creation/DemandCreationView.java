@@ -28,8 +28,6 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
 
     protected enum TopPanel {
         SECOND, THIRD, FOURTH, FIFTH, REMOVE
-
-
     }
 
     @UiField AbsolutePanel absolutePanel;
@@ -40,7 +38,7 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     private static final int END_THIRD_VALUE = 40;
     private static final int END_FOURTH_VALUE = 60;
     private static final int END_FIFTH_VALUE = 80;
-    private static final int ONE_SECOND = 1000;
+    private static final int ONE_SECOND = /** 1000; **/ 1;
 
     //initial topPanel
     private ArrayList<VerticalPanel> topPanel = new ArrayList<VerticalPanel>();
@@ -65,14 +63,14 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     //step5
     @UiField VerticalPanel stepFive;
     @UiField SimplePanel userFormHolder;
-    @UiField Button btnFiveBack, btnFiveCreate;
+    @UiField Button btnFiveBack, btnFiveRegAndCreate;
 
 
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.cssBase().ensureInjected();
-        btnFiveCreate.setStyleName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
+        btnFiveRegAndCreate.setStyleName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
         stepFive.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
 //        stepOne.add(new FormDemandBasicView());
 //        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
@@ -214,7 +212,7 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
 
     @Override
     public HasClickHandlers fiveCreateButton() {
-        return btnFiveCreate;
+        return btnFiveRegAndCreate;
     }
 
     @Override
@@ -246,8 +244,14 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     }
 
     @Override
-    public void showCreationButton() {
-        btnFiveCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOff());
+    public void toggleRegAndCreateButton() {
+        LOGGER.fine(btnFiveRegAndCreate.getStylePrimaryName()
+            + " VS " + StyleResource.INSTANCE.cssBase().elemHiddenOn());
+        if (btnFiveRegAndCreate.getStylePrimaryName().equals(StyleResource.INSTANCE.cssBase().elemHiddenOn())) {
+            btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOff());
+        } else {
+            btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
+        }
     }
 
 }

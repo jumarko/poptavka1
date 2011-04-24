@@ -10,6 +10,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.shared.domain.AddressDetail;
+import cz.poptavka.sample.shared.domain.ClientDetail;
+
 public class FormPersonView extends Composite implements FormPersonPresenter.FormPersonInterface {
 
     private static FormPersonViewUiBinder uiBinder = GWT.create(FormPersonViewUiBinder.class);
@@ -47,6 +50,22 @@ public class FormPersonView extends Composite implements FormPersonPresenter.For
             }
         }
         return errorCount == 0;
+    }
+
+    public ClientDetail getNewClient() {
+        ClientDetail client = new ClientDetail(mailBox.getText(), passBox.getText());
+        client.setFirstName(nameBox.getText());
+        client.setLastName(surnameBox.getText());
+        client.setPhone(phoneBox.getText());
+
+        AddressDetail address = new AddressDetail();
+        address.setCityName(cityBox.getText());
+        address.setStreet(streetBox.getText());
+        address.setZipCode(zipBox.getText());
+
+        client.setAddress(address);
+
+        return client;
     }
 
     @Override

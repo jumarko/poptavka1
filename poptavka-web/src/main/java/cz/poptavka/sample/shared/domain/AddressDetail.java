@@ -4,19 +4,19 @@ import java.io.Serializable;
 
 public class AddressDetail implements Serializable {
 
-    private String cityCode;
+    private String cityName;
     private String street;
     private String zipCode;
 
     public AddressDetail() {
     }
 
-    public String getCityCode() {
-        return cityCode;
+    public String getCityName() {
+        return cityName;
     }
 
-    public void setCityCode(String cityCode) {
-        this.cityCode = cityCode;
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public String getStreet() {

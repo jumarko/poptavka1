@@ -9,6 +9,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.common.CommonEventBus;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 
 @Presenter(view = FormPersonView.class)
 public class FormPersonPresenter extends LazyPresenter<FormPersonPresenter.FormPersonInterface, CommonEventBus> {
@@ -20,6 +21,8 @@ public class FormPersonPresenter extends LazyPresenter<FormPersonPresenter.FormP
 
         boolean isValid();
 
+        ClientDetail getNewClient();
+
         Widget getWidgetView();
     }
 
@@ -30,7 +33,8 @@ public class FormPersonPresenter extends LazyPresenter<FormPersonPresenter.FormP
 
     public void onSubmitUserForm() {
         if (view.isValid()) {
-            //eventBus.sendData
+            ClientDetail client = view.getNewClient();
+            eventBus.registerNewClient(client);
         } else {
             //error
         }

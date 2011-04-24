@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
+import cz.poptavka.sample.domain.address.Address;
+import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Company;
 import cz.poptavka.sample.domain.user.Person;
@@ -39,6 +42,11 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     }
 
+    /**
+     * Create new Client - person or company.
+     *
+     * TODO: website assignation in backend
+     */
     @Override
     public long createNewClient(ClientDetail clientDetail) {
         Client newClient = new Client();
@@ -57,19 +65,25 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.setCompany(company);
         /** Address. **/
         /** Need to fix City selection for frontEnd - think about it **/
-//        long addressId = Long.parseLong(clientDetail.getAddress().getCityCode());
-//        //getting city from selected
-//        Locality city = (Locality) genericService.getById(addressId);
-//        Address address = new Address();
-//        address.setCity(city);
-//        address.setStreet(clientDetail.getAddress().getStreet());
-//        address.setZipCode(clientDetail.getAddress().getZipCode());
-//        List<Address> addresses = new ArrayList<Address>();
-//        addresses.add(address);
-//        newClient.setAddresses(addresses);
+        String addressName = clientDetail.getAddress().getCityName();
+
+        /** need for fix this **/
+//        LocalityRPCServiceImpl localityService = new LocalityRPCServiceImpl();
+//        Locality city = localityService.getLocality("Brno");
+        Locality city = new Locality("CZ-TEST", "BRNO", LocalityType.CITY);
+
+        Address address = new Address();
+        address.setCity(city);
+        address.setStreet(clientDetail.getAddress().getStreet());
+        address.setZipCode(clientDetail.getAddress().getZipCode());
+        List<Address> addresses = new ArrayList<Address>();
+        addresses.add(address);
+        newClient.setAddresses(addresses);
+        /** Login & pwd information. **/
         newClient.setEmail(clientDetail.getEmail());
         newClient.setLogin(clientDetail.getLogin());
         newClient.setPassword(clientDetail.getPassword());
+
         newClient = clientService.create(newClient);
         return newClient.getId();
     }

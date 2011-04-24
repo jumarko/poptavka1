@@ -138,7 +138,6 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
                 // TODO Auto-generated method stub
 
             }
-
             @Override
             public void onSuccess(Long clientId) {
                 if (clientId != -1) {
@@ -151,6 +150,18 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
     }
 
     public void onRegisterNewClient(ClientDetail client) {
-
+        clientService.createNewClient(client, new AsyncCallback<Long>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onSuccess(Long clientId) {
+                if (clientId != -1) {
+                    eventBus.setClientId(clientId);
+                    eventBus.getBasicInfoValues();
+                }
+            }
+        });
     }
 }

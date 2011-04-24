@@ -17,6 +17,8 @@ public class ClientDetail implements Serializable {
     private String companyName = null;
     private String taxId = null;
 
+    private String website;
+
     private AddressDetail address;
 
     private ArrayList<String> demandsId;
@@ -117,5 +119,13 @@ public class ClientDetail implements Serializable {
 
     public void setDemandsId(ArrayList<String> demandsId) {
         this.demandsId = demandsId;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getWebsite() {
+        return website;
     }
 }

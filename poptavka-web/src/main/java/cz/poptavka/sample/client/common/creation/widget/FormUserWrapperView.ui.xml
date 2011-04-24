@@ -9,6 +9,7 @@
     <g:HTMLPanel>
              <g:RadioButton name="type" ui:field="personRadio" text="Sukromna osoba"/>
              <g:RadioButton name="type" ui:field="companyRadio" text="Firma"/>
+             <g:Button ui:field="toLoginBtn">Back to Login</g:Button>
         <g:SimplePanel ui:field="formHolder"/>
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -80,7 +80,7 @@ public interface CommonEventBus extends EventBus {
     @Event(handlers = FormLoginPresenter.class)
     void initFormLogin(SimplePanel embedToWidget);
 
-    @Event(handlers = {FormUserWrapperPresenter.class, DemandCreationPresenter.class })
+    @Event(handlers = FormUserWrapperPresenter.class)
     void initNewUserForm(SimplePanel embedToWidget);
 
     @Event(handlers = FormPersonPresenter.class,
@@ -145,5 +145,9 @@ public interface CommonEventBus extends EventBus {
 
     @Event(handlers = CommonHandler.class)
     void registerNewClient(ClientDetail client);
+
+    @Event(handlers = DemandCreationPresenter.class)
+    void toggleCreateAndRegButton();
+
 
 }

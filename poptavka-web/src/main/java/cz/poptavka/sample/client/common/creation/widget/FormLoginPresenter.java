@@ -41,6 +41,7 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
         view.getRegisterBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
+                eventBus.toggleCreateAndRegButton();
                 eventBus.initNewUserForm((SimplePanel) view.getWidgetView().getParent());
             }
         });
@@ -59,7 +60,7 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
         }
         // TODO hash passwd
 
-        // TODO service call to server to verify user
+        //verifying existing user
         eventBus.verifyExistingClient(new ClientDetail(view.getLogin(), view.getPassword()));
     }
 }

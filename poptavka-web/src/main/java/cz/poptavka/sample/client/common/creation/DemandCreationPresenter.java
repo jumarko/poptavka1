@@ -66,7 +66,7 @@ public class DemandCreationPresenter
 
         SimplePanel getUserFormHolder();
 
-        void showCreationButton();
+        void toggleRegAndCreateButton();
     }
 
     private boolean initLocality = true;
@@ -120,8 +120,7 @@ public class DemandCreationPresenter
         view.fiveCreateButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-//                onSubmitNewDemand();
-                eventBus.getBasicInfoValues();
+                eventBus.submitUserForm();
             }
         });
 
@@ -233,8 +232,9 @@ public class DemandCreationPresenter
     }
 
     /** Done automatically in step five, when option: register new client is selected. **/
-    public void onInitNewUserForm(SimplePanel embedToWidget) {
-        view.showCreationButton();
+    //DO NOT EDIT
+    public void onToggleCreateAndRegButton() {
+        view.toggleRegAndCreateButton();
     }
 
 }

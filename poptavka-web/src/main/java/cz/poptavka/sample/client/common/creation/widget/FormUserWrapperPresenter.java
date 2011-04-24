@@ -1,7 +1,10 @@
 package cz.poptavka.sample.client.common.creation.widget;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,6 +26,8 @@ public class FormUserWrapperPresenter extends
 
         RadioButton getCompanyButton();
 
+        Button getToLoginButton();
+
         SimplePanel getFormHolder();
     }
 
@@ -42,6 +47,15 @@ public class FormUserWrapperPresenter extends
                 if (view.getCompanyButton().getValue()) {
                     eventBus.initCompanyForm(view.getFormHolder());
                 }
+            }
+        });
+        view.getToLoginButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                //just for toggle button
+                eventBus.toggleCreateAndRegButton();
+                eventBus.initFormLogin((SimplePanel) view.getWidgetView().getParent());
+
             }
         });
     }

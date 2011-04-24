@@ -10,26 +10,13 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.shared.domain.AddressDetail;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 
 public class FormCompanyView extends Composite implements FormCompanyPresenter.FormCompanyInterface {
 
     private static FormPersonViewUiBinder uiBinder = GWT.create(FormPersonViewUiBinder.class);
     interface FormPersonViewUiBinder extends UiBinder<Widget, FormCompanyView> {  }
-
-    public void createView() {
-        initWidget(uiBinder.createAndBindUi(this));
-        widgets.add(companyNameBox);
-        widgets.add(icBox);
-        widgets.add(dicBox);
-
-        widgets.add(streetBox);
-        widgets.add(cityBox);
-        widgets.add(zipBox);
-        widgets.add(nameBox);
-        widgets.add(surnameBox);
-        widgets.add(phoneBox);
-        widgets.add(mailBox);
-    }
 
     private ArrayList<TextBox> widgets = new ArrayList<TextBox>();
 
@@ -46,6 +33,21 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
     @UiField TextBox mailBox;
     @UiField PasswordTextBox passBox, passConfirmBox;
 
+    public void createView() {
+        initWidget(uiBinder.createAndBindUi(this));
+        widgets.add(companyNameBox);
+        widgets.add(icBox);
+        widgets.add(dicBox);
+
+        widgets.add(streetBox);
+        widgets.add(cityBox);
+        widgets.add(zipBox);
+        widgets.add(nameBox);
+        widgets.add(surnameBox);
+        widgets.add(phoneBox);
+        widgets.add(mailBox);
+    }
+
     public boolean isValid() {
         int errorCount = 0;
         for (TextBox item : widgets) {
@@ -59,8 +61,33 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
     }
 
     @Override
+    public ClientDetail getNewClient() {
+        ClientDetail client = new ClientDetail(mailBox.getText(), passBox.getText());
+
+        client.setCompanyName(companyNameBox.getText());
+        client.setIdentifiacationNumber(icBox.getText());
+        client.setTaxId(dicBox.getText());
+
+        client.setFirstName(nameBox.getText());
+        client.setLastName(surnameBox.getText());
+        client.setPhone(phoneBox.getText());
+        client.setWebsite(websiteBox.getText());
+
+        AddressDetail address = new AddressDetail();
+        address.setCityName(cityBox.getText());
+        address.setStreet(streetBox.getText());
+        address.setZipCode(zipBox.getText());
+
+        client.setAddress(address);
+
+        return client;
+    }
+
+    @Override
     public Widget getWidgetView() {
         return this;
     }
+
+
 
 }

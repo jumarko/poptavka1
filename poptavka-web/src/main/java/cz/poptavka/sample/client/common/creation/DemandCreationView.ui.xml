@@ -95,7 +95,7 @@
                     <g:HTMLPanel>
                     <g:HorizontalPanel>
                         <g:Button ui:field="btnFiveBack">Back</g:Button>
-                        <g:Button ui:field="btnFiveCreate">Register &smp; Create</g:Button>
+                        <g:Button ui:field="btnFiveRegAndCreate">Register &smp; Create</g:Button>
                     </g:HorizontalPanel>
                 </g:HTMLPanel>
                 </g:Cell>

@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.common.creation.widget;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -17,6 +18,7 @@ public class FormUserWrapperView extends Composite implements FormUserWrapperPre
 
     @UiField RadioButton personRadio;
     @UiField RadioButton companyRadio;
+    @UiField Button toLoginBtn;
     @UiField SimplePanel formHolder;
 
     @Override
@@ -37,6 +39,11 @@ public class FormUserWrapperView extends Composite implements FormUserWrapperPre
     @Override
     public RadioButton getCompanyButton() {
         return companyRadio;
+    }
+
+    @Override
+    public Button getToLoginButton() {
+        return toLoginBtn;
     }
 
     @Override

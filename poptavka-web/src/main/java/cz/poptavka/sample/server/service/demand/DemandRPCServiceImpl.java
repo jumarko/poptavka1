@@ -80,6 +80,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         Client client = clientService.getById(cliendId);
         Demand demand = new Demand();
         demand.setTitle(detail.getTitle());
+        demand.setDescription(detail.getDescription());
         demand.setType(this.demandService.getDemandType(detail.getDemandType()));
         demand.setPrice(BigDecimal.valueOf(detail.getPrice()));
         demand.setMaxSuppliers(detail.getMaxOffers());
