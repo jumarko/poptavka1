@@ -24,7 +24,7 @@ public interface DemandsEventBus extends EventBus {
      * Initialize demands presenter.
      */
     @Event(handlers = DemandsPresenter.class)
-    void start();
+    void atDemands();
 
     /**
      * Display demands on success initialization of demands presenter.

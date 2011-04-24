@@ -91,7 +91,7 @@ public class DemandsPresenter extends
      * Get all categories and localities to display in listBoxes for later filtering.
      *
      */
-    public void onStart() {
+    public void onAtDemands() {
         LOGGER.info("Starting demands presenter...");
         LOGGER.info("Getting categories...");
         eventBus.getCategories();

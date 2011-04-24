@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+
 import cz.poptavka.sample.domain.demand.Demand;
 
 public class DemandView extends Composite {
