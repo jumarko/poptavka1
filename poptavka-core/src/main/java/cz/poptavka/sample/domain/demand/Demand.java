@@ -117,10 +117,10 @@ public class Demand extends DomainObject {
     //----------------------------------  Attributes for demands gathered from external systems ------------------------
     //----------------------------------  such epoptavka.cz, aaapoptavka.cz, etc. --------------------------------------
 
-    /** Arbitrary category specification for demands gathered from external system */
-    private String foreingCategory;
+    /** Arbitrary category specification for demands gathered from external system. */
+    private String foreignCategory;
 
-    /** Arbitrary URL that represents the link to the original demand gathered from external system */
+    /** Arbitrary URL that represents the link to the original demand gathered from external system. */
     private String foreignLink;
 
     @OneToOne
@@ -288,12 +288,12 @@ public class Demand extends DomainObject {
         this.offers = offers;
     }
 
-    public String getForeingCategory() {
-        return foreingCategory;
+    public String getForeignCategory() {
+        return foreignCategory;
     }
 
-    public void setForeingCategory(String foreingCategory) {
-        this.foreingCategory = foreingCategory;
+    public void setForeignCategory(String foreignCategory) {
+        this.foreignCategory = foreignCategory;
     }
 
     public String getForeignLink() {
