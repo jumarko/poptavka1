@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -13,14 +14,6 @@ public class FormPersonView extends Composite implements FormPersonPresenter.For
 
     private static FormPersonViewUiBinder uiBinder = GWT.create(FormPersonViewUiBinder.class);
     interface FormPersonViewUiBinder extends UiBinder<Widget, FormPersonView> {  }
-
-    public void createView() {
-        initWidget(uiBinder.createAndBindUi(this));
-        widgets.add(nameBox);
-        widgets.add(surnameBox);
-        widgets.add(phoneBox);
-        widgets.add(mailBox);
-    }
 
     private ArrayList<TextBox> widgets = new ArrayList<TextBox>();
     @UiField TextBox websiteBox;
@@ -30,12 +23,19 @@ public class FormPersonView extends Composite implements FormPersonPresenter.For
     @UiField TextBox nameBox;
     @UiField TextBox surnameBox;
     @UiField TextBox phoneBox;
+    //login fields
     @UiField TextBox mailBox;
+    @UiField PasswordTextBox passBox;
+    @UiField PasswordTextBox passConfirmBox;
 
-//    public FormPersonView(String firstName) {
-//        initWidget(uiBinder.createAndBindUi(this));
-//
-//    }
+    public void createView() {
+        initWidget(uiBinder.createAndBindUi(this));
+        widgets.add(nameBox);
+        widgets.add(surnameBox);
+        widgets.add(phoneBox);
+        widgets.add(mailBox);
+        widgets.add(passBox);
+    }
 
     public boolean isValid() {
         int errorCount = 0;

@@ -29,7 +29,7 @@
                     <g:HTML></g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:Button ui:field="loginBtn">Prihlasit</g:Button>
+                    <g:Button ui:field="loginBtn">Login &amp; Create</g:Button>
                 </g:customCell>
             </g:row>
         </g:Grid>

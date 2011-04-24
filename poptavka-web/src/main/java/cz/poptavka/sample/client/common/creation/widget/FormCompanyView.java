@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -43,6 +44,7 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
     @UiField TextBox surnameBox;
     @UiField TextBox phoneBox;
     @UiField TextBox mailBox;
+    @UiField PasswordTextBox passBox, passConfirmBox;
 
     public boolean isValid() {
         int errorCount = 0;

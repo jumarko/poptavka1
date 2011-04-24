@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.home;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -26,11 +27,11 @@ public interface HomeEventBus extends EventBus {
 
     /** init method. **/
     @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atHome();
+    void displayMenu();
 
     /** init method. **/
     @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
-    void displayMenu();
+    String atHome();
 
     /**
      * Display HomeView - parent Widget for public section.
@@ -57,9 +58,6 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void initCategoryDisplay(AnchorEnum anchor);
 
-    @Event(modulesToLoad = DemandsModule.class)
-    void start();
-
     @Event(modulesToLoad = MyProblemsModule.class)
     void displayMyProblems();
 
@@ -69,7 +67,14 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
 
+    /** History/Navigation events. **/
     @Event(forwardToParent = true, historyConverter = HomeHistoryConverter.class)
     String atCreateDemand(boolean homeSection);
 
+    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
+    String atDemands();
+
+    /** DEVEL SECTION **/
+    @Event(forwardToParent = true)
+    void initLocalityWidget(HasOneWidget embedToWidget);
 }

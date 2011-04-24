@@ -35,10 +35,8 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     //menu section
     @UiField Hyperlink linkHome;
     @UiField Hyperlink linkCreateDemand;
-    @UiField
-    Button btnCreateDemand;
-    @UiField
-    Button displayDemands;
+    @UiField Hyperlink linkDisplayDemands;
+
     @UiField
     Button button3;
     @UiField
@@ -99,16 +97,6 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     }
 
     @Override
-    public HasClickHandlers getCreateDemandBtn() {
-        return btnCreateDemand;
-    }
-
-    @Override
-    public HasClickHandlers getDisplayDemandsBtn() {
-        return displayDemands;
-    }
-
-    @Override
     public HasClickHandlers getButton3Btn() {
         return button3;
     }
@@ -121,4 +109,9 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     public void setHomeToken(String token) {
         linkHome.setTargetHistoryToken(token);
     }
+
+    public void setDisplayDemandsToken(String token) {
+        linkDisplayDemands.setTargetHistoryToken(token);
+    }
+
 }

@@ -22,6 +22,10 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
             eventBus.displayMenu();
             eventBus.atCreateDemand(true);
         }
+        if (historyName.equals("atDemands")) {
+            eventBus.displayMenu();
+            eventBus.atDemands();
+        }
     }
 
     @Override

@@ -66,7 +66,17 @@ public class FormDemandAdvView extends Composite implements FormDemandAdvPresent
     public HashMap<String, Object> getValues() {
         map.put("maxOffers", maxOffersBox.getValue());
         map.put("minRating", minRatingBox.getValue());
-        // TODO excluded suppliers and type of demand
+        //demand types
+        String resultValue = "";
+        if (classicRadio.getValue()) {
+            resultValue = "normal";
+        } else {
+            if (attractiveRadio.getValue()) {
+                resultValue = "attractive";
+            }
+        }
+        map.put("demandType", resultValue);
+        // TODO excluded suppliers
         return map;
     }
 

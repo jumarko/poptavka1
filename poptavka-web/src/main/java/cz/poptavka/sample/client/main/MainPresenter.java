@@ -5,6 +5,9 @@ import java.util.logging.Logger;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -21,7 +24,32 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
         void setLoginWidget(Widget login);
 
+        void toggleMainLayout();
+
         void setListOfDemands(Widget demands);
+
+        // TODO eventually change to hyperlink
+        Anchor getLoginButton();
+    }
+
+    private boolean loggedIn = false;
+
+    @Override
+    public void bind() {
+        view.getLoginButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent arg0) {
+                eventBus.toggleLayout();
+                if (loggedIn) {
+                    eventBus.atHome();
+                    view.getLoginButton().setText("Log In");
+                } else {
+                    eventBus.initUser();
+                    view.getLoginButton().setText("Log Out");
+                }
+                loggedIn = !loggedIn;
+            }
+        });
     }
 
     /**
@@ -29,8 +57,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      */
     public void onStart() {
         LOGGER.info("Initializing application ... ");
-        LOGGER.info("    > Login Module");
-        eventBus.initLogin();
+//        LOGGER.info("    > Login Module");
+//        eventBus.initLogin();
         LOGGER.info("    > Home Module");
         eventBus.atHome();
 //        LOGGER.info("    > User Module");
@@ -86,5 +114,10 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public void onAfterLoad() {
         Document.get().getElementById("gwt-modules-loading").getStyle().setDisplay(Display.NONE);
         Document.get().getElementById("loading").getStyle().setDisplay(Display.NONE);
+    }
+
+    public void onToggleLayout() {
+        LOGGER.fine("Toggle layout");
+        view.toggleMainLayout();
     }
 }

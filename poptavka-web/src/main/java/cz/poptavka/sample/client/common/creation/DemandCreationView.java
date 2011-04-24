@@ -17,6 +17,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.resources.StyleResource;
+
 public class DemandCreationView extends Composite implements DemandCreationPresenter.CreationViewInterface {
 
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
@@ -63,16 +65,14 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     //step5
     @UiField VerticalPanel stepFive;
     @UiField SimplePanel userFormHolder;
-
     @UiField Button btnFiveBack, btnFiveCreate;
 
 
 
     public void createView() {
-        LOGGER.info("initializing part: Rich Text Toolbar ... ");
-//        description = new RichTextToolbarWidget();
-        LOGGER.info("initializing part: COMPLETE widget ... ");
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.cssBase().ensureInjected();
+        btnFiveCreate.setStyleName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
         stepFive.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
 //        stepOne.add(new FormDemandBasicView());
 //        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
@@ -243,6 +243,11 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     @Override
     public SimplePanel getUserFormHolder() {
         return userFormHolder;
+    }
+
+    @Override
+    public void showCreationButton() {
+        btnFiveCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOff());
     }
 
 }

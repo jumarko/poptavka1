@@ -24,6 +24,7 @@ import cz.poptavka.sample.client.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
@@ -79,7 +80,7 @@ public interface CommonEventBus extends EventBus {
     @Event(handlers = FormLoginPresenter.class)
     void initFormLogin(SimplePanel embedToWidget);
 
-    @Event(handlers = FormUserWrapperPresenter.class)
+    @Event(handlers = {FormUserWrapperPresenter.class, DemandCreationPresenter.class })
     void initNewUserForm(SimplePanel embedToWidget);
 
     @Event(handlers = FormPersonPresenter.class,
@@ -131,5 +132,18 @@ public interface CommonEventBus extends EventBus {
 
     @Event(handlers = DemandCreationPresenter.class)
     void pushAdvInfoValues(HashMap<String, Object> advValues);
+
+    /** submit new demand. **/
+    @Event(handlers = DemandCreationPresenter.class)
+    void submitNewDemand();
+
+    @Event(handlers = DemandCreationPresenter.class)
+    void setClientId(long clientId);
+
+    @Event(handlers = CommonHandler.class)
+    void verifyExistingClient(ClientDetail client);
+
+    @Event(handlers = CommonHandler.class)
+    void registerNewClient(ClientDetail client);
 
 }

@@ -4,6 +4,7 @@ package cz.poptavka.sample.client.main;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -16,15 +17,13 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     private static final Binder BINDER = GWT.create(Binder.class);
     interface Binder extends UiBinder<Widget, MainView> {    }
 
-    @UiField
-    HTMLPanel layoutMaster;
-    @UiField
-    HTMLPanel headerHolder;
-    @UiField
-    SimplePanel bodyHolder;
-    @UiField
-    HTMLPanel footerHolder;
+    /** Main UI containers. **/
+    @UiField HTMLPanel layoutMaster;
+    @UiField HTMLPanel headerHolder;
+    @UiField SimplePanel bodyHolder;
+    @UiField HTMLPanel footerHolder;
 
+    @UiField Anchor loginButton;
 
     /**
      * Constructor of parent view with some basic styling.
@@ -55,6 +54,20 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
      */
     public void setLoginWidget(Widget login) {
         headerHolder.add(login, "loginArea");
+    }
+
+    @Override
+    public Anchor getLoginButton() {
+        return loginButton;
+    }
+
+    @Override
+    public void toggleMainLayout() {
+        if (layoutMaster.getStyleName().equals(StyleResource.INSTANCE.cssBase().layoutContainer())) {
+            layoutMaster.setStyleName(StyleResource.INSTANCE.cssBase().layoutContainerUser());
+        } else {
+            layoutMaster.setStyleName(StyleResource.INSTANCE.cssBase().layoutContainer());
+        }
     }
 
 }

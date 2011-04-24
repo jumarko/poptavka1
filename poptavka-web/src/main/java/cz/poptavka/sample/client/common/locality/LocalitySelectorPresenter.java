@@ -108,7 +108,11 @@ public class LocalitySelectorPresenter
             @Override
             public void execute() {
                 LOGGER.info("Filling list...");
+                if (list.size() == 0) {
+                    LOGGER.info("NO CONTAINING LOCALITIES");
+                }
                 for (int i = 0; i < list.size(); i++) {
+                    LOGGER.info("item #" + i);
                     box.addItem(list.get(i).getName(), list.get(i).getCode());
                 }
                 LOGGER.info("List filled");
@@ -118,6 +122,7 @@ public class LocalitySelectorPresenter
     }
 
     public void onGetSelectedLocalityCodes() {
+        LOGGER.info("Getting/Pushing localities");
         ListBox tmp = view.getSelectedList();
         ArrayList<String> codes = new ArrayList<String>();
         for (int i = 0; i < tmp.getItemCount(); i++) {

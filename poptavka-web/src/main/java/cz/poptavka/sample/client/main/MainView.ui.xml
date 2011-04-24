@@ -14,7 +14,11 @@
     <g:HTMLPanel ui:field="layoutMaster" styleName="{res.cssBase.layoutContainer}">
 
         <g:HTMLPanel ui:field='headerHolder' styleName='{res.cssBase.headerContainer}'>
-            <div id="loginArea" class='{style.login-area}' ></div>
+            <div id="loginArea" class='{style.login-area}' >
+                <g:Anchor ui:field="loginButton" text="Log In" />
+                <a href="#">Help</a>
+                <a href="#">About</a>
+            </div>
         </g:HTMLPanel>
 
         <g:SimplePanel ui:field='bodyHolder' styleName='{res.cssBase.bodyContainer}'>

@@ -49,6 +49,9 @@ public class FormDemandBasicPresenter
     }
 
     public void onGetBasicInfoValues() {
-        eventBus.pushBasicInfoValues(view.getValues());
+        LOGGER.info("Getting/Pushing basic values");
+        HashMap<String, Object> map = view.getValues();
+        eventBus.pushBasicInfoValues(map);
+        LOGGER.info("Getting/Pushing basic values");
     }
 }

@@ -80,11 +80,14 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
 
     @Override
     public HashMap<String, Object> getValues() {
+        LOGGER.info("Filling map with basic values");
         map.put("title", titleBox.getText());
         map.put("description", descriptionBox.getValue());
         map.put("price", priceBox.getText());
         map.put("endDate", finishDateBox.getValue());
         map.put("expireDate", expireDateBox.getValue());
+
+        LOGGER.info("Filling map with basic values ... DONE");
         return map;
     }
 

@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -25,13 +26,11 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         void setCreateDemandToken(String token);
 
-        HasClickHandlers getCreateDemandBtn();
+        void setDisplayDemandsToken(String token);
 
         void setContent(AnchorEnum anchor, Widget content, boolean clearOthers);
 
         Widget getWidgetView();
-
-        HasClickHandlers getDisplayDemandsBtn();
 
         HasClickHandlers getButton3Btn();
     }
@@ -41,12 +40,8 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         view.setCreateDemandToken(getTokenGenerator().atCreateDemand(true));
 
-        view.getDisplayDemandsBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                eventBus.start();
-            }
-        });
+        view.setDisplayDemandsToken(getTokenGenerator().atDemands());
+
         view.getButton3Btn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
@@ -58,7 +53,11 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     public void onAtHome() {
         LOGGER.info(" on init view ...");
         eventBus.setBodyHolderWidget(view.getWidgetView());
-        eventBus.initCategoryDisplay(AnchorEnum.THIRD);
+        SimplePanel panel = new SimplePanel();
+        eventBus.setHomeWidget(AnchorEnum.FIRST, panel, true);
+        eventBus.initLocalityWidget(panel);
+//        TODO uncomment below
+//        eventBus.initCategoryDisplay(AnchorEnum.FIRST);
     }
 
     public void onDisplayMenu() {

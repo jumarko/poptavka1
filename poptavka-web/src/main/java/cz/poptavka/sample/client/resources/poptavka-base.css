@@ -10,6 +10,12 @@
     position:relative;
 }
 
+.layout-container-user {
+    width: 100%;
+    height: 100%;
+    position:absolute;
+}
+
 .header-container {
     height: 150px;
     background-color: #E0F0FF;
@@ -77,4 +83,12 @@
     width: 200px;
     height: 160px;
     background: url("images/loader.gif") no-repeat center;
+}
+
+.elem-hidden {
+    visibility: hidden;
+}
+
+.elem-visible {
+    visibility: visible;
 }

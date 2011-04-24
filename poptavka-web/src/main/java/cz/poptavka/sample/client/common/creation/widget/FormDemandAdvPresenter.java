@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.common.creation.widget;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -14,6 +15,9 @@ import cz.poptavka.sample.client.common.CommonEventBus;
 @Presenter(view = FormDemandAdvView.class)
 public class FormDemandAdvPresenter extends
     LazyPresenter<FormDemandAdvPresenter.FormDemandAdvViewInterface, CommonEventBus> {
+
+    private static final Logger LOGGER = Logger
+            .getLogger(FormDemandAdvPresenter.class.getName());
 
     public interface FormDemandAdvViewInterface extends LazyView {
 
@@ -39,6 +43,7 @@ public class FormDemandAdvPresenter extends
     }
 
     public void onGetAdvInfoValues() {
+        LOGGER.info("Getting/Pushing adv. values");
         eventBus.pushAdvInfoValues(view.getValues());
     }
 }

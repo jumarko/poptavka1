@@ -7,6 +7,9 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("layout-container")
     String layoutContainer();
 
+    @ClassName("layout-container-user")
+    String layoutContainerUser();
+
     @ClassName("header-container")
     String headerContainer();
 
@@ -45,4 +48,12 @@ public interface PoptavkaBaseStyle extends CssResource {
 
     @ClassName("common-list-loader")
     String commonListLoader();
+
+    @ClassName("elem-hidden")
+    String elemHiddenOn();
+
+    @ClassName("elem-visible")
+    String elemHiddenOff();
+
+
 }

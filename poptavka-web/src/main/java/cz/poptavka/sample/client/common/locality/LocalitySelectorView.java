@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
+import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.address.LocalityType;
 
 @Singleton
@@ -36,6 +37,7 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
 
     public LocalitySelectorView() {
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.cssBase().ensureInjected();
     }
 
     @Override

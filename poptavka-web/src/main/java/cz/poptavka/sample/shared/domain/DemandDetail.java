@@ -17,6 +17,7 @@ public class DemandDetail implements Serializable {
     private long clientId;
     private int maxOffers;
     private int minRating;
+    private String demandType;
 
     /** for serialization **/
     public DemandDetail() {
@@ -33,6 +34,7 @@ public class DemandDetail implements Serializable {
     public void setAdvInfo(HashMap<String, Object> map) {
         this.maxOffers = (Integer) map.get("maxOffers");
         this.minRating = (Integer) map.get("minRating");
+        this.demandType = (String) map.get("demandType");
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -95,6 +97,14 @@ public class DemandDetail implements Serializable {
     }
     public void setMinRating(int minRating) {
         this.minRating = minRating;
+    }
+
+    public String getDemandType() {
+        return demandType;
+    }
+
+    public void setDemandType(String demandType) {
+        this.demandType = demandType;
     }
 
 }

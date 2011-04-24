@@ -56,16 +56,10 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     private ArrayList<CategoryDetail> createCategoryDetailList(List<Category> categories) {
         final ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
 
-        int i = 0;
         for (Category cat : categories) {
             categoryDetails.add(new CategoryDetail(cat.getId(), cat.getName(), 0, 0));
-            i++;
-            if (i > 25) {
-                return categoryDetails;
-            }
         }
 
-        //returning only sublist of 25 items
         return categoryDetails;
     }
 }

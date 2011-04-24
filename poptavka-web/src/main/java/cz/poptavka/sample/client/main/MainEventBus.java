@@ -18,13 +18,12 @@ import cz.poptavka.sample.client.common.CommonModule;
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.home.HomeModule;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
-import cz.poptavka.sample.client.login.LoginModule;
 import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Events(startView = MainView.class, historyOnStart = true)
 @ChildModules({
-    @ChildModule(moduleClass = LoginModule.class, async = true, autoDisplay = false),
+//    @ChildModule(moduleClass = LoginModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = CommonModule.class, autoDisplay = false, async = true),
     @ChildModule(moduleClass = HomeModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false)
@@ -40,11 +39,11 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void start();
 
-    /**
-     * Init login module.
-     */
-    @Event(modulesToLoad = LoginModule.class)
-    void initLogin();
+//    /**
+//     * Init login module.
+//     */
+//    @Event(modulesToLoad = LoginModule.class)
+//    void initLogin();
 
     @Event(handlers = MainPresenter.class)
     void setAnchorWidget(boolean homeSection, AnchorEnum anchor, Widget content, boolean clearOthers);
@@ -72,8 +71,8 @@ public interface MainEventBus extends EventBus {
 
     //working on - delete after Beho 30.3.
     @Event(modulesToLoad = CommonModule.class)
-    void initCategoryWidget(HasOneWidget embedToWidget);
-//    void initLocalityWidget(HasOneWidget embedToWidget);
+//    void initCategoryWidget(HasOneWidget embedToWidget);
+    void initLocalityWidget(HasOneWidget embedToWidget);
 
     /**
      * Sets widget to View's body section. Body section can hold one widget only.
@@ -101,6 +100,9 @@ public interface MainEventBus extends EventBus {
     @AfterLoadChildModule
     @Event(handlers = MainPresenter.class)
     void afterLoad();
+
+    @Event(handlers = MainPresenter.class)
+    void toggleLayout();
 
     @Event(modulesToLoad = CommonModule.class)
     void getRootCategories();

@@ -10,6 +10,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.common.CommonEventBus;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 
 @Presenter(view = FormLoginView.class)
 public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLoginInterface, CommonEventBus> {
@@ -57,6 +58,8 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
             view.displayError();
         }
         // TODO hash passwd
+
         // TODO service call to server to verify user
+        eventBus.verifyExistingClient(new ClientDetail(view.getLogin(), view.getPassword()));
     }
 }

@@ -12,5 +12,9 @@ import cz.poptavka.sample.shared.domain.ClientDetail;
 public interface ClientRPCService extends RemoteService {
     ArrayList<ClientDetail> getAllClients();
 
+    long createNewClient(ClientDetail clientDetail);
+
     void sendClientId(long id);
+
+    long verifyClient(ClientDetail client);
 }

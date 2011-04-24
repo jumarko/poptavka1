@@ -107,6 +107,7 @@ public class CategorySelectorPresenter extends
     }
 
     public void onGetSelectedCategoryCodes() {
+        LOGGER.info("Getting/Pushing categories");
         ListBox tmp = view.getSelectedList();
         ArrayList<String> codes = new ArrayList<String>();
         for (int i = 0; i < tmp.getItemCount(); i++) {

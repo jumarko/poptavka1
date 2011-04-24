@@ -11,15 +11,18 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 /**
- * Handler for common used RPC calls for localities and categories and other common components.
+ * Handler for common used RPC calls for localities and categories and other
+ * common components.
  *
  * @author Beho
  *
@@ -31,6 +34,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
+    private ClientRPCServiceAsync clientService = null;
 
     private static final Logger LOGGER = Logger.getLogger("CommonHandler");
 
@@ -49,16 +53,21 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
         demandService = service;
     }
 
+    @Inject
+    void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
+        clientService = service;
+    }
+
     public void onGetLocalities() {
-        localityService.getLocalities(LocalityType.DISTRICT, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onSuccess(ArrayList<LocalityDetail> list) {
-                eventBus.setLocalityData(LocalityType.DISTRICT, list);
+                eventBus.setLocalityData(LocalityType.REGION, list);
             }
 
             @Override
             public void onFailure(Throwable arg0) {
-                //TODO empty
+                // TODO empty
             }
         });
     }
@@ -67,7 +76,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable arg0) {
-                //TODO empty
+                // TODO empty
             }
 
             @Override
@@ -79,12 +88,10 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
 
     public void onGetRootCategories() {
         categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
-
             @Override
             public void onFailure(Throwable arg0) {
-                //empty
+                // empty
             }
-
             @Override
             public void onSuccess(ArrayList<CategoryDetail> list) {
                 eventBus.setCategoryData(CategoryType.ROOT, list);
@@ -96,7 +103,6 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
     public void onGetChildCategories(final CategoryType type, String categoryId) {
         LOGGER.info("starting category service call");
         categoryService.getCategoryChildren(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
-
             @Override
             public void onSuccess(ArrayList<CategoryDetail> list) {
                 eventBus.setCategoryData(type, list);
@@ -124,5 +130,29 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             }
         });
         LOGGER.info("submitting new demand");
+    }
+
+    public void onVerifyExistingClient(ClientDetail client) {
+//        clientService.verifyClient(client, new AsyncCallback<Long>() {
+//            @Override
+//            public void onFailure(Throwable arg0) {
+//                // TODO Auto-generated method stub
+//
+//            }
+//
+//            @Override
+//            public void onSuccess(Long clientId) {
+//                eventBus.setClientId(clientId);
+////                eventBus.getBasicInfoValues();
+//            }
+//        });
+
+        //bypassing not working service
+        eventBus.setClientId(1);
+        eventBus.getBasicInfoValues();
+    }
+
+    public void onRegisterNewClient(ClientDetail client) {
+
     }
 }

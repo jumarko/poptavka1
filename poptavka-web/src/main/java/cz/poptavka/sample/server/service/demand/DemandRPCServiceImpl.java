@@ -19,6 +19,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
+import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.DemandService;
@@ -74,28 +75,29 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public String createNewDemand(DemandDetail detail, Long cliendId) {
-        LOGGER.fine("Init method CREATE DEMAND");
-        System.out.println("START");
-        System.out.println("get Client by ID");
-        Client client = clientService.getById(cliendId);
-        Demand demand = new Demand();
         try {
+            LOGGER.fine("Init method CREATE DEMAND");
+            System.out.println("START");
+            System.out.println("get Client by ID");
+            Client client = clientService.getById(cliendId);
+            Demand demand = new Demand();
+            DemandType demandType = new DemandType();
+            demandType.setCode(detail.getDemandType());
             demand.setTitle(detail.getTitle());
-            demand.setDescription(detail.getDescription());
+            demand.setType(demandType);
             demand.setPrice(BigDecimal.valueOf(detail.getPrice()));
             demand.setMaxSuppliers(detail.getMaxOffers());
             demand.setMinRating(detail.getMinRating());
             demand.setStatus(DemandStatus.NEW);
             demand.setEndDate(detail.getEndDate());
             demand.setValidTo(detail.getExpireDate());
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            demand.setClient(client);
+            System.out.println("create new DEMAND");
+            demandService.create(demand);
+            return "Done";
+        } catch (Exception ex) {
+            return ex.toString();
         }
-        demand.setClient(client);
-        System.out.println("create new DEMAND");
-        demandService.create(demand);
-        return "Done";
     }
 
     @Override

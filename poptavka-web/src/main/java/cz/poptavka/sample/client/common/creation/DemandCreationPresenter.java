@@ -18,7 +18,6 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.common.CommonEventBus;
 import cz.poptavka.sample.client.common.creation.DemandCreationView.TopPanel;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
-import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
 @Presenter(view = DemandCreationView.class)
@@ -66,12 +65,17 @@ public class DemandCreationPresenter
         /** Login, registration section **/
 
         SimplePanel getUserFormHolder();
+
+        void showCreationButton();
     }
 
     private boolean initLocality = true;
     private boolean initCategory = true;
     private boolean initAdvInfo = true;
     private ClickHandler backBtnHanlder;
+
+    private boolean loggedUser = true;
+    private long clientId;
 
     /** Init presenter. **/
     @Override
@@ -116,11 +120,10 @@ public class DemandCreationPresenter
         view.fiveCreateButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                submitNewDemand();
+//                onSubmitNewDemand();
+                eventBus.getBasicInfoValues();
             }
         });
-
-
 
         /** TEST **/
         HTML x = (HTML) view.getVerticalPanel().getWidget(0);
@@ -143,6 +146,11 @@ public class DemandCreationPresenter
         };
     }
 
+    /**
+     * Init method call.
+     *
+     * @param homeSection
+     */
     public void onAtCreateDemand(boolean homeSection) {
         LOGGER.info("Initializing Demand Creation View Widget ... ");
         eventBus.setAnchorWidget(homeSection, AnchorEnum.THIRD, view.getWidgetView(), true);
@@ -206,15 +214,22 @@ public class DemandCreationPresenter
 
     public void onPushAdvInfoValues(HashMap<String, Object> advValues) {
         newDemand.setAdvInfo(advValues);
-        submitNewDemand();
+        onSubmitNewDemand();
     }
 
-    private void submitNewDemand() {
+    public void onSubmitNewDemand() {
         LOGGER.fine("submiting new demand");
-        ClientDetail newClient = new ClientDetail("email@domena.cz");
+        eventBus.createDemand(newDemand, clientId);
+    }
 
-        eventBus.createDemand(newDemand, new Long(1));
+    public void onSetClientId(long id) {
+        this.clientId = id;
+        LOGGER.info("Current User's Id is: " + clientId);
+    }
 
+    /** Done automatically in step five, when option: register new client is selected. **/
+    public void onInitNewUserForm(SimplePanel embedToWidget) {
+        view.showCreationButton();
     }
 
 }
