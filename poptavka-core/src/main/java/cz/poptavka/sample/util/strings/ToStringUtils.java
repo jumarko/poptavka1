@@ -21,7 +21,7 @@ public final class ToStringUtils {
      * @return id of <code>domainObject</code> or "[NULL]"
      */
     public static String printId(DomainObject domainObject) {
-        if (domainObject == null) {
+        if (domainObject != null) {
             return "" + domainObject.getId();
         }
 
