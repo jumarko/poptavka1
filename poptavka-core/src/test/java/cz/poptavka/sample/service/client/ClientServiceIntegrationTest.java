@@ -80,6 +80,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         final List<Client> peristedClient = this.clientService.searchByCriteria(
                 new ClientSearchCriteria("New", "Client"));
         Assert.assertNotNull(peristedClient);
+        Assert.assertNotNull(peristedClient.get(0).getId());
         Assert.assertEquals("new@client.com", peristedClient.get(0).getEmail());
     }
 }

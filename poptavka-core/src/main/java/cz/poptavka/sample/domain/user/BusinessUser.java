@@ -4,6 +4,7 @@ import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.settings.Settings;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
@@ -144,8 +145,8 @@ public class BusinessUser extends User {
         final StringBuilder sb = new StringBuilder();
         sb.append("BusinessUser");
         sb.append("{id=").append(getId());
-        sb.append(", company=").append(company);
-        sb.append(", person=").append(person);
+        sb.append(", company=").append(ToStringUtils.printId(company));
+        sb.append(", person=").append(ToStringUtils.printId(person));
         sb.append(", verified=").append(verified);
         sb.append('}');
         return sb.toString();

@@ -71,10 +71,10 @@ public class MessageTreeItem extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("MessageTreeItem");
-        sb.append("{threadRoot=").append(ToStringUtils.printId(threadRoot));
-        sb.append(", parent=").append(ToStringUtils.printId(parent));
-        sb.append(", firstBorn=").append(ToStringUtils.printId(firstBorn));
-        sb.append(", nextSibling=").append(ToStringUtils.printId(nextSibling));
+        sb.append("{threadRoot.id=").append(ToStringUtils.printId(threadRoot));
+        sb.append(", parent.id=").append(ToStringUtils.printId(parent));
+        sb.append(", firstBorn.id=").append(ToStringUtils.printId(firstBorn));
+        sb.append(", nextSibling.id=").append(ToStringUtils.printId(nextSibling));
         sb.append('}');
         return sb.toString();
     }

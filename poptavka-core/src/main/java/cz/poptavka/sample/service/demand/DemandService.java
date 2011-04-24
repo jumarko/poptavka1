@@ -9,8 +9,10 @@ import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.service.GenericService;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +25,21 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
     int ESTIMATED_NUMBER_OF_CATEGORIES = 10000;
 
 
+    /**
+     * Load all types available for demands.
+     *
+     * @retun all demand's types
+     */
+    List<DemandType> getDemandTypes();
+
+    /**
+     * Load specific demand type that is uniquely identified by its code.
+     *
+     * @param code unique code of Demand type
+     * @return demand type with given code or null if no such demand type exists
+     * @throws IllegalArgumentException if given code is empty
+     */
+    DemandType getDemandType(String code);
 
     /**
      * Load all demands associated to the given locality (-ies).

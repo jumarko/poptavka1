@@ -57,9 +57,7 @@ public class Client extends BusinessUser {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Client");
-        sb.append("{demands=").append(demands);
         sb.append(", overalRating=").append(overalRating);
-        sb.append(", supplierBlacklist=").append(supplierBlacklist);
         sb.append('}');
         return sb.toString();
     }

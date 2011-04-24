@@ -5,12 +5,15 @@
 
 package cz.poptavka.sample.service.demand;
 
+import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import java.util.Set;
 /**
  *
  * @author Excalibur
+ * @author Juraj Martinka
  */
 @Transactional(readOnly = true)
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
@@ -29,6 +33,18 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private DemandDao demandDao;
 
 
+    @Override
+    @Cacheable(cacheName = "cache5h")
+    public List<DemandType> getDemandTypes() {
+        return demandDao.getDemandTypes();
+    }
+
+    @Override
+    @Cacheable(cacheName = "cache5h")
+    public DemandType getDemandType(String code) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
+        return demandDao.getDemandType(code);
+    }
 
     /** {@inheritDoc} */
     @Override

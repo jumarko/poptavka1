@@ -7,6 +7,7 @@ package cz.poptavka.sample.domain.mail;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -56,7 +57,7 @@ public class MessageUserRole extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("MessageserRole");
-        sb.append("{user='").append(user.getLogin()).append('\'');
+        sb.append("{user.login='").append(user.getLogin()).append('\'');
         sb.append("{type='").append(type).append('\'');
         sb.append("{message='").append(message).append('\'');
         sb.append('}');

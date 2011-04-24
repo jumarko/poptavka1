@@ -1,14 +1,10 @@
 package cz.poptavka.sample.client.common;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
@@ -19,6 +15,9 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Handler for common used RPC calls for localities and categories and other

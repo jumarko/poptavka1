@@ -9,8 +9,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.User;
-import java.util.Date;
-import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -152,7 +153,7 @@ public class Message extends MessageTreeItem {
         final StringBuilder sb = new StringBuilder();
         sb.append("Message");
         sb.append("{subject='").append(subject).append('\'');
-        sb.append("{sender='").append(sender.getLogin()).append('\'');
+        sb.append("{sender.login='").append(sender.getLogin()).append('\'');
         sb.append("{messageState='").append(messageState).append('\'');
         sb.append('}');
         return sb.toString();

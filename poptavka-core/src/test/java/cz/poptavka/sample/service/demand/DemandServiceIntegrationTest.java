@@ -7,6 +7,8 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.service.address.LocalityService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,43 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private CategoryService categoryService;
+
+
+    @Test
+    public void testGetDemandTypes() {
+        final List<DemandType> demandTypes = this.demandService.getDemandTypes();
+        Assert.assertEquals(3, demandTypes.size());
+        checkDemandTypeExists("normal", demandTypes);
+        checkDemandTypeExists("attractive", demandTypes);
+        checkDemandTypeExists("all", demandTypes);
+    }
+
+    @Test
+    public void testGetDemandType() {
+        checkGetDemandTypeByCode("normal");
+        checkGetDemandTypeByCode("attractive");
+        checkGetDemandTypeByCode("all");
+    }
+
+    @Test
+    public void testGetDemandTypeForWrongCode() {
+        String demandTypeCode = "virtual";
+        DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+        Assert.assertNull(demandType);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetDemandTypeForNullCode() {
+        String demandTypeCode = null;
+        DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetDemandTypeForBlankCode() {
+        String demandTypeCode = null;
+        DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+    }
+
 
 
     @Test
@@ -168,6 +207,21 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
+
+    private void checkDemandTypeExists(final String demandTypeCode, final List<DemandType> demandTypes) {
+        CollectionUtils.exists(demandTypes, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                return demandTypeCode.equals(((DemandType) object).getCode());
+            }
+        });
+    }
+
+
+    private void checkGetDemandTypeByCode(String demandTypeCode) {
+        final DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+        Assert.assertEquals(demandTypeCode, demandType.getCode());
+    }
 
     private void checkDemandsByLocality(int expectedDemandsNumber, String... localityCodes) {
         if (localityCodes.length == 0) {

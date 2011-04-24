@@ -5,26 +5,24 @@
 
 package cz.poptavka.sample.server.service.demand;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * @author Excalibur
@@ -81,10 +79,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         System.out.println("get Client by ID");
         Client client = clientService.getById(cliendId);
         Demand demand = new Demand();
-        DemandType demandType = new DemandType();
-        demandType.setCode(detail.getDemandType());
         demand.setTitle(detail.getTitle());
-        demand.setType(demandType);
+        demand.setType(this.demandService.getDemandType(detail.getDemandType()));
         demand.setPrice(BigDecimal.valueOf(detail.getPrice()));
         demand.setMaxSuppliers(detail.getMaxOffers());
         demand.setMinRating(detail.getMinRating());
@@ -93,7 +89,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setValidTo(detail.getExpireDate());
         demand.setClient(client);
         System.out.println("** NEW DEMAND summary **\n" + demand.toString());
-//        demandService.create(demand);
+        demandService.create(demand);
         return "Done";
 //        } catch (Exception ex) {
 //            System.err.print(ex.printStackTrace());

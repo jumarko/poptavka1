@@ -3,6 +3,7 @@ package cz.poptavka.sample.domain.mail;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 
 import javax.persistence.OneToOne;
 
@@ -26,8 +27,8 @@ public class Inbox extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Inbox");
-        sb.append("{client=").append(client);
-        sb.append(", supplier=").append(supplier);
+        sb.append("{client.id=").append(ToStringUtils.printId(client));
+        sb.append(", supplier.id=").append(supplier);
         sb.append('}');
         return sb.toString();
     }

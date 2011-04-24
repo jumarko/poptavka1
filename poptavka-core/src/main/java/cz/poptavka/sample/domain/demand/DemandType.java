@@ -5,6 +5,8 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * Type of demand. It is closely connected to the business relation to the {@link cz.poptavka.sample.domain.user.User}
@@ -15,7 +17,13 @@ import javax.persistence.Entity;
  */
 @Entity
 @Audited
+@NamedQueries({ @NamedQuery(name = DemandType.GET_ALL_DEMAND_TYPES_QUERY, query = "from DemandType"),
+@NamedQuery(name = DemandType.GET_DEMAND_TYPE_QUERY, query = "from DemandType dt where dt.code = :code") })
 public class DemandType extends DomainObject {
+
+    public static final String GET_ALL_DEMAND_TYPES_QUERY = "getAllDemandTypes";
+    public static final String GET_DEMAND_TYPE_QUERY = "getDemandType";
+
 
 
     /**

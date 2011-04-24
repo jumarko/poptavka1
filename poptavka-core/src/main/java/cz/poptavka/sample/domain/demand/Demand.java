@@ -10,6 +10,7 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -63,8 +64,8 @@ public class Demand extends DomainObject {
      * Many times is more handy to work with {@link cz.poptavka.sample.domain.demand.DemandType#getType()}
      * instead of wrapper object.
      */
-    @ManyToOne(optional = false)
     @Audited
+    @ManyToOne(optional = false)
     private DemandType type;
 
     @ManyToOne
@@ -321,9 +322,7 @@ public class Demand extends DomainObject {
         sb.append("{price='").append(price).append('\'');
         sb.append(", status=").append(status);
         sb.append(", type=").append(type);
-        sb.append(", client=").append(client);
-        sb.append(", localities=").append(localities);
-        sb.append(", category=").append(categories);
+        sb.append(", client=").append(ToStringUtils.printId(client));
         sb.append('}');
         return sb.toString();
     }

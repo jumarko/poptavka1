@@ -1,6 +1,7 @@
 package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -52,8 +53,8 @@ public class SupplierBlacklist extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("SupplierBlacklist");
-        sb.append("{client=").append(client);
-        sb.append(", suppliers=").append(suppliers);
+        sb.append("{client.id=").append(ToStringUtils.printId(client));
+        sb.append(", suppliers.size=").append(suppliers != null ? suppliers.size() : 0);
         sb.append('}');
         return sb.toString();
     }
