@@ -56,6 +56,10 @@ public class DemandType extends DomainObject {
             }
             throw new IllegalArgumentException("No DemandType enum constant for type code [" + typeCode + "].");
         }
+
+        public String getValue() {
+            return value;
+        }
     }
 
 

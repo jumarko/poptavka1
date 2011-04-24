@@ -26,7 +26,6 @@ import java.util.Set;
  * @author Excalibur
  * @author Juraj Martinka
  */
-@Transactional(readOnly = true)
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
 
@@ -35,12 +34,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     @Override
     @Cacheable(cacheName = "cache5h")
+    @Transactional(readOnly = true)
     public List<DemandType> getDemandTypes() {
         return demandDao.getDemandTypes();
     }
 
     @Override
     @Cacheable(cacheName = "cache5h")
+    @Transactional(readOnly = true)
     public DemandType getDemandType(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
         return demandDao.getDemandType(code);
@@ -48,12 +49,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public Set<Demand> getDemands(Locality... localities) {
         return this.demandDao.getDemands(localities);
     }
 
 
     /** {@inheritDoc} */
+    @Transactional(readOnly = true)
     public Map<Locality, Long> getDemandsCountForAllLocalities() {
         final List<Map<String, Object>> demandsCountForAllLocalities = this.demandDao.getDemandsCountForAllLocalities();
 
@@ -77,6 +80,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
      */
     @Override
     @Cacheable(cacheName = "cache5min")
+    @Transactional(readOnly = true)
     public long getDemandsCount(Locality... localities) {
         return this.demandDao.getDemandsCount(localities);
     }
@@ -84,24 +88,28 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getDemandsCountQuick(Locality locality) {
         return this.demandDao.getDemandsCountQuick(locality);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getDemandsCountWithoutChildren(Locality locality) {
         return this.demandDao.getDemandsCountWithoutChildren(locality);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public Set<Demand> getDemands(Category... categories) {
         return this.demandDao.getDemands(categories);
     }
 
 
     /** {@inheritDoc} */
+    @Transactional(readOnly = true)
     public Map<Category, Long> getDemandsCountForAllCategories() {
         final List<Map<String, Object>> demandsCountForAllCategories = this.demandDao.getDemandsCountForAllCategories();
 
@@ -123,18 +131,21 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
      */
     @Override
     @Cacheable(cacheName = "cache5min")
+    @Transactional(readOnly = true)
     public long getDemandsCount(Category... categories) {
         return this.demandDao.getDemandsCount(categories);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getDemandsCountQuick(Category category) {
         return this.demandDao.getDemandsCountQuick(category);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public long getDemandsCountWithoutChildren(Category category) {
         return this.demandDao.getDemandsCountWithoutChildren(category);
     }

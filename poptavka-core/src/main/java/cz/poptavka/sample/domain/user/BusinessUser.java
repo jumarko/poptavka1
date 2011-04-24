@@ -49,15 +49,17 @@ public class BusinessUser extends User {
 
 
     /** All user's addresses. */
-    @OneToMany
     @NotAudited
+    @OneToMany
+    @Cascade(value = CascadeType.ALL)
     private List<Address> addresses;
 
     /** Flag if user has already been verified. If true then it is a "permanent" user, otherwise it is temporary user.*/
     private boolean verified;
 
-    @OneToMany(mappedBy = "user")
     @NotAudited
+    @OneToMany(mappedBy = "user")
+    @Cascade(value = CascadeType.ALL)
     private List<UserService> userServices;
 
 
@@ -66,8 +68,9 @@ public class BusinessUser extends User {
     private List<Invoice> invoices;
 
 
-    @OneToOne
     @NotAudited
+    @OneToOne
+    @Cascade(value = CascadeType.ALL)
     private Settings settings;
 
 

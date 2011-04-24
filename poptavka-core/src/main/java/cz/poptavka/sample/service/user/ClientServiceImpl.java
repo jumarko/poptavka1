@@ -32,8 +32,8 @@ public class ClientServiceImpl extends GenericServiceImpl<Client, ClientDao> imp
     }
 
     @Override
+    @Transactional
     public Client create(Client client) {
-        return super.create(client);    //To change body of overridden methods use File | Settings | File Templates.
+        return super.create(client);
     }
-
 }

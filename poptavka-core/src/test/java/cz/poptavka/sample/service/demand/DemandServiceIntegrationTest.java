@@ -5,14 +5,21 @@ import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
+import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.user.ClientService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,10 +32,12 @@ import java.util.Map;
 @DataSet(path = {
         "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
-        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
+    private static final long TEST_CLIENT_ID = 111111111L;
     @Autowired
     private DemandService demandService;
 
@@ -37,6 +46,9 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ClientService clientService;
 
 
     @Test
@@ -206,8 +218,37 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
-    //------------------------------ HELPER METHODS --------------------------------------------------------------------
+    @Test
+    public void testCreateDemand() {
 
+        final Demand demand = new Demand();
+        demand.setTitle("Title poptavka");
+        demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
+        demand.setPrice(BigDecimal.valueOf(10000));
+        demand.setMaxSuppliers(20);
+        demand.setMinRating(99);
+        demand.setStatus(DemandStatus.NEW);
+        final String[] dateFormat = new String[] {"yyyy-mm-dd" };
+        try {
+            demand.setEndDate(DateUtils.parseDate("2011-05-01", dateFormat));
+            demand.setValidTo(DateUtils.parseDate("2011-06-01", dateFormat));
+        } catch (ParseException e) {
+            Assert.fail("Incorrect date format in test data.");
+        }
+
+        final Client newClient = new Client();
+        newClient.setEmail("test@poptavam.com");
+        newClient.setPerson(new Person("Test", "Client"));
+        this.clientService.create(newClient);
+
+        demand.setClient(clientService.getById(newClient.getId()));
+//        demand.setClient(clientService.getById(TEST_CLIENT_ID));
+        demandService.create(demand);
+    }
+
+
+    //------------------------------ HELPER METHODS --------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     private void checkDemandTypeExists(final String demandTypeCode, final List<DemandType> demandTypes) {
         CollectionUtils.exists(demandTypes, new Predicate() {
             @Override

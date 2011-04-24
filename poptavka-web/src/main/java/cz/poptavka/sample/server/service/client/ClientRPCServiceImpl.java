@@ -1,27 +1,31 @@
 package cz.poptavka.sample.server.service.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Company;
 import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
-    private ClientService clientService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
+    private static final String HULICE_CODE = "529737";
+
+    private ClientService clientService;
+
+    private LocalityService localityService;
+
 
     @Override
     public ArrayList<ClientDetail> getAllClients() {
@@ -34,6 +38,12 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+
+    @Autowired
+    public void setLocalityService(LocalityService localityService) {
+        this.localityService = localityService;
     }
 
     @Override
@@ -70,9 +80,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         /** need for fix this **/
 //        LocalityRPCServiceImpl localityService = new LocalityRPCServiceImpl();
 //        Locality city = localityService.getLocality("Brno");
-        Locality city = new Locality("CZ-TEST", "BRNO", LocalityType.CITY);
-
-        Address address = new Address();
+        final Locality city = this.localityService.getLocality(HULICE_CODE);
+        final Address address = new Address();
         address.setCity(city);
         address.setStreet(clientDetail.getAddress().getStreet());
         address.setZipCode(clientDetail.getAddress().getZipCode());

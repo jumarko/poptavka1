@@ -5,7 +5,6 @@ import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,8 @@ import java.util.List;
  * Test of {@link cz.poptavka.sample.service.user.ClientService} that works
  * with real DB!
  * Watch out for consequences - e.g. methods that create/update/delete data should
- * not be temporary part of this tests - such tests should be marked as @Ignored to prevent modification of live data.
+ * not be a permanent part of this tests - such tests should be marked as @Ignored to prevent
+ * from modifications of live data.
  *
  * @author Juraj Martinka
  *         Date: 24.4.11

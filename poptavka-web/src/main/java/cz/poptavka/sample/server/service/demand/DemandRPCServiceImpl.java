@@ -10,13 +10,11 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -46,18 +44,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return demandService;
     }
 
-    public ClientService setClientService() {
-        return clientService;
-    }
 
     @Autowired
-    @Required
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
     }
 
     @Autowired
-    @Required
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
     }
@@ -77,8 +70,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         LOGGER.fine("Init method CREATE DEMAND");
         System.out.println("START");
         System.out.println("get Client by ID");
-        Client client = clientService.getById(cliendId);
-        Demand demand = new Demand();
+        final Demand demand = new Demand();
         demand.setTitle(detail.getTitle());
         demand.setDescription(detail.getDescription());
         demand.setType(this.demandService.getDemandType(detail.getDemandType()));
@@ -88,7 +80,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getExpireDate());
-        demand.setClient(client);
+        demand.setClient(clientService.getById(cliendId));
         System.out.println("** NEW DEMAND summary **\n" + demand.toString());
         demandService.create(demand);
         return "Done";
