@@ -13,7 +13,7 @@
                 <g:Label text="Maximalny pocet ponuk"/>
             </g:customCell>
             <g:customCell>
-                <g:IntegerBox ui:field="maxOffersBox"></g:IntegerBox>
+                <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
             </g:customCell>
         </g:row>
         <g:row>
@@ -21,7 +21,7 @@
                 <g:Label text="Hodnotenie dodavatelov"/>
             </g:customCell>
             <g:customCell>
-                <g:IntegerBox ui:field="minRatingBox"></g:IntegerBox>
+                <g:IntegerBox ui:field="minRatingBox">0</g:IntegerBox>
             </g:customCell>
         </g:row>
         <g:row>

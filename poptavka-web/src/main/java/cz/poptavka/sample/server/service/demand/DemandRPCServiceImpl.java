@@ -75,29 +75,30 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public String createNewDemand(DemandDetail detail, Long cliendId) {
-        try {
-            LOGGER.fine("Init method CREATE DEMAND");
-            System.out.println("START");
-            System.out.println("get Client by ID");
-            Client client = clientService.getById(cliendId);
-            Demand demand = new Demand();
-            DemandType demandType = new DemandType();
-            demandType.setCode(detail.getDemandType());
-            demand.setTitle(detail.getTitle());
-            demand.setType(demandType);
-            demand.setPrice(BigDecimal.valueOf(detail.getPrice()));
-            demand.setMaxSuppliers(detail.getMaxOffers());
-            demand.setMinRating(detail.getMinRating());
-            demand.setStatus(DemandStatus.NEW);
-            demand.setEndDate(detail.getEndDate());
-            demand.setValidTo(detail.getExpireDate());
-            demand.setClient(client);
-            System.out.println("create new DEMAND");
-            demandService.create(demand);
-            return "Done";
-        } catch (Exception ex) {
-            return ex.toString();
-        }
+        //try {
+        LOGGER.fine("Init method CREATE DEMAND");
+        System.out.println("START");
+        System.out.println("get Client by ID");
+        Client client = clientService.getById(cliendId);
+        Demand demand = new Demand();
+        DemandType demandType = new DemandType();
+        demandType.setCode(detail.getDemandType());
+        demand.setTitle(detail.getTitle());
+        demand.setType(demandType);
+        demand.setPrice(BigDecimal.valueOf(detail.getPrice()));
+        demand.setMaxSuppliers(detail.getMaxOffers());
+        demand.setMinRating(detail.getMinRating());
+        demand.setStatus(DemandStatus.NEW);
+        demand.setEndDate(detail.getEndDate());
+        demand.setValidTo(detail.getExpireDate());
+        demand.setClient(client);
+        System.out.println("** NEW DEMAND summary **\n" + demand.toString());
+//        demandService.create(demand);
+        return "Done";
+//        } catch (Exception ex) {
+//            System.err.print(ex.printStackTrace());
+//
+//        }
     }
 
     @Override

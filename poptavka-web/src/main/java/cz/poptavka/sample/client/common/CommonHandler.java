@@ -133,23 +133,22 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
     }
 
     public void onVerifyExistingClient(ClientDetail client) {
-//        clientService.verifyClient(client, new AsyncCallback<Long>() {
-//            @Override
-//            public void onFailure(Throwable arg0) {
-//                // TODO Auto-generated method stub
-//
-//            }
-//
-//            @Override
-//            public void onSuccess(Long clientId) {
-//                eventBus.setClientId(clientId);
-////                eventBus.getBasicInfoValues();
-//            }
-//        });
+        clientService.verifyClient(client, new AsyncCallback<Long>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO Auto-generated method stub
 
-        //bypassing not working service
-        eventBus.setClientId(1);
-        eventBus.getBasicInfoValues();
+            }
+
+            @Override
+            public void onSuccess(Long clientId) {
+                if (clientId != -1) {
+                    eventBus.setClientId(clientId);
+                    eventBus.getBasicInfoValues();
+                }
+            }
+        });
+
     }
 
     public void onRegisterNewClient(ClientDetail client) {

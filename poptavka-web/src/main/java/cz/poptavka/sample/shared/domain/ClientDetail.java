@@ -27,6 +27,7 @@ public class ClientDetail implements Serializable {
 
     public ClientDetail(String email, String password) {
         this.email = email;
+        this.login = email;
         this.passowrd = password;
     }
 
@@ -46,7 +47,7 @@ public class ClientDetail implements Serializable {
         this.login = login;
     }
 
-    public String getPassowrd() {
+    public String getPassword() {
         return passowrd;
     }
 

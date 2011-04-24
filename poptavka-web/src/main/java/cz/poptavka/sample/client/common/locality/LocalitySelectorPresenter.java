@@ -107,15 +107,13 @@ public class LocalitySelectorPresenter
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                LOGGER.info("Filling list...");
+                LOGGER.info("Filling Locality list...");
                 if (list.size() == 0) {
                     LOGGER.info("NO CONTAINING LOCALITIES");
                 }
                 for (int i = 0; i < list.size(); i++) {
-                    LOGGER.info("item #" + i);
                     box.addItem(list.get(i).getName(), list.get(i).getCode());
                 }
-                LOGGER.info("List filled");
             }
 
         });

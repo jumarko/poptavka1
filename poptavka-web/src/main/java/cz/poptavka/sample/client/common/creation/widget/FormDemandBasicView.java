@@ -83,7 +83,7 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
         LOGGER.info("Filling map with basic values");
         map.put("title", titleBox.getText());
         map.put("description", descriptionBox.getValue());
-        map.put("price", priceBox.getText());
+        map.put("price", priceBox.getValue());
         map.put("endDate", finishDateBox.getValue());
         map.put("expireDate", expireDateBox.getValue());
 

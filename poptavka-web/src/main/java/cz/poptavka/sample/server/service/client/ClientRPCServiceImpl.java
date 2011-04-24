@@ -1,6 +1,7 @@
 package cz.poptavka.sample.server.service.client;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +12,12 @@ import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Company;
 import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
-import cz.poptavka.sample.service.GenericService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
     private ClientService clientService;
-    private GenericService genericService;
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
 
     @Override
@@ -29,14 +28,9 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return null;
     }
 
-//    @Autowired
-//    public void setClientService(ClientService clientService) {
-//        this.clientService = clientService;
-//    }
-
     @Autowired
-    public void setGenericService(GenericService genericService) {
-        this.genericService = genericService;
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @Override
@@ -51,7 +45,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         /** Person is mandatory for person client and for company client as well. **/
         Person person = new Person(clientDetail.getFirstName(), clientDetail.getLastName());
         person.setPhone(clientDetail.getPhone());
-        person = (Person) genericService.create(person);
         newClient.setPerson(person);
         /** Company will stay null for person client. **/
         Company company = null;
@@ -60,7 +53,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
             company.setName(clientDetail.getCompanyName());
             company.setIdentificationNumber(clientDetail.getIdentifiacationNumber());
             company.setTaxId(clientDetail.getTaxId());
-            company = (Company) genericService.create(company);
         }
         newClient.setCompany(company);
         /** Address. **/
@@ -77,21 +69,24 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 //        newClient.setAddresses(addresses);
         newClient.setEmail(clientDetail.getEmail());
         newClient.setLogin(clientDetail.getLogin());
-        newClient.setPassword(clientDetail.getPassowrd());
+        newClient.setPassword(clientDetail.getPassword());
         newClient = clientService.create(newClient);
         return newClient.getId();
     }
 
     @Override
     public long verifyClient(ClientDetail client) {
-//        List<Client> clients = clientService.getAll();
-//        for (Client cl : clients) {
-//            if (cl.getLogin().equals(client.getLogin()) && cl.getPassword().equals(client.getPassowrd())) {
-//                return cl.getId();
-//            }
-//        }
-//        return -1;
-        return 1;
+        List<Client> clients = clientService.getAll();
+
+        for (Client cl : clients) {
+            System.out.println("Login: " + cl.getLogin() + " Password: " + cl.getPassword());
+            System.out.println("Login: " + client.getLogin() + " Password: " + client.getPassword());
+            if (cl.getLogin().equals(client.getLogin()) && cl.getPassword().equals(client.getPassword())) {
+                return cl.getId();
+            }
+        }
+        return -1;
+//        return 1;
     }
 
 }

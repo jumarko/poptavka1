@@ -13,7 +13,7 @@
                     <g:HTML wordWrap="true">email</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:TextBox ui:field="mailBox"/>
+                    <g:TextBox ui:field="mailBox">mail@domena.cz</g:TextBox>
                 </g:customCell>
             </g:row>
             <g:row>
@@ -21,7 +21,7 @@
                     <g:HTML wordWrap="true">heslo</g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:PasswordTextBox ui:field="passBox"/>
+                    <g:PasswordTextBox ui:field="passBox">heslo</g:PasswordTextBox>
                 </g:customCell>
             </g:row>
             <g:row>

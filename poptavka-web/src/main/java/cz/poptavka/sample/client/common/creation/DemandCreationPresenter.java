@@ -198,21 +198,26 @@ public class DemandCreationPresenter
 
 
     public void onPushBasicInfoValues(HashMap<String, Object> basicValues) {
+        LOGGER.info("setting basic info");
         newDemand.setBasicInfo(basicValues);
         eventBus.getSelectedCategoryCodes();
+        LOGGER.info("After eventBus call");
     }
 
     public void onPushSelectedCategoryCodes(ArrayList<String> categories) {
+        LOGGER.info("setting categories");
         newDemand.setCategories(categories);
         eventBus.getSelectedLocalityCodes();
     }
 
     public void onPushSelectedLocalityCodes(ArrayList<String> localities) {
+        LOGGER.info("setting localities");
         newDemand.setLocalities(localities);
         eventBus.getAdvInfoValues();
     }
 
     public void onPushAdvInfoValues(HashMap<String, Object> advValues) {
+        LOGGER.info("setting advanced info");
         newDemand.setAdvInfo(advValues);
         onSubmitNewDemand();
     }
