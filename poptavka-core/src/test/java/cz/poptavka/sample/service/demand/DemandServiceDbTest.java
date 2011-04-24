@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.demand;
 
+import cz.poptavka.sample.base.RealDbTest;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
@@ -10,10 +11,8 @@ import org.apache.commons.lang.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -29,10 +28,7 @@ import java.text.ParseException;
  * @author Juraj Martinka
  *         Date: 4.2.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
-@Transactional
-public class DemandServiceDbTest {
+public class DemandServiceDbTest extends RealDbTest {
 
     @Autowired
     private DemandService demandService;
@@ -42,10 +38,11 @@ public class DemandServiceDbTest {
 
 
     @Test
-    @Ignore // do not create clients in live DB every time this test is run
+    @Ignore // do not use live DB if it is not neccessary
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testCreateDemand() {
         final Demand demand = new Demand();
-        demand.setTitle("Title poptavka");
+        demand.setTitle("TEST poptavka");
         demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
         demand.setPrice(BigDecimal.valueOf(10000));
         demand.setMaxSuppliers(20);

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.client;
 
+import cz.poptavka.sample.base.RealDbTest;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientSearchCriteria;
@@ -7,10 +8,8 @@ import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,16 +24,14 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 24.4.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
-@Transactional
-public class ClientServiceDbTest {
+public class ClientServiceDbTest extends RealDbTest {
 
     @Autowired
     private ClientService clientService;
 
     @Test
     @Ignore // do not create clients in live DB every time this test is run
+    @Transactional(propagation = Propagation.REQUIRED)
     public void testCreateClient() {
         final Client newClient = new Client();
         newClient.setEmail("test@poptavam.com");
