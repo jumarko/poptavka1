@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -222,21 +223,33 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         final Demand demand = new Demand();
         demand.setTitle("Title poptavka");
         demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
-        demand.setPrice(BigDecimal.valueOf(10000));
+        final BigDecimal price = BigDecimal.valueOf(10000);
+        demand.setPrice(price);
         demand.setMaxSuppliers(20);
         demand.setMinRating(99);
         demand.setStatus(DemandStatus.NEW);
-        demand.setEndDate(DateUtils.parseDate("2011-05-01"));
-        demand.setValidTo(DateUtils.parseDate("2011-06-01"));
+        final Date endDate = DateUtils.parseDate("2011-05-01");
+        demand.setEndDate(endDate);
+        final Date validTo = DateUtils.parseDate("2011-06-01");
+        demand.setValidTo(validTo);
 
 
         final Client newClient = new Client();
         newClient.setEmail("test@poptavam.com");
-        newClient.setPerson(new Person("Test", "Client"));
+        final String clientSurname = "Client";
+        newClient.setPerson(new Person("Test", clientSurname));
         this.clientService.create(newClient);
 
         demand.setClient(clientService.getById(newClient.getId()));
         demandService.create(demand);
+
+        final Demand createdDemand = this.demandService.getById(demand.getId());
+        Assert.assertNotNull(createdDemand);
+        Assert.assertEquals(price, createdDemand.getPrice());
+        Assert.assertEquals(DemandStatus.NEW, createdDemand.getStatus());
+        Assert.assertEquals(validTo, createdDemand.getValidTo());
+        Assert.assertEquals(clientSurname, createdDemand.getClient().getPerson().getLastName());
+
     }
 
 
