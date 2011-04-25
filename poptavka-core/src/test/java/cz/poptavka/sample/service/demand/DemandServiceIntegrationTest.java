@@ -11,15 +11,14 @@ import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.util.date.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,7 +36,6 @@ import java.util.Map;
         dtd = "classpath:test.dtd")
 public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
-    private static final long TEST_CLIENT_ID = 111111111L;
     @Autowired
     private DemandService demandService;
 
@@ -228,13 +226,9 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         demand.setMaxSuppliers(20);
         demand.setMinRating(99);
         demand.setStatus(DemandStatus.NEW);
-        final String[] dateFormat = new String[] {"yyyy-mm-dd" };
-        try {
-            demand.setEndDate(DateUtils.parseDate("2011-05-01", dateFormat));
-            demand.setValidTo(DateUtils.parseDate("2011-06-01", dateFormat));
-        } catch (ParseException e) {
-            Assert.fail("Incorrect date format in test data.");
-        }
+        demand.setEndDate(DateUtils.parseDate("2011-05-01"));
+        demand.setValidTo(DateUtils.parseDate("2011-06-01"));
+
 
         final Client newClient = new Client();
         newClient.setEmail("test@poptavam.com");
@@ -242,7 +236,6 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         this.clientService.create(newClient);
 
         demand.setClient(clientService.getById(newClient.getId()));
-//        demand.setClient(clientService.getById(TEST_CLIENT_ID));
         demandService.create(demand);
     }
 

@@ -7,8 +7,7 @@ import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientService;
-import org.apache.commons.lang.time.DateUtils;
-import org.junit.Assert;
+import cz.poptavka.sample.util.date.DateUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 
 /**
  * Test that communicates with real db!
@@ -48,13 +46,8 @@ public class DemandServiceDbTest extends RealDbTest {
         demand.setMaxSuppliers(20);
         demand.setMinRating(99);
         demand.setStatus(DemandStatus.NEW);
-        final String[] dateFormat = new String[] {"yyyy-mm-dd" };
-        try {
-            demand.setEndDate(DateUtils.parseDate("2011-05-01", dateFormat));
-            demand.setValidTo(DateUtils.parseDate("2011-06-01", dateFormat));
-        } catch (ParseException e) {
-            Assert.fail("Incorrect date format in test data.");
-        }
+        demand.setEndDate(DateUtils.parseDate("2011-05-01"));
+        demand.setValidTo(DateUtils.parseDate("2011-06-01"));
 
         demand.setClient(createNewClient());
         demandService.create(demand);

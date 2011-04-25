@@ -1,8 +1,10 @@
 package cz.poptavka.sample.service;
 
+import com.google.common.base.Preconditions;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.exception.DomainObjectNotFoundException;
+import org.hibernate.criterion.Example;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -115,6 +117,21 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
         return dao.refresh(entity);
     }
 
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Dom> findByExample(Dom example) {
+        return this.dao.findByExample(example);
+    }
+
+    @Override
+    public List<Dom> findByExampleCustom(Example customExample) {
+        Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
+        return this.dao.findByExampleCustom(customExample);
+    }
+
+
+    //----------------------------------  OTHER METHODS ----------------------------------------------------------------
     /**
      * @throws IllegalStateException if dao is not set
      */

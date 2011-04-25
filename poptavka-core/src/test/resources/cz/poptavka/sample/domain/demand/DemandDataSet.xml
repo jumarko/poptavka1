@@ -6,16 +6,16 @@
     <DEMANDTYPE ID="2" CODE="attractive" />
     <DEMANDTYPE ID="3" CODE="all" />
 
-    <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."/>
-    <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."/>
-    <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3"  DESCRIPTION="3: All request for java application."/>
-    <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."/>
+    <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."        PRICE="10000" ENDDATE="2011-10-10" STATUS="NEW" />
+    <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."    PRICE="10000" ENDDATE="2011-10-10" STATUS="NEW" />
+    <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3" DESCRIPTION="3: All request for java application."           PRICE="1200" />
+    <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."                      ENDDATE="2011-04-04"/>
     <DEMAND ID="5" TYPE_ID="2" TITLE="Demand 5" DESCRIPTION="5: Attractive request for java application."/>
-    <DEMAND ID="6" TYPE_ID="1" TITLE="Demand 6" DESCRIPTION="6: All request for java application."/>
-    <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."/>
-    <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."/>
-    <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."/>
-    <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application."/>
+    <DEMAND ID="6" TYPE_ID="1" TITLE="Demand 6" DESCRIPTION="6: All request for java application."           PRICE="444"   ENDDATE="2019-1-1"/>
+    <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."        PRICE="1110"  ENDDATE="2011-10-10" STATUS="NEW" />
+    <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."        PRICE="9000000"                    STATUS="NEW" />
+    <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."                                           STATUS="NEW" />
+    <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"                      STATUS="NEW" />
 
 
     <!--########################################## demands for localities ###########################################-->

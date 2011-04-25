@@ -2,6 +2,7 @@ package cz.poptavka.sample.dao;
 
 
 import cz.poptavka.sample.domain.common.DomainObject;
+import org.hibernate.criterion.Example;
 
 import java.util.List;
 import java.util.Map;
@@ -129,4 +130,33 @@ public interface GenericDao<T extends DomainObject> {
      * @return
      */
     Class<? extends T> getPersistentClass();
+
+    /**
+     *  Load all entities that satisfy conditions given by <code>example</code> also known as "Query by Example".
+     *  <p>
+     *  The default setting is that NULL and ZERO values are excluded! If you want to bypass these restrictions, you
+     *  must use the more general method {@link #findByExampleCustom(org.hibernate.criterion.Example)}.
+     *
+     * @param example "entity filter"
+     * @return list of all entities satisfying given criteria
+     * @throws IllegalArgumentException if given <code>example</code> object is null
+     */
+    List<T> findByExample(T example);
+
+    /**
+     * This method similar to {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)} but allows custom
+     * specification of custom Example.
+     * <p>
+     * This allows you to use enable (e.g.) NULL values or ZERO values.
+     * For more information see {@link org.hibernate.criterion.Example}
+     * <p>
+     *     Be aware when using this! It's quite easy to break the backward compatibility if you use this method
+     * to allow (e.g.) NULL values. If new property is added on given domain object (<code>example</code>) then
+     * existing code might be broken.
+     *
+     * @param customExample example which will be used to create a Criteria Query.
+     * @return list of all domain objects that satisfy criteria given by <code>customExample</code>.
+     */
+    List<T> findByExampleCustom(Example customExample);
+
 }

@@ -7,11 +7,27 @@ package cz.poptavka.sample.domain.address;
  *         Date: 4.2.11
  */
 public enum LocalityType {
-    COUNTRY,
+    COUNTRY(1),
     /** "kraj" in the Czech Republic.*/
-    REGION,
+    REGION(2),
     /** "okres" in the Czech Republic.*/
-    DISTRICT,
+    DISTRICT(3),
     /** "obec in the Czech Republic.*/
-    CITY
+    CITY(4);
+
+    /**
+     * Level which corresponds to this locality type.
+     *@see cz.poptavka.sample.domain.common.TreeItem
+     */
+    private final int level;
+
+
+    LocalityType(int level) {
+        this.level = level;
+    }
+
+
+    public int getLevel() {
+        return level;
+    }
 }

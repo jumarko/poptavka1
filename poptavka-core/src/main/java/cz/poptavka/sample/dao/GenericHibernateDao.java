@@ -5,9 +5,11 @@
 
 package cz.poptavka.sample.dao;
 
+import com.google.common.base.Preconditions;
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Example;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -215,6 +217,28 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     public void flush() {
         em().flush();
     }
+
+
+    /** {@inheritDoc} */
+    public List<T> findByExample(T example) {
+        Preconditions.checkArgument(example != null, "Example object must not be null");
+        // query by example
+        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
+        entityCriteria.add(Example.create(example)
+                .excludeZeroes());
+        return entityCriteria.list();
+    }
+
+
+    @Override
+    public List<T> findByExampleCustom(Example customExample) {
+        Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
+        // query by example
+        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
+        entityCriteria.add(customExample);
+        return entityCriteria.list();
+    }
+
 
     /**
      * Searches through database by given criteria.
