@@ -2,12 +2,14 @@ package cz.poptavka.sample.base.integration;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
+import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.CompositeDataSet;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
+import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
@@ -62,8 +64,17 @@ public abstract class DBUnitBaseTest {
     /** String that can be used in xml scripts to represent null values. */
     private static final String NULL_REPLACEMENT_VALUE = "[NULL]";
 
+    /** Data type factory which is used by default.
+     * See
+     * <a href="http://theflashesofinsight.wordpress.com/2009/03/07/dbunitoracle-fix-issue-with-inserting-date-field/">
+     *     Fix issue with inserting DATE Field</a>
+     */
+    private static final IDataTypeFactory DATA_TYPE_FACTORY =  new org.dbunit.ext.hsqldb.HsqldbDataTypeFactory();
+
     @Autowired
     private DataSource dataSource;
+
+    private volatile IDatabaseConnection connection;
 
     private List<String> dataSetsFilePaths = new ArrayList<String>();
     private String dataSetDtdFilePath  = "";
@@ -136,8 +147,18 @@ public abstract class DBUnitBaseTest {
 
 
     private IDatabaseConnection getConnection() throws Exception {
-        return new SpringDatabaseDataSourceConnection(this.dataSource);
-
+        if (connection == null) {
+            synchronized (this) {
+                if (connection == null) {
+                    final SpringDatabaseDataSourceConnection newConnection =
+                            new SpringDatabaseDataSourceConnection(this.dataSource);
+                    newConnection.getConfig().setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
+                            DATA_TYPE_FACTORY);
+                    this.connection = newConnection;
+                }
+            }
+        }
+        return  connection;
 //        return new DatabaseDataSourceConnection(this.dataSource);
     }
 
