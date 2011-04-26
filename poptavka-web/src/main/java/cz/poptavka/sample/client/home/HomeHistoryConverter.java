@@ -13,8 +13,6 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 
     @Override
     public void convertFromToken(String historyName, String param, HomeEventBus eventBus) {
-        LOGGER.fine("history param is: " + param);
-        LOGGER.fine("history historyName is: " + historyName);
         if (historyName.equals("atHome")) {
             eventBus.atHome();
         }

@@ -25,13 +25,16 @@
         <g:at left="0" top="0">
         <!-- STEP ONE -->
             <g:VerticalPanel ui:field="stepOne">
-                <g:HTML styleName='{style.clickable}'><div><strong>#1 Demand Description</strong></div></g:HTML>
+                <g:Cell horizontalAlignment="ALIGN_CENTER">
+                    <g:HTML><ui:msg key="demandCreationTitle">Demand Creation</ui:msg></g:HTML>
+                </g:Cell>
+                <g:HTML styleName='{style.clickable}'><div><strong>#1 <ui:msg key="demandBasicInfo">Demand Description</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="basicInfoHolder"/>
                     <g:HTMLPanel>
                         <div style="position:absolute; bottom: 0px; right: 0px;">
                         <g:HorizontalPanel>
                             <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
-                                <g:Button ui:field="btnOneNext">Next</g:Button>
+                                <g:Button ui:field="btnOneNext"><ui:msg key='nextStep'>Next</ui:msg></g:Button>
                             </g:Cell>
                         </g:HorizontalPanel>
                         </div>
@@ -40,14 +43,14 @@
         </g:at>
         <!-- STEP TWO -->
         <g:at left="0" top="465">
-            <g:VerticalPanel ui:field="stepTwo" width="600px" height="440px" styleName='{res.cssBase.solidBackground}'>
-                <g:HTML styleName='{style.clickable}'><div><strong>#2 Category selection</strong></div></g:HTML>
+            <g:VerticalPanel ui:field="stepTwo" width="600px" height="420px" styleName='{res.cssBase.solidBackground}'>
+                <g:HTML styleName='{style.clickable}'><div><strong>#2 <ui:msg key="catsSelection">Category selection</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="categoryHolder"/>
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                     <g:HorizontalPanel>
-                        <g:Button ui:field="btnTwoBack">Back</g:Button>
-                        <g:Button ui:field="btnTwoNext">Next</g:Button>
+                        <g:Button ui:field="btnTwoBack"><ui:msg key='backStep'>Back</ui:msg></g:Button>
+                        <g:Button ui:field="btnTwoNext"><ui:msg key='nextStep'>Next</ui:msg></g:Button>
                     </g:HorizontalPanel>
                 </g:HTMLPanel>
                 </g:Cell>
@@ -55,15 +58,15 @@
         </g:at>
         <!-- STEP THREE -->
         <g:at left="0" top="465">
-            <g:VerticalPanel height="420px" ui:field="stepThree" width="600px" styleName='{res.cssBase.solidBackground}'>
-                <g:HTML styleName='{style.clickable}'><div><strong>#3 Locality selection</strong></div></g:HTML>
+            <g:VerticalPanel height="400px" ui:field="stepThree" width="600px" styleName='{res.cssBase.solidBackground}'>
+                <g:HTML styleName='{style.clickable}'><div><strong>#3 <ui:msg key="locsSelection">Locality selection</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="localityHolder"/>
                 <!-- <cl:LocalitySelectorView ui:field="localityWidget"/> -->
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                         <g:HorizontalPanel>
-                            <g:Button ui:field="btnThreeBack">Back</g:Button>
-                            <g:Button ui:field="btnThreeNext">Next</g:Button>
+                            <g:Button ui:field="btnThreeBack"><ui:msg key='backStep'>Back</ui:msg></g:Button>
+                            <g:Button ui:field="btnThreeNext"><ui:msg key='nextStep'>Next</ui:msg></g:Button>
                         </g:HorizontalPanel>
                     </g:HTMLPanel>
                 </g:Cell>
@@ -71,14 +74,14 @@
         </g:at>
         <!-- STEP FOUR -->
         <g:at left="0" top="465">
-            <g:VerticalPanel height="400px" width="600px" ui:field="stepFour" styleName='{res.cssBase.solidBackground}'>
-                <g:HTML styleName='{style.clickable}'><div><strong>#4 Rozsirene moznosti nastavenia poptavky</strong></div></g:HTML>
+            <g:VerticalPanel height="380px" width="600px" ui:field="stepFour" styleName='{res.cssBase.solidBackground}'>
+                <g:HTML styleName='{style.clickable}'><div><strong>#4 <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="advInfoHolder"/>
                 <g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
                     <g:HTMLPanel>
                         <g:HorizontalPanel>
-                            <g:Button ui:field="btnFourBack">Back</g:Button>
-                            <g:Button ui:field="btnFourNext">Next</g:Button>
+                            <g:Button ui:field="btnFourBack"><ui:msg key='backStep'>Back</ui:msg></g:Button>
+                            <g:Button ui:field="btnFourNext"><ui:msg key='nextStep'>Next</ui:msg></g:Button>
                         </g:HorizontalPanel>
                     </g:HTMLPanel>
                 </g:Cell>
@@ -86,16 +89,16 @@
         </g:at>
         <!-- STEP FIVE -->
         <g:at left="0" top="465">
-            <g:VerticalPanel ui:field="stepFive" width="600px" height="380px" styleName='{res.cssBase.solidBackground}' >
-                <g:HTML styleName='{style.clickable}'><div><strong>#5 Prihlasenie do systemu / Registracia noveho uzivatela</strong></div></g:HTML>
+            <g:VerticalPanel ui:field="stepFive" width="600px" height="360px" styleName='{res.cssBase.solidBackground}' >
+                <g:HTML styleName='{style.clickable}'><div><strong>#5 <ui:msg key="loginOrRegister">Log in or register</ui:msg></strong></div></g:HTML>
                 <g:Cell verticalAlignment="ALIGN_TOP">
                   <g:SimplePanel ui:field="userFormHolder"></g:SimplePanel>
                 </g:Cell>
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
                     <g:HTMLPanel>
                     <g:HorizontalPanel>
-                        <g:Button ui:field="btnFiveBack">Back</g:Button>
-                        <g:Button ui:field="btnFiveRegAndCreate">Register &smp; Create</g:Button>
+                        <g:Button ui:field="btnFiveBack"><ui:msg key='backStep'>Back</ui:msg></g:Button>
+                        <g:Button ui:field="btnFiveRegAndCreate"><ui:msg key='regAndCreate'>Register and Create</ui:msg></g:Button>
                     </g:HorizontalPanel>
                 </g:HTMLPanel>
                 </g:Cell>

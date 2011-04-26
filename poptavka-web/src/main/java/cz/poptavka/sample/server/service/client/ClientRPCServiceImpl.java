@@ -93,8 +93,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.setLogin(clientDetail.getLogin());
         newClient.setPassword(clientDetail.getPassword());
 
-        newClient = clientService.create(newClient);
-        return newClient.getId();
+        Client newClient2 = clientService.create(newClient);
+        return newClient2.getId();
     }
 
     @Override

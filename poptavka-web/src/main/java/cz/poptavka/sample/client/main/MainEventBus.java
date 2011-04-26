@@ -3,7 +3,6 @@ package cz.poptavka.sample.client.main;
 
 import java.util.ArrayList;
 
-import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -39,12 +38,6 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void start();
 
-//    /**
-//     * Init login module.
-//     */
-//    @Event(modulesToLoad = LoginModule.class)
-//    void initLogin();
-
     @Event(handlers = MainPresenter.class)
     void setAnchorWidget(boolean homeSection, AnchorEnum anchor, Widget content, boolean clearOthers);
 
@@ -61,18 +54,14 @@ public interface MainEventBus extends EventBus {
      * Init user module (logged user).
      */
     @Event(modulesToLoad = UserModule.class)
-    void initUser();
-//
-//    @Event(modulesToLoad = UserModule.class)
-//    void setUserWidget(AnchorEnum anchor, Widget content, boolean clearOthers);
+    void atAccount();
+
+    @Event(modulesToLoad = UserModule.class)
+    void setTabWidget(Widget widget);
+
 
     @Event(modulesToLoad = CommonModule.class)
     void atCreateDemand(boolean homeSection);
-
-    //working on - delete after Beho 30.3.
-    @Event(modulesToLoad = CommonModule.class)
-//    void initCategoryWidget(HasOneWidget embedToWidget);
-    void initLocalityWidget(HasOneWidget embedToWidget);
 
     /**
      * Sets widget to View's body section. Body section can hold one widget only.
@@ -90,9 +79,6 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void listOfDemandsWidget(Widget body);
 
-    @Event (handlers = MainPresenter.class)
-    void setLoginWidget(Widget login);
-
     @BeforeLoadChildModule
     @Event(handlers = MainPresenter.class)
     void beforeLoad();
@@ -102,7 +88,11 @@ public interface MainEventBus extends EventBus {
     void afterLoad();
 
     @Event(handlers = MainPresenter.class)
-    void toggleLayout();
+    void setPublicLayout();
+
+    @Event(handlers = MainPresenter.class)
+    void setUserLayout();
+
 
     @Event(modulesToLoad = CommonModule.class)
     void getRootCategories();

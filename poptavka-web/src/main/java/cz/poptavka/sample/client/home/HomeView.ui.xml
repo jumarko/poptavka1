@@ -4,13 +4,13 @@
     <g:HTMLPanel ui:field="container">
         <!-- menu -->
         <g:HorizontalPanel>
-            <g:Hyperlink ui:field="linkHome">Home</g:Hyperlink>
+            <g:Hyperlink ui:field="linkHome"><ui:msg key="homeLink">Home</ui:msg></g:Hyperlink>
             <!-- remove next HTML widget for production -->
             <g:HTML>&nbsp;</g:HTML>
-            <g:Hyperlink ui:field="linkCreateDemand">Create Demand</g:Hyperlink>
+            <g:Hyperlink ui:field="linkCreateDemand"><ui:msg key="createDemandLink">Create Demand</ui:msg></g:Hyperlink>
             <!-- remove next HTML widget for production -->
             <g:HTML>&nbsp;</g:HTML>
-            <g:Hyperlink ui:field="linkDisplayDemands">Display Demands</g:Hyperlink>
+            <g:Hyperlink ui:field="linkDisplayDemands"><ui:msg key="displayDemandsLink">Display Demands</ui:msg></g:Hyperlink>
             <!-- remove next HTML widget for production -->
             <g:HTML>&nbsp;</g:HTML>
             <g:Button ui:field="button3">Button 3</g:Button>

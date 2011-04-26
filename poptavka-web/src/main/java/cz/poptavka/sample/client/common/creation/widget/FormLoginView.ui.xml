@@ -10,7 +10,7 @@
         <g:Grid>
             <g:row>
                 <g:customCell>
-                    <g:HTML wordWrap="true">email</g:HTML>
+                    <g:HTML><ui:msg key="email">E-mail</ui:msg></g:HTML>
                 </g:customCell>
                 <g:customCell>
                     <g:TextBox ui:field="mailBox">mail@domena.cz</g:TextBox>
@@ -18,7 +18,7 @@
             </g:row>
             <g:row>
                 <g:customCell>
-                    <g:HTML wordWrap="true">heslo</g:HTML>
+                    <g:HTML><ui:msg key="pass">Password</ui:msg></g:HTML>
                 </g:customCell>
                 <g:customCell>
                     <g:PasswordTextBox ui:field="passBox">heslo</g:PasswordTextBox>
@@ -29,7 +29,7 @@
                     <g:HTML></g:HTML>
                 </g:customCell>
                 <g:customCell>
-                    <g:Button ui:field="loginBtn">Login &amp; Create</g:Button>
+                    <g:Button ui:field="loginBtn"><ui:msg key="loginBtn">Login &amp; Create Demand</ui:msg></g:Button>
                 </g:customCell>
             </g:row>
         </g:Grid>
@@ -37,13 +37,13 @@
             <g:row>
                 <g:customCell>
                     <g:HTML visible="false" ui:field="errorMsg">
-                        <strong>Wrong username/password</strong>
+                        <strong><ui:msg key="error">Wrong username/password</ui:msg></strong>
                     </g:HTML>
                 </g:customCell>
             </g:row>
             <g:row>
                 <g:customCell>
-                    <g:Button ui:field="registerBtn">Register for FREE</g:Button>
+                    <g:Button ui:field="registerBtn"><ui:msg key="registerBtn">Register for FREE</ui:msg></g:Button>
                 </g:customCell>
             </g:row>
         </g:Grid>

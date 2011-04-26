@@ -11,7 +11,7 @@
             <g:ListBox ui:field='cityList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
             <g:HTML ui:field='loader' visible='false' styleName='{res.cssBase.commonListLoader}' />
         </g:HorizontalPanel>
-        <strong><ui:msg key="selected">Selected:</ui:msg></strong><br />
+        <strong><ui:msg key="selectedLocs">Selected</ui:msg>:</strong><br />
         <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>
     </g:HTMLPanel>
 </ui:UiBinder>

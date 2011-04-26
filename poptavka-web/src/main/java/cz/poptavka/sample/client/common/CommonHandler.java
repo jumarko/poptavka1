@@ -159,7 +159,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             public void onSuccess(Long clientId) {
                 if (clientId != -1) {
                     eventBus.setClientId(clientId);
-                    eventBus.getBasicInfoValues();
+//                    eventBus.getBasicInfoValues();
                 }
             }
         });

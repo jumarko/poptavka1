@@ -20,7 +20,7 @@
                 <g:Grid>
                     <g:row>
                         <g:customCell>
-                            <g:Label text="Nazov"/>
+                            <g:HTML><ui:msg key="demandTitle">Title</ui:msg></g:HTML>
                         </g:customCell>
                         <g:customCell>
                             <g:TextBox ui:field="titleBox"/>
@@ -28,7 +28,7 @@
                     </g:row>
                     <g:row>
                         <g:customCell>
-                            <g:Label text="Popis"/>
+                            <g:HTML><ui:msg key="description">Description</ui:msg></g:HTML>
                         </g:customCell>
                         <g:customCell>
                             <cc:RichTextToolbarWidget ui:field="descriptionBox"/>
@@ -36,7 +36,7 @@
                     </g:row>
                     <g:row>
                         <g:customCell>
-                            <g:Label text="Cena"/>
+                            <g:HTML><ui:msg key="price">Price</ui:msg></g:HTML>
                         </g:customCell>
                         <g:customCell>
                             <g:LongBox ui:field="priceBox"/>
@@ -44,7 +44,7 @@
                     </g:row>
                     <g:row>
                         <g:customCell>
-                            <g:Label text="Termin dokoncenia"/>
+                            <g:HTML><ui:msg key="endDate">End Date</ui:msg></g:HTML>
                         </g:customCell>
                         <g:customCell>
                             <p1:DateBox ui:field="finishDateBox"/>
@@ -52,7 +52,7 @@
                     </g:row>
                     <g:row>
                         <g:customCell>
-                            <g:Label text="Platnost poptavky"/>
+                            <g:HTML><ui:msg key="expireDate">Expire Date</ui:msg></g:HTML>
                         </g:customCell>
                         <g:customCell>
                             <p1:DateBox ui:field="expireDateBox"/>
@@ -60,7 +60,7 @@
                     </g:row>
                     <g:row>
                         <g:customCell>
-                            <g:Label text="Priloha"/>
+                            <g:HTML><ui:msg key="attachment">Attachment</ui:msg></g:HTML>
                         </g:customCell>
                         <g:customCell>
                             <g:FileUpload/>

@@ -34,10 +34,10 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
 
     //anim constants
     private static final int START_VALUE = 465;
-    private static final int END_SECOND_VALUE = 20;
-    private static final int END_THIRD_VALUE = 40;
-    private static final int END_FOURTH_VALUE = 60;
-    private static final int END_FIFTH_VALUE = 80;
+    private static final int END_SECOND_VALUE = 40;
+    private static final int END_THIRD_VALUE = 60;
+    private static final int END_FOURTH_VALUE = 80;
+    private static final int END_FIFTH_VALUE = 100;
     private static final int ONE_SECOND = /** 1000; **/ 1;
 
     //initial topPanel
@@ -72,10 +72,6 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
         StyleResource.INSTANCE.cssBase().ensureInjected();
         btnFiveRegAndCreate.setStyleName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
         stepFive.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
-//        stepOne.add(new FormDemandBasicView());
-//        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-//        finishDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-//        expireDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
     }
 
     @Override
@@ -139,35 +135,6 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     @Override
     public SimplePanel getAdvInfoHolder() {
         return advInfoHolder;
-    }
-    /**
-     * For block animation (show/hide) purpose.
-     *
-     * @author Beho
-     */
-    private class MoveAnimation extends Animation {
-        private int startY;
-        private int distance;
-        private VerticalPanel object = null;
-
-        public MoveAnimation() {
-        }
-
-        //Initialize currently animated object
-        public void setAndRun(int start, int end, VerticalPanel obj, int duration) {
-            object = obj;
-            startY = start;
-            distance = start - end;
-
-            //run it
-            this.run(duration);
-        }
-
-        @Override
-        protected void onUpdate(double progress) {
-            double value = startY - (progress * distance);
-            absolutePanel.setWidgetPosition(object, 0, (int) value);
-        }
     }
 
     @Override
@@ -235,7 +202,6 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
             };
             timer.schedule(100);
         }
-
     }
 
     @Override
@@ -251,6 +217,39 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
             btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOff());
         } else {
             btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
+        }
+    }
+
+//********************************************************************************************************************//
+//                                            MOVE ANIMATION CLASS                                                    //
+//********************************************************************************************************************//
+    /**
+     * For block animation (show/hide) purpose.
+     *
+     * @author Beho
+     */
+    private class MoveAnimation extends Animation {
+        private int startY;
+        private int distance;
+        private VerticalPanel object = null;
+
+        public MoveAnimation() {
+        }
+
+        //Initialize currently animated object
+        public void setAndRun(int start, int end, VerticalPanel obj, int duration) {
+            object = obj;
+            startY = start;
+            distance = start - end;
+
+            //run it
+            this.run(duration);
+        }
+
+        @Override
+        protected void onUpdate(double progress) {
+            double value = startY - (progress * distance);
+            absolutePanel.setWidgetPosition(object, 0, (int) value);
         }
     }
 

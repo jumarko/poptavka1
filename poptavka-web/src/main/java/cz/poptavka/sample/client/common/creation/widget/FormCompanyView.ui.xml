@@ -6,36 +6,40 @@
         <g:row>
             <g:customCell>
                 <g:VerticalPanel>
-                    <g:HTML horizontalAlignment="ALIGN_CENTER">Login info</g:HTML>
+                    <g:HTML horizontalAlignment="ALIGN_CENTER">
+                        <ui:msg key="accInfo">Account Info</ui:msg>
+                    </g:HTML>
                     <g:Grid>
                         <g:row>
                             <g:customCell>
                                 <g:HTML wordWrap="true">
-                                    Email/Login
+                                    <ui:msg key="emailLogin">E-mail</ui:msg>
                                     <span style="color: red;">*</span>
                                 </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="mailBox" />
+                                <g:TextBox ui:field="mailBox">novy@user.cz</g:TextBox>
                             </g:customCell>
                         </g:row>
                         <g:row>
                             <g:customCell>
                                 <g:HTML wordWrap="true">
-                                    Heslo
+                                    <ui:msg key="pass">Password</ui:msg>
                                     <span style="color: red;">*</span>
                                 </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:PasswordTextBox ui:field="passBox" />
+                                <g:PasswordTextBox ui:field="passBox">heslo</g:PasswordTextBox>
                             </g:customCell>
                         </g:row>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true">Heslo znovu</g:HTML>
+                                <g:HTML wordWrap="true">
+                                    <ui:msg key="passRepeat">Password Again</ui:msg>
+                                </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:PasswordTextBox ui:field="passConfirmBox" />
+                                <g:PasswordTextBox ui:field="passConfirmBox">heslo</g:PasswordTextBox>
                             </g:customCell>
                         </g:row>
                     </g:Grid>
@@ -43,11 +47,13 @@
             </g:customCell>
             <g:customCell>
                 <g:VerticalPanel>
-                    <g:HTML wordWrap="true" horizontalAlignment="ALIGN_CENTER">Info o firme</g:HTML>
+                    <g:HTML horizontalAlignment="ALIGN_CENTER"><ui:msg key="companyInfo">Company Info</ui:msg></g:HTML>
                     <g:Grid>
                         <g:row>
                             <g:customCell>
-                                <g:Label text="Nazov firmy" />
+                                <g:HTML>
+                                    <ui:msg key="companyName">Company Name</ui:msg>
+                                </g:HTML>
                             </g:customCell>
                             <g:customCell>
                                 <g:TextBox ui:field="companyNameBox" />
@@ -55,26 +61,28 @@
                         </g:row>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true" ui:field="Ulica">IC</g:HTML>
+                                <g:HTML><ui:msg key="idNumber">Identification Number</ui:msg></g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="icBox" />
-                            </g:customCell>
-                        </g:row>
-                        <g:row>
-                            <g:customCell>
-                                <g:HTML wordWrap="true">DIC</g:HTML>
-                            </g:customCell>
-                            <g:customCell>
-                                <g:TextBox ui:field="dicBox" />
+                                <g:TextBox ui:field="idNumberBox" />
                             </g:customCell>
                         </g:row>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true">WWW</g:HTML>
+                                <g:HTML><ui:msg key="taxNumber">Tax Number</ui:msg></g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="websiteBox" />
+                                <g:TextBox ui:field="taxNumberBox" />
+                            </g:customCell>
+                        </g:row>
+                        <g:row>
+                            <g:customCell>
+                                <g:HTML>
+                                    <ui:msg key="website">Your Website</ui:msg>
+                                </g:HTML>
+                            </g:customCell>
+                            <g:customCell>
+                                <g:TextBox ui:field="websiteBox">www.sss.zzz</g:TextBox>
                             </g:customCell>
                         </g:row>
                     </g:Grid>
@@ -84,30 +92,38 @@
         <g:row>
             <g:customCell>
                 <g:VerticalPanel>
-                    <g:HTML wordWrap="true" horizontalAlignment="ALIGN_CENTER">Adresa Firmy</g:HTML>
+                    <g:HTML wordWrap="true" horizontalAlignment="ALIGN_CENTER">
+                        <ui:msg key="address">Address</ui:msg>
+                    </g:HTML>
                     <g:Grid>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true">Ulica</g:HTML>
+                                <g:HTML>
+                                    <ui:msg key="street">Street</ui:msg>
+                                </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="streetBox" />
-                            </g:customCell>
-                        </g:row>
-                        <g:row>
-                            <g:customCell>
-                                <g:HTML wordWrap="true">Mesto</g:HTML>
-                            </g:customCell>
-                            <g:customCell>
-                                <g:TextBox ui:field="cityBox" />
+                                <g:TextBox ui:field="streetBox">ulica</g:TextBox>
                             </g:customCell>
                         </g:row>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true">PSC</g:HTML>
+                                <g:HTML>
+                                    <ui:msg key="city">City</ui:msg>
+                                </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="zipBox" />
+                                <g:TextBox ui:field="cityBox">Brno</g:TextBox>
+                            </g:customCell>
+                        </g:row>
+                        <g:row>
+                            <g:customCell>
+                                <g:HTML>
+                                    <ui:msg key="zipcode">Zipcode</ui:msg>
+                                </g:HTML>
+                            </g:customCell>
+                            <g:customCell>
+                                <g:TextBox ui:field="zipBox">60200</g:TextBox>
                             </g:customCell>
                         </g:row>
                     </g:Grid>
@@ -115,30 +131,36 @@
             </g:customCell>
             <g:customCell>
                 <g:VerticalPanel>
-                    <g:HTML wordWrap="true" horizontalAlignment="ALIGN_CENTER">Kontaktna osoba</g:HTML>
+                    <g:HTML horizontalAlignment="ALIGN_CENTER"><ui:msg key="contactPerson">Contact Person</ui:msg></g:HTML>
                     <g:Grid>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true">Meno</g:HTML>
+                                <g:HTML>
+                                    <ui:msg key="name">Name</ui:msg>
+                                </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="nameBox" />
-                            </g:customCell>
-                        </g:row>
-                        <g:row>
-                            <g:customCell>
-                                <g:HTML wordWrap="true">Priezvisko</g:HTML>
-                            </g:customCell>
-                            <g:customCell>
-                                <g:TextBox ui:field="surnameBox" />
+                                <g:TextBox ui:field="nameBox">Meno</g:TextBox>
                             </g:customCell>
                         </g:row>
                         <g:row>
                             <g:customCell>
-                                <g:HTML wordWrap="true">Telefon</g:HTML>
+                                <g:HTML>
+                                    <ui:msg key="lastName">Last Name</ui:msg>
+                                </g:HTML>
                             </g:customCell>
                             <g:customCell>
-                                <g:TextBox ui:field="phoneBox" />
+                                <g:TextBox ui:field="surnameBox">Priezvisko</g:TextBox>
+                            </g:customCell>
+                        </g:row>
+                        <g:row>
+                            <g:customCell>
+                                <g:HTML>
+                                    <ui:msg key="phone">Phone</ui:msg>
+                                </g:HTML>
+                            </g:customCell>
+                            <g:customCell>
+                                <g:TextBox ui:field="phoneBox">123456789</g:TextBox>
                             </g:customCell>
                         </g:row>
                     </g:Grid>

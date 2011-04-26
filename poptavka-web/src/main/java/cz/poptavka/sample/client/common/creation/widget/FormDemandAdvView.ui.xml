@@ -10,7 +10,7 @@
     <g:Grid>
         <g:row>
             <g:customCell>
-                <g:Label text="Maximalny pocet ponuk"/>
+                <g:HTML><ui:msg key="maxOffersCount">Max offers Count</ui:msg></g:HTML>
             </g:customCell>
             <g:customCell>
                 <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
@@ -18,7 +18,7 @@
         </g:row>
         <g:row>
             <g:customCell>
-                <g:Label text="Hodnotenie dodavatelov"/>
+                <g:HTML><ui:msg key="minRating">Minimal rating</ui:msg></g:HTML>
             </g:customCell>
             <g:customCell>
                 <g:IntegerBox ui:field="minRatingBox">0</g:IntegerBox>
@@ -26,18 +26,18 @@
         </g:row>
         <g:row>
             <g:customCell>
-                <g:Label text="Vyclenit dodavatela"/>
+                <g:HTML><ui:msg key="exclude">Exclude supplier</ui:msg></g:HTML>
             </g:customCell>
             <g:customCell>
                 <g:SuggestBox/>
             </g:customCell>
             <g:customCell>
-                <g:Button ui:field="excludeBtn">Vyclenit</g:Button>
+                <g:Button ui:field="excludeBtn"><ui:msg key="excludeBtn">Exclude him</ui:msg></g:Button>
             </g:customCell>
         </g:row>
         <g:row>
             <g:customCell>
-                <g:Label text="Zoznam vyclenenych dodavatelov" width="70"/>
+                <g:Label width="70"><ui:msg key="excludedList">List of excluded suppliers</ui:msg></g:Label>
             </g:customCell>
             <g:customCell>
                 <g:ListBox ui:field="excludedList" visibleItemCount="5" width="148px"/>
@@ -45,12 +45,12 @@
         </g:row>
         <g:row>
             <g:customCell>
-                <g:Label text="typ poptavky"/>
+                <g:HTML><ui:msg key="demandType">Demand Type</ui:msg></g:HTML>
             </g:customCell>
             <g:customCell>
                 <g:VerticalPanel>
-                    <g:RadioButton name="demandType" ui:field="classicRadio" checked="true" text="Klasicka poptavka"/>
-                    <g:RadioButton name="demandType" ui:field="attractiveRadio" text="Atraktivna poptavka"/>
+                    <g:RadioButton name="demandType" ui:field="classicRadio" checked="true" ><ui:msg key="classicType">Normal Demand</ui:msg></g:RadioButton>
+                    <g:RadioButton name="demandType" ui:field="attractiveRadio" ><ui:msg key="attractiveType">Attractive Demand</ui:msg></g:RadioButton>
                 </g:VerticalPanel>
             </g:customCell>
         </g:row>

@@ -21,8 +21,8 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
     private ArrayList<TextBox> widgets = new ArrayList<TextBox>();
 
     @UiField TextBox companyNameBox;
-    @UiField TextBox icBox;
-    @UiField TextBox dicBox;
+    @UiField TextBox idNumberBox;
+    @UiField TextBox taxNumberBox;
     @UiField TextBox websiteBox;
     @UiField TextBox streetBox;
     @UiField TextBox cityBox;
@@ -36,8 +36,8 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         widgets.add(companyNameBox);
-        widgets.add(icBox);
-        widgets.add(dicBox);
+        widgets.add(idNumberBox);
+        widgets.add(taxNumberBox);
 
         widgets.add(streetBox);
         widgets.add(cityBox);
@@ -65,8 +65,8 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
         ClientDetail client = new ClientDetail(mailBox.getText(), passBox.getText());
 
         client.setCompanyName(companyNameBox.getText());
-        client.setIdentifiacationNumber(icBox.getText());
-        client.setTaxId(dicBox.getText());
+        client.setIdentifiacationNumber(idNumberBox.getText());
+        client.setTaxId(taxNumberBox.getText());
 
         client.setFirstName(nameBox.getText());
         client.setLastName(surnameBox.getText());

@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -52,15 +51,12 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public void onAtHome() {
         LOGGER.info(" on init view ...");
-        eventBus.setBodyHolderWidget(view.getWidgetView());
-        SimplePanel panel = new SimplePanel();
-        eventBus.setHomeWidget(AnchorEnum.FIRST, panel, true);
-        eventBus.initLocalityWidget(panel);
-//        TODO uncomment below
-//        eventBus.initCategoryDisplay(AnchorEnum.FIRST);
+        onDisplayMenu();
+        eventBus.initCategoryDisplay(AnchorEnum.SECOND);
     }
 
     public void onDisplayMenu() {
+        eventBus.setPublicLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
     }
 

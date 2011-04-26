@@ -15,9 +15,11 @@
 
         <g:HTMLPanel ui:field='headerHolder' styleName='{res.cssBase.headerContainer}'>
             <div id="loginArea" class='{style.login-area}' >
-                <g:Anchor ui:field="loginButton" text="Log In" />
-                <a href="#">Help</a>
-                <a href="#">About</a>
+                <g:Anchor ui:field="loginButton" ><ui:msg key="logIn">Log In</ui:msg></g:Anchor>
+                <a href="#"><ui:msg key="help">Help</ui:msg></a>
+                <a href="#"><ui:msg key="about">About</ui:msg></a>
+                <br />
+                Current locale: <ui:msg key="locDef">Default</ui:msg>
             </div>
         </g:HTMLPanel>
 
@@ -25,10 +27,10 @@
             <!-- ony one child widget allowed -->
             <!-- designed for root child view  -->
         </g:SimplePanel>
-
+<!--
         <g:HTMLPanel ui:field='footerHolder' styleName='{res.cssBase.footerContainer}'>
-            <!-- TODO: REPLACE footer - will be hardcoded in host page -->
+             TODO: REPLACE footer - will be hardcoded in host page
         </g:HTMLPanel>
-
+-->
     </g:HTMLPanel>
 </ui:UiBinder>

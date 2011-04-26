@@ -17,9 +17,10 @@ public class UserPresenter extends BasePresenter<UserPresenter.UserViewInterface
         Widget getWidgetView();
     }
 
-    public void onInitUser() {
+    public void onAtAccount() {
         //init
         LOGGER.info("init user widget ...");
+        eventBus.setUserLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
     }
 

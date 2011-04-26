@@ -7,9 +7,9 @@
         }
     </ui:style>
     <g:HTMLPanel>
-             <g:RadioButton name="type" ui:field="personRadio" text="Sukromna osoba"/>
-             <g:RadioButton name="type" ui:field="companyRadio" text="Firma"/>
-             <g:Button ui:field="toLoginBtn">Back to Login</g:Button>
+             <g:RadioButton name="type" ui:field="personRadio" ><ui:msg key="privatePerson">Private Person</ui:msg></g:RadioButton>
+             <g:RadioButton name="type" ui:field="companyRadio" ><ui:msg key="company">Company</ui:msg></g:RadioButton>
+             <g:Button ui:field="toLoginBtn"><ui:msg key="toLogin">To Login Page</ui:msg></g:Button>
         <g:SimplePanel ui:field="formHolder"/>
     </g:HTMLPanel>
 </ui:UiBinder>

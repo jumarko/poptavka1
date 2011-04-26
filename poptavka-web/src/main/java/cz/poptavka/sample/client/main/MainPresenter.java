@@ -3,10 +3,12 @@ package cz.poptavka.sample.client.main;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -19,12 +21,14 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
     private static final Logger LOGGER = Logger.getLogger("MainPresenter");
 
+    LocalizableMessages msgs = GWT.create(LocalizableMessages.class);
+
     public interface MainViewInterface {
         void setBodyWidget(Widget body);
 
         void setLoginWidget(Widget login);
 
-        void toggleMainLayout();
+        void toggleMainLayout(boolean switchToUserLayout);
 
         void setListOfDemands(Widget demands);
 
@@ -39,13 +43,12 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         view.getLoginButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent arg0) {
-                eventBus.toggleLayout();
                 if (loggedIn) {
                     eventBus.atHome();
-                    view.getLoginButton().setText("Log In");
+                    view.getLoginButton().setText(msgs.logIn());
                 } else {
-                    eventBus.initUser();
-                    view.getLoginButton().setText("Log Out");
+                    eventBus.atAccount();
+                    view.getLoginButton().setText(msgs.logOut());
                 }
                 loggedIn = !loggedIn;
             }
@@ -57,10 +60,9 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      */
     public void onStart() {
         LOGGER.info("Initializing application ... ");
-//        LOGGER.info("    > Login Module");
-//        eventBus.initLogin();
         LOGGER.info("    > Home Module");
         eventBus.atHome();
+//        for user part development
 //        LOGGER.info("    > User Module");
 //        eventBus.initUser();
     }
@@ -93,17 +95,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         if (homeSection) {
             eventBus.setHomeWidget(anchor, content, clearOthers);
         } else {
-//            eventBus.setUserWidget(anchor, content, clearOthers);
+            eventBus.setTabWidget(content);
         }
-    }
-
-    /**
-     * Sets widget to login-area.
-     *
-     * @param login login widget
-     */
-    public void onSetLoginWidget(Widget login) {
-        view.setLoginWidget(login);
     }
 
     public void onBeforeLoad() {
@@ -116,8 +109,13 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         Document.get().getElementById("loading").getStyle().setDisplay(Display.NONE);
     }
 
-    public void onToggleLayout() {
+    public void onSetPublicLayout() {
         LOGGER.fine("Toggle layout");
-        view.toggleMainLayout();
+        view.toggleMainLayout(false);
+    }
+
+    public void onSetUserLayout() {
+        LOGGER.fine("Toggle layout");
+        view.toggleMainLayout(true);
     }
 }

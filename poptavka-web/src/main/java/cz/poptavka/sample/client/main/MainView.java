@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.main;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
@@ -21,7 +22,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     @UiField HTMLPanel layoutMaster;
     @UiField HTMLPanel headerHolder;
     @UiField SimplePanel bodyHolder;
-    @UiField HTMLPanel footerHolder;
+//    @UiField HTMLPanel footerHolder;
 
     @UiField Anchor loginButton;
 
@@ -32,6 +33,8 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
         initWidget(BINDER.createAndBindUi(this));
         //styling layout - styled in UiBinder
         StyleResource.INSTANCE.cssBase().ensureInjected();
+        Document.get().getElementById("footerContainer")
+            .addClassName(StyleResource.INSTANCE.cssBase().footerContainer());
     }
 
     /**
@@ -62,8 +65,8 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     }
 
     @Override
-    public void toggleMainLayout() {
-        if (layoutMaster.getStyleName().equals(StyleResource.INSTANCE.cssBase().layoutContainer())) {
+    public void toggleMainLayout(boolean switchToUserLayout) {
+        if (switchToUserLayout) {
             layoutMaster.setStyleName(StyleResource.INSTANCE.cssBase().layoutContainerUser());
         } else {
             layoutMaster.setStyleName(StyleResource.INSTANCE.cssBase().layoutContainer());

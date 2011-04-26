@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.home;
 
 import java.util.ArrayList;
 
-import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -32,6 +31,12 @@ public interface HomeEventBus extends EventBus {
     /** init method. **/
     @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
     String atHome();
+
+    /**
+     * Method for setting public UI layout
+     */
+    @Event(forwardToParent = true)
+    void setPublicLayout();
 
     /**
      * Display HomeView - parent Widget for public section.
@@ -74,7 +79,4 @@ public interface HomeEventBus extends EventBus {
     @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();
 
-    /** DEVEL SECTION **/
-    @Event(forwardToParent = true)
-    void initLocalityWidget(HasOneWidget embedToWidget);
 }

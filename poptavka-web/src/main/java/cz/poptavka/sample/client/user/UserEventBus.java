@@ -10,8 +10,11 @@ import com.mvp4g.client.event.EventBus;
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
-    @Event(handlers = UserPresenter.class)
-    void initUser();
+    @Event(handlers = UserPresenter.class, historyConverter = UserHistoryConverter.class)
+    String atAccount();
+
+    @Event(forwardToParent = true)
+    void setUserLayout();
 
     /**
      * Display User View - parent Widget for client-logged user section.
