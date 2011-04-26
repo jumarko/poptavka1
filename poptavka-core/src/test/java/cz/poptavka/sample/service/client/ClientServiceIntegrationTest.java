@@ -38,19 +38,20 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testSearchClientByName() {
-        final List<Client> clients = clientService.searchByCriteria(new ClientSearchCriteria("Elvíra", "Vytretá"));
+        final List<Client> clients = clientService.searchByCriteria(
+                new ClientSearchCriteria("Elv\u00edra", "Vytret\u00e1"));
         Assert.assertNotNull(clients);
         Assert.assertEquals(1, clients.size());
         final Client client = clients.get(0);
-        Assert.assertTrue("Elvíra".equals(client.getPerson().getFirstName()));
-        Assert.assertTrue("Vytretá".equals(client.getPerson().getLastName()));
+        Assert.assertTrue("Elv\u00edra".equals(client.getPerson().getFirstName()));
+        Assert.assertTrue("Vytret\u00e1".equals(client.getPerson().getLastName()));
 
 
-        final List<Client> clients2 = clientService.searchByCriteria(new ClientSearchCriteria("Elvíra", null));
+        final List<Client> clients2 = clientService.searchByCriteria(new ClientSearchCriteria("Elv\u00edra", null));
         Assert.assertNotNull(clients);
         Assert.assertEquals(2, clients2.size());
-        Assert.assertTrue("Elvíra".equals(clients2.get(0).getPerson().getFirstName()));
-        Assert.assertTrue("Elvíra".equals(clients2.get(1).getPerson().getFirstName()));
+        Assert.assertTrue("Elv\u00edra".equals(clients2.get(0).getPerson().getFirstName()));
+        Assert.assertTrue("Elv\u00edra".equals(clients2.get(1).getPerson().getFirstName()));
 
 
         final Client hovnoClient = clientService.getById(111111114L);

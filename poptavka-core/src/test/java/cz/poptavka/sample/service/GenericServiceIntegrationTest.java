@@ -79,7 +79,7 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
     public void findClientByExample() {
 
         final Client client = new Client();
-        client.setPerson(new Person("Elvíra", "Vytretá"));
+        client.setPerson(new Person("Elv\u00edra", "Vytret\u00e1"));
         final List<Client> clientsByNamesBroken = this.clientService.findByExample(client);
         // filtering by association type Person has no effect, check the documentation
         // for GenericService#findByExample() method
