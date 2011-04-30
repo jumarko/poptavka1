@@ -3,11 +3,11 @@ package cz.poptavka.sample.client.common.category;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,52 +26,34 @@ public class CategorySelectorPresenter extends
         ROOT, MAIN, LEAF
     }
 
+    private boolean init = false;
+
     public interface CategorySelectorInterface extends LazyView {
 
-        ListBox getRootCategoryList();
-
-        ListBox getCategoryList();
-
-        ListBox getSubCategoryList();
+        Grid getListHolder();
 
         ListBox getSelectedList();
 
-        String getSelectedItem(CategoryType list);
-
         void toggleLoader();
 
-        void addToSelectedList();
+        void addToSelectedList(String text, String value);
 
         void removeFromSelectedList();
 
+        int getListIndex();
+
+        ListBox createListAtIndex(int index);
+
+        boolean isSubcategoryListEmpty();
+
         Widget getWidgetView();
+
+        void clearChildrenLists(int i);
     }
 
     private static final Logger LOGGER = Logger.getLogger("CategorySelectorPresenter");
 
     public void bindView() {
-        view.getRootCategoryList().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                view.toggleLoader();
-                view.getCategoryList().setVisible(false);
-                view.getSubCategoryList().setVisible(false);
-                eventBus.getChildCategories(CategoryType.MAIN, view.getSelectedItem(CategoryType.ROOT));
-            }
-        });
-        view.getCategoryList().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                view.toggleLoader();
-                view.getSubCategoryList().setVisible(false);
-            }
-        });
-        view.getSubCategoryList().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                view.addToSelectedList();
-            }
-        });
         view.getSelectedList().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
@@ -81,31 +63,19 @@ public class CategorySelectorPresenter extends
     }
 
     public void onInitCategoryWidget(HasOneWidget embedWidget) {
-        LOGGER.info("launching Category service RPC call ... ");
-        if (!(view.getRootCategoryList().getItemCount() > 0)) {
-            eventBus.getRootCategories();
-        }
+        LOGGER.info("init Category Widget ... ");
+        eventBus.getChildListCategories(0, "ALL_CATEGORIES");
         embedWidget.setWidget(view.getWidgetView());
+        init = false;
     }
 
-    public void onSetCategoryData(CategoryType type, ArrayList<CategoryDetail> list) {
-        switch (type) {
-            case ROOT:
-                setData(view.getRootCategoryList(), list);
-                break;
-            case MAIN:
-                view.toggleLoader();
-                setData(view.getCategoryList(), list);
-                break;
-            case LEAF:
-                view.toggleLoader();
-                setData(view.getSubCategoryList(), list);
-                break;
-            default:
-                break;
-        }
+    public void onSetCategoryListData(int newListPosition, ArrayList<CategoryDetail> list) {
+        ListBox listBox = view.createListAtIndex(newListPosition);
+        setAndDisplayData(listBox, list);
+        addCategoryChangeHandler(listBox, newListPosition);
     }
 
+    /** Demand cration getValues method. **/
     public void onGetSelectedCategoryCodes() {
         LOGGER.info("Getting/Pushing categories");
         ListBox tmp = view.getSelectedList();
@@ -116,22 +86,33 @@ public class CategorySelectorPresenter extends
         eventBus.pushSelectedCategoryCodes(codes);
     }
 
-    private void setData(final ListBox box, final ArrayList<CategoryDetail> list) {
-        box.clear();
+    private void setAndDisplayData(final ListBox box, final ArrayList<CategoryDetail> list) {
         box.setVisible(true);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                LOGGER.info("Filling list...");
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
-                }
-                LOGGER.info("List filled");
-            }
+        LOGGER.info("Filling list...");
+        for (int i = 0; i < list.size(); i++) {
+            box.addItem(list.get(i).getParentName(), String.valueOf(list.get(i).getId()));
+        }
+        LOGGER.info("List filled");
 
-        });
+        //display
+        view.getListHolder().setWidget(0, view.getListIndex(), box);
     }
 
-
+    private void addCategoryChangeHandler(final ListBox box, final int index) {
+        box.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                String text = box.getItemText(box.getSelectedIndex());
+                String value = box.getValue(box.getSelectedIndex());
+                if (text.contains(" >")) {
+                    view.clearChildrenLists(index);
+                    eventBus.getChildListCategories(index + 1, box.getValue(box.getSelectedIndex()));
+                    LOGGER.fine("Next table is at index " + index + 1);
+                } else {
+                    view.addToSelectedList(text, value);
+                }
+            }
+        });
+    }
 
 }

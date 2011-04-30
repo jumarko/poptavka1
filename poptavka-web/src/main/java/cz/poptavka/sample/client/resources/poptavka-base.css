@@ -2,6 +2,10 @@
 
 /* 	Poptavka basic layout definitions - start */
 
+body {
+    margin: 0;
+}
+
 .layout-container {
     min-width: 800px;
     max-width: 1024px;

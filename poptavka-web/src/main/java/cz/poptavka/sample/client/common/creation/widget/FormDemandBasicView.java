@@ -66,11 +66,11 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
                 LOGGER.fine("REAL ERROR");
                 errorCount++;
             } else {
-                if (item.getValue().toString().equals("")) {
-                    // TODO mark error grafically
-                    LOGGER.fine("REAL TEXT ERROR");
-                    errorCount++;
-                }
+//                if (item.getValue().toString().equals("")) {
+//                    // TODO mark error grafically
+//                    LOGGER.fine("REAL TEXT ERROR");
+//                    errorCount++;
+//                }
             }
         }
 //        return errorCount == 0;

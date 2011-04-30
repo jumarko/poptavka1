@@ -56,7 +56,7 @@ public interface CommonEventBus extends EventBus {
     void initCategoryWidget(HasOneWidget embedToWidget);
 
     @Event(handlers = CategorySelectorPresenter.class)
-    void setCategoryData(CategoryType type, ArrayList<CategoryDetail> list);
+    void setCategoryListData(int newListPosition, ArrayList<CategoryDetail> list);
 
     @Event(forwardToParent = true)
     void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
@@ -64,8 +64,12 @@ public interface CommonEventBus extends EventBus {
     @Event(handlers = CommonHandler.class)
     void getRootCategories();
 
+//    //TODO del
+//    @Event(handlers = CommonHandler.class)
+//    void getChildCategories(CategoryType type, String categoryId);
+
     @Event(handlers = CommonHandler.class)
-    void getChildCategories(CategoryType type, String categoryId);
+    void getChildListCategories(int newListPosition, String categoryId);
 
     @Event(handlers = CommonHandler.class)
     void createDemand(DemandDetail newDemand, Long clientId);

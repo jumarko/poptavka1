@@ -32,7 +32,6 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public ArrayList<CategoryDetail> getCategories() {
         final List<Category> categories = categoryService.getRootCategories();
-        System.out.println("Root category count: " + categories.size());
         return createCategoryDetailList(categories);
     }
 
@@ -57,7 +56,15 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         final ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
 
         for (Category cat : categories) {
-            categoryDetails.add(new CategoryDetail(cat.getId(), cat.getName(), 0, 0));
+            CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(), 0, 0);
+//            CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
+//                  cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());
+            if (cat.getChildren().size() != 0) {
+                detail.setParent(true);
+            } else {
+                detail.setParent(false);
+            }
+            categoryDetails.add(detail);
         }
 
         return categoryDetails;

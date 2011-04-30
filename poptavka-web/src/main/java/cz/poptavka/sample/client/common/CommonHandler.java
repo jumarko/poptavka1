@@ -93,29 +93,49 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             }
             @Override
             public void onSuccess(ArrayList<CategoryDetail> list) {
-                eventBus.setCategoryData(CategoryType.ROOT, list);
                 eventBus.setCategoryDisplayData(CategoryType.ROOT, list);
             }
         });
     }
 
-    public void onGetChildCategories(final CategoryType type, String categoryId) {
+    public void onGetChildListCategories(final int newListPosition, String categoryId) {
         LOGGER.info("starting category service call");
-        categoryService.getCategoryChildren(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
-            @Override
-            public void onSuccess(ArrayList<CategoryDetail> list) {
-                eventBus.setCategoryData(type, list);
-            }
+        if (categoryId.equals("ALL_CATEGORIES")) {
+            LOGGER.info(" --> root categories");
+            categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
+                @Override
+                public void onFailure(Throwable arg0) {
+                    // TODO Auto-generated method stub
+                }
 
-            @Override
-            public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
+                @Override
+                public void onSuccess(ArrayList<CategoryDetail> list) {
+                    eventBus.setCategoryListData(newListPosition, list);
+                }
+            });
+        } else {
+            LOGGER.info(" --> child categories");
+            categoryService.getCategoryChildren(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+                @Override
+                public void onSuccess(ArrayList<CategoryDetail> list) {
+                    eventBus.setCategoryListData(newListPosition, list);
+                }
 
-            }
-        });
+                @Override
+                public void onFailure(Throwable arg0) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+        }
         LOGGER.info("ending category service call");
     }
-
+    /**
+     * Creates new demand.
+     *
+     * @param detail front-end entity of demand
+     * @param clientId client id
+     */
     public void onCreateDemand(DemandDetail detail, Long clientId) {
         demandService.createNewDemand(detail, clientId, new AsyncCallback<String>() {
             @Override
@@ -131,6 +151,12 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
         LOGGER.info("submitting new demand");
     }
 
+    /**
+     * Verify identity of user, if exists in the system.
+     * If so, new demand is created.
+     *
+     * @param client existing user detail
+     */
     public void onVerifyExistingClient(ClientDetail client) {
         clientService.verifyClient(client, new AsyncCallback<Long>() {
             @Override
@@ -149,6 +175,11 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
 
     }
 
+    /**
+     * Method registers new client and afterwards creates new demand.
+     *
+     * @param client newly created client
+     */
     public void onRegisterNewClient(ClientDetail client) {
         clientService.createNewClient(client, new AsyncCallback<Long>() {
             @Override
@@ -159,7 +190,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             public void onSuccess(Long clientId) {
                 if (clientId != -1) {
                     eventBus.setClientId(clientId);
-//                    eventBus.getBasicInfoValues();
+                    eventBus.getBasicInfoValues();
                 }
             }
         });

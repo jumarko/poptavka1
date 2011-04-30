@@ -6,10 +6,29 @@
 
     <g:HTMLPanel>
         <g:HorizontalPanel>
-            <g:ListBox ui:field='rootCategoryList' visibleItemCount='10' width="200"></g:ListBox>
-            <g:ListBox ui:field='categoryList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
-            <g:ListBox ui:field='subCategoryList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
-            <g:HTML ui:field='loader' visible='false' styleName='{res.cssBase.commonListLoader}' />
+            <g:Grid ui:field='categoryListHolder'>
+                <g:row>
+                    <g:customCell>
+                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                    </g:customCell>
+                    <g:customCell>
+                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                    </g:customCell>
+
+                </g:row>
+            </g:Grid>
         </g:HorizontalPanel>
         <strong><ui:msg key="selectedCats">Selected</ui:msg>:</strong><br />
         <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>

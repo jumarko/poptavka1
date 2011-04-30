@@ -21,7 +21,7 @@
         }
     </ui:style>
 
-    <g:AbsolutePanel width="600px" height="460px" ui:field='absolutePanel' styleName='{res.cssBase.solidBackground}'>
+    <g:AbsolutePanel height="460px" ui:field='absolutePanel' styleName='{res.cssBase.solidBackground}'>
         <g:at left="0" top="0">
         <!-- STEP ONE -->
             <g:VerticalPanel ui:field="stepOne">

@@ -4,16 +4,26 @@ import java.io.Serializable;
 
 public class CategoryDetail implements Serializable {
 
-    //TODO change id to code when change on server side is made
     private long id;
     private String name;
-    private int demands;
-    private int suppliers;
+    private long demands;
+    private long suppliers;
+    //if parent = false, no child category exists;
+    private boolean parent = false;
+    private String parentName = "";
 
     public CategoryDetail() {
     }
 
-    public CategoryDetail(Long id, String name, int demands, int suppliers) {
+    public CategoryDetail(Long id, String name) {
+        init(id, name, 0, 0);
+    }
+
+    public CategoryDetail(Long id, String name, long demands, long suppliers) {
+        init(id, name, demands, suppliers);
+    }
+
+    private void init(Long id, String name, long demands, long suppliers) {
         this.id = id;
         this.name = name;
         this.demands = demands;
@@ -32,23 +42,38 @@ public class CategoryDetail implements Serializable {
         return name;
     }
 
+    public String getParentName() {
+        return name + parentName;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
-    public int getDemands() {
+    public long getDemands() {
         return demands;
     }
 
-    public void setDemands(int demands) {
+    public void setDemands(long demands) {
         this.demands = demands;
     }
 
-    public int getSuppliers() {
+    public long getSuppliers() {
         return suppliers;
     }
 
-    public void setSuppliers(int suppliers) {
+    public void setSuppliers(long suppliers) {
         this.suppliers = suppliers;
+    }
+
+    public boolean isParent() {
+        return parent;
+    }
+
+    public void setParent(boolean isParent) {
+        this.parent = isParent;
+        if (parent) {
+            this.parentName = " >";
+        }
     }
 
 }

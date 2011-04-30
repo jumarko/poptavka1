@@ -21,7 +21,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
     private static final Logger LOGGER = Logger.getLogger("MainPresenter");
 
-    LocalizableMessages msgs = GWT.create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface MainViewInterface {
         void setBodyWidget(Widget body);
@@ -45,10 +45,10 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
             public void onClick(ClickEvent arg0) {
                 if (loggedIn) {
                     eventBus.atHome();
-                    view.getLoginButton().setText(msgs.logIn());
+                    view.getLoginButton().setText(MSGS.logIn());
                 } else {
                     eventBus.atAccount();
-                    view.getLoginButton().setText(msgs.logOut());
+                    view.getLoginButton().setText(MSGS.logOut());
                 }
                 loggedIn = !loggedIn;
             }

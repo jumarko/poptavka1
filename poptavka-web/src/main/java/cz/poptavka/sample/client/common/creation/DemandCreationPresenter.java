@@ -164,21 +164,21 @@ public class DemandCreationPresenter
                 view.toggleVisiblePanel(TopPanel.SECOND);
                 if (initCategory) {
                     eventBus.initCategoryWidget(view.getCategoryHolder());
-//                    initCategory = false;
+                    initCategory = false;
                 }
                 break;
             case 1:
                 view.toggleVisiblePanel(TopPanel.THIRD);
                 if (initLocality) {
                     eventBus.initLocalityWidget(view.getLocalityHolder());
-//                    initLocality = false;
+                    initLocality = false;
                 }
                 break;
             case 2:
                 view.toggleVisiblePanel(TopPanel.FOURTH);
                 if (initAdvInfo) {
                     eventBus.initDemandAdvForm(view.getAdvInfoHolder());
-//                    initAdvInfo = false;
+                    initAdvInfo = false;
                 }
                 break;
             case 3:
