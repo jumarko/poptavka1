@@ -11,7 +11,7 @@ public abstract class DomainObject implements Serializable {
 
     /** Id of the entity. */
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
