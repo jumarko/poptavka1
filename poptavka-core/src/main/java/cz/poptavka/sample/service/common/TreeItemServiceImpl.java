@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.common;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.common.TreeItem;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,14 @@ public class TreeItemServiceImpl implements TreeItemService {
     /** {@inheritDoc} */
     @Override
     public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass) {
-        return this.treeItemDao.getAllChildren(parentNode, treeItemClass);
+        return getAllChildren(parentNode, treeItemClass, null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+                                                       ResultCriteria resultCriteria) {
+        return this.treeItemDao.getAllChildren(parentNode, treeItemClass, resultCriteria);
     }
 
 

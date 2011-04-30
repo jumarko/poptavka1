@@ -1,5 +1,6 @@
 package cz.poptavka.sample.dao.common;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.domain.common.TreeItem;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
@@ -20,7 +21,8 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
 
     /** {@inheritDoc} */
     @Override
-    public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass) {
+    public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+                                                       ResultCriteria resultCriteria) {
         final Criteria allChildrenCriteria = getHibernateSession().createCriteria(treeItemClass);
         if (parentNode != null) {
             // only descendants of specified parent
@@ -28,7 +30,8 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
                 parentNode.getLeftBound() + 1,
                 parentNode.getRightBound() - 1));
         }
-        return allChildrenCriteria.list();
+
+        return buildResultCriteria(allChildrenCriteria, resultCriteria).list();
     }
 
 

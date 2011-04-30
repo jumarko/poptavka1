@@ -49,13 +49,12 @@ public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testGetLocalitiesByTypeWithNoCriteria() {
-        final ResultCriteria emptyCriteria = new ResultCriteria.Builder().build();
-        checkLocalitiesByTypeAdditionalCriteria(LocalityType.COUNTRY, emptyCriteria, 1);
-        checkLocalitiesByTypeAdditionalCriteria(LocalityType.REGION, emptyCriteria, 2);
-        checkLocalitiesByTypeAdditionalCriteria(LocalityType.DISTRICT, emptyCriteria, 3);
-        checkLocalitiesByTypeAdditionalCriteria(LocalityType.CITY, emptyCriteria, 6);
+        checkLocalitiesByTypeAdditionalCriteria(LocalityType.COUNTRY, ResultCriteria.EMPTY_CRITERIA, 1);
+        checkLocalitiesByTypeAdditionalCriteria(LocalityType.REGION, ResultCriteria.EMPTY_CRITERIA, 2);
+        checkLocalitiesByTypeAdditionalCriteria(LocalityType.DISTRICT, ResultCriteria.EMPTY_CRITERIA, 3);
+        checkLocalitiesByTypeAdditionalCriteria(LocalityType.CITY, ResultCriteria.EMPTY_CRITERIA, 6);
 
-        checkLocalitiesByTypeAdditionalCriteria(null, emptyCriteria, 0);
+        checkLocalitiesByTypeAdditionalCriteria(null, ResultCriteria.EMPTY_CRITERIA, 0);
     }
 
 

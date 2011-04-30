@@ -107,12 +107,6 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
-    @Test
-    public void findCategoryByExample() {
-        // TODO: implement test
-    }
-
-
 
     //----------------------------------  METHODS FOR TESTING findByExampleCustom() method -----------------------------
     @Test
@@ -143,7 +137,7 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetAllWithNoCriteria() {
         // no restrictions
-        final List<Demand> allDemands = this.demandService.getAll(new ResultCriteria.Builder().build());
+        final List<Demand> allDemands = this.demandService.getAll(ResultCriteria.EMPTY_CRITERIA);
         Assert.assertEquals(10, allDemands.size());
     }
 
@@ -221,7 +215,7 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void findClientByExampleWithNoCriteria() {
         final List<Client> clientsByNamesBroken = this.clientService.findByExample(this.exampleClient,
-                new ResultCriteria.Builder().build());
+                ResultCriteria.EMPTY_CRITERIA);
         // filtering by association type Person has no effect, check the documentation
         // for GenericService#findByExample() method
         Assert.assertEquals(4, clientsByNamesBroken.size());

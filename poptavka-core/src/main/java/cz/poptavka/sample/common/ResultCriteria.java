@@ -12,6 +12,9 @@ import java.util.Map;
  */
 public final class ResultCriteria {
 
+    /** Handy constant - maiinly for testing purposes. */
+    public static final ResultCriteria EMPTY_CRITERIA = new ResultCriteria.Builder().build();
+
     /**
      * The collection of columns by which we want to order. The columns are applied in order as returned by
      * Collection iterator.

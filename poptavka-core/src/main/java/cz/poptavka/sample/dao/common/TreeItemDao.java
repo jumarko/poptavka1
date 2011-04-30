@@ -1,5 +1,6 @@
 package cz.poptavka.sample.dao.common;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.TreeItem;
 
 import java.util.List;
@@ -21,9 +22,11 @@ public interface TreeItemDao {
      * @param parentNode parent node whose children are loaded and returned. Can be null, then all instances of
      * entity class <code>treeItemClass</code> are returned.
      * @param treeItemClass type of children
+     * @param resultCriteria additional criteria that are applied to the result, can be null
      * @return all children of <code>parentNode</code>.
      */
-    <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass);
+    <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+                                                ResultCriteria resultCriteria);
 
 
     /**

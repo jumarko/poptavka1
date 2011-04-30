@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.common;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.TreeItem;
 
 import java.util.List;
@@ -15,6 +16,19 @@ public interface TreeItemService {
      * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildren(cz.poptavka.sample.domain.common.TreeItem, Class)
      */
     <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass);
+
+    /**
+     * The same as {@link #getAllChildren(cz.poptavka.sample.domain.common.TreeItem, Class)},
+     * but additional criteria are applied on the result.
+     *
+     * @param parentNode
+     * @param treeItemClass
+     * @param resultCriteria additional criteria that are applied and only that result is returned, can be null
+     * @param <T>
+     * @return
+     */
+    <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+                                                       ResultCriteria resultCriteria);
 
 
     /**
