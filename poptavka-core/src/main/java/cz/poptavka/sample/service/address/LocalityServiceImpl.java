@@ -1,6 +1,7 @@
 package cz.poptavka.sample.service.address;
 
 import com.googlecode.ehcache.annotations.Cacheable;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.address.LocalityDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -32,6 +33,12 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     @Override
 //    @Cacheable(cacheName = "cache5h")
     public List<Locality> getLocalities(LocalityType localityType) {
-        return getDao().getLocalities(localityType);
+        return getDao().getLocalities(localityType, null);
+    }
+
+    @Override
+//    @Cacheable(cacheName = "cache5h")
+    public List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria) {
+        return getDao().getLocalities(localityType, resultCriteria);
     }
 }

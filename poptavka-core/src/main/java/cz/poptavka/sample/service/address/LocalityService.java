@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.address;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.address.LocalityDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -20,6 +21,15 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
      * @return
      */
     List<Locality> getLocalities(LocalityType localityType);
+
+    /**
+     * Same as {@link #getLocalities(cz.poptavka.sample.domain.address.LocalityType)}
+     * but additional criteria can be applied.
+     * @param localityType
+     * @param resultCriteria optional additional criteria which can be applied to the localities
+     * @return
+     */
+    List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria);
 
     /**
      * Get locality by given code. Code must be a unique identifier!

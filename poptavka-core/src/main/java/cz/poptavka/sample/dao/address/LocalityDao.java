@@ -1,5 +1,6 @@
 package cz.poptavka.sample.dao.address;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -20,13 +21,13 @@ public interface LocalityDao extends GenericDao<Locality> {
      */
     Locality getLocality(String code);
 
-      /**
+    /**
      * Get all localities of given type.
      *
-     *
-       * @param localityType
-       * @return
+     * @param localityType
+     * @param resultCriteria optional additional criteria which can be applied to the localities
+     * @return
      */
-    List<Locality> getLocalities(LocalityType localityType);
+    List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria);
 
 }

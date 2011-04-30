@@ -177,12 +177,20 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Apply (or in other words "add") <code>resultCriteria</code> on <code>entityCriteria</code>.
+     * Result criteria can be empty.
      *
-     * @param entityCriteria
-     * @param resultCriteria
+     * @param entityCriteria criteria which will be augmented to create final criteria - both entity and result
+     * @param resultCriteria result criteria will be applied as additional criteria on entity criteria
+     *                     can be null, in that case, no additonal criteria are applied
+     *
      * @return criteria which are the result of both input criterias
      */
-    private Criteria buildResultCriteria(Criteria entityCriteria, ResultCriteria resultCriteria) {
+    protected Criteria buildResultCriteria(Criteria entityCriteria, ResultCriteria resultCriteria) {
+        if (resultCriteria == null) {
+            // no additional criteria
+            return entityCriteria;
+        }
+
         if (resultCriteria.getFirstResult() != null) {
             entityCriteria.setFirstResult(resultCriteria.getFirstResult());
         }
