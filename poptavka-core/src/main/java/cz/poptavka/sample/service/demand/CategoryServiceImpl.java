@@ -1,6 +1,7 @@
 package cz.poptavka.sample.service.demand;
 
 import com.googlecode.ehcache.annotations.Cacheable;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.CategoryDao;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.GenericServiceImpl;
@@ -21,7 +22,14 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     @Override
     @Cacheable(cacheName = "cache5h")
     public List<Category> getRootCategories() {
-        return getDao().getRootCategories();
+        return getRootCategories(null);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Cacheable(cacheName = "cache5h")
+    public List<Category> getRootCategories(ResultCriteria resultCriteria) {
+        return getDao().getRootCategories(resultCriteria);
     }
 
     /** {@inheritDoc} */

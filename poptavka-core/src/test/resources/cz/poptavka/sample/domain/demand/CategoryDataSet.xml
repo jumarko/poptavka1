@@ -13,6 +13,7 @@
 -->
 <dataset>
     <!-- root category -->
+    <CATEGORY ID="111" CODE="cat00"  NAME="Root Category 2" DESCRIPTION="Childless root category" LEVEL="0"  PARENT_ID="[NULL]" LEFTBOUND="111" RIGHTBOUND="112" />
     <CATEGORY ID="1" CODE="cat0"  NAME="Root Category" DESCRIPTION="Common ancestor for all categories" LEVEL="0"  PARENT_ID="[NULL]" LEFTBOUND="1" RIGHTBOUND="32" />
 
     <!-- first level of categories -->
