@@ -1,6 +1,7 @@
 
 package cz.poptavka.sample.service;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.hibernate.criterion.Example;
@@ -28,6 +29,16 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      * @return
      */
     List<T> getAll();
+
+    /**
+     * Load all entities that satisfy additional criteria - this could be limit on max number of result and
+     * similar restrictions.
+     * <p>
+     *     For more information:
+     *     @see ResultCriteria
+     * @return all entities that resultCriteria
+     */
+    List<T> getAll(ResultCriteria resultCriteria);
 
     /**
      * persists the entity.
@@ -87,6 +98,19 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
     List<T> findByExample(T example);
 
     /**
+     * The same as {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)}
+     * but additonal criteria are applied on the result.
+     *
+     * <p>
+     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     *
+     * @param example
+     * @param resultCriteria
+     * @return
+     */
+    List<T> findByExample(T example, ResultCriteria resultCriteria);
+
+    /**
      * This method similar to {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)} but allows
      * specification of custom Example.
      * <p>
@@ -101,5 +125,19 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      *
      */
     List<T> findByExampleCustom(Example customExample);
+
+
+    /**
+     * The same as {@link #findByExampleCustom(org.hibernate.criterion.Example)}
+     * but additonal criteria are applied on the result.
+     *
+     * <p>
+     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     *
+     * @param customExample
+     * @param resultCriteria
+     * @return
+     */
+    List<T> findByExampleCustom(Example customExample, ResultCriteria resultCriteria);
 
 }

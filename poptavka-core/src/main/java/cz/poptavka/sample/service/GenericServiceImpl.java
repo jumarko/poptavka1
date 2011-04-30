@@ -1,6 +1,7 @@
 package cz.poptavka.sample.service;
 
 import com.google.common.base.Preconditions;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.exception.DomainObjectNotFoundException;
@@ -49,6 +50,17 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
     public List<Dom> getAll() {
         assertConfigured();
         return dao.findAll();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Dom> getAll(ResultCriteria resultCriteria) {
+        assertConfigured();
+        return dao.findAll(resultCriteria);
     }
 
     /**
@@ -124,12 +136,23 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
         return this.dao.findByExample(example);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public List<Dom> findByExample(Dom example, ResultCriteria resultCriteria) {
+        return this.dao.findByExample(example, resultCriteria);
+    }
+
     @Override
     public List<Dom> findByExampleCustom(Example customExample) {
         Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
         return this.dao.findByExampleCustom(customExample);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public List<Dom> findByExampleCustom(Example customExample, ResultCriteria resultCriteria) {
+        return this.dao.findByExampleCustom(customExample, resultCriteria);
+    }
 
     //----------------------------------  OTHER METHODS ----------------------------------------------------------------
     /**

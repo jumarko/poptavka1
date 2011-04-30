@@ -1,6 +1,7 @@
 package cz.poptavka.sample.dao;
 
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.hibernate.criterion.Example;
 
@@ -33,6 +34,16 @@ public interface GenericDao<T extends DomainObject> {
      * @return
      */
     List<T> findAll();
+
+    /**
+     * Load all entities that satisfy additional criteria - this could be limit on max number of result and
+     * similar restrictions.
+     * <p>
+     *     For more information:
+     *     @see cz.poptavka.sample.common.ResultCriteria
+     * @return all entities that resultCriteria
+     */
+    List<T> findAll(ResultCriteria resultCriteria);
 
     /**
      * Searches for the objects by their respective id's.
@@ -143,6 +154,19 @@ public interface GenericDao<T extends DomainObject> {
      */
     List<T> findByExample(T example);
 
+     /**
+     * The same as {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)}
+     * but additonal criteria are applied on the result.
+     *
+     * <p>
+     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     *
+     * @param example
+     * @param resultCriteria
+     * @return
+     */
+    List<T> findByExample(T example, ResultCriteria resultCriteria);
+
     /**
      * This method similar to {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)} but allows custom
      * specification of custom Example.
@@ -158,5 +182,18 @@ public interface GenericDao<T extends DomainObject> {
      * @return list of all domain objects that satisfy criteria given by <code>customExample</code>.
      */
     List<T> findByExampleCustom(Example customExample);
+
+    /**
+     * The same as {@link #findByExampleCustom(org.hibernate.criterion.Example)}
+     * but additonal criteria are applied on the result.
+     *
+     * <p>
+     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     *
+     * @param customExample
+     * @param resultCriteria
+     * @return
+     */
+    List<T> findByExampleCustom(Example customExample, ResultCriteria resultCriteria);
 
 }

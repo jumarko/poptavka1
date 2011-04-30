@@ -6,10 +6,15 @@
 package cz.poptavka.sample.dao;
 
 import com.google.common.base.Preconditions;
+import cz.poptavka.sample.common.OrderType;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.DomainObject;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +57,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Creates new GenericHibernateDao.
+     *
      * @param persistentClass
      */
     protected GenericHibernateDao(final Class<? extends T> persistentClass) {
@@ -120,6 +126,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Gets the simple name of entity class.
+     *
      * @return
      */
     final protected String getEntityClassSimpleName() {
@@ -159,6 +166,47 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     public List<T> findAll() {
         //Restrictions.eq("forLogOnly", null));
         return createQuery("select o from " + getPersistentClass().getName() + " o").getResultList();
+    }
+
+    @Override
+    public List<T> findAll(ResultCriteria resultCriteria) {
+        Preconditions.checkNotNull(resultCriteria);
+        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
+        return buildResultCriteria(entityCriteria, resultCriteria).list();
+    }
+
+    /**
+     * Apply (or in other words "add") <code>resultCriteria</code> on <code>entityCriteria</code>.
+     *
+     * @param entityCriteria
+     * @param resultCriteria
+     * @return criteria which are the result of both input criterias
+     */
+    private Criteria buildResultCriteria(Criteria entityCriteria, ResultCriteria resultCriteria) {
+        if (resultCriteria.getFirstResult() != null) {
+            entityCriteria.setFirstResult(resultCriteria.getFirstResult());
+        }
+        if (resultCriteria.getMaxResults() != null) {
+            entityCriteria.setMaxResults(resultCriteria.getMaxResults());
+        }
+        if (resultCriteria.getOrderByColumns() != null
+                && CollectionUtils.isNotEmpty(resultCriteria.getOrderByColumns().keySet())) {
+
+            for (Map.Entry<String, OrderType> orderBy : resultCriteria.getOrderByColumns().entrySet()) {
+                final String orderByColumn = orderBy.getKey();
+                if (StringUtils.isNotBlank(orderByColumn)) {
+                    switch (orderBy.getValue()) {
+                        case ASC:
+                            entityCriteria.addOrder(Order.asc(orderByColumn));
+                        case DESC:
+                            entityCriteria.addOrder(Order.desc(orderByColumn));
+                        default:
+                            entityCriteria.addOrder(Order.asc(orderByColumn));
+                    }
+                }
+            }
+        }
+        return entityCriteria;
     }
 
     @SuppressWarnings("unchecked")
@@ -219,7 +267,9 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     }
 
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public List<T> findByExample(T example) {
         Preconditions.checkArgument(example != null, "Example object must not be null");
         // query by example
@@ -229,6 +279,15 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         return entityCriteria.list();
     }
 
+    @Override
+    public List<T> findByExample(T example, ResultCriteria resultCriteria) {
+        Preconditions.checkArgument(example != null, "Example object must not be null");
+        // query by example
+        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
+        entityCriteria.add(Example.create(example)
+                .excludeZeroes());
+        return buildResultCriteria(entityCriteria, resultCriteria).list();
+    }
 
     @Override
     public List<T> findByExampleCustom(Example customExample) {
@@ -239,9 +298,18 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         return entityCriteria.list();
     }
 
+    @Override
+    public List<T> findByExampleCustom(Example customExample, ResultCriteria resultCriteria) {
+        Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
+        // query by example
+        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
+        entityCriteria.add(customExample);
+        return buildResultCriteria(entityCriteria, resultCriteria).list();
+    }
 
     /**
      * Searches through database by given criteria.
+     *
      * @param criterion
      * @return result of the search
      */
@@ -256,6 +324,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Creates named query.
+     *
      * @param name
      * @return
      */
@@ -265,6 +334,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Creates query.
+     *
      * @param query
      * @return
      */
@@ -274,6 +344,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Creates JPA query.
+     *
      * @param query
      * @return
      */
@@ -283,6 +354,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Creates hibernate query.
+     *
      * @param query
      * @return
      */
@@ -292,6 +364,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Returns single result of the query or null value if the result is empty.
+     *
      * @param query
      * @return
      * @throws NonUniqueResultException if the query returns more than one result
@@ -397,6 +470,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     /**
      * Returns the single result of the query.
+     *
      * @param query
      * @return
      */

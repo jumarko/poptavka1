@@ -2,6 +2,7 @@ package cz.poptavka.sample.service;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -17,9 +18,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.hibernate.criterion.Example;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +50,15 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private CategoryService categoryService;
+
+
+    private Client exampleClient;
+
+
+    @Before
+    public void setUp() {
+        this.exampleClient = createExampleClient();
+    }
 
 
     //----------------------------------  METHODS FOR TESTING findByExample() method -----------------------------------
@@ -77,10 +90,7 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
     // TODO: find the way of using association types with Query By Example approach
     @Test
     public void findClientByExample() {
-
-        final Client client = new Client();
-        client.setPerson(new Person("Elv\u00edra", "Vytret\u00e1"));
-        final List<Client> clientsByNamesBroken = this.clientService.findByExample(client);
+        final List<Client> clientsByNamesBroken = this.clientService.findByExample(this.exampleClient);
         // filtering by association type Person has no effect, check the documentation
         // for GenericService#findByExample() method
         Assert.assertEquals(4, clientsByNamesBroken.size());
@@ -129,7 +139,133 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
 
 
+    //--------------------------------  METHODS FOR TESTING filtering based on <code>ResultCriteria</code> -------------
+    @Test
+    public void testGetAllWithNoCriteria() {
+        // no restrictions
+        final List<Demand> allDemands = this.demandService.getAll(new ResultCriteria.Builder().build());
+        Assert.assertEquals(10, allDemands.size());
+    }
+
+
+    @Test
+    public void testGetAllWithMaxResults() {
+        // restrict number of demands - no ordering is guaranteed!
+        final int maxDemands = 5;
+        final List<Demand> allDemandsMaxResults = this.demandService.getAll(new ResultCriteria.Builder()
+                .maxResults(5)
+                .build());
+        Assert.assertEquals(5, allDemandsMaxResults.size());
+
+    }
+
+    @Test
+    public void testGetAllWithFirstResultAndMaxResults() {
+        // restrict number of demands - no ordering is guaranteed!
+        final int maxDemands = 5;
+        final int firstResult = 2;
+        final List<Demand> allDemandsMaxResults = this.demandService.getAll(new ResultCriteria.Builder()
+                .maxResults(maxDemands)
+                .firstResult(firstResult)
+                .build());
+        Assert.assertEquals(maxDemands, allDemandsMaxResults.size());
+    }
+
+
+    @Test
+    public void testGetAllWithFirstResultAndMaxResultsOrderBy() {
+        // restrict number of demands - no ordering is guaranteed!
+        final int maxDemands = 5;
+        final int firstResult = 2;
+        final List<Demand> allDemandsMaxResults = this.demandService.getAll(new ResultCriteria.Builder()
+                .maxResults(maxDemands)
+                .firstResult(firstResult)
+                .orderByColumns(Arrays.asList("id"))
+                .build());
+        Assert.assertEquals(maxDemands, allDemandsMaxResults.size());
+        checkDemandExistence(3L, allDemandsMaxResults);
+        checkDemandExistence(4L, allDemandsMaxResults);
+        checkDemandExistence(5L, allDemandsMaxResults);
+        checkDemandExistence(6L, allDemandsMaxResults);
+        checkDemandExistence(7L, allDemandsMaxResults);
+        checkDemandNonExistence(2L, allDemandsMaxResults);
+        checkDemandNonExistence(10L, allDemandsMaxResults);
+    }
+
+
+    @Test
+    public void testGetAllWithFirstResultOrderyBy() {
+        // restrict number of demands - no ordering is guaranteed!
+        final int firstResult = 8;
+        final List<Demand> allDemandsMaxResults = this.demandService.getAll(new ResultCriteria.Builder()
+                .firstResult(firstResult)
+                .orderByColumns(Arrays.asList("id"))
+                .build());
+        Assert.assertEquals(2, allDemandsMaxResults.size());
+        checkDemandExistence(9L, allDemandsMaxResults);
+        checkDemandExistence(10L, allDemandsMaxResults);
+    }
+
+    @Test
+    public void testGetAllWithFirstResultBeyondMaximum() {
+        // restrict number of demands - no ordering is guaranteed!
+        final int firstResult = 10;
+        final List<Demand> allDemands = this.demandService.getAll(new ResultCriteria.Builder()
+                .firstResult(firstResult)
+                .orderByColumns(Arrays.asList("id"))
+                .build());
+        Assert.assertTrue(allDemands.isEmpty());
+    }
+
+
+    @Test
+    public void findClientByExampleWithNoCriteria() {
+        final List<Client> clientsByNamesBroken = this.clientService.findByExample(this.exampleClient,
+                new ResultCriteria.Builder().build());
+        // filtering by association type Person has no effect, check the documentation
+        // for GenericService#findByExample() method
+        Assert.assertEquals(4, clientsByNamesBroken.size());
+    }
+
+
+    @Test
+    public void findClientByExampleWithMaxResults() {
+        final int maxClients = 2;
+        final List<Client> clientsByNamesBroken = this.clientService.findByExample(this.exampleClient,
+                new ResultCriteria.Builder()
+                        .maxResults(maxClients)
+                        .build());
+        // filtering by association type Person has no effect, check the documentation
+        // for GenericService#findByExample() method
+        Assert.assertEquals(maxClients, clientsByNamesBroken.size());
+    }
+
+    @Test
+    public void findClientByExampleWithFirstResultOrderBy() {
+        final int firstResult = 3;
+        final List<Client> clientsByNamesBroken = this.clientService.findByExample(this.exampleClient,
+                new ResultCriteria.Builder()
+                        .firstResult(firstResult)
+                        .orderByColumns(Arrays.asList("id"))
+                        .build());
+        // filtering by association type Person has no effect, check the documentation
+        // for GenericService#findByExample() method
+        Assert.assertEquals(1, clientsByNamesBroken.size());
+    }
+
+
+
+
+
     //----------------------------------  HELPER METHODS ---------------------------------------------------------------
+
+    private Client createExampleClient() {
+        final Client client = new Client();
+        client.setPerson(new Person("Elv\u00edra", "Vytret\u00e1"));
+        return client;
+    }
+
+
     /**
      * Check if locality with code <code>localityCode</code> is in collection <code>allLocalities</code>.
      *
@@ -137,13 +273,33 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
      * @param allLocalities collection which is searched
      */
     private void checkLocalityExistence(final String localityCode, List<Locality> allLocalities) {
-        CollectionUtils.exists(allLocalities, new Predicate() {
+        Assert.assertTrue(CollectionUtils.exists(allLocalities, new Predicate() {
             @Override
             public boolean evaluate(Object object) {
                 return localityCode.equals(((Locality) object).getCode());
             }
-        });
+        }));
+
     }
+
+    private void checkDemandExistence(final Long id, Collection<Demand> allDemands) {
+        Assert.assertTrue(CollectionUtils.exists(allDemands, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                return id.equals(((Demand) object).getId());
+            }
+        }));
+    }
+
+    private void checkDemandNonExistence(final Long id, Collection<Demand> allDemands) {
+        Assert.assertFalse(CollectionUtils.exists(allDemands, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                return id.equals(((Demand) object).getId());
+            }
+        }));
+    }
+
 
 
     private void checkDemandsByStatus(DemandStatus status, int expectedCount) {
