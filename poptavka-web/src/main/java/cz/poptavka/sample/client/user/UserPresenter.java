@@ -25,6 +25,7 @@ public class UserPresenter extends BasePresenter<UserPresenter.UserViewInterface
     }
 
     public void onSetTabWidget(Widget tabBody) {
+        LOGGER.info("widget body here !!");
         view.setBody(tabBody);
     }
 }

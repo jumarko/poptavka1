@@ -5,12 +5,14 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.user.demands.DemandsPresenter;
+
 
 @Events(startView = UserView.class, module = UserModule.class)
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
-    @Event(handlers = UserPresenter.class, historyConverter = UserHistoryConverter.class)
+    @Event(handlers = {UserPresenter.class, DemandsPresenter.class }, historyConverter = UserHistoryConverter.class)
     String atAccount();
 
     @Event(forwardToParent = true)

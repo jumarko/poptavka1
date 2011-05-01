@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:demands="urn:import:cz.poptavka.sample.client.user.listOfDemands">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:demands="urn:import:cz.poptavka.sample.client.user.demands">
 	<ui:style>
 		.search {
 			margin-left: 10px;
@@ -8,42 +8,21 @@
 		}
 	</ui:style>
 	<g:HTMLPanel>
-		<g:DockLayoutPanel unit='EM'>
+		<g:HorizontalPanel>
+			<g:DecoratedTabBar ui:field='tabBar'></g:DecoratedTabBar>
 
-			<g:north size='5'>
-				<g:HorizontalPanel>
-					<g:SimplePanel ui:field="tabPanel">
-						<g:DecoratedTabBar ui:field='tabBar'></g:DecoratedTabBar>
-					</g:SimplePanel>
-					<!-- Which method of creating tab will be better? -->
-					<!-- <g:HTMLPanel> <div style="width: 130px; display: inline;"><g:Anchor>Poptavky</g:Anchor></div> 
-						<div style="width: 130px; display: inline;"><g:Anchor>Spravy</g:Anchor></div> 
-						<div style="width: 130px; display: inline;"><g:Anchor>Nastavenia</g:Anchor></div> 
-						<div style="width: 130px; display: inline;"><g:Anchor>Kontaky</g:Anchor></div> 
-						<div style="width: 130px; display: inline;"><g:Anchor>Kategorie</g:Anchor></div> 
-						</g:HTMLPanel> -->
-					<g:Cell horizontalAlignment="ALIGN_RIGHT">
-						<g:HTML wordWrap="true" styleName='{style.search}'>SEARCH COMPONENT
-							PLACEHOLDER</g:HTML>
-					</g:Cell>
-				</g:HorizontalPanel>
-			</g:north>
-
-			<g:center>
-				<g:SplitLayoutPanel>
-					<g:west size='192'>
-						<g:HTML wordWrap="true" styleName='{style.search}'>WEST PANEL</g:HTML>
-					</g:west>
-
-					<g:north size='200'>
-						<demands:ListOfDemandsView ui:field="demandsList" />
-					</g:north>
-
-					<g:center>
-						<g:HTML wordWrap="true" styleName='{style.search}'>DEMAND DETAIL PANEL</g:HTML>
-					</g:center>
-				</g:SplitLayoutPanel>
-			</g:center>
-		</g:DockLayoutPanel>
+			<!-- Which method of creating tab will be better? -->
+			<!-- <g:HTMLPanel> <div style="width: 130px; display: inline;"><g:Anchor>Poptavky</g:Anchor></div>
+				<div style="width: 130px; display: inline;"><g:Anchor>Spravy</g:Anchor></div>
+				<div style="width: 130px; display: inline;"><g:Anchor>Nastavenia</g:Anchor></div>
+				<div style="width: 130px; display: inline;"><g:Anchor>Kontaky</g:Anchor></div>
+				<div style="width: 130px; display: inline;"><g:Anchor>Kategorie</g:Anchor></div>
+				</g:HTMLPanel> -->
+			<g:Cell horizontalAlignment="ALIGN_RIGHT">
+				<g:HTML wordWrap="true" styleName='{style.search}'>SEARCH COMPONENT
+					PLACEHOLDER</g:HTML>
+			</g:Cell>
+		</g:HorizontalPanel>
+		<g:SimplePanel ui:field="tabPanel" />
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -9,8 +9,6 @@ import com.google.gwt.user.client.ui.DecoratedTabBar;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.user.listOfDemands.ListOfDemandsView;
-
 public class UserView extends Composite implements UserPresenter.UserViewInterface {
 
     private static UserViewUiBinder uiBinder = GWT.create(UserViewUiBinder.class);
@@ -18,8 +16,6 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
 
     @UiField
     DecoratedTabBar tabBar;
-    @UiField
-    ListOfDemandsView demandsList;
     @UiField
     SimplePanel tabPanel;
     //tabs
@@ -32,8 +28,6 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     public UserView() {
 
         initWidget(uiBinder.createAndBindUi(this));
-
-        demandsList.getListOfDemandsView();
 
         tabBar.addTab(demandsTab);
         tabBar.addTab(messagesTab);
