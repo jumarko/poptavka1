@@ -7,16 +7,20 @@ package cz.poptavka.sample.service.demand;
 
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import cz.poptavka.sample.service.ResultProvider;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +55,22 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional(readOnly = true)
     public Set<Demand> getDemands(Locality... localities) {
-        return this.demandDao.getDemands(localities);
+        return getDemands(ResultCriteria.EMPTY_CRITERIA, localities);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Demand> getDemands(final ResultCriteria resultCriteria, final Locality... localities) {
+        final ResultProvider<Demand> demandProvider = new ResultProvider<Demand>(resultCriteria) {
+            @Override
+            public Collection<Demand> getResult() {
+                return DemandServiceImpl.this.demandDao.getDemands(localities, getResultCriteria());
+            }
+        };
+
+        return new LinkedHashSet<Demand>(applyOrderByCriteria(demandProvider, resultCriteria));
     }
 
 
@@ -104,9 +123,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional(readOnly = true)
     public Set<Demand> getDemands(Category... categories) {
-        return this.demandDao.getDemands(categories);
+        return getDemands(ResultCriteria.EMPTY_CRITERIA, categories);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Set<Demand> getDemands(ResultCriteria resultCriteria, Category... categories) {
+        return this.demandDao.getDemands(categories, resultCriteria);
+    }
 
     /** {@inheritDoc} */
     @Transactional(readOnly = true)

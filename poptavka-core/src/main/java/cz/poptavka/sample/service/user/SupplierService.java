@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.user;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
@@ -25,6 +26,17 @@ public interface SupplierService {
      * @return
      */
     Set<Supplier> getSuppliers(Locality... localities);
+
+
+    /**
+     * The same as {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality...)}
+     * but apply additional criteria to the result.
+     *
+     * @param resultCriteria additional criteria, can be null
+     * @param localities
+     * @return
+     */
+    Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Locality... localities);
 
     /**
      * Highly optimized method for getting number of suppliers for all localities.
@@ -71,6 +83,17 @@ public interface SupplierService {
      * @return
      */
     Set<Supplier> getSuppliers(Category... categories);
+
+    /**
+     *                                                            /**
+     * The same as {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category...)}
+     * but apply additional criteria to the result.
+     *
+     * @param resultCriteria additional criteria, can be null
+     * @param categories
+     * @return
+     */
+    Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Category... categories);
 
     /**
      * Highly optimized method for getting number of suppliers for all categories.

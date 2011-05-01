@@ -2,6 +2,7 @@ package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -86,7 +88,6 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
-
     @Test
     public void testGetDemandsByLocality() {
         checkDemandsByLocality(4, "loc2");
@@ -101,6 +102,116 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         checkDemandsByLocality(10, "loc1", "loc2", "loc11");
         checkDemandsByLocality(5, "loc121", "loc2");
     }
+
+
+    //----------------------------------  Methods for testing additional criteria methods ------------------------------
+    @Test
+    public void testGetDemandsByLocalityWithNoRestrictions() {
+        checkDemandsByLocalityAdditionalCriteria(4, ResultCriteria.EMPTY_CRITERIA, "loc2");
+        checkDemandsByLocalityAdditionalCriteria(6, ResultCriteria.EMPTY_CRITERIA, "loc1");
+        checkDemandsByLocalityAdditionalCriteria(4, ResultCriteria.EMPTY_CRITERIA, "loc11");
+        checkDemandsByLocalityAdditionalCriteria(0, ResultCriteria.EMPTY_CRITERIA, "loc0111");
+        checkDemandsByLocalityAdditionalCriteria(1, ResultCriteria.EMPTY_CRITERIA, "loc121");
+
+        // check combination of localities - the result is NOT always the sum of demands related to the localities
+        // because duplication of demands in result is not allowed!
+        checkDemandsByLocalityAdditionalCriteria(10, ResultCriteria.EMPTY_CRITERIA, "loc1", "loc2");
+        checkDemandsByLocalityAdditionalCriteria(10, ResultCriteria.EMPTY_CRITERIA, "loc1", "loc2", "loc11");
+        checkDemandsByLocalityAdditionalCriteria(5, ResultCriteria.EMPTY_CRITERIA, "loc121", "loc2");
+    }
+
+
+    @Test
+    public void testGetDemandsByLocalityWithMaxResults() {
+        final ResultCriteria criteria = new ResultCriteria.Builder()
+                .maxResults(4)
+                .build();
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc2");
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1");
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc11");
+        checkDemandsByLocalityAdditionalCriteria(0, criteria, "loc0111");
+        checkDemandsByLocalityAdditionalCriteria(1, criteria, "loc121");
+
+        // check combination of localities - the result is NOT always the sum of demands related to the localities
+        // because duplication of demands in result is not allowed!
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1", "loc2");
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1", "loc2", "loc11");
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc121", "loc2");
+    }
+
+    @Test
+    public void testGetDemandsByLocalityWithFirstResultMaxResults() {
+        final ResultCriteria criteria = new ResultCriteria.Builder()
+                .firstResult(2)
+                .maxResults(4)
+                .build();
+        checkDemandsByLocalityAdditionalCriteria(2, criteria, "loc2");
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1");
+        checkDemandsByLocalityAdditionalCriteria(2, criteria, "loc11");
+        checkDemandsByLocalityAdditionalCriteria(0, criteria, "loc0111");
+        checkDemandsByLocalityAdditionalCriteria(0, criteria, "loc121");
+
+        // check combination of localities - the result is NOT always the sum of demands related to the localities
+        // because duplication of demands in result is not allowed!
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1", "loc2");
+        checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1", "loc2", "loc11");
+        checkDemandsByLocalityAdditionalCriteria(3, criteria, "loc121", "loc2");
+    }
+
+
+    @Test
+    public void testGetDemandsByLocalityWithFirstResultOrderBy() {
+        final ResultCriteria criteria = new ResultCriteria.Builder()
+                .firstResult(2)
+                .orderByColumns(Arrays.asList("title"))
+                .build();
+
+        final Collection<Demand> loc2Demands = checkDemandsByLocalityAdditionalCriteria(2, criteria, "loc2");
+        checkDemandExists(loc2Demands, 9L);
+        checkDemandExists(loc2Demands, 10L);
+
+        final Collection<Demand> loc1Demands = checkDemandsByLocalityAdditionalCriteria(4, criteria, "loc1");
+        checkDemandExists(loc1Demands, 5L);
+        checkDemandExists(loc1Demands, 6L);
+        checkDemandExists(loc1Demands, 7L);
+        checkDemandExists(loc1Demands, 8L);
+
+        final Collection<Demand> loc11Demands = checkDemandsByLocalityAdditionalCriteria(2, criteria, "loc11");
+        checkDemandExists(loc11Demands, 6L);
+        checkDemandExists(loc11Demands, 7L);
+
+        checkDemandsByLocalityAdditionalCriteria(0, criteria, "loc0111");
+
+        checkDemandsByLocalityAdditionalCriteria(0, criteria, "loc121");
+
+        // check combination of localities - the result is NOT always the sum of demands related to the localities
+        // because duplication of demands in result is not allowed!
+        final Collection<Demand> loc1loc2demands =
+                checkDemandsByLocalityAdditionalCriteria(8, criteria, "loc1", "loc2");
+        checkDemandExists(loc1loc2demands, 5L);
+        checkDemandExists(loc1loc2demands, 6L);
+        checkDemandExists(loc1loc2demands, 7L);
+        checkDemandExists(loc1loc2demands, 8L);
+
+        final Collection<Demand> loc1loc2loc11Demands =
+                checkDemandsByLocalityAdditionalCriteria(8, criteria, "loc1", "loc2", "loc11");
+        checkDemandExists(loc1loc2loc11Demands, 3L);
+        checkDemandExists(loc1loc2loc11Demands, 4L);
+        checkDemandExists(loc1loc2loc11Demands, 5L);
+        checkDemandExists(loc1loc2loc11Demands, 6L);
+        checkDemandExists(loc1loc2loc11Demands, 7L);
+        checkDemandExists(loc1loc2loc11Demands, 8L);
+        checkDemandExists(loc1loc2loc11Demands, 9L);
+        checkDemandExists(loc1loc2loc11Demands, 10L);
+
+        final Collection<Demand> loc121Loc2Demands =
+                checkDemandsByLocalityAdditionalCriteria(3, criteria, "loc121", "loc2");
+        checkDemandExists(loc121Loc2Demands, 8L);
+        checkDemandExists(loc121Loc2Demands, 9L);
+        checkDemandExists(loc121Loc2Demands, 10L);
+    }
+
+    //----------------------------------  End of methods for testing additional criteria methods -----------------------
 
 
     @Test
@@ -121,7 +232,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetDemandsCountForAllCategories() {
         final Map<Category, Long> demandsCountForAllCategories = this.demandService.getDemandsCountForAllCategories();
-        Assert.assertEquals(16, demandsCountForAllCategories.size());
+        Assert.assertEquals(17, demandsCountForAllCategories.size());
 
         checkDemandsForCategory("cat0", 10L, demandsCountForAllCategories);
         checkDemandsForCategory("cat1", 5L, demandsCountForAllCategories);
@@ -170,7 +281,6 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
-
     @Test
     public void testGetDemandsCountByCategory() {
         checkDemandCountByCategory("cat0", 10);
@@ -200,7 +310,6 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         checkDemandCountWithoutChildrenByCategory("cat312", 1);
         checkDemandCountWithoutChildrenByCategory("cat1132", 1);
     }
-
 
 
     @Test
@@ -256,12 +365,21 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     private void checkDemandTypeExists(final String demandTypeCode, final List<DemandType> demandTypes) {
-        CollectionUtils.exists(demandTypes, new Predicate() {
+        Assert.assertTrue(CollectionUtils.exists(demandTypes, new Predicate() {
             @Override
             public boolean evaluate(Object object) {
                 return demandTypeCode.equals(((DemandType) object).getCode());
             }
-        });
+        }));
+    }
+
+    private void checkDemandExists(Collection<Demand> loc2Demands, final long demandId) {
+        Assert.assertTrue(CollectionUtils.exists(loc2Demands, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                return demandId == ((Demand) object).getId();
+            }
+        }));
     }
 
 
@@ -271,20 +389,39 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
     private void checkDemandsByLocality(int expectedDemandsNumber, String... localityCodes) {
+        checkDemandsByLocalityAdditionalCriteria(expectedDemandsNumber, null, localityCodes);
+    }
+
+
+    /**
+     * Check wheter given localities are related to exactly <code>expectedDemandsNumber</code> number of demands.
+     *
+     * @param expectedDemandsNumber
+     * @param resultCriteria
+     * @param localityCodes
+     */
+    private Collection<Demand> checkDemandsByLocalityAdditionalCriteria(int expectedDemandsNumber,
+                                                                        ResultCriteria resultCriteria,
+                                                                        String... localityCodes) {
         if (localityCodes.length == 0) {
             throw new IllegalArgumentException("No localities for testing!");
         }
 
-        List<Locality> localities = new ArrayList<Locality>();
+        final List<Locality> localities = new ArrayList<Locality>();
         for (String localityCode : localityCodes) {
             localities.add(this.localityService.getLocality(localityCode));
         }
+
         final Collection<Demand> demandsForLocalities = this.demandService.getDemands(
+                resultCriteria,
                 localities.toArray(new Locality[localities.size()]));
-        final String message = "Locality codes [" + localityCodes + "]";
+        final String message = "Locality codes [" + Arrays.toString(localityCodes) + "]";
         Assert.assertNotNull(message, demandsForLocalities);
         Assert.assertEquals(message, expectedDemandsNumber, demandsForLocalities.size());
+
+        return demandsForLocalities;
     }
+
 
     private void checkDemandCountByLocality(String localityCode, int expectedCount) {
         final String message = "Locality code [" + localityCode + "]";
@@ -339,9 +476,6 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
                 expectedDemandsCount,
                 demandsCountForAllLocalities.get(this.localityService.getLocality(localityCode)));
     }
-
-
-
 
 
     private void checkDemandType(long demandId, DemandType.Type expectedType) {

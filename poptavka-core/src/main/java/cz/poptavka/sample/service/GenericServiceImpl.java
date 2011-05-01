@@ -1,14 +1,22 @@
 package cz.poptavka.sample.service;
 
 import com.google.common.base.Preconditions;
+import cz.poptavka.sample.common.OrderType;
 import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.exception.DomainObjectNotFoundException;
+import cz.poptavka.sample.util.collection.GenericComparator;
 import org.hibernate.criterion.Example;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao<Dom>>
         implements GenericService<Dom, Dao> {
@@ -153,6 +161,56 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
     public List<Dom> findByExampleCustom(Example customExample, ResultCriteria resultCriteria) {
         return this.dao.findByExampleCustom(customExample, resultCriteria);
     }
+
+
+    /**
+     * Checks whether given additional criteria <code>resultCriteria</code> contains some columns
+     * for ordering and eventually applies this ordering.
+     *
+     * <p>
+     *     This implementation use {@link ResultProvider} to avoid calling specific Dao method before
+     *     order by criteria are cleared.
+     *
+     * @param resultProvider provider that is used for lazy loading of result
+     * @param orderByCriteria additional criteria from which only the orderBy condition is applied!
+     * @return domainObjects ordered by critiera
+     */
+    protected <T extends DomainObject> Collection<T> applyOrderByCriteria(ResultProvider<T> resultProvider,
+                                                                   ResultCriteria orderByCriteria) {
+        if (! ResultCriteria.isOrderBySpecified(orderByCriteria)) {
+            return resultProvider.getResult();
+        }
+
+        // find all properties on domain object by which should order -- LinkedHashSet ensures that
+        // priority of order by properties will be saved
+        final Set<String> orderByProperties = new LinkedHashSet<String>();
+        for (Map.Entry<String, OrderType> orderByEntry : orderByCriteria.getOrderByColumns().entrySet()) {
+            final String fieldName = orderByEntry.getKey();
+            orderByProperties.add(fieldName);
+        }
+        // use list not TreeSet, otherwise objects that are considered to be equal will be lost!
+        final List<T> orderedDomainObjects = new ArrayList<T>();
+
+        // remove order by from criteria because Dao does not support it!
+        // @see GenericDao#applyOrderByCriteria method
+        resultProvider.setResultCriteria(new ResultCriteria.Builder()
+                .firstResult(orderByCriteria.getFirstResult())
+                .maxResults(orderByCriteria.getMaxResults())
+                .orderByColumns(Collections.EMPTY_LIST) // order by criteria cleared!
+                .build());
+        orderedDomainObjects.addAll(resultProvider.getResult());
+        // order collection by specified order by properties
+        Collections.sort(orderedDomainObjects, new GenericComparator(orderByProperties));
+        return orderedDomainObjects;
+    }
+//
+//
+//    private void checkPropertyExists(DomainObject domainObject, String fieldName) {
+//        Preconditions.checkState(
+//                cz.poptavka.sample.util.reflection.ReflectionUtils.hasGetter(domainObject.getClass(), fieldName),
+//                "Field with name [" + fieldName + "] does not exist on class [" + domainObject.getClass() + "]!");
+//    }
+
 
     //----------------------------------  OTHER METHODS ----------------------------------------------------------------
     /**

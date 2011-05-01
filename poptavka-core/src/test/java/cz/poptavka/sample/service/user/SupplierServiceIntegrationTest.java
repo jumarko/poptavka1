@@ -98,7 +98,7 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
     public void testGetSuppliersForAllCategories() {
         final Map<Category, Long> suppliersCountForAllCategories =
                 this.supplierService.getSuppliersCountForAllCategories();
-        Assert.assertEquals(16, suppliersCountForAllCategories.size());
+        Assert.assertEquals(17, suppliersCountForAllCategories.size());
 
         checkSuppliersForCategory("cat11", 2L, suppliersCountForAllCategories);
         checkSuppliersForCategory("cat3", 2L, suppliersCountForAllCategories);

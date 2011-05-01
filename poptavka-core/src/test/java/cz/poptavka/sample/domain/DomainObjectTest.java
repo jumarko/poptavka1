@@ -1,6 +1,7 @@
 package cz.poptavka.sample.domain;
 
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.util.reflection.ReflectionUtils;
 import junit.framework.TestCase;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert;
@@ -18,10 +19,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,9 +37,6 @@ public class DomainObjectTest {
      * Name of package where ALL domain classes are located.
      */
     private static final String DOMAIN_PACKAGE_NAME = "cz.poptavka.sample.domain";
-    private static final String GETTER_PREFIX = "get";
-    private static final String SETTER_PREFIX = "set";
-    private static final String GETTER_BOOLEAN_PREFIX = "is";
     private static final String FIELD_VALIDATIONS_SEPARATOR = ", ";
 
     private static final String POPTAVKA_CORE_PACKAGE = "cz.poptavka";
@@ -66,7 +62,7 @@ public class DomainObjectTest {
     @BeforeClass
     public static void setUp() throws Exception {
         final ClassPathScanningCandidateComponentProvider provider =
-            new ClassPathScanningCandidateComponentProvider(true);
+                new ClassPathScanningCandidateComponentProvider(true);
         // do not check abstract classes
         provider.addIncludeFilter(new AbstractClassTestingTypeFilter() {
             @Override
@@ -125,23 +121,10 @@ public class DomainObjectTest {
 
         for (Class<?> domainObjectClass : domainObjectsClasses) {
             HashMap<Field, String> classFieldsViolations = new HashMap<Field, String>(); // all violations for one class
-            final List<Method> allPublicMethods = Arrays.asList(domainObjectClass.getMethods());
-
             for (Field field : domainObjectClass.getDeclaredFields()) {
                 if (isPersistenceProperty(domainObjectClass, field)) {
-                    boolean hasGetter = false;
-                    boolean hasSetter = false;
-                    for (Method publicMethod : allPublicMethods) {
-                        if (publicMethod.getName().contains(getFieldNameFirstLetterUpperCase(field))) {
-                            if (publicMethod.getName().startsWith(GETTER_PREFIX)
-                                    || publicMethod.getName().startsWith(GETTER_BOOLEAN_PREFIX)) {
-                                hasGetter = true;
-                            } else if (publicMethod.getName().startsWith(SETTER_PREFIX)) {
-                                hasSetter = true;
-                            }
-                        }
-                    }
-
+                    final boolean hasGetter = ReflectionUtils.hasGetter(domainObjectClass, field.getName());
+                    final boolean hasSetter = ReflectionUtils.hasSetter(domainObjectClass, field.getName());
                     if (!hasGetter) {
                         if (!hasSetter) {
                             classFieldsViolations.put(field, "No Getter and Setter method");
@@ -294,11 +277,6 @@ public class DomainObjectTest {
         }
 
         return violationMessage.append("]").toString();
-    }
-
-    private static String getFieldNameFirstLetterUpperCase(Field field) {
-        return field.getName().substring(0, 1).toUpperCase() // first letter with Upper case
-                + field.getName().substring(1, field.getName().length()); // the rest of name without change
     }
 
 

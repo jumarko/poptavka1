@@ -5,6 +5,7 @@
 
 package cz.poptavka.sample.dao.demand;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
@@ -40,7 +41,9 @@ public interface DemandDao extends GenericDao<Demand> {
 
 
     /**
-     * Load all demands for given localities. This methods works recursively, that means that really ALL demands
+     * Load all demands for given localities while applying additional criteria if they are specified.
+     *
+     * <p>This methods works recursively, that means that really ALL demands
      * for given localities are returned - NOT ONLY demands directly assigned to those localities!
      * <p>
      * E.g.
@@ -59,10 +62,14 @@ public interface DemandDao extends GenericDao<Demand> {
      * the hierarchy of localities. Then <code>getDemands(loc1)</code> must return all demands related to the following
      * localities: loc1, loc11, loc12 and loc121.
      *
-     * @param localities
+     * @param localities collection of all localities for which we want return (posisibly all) demands that are related
+     * to those localities
+     * @param resultCriteria additional criteria that will be applied to the found demands, can be null
      * @return all demands that (directly OR indirectly) belongs to the some from given <code>localities</code>.
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns,
+     *     see {@link ResultCriteria#orderByColumns}
      */
-    Set<Demand> getDemands(Locality... localities);
+    Set<Demand> getDemands(Locality[] localities, ResultCriteria resultCriteria);
 
 
     /**
@@ -77,7 +84,8 @@ public interface DemandDao extends GenericDao<Demand> {
      * Get count of ALL demands associated to the some locality from given <code>localities</code>
      *
      * <p>
-     * See {@link #getDemands(cz.poptavka.sample.domain.address.Locality...)} for further explanation.
+     * See {@link #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)}
+     * for further explanation.
      *
      * @param localities
      * @return
@@ -109,15 +117,23 @@ public interface DemandDao extends GenericDao<Demand> {
     List<Map<String, Object>> getDemandsCountForAllCategories();
 
     /**
-     * Load all demands for given categories. This methods works recursively, that means that really ALL demands
+     * Load all demands for given categories while applying additional criteria <code>resultCriteria</code>
+     * if they are specified.
+     *
+     * <p>
+     *     This methods works recursively, that means that really ALL demands
      * for given categories are returned - NOT ONLY demands directly assigned to those categories!
      *
+     *
+     * @param resultCriteria
      * @param categories
      * @return all demands that (directly OR indirectly) belongs to the some from given <code>localities</code>.
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      *
-     * @see #getDemands(cz.poptavka.sample.domain.address.Locality...)
+     * @see #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)
+     * @see ResultCriteria#orderByColumns
      */
-    Set<Demand> getDemands(Category... categories);
+    Set<Demand> getDemands(Category[] categories, ResultCriteria resultCriteria);
 
     /**
      * Get count of ALL demands associated to the some category from given <code>categories</code>.
@@ -125,7 +141,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @param categories
      * @return
      *
-     * @see #getDemands(cz.poptavka.sample.domain.address.Locality...)
+     * @see #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)
      */
     long getDemandsCount(Category... categories);
 

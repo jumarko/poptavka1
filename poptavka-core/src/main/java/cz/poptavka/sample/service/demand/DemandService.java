@@ -5,6 +5,7 @@
 
 package cz.poptavka.sample.service.demand;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
@@ -44,12 +45,27 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
     /**
      * Load all demands associated to the given locality (-ies).
      *
-     * @see cz.poptavka.sample.dao.demand.DemandDao#getDemands(cz.poptavka.sample.domain.address.Locality...)
+     * @see cz.poptavka.sample.dao.demand.DemandDao#getDemands(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.common.ResultCriteria)
      *
      * @param localities
      * @return
      */
     Set<Demand> getDemands(Locality... localities);
+
+    /**
+     * The same as {@link #getDemands(cz.poptavka.sample.domain.address.Locality...)},
+     * but apply additional criteria on demands.
+     * <p>
+     *     ResultCriteria are applied
+     *
+     * @see ResultCriteria
+     *
+     * @param resultCriteria
+     * @param localities
+     * @return
+     */
+    Set<Demand> getDemands(ResultCriteria resultCriteria, Locality... localities);
 
 
     /**
@@ -94,6 +110,18 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(Category... categories);
+
+    /**
+     * The same as {@link #getDemands(cz.poptavka.sample.domain.demand.Category...)},
+     * but apply additional criteria on demands.
+     *
+     * @see ResultCriteria
+     *
+     * @param resultCriteria additional criteria, can be null.
+     * @param  categories
+     * @return
+     */
+    Set<Demand> getDemands(ResultCriteria resultCriteria, Category... categories);
 
 
     /**

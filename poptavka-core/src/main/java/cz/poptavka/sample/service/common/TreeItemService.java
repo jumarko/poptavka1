@@ -13,7 +13,8 @@ import java.util.Set;
 public interface TreeItemService {
 
     /**
-     * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildren(cz.poptavka.sample.domain.common.TreeItem, Class)
+     * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildren(cz.poptavka.sample.domain.common.TreeItem,
+     *      Class, cz.poptavka.sample.common.ResultCriteria)
      */
     <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass);
 
@@ -28,7 +29,7 @@ public interface TreeItemService {
      * @return
      */
     <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
-                                                       ResultCriteria resultCriteria);
+                                                ResultCriteria resultCriteria);
 
 
     /**
@@ -37,6 +38,8 @@ public interface TreeItemService {
     <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems, Class<T> treeItemClass);
 
 
-    /** @see cz.poptavka.sample.dao.common.TreeItemDao#getAllLeavesIds() */
+    /**
+     * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllLeavesIds(Class)
+     */
     List<Long> getAllLeavesIds(Class<? extends TreeItem> treeItemClazz);
 }

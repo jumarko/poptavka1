@@ -12,7 +12,9 @@ import java.util.Map;
  */
 public final class ResultCriteria {
 
-    /** Handy constant - maiinly for testing purposes. */
+    /**
+     * Handy constant - maiinly for testing purposes.
+     */
     public static final ResultCriteria EMPTY_CRITERIA = new ResultCriteria.Builder().build();
 
     /**
@@ -20,16 +22,19 @@ public final class ResultCriteria {
      * Collection iterator.
      * Map contains pairs (propertyName, OrderType). Ordering direction is specified by OrderType. Default OrderType
      * is ascending.
-     * <p>
-     *     It is a full responsibility of programmer (client) that each column specify in this collection
-     *     represents some property on target entity.
-     * <p>
-     *     @see GenericServiceIntegrationTest for examples on using this criteria class.
+     * <p/>
+     * It is a full responsibility of programmer (client) that each column specify in this collection
+     * represents some property on target entity.
+     * <p/>
+     *
+     * @see GenericServiceIntegrationTest for examples on using this criteria class.
      */
     private Map<String, OrderType> orderByColumns;
 
 
-    /** Maximum number of results that should be return. */
+    /**
+     * Maximum number of results that should be return.
+     */
     private Integer maxResults;
 
     /**
@@ -37,6 +42,17 @@ public final class ResultCriteria {
      * Numbered from 0!
      */
     private Integer firstResult;
+
+
+    /**
+     * Checks whether criteria given as parameter have set up some order by policy.
+     *
+     * @return true if criteria has set at least one column which should be used for ordering, false otherwise.
+     */
+    public static boolean isOrderBySpecified(ResultCriteria resultCriteria) {
+        return resultCriteria != null && resultCriteria.getOrderByColumns() != null
+                && (!resultCriteria.getOrderByColumns().isEmpty());
+    }
 
 
     public static class Builder {
@@ -73,11 +89,10 @@ public final class ResultCriteria {
             return this;
         }
 
-        public  ResultCriteria build() {
+        public ResultCriteria build() {
             return new ResultCriteria(this);
         }
     }
-
 
 
     private ResultCriteria(Builder builder) {

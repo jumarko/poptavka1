@@ -5,6 +5,7 @@
 
 package cz.poptavka.sample.dao.demand;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.address.Locality;
@@ -13,6 +14,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
 
+import javax.persistence.Query;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,23 +52,19 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     }
 
 
-    /**
-     *  {@inheritDoc}
-     * <p>
-     * If some demand occurs in more than one locality it is still included ONLY ONCE in result.
-     */
+    /** {@inheritDoc} */
     @Override
-    public Set<Demand> getDemands(Locality... localities) {
+    public Set<Demand> getDemands(Locality[] localities, ResultCriteria resultCriteria) {
         if (localities == null || localities.length == 0 || CollectionsHelper.containsOnlyNulls(localities)) {
             return Collections.emptySet();
         }
 
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Locality.class));
-        return toSet(runNamedQuery("getDemandsForLocalities", params));
-    }
+        Query query = getEntityManager().createNamedQuery("getDemandsForLocalities");
+        query.setParameter("localitiesIds",
+                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class));
 
+        return toSet(applyResultCriteria(query, resultCriteria).getResultList());
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -105,15 +103,16 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
 
     /** {@inheritDoc} */
     @Override
-    public Set<Demand> getDemands(Category... categories) {
+    public Set<Demand> getDemands(Category[] categories, ResultCriteria resultCriteria) {
         if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
             return Collections.emptySet();
         }
 
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
-                Category.class));
-        return toSet(runNamedQuery("getDemandsForCategories", params));
+        Query query = getEntityManager().createNamedQuery("getDemandsForCategories");
+        query.setParameter("categoriesIds",
+                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class));
+
+        return toSet(applyResultCriteria(query, resultCriteria).getResultList());
     }
 
      /** {@inheritDoc} */

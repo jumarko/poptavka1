@@ -1,5 +1,6 @@
 package cz.poptavka.sample.dao.user;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
@@ -16,14 +17,18 @@ import java.util.Set;
 public interface SupplierDao extends GenericDao<Supplier> {
 
     /**
-     * Load all suppliers associated to the given locality (-ies).
+     * Load all suppliers associated to the given locality (-ies) while applying additional criteria
+     * <code>resultCriteria</code> if they are specified.
      *
-     * @see cz.poptavka.sample.dao.demand.DemandDao#getDemands(cz.poptavka.sample.domain.address.Locality...)
+     * @see cz.poptavka.sample.dao.demand.DemandDao#getDemands(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.common.ResultCriteria)
      *
      * @param localities
-     * @return
+     * @param resultCriteria additional restirction that will be set to result, can be null
+     * @return collection of suppliers that are related to the given localities and adher to <code>resultCriteria</code>
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
-    Set<Supplier> getSuppliers(Locality... localities);
+    Set<Supplier> getSuppliers(Locality[] localities, ResultCriteria resultCriteria);
 
      /**
      * Optmized method for loading suppliers count for all localities in one query!
@@ -36,9 +41,11 @@ public interface SupplierDao extends GenericDao<Supplier> {
     /**
      * Evaluate the number of suppliers associated to the given <code>locality</code>(-ies).
      * <p>
-     * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality...)} if you want
+     * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.common.ResultCriteria)} if you want
      * to retrieve only number of suppliers - this method is far more lightweight than usage of
-     * {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality...)}.size().
+     * {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)}
+     *      .size().
      *
      * @param localities
      * @return number of suppliers related to the <code>locality</code>(-ies).
@@ -56,12 +63,15 @@ public interface SupplierDao extends GenericDao<Supplier> {
 
 
     /**
-     * Load all suppliers associated to the given category (-ies).
+     * Load all suppliers associated to the given category (-ies) while applying additional criteria
+     * <code>resultCriteria</code> if they are specified.
      *
      * @param categories
-     * @return
+     * @param resultCriteria
+     * @return collection of suppliers that are related to the given localities and adher to <code>resultCriteria</code>
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
-    Set<Supplier> getSuppliers(Category... categories);
+    Set<Supplier> getSuppliers(Category[] categories, ResultCriteria resultCriteria);
 
 
     /**
@@ -75,9 +85,12 @@ public interface SupplierDao extends GenericDao<Supplier> {
     /**
      * Evaluate the number of suppliers associated to the given <code>category</code>(-ies).
      * <p>
-     * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category...)} if you want
+     * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category[],
+     * cz.poptavka.sample.common.ResultCriteria)} if you want
      * to retrieve only number of suppliers - this method is far more lightweight than usage of
-     * {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category...)}.size().
+     * {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category[], cz.poptavka.sample.common.ResultCriteria)}
+     *      .size().
+     * </p>
      *
      * @param categories
      * @return number of suppliers related to the <code>category</code>(-ies).

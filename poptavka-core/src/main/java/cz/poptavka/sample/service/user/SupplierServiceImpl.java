@@ -1,6 +1,7 @@
 package cz.poptavka.sample.service.user;
 
 import com.googlecode.ehcache.annotations.Cacheable;
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.user.SupplierDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
@@ -26,7 +27,14 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     /** {@inheritDoc} */
     @Override
     public Set<Supplier> getSuppliers(Locality... localities) {
-        return this.supplierDao.getSuppliers(localities);
+        return getSuppliers(ResultCriteria.EMPTY_CRITERIA, localities);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Locality... localities) {
+        return this.supplierDao.getSuppliers(localities, resultCriteria);
     }
 
     /** {@inheritDoc} */
@@ -66,9 +74,13 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     /** {@inheritDoc} */
     @Override
     public Set<Supplier> getSuppliers(Category... categories) {
-        return this.supplierDao.getSuppliers(categories);
+        return getSuppliers(ResultCriteria.EMPTY_CRITERIA, categories);
     }
 
+    @Override
+    public Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Category... categories) {
+        return this.supplierDao.getSuppliers(categories, resultCriteria);
+    }
 
     /** {@inheritDoc} */
     public Map<Category, Long> getSuppliersCountForAllCategories() {

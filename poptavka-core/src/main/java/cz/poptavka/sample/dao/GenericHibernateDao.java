@@ -181,8 +181,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      *
      * @param entityCriteria criteria which will be augmented to create final criteria - both entity and result
      * @param resultCriteria result criteria will be applied as additional criteria on entity criteria
-     *                     can be null, in that case, no additonal criteria are applied
-     *
+     *                       can be null, in that case, no additonal criteria are applied
      * @return criteria which are the result of both input criterias
      */
     protected Criteria buildResultCriteria(Criteria entityCriteria, ResultCriteria resultCriteria) {
@@ -215,6 +214,37 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
             }
         }
         return entityCriteria;
+    }
+
+
+    /**
+     * Set additional restrictions as specified by <code>resultCriteria</code> to the given <code>query</code>.
+     * <p>
+     * Currently only {@link ResultCriteria#firstResult} and {@link ResultCriteria#maxResults| are supported
+     * restrictions that can be applied!<br />
+     * Ordering ({@link ResultCriteria#orderByColumns}) cannot be applied!
+     * </p>
+     *
+     * @param query          a query to which additional criteria should be applief
+     * @param resultCriteria additional criteria to be applied to query
+     * @return the same query which is further restricted by additional criteria <code>resultCriteria</code>
+     * @throws IllegalStateException if given <code>resultCriteria</code> contains specification of ordering
+     */
+    public Query applyResultCriteria(Query query, ResultCriteria resultCriteria) {
+        Preconditions.checkState(!ResultCriteria.isOrderBySpecified(resultCriteria),
+                "Query with ResultCriteria DOES NOT SUPPORT ORDERING - only firstResult and maxResults are supported"
+                        + " properties for ResultCriteria!");
+
+        if (resultCriteria != null) {
+            if (resultCriteria.getFirstResult() != null) {
+                query.setFirstResult(resultCriteria.getFirstResult());
+            }
+            if (resultCriteria.getMaxResults() != null) {
+                query.setMaxResults(resultCriteria.getMaxResults());
+            }
+        }
+
+        return query;
     }
 
     @SuppressWarnings("unchecked")

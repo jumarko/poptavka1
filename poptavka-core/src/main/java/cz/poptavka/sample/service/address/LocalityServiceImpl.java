@@ -33,7 +33,7 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     @Override
 //    @Cacheable(cacheName = "cache5h")
     public List<Locality> getLocalities(LocalityType localityType) {
-        return getDao().getLocalities(localityType, null);
+        return getDao().getLocalities(localityType, ResultCriteria.EMPTY_CRITERIA);
     }
 
     @Override

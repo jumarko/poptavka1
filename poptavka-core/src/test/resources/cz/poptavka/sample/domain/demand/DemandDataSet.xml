@@ -19,16 +19,16 @@
 
 
     <!--########################################## demands for localities ###########################################-->
-    <DEMAND_LOCALITY ID="1" DEMAND_ID="1" LOCALITY_ID="1" />
-    <DEMAND_LOCALITY ID="2" DEMAND_ID="2" LOCALITY_ID="2" />
-    <DEMAND_LOCALITY ID="3" DEMAND_ID="3" LOCALITY_ID="2" />
-    <DEMAND_LOCALITY ID="4" DEMAND_ID="4" LOCALITY_ID="3" />
-    <DEMAND_LOCALITY ID="5" DEMAND_ID="5" LOCALITY_ID="3" />
-    <DEMAND_LOCALITY ID="6" DEMAND_ID="6" LOCALITY_ID="3" />
-    <DEMAND_LOCALITY ID="7" DEMAND_ID="7" LOCALITY_ID="3" />
-    <DEMAND_LOCALITY ID="8" DEMAND_ID="8" LOCALITY_ID="6" />
-    <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="8" />
-    <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />
+    <DEMAND_LOCALITY ID="1" DEMAND_ID="1" LOCALITY_ID="1" />   <!-- "locality1"-->
+    <DEMAND_LOCALITY ID="2" DEMAND_ID="2" LOCALITY_ID="2" />   <!-- "locality2"-->
+    <DEMAND_LOCALITY ID="3" DEMAND_ID="3" LOCALITY_ID="2" />   <!-- "locality2"-->
+    <DEMAND_LOCALITY ID="4" DEMAND_ID="4" LOCALITY_ID="3" />   <!-- "locality11"-->
+    <DEMAND_LOCALITY ID="5" DEMAND_ID="5" LOCALITY_ID="3" />   <!-- "locality11"-->
+    <DEMAND_LOCALITY ID="6" DEMAND_ID="6" LOCALITY_ID="3" />   <!-- "locality11"-->
+    <DEMAND_LOCALITY ID="7" DEMAND_ID="7" LOCALITY_ID="3" />   <!-- "locality11"-->
+    <DEMAND_LOCALITY ID="8" DEMAND_ID="8" LOCALITY_ID="6" />   <!-- "locality121"-->
+    <DEMAND_LOCALITY ID="9" DEMAND_ID="9" LOCALITY_ID="8" />   <!-- "locality21"-->
+    <DEMAND_LOCALITY ID="10" DEMAND_ID="10" LOCALITY_ID="2" />  <!-- "locality2"-->
 
     <!--########################################## demands for categories ###########################################-->
     <DEMAND_CATEGORY ID="1" DEMAND_ID="1" CATEGORY_ID="1" /> <!-- "Root category" -->

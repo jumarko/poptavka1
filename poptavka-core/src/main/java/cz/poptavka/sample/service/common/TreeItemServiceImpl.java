@@ -24,7 +24,7 @@ public class TreeItemServiceImpl implements TreeItemService {
     /** {@inheritDoc} */
     @Override
     public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass) {
-        return getAllChildren(parentNode, treeItemClass, null);
+        return getAllChildren(parentNode, treeItemClass, ResultCriteria.EMPTY_CRITERIA);
     }
 
     /** {@inheritDoc} */

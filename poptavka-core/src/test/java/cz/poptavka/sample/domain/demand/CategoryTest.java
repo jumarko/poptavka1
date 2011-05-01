@@ -41,7 +41,7 @@ public class CategoryTest extends DBUnitBaseTest {
 
     @Test
     public void testGetAllChildren() {
-        checkGetAllCategoryChildren(null, 16);
+        checkGetAllCategoryChildren(null, 17);
         checkGetAllCategoryChildren("cat11", 5);
         checkGetAllCategoryChildren("cat113", 2);
         checkGetAllCategoryChildren("cat2", 3);
@@ -77,7 +77,7 @@ public class CategoryTest extends DBUnitBaseTest {
                 .firstResult(2)
                 .orderByColumns(Arrays.asList("name"))
                 .build();
-        checkGetAllCategoryChildrenWithAdditionalCriteria(null, criteria, 14);
+        checkGetAllCategoryChildrenWithAdditionalCriteria(null, criteria, 15);
         checkGetAllCategoryChildrenWithAdditionalCriteria("cat11", criteria, 3);
         checkGetAllCategoryChildrenWithAdditionalCriteria("cat113", criteria, 0);
         final List<Category> cat2 = checkGetAllCategoryChildrenWithAdditionalCriteria("cat2", criteria, 1);
@@ -129,7 +129,7 @@ public class CategoryTest extends DBUnitBaseTest {
         }
         final List<Category> allCategories = this.treeItemService.getAllChildren(category, Category.class);
         Assert.assertNotNull(allCategories);
-        Assert.assertEquals(subCategoriesCount, allCategories.size()); //15 real categories plus 1 virtual root category
+        Assert.assertEquals(subCategoriesCount, allCategories.size());
     }
 
 
@@ -149,7 +149,8 @@ public class CategoryTest extends DBUnitBaseTest {
         final List<Category> allCategories = this.treeItemService.getAllChildren(
                 category, Category.class, resultCriteria);
         Assert.assertNotNull(allCategories);
-        Assert.assertEquals(subCategoriesCount, allCategories.size()); //15 real categories plus 1 virtual root category
+        //15 real categories plus 2 virtual root categories
+        Assert.assertEquals(subCategoriesCount, allCategories.size());
         return allCategories;
     }
 

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.dao.user;
 
+import cz.poptavka.sample.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.address.Locality;
@@ -57,7 +58,7 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
 
 
     @Override
-    public Set<Supplier> getSuppliers(Category... categories) {
+    public Set<Supplier> getSuppliers(Category[] categories, ResultCriteria resultCriteria) {
         if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
             return Collections.emptySet();
         }
@@ -104,7 +105,7 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
 
 
     @Override
-    public Set<Supplier> getSuppliers(Locality... localities) {
+    public Set<Supplier> getSuppliers(Locality[] localities, ResultCriteria resultCriteria) {
         if (localities == null || localities.length == 0 || CollectionsHelper.containsOnlyNulls(localities)) {
             return Collections.emptySet();
         }
@@ -114,6 +115,9 @@ public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements Su
                 Locality.class));
         return toSet(runNamedQuery("getSuppliersForLocalities", params));
     }
+
+
+
 
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------

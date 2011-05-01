@@ -35,6 +35,7 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
     }
 
 
+    @Override
     /** {@inheritDoc} */
     public <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<? extends TreeItem> treeItems,
                                                                          Class<T> treeItemClass) {
@@ -53,7 +54,8 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
         final Criteria allTreeItemsCriteria = getHibernateSession().createCriteria(treeItemClass);
         allTreeItemsCriteria.add(fromSomeTreeItemDisjunction);
 
-        // for all tree items we want to get only their IDs for using them in native SQL query or somewhere else
+        // For all tree items we want to get only their IDs for using them in native SQL query or somewhere else.
+        // Apply also additional criteria if required.
         return getTreeItemsIds(allTreeItemsCriteria.list());
     }
 
