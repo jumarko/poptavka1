@@ -3,7 +3,6 @@ package cz.poptavka.sample.client.common.creation.widget;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -37,8 +36,6 @@ public class FormDemandAdvPresenter extends
     public void onValidateDemandAdvForm() {
         if (view.isValid()) {
             eventBus.formNextStep();
-        } else {
-            Window.alert("Fill the form first");
         }
     }
 

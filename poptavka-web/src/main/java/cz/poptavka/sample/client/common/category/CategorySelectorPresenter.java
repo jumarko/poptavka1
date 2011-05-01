@@ -10,6 +10,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -34,8 +35,6 @@ public class CategorySelectorPresenter extends
 
         ListBox getSelectedList();
 
-        void toggleLoader();
-
         void addToSelectedList(String text, String value);
 
         void removeFromSelectedList();
@@ -44,9 +43,9 @@ public class CategorySelectorPresenter extends
 
         ListBox createListAtIndex(int index);
 
-        boolean isSubcategoryListEmpty();
-
         Widget getWidgetView();
+
+        ScrollPanel getScrollPanel();
 
         void clearChildrenLists(int i);
     }
@@ -94,8 +93,15 @@ public class CategorySelectorPresenter extends
         }
         LOGGER.info("List filled");
 
-        //display
-        view.getListHolder().setWidget(0, view.getListIndex(), box);
+        //check if possible to display, if needed resize table
+        int positionToInsert = view.getListIndex();
+        int columCount = view.getListHolder().getColumnCount();
+        if (columCount == positionToInsert) {
+            view.getListHolder().resizeColumns(columCount + 1);
+
+        }
+        view.getListHolder().setWidget(0, positionToInsert, box);
+        view.getScrollPanel().scrollToRight();
     }
 
     private void addCategoryChangeHandler(final ListBox box, final int index) {

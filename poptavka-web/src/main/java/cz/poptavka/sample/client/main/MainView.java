@@ -33,6 +33,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
         initWidget(BINDER.createAndBindUi(this));
         //styling layout - styled in UiBinder
         StyleResource.INSTANCE.cssBase().ensureInjected();
+        layoutMaster.getElement().setId("page");
         Document.get().getElementById("footerContainer")
             .addClassName(StyleResource.INSTANCE.cssBase().footerContainer());
     }

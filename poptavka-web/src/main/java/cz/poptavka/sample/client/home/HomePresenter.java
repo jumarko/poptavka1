@@ -51,7 +51,6 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public void onAtHome() {
         LOGGER.info(" on init view ...");
-        onDisplayMenu();
         eventBus.initCategoryDisplay(AnchorEnum.SECOND);
     }
 

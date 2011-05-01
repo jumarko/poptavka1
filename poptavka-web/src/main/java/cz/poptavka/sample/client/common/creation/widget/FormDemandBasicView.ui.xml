@@ -4,7 +4,7 @@
     xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation.widget"
     xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
-       <ui:style>
+    <ui:style>
         .clickable {
             cursor: pointer;
         }

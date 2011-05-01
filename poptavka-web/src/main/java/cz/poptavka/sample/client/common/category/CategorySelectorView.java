@@ -4,43 +4,44 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import cz.poptavka.sample.client.resources.StyleResource;
 
 //@Singleton
 public class CategorySelectorView extends Composite implements CategorySelectorPresenter.CategorySelectorInterface {
 
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
-
-    interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {
-    }
+    interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {    }
 
     //default list visibleItemCount
     private static final int TEN = 10;
 
-    private HashSet<String> selectedListStrings = new HashSet<String>();
-
+    @UiField ScrollPanel masterPanel;
     @UiField Grid categoryListHolder;
     private ArrayList<ListBox> subcategories = new ArrayList<ListBox>();
 
-//    @UiField HTML loader;
     @UiField ListBox selectedList;
+    private HashSet<String> selectedListStrings = new HashSet<String>();
 
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.cssBase().ensureInjected();
+
+        //set width according to page width
+        masterPanel.setWidth((Document.get().getElementById("page").getClientWidth() + "px"));
     }
 
     public Widget getWidgetView() {
         return this;
-    }
-
-    public void toggleLoader() {
-//        loader.setVisible(!loader.isVisible());
     }
 
     @Override
@@ -64,13 +65,10 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
         selectedList.removeItem(index);
     }
 
+    /** Returns actual free depth level. **/
     @Override
     public int getListIndex() {
         return ((subcategories.size() - 1) >= 0 ? (subcategories.size() - 1) : 0);
-    }
-
-    public boolean isSubcategoryListEmpty() {
-        return subcategories.isEmpty();
     }
 
     @Override
@@ -83,7 +81,7 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
         ListBox list = new ListBox();
         list.setVisibleItemCount(TEN);
         list.setWidth("200");
-        if (isSubcategoryListEmpty()) {
+        if (subcategories.isEmpty()) {
             subcategories.add(list);
         } else {
             subcategories.add(index, list);
@@ -94,10 +92,13 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
     @Override
     public void clearChildrenLists(int index) {
         for (int i = getListIndex(); i > index; i--) {
-//            categoryListHolder.removeCell(0, i);
             categoryListHolder.clearCell(0, i);
             subcategories.remove(i);
         }
+    }
+
+    public ScrollPanel getScrollPanel() {
+        return masterPanel;
     }
 
 }

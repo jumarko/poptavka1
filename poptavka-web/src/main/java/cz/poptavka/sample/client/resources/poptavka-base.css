@@ -88,6 +88,10 @@ body {
     background-color: white;
 }
 
+.error-field {
+    background-color: #ffcece;
+}
+
 .common-list-loader {
     width: 200px;
     height: 160px;

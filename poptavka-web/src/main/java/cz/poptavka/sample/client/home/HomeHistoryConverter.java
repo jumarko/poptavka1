@@ -13,15 +13,16 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 
     @Override
     public void convertFromToken(String historyName, String param, HomeEventBus eventBus) {
+        eventBus.setHistoryStoredForNextOne(false);
+        eventBus.displayMenu();
+
         if (historyName.equals("atHome")) {
             eventBus.atHome();
         }
         if (historyName.equals("atCreateDemand")) {
-            eventBus.displayMenu();
             eventBus.atCreateDemand(true);
         }
         if (historyName.equals("atDemands")) {
-            eventBus.displayMenu();
             eventBus.atDemands();
         }
     }

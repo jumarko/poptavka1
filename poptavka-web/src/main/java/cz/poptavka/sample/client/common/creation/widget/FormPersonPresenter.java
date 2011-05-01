@@ -35,9 +35,6 @@ public class FormPersonPresenter extends LazyPresenter<FormPersonPresenter.FormP
         if (view.isValid()) {
             ClientDetail client = view.getNewClient();
             eventBus.registerNewClient(client);
-        } else {
-            //error
         }
-        LOGGER.fine("result of validation: " + view.isValid());
     }
 }

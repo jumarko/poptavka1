@@ -55,5 +55,8 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("elem-visible")
     String elemHiddenOff();
 
+    @ClassName("error-field")
+    String errorField();
+
 
 }

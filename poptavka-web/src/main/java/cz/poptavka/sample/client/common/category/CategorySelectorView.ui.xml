@@ -5,31 +5,15 @@
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
     <g:HTMLPanel>
-        <g:HorizontalPanel>
+        <g:ScrollPanel ui:field='masterPanel'>
             <g:Grid ui:field='categoryListHolder'>
                 <g:row>
                     <g:customCell>
-                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
+                        <g:ListBox visibleItemCount='10' width="200"/>
                     </g:customCell>
-                    <g:customCell>
-                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
-                    </g:customCell>
-                    <g:customCell>
-                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
-                    </g:customCell>
-                    <g:customCell>
-                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
-                    </g:customCell>
-                    <g:customCell>
-                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
-                    </g:customCell>
-                    <g:customCell>
-                        <g:HTML styleName='{res.cssBase.commonListLoader]'></g:HTML>
-                    </g:customCell>
-
                 </g:row>
             </g:Grid>
-        </g:HorizontalPanel>
+        </g:ScrollPanel>
         <strong><ui:msg key="selectedCats">Selected</ui:msg>:</strong><br />
         <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>
     </g:HTMLPanel>

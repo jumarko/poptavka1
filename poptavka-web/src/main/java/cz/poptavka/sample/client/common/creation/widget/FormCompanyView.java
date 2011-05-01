@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 
@@ -46,15 +47,16 @@ public class FormCompanyView extends Composite implements FormCompanyPresenter.F
         widgets.add(surnameBox);
         widgets.add(phoneBox);
         widgets.add(mailBox);
+        widgets.add(passBox);
     }
 
     public boolean isValid() {
         int errorCount = 0;
         for (TextBox item : widgets) {
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.cssBase().errorField());
             if (item.getText().length() == 0) {
-                //TODO mark error grafically
-
                 errorCount++;
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
             }
         }
         return errorCount == 0;

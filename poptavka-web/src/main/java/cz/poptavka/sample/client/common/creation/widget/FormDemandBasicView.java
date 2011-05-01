@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
+import cz.poptavka.sample.client.resources.StyleResource;
+
 public class FormDemandBasicView extends Composite implements FormDemandBasicPresenter.FormDemandBasicInterface {
 
     private static final Logger LOGGER = Logger.getLogger(FormDemandBasicView.class
@@ -60,22 +62,21 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
     public boolean isValid() {
         int errorCount = 0;
         for (HasValue item : widgets) {
-            LOGGER.fine("checking... " + item.getClass().getName());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.cssBase().errorField());
             if (item.getValue() == null) {
-                // TODO mark error grafically
-                LOGGER.fine("REAL ERROR");
                 errorCount++;
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
             } else {
-//                if (item.getValue().toString().equals("")) {
-//                    // TODO mark error grafically
-//                    LOGGER.fine("REAL TEXT ERROR");
-//                    errorCount++;
-//                }
+                if (item.getValue().toString().equals("")) {
+                    errorCount++;
+                    ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+                }
             }
         }
-//        return errorCount == 0;
         //devel only
-        return true;
+//        return true;
+//        production
+        return errorCount == 0;
     }
 
     @Override

@@ -27,7 +27,7 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
 
         String getPassword();
 
-        void displayError();
+        boolean isValid();
     }
 
     @Override
@@ -35,7 +35,9 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
         view.getLoginBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                processLogin();
+                if (view.isValid()) {
+                    processLogin();
+                }
             }
         });
         view.getRegisterBtn().addClickHandler(new ClickHandler() {
@@ -55,9 +57,6 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
     private void processLogin() {
         String login = view.getLogin();
         String pass = view.getPassword();
-        if ((login.length() == 0) || (pass.length() == 0)) {
-            view.displayError();
-        }
         // TODO hash passwd
 
         //verifying existing user

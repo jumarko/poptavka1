@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.resources.StyleResource;
+
 public class FormDemandAdvView extends Composite implements FormDemandAdvPresenter.FormDemandAdvViewInterface {
 
     private static FormDemandAdvViewUiBinder uiBinder = GWT.create(FormDemandAdvViewUiBinder.class);
@@ -50,16 +52,15 @@ public class FormDemandAdvView extends Composite implements FormDemandAdvPresent
     public boolean isValid() {
         int errorCount = 0;
         for (HasValue item : widgets) {
-            LOGGER.fine("checking... " + item.getClass().getName());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.cssBase().errorField());
             if (item.getValue() == null) {
-                // TODO mark error grafically
-                LOGGER.fine("ERROR");
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
                 errorCount++;
             }
         }
-//        return errorCount == 0;
         //devel only
-        return true;
+//        return true;
+        return errorCount == 0;
     }
 
     @Override

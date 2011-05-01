@@ -90,7 +90,6 @@ public class DemandCreationPresenter
                 eventBus.validateDemandBasicForm();
             }
         });
-
         view.twoNextButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
