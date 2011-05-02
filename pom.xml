@@ -105,6 +105,14 @@
             <layout>default</layout>
             <url>http://mvnrepository.com/</url>
         </repository>
+
+        <!-- primarily due the aspectj unavailability -->
+        <repository>
+            <id>maven.springframework.org</id>
+            <name>SpringSource snapshots</name>
+            <url>http://maven.springframework.org/snapshot</url>
+        </repository>
+
         <repository>
             <id>GWTPlatform</id>
             <name>GWT Platform repository</name>
