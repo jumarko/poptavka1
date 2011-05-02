@@ -53,8 +53,12 @@ public class BusinessUser extends User {
     @Cascade(value = CascadeType.ALL)
     private List<Address> addresses;
 
-    /** Flag if user has already been verified. If true then it is a "permanent" user, otherwise it is temporary user.*/
-    private boolean verified;
+    /**
+     *  Verfification state of client. No default value!
+     * @see {@link VERIFICATION} enum
+     */
+    @Enumerated(value = EnumType.STRING)
+    private VERIFICATION verification;
 
     @NotAudited
     @OneToMany(mappedBy = "user")
@@ -100,12 +104,12 @@ public class BusinessUser extends User {
         this.addresses = addresses;
     }
 
-    public boolean isVerified() {
-        return verified;
+    public VERIFICATION getVerification() {
+        return verification;
     }
 
-    public void setVerified(boolean verified) {
-        this.verified = verified;
+    public void setVerification(VERIFICATION verification) {
+        this.verification = verification;
     }
 
     public List<UserService> getUserServices() {
@@ -127,13 +131,25 @@ public class BusinessUser extends User {
     //-------------------------- End of GETTERS AND SETTERS ------------------------------------------------------------
 
 
+    public static enum VERIFICATION {
+        /** Client has already been verified. */
+        VERIFIED,
+
+        /** Client has not been verified yet. */
+        UNVERIFIED,
+
+        /** Client is coming from external system and its verification does not make sense. */
+        EXTERNAL
+    }
+
+
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("BusinessUser");
         sb.append("{id=").append(getId());
         sb.append(", company=").append(ToStringUtils.printId(company));
         sb.append(", person=").append(ToStringUtils.printId(person));
-        sb.append(", verified=").append(verified);
+        sb.append(", verified=").append(verification);
         sb.append('}');
         return sb.toString();
     }

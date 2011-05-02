@@ -4,28 +4,28 @@
     <USER ID="11" EMAIL="user@email.com" LOGIN="myUser1" PASSWORD="ahoj" />
     <COMPANY ID="11" NAME="My First Company" />
     <PERSON ID="11" FIRSTNAME="Elvíra" LASTNAME="Vytretá" />
-    <BUSINESSUSER  ID="11" VERIFIED="0" PERSON_ID="11" COMPANY_ID="11" />
+    <BUSINESSUSER  ID="11" VERIFICATION="UNVERIFIED" PERSON_ID="11" COMPANY_ID="11" />
     <CLIENT ID="11" />
     <SUPPLIER ID="11" />
 
     <USER ID="12" EMAIL="user@email.com" LOGIN="myUse2r" PASSWORD="ahoj" />
     <COMPANY ID="12" NAME="My Second Company" />
     <PERSON ID="12" FIRSTNAME="Velislav" LASTNAME="Kroko" />
-    <BUSINESSUSER  ID="12" VERIFIED="0" PERSON_ID="12"/>
+    <BUSINESSUSER  ID="12" VERIFICATION="UNVERIFIED" PERSON_ID="12"/>
     <CLIENT ID="12" />
     <SUPPLIER ID="12" />
 
     <USER ID="13" EMAIL="user@email.com" LOGIN="myUser3" PASSWORD="ahoj" />
     <COMPANY ID="13" NAME="My Third Company" />
     <PERSON ID="13" FIRSTNAME="Lisohlávka" LASTNAME="Čínska"/>
-    <BUSINESSUSER ID="13" VERIFIED="0" PERSON_ID="13"/>
+    <BUSINESSUSER ID="13" VERIFICATION="UNVERIFIED" PERSON_ID="13"/>
     <CLIENT ID="13" />
     <SUPPLIER ID="13" />
 
     <USER ID="14" EMAIL="user@email.com" LOGIN="myUser4" PASSWORD="ahoj" />
     <COMPANY ID="14" NAME="My Fourth Company" TAXID="hovna" IDENTIFICATIONNUMBER="sracky" />
     <PERSON ID="14" FIRSTNAME="Elvíra" LASTNAME="Maslová"/>
-    <BUSINESSUSER  ID="14" VERIFIED="0" PERSON_ID="14" COMPANY_ID="14"/>
+    <BUSINESSUSER  ID="14" VERIFIED="UNVERIFIED" PERSON_ID="14" COMPANY_ID="14"/>
     <CLIENT ID="14" />
     <SUPPLIER ID="14" />
 

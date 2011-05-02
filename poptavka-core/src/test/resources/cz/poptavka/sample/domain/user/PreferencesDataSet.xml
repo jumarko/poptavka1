@@ -6,7 +6,7 @@
     <COMPANY ID="111" />
     <PERSON ID="111" />
     <USER ID="111" EMAIL="pref@mail.com" LOGIN="prefUser" PASSWORD="pref" SETTINGS_ID="1"/>
-    <BUSINESSUSER ID="111" VERIFIED="0" />
+    <BUSINESSUSER ID="111" VERIFIED="UNVERIFIED" />
     <CLIENT ID="111" />
 
 
