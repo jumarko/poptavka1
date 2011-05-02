@@ -112,6 +112,12 @@
             <name>SpringSource snapshots</name>
             <url>http://maven.springframework.org/snapshot</url>
         </repository>
+        <repository>
+            <id>developer.jasig.org</id>
+            <name>Jasig repository</name>
+            <url>https://developer.jasig.org/repo/content/repositories/3rd-party</url>
+        </repository>
+
 
         <repository>
             <id>GWTPlatform</id>
