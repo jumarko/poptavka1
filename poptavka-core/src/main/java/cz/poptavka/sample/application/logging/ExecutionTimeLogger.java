@@ -1,11 +1,12 @@
 package cz.poptavka.sample.application.logging;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-//import org.aspectj.lang.annotation.Around;
-//import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
+
+//import org.aspectj.lang.annotation.Around;
+//import org.aspectj.lang.annotation.Aspect;
 
 /**
  * Aspect which is responsible for measuring and logging execution time of all methods.
@@ -17,8 +18,8 @@ import org.springframework.util.StopWatch;
  *         Date: 10.4.11
  */
 //@Aspect
-public class ExecutionTimeLoggerAspect {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionTimeLoggerAspect.class);
+public class ExecutionTimeLogger {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionTimeLogger.class);
 
 //    @Around("execution(* cz.poptavka.sample..*.*(..)) "
 //            + " && ! execution(* cz.poptavka.sample.application.logging.*.*(..))")

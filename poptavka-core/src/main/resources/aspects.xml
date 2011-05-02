@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <aop:config>
+        <!-- pointcuts -->
+        <aop:pointcut id="allProjectClasses" expression="execution(* cz.poptavka.sample..*.*(..))" />
+
+        <!-- aspects -->
+        <aop:aspect id="exceptionLoggerAspect" ref="exceptionLogger">
+            <aop:after-throwing  throwing="exception"  pointcut-ref="allProjectClasses" method="logExceptionMethod" />
+        </aop:aspect>
+        <!-- ExecutionTimeLogger is only for performance monitoring and debugging - normally it is disabled -->
+        <!--<aop:aspect id="executionTimeLoggerAspect" ref="executionTimeLogger">-->
+            <!--<aop:around pointcut-ref="allProjectClasses" method="logTimeMethod" />-->
+        <!--</aop:aspect>-->
+
+    </aop:config>
+
+    <!-- aspects' beans' -->
+    <bean id="exceptionLogger" class="cz.poptavka.sample.application.logging.ExceptionLogger" />
+    <bean id="executionTimeLogger" class="cz.poptavka.sample.application.logging.ExecutionTimeLogger" />
+
+
+</beans>

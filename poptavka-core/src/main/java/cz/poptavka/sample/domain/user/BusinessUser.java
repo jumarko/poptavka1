@@ -3,7 +3,6 @@ package cz.poptavka.sample.domain.user;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
-import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -68,13 +67,6 @@ public class BusinessUser extends User {
     private List<Invoice> invoices;
 
 
-    @NotAudited
-    @OneToOne
-    @Cascade(value = CascadeType.ALL)
-    private Settings settings;
-
-
-
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
     public BusinessType getBusinessType() {
         return businessType;
@@ -131,15 +123,6 @@ public class BusinessUser extends User {
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
-
 
     //-------------------------- End of GETTERS AND SETTERS ------------------------------------------------------------
 

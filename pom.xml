@@ -89,13 +89,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </pluginRepository>
-        <pluginRepository>
-           <id>bees-plugins-snapshots</id>
-           <url>http://repository-cloudbees.forge.cloudbees.com/public-snapshot/  </url>
-           <releases>
-             <enabled>true</enabled>
-           </releases>
-        </pluginRepository>
 
     </pluginRepositories>
 
@@ -638,12 +631,6 @@
                     </execution>
                 </executions>
             </plugin>
-            
-            <plugin>
-               <groupId>com.cloudbees</groupId>
-               <artifactId>bees-maven-plugin</artifactId>
-            </plugin>
-
         </plugins>
     </build>
 

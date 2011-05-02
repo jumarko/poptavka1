@@ -2,7 +2,7 @@ package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.domain.settings.Preference;
+import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class User extends DomainObject {
     @Column(length = 32)
     private String login;
 
-    /** TODO martinka password should be stored in an array of chars. */
     @Column(length = 64)
     private String password;
 
@@ -41,9 +39,9 @@ public class User extends DomainObject {
     @NotAudited
     private List<AccessRole> accessRoles;
 
-    /** User's preferences for improving user's experience. */
-    @OneToMany
-    private List<Preference> preferences;
+    @OneToOne
+    @NotAudited
+    private Settings settings;
 
 
     @OneToOne
@@ -109,12 +107,12 @@ public class User extends DomainObject {
         this.accessRoles = accessRoles;
     }
 
-    public List<Preference> getPreferences() {
-        return preferences;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public void setPreferences(List<Preference> preferences) {
-        this.preferences = preferences;
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
     public EmailActivation getEmailActivation() {

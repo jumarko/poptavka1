@@ -16,6 +16,8 @@
     <bean id="clientDao"
           class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
 
+    <bean id="preferenceDao" class="cz.poptavka.sample.dao.user.PreferenceDaoImpl" />
+
     <bean id="demandDao"
           class="cz.poptavka.sample.dao.demand.DemandDaoImpl">
         <property name="treeItemDao" ref="treeItemDao" />
@@ -40,20 +42,23 @@
 
 
 
+
     <!-- Service -->
-    <bean id="treeItemService"
-          class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
+    <bean id="treeItemService" class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="personService"
-          class="cz.poptavka.sample.service.user.PersonServiceImpl">
+    <bean id="personService" class="cz.poptavka.sample.service.user.PersonServiceImpl">
         <property name="dao" ref="personDao"/>
     </bean>
 
-    <bean id="clientService"
-          class="cz.poptavka.sample.service.user.ClientServiceImpl">
+    <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">
         <property name="dao" ref="clientDao"/>
+    </bean>
+
+    <bean id="preferenceService" class="cz.poptavka.sample.service.user.PreferenceServiceImpl">
+        <property name="dao" ref="preferenceDao"/>
+        <property name="preferenceDao" ref="preferenceDao"/>
     </bean>
 
     <bean id="demandService"
@@ -88,11 +93,6 @@
         <property name="demandService" ref="demandService" />
         <property name="supplierService" ref="supplierService" />
     </bean>
-
-    <!-- aspects -->
-    <bean id="exceptionLoggerAspect" class="cz.poptavka.sample.application.logging.ExceptionLoggerAspect" />
-    <bean id="executionTimeLoggerAspect" class="cz.poptavka.sample.application.logging.ExecutionTimeLoggerAspect" />
-
 
     <!-- Other -->
     <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>

@@ -40,6 +40,13 @@ public class Preference extends DomainObject {
 
     private String description;
 
+    public Preference() {
+    }
+
+    public Preference(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
 
     public String getKey() {
         return key;
