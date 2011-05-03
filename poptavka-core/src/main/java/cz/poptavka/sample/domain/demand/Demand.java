@@ -21,6 +21,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -38,9 +39,19 @@ import java.util.List;
 @Entity
 @Audited
 public class Demand extends DomainObject {
+
     @Column(length = 100, nullable = false)
     private String title;
 
+    /**
+     * Description for demands. Can be quite long, but it is nor neccessary, nor desirable to have an arbitrary
+     * big column.
+     * <p>
+     *     (At least) now for MySQL this column must be altered to be a TEXT (max 64 kB) type.
+     *     Otherwise the Hibernate create by default the LONGTEXT type, which can have up to 4 GB.
+     */
+    @Lob
+    @Column(name = "description")
     private String description;
 
     private BigDecimal price;
