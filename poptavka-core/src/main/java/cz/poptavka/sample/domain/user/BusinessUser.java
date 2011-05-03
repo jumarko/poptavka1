@@ -55,10 +55,10 @@ public class BusinessUser extends User {
 
     /**
      *  Verfification state of client. No default value!
-     * @see {@link VERIFICATION} enum
+     * @see {@link cz.poptavka.sample.domain.user.BusinessUser.Verification} enum
      */
     @Enumerated(value = EnumType.STRING)
-    private VERIFICATION verification;
+    private Verification verification;
 
     @NotAudited
     @OneToMany(mappedBy = "user")
@@ -104,11 +104,11 @@ public class BusinessUser extends User {
         this.addresses = addresses;
     }
 
-    public VERIFICATION getVerification() {
+    public Verification getVerification() {
         return verification;
     }
 
-    public void setVerification(VERIFICATION verification) {
+    public void setVerification(Verification verification) {
         this.verification = verification;
     }
 
@@ -131,7 +131,7 @@ public class BusinessUser extends User {
     //-------------------------- End of GETTERS AND SETTERS ------------------------------------------------------------
 
 
-    public static enum VERIFICATION {
+    public static enum Verification {
         /** Client has already been verified. */
         VERIFIED,
 
