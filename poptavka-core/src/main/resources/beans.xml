@@ -9,7 +9,19 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <!-- Dao -->
+    <!-- SearchProcessor -->
+    <bean id="mySearchProcessor" class="com.googlecode.genericdao.search.jpa.JPASearchProcessor">
+        <constructor-arg ref="metadataUtil" />
+    </bean>
+    <bean id="metadataUtil" class="com.googlecode.genericdao.search.jpa.hibernate.HibernateMetadataUtil"
+          factory-method="getInstanceForEntityManagerFactory">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+    <bean id="generalDao" class="cz.poptavka.sample.dao.DecoratedGeneralDAOImpl">
+        <constructor-arg ref="mySearchProcessor"/>
+    </bean>
+
+
     <bean id="personDao"
           class="cz.poptavka.sample.dao.user.PersonDaoImpl"/>
 
@@ -44,6 +56,9 @@
 
 
     <!-- Service -->
+    <bean id="generalService" class="cz.poptavka.sample.service.GeneralServiceImpl">
+        <constructor-arg ref="generalDao" />
+    </bean>
     <bean id="treeItemService" class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
@@ -99,7 +114,7 @@
 
     <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
 
-     <!-- Gilead configuration -->
+    <!-- Gilead configuration -->
     <bean id="persistenceUtil" class="net.sf.gilead.core.hibernate.jpa.HibernateJpaUtil">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>

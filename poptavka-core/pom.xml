@@ -77,6 +77,16 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
         </dependency>
+        <!-- This first dependency includes all the JPA implementations for the DAOs -->
+        <dependency>
+            <groupId>com.googlecode.genericdao</groupId>
+            <artifactId>dao</artifactId>
+        </dependency>
+        <!-- This second one includes the Hibernate Entity Manager plugin for the framework -->
+        <dependency>
+            <groupId>com.googlecode.genericdao</groupId>
+            <artifactId>search-jpa-hibernate</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>net.sf.gilead</groupId>

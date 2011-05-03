@@ -28,6 +28,7 @@
         <guava.version>r07</guava.version>
         <hibernate.version>3.5.5-Final</hibernate.version>
         <hibernate-jpamodelgen.version>1.0.0.Final</hibernate-jpamodelgen.version>
+        <genericdao.version>1.0.0</genericdao.version>
         <ehcache.version>1.2.3</ehcache.version>
         <ehcache-spring-annotations.version>1.1.2</ehcache-spring-annotations.version>
         <mockito.version>1.8.5</mockito.version>
@@ -265,6 +266,18 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jpamodelgen</artifactId>
                 <version>${hibernate-jpamodelgen.version}</version>
+            </dependency>
+            <!-- This first dependency includes all the JPA implementations for the DAOs -->
+            <dependency>
+                <groupId>com.googlecode.genericdao</groupId>
+                <artifactId>dao</artifactId>
+                <version>${genericdao.version}</version>
+            </dependency>
+            <!-- This second one includes the Hibernate Entity Manager plugin for the framework -->
+            <dependency>
+                <groupId>com.googlecode.genericdao</groupId>
+                <artifactId>search-jpa-hibernate</artifactId>
+                <version>${genericdao.version}</version>
             </dependency>
 
             <!--logging -->
