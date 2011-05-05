@@ -12,6 +12,8 @@
 		.contentPanel {
 			margin: 0 auto;
 			border: 1px solid black;
+			width: 100%;
+			heigth: 100%;
 		}
 
 		.headerPanel {
