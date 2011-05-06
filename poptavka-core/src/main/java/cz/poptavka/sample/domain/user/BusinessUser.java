@@ -132,13 +132,17 @@ public class BusinessUser extends User {
 
 
     public static enum Verification {
-        /** Client has already been verified. */
+        /** User has already been verified by email link activation. */
         VERIFIED,
 
-        /** Client has not been verified yet. */
+        /**
+         * User has filled out our registration form and received email link activation.
+         * If user was in state EXTERNAL before registration we will change it to UNVERIFIED
+         * and we will be waiting for email link activation.
+         */
         UNVERIFIED,
 
-        /** Client is coming from external system and its verification does not make sense. */
+        /** User came from external system and will be verified after email link activation is performed */
         EXTERNAL
     }
 
