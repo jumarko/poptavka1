@@ -1,17 +1,16 @@
 package cz.poptavka.sample.client.user.problems;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.BasePresenter;
+import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.domain.mail.Message;
+import cz.poptavka.sample.domain.user.User;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
-
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
-import cz.poptavka.sample.domain.mail.Message;
-import cz.poptavka.sample.domain.user.User;
 
 /**
  *
@@ -59,7 +58,6 @@ public class MyProblemsPresenter
         Message m1 = new Message();
         m1.setSubject("Odpoved1");
         User u = new User();
-        u.setLogin("userLogin");
         u.setEmail("userEmail");
         m1.setSender(u);
         m1.setSent(new Date());
@@ -71,7 +69,6 @@ public class MyProblemsPresenter
         Message m2 = new Message();
         m2.setSubject("Odpoved2");
         User u2 = new User();
-        u.setLogin("secondUserLogin");
         u.setEmail("secondUserEmail");
         m2.setSender(u2);
         m2.setSent(new Date());
@@ -81,7 +78,6 @@ public class MyProblemsPresenter
         Message m3 = new Message();
         m3.setSubject("Odpoved3");
         User u3 = new User();
-        u.setLogin("secondUserLogin");
         u.setEmail("secondUserEmail");
         m3.setSender(u3);
         m3.setSent(new Date());
@@ -95,7 +91,6 @@ public class MyProblemsPresenter
         Message m4 = new Message();
         m4.setSubject("Odpoved4");
         User u4 = new User();
-        u.setLogin("secondUserLogin");
         u.setEmail("secondUserEmail");
         m4.setSender(u4);
         m4.setSent(new Date());

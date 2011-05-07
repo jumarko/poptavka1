@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
-
 import cz.poptavka.sample.domain.demand.Demand;
 
 public class DemandView extends Composite {
@@ -75,6 +74,6 @@ public class DemandView extends Composite {
         infoTable.setWidget(row, 1, new Label(demand.getCategories().toString()));
 
         infoTable.setWidget(row++, 0, new Label("Client: "));
-        infoTable.setWidget(row, 1, new Label(demand.getClient().getLogin()));
+        infoTable.setWidget(row, 1, new Label(demand.getClient().getEmail()));
     }
 }

@@ -1,6 +1,7 @@
 package cz.poptavka.sample.domain;
 
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.reflection.ReflectionUtils;
 import junit.framework.TestCase;
 import org.apache.commons.collections.CollectionUtils;
@@ -12,7 +13,10 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.filter.AbstractClassTestingTypeFilter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -143,7 +147,7 @@ public class DomainObjectTest {
         }
 
         Assert.assertTrue("Missing gettters or setters in following classes: "
-                + getAccessorsViolationsMessage(violations),
+                + formatViolationsMessage(violations),
                 violations.isEmpty());
     }
 
@@ -178,7 +182,7 @@ public class DomainObjectTest {
         }
 
         Assert.assertTrue("Usage of prohibited classes in following classes: "
-                + getAccessorsViolationsMessage(violations),
+                + formatViolationsMessage(violations),
                 violations.isEmpty());
     }
 
@@ -236,6 +240,40 @@ public class DomainObjectTest {
     }
 
 
+    /**
+     * Tests if each enum-type field on persistent entity has EnumType set to string and restriction on length.
+     * Basically each enum field should have following annotations:
+     * <pre>
+     *      @Enumerated(value = EnumType.STRING)
+     *      @Column(length = Constants.ENUM_FIELD_LENGTH)
+     * </pre>
+     *
+     */
+    @Test
+    public void testEnumPersistentFields() {
+        final Map<Class, Map<Field, String>> violations = new HashMap<Class, Map<Field, String>>();
+        for (Class<?> domainObjectClass : domainObjectsClasses) {
+            final HashMap<Field, String> classFieldsViolations = new HashMap<Field, String>();
+            if (isPersistenceEntity(domainObjectClass)) {
+                for (Field field : domainObjectClass.getDeclaredFields()) {
+                    if (field.getType().isEnum() && isPersistenceProperty(domainObjectClass, field)) {
+                        checkCorrectEnumType(classFieldsViolations, field);
+                        checkEnumTypeLengthRestriction(classFieldsViolations, field);
+                    }
+                }
+            }
+
+            // put all validation errors for checked domain class
+            if (!classFieldsViolations.isEmpty()) {
+                violations.put(domainObjectClass, classFieldsViolations);
+            }
+        }
+
+        Assert.assertTrue("Persistence enum attributes violations: " + formatViolationsMessage(violations),
+                            violations.isEmpty());
+    }
+
+
     //-------------------------------- HELPER METHODS ------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     private static boolean isInProhibitedPackage(Class<?> fieldType) {
@@ -260,7 +298,7 @@ public class DomainObjectTest {
 
 
 
-    private static String getAccessorsViolationsMessage(Map<Class, Map<Field, String>> violations) {
+    private static String formatViolationsMessage(Map<Class, Map<Field, String>> violations) {
 
         StringBuilder violationMessage = new StringBuilder("[");
         for (Map.Entry<Class, Map<Field, String>> classViolation : violations.entrySet()) {
@@ -310,5 +348,32 @@ public class DomainObjectTest {
         return !(aClass.getAnnotation(Entity.class) == null
                 && aClass.getAnnotation(org.hibernate.annotations.Entity.class) == null);
 
+    }
+
+
+     /**
+     * Checks if persistent enum attribute has specified supported column length = 64.
+     *
+     * @param classFieldsViolations
+     * @param field
+     */
+    private void checkEnumTypeLengthRestriction(Map<Field, String> classFieldsViolations, Field field) {
+        final Column columnAnnotation = field.getAnnotation(Column.class);
+        if (columnAnnotation == null) {
+            classFieldsViolations.put(field, "Field has no @Column annotation for length restriction.");
+        } else if (columnAnnotation.length() != Constants.ENUM_FIELD_LENGTH) {
+            classFieldsViolations.put(field, "Field has @Column annotation but does not have correct "
+                    + "length restriction. Expected length=" + Constants.ENUM_FIELD_LENGTH
+                    + ", but found length=" + columnAnnotation.length());
+        }
+    }
+
+    private void checkCorrectEnumType(Map<Field, String> classFieldsViolations, Field field) {
+        final Enumerated enumeratedAnnotation = field.getAnnotation(Enumerated.class);
+        if (enumeratedAnnotation == null) {
+            classFieldsViolations.put(field, "Does not have @Enumerated annotation");
+        } else if (enumeratedAnnotation.value() != EnumType.STRING) {
+            classFieldsViolations.put(field, "Does not have EnumType.STRING specified");
+        }
     }
 }

@@ -6,7 +6,7 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import java.util.Collection;
 
 /**
- * A Closure for deffered retrieval of collection of domain objects.
+ * A Closure for deferred retrieval of collection of domain objects.
  *
  * @author Juraj Martinka
  *         Date: 1.5.11

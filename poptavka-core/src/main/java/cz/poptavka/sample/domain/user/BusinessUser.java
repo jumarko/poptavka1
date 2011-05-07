@@ -3,12 +3,14 @@ package cz.poptavka.sample.domain.user;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,6 +36,7 @@ import java.util.List;
 public class BusinessUser extends User {
 
     @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
     private BusinessType businessType;
 
     /** Company is filled if this object represents the company. For private persons it is null at most situations. */
@@ -58,6 +61,7 @@ public class BusinessUser extends User {
      * @see {@link cz.poptavka.sample.domain.user.BusinessUser.Verification} enum
      */
     @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
     private Verification verification;
 
     @NotAudited
@@ -142,7 +146,7 @@ public class BusinessUser extends User {
          */
         UNVERIFIED,
 
-        /** User came from external system and will be verified after email link activation is performed */
+        /** User came from external system and will be verified after email link activation is performed. */
         EXTERNAL
     }
 

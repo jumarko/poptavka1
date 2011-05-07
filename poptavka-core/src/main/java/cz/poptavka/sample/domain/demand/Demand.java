@@ -10,6 +10,7 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -68,6 +69,7 @@ public class Demand extends DomainObject {
     private String attachmentPath;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
     private DemandStatus status;
 
     /**

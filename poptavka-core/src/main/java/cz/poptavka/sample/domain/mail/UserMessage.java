@@ -7,6 +7,7 @@ package cz.poptavka.sample.domain.mail;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -61,7 +62,7 @@ public class UserMessage extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("ContactMessage");
-        sb.append("{user='").append(user.getLogin()).append('\'');
+        sb.append("{user='").append(user.getEmail()).append('\'');
         sb.append("{message='").append(message).append('\'');
         sb.append('}');
         return sb.toString();

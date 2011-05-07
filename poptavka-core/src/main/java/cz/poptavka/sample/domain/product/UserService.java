@@ -3,8 +3,12 @@ package cz.poptavka.sample.domain.product;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.user.BusinessUser;
+import cz.poptavka.sample.util.orm.Constants;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 /**
@@ -23,6 +27,8 @@ public class UserService extends DomainObject {
     @ManyToOne
     private BusinessUser user;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
     private Status status;
 
 

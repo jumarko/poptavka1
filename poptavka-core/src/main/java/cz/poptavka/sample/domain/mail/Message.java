@@ -5,18 +5,23 @@
 
 package cz.poptavka.sample.domain.mail;
 
+import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -30,35 +35,101 @@ import java.util.List;
  */
 
 @Entity
-public class Message extends MessageTreeItem {
+public class Message extends DomainObject {
+
+    /* the first message in the thread, i.e. the original question */
+    @ManyToOne
+    private Message threadRoot;
+
+    /* immediate parent of this message - to what this message is a reply */
+    @ManyToOne
+    private Message parent;
+
+    /* the first child of this message - the first reply to rhis message */
+    @ManyToOne
+    private Message firstBorn;
+
+    /* the next reply to this message's parent */
+    @OneToOne
+    @JoinColumn
+    private Message nextSibling;
+
     @Column(length = 127)
     private String subject;
+
     @Lob
     private String body;
+
     @ManyToOne
     private User sender;
+
     @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
     private MessageState messageState;
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date created;
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date lastModified;
+
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date sent;
 
     @OneToMany
     private List<MessageUserRole> roles;
 
-
     /* a demand to which this message pertains */
     @ManyToOne
     private Demand demand;
+
     /* an offer to which this message pertains */
     @ManyToOne
     private Offer offer;
+
     /* a problem to which this message pertains */
     @ManyToOne
     private Problem problem;
+
+
+    //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
+
+    public boolean isThreadRoot() {
+        return parent == null;
+    }
+
+    public Message getThreadRoot() {
+        return threadRoot;
+    }
+
+    public void setThreadRoot(Message threadRoot) {
+        this.threadRoot = threadRoot;
+    }
+
+    public Message getParent() {
+        return parent;
+    }
+
+    public void setParent(Message parent) {
+        this.parent = parent;
+    }
+
+    public Message getFirstBorn() {
+        return firstBorn;
+    }
+
+    public void setFirstBorn(Message firstBorn) {
+        this.firstBorn = firstBorn;
+    }
+
+    public Message getNextSibling() {
+        return nextSibling;
+    }
+
+    public void setNextSibling(Message nextSibling) {
+        this.nextSibling = nextSibling;
+    }
+
 
     public String getBody() {
         return body;
@@ -152,8 +223,12 @@ public class Message extends MessageTreeItem {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Message");
+        sb.append("{threadRoot.id=").append(ToStringUtils.printId(threadRoot));
+        sb.append(", parent.id=").append(ToStringUtils.printId(parent));
+        sb.append(", firstBorn.id=").append(ToStringUtils.printId(firstBorn));
+        sb.append(", nextSibling.id=").append(ToStringUtils.printId(nextSibling));
         sb.append("{subject='").append(subject).append('\'');
-        sb.append("{sender.login='").append(sender.getLogin()).append('\'');
+        sb.append("{sender.email='").append(sender.getEmail()).append('\'');
         sb.append("{messageState='").append(messageState).append('\'');
         sb.append('}');
         return sb.toString();

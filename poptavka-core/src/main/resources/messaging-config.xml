@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Connection Factory -->
+    <bean id="rabbitConnFactory"
+          class="org.springframework.amqp.rabbit.connection.SingleConnectionFactory">
+        <constructor-arg><value>localhost</value></constructor-arg>
+        <property name="host" value="${amqp.host}" />
+        <property name="username" value="${amqp.username}" />
+        <property name="password" value="${amqp.password}" />
+        <property name="virtualHost" value="${amqp.virtualHost}" />
+        <property name="port" value="${amqp.port}" />
+    </bean>
+
+    <!-- Spring AMQP Template -->
+    <bean id="template"
+          class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <property name="connectionFactory" ref="rabbitConnFactory" />
+        <!--<property name="messageConverter">-->
+            <!--<bean class="org.springframework.amqp.support.converter.JsonMessageConverter">-->
+                <!--&lt;!&ndash; TODO check if custom class mapper is neccesary &ndash;&gt;-->
+                <!--&lt;!&ndash; if necessary, override the DefaultClassMapper &ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="classMapper" ref="customClassMapper"/>&ndash;&gt;-->
+            <!--</bean>-->
+        <!--</property>-->
+        <property name="routingKey" value="${amqp.routingKey}"/>
+        <property name="queue" value="${amqp.queue}"/>
+
+    </bean>
+
+    <!-- Spring AMQP Admin -->
+    <bean id="admin" class="org.springframework.amqp.rabbit.core.RabbitAdmin">
+        <constructor-arg ref="rabbitConnFactory" />
+    </bean>
+
+
+</beans>

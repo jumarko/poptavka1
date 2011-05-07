@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -22,16 +23,17 @@ import java.util.List;
  *         Date: 28.1.11
  */
 @Entity
+// use slightly different name because "User" is a reserved word
+@Table(name = "UserT")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends DomainObject {
 
-    @Column(length = 32)
-    private String login;
-
     @Column(length = 64)
     private String password;
 
+    @Column(nullable = false, unique = true, length = 128)
+    /** User's email, serves also as a login.  */
     private String email;
 
     /** Roles assigned to this user in the application. */
@@ -39,7 +41,7 @@ public class User extends DomainObject {
     @NotAudited
     private List<AccessRole> accessRoles;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @NotAudited
     private Settings settings;
 
@@ -52,19 +54,11 @@ public class User extends DomainObject {
     public User() {
     }
 
-    public User(String login, String password) {
-        this.login = login;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     public String getPassword() {
         return password;
@@ -74,21 +68,6 @@ public class User extends DomainObject {
         this.password = password;
     }
 
-    /** TODO martinka password should be stored in an array of chars. */
-//    public char[] getPassword() {
-//        if (password == null) {
-//            return new char[] {};
-//        }
-//        return Arrays.copyOf(password, password.length);
-//    }
-//
-//    public void setPassword(char[] password) {
-//        if (password == null) {
-//            this.password = new char[] {};
-//        }
-//
-//        this.password = Arrays.copyOf(password, password.length);
-//    }
 
     public String getEmail() {
         return email;
@@ -127,7 +106,6 @@ public class User extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("User");
-        sb.append("{login='").append(login).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append('}');
         return sb.toString();

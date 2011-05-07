@@ -7,7 +7,9 @@ package cz.poptavka.sample.domain.mail;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.util.orm.Constants;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,6 +29,7 @@ public class MessageUserRole extends DomainObject {
     private Message message;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
     private RoleType type;
 
     public Message getMessage() {
@@ -57,7 +60,7 @@ public class MessageUserRole extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("MessageserRole");
-        sb.append("{user.login='").append(user.getLogin()).append('\'');
+        sb.append("{user.email='").append(user.getEmail()).append('\'');
         sb.append("{type='").append(type).append('\'');
         sb.append("{message='").append(message).append('\'');
         sb.append('}');

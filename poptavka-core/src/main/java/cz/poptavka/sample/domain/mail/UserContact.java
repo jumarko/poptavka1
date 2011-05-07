@@ -8,11 +8,12 @@ package cz.poptavka.sample.domain.mail;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
-import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.Date;
 
 /**
  *
@@ -107,8 +108,8 @@ public class UserContact extends DomainObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("UserContact");
         sb.append("{displayName='").append(displayName).append('\'');
-        sb.append("{savedBy='").append(savedBy.getLogin()).append('\'');
-        sb.append("{savedBy='").append(savedBy.getLogin()).append('\'');
+        sb.append("{savedBy='").append(savedBy.getEmail()).append('\'');
+        sb.append("{savedBy='").append(savedBy.getEmail()).append('\'');
         sb.append('}');
         return sb.toString();
     }

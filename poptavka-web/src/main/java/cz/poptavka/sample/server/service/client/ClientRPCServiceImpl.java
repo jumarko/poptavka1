@@ -90,7 +90,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.setAddresses(addresses);
         /** Login & pwd information. **/
         newClient.setEmail(clientDetail.getEmail());
-        newClient.setLogin(clientDetail.getLogin());
         newClient.setPassword(clientDetail.getPassword());
 
         Client newClient2 = clientService.create(newClient);
@@ -102,9 +101,9 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         List<Client> clients = clientService.getAll();
 
         for (Client cl : clients) {
-            System.out.println("Login: " + cl.getLogin() + " Password: " + cl.getPassword());
+            System.out.println("Login: " + cl.getEmail() + " Password: " + cl.getPassword());
             System.out.println("Login: " + client.getLogin() + " Password: " + client.getPassword());
-            if (cl.getLogin().equals(client.getLogin()) && cl.getPassword().equals(client.getPassword())) {
+            if (cl.getEmail().equals(client.getLogin()) && cl.getPassword().equals(client.getPassword())) {
                 return cl.getId();
             }
         }

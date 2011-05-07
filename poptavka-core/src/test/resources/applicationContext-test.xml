@@ -8,13 +8,20 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
     <import resource="applicationContext.xml" />
 
-    <!-- override database properties to use in memory database for testing purposes -->
-    <bean id="propertyConfigurer"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-          p:location="classpath:/database-hsqldb.properties"/>
+    <!-- override database properties to use in memory database for testing purposes
+         MUST FOLLOW ONLY AFTER IMPORT of "applicationContext.xml" !!! -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/database-hsqldb.properties</value>
+                <value>classpath:/messaging.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
 
     <bean id="hibernateTemplate" class="org.springframework.orm.jpa.JpaTemplate">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
