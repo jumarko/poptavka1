@@ -1,11 +1,10 @@
 package cz.poptavka.sample.client.user.demands;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -16,29 +15,30 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
     }
 
 
-    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
+//    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField SimplePanel contentPanel;
+    @UiField Hyperlink myDemandsLink, offersLink, newDemandLink;
 
     public DemandsLayoutView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
-
-    @Override
-    public HasClickHandlers getMyDemandsBtn() {
-        return myDemandsBtn;
-    }
-
-    @Override
-    public HasClickHandlers getOffersBtn() {
-        // TODO Auto-generated method stub
-        return offersBtn;
-    }
-
-    @Override
-    public HasClickHandlers getCreateDemandBtn() {
-        // TODO Auto-generated method stub
-        return createDemandBtn;
-    }
+//
+//    @Override
+//    public HasClickHandlers getMyDemandsBtn() {
+//        return myDemandsBtn;
+//    }
+//
+//    @Override
+//    public HasClickHandlers getOffersBtn() {
+//        // TODO Auto-generated method stub
+//        return offersBtn;
+//    }
+//
+//    @Override
+//    public HasClickHandlers getCreateDemandBtn() {
+//        // TODO Auto-generated method stub
+//        return createDemandBtn;
+//    }
 
     @Override
     public Widget getWidgetView() {
@@ -48,6 +48,18 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
     @Override
     public void setContent(Widget contentWidget) {
         contentPanel.setWidget(contentWidget);
+    }
+
+    public void setMyDemandsToken(String linkString) {
+        myDemandsLink.setTargetHistoryToken(linkString);
+    }
+
+    public void setOffersToken(String linkString) {
+        offersLink.setTargetHistoryToken(linkString);
+    }
+
+    public void setNewDemandToken(String linkString) {
+        newDemandLink.setTargetHistoryToken(linkString);
     }
 
 }

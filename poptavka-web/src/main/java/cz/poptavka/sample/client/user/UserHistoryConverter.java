@@ -10,8 +10,15 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
     @Override
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
-        if (historyName.equals("atAccount")) {
-            eventBus.atAccount();
+        eventBus.atAccount();
+        if (historyName.equals("invokeMyDemands")) {
+            eventBus.invokeMyDemands();
+        }
+        if (historyName.equals("invokeOffers")) {
+            eventBus.invokeOffers();
+        }
+        if (historyName.equals("invokeNewDemand")) {
+            eventBus.invokeNewDemand();
         }
     }
 

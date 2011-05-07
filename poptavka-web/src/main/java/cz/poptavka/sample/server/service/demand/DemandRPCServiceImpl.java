@@ -66,10 +66,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public String createNewDemand(DemandDetail detail, Long cliendId) {
-        //try {
-        LOGGER.fine("Init method CREATE DEMAND");
-        System.out.println("START");
-        System.out.println("get Client by ID");
         final Demand demand = new Demand();
         demand.setTitle(detail.getTitle());
         demand.setDescription(detail.getDescription());
@@ -81,13 +77,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getExpireDate());
         demand.setClient(clientService.getById(cliendId));
-        System.out.println("** NEW DEMAND summary **\n" + demand.toString());
         demandService.create(demand);
         return "Done";
-//        } catch (Exception ex) {
-//            System.err.print(ex.printStackTrace());
-//
-//        }
     }
 
     @Override
@@ -104,4 +95,5 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public Set<Demand> getDemands(Category... categories) {
         return demandService.getDemands(categories);
     }
+
 }

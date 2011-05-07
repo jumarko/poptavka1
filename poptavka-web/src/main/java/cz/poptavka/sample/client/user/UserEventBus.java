@@ -6,6 +6,8 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
+import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 
 
@@ -13,7 +15,6 @@ import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
-    //@Event(handlers = {UserPresenter.class, DemandsPresenter.class }, historyConverter = UserHistoryConverter.class)
     @Event(handlers = {UserPresenter.class, DemandsLayoutPresenter.class },
             historyConverter = UserHistoryConverter.class)
     String atAccount();
@@ -38,16 +39,15 @@ public interface UserEventBus extends EventBus {
     void setTabWidget(Widget tabBody);
 
     /** DEMAND tab methods **/
+    @Event(handlers = MyDemandsPresenter.class, historyConverter = UserHistoryConverter.class)
+    String invokeMyDemands();
 
-    @Event
-    void invokeMyDemands();
-
-    @Event(handlers = OffersPresenter.class)
-    void invokeOffers();
+    @Event(handlers = OffersPresenter.class, historyConverter = UserHistoryConverter.class)
+    String invokeOffers();
 
     //do not forget about common package
-    @Event
-    void invokeDemandCreation();
+    @Event(handlers = NewDemandPresenter.class, historyConverter = UserHistoryConverter.class)
+    String invokeNewDemand();
 
     //for operator only
     @Event

@@ -25,7 +25,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     Anchor contactsTab = new Anchor("Kontakty");
     Anchor categoriesTab = new Anchor("Kategorie");
 
-    public UserView() {
+    public void createView() {
 
         initWidget(uiBinder.createAndBindUi(this));
 

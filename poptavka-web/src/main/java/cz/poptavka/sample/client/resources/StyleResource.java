@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource.NotStrict;
 
+import cz.poptavka.sample.client.resources.images.Images;
 import cz.poptavka.sample.client.resources.richtext.RichTextStyle;
 
 /**
@@ -29,6 +30,8 @@ public interface StyleResource extends ClientBundle {
      */
     @Source("poptavka-base.css")
     PoptavkaBaseStyle cssBase();
+
+    Images images();
 
     /**
      *

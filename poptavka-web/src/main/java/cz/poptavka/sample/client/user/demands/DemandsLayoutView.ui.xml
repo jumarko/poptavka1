@@ -9,9 +9,14 @@
     <g:HorizontalPanel>
         <!-- LEFT MENU PANEL -->
         <g:VerticalPanel>
+        <!--
             <g:Button ui:field="myDemandsBtn" width="9em"><ui:msg key="myDemands">My Demands</ui:msg></g:Button>
             <g:Button ui:field="offersBtn" width="9em"><ui:msg key="offers">Offers</ui:msg></g:Button>
-            <g:Button ui:field="createDemandBtn" width="9em"><ui:msg key="createDemandLink">Create Demand</ui:msg></g:Button>
+            <g:Button ui:field="createDemandBtn" width="9em"><ui:msg key="createDemandLink">New Demand</ui:msg></g:Button>
+         -->
+            <g:Hyperlink ui:field="myDemandsLink"><ui:msg key="myDemands">My Demands</ui:msg></g:Hyperlink>
+            <g:Hyperlink ui:field="offersLink"><ui:msg key="offers">Offers</ui:msg></g:Hyperlink>
+            <g:Hyperlink ui:field="newDemandLink"><ui:msg key="createDemandLink">New Demand</ui:msg></g:Hyperlink>
         </g:VerticalPanel>
         <!-- CURRENT OPTION HOLDER -->
         <g:SimplePanel ui:field="contentPanel"/>

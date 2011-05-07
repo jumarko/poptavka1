@@ -4,5 +4,6 @@ public interface LocalizableMessages extends Messages {
 
     String logIn();
     String logOut();
+    String endDate();
 
 }

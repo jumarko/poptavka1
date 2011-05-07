@@ -27,4 +27,5 @@ public interface DemandRPCService extends RemoteService {
     Set<Demand> getDemands(Locality... localities);
     Set<Demand> getDemands(Category... categories);
 
+
 }

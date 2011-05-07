@@ -1,8 +1,16 @@
 package cz.poptavka.sample.server.service.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Company;
 import cz.poptavka.sample.domain.user.Person;
@@ -10,12 +18,7 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
+import cz.poptavka.sample.shared.domain.DemandDetail;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -26,8 +29,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     private LocalityService localityService;
 
-
-    @Override
     public ArrayList<ClientDetail> getAllClients() {
         // TODO Auto-generated method stub
         LOGGER.info("Getting fake clients");
@@ -46,7 +47,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.localityService = localityService;
     }
 
-    @Override
     public void sendClientId(long id) {
         // TODO Auto-generated method stub
 
@@ -57,7 +57,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      *
      * TODO: website assignation in backend
      */
-    @Override
     public long createNewClient(ClientDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
@@ -96,19 +95,30 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return newClient2.getId();
     }
 
-    @Override
     public long verifyClient(ClientDetail client) {
         List<Client> clients = clientService.getAll();
 
         for (Client cl : clients) {
-            System.out.println("Login: " + cl.getEmail() + " Password: " + cl.getPassword());
-            System.out.println("Login: " + client.getLogin() + " Password: " + client.getPassword());
             if (cl.getEmail().equals(client.getLogin()) && cl.getPassword().equals(client.getPassword())) {
                 return cl.getId();
             }
         }
         return -1;
 //        return 1;
+    }
+
+    public ArrayList<DemandDetail> getClientDemands(long id) {
+        Client client = clientService.getById(id);
+        return toArrayList(client.getDemands());
+    }
+
+    private ArrayList<DemandDetail> toArrayList(List<Demand> list) {
+        ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
+        for (Demand demand : list) {
+            DemandDetail detail = new DemandDetail();
+            details.add(detail);
+        }
+        return details;
     }
 
 }

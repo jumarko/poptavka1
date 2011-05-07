@@ -2,9 +2,6 @@ package cz.poptavka.sample.client.user.demands;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -13,7 +10,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 
 /**
  *
- * Just for user, not operator functionality implemented
+ * Just for user, not operator functionality implemented. Serves as holder for demands related stuff.
  *
  * @author Beho
  *
@@ -28,38 +25,22 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
 
     public interface DemandsLayoutInterface {
 
-        HasClickHandlers getMyDemandsBtn();
-
-        HasClickHandlers getOffersBtn();
-
-        HasClickHandlers getCreateDemandBtn();
-
         Widget getWidgetView();
 
         void setContent(Widget contentWidget);
+
+        void setMyDemandsToken(String link);
+
+        void setOffersToken(String link);
+
+        void setNewDemandToken(String link);
     }
 
     public void bind() {
-        /** bind menu operations **/
-        view.getMyDemandsBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                eventBus.invokeMyDemands();
-            }
-        });
-        view.getOffersBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                LOGGER.info("invoke offers");
-                eventBus.invokeOffers();
-            }
-        });
-        view.getCreateDemandBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                eventBus.invokeDemandCreation();
-            }
-        });
+        view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
+        view.setOffersToken(getTokenGenerator().invokeOffers());
+        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+
     }
 
     public void onAtAccount() {
