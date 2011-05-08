@@ -1,4 +1,4 @@
-package cz.poptavka.sample.common;
+package cz.poptavka.sample.domain.common;
 
 /**
  * Represents type of ordering in two principal forms:

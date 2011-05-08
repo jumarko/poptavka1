@@ -1,4 +1,4 @@
-package cz.poptavka.sample.common;
+package cz.poptavka.sample.domain.common;
 
 import java.util.HashMap;
 import java.util.List;
