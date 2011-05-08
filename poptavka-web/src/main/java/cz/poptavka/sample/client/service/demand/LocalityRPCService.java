@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
@@ -28,4 +29,5 @@ public interface LocalityRPCService extends RemoteService {
      */
     ArrayList<LocalityDetail> getLocalities(String locCode);
 
+    Locality getLocality(long id);
 }

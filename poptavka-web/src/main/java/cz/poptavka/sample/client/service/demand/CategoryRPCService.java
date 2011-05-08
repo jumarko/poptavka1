@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.service.demand;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -16,4 +17,8 @@ public interface CategoryRPCService extends RemoteService {
     ArrayList<CategoryDetail> getCategories();
 
     ArrayList<CategoryDetail> getCategoryChildren(String category);
+
+    Category getCategory(long id);
+
+    List<Category> getAllRootCategories();
 }

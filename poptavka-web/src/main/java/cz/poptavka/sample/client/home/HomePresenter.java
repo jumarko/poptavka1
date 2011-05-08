@@ -44,7 +44,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         view.getButton3Btn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.displayMyProblems();
+                eventBus.displayProblems();
             }
         });
     }

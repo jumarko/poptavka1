@@ -1,6 +1,7 @@
-package cz.poptavka.sample.client.common.messages;
+package cz.poptavka.sample.client.common.messages.message;
 
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -16,9 +17,10 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import cz.poptavka.sample.domain.mail.Message;
 
 public class MessageView extends Composite
@@ -42,13 +44,6 @@ public class MessageView extends Composite
     Label date;
 
     @UiField
-    Button buttonReply;
-    @UiField
-    Button buttonReplyToAll;
-    @UiField
-    Button buttonForward;
-
-    @UiField
     Button buttonSend;
     @UiField
     Button buttonDiscard;
@@ -58,11 +53,7 @@ public class MessageView extends Composite
     @UiField
     DisclosurePanel panelBody;
     @UiField
-    HorizontalPanel panelFooter1;
-    @UiField
-    HorizontalPanel panelFooter2;
-    @UiField
-    DisclosurePanel panelDetail;
+    HorizontalPanel panelFooter;
     @UiField
     VerticalPanel messageText;
 
@@ -72,47 +63,57 @@ public class MessageView extends Composite
         initWidget(uiBinder.createAndBindUi(this));
         this.from.setText(message.getSender().getEmail());
         this.date.setText(message.getSent().toString());
-        messageText.add(this.getArea(message.getBody()));
+        messageText.add(this.getText(message.getBody()));
         if (message.getBody().length() > 50) {
             this.shortText.setText(message.getBody().substring(0, 50) + "...");
         } else {
             this.shortText.setText(message.getBody());
         }
+        panelFooter.setVisible(false);
     }
 
     // NEW MESSAGE
     public MessageView() {
         initWidget(uiBinder.createAndBindUi(this));
-        messageText.add(this.getAreaWithToolbox());
+        this.from.setText("me");
+        this.date.setText(new Date().toString());
+
+        messageText.add(this.getTextArea());
+
+        panelFooter.setVisible(true);
+        panelBody.setOpen(true);
     }
 
-    public Grid getArea(String text) {
+    public Grid getText(String text) {
 
-        RichTextArea area = new RichTextArea();
-        area.ensureDebugId("cwRichText-area");
-        area.setSize("100%", "14em");
-        area.setText(text);
+        //RichTextArea area = new RichTextArea();
+//        area.ensureDebugId("cwRichText-area");
+//        area.setSize("100%", "14em");
+//        area.setText(text);
+        Label label = new Label();
+        label.setText(text);
 
         Grid grid = new Grid(1, 1);
         grid.setStyleName("cw-RichText");
-        grid.setWidget(0, 0, area);
+        grid.setWidget(0, 0, label);
         return grid;
     }
 
-    public Grid getAreaWithToolbox() {
+    public Grid getTextArea() {
         // Create the text area and toolbar
-        RichTextArea area = new RichTextArea();
-        area.ensureDebugId("cwRichText-area");
-        area.setSize("100%", "14em");
-        RichTextToolbar toolbar = new RichTextToolbar(area);
-        toolbar.ensureDebugId("cwRichText-toolbar");
-        toolbar.setWidth("100%");
+        //RichTextArea area = new RichTextArea();
+        TextArea area = new TextArea();
+//        area.ensureDebugId("cwRichText-area");
+//        area.setSize("100%", "14em");
+//        RichTextToolbar toolbar = new RichTextToolbar(area);
+//        toolbar.ensureDebugId("cwRichText-toolbar");
+//        toolbar.setWidth("100%");
 
         // Add the components to a panel
         Grid grid = new Grid(2, 1);
         grid.setStyleName("cw-RichText");
-        grid.setWidget(0, 0, toolbar);
-        grid.setWidget(1, 0, area);
+        //grid.setWidget(0, 0, toolbar);
+        grid.setWidget(0, 0, area);
         return grid;
     }
 
@@ -129,35 +130,25 @@ public class MessageView extends Composite
     public void onClickHeaderPanel(ClickEvent click) {
         if (panelBody.isOpen()) {
             panelBody.setOpen(false);
-            panelFooter2.setVisible(false);
-            panelDetail.setVisible(false);
         } else {
             panelBody.setOpen(true);
-            panelFooter2.setVisible(true);
-            panelDetail.setVisible(true);
         }
     }
 
-    @Override
-    public HasClickHandlers getReplyMessageBtn() {
-        return buttonReply;
-    }
-    @Override
-    public HasClickHandlers getReplyToAllMessageBtn() {
-        return buttonReplyToAll;
-    }
-    @Override
-    public HasClickHandlers getForwardMessageBtn() {
-        return buttonForward;
-    }
 
     @Override
     public HasClickHandlers getSendMessageBtn() {
         return buttonSend;
     }
+
     @Override
-    public HasClickHandlers getDeleteMessageBtn() {
+    public HasClickHandlers getDiscardMessageBtn() {
         return buttonDiscard;
+    }
+
+    @Override
+    public HorizontalPanel getPanelFooter() {
+        return panelFooter;
     }
     /**
      * Returns this view instance.

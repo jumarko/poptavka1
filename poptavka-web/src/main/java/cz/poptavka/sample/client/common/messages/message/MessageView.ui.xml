@@ -1,39 +1,25 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
-  xmlns:p="urn:import:cz.poptavka.sample.client.common.messages">
+  xmlns:p="urn:import:cz.poptavka.sample.client.common.messages.message">
   <ui:style>
     .important {
       font-weight: bold;
     }
   </ui:style>
   <g:HTMLPanel>
+
     <p:MyHorizontalPanel ui:field="panelHeader" width="1000px">
       <g:Image ui:field="logo" width="16px" height="16px" />
       <g:Label ui:field="from" text="UserName" width="150px" />
       <g:Label ui:field="shortText" width="500px"/>
-      <g:DisclosurePanel ui:field="panelDetail" visible="false">
-        <g:header>Details</g:header>
-        <g:VerticalPanel>
-          <g:Label>text</g:Label>
-          <g:Label>text1</g:Label>
-          <g:Label>text2</g:Label>
-          <g:Label>text3</g:Label>
-          <g:Label>text4</g:Label>
-        </g:VerticalPanel>
-      </g:DisclosurePanel>
       <g:Label ui:field="date"/>
     </p:MyHorizontalPanel>
 
     <g:DisclosurePanel ui:field="panelBody">
       <g:VerticalPanel>
-        <g:VerticalPanel ui:field="messageText"/>
-        <g:HorizontalPanel ui:field="panelFooter1">
-          <g:Button ui:field="buttonReply">Reply</g:Button>
-          <g:Button ui:field="buttonReplyToAll">Reply to all</g:Button>
-          <g:Button ui:field="buttonForward">Forward</g:Button>
-        </g:HorizontalPanel>
-        <g:HorizontalPanel ui:field="panelFooter2">
+        <g:VerticalPanel ui:field="messageText" width="500px"/>
+        <g:HorizontalPanel ui:field="panelFooter">
           <g:Button ui:field="buttonSend">Send</g:Button>
           <g:Button ui:field="buttonDiscard">Discard</g:Button>
         </g:HorizontalPanel>

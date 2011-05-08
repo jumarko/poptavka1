@@ -25,10 +25,7 @@
             </g:VerticalPanel>
 <!--        </g:DecoratorPanel>
          <g:VerticalSplitPanel/>
-
-        <p2:MessagesView ui:field="messages"/>
-        -->
-    <g:Label ui:field="title">Sprava</g:Label>
-    <g:VerticalPanel ui:field = "messagesPanel"/>
+-->
+     <p2:MessagesView ui:field="messages"/>
     </g:HTMLPanel>
 </ui:UiBinder>

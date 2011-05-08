@@ -64,7 +64,7 @@ public interface HomeEventBus extends EventBus {
     void initCategoryDisplay(AnchorEnum anchor);
 
     @Event(modulesToLoad = MyProblemsModule.class)
-    void displayMyProblems();
+    void displayProblems();
 
     @Event(forwardToParent = true)
     void getRootCategories();

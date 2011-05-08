@@ -104,7 +104,7 @@ public class OffersFlexTable extends FlexTable {
                 detail.company.setText(offer.getSupplierName());
                 master.add(detail);
                 this.setHTML(insertAfter, COLUMN_PRICE,
-                        (offer.getPrice() == null ? MSGS.emptyField() :  offer.getPrice() + " Kč"));
+                        (offer.getPrice() == null ? MSGS.emptyField() :  offer.getPrice() + " Kc"));
                 this.setHTML(insertAfter, COLUMN_DATE,
                         (offer.getFinishDate() == null ? MSGS.emptyField() : offer.getFinishDate().toString()));
                 //this.setHTML(insertAfter, COLUMN_ID, "" + offer.getMessageId());

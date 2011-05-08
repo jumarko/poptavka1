@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.home.demands;
+package cz.poptavka.sample.client.home.demands.demand;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,9 +12,11 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+
 import cz.poptavka.sample.domain.demand.Demand;
 
-public class DemandView extends Composite {
+public class DemandView extends Composite implements
+    DemandPresenter.DemandViewInterface  {
 
     private static DemandViewUiBinder uiBinder = GWT.create(DemandViewUiBinder.class);
 
@@ -73,7 +75,7 @@ public class DemandView extends Composite {
         infoTable.setWidget(row++, 0, new Label("Categories: "));
         infoTable.setWidget(row, 1, new Label(demand.getCategories().toString()));
 
-        infoTable.setWidget(row++, 0, new Label("Client: "));
-        infoTable.setWidget(row, 1, new Label(demand.getClient().getEmail()));
+//        infoTable.setWidget(row++, 0, new Label("Client: "));
+//        infoTable.setWidget(row, 1, new Label(demand.getClient().getEmail()));
     }
 }

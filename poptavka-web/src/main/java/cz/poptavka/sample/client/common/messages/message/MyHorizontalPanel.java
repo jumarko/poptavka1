@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.common.messages;
+package cz.poptavka.sample.client.common.messages.message;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
+import cz.poptavka.sample.domain.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -116,6 +117,21 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return demandService.getDemands(categories);
     }
 
+    @Override
+    public List<Demand> getDemands(ResultCriteria resultCriteria) {
+        return demandService.getAll(resultCriteria);
+    }
+
+    @Override
+    public Set<Demand> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
+        return demandService.getDemands(resultCriteria, localities);
+    }
+
+    @Override
+    public Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories) {
+        return demandService.getDemands(resultCriteria, categories);
+    }
+
     public ArrayList<DemandDetail> getClientDemands(long id) {
         Client client = clientService.getById(id);
         return toArrayList(client.getDemands());
@@ -153,5 +169,4 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         return details;
     }
-
 }

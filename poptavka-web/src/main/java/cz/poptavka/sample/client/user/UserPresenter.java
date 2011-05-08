@@ -27,6 +27,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     public void onAtAccount() {
         eventBus.setUserLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
+//        eventBus.invokeMyDemands();
     }
 
     public void onSetTabWidget(Widget tabBody) {

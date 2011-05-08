@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import cz.poptavka.sample.domain.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -23,10 +24,14 @@ public interface DemandRPCServiceAsync {
 
     void getDemands(Locality[] localities, AsyncCallback<Set<Demand>> callback);
 
-    void getClientDemands(long id,
-            AsyncCallback<ArrayList<DemandDetail>> callback);
+    void getDemands(ResultCriteria resultCriteria, AsyncCallback<List<Demand>> callback);
 
-    void getDemandOffers(ArrayList<Long> idList,
-            AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
+    void getDemands(ResultCriteria resultCriteria, Category[] categories, AsyncCallback<Set<Demand>> callback);
+
+    void getDemands(ResultCriteria resultCriteria, Locality[] localities, AsyncCallback<Set<Demand>> callback);
+
+    void getClientDemands(long id, AsyncCallback<ArrayList<DemandDetail>> callback);
+
+    void getDemandOffers(ArrayList<Long> idList, AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
 
 }

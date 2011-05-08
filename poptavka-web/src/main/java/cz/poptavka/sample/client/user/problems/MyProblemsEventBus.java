@@ -14,10 +14,10 @@ import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 public interface MyProblemsEventBus extends EventBus {
 
     @Event(handlers = MyProblemsPresenter.class)
-    void displayMyProblems();
+    void displayProblems();
 
     @Event(handlers = MyProblemsPresenter.class)
-    void displayMessages();
+    void displayMessages(Problem problem);
 
     @Event(forwardToParent = true)
     void setHomeWidget(AnchorEnum anchor, Widget content, boolean clearOthers);

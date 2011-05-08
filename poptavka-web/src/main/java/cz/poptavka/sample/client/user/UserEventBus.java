@@ -7,10 +7,15 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.common.messages.MessagesPresenter;
+import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
+//import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
+//import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
+import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 
@@ -83,6 +88,18 @@ public interface UserEventBus extends EventBus {
 
     @Event(handlers = DemandsLayoutPresenter.class)
     void displayContent(Widget contentWidget);
+
+    @Event(handlers = MessagesPresenter.class)
+    void reply();
+
+    @Event(handlers = MessagePresenter.class)
+    void send();
+
+    @Event(handlers = MessagesPresenter.class)
+    void discard();
+
+    @Event(handlers = MessagesPresenter.class)
+    void displayMessages(Problem problem);
 
     /** handler method area **/
     @Event(handlers = UserHandler.class)

@@ -59,4 +59,9 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         return localityDetails;
     }
 
+    @Override
+    public Locality getLocality(long id) {
+        return localityService.getById(id);
+    }
+
 }

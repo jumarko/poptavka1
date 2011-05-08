@@ -30,6 +30,16 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
+    public Category getCategory(long id) {
+        return categoryService.getById(id);
+    }
+
+    @Override
+    public List<Category> getAllRootCategories() {
+        return categoryService.getRootCategories();
+    }
+
+    @Override
     public ArrayList<CategoryDetail> getCategories() {
         final List<Category> categories = categoryService.getRootCategories();
         return createCategoryDetailList(categories);

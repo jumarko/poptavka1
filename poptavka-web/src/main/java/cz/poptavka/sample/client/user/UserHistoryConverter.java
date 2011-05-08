@@ -12,13 +12,13 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
             UserEventBus eventBus) {
         eventBus.atAccount();
         if (historyName.equals("invokeMyDemands")) {
-            eventBus.invokeMyDemands();
+//            eventBus.invokeMyDemands();
         }
         if (historyName.equals("invokeOffers")) {
             eventBus.invokeOffers();
         }
         if (historyName.equals("invokeNewDemand")) {
-            eventBus.invokeNewDemand();
+//            eventBus.invokeNewDemand();
         }
     }
 

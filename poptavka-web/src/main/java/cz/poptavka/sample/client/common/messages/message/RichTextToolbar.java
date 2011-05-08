@@ -14,7 +14,7 @@
  * Web: http://blog.elitecoderz.net
  */
 
-package cz.poptavka.sample.client.common.messages;
+package cz.poptavka.sample.client.common.messages.message;
 
 import java.util.HashMap;
 
