@@ -1,22 +1,21 @@
 package cz.poptavka.sample.client.home.demands;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
-import com.mvp4g.client.event.EventBus;
 import com.mvp4g.client.annotation.Events;
-
+import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.demands.flexPager.FlexPagerPresenter;
-import cz.poptavka.sample.domain.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+
+import java.util.ArrayList;
+import java.util.Collection;
 /**
  *
  * @author Martin Slavkovsky

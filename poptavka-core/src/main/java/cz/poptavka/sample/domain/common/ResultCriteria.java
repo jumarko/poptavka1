@@ -1,5 +1,6 @@
 package cz.poptavka.sample.domain.common;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author Juraj Martinka
  *         Date: 30.4.11
  */
-public final class ResultCriteria {
+public final class ResultCriteria implements Serializable {
 
     /**
      * Handy constant - maiinly for testing purposes.
@@ -55,6 +56,18 @@ public final class ResultCriteria {
     }
 
 
+    private ResultCriteria() {
+        // nonparameteric constructor for GWT
+    }
+
+    private ResultCriteria(Builder builder) {
+        // fill all atributes from builder
+        this.orderByColumns = builder.orderByColumns;
+        this.maxResults = builder.maxResults;
+        this.firstResult = builder.firstResult;
+    }
+
+
     public static class Builder {
 
         private Map<String, OrderType> orderByColumns = new HashMap<String, OrderType>();
@@ -93,15 +106,6 @@ public final class ResultCriteria {
             return new ResultCriteria(this);
         }
     }
-
-
-    private ResultCriteria(Builder builder) {
-        // fill all atributes from builder
-        this.orderByColumns = builder.orderByColumns;
-        this.maxResults = builder.maxResults;
-        this.firstResult = builder.firstResult;
-    }
-
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
 

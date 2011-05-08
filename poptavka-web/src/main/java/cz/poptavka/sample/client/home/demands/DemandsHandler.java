@@ -13,7 +13,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.domain.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;

@@ -6,19 +6,18 @@
  */
 package cz.poptavka.sample.client.service.demand;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {
@@ -27,8 +26,8 @@ public interface DemandRPCService extends RemoteService {
 
     String  createNewDemand(DemandDetail newDemand, Long clientId);
 
-    Set<Demand> getDemands(Locality... localities);
-    Set<Demand> getDemands(Category... categories);
+    Set<Demand> getDemands(Locality[] localities);
+    Set<Demand> getDemands(Category[] categories);
 
     List<Demand> getDemands(ResultCriteria resultCriteria);
     Set<Demand> getDemands(ResultCriteria resultCriteria, Locality[] localities);
