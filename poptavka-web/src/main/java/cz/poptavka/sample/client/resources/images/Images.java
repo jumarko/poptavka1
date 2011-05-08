@@ -14,4 +14,12 @@ public interface Images extends ClientBundle {
 
     @Source("zoom-out.gif")
     ImageResource zoomOut();
+
+    @Source("offers-open.png")
+    ImageResource offerOpen();
+
+    @Source("offers-opened.png")
+    ImageResource offerOpened();
+
+
 }

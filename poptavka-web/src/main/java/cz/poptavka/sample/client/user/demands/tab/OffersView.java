@@ -29,11 +29,13 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
     public void createView() {
         master = new HorizontalSplitPanel();
         answerBtn = new Button(MSGS.answer());
+        answerBtn.setEnabled(false);
         refuseBtn = new Button(MSGS.refuse());
+        refuseBtn.setEnabled(false);
         acceptBtn = new Button(MSGS.accept());
+        acceptBtn.setEnabled(false);
         table = new OffersFlexTable();
         messageSection = new SimplePanel();
-
 
         VerticalPanel tableMaster = new VerticalPanel();
         HorizontalPanel btnPanel = new HorizontalPanel();
@@ -58,6 +60,26 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
     @Override
     public OffersFlexTable getTable() {
         return table;
+    }
+
+    @Override
+    public Button getAnswerBtn() {
+        return answerBtn;
+    }
+
+    @Override
+    public Button getRefuseBtn() {
+        return refuseBtn;
+    }
+
+    @Override
+    public Button getAcceptBtn() {
+        return acceptBtn;
+    }
+
+    @Override
+    public SimplePanel getDetailSection() {
+        return messageSection;
     }
 
 

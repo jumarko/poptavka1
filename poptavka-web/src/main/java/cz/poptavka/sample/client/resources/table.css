@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+.click-table {
+    cursor: pointer;
+}
+
+.click-table tr:hover {
+    background-color: black;
+    color: white;
+}
+
+.header {
+    background-color: gray;
+}
+
+.even {
+    background-color: #ced;
+}
+
+.selected-row {
+    background-color: #abc;
+}
+
+.selected-offer {
+    background-color: #abcdef;
+}

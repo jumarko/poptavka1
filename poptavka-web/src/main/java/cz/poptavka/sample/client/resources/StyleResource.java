@@ -31,6 +31,9 @@ public interface StyleResource extends ClientBundle {
     @Source("poptavka-base.css")
     PoptavkaBaseStyle cssBase();
 
+    @Source("table.css")
+    TableStyle table();
+
     Images images();
 
     /**

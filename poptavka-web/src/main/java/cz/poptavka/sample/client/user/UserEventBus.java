@@ -31,6 +31,9 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = DemandsLayoutPresenter.class)
     void setClientDemands(ArrayList<DemandDetail> demands);
 
+    @Event(handlers = DemandsLayoutPresenter.class)
+    void showDemandDetail(long demandId);
+
     @Event(forwardToParent = true)
     void setUserLayout();
 
@@ -107,4 +110,9 @@ public interface UserEventBus extends EventBus {
 
     @Event(handlers = UserHandler.class)
     void requestOffers(ArrayList<Long> idList);
+
+    @Event(handlers = OffersPresenter.class)
+    void setDetailSection(Widget widget);
+
+
 }
