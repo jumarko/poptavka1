@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  <ui:style>
+    .important {
+      font-weight: bold;
+    }
+  </ui:style>
+  <g:HTMLPanel>
+    <g:VerticalPanel>
+      <g:Label ui:field="title">Sprava</g:Label>
+      <g:VerticalPanel ui:field="messagesPanel" />
+      <g:Button ui:field="buttonReply">Reply</g:Button>
+    </g:VerticalPanel>
+  </g:HTMLPanel>
+</ui:UiBinder>
