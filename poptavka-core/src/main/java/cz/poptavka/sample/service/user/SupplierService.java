@@ -1,6 +1,6 @@
 package cz.poptavka.sample.service.user;
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;

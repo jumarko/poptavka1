@@ -2,7 +2,7 @@ package cz.poptavka.sample.domain.demand;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.CategoryDao;
 import cz.poptavka.sample.service.common.TreeItemService;
 import org.junit.Assert;

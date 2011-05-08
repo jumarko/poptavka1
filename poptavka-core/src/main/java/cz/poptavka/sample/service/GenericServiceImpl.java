@@ -1,8 +1,8 @@
 package cz.poptavka.sample.service;
 
 import com.google.common.base.Preconditions;
-import cz.poptavka.sample.common.OrderType;
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.exception.DomainObjectNotFoundException;

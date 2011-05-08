@@ -1,6 +1,6 @@
 package cz.poptavka.sample.service;
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.DomainObject;
 
 import java.util.Collection;

@@ -5,7 +5,7 @@
 
 package cz.poptavka.sample.dao.demand;
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.address.Locality;

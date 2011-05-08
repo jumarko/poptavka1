@@ -2,7 +2,7 @@ package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;

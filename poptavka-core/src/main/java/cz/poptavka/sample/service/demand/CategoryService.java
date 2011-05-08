@@ -1,6 +1,6 @@
 package cz.poptavka.sample.service.demand;
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.CategoryDao;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.GenericService;

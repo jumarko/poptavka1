@@ -1,6 +1,6 @@
 package cz.poptavka.sample.dao.common;
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.TreeItem;
 
 import java.util.List;

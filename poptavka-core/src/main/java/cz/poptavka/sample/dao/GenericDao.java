@@ -1,7 +1,7 @@
 package cz.poptavka.sample.dao;
 
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.hibernate.criterion.Example;
 

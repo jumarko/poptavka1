@@ -5,7 +5,7 @@
 
 package cz.poptavka.sample.service.demand;
 
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;

@@ -1,7 +1,7 @@
 package cz.poptavka.sample.service.address;
 
 import com.googlecode.ehcache.annotations.Cacheable;
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.address.LocalityDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;

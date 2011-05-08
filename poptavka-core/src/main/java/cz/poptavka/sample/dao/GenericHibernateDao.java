@@ -6,8 +6,8 @@
 package cz.poptavka.sample.dao;
 
 import com.google.common.base.Preconditions;
-import cz.poptavka.sample.common.OrderType;
-import cz.poptavka.sample.common.ResultCriteria;
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
