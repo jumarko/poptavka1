@@ -8,7 +8,21 @@
         }
     </ui:style>
     <g:HTMLPanel>
-        Offers content
-        <w:OffersFlexTable></w:OffersFlexTable>
+         <g:VerticalPanel>
+             <g:HorizontalPanel>
+                 <g:HTML>
+                     <ui:msg key="offers">Offers</ui:msg>
+                 </g:HTML>
+                 <g:Button ui:field='answerBtn' enabled="false"><ui:msg key="answer">Answer</ui:msg></g:Button>
+                 <g:Button ui:field='refuseBtn' enabled="false"><ui:msg key="refuse">Refuse</ui:msg></g:Button>
+                 <g:Button ui:field='acceptBtn' enabled="false"><ui:msg key="accept">Accept</ui:msg></g:Button>
+             </g:HorizontalPanel>
+             <w:OffersFlexTable ui:field="table"></w:OffersFlexTable>
+             <w:OfferDetailView></w:OfferDetailView>
+             <w:OffersViewWrapper></w:OffersViewWrapper>
+         </g:VerticalPanel>
+         <g:HorizontalSplitPanel>
+
+         </g:HorizontalSplitPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

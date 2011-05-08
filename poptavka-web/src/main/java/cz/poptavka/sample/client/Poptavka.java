@@ -28,5 +28,6 @@ public class Poptavka implements EntryPoint {
         module.createAndStartModule();
         LOGGER.info("Loading done ... ");
         RootPanel.get("gwt-container").add((Widget) module.getStartView());
+//        RootLayoutPanel.get().add((Widget) module.getStartView());
     }
 }

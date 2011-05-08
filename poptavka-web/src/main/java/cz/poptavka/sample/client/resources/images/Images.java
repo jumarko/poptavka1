@@ -9,4 +9,9 @@ public interface Images extends ClientBundle {
     @Source("star.png")
     ImageResource star();
 
+    @Source("zoom-in.gif")
+    ImageResource zoomIn();
+
+    @Source("zoom-out.gif")
+    ImageResource zoomOut();
 }

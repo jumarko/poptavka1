@@ -5,5 +5,10 @@ public interface LocalizableMessages extends Messages {
     String logIn();
     String logOut();
     String endDate();
+    String emptyField();
 
+    //offers view - buttons
+    String answer();
+    String refuse();
+    String accept();
 }

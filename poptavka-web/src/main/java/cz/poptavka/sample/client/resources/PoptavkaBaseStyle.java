@@ -25,6 +25,9 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("body-container")
     String bodyContainer();
 
+    @ClassName("max-size")
+    String maxSize();
+
     @ClassName("closed")
     String closedWidget();
 

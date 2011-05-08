@@ -1,15 +1,17 @@
 package cz.poptavka.sample.shared.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class DemandDetail implements Serializable {
 
+    private long id;
     private String title;
     private String description;
-    private Long price;
+    private BigDecimal price;
     private Date endDate;
     private Date expireDate;
     private ArrayList<String> localities;
@@ -26,7 +28,7 @@ public class DemandDetail implements Serializable {
     public void setBasicInfo(HashMap<String, Object> map) {
         this.title = (String) map.get("title");
         this.description = (String) map.get("description");
-        this.price = (Long) map.get("price");
+        this.price = (BigDecimal) map.get("price");
         this.endDate = (Date) map.get("endDate");
         this.expireDate = (Date) map.get("expireDate");
     }
@@ -38,6 +40,14 @@ public class DemandDetail implements Serializable {
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -50,10 +60,10 @@ public class DemandDetail implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public Long getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
     public Date getEndDate() {

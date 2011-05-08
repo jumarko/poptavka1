@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Company;
 import cz.poptavka.sample.domain.user.Person;
@@ -18,7 +17,6 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -105,20 +103,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         return -1;
 //        return 1;
-    }
-
-    public ArrayList<DemandDetail> getClientDemands(long id) {
-        Client client = clientService.getById(id);
-        return toArrayList(client.getDemands());
-    }
-
-    private ArrayList<DemandDetail> toArrayList(List<Demand> list) {
-        ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
-        for (Demand demand : list) {
-            DemandDetail detail = new DemandDetail();
-            details.add(detail);
-        }
-        return details;
     }
 
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.shared.domain.ClientDetail;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 
 public interface ClientRPCServiceAsync {
 
@@ -16,7 +15,5 @@ public interface ClientRPCServiceAsync {
     void createNewClient(ClientDetail clientDetail, AsyncCallback<Long> callback);
 
     void verifyClient(ClientDetail client, AsyncCallback<Long> callback);
-
-    void getClientDemands(long id, AsyncCallback<ArrayList<DemandDetail>> callback);
 
 }

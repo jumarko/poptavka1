@@ -23,10 +23,12 @@
             </div>
         </g:HTMLPanel>
 
-        <g:SimplePanel ui:field='bodyHolder' styleName='{res.cssBase.bodyContainer}'>
-            <!-- ony one child widget allowed -->
-            <!-- designed for root child view  -->
-        </g:SimplePanel>
+        <g:ScrollPanel ui:field='bodyHolder' styleName='{res.cssBase.bodyContainer}'>
+            <!--  <g:SimplePanel ui:field='bodyHolder' styleName='{res.cssBase.bodyContainer}'> -->
+                <!-- ony one child widget allowed -->
+                <!-- designed for root child view  -->
+            <!--  </g:SimplePanel> -->
+        </g:ScrollPanel>
 <!--
         <g:HTMLPanel ui:field='footerHolder' styleName='{res.cssBase.footerContainer}'>
              TODO: REPLACE footer - will be hardcoded in host page

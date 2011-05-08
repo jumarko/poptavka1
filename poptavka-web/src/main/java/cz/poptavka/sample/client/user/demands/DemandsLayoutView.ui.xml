@@ -19,6 +19,18 @@
             <g:Hyperlink ui:field="newDemandLink"><ui:msg key="createDemandLink">New Demand</ui:msg></g:Hyperlink>
         </g:VerticalPanel>
         <!-- CURRENT OPTION HOLDER -->
-        <g:SimplePanel ui:field="contentPanel"/>
+        <g:SimplePanel ui:field="contentPanel">
+            <g:HTML><center><h1>Welcome Screen</h1></center>
+                This is the initial page. <br /><br />
+                <strong>Features:</strong>
+                <ul>
+                    <li>feature</li>
+                    <li>feature</li>
+                    <li>feature</li>
+                    <li>feature</li>
+                    <li>feature</li>
+                </ul>
+            </g:HTML>
+        </g:SimplePanel>
     </g:HorizontalPanel>
 </ui:UiBinder>

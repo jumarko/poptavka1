@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.user.demands;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,6 +16,9 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
     interface DemandsLayoutViewUiBinder extends UiBinder<Widget, DemandsLayoutView> {
     }
 
+
+    private static final Logger LOGGER = Logger
+            .getLogger(DemandsLayoutView.class.getName());
 
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField SimplePanel contentPanel;

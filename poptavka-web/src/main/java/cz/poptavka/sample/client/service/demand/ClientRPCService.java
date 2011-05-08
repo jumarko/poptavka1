@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.shared.domain.ClientDetail;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 
 
 @RemoteServiceRelativePath("service/cs")
@@ -19,5 +18,4 @@ public interface ClientRPCService extends RemoteService {
 
     long verifyClient(ClientDetail client);
 
-    ArrayList<DemandDetail> getClientDemands(long id);
 }
