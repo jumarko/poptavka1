@@ -10,8 +10,6 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.common.messages.MessagesPresenter;
 import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
-//import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
-//import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
@@ -104,7 +102,7 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = MessagesPresenter.class)
     void displayMessages(Problem problem);
 
-    /** handler method area **/
+    /** handler method area. **/
     @Event(handlers = UserHandler.class)
     void getClientsDemands(long id);
 

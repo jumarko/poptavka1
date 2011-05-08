@@ -15,8 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Martin Slavkovsky
  *
  */
-public class FlexPagerView extends Composite implements
-        FlexPagerPresenter.FlexPagerViewInterface {
+public class FlexPagerView extends Composite implements FlexPagerPresenter.FlexPagerViewInterface {
 
     private static MyPagerUiBinder uiBinder = GWT.create(MyPagerUiBinder.class);
 

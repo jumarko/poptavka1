@@ -45,8 +45,8 @@ public class OffersPresenter extends
         view.getTable().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-//                HashMap<Integer, Integer> map = view.getTable().getClickedRow(event);
-//                resolveTableClick(map);
+                HashMap<Integer, Integer> map = view.getTable().getClickedRow(event);
+                resolveTableClick(map);
             }
         });
     }
@@ -65,7 +65,7 @@ public class OffersPresenter extends
     }
 
     public void onResponseOffers(ArrayList<ArrayList<OfferDetail>> offersList) {
-//        view.getTable().setOffers(offersList);
+        view.getTable().setOffers(offersList);
     }
 
     /** Help method for requestOffers. **/
@@ -78,27 +78,27 @@ public class OffersPresenter extends
     }
 
     public void resolveTableClick(HashMap<Integer, Integer> map) {
-//        LOGGER.fine("A-" + map.get(OffersFlexTable.RESULT_ACTION));
-//        LOGGER.fine("T-" + map.get(OffersFlexTable.RESULT_TYPE));
-//        LOGGER.fine("ID-" + map.get(OffersFlexTable.RESULT_ID));
-//        if (map.get(OffersFlexTable.RESULT_TYPE) == OffersFlexTable.ACTION_SORT) {
-//            //just pure table thing
-//            return;
-//        }
-//        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_OFFER) {
-//            view.getAcceptBtn().setEnabled(true);
-//            view.getAnswerBtn().setEnabled(true);
-//            view.getRefuseBtn().setEnabled(true);
-//        }
-//        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_DEMAND) {
-//            view.getAcceptBtn().setEnabled(false);
-//            view.getAnswerBtn().setEnabled(false);
-//            view.getRefuseBtn().setEnabled(false);
-//            //demandDetail call
-//            eventBus.showDemandDetail(map.get(OffersFlexTable.RESULT_ID));
-//        }
-        //offer message
-        //toggle - to disable buttons
+        LOGGER.fine("A-" + map.get(OffersFlexTable.RESULT_ACTION));
+        LOGGER.fine("T-" + map.get(OffersFlexTable.RESULT_TYPE));
+        LOGGER.fine("ID-" + map.get(OffersFlexTable.RESULT_ID));
+        if (map.get(OffersFlexTable.RESULT_TYPE) == OffersFlexTable.ACTION_SORT) {
+            //just pure table thing
+            return;
+        }
+        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_OFFER) {
+            view.getAcceptBtn().setEnabled(true);
+            view.getAnswerBtn().setEnabled(true);
+            view.getRefuseBtn().setEnabled(true);
+        }
+        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_DEMAND) {
+            view.getAcceptBtn().setEnabled(false);
+            view.getAnswerBtn().setEnabled(false);
+            view.getRefuseBtn().setEnabled(false);
+            //demandDetail call
+            eventBus.showDemandDetail(map.get(OffersFlexTable.RESULT_ID));
+        }
+//        offer message
+//        toggle - to disable buttons
     }
 
     public void onSetDetailSection(Widget widget) {

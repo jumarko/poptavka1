@@ -8,6 +8,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 
@@ -25,7 +26,7 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
 
     //will be assigned during login process
     //devel client with ID = 17
-    private long clientId = 17;
+    private long clientId = 119;
     private ArrayList<DemandDetail> clientsDemands = null;
     private ArrayList<ArrayList<OfferDetail>> client = new ArrayList<ArrayList<OfferDetail>>();
     private boolean sendDemandsFlag = false;
@@ -47,9 +48,9 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
     }
 
     public void bind() {
-//        view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
+        view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
-//        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
     }
 
     public void onAtAccount() {
@@ -77,6 +78,15 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
             eventBus.responseDemands(clientsDemands);
         }
 
+    }
+
+    public void onShowDemandDetail(long demandId) {
+        for (DemandDetail demand : clientsDemands) {
+            if (demand.getId() == demandId) {
+                eventBus.setDetailSection(new DemandDetailView(demand));
+                return;
+            }
+        }
     }
 
 }
