@@ -2,8 +2,8 @@ package cz.poptavka.sample.dao.user;
 
 import com.google.common.base.Preconditions;
 import cz.poptavka.sample.dao.GenericHibernateDao;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientSearchCriteria;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -26,9 +26,12 @@ public class ClientDaoImpl extends GenericHibernateDao<Client> implements Client
 
         // query by example
         final Criteria personCriteria = getHibernateSession().createCriteria(Client.class)
-                .createCriteria("person");
+                .createCriteria("businessUserData");
         personCriteria.add(Example.create(
-                new Person(clientSearchCritera.getName(), clientSearchCritera.getSurName())));
+                new BusinessUserData.Builder()
+                        .personFirstName(clientSearchCritera.getName())
+                        .personLastName(clientSearchCritera.getSurName())
+                        .build()));
         return personCriteria.list();
     }
 }

@@ -22,9 +22,6 @@
     </bean>
 
 
-    <bean id="personDao"
-          class="cz.poptavka.sample.dao.user.PersonDaoImpl"/>
-
     <bean id="clientDao"
           class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
 
@@ -61,10 +58,6 @@
     </bean>
     <bean id="treeItemService" class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
         <property name="treeItemDao" ref="treeItemDao" />
-    </bean>
-
-    <bean id="personService" class="cz.poptavka.sample.service.user.PersonServiceImpl">
-        <property name="dao" ref="personDao"/>
     </bean>
 
     <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">

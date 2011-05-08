@@ -5,9 +5,9 @@
 
 package cz.poptavka.sample.dao.demand;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
@@ -84,7 +84,8 @@ public interface DemandDao extends GenericDao<Demand> {
      * Get count of ALL demands associated to the some locality from given <code>localities</code>
      *
      * <p>
-     * See {@link #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)}
+     * See {@link #getDemands(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)}
      * for further explanation.
      *
      * @param localities
@@ -130,7 +131,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return all demands that (directly OR indirectly) belongs to the some from given <code>localities</code>.
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      *
-     * @see #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)
+     * @see #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.domain.common.ResultCriteria)
      * @see ResultCriteria#orderByColumns
      */
     Set<Demand> getDemands(Category[] categories, ResultCriteria resultCriteria);
@@ -141,7 +142,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @param categories
      * @return
      *
-     * @see #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)
+     * @see #getDemands(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.domain.common.ResultCriteria)
      */
     long getDemandsCount(Category... categories);
 

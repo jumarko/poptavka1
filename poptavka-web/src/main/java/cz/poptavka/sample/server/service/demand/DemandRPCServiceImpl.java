@@ -5,16 +5,9 @@
 
 package cz.poptavka.sample.server.service.demand;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
@@ -25,6 +18,12 @@ import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * @author Excalibur
@@ -159,8 +158,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 //                detail.setSupplierName(offer.getSupplier().getPerson().getFirstName()
 //                        + " " + offer.getSupplier().getPerson().getLastName());
 //            }
-            if (offer.getSupplier().getCompany() != null) {
-                detail.setSupplierName(offer.getSupplier().getCompany().getName());
+            if (offer.getSupplier().getBusinessUserData() != null) {
+                detail.setSupplierName(offer.getSupplier().getBusinessUserData().getCompanyName());
             } else {
                 detail.setSupplierName("unknown");
             }

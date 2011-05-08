@@ -1,8 +1,8 @@
 package cz.poptavka.sample.dao.user;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 
@@ -21,7 +21,7 @@ public interface SupplierDao extends GenericDao<Supplier> {
      * <code>resultCriteria</code> if they are specified.
      *
      * @see cz.poptavka.sample.dao.demand.DemandDao#getDemands(cz.poptavka.sample.domain.address.Locality[],
-     * cz.poptavka.sample.common.ResultCriteria)
+     * cz.poptavka.sample.domain.common.ResultCriteria)
      *
      * @param localities
      * @param resultCriteria additional restirction that will be set to result, can be null
@@ -42,9 +42,10 @@ public interface SupplierDao extends GenericDao<Supplier> {
      * Evaluate the number of suppliers associated to the given <code>locality</code>(-ies).
      * <p>
      * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[],
-     * cz.poptavka.sample.common.ResultCriteria)} if you want
+     * cz.poptavka.sample.domain.common.ResultCriteria)} if you want
      * to retrieve only number of suppliers - this method is far more lightweight than usage of
-     * {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[], cz.poptavka.sample.common.ResultCriteria)}
+     * {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)}
      *      .size().
      *
      * @param localities
@@ -86,9 +87,10 @@ public interface SupplierDao extends GenericDao<Supplier> {
      * Evaluate the number of suppliers associated to the given <code>category</code>(-ies).
      * <p>
      * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category[],
-     * cz.poptavka.sample.common.ResultCriteria)} if you want
+     * cz.poptavka.sample.domain.common.ResultCriteria)} if you want
      * to retrieve only number of suppliers - this method is far more lightweight than usage of
-     * {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category[], cz.poptavka.sample.common.ResultCriteria)}
+     * {@link #getSuppliers(cz.poptavka.sample.domain.demand.Category[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)}
      *      .size().
      * </p>
      *

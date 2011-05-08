@@ -3,8 +3,8 @@ package cz.poptavka.sample.service.client;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.settings.Settings;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Assert;
@@ -33,7 +33,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
     public void testGetAllClients() {
         final List<Client> allClients = clientService.getAll();
         for (Client client : allClients) {
-            System.out.println(client.getPerson().getFirstName());
+            System.out.println(client.getBusinessUserData().getPersonFirstName());
         }
         System.out.println();
         Assert.assertEquals(4, allClients.size());
@@ -47,19 +47,19 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertNotNull(clients);
         Assert.assertEquals(1, clients.size());
         final Client client = clients.get(0);
-        Assert.assertTrue("Elv\u00edra".equals(client.getPerson().getFirstName()));
-        Assert.assertTrue("Vytret\u00e1".equals(client.getPerson().getLastName()));
+        Assert.assertTrue("Elv\u00edra".equals(client.getBusinessUserData().getPersonFirstName()));
+        Assert.assertTrue("Vytret\u00e1".equals(client.getBusinessUserData().getPersonLastName()));
 
 
         final List<Client> clients2 = clientService.searchByCriteria(new ClientSearchCriteria("Elv\u00edra", null));
         Assert.assertNotNull(clients);
         Assert.assertEquals(2, clients2.size());
-        Assert.assertTrue("Elv\u00edra".equals(clients2.get(0).getPerson().getFirstName()));
-        Assert.assertTrue("Elv\u00edra".equals(clients2.get(1).getPerson().getFirstName()));
+        Assert.assertTrue("Elv\u00edra".equals(clients2.get(0).getBusinessUserData().getPersonFirstName()));
+        Assert.assertTrue("Elv\u00edra".equals(clients2.get(1).getBusinessUserData().getPersonFirstName()));
 
 
         final Client hovnoClient = clientService.getById(111111114L);
-        Assert.assertTrue("hovna".equals(hovnoClient.getCompany().getTaxId()));
+        Assert.assertTrue("hovna".equals(hovnoClient.getBusinessUserData().getTaxId()));
     }
 
 
@@ -70,7 +70,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(1, clients.size());
 
         final Client clientToModify = clients.get(0);
-        clientToModify.getPerson().setLastName("Krokovic");
+        clientToModify.getBusinessUserData().setPersonLastName("Krokovic");
         this.clientService.update(clientToModify);
     }
 
@@ -79,7 +79,8 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
     public void testCreateClient() {
         final Client newClient = new Client();
         newClient.setEmail("new@client.com");
-        newClient.setPerson(new Person("New", "Client"));
+        newClient.setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("New").personLastName("Client").build());
         newClient.setSettings(new Settings());
         this.clientService.create(newClient);
 

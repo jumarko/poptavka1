@@ -1,22 +1,20 @@
 package cz.poptavka.sample.server.service.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Company;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -58,18 +56,16 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public long createNewClient(ClientDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
-        Person person = new Person(clientDetail.getFirstName(), clientDetail.getLastName());
-        person.setPhone(clientDetail.getPhone());
-        newClient.setPerson(person);
-        /** Company will stay null for person client. **/
-        Company company = null;
-        if (!(clientDetail.getCompanyName() == null)) {
-            company = new Company();
-            company.setName(clientDetail.getCompanyName());
-            company.setIdentificationNumber(clientDetail.getIdentifiacationNumber());
-            company.setTaxId(clientDetail.getTaxId());
-        }
-        newClient.setCompany(company);
+        final BusinessUserData businessUserData = new BusinessUserData.Builder()
+                .companyName(clientDetail.getCompanyName())
+                .personFirstName(clientDetail.getFirstName())
+                .personLastName(clientDetail.getLastName())
+                .phone(clientDetail.getPhone())
+                .identificationNumber(clientDetail.getIdentifiacationNumber())
+                .taxId(clientDetail.getTaxId())
+                .build();
+        newClient.setBusinessUserData(businessUserData);
+
         /** Address. **/
         /** Need to fix City selection for frontEnd - think about it **/
         String addressName = clientDetail.getAddress().getCityName();

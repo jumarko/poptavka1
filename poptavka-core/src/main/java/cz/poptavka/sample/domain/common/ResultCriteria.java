@@ -121,4 +121,15 @@ public final class ResultCriteria implements Serializable {
         return firstResult;
     }
 
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("ResultCriteria");
+        sb.append("{orderByColumns=").append(orderByColumns);
+        sb.append(", maxResults=").append(maxResults);
+        sb.append(", firstResult=").append(firstResult);
+        sb.append('}');
+        return sb.toString();
+    }
 }

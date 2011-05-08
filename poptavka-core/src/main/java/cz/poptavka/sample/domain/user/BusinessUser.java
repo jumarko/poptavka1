@@ -39,15 +39,10 @@ public class BusinessUser extends User {
     @Column(length = Constants.ENUM_FIELD_LENGTH)
     private BusinessType businessType;
 
-    /** Company is filled if this object represents the company. For private persons it is null at most situations. */
+    /** Business user data about company and contact person. */
     @OneToOne
     @Cascade(value = CascadeType.ALL)
-    private Company company;
-
-    /** Represents person. It is either the business user itself or contact person for company. */
-    @OneToOne
-    @Cascade(value = CascadeType.ALL)
-    private Person person;
+    private BusinessUserData businessUserData;
 
 
     /** All user's addresses. */
@@ -84,20 +79,12 @@ public class BusinessUser extends User {
         this.businessType = businessType;
     }
 
-    public Company getCompany() {
-        return company;
+    public BusinessUserData getBusinessUserData() {
+        return businessUserData;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setBusinessUserData(BusinessUserData businessUserData) {
+        this.businessUserData = businessUserData;
     }
 
     public List<Address> getAddresses() {
@@ -155,8 +142,7 @@ public class BusinessUser extends User {
         final StringBuilder sb = new StringBuilder();
         sb.append("BusinessUser");
         sb.append("{id=").append(getId());
-        sb.append(", company=").append(ToStringUtils.printId(company));
-        sb.append(", person=").append(ToStringUtils.printId(person));
+        sb.append(", businessUserData=").append(ToStringUtils.printId(businessUserData));
         sb.append(", verified=").append(verification);
         sb.append('}');
         return sb.toString();

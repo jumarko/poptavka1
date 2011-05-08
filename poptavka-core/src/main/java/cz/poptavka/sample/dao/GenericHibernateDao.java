@@ -6,9 +6,9 @@
 package cz.poptavka.sample.dao;
 
 import com.google.common.base.Preconditions;
+import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.common.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -220,9 +220,9 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     /**
      * Set additional restrictions as specified by <code>resultCriteria</code> to the given <code>query</code>.
      * <p>
-     * Currently only {@link ResultCriteria#firstResult} and {@link ResultCriteria#maxResults| are supported
-     * restrictions that can be applied!<br />
-     * Ordering ({@link ResultCriteria#orderByColumns}) cannot be applied!
+     * Currently only {@link cz.poptavka.sample.domain.common.ResultCriteria#firstResult}
+     * and {@link ResultCriteria#maxResults| are supported restrictions that can be applied!<br />
+     * Ordering ({@link cz.poptavka.sample.domain.common.ResultCriteria#orderByColumns}) cannot be applied!
      * </p>
      *
      * @param query          a query to which additional criteria should be applief

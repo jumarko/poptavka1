@@ -1,9 +1,9 @@
 
 package cz.poptavka.sample.service;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import org.hibernate.criterion.Example;
 
 import java.util.List;
@@ -88,7 +88,8 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      *  Otherwise this method cannot be used and more complicated criteria must be constructed manually.
      *  E.g. following code IS NOT WORKING:
      *  <pre> final Client client = new Client();
-        client.setPerson(new Person("Elvíra", "Vytretá"));
+        client.setBusinessUserData(
+            new BusinessUserData.Builder().personFirstName("Elvira").personLastName("Vytreta").build());
         final List<Client> clientsByNames = this.clientService.findByExample(client);</pre>
      *
      * @param example "entity filter"
@@ -102,7 +103,7 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      * but additonal criteria are applied on the result.
      *
      * <p>
-     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}
      *
      * @param example
      * @param resultCriteria
@@ -132,7 +133,7 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      * but additonal criteria are applied on the result.
      *
      * <p>
-     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}
      *
      * @param customExample
      * @param resultCriteria

@@ -1,7 +1,7 @@
 package cz.poptavka.sample.service.audit;
 
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.After;
 import org.junit.Assert;
@@ -114,7 +114,8 @@ public class AuditServiceTest {
     private Client createClient(String firstName, String lastName) {
         final Client newClient = new Client();
         newClient.setEmail(firstName + "." + lastName + "@poptavam.com");
-        newClient.setPerson(new Person(firstName, lastName));
+        newClient.setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName(firstName).personLastName(lastName).build());
         clientService.create(newClient);
         return newClient;
     }
@@ -123,7 +124,8 @@ public class AuditServiceTest {
     private void updateClient(final Client clientForUpdate) {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             protected void doInTransactionWithoutResult(TransactionStatus status) {
-                clientForUpdate.setPerson(new Person("Client1", "Client1"));
+                clientForUpdate.setBusinessUserData(
+                        new BusinessUserData.Builder().personFirstName("Client1").personLastName("Client1").build());
                 clientService.update(clientForUpdate);
             }
         });

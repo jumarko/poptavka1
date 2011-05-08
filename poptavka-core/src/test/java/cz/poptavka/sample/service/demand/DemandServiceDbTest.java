@@ -4,8 +4,8 @@ import cz.poptavka.sample.base.RealDbTest;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.util.date.DateUtils;
 import org.junit.Ignore;
@@ -56,7 +56,8 @@ public class DemandServiceDbTest extends RealDbTest {
     private Client createNewClient() {
         final Client newClient = new Client();
         newClient.setEmail("test@poptavam.com");
-        newClient.setPerson(new Person("Test", "Client"));
+        newClient.setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("Test").personLastName("Client").build());
         return this.clientService.create(newClient);
     }
 

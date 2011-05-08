@@ -2,15 +2,15 @@ package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.settings.Settings;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.util.date.DateUtils;
@@ -350,7 +350,8 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         final Client newClient = new Client();
         newClient.setEmail("test@poptavam.com");
         final String clientSurname = "Client";
-        newClient.setPerson(new Person("Test", clientSurname));
+        newClient.setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("Test").personLastName(clientSurname).build());
         newClient.setSettings(new Settings());
         this.clientService.create(newClient);
 
@@ -362,7 +363,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(price, createdDemand.getPrice());
         Assert.assertEquals(DemandStatus.NEW, createdDemand.getStatus());
         Assert.assertEquals(validTo, createdDemand.getValidTo());
-        Assert.assertEquals(clientSurname, createdDemand.getClient().getPerson().getLastName());
+        Assert.assertEquals(clientSurname, createdDemand.getClient().getBusinessUserData().getPersonLastName());
 
     }
 

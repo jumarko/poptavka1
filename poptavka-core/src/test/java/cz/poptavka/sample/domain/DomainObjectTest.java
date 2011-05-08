@@ -215,11 +215,20 @@ public class DomainObjectTest {
     /**
      * Check if each domain object has meaningful (i.e. it overrides the default {@link Object#toString()})
      * toString() method.
+     *
+     * <p>
+     *     Nested, inner and anonymous classes are ignored.
      */
     @Test
     public void testToStringOverriden() {
         final ArrayList<Class> violationClasses = new ArrayList<Class>(); // classes that violates tested requirement
         for (Class<?> domainObjectClass : domainObjectsClasses) {
+            if (domainObjectClass.isLocalClass() || domainObjectClass.isAnonymousClass()
+                    || domainObjectClass.isMemberClass()) {
+                // ignore nested and anonymous classes
+                continue;
+            }
+
             try {
                 final Method toStringMethod = domainObjectClass.getMethod("toString");
                 if (Object.class.equals(toStringMethod.getDeclaringClass())) {

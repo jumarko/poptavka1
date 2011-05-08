@@ -1,8 +1,8 @@
 package cz.poptavka.sample.service.client;
 
 import cz.poptavka.sample.base.RealDbTest;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.user.ClientSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Assert;
@@ -35,7 +35,8 @@ public class ClientServiceDbTest extends RealDbTest {
     public void testCreateClient() {
         final Client newClient = new Client();
         newClient.setEmail("test@poptavam.com");
-        newClient.setPerson(new Person("Test", "Client"));
+        newClient.setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("Test").personLastName("Client").build());
         this.clientService.create(newClient);
 
         final List<Client> peristedClient = this.clientService.searchByCriteria(

@@ -14,7 +14,7 @@ public interface TreeItemService {
 
     /**
      * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildren(cz.poptavka.sample.domain.common.TreeItem,
-     *      Class, cz.poptavka.sample.common.ResultCriteria)
+     *      Class, cz.poptavka.sample.domain.common.ResultCriteria)
      */
     <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass);
 

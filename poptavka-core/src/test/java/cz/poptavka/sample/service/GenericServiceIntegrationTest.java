@@ -2,13 +2,13 @@ package cz.poptavka.sample.service;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Person;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
@@ -257,7 +257,8 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
     private Client createExampleClient() {
         final Client client = new Client();
-        client.setPerson(new Person("Elv\u00edra", "Vytret\u00e1"));
+        client.setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("Elv\u00edra").personLastName("Vytret\u00e1").build());
         return client;
     }
 

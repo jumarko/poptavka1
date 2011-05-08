@@ -1,8 +1,8 @@
 package cz.poptavka.sample.dao;
 
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import org.hibernate.criterion.Example;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public interface GenericDao<T extends DomainObject> {
      * similar restrictions.
      * <p>
      *     For more information:
-     *     @see cz.poptavka.sample.common.ResultCriteria
+     *     @see cz.poptavka.sample.domain.common.ResultCriteria
      * @return all entities that resultCriteria
      */
     List<T> findAll(ResultCriteria resultCriteria);
@@ -159,7 +159,7 @@ public interface GenericDao<T extends DomainObject> {
      * but additonal criteria are applied on the result.
      *
      * <p>
-     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}
      *
      * @param example
      * @param resultCriteria
@@ -188,7 +188,7 @@ public interface GenericDao<T extends DomainObject> {
      * but additonal criteria are applied on the result.
      *
      * <p>
-     * See {@link #getAll(cz.poptavka.sample.common.ResultCriteria)}
+     * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}
      *
      * @param customExample
      * @param resultCriteria
