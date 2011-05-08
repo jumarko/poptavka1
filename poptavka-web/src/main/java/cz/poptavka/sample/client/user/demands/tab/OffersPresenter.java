@@ -1,9 +1,5 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -12,11 +8,14 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.OffersFlexTable;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 @Presenter(view = OffersView.class)
 public class OffersPresenter extends
@@ -46,8 +45,8 @@ public class OffersPresenter extends
         view.getTable().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                HashMap<Integer, Integer> map = view.getTable().getClickedRow(event);
-                resolveTableClick(map);
+//                HashMap<Integer, Integer> map = view.getTable().getClickedRow(event);
+//                resolveTableClick(map);
             }
         });
     }
@@ -66,7 +65,7 @@ public class OffersPresenter extends
     }
 
     public void onResponseOffers(ArrayList<ArrayList<OfferDetail>> offersList) {
-        view.getTable().setOffers(offersList);
+//        view.getTable().setOffers(offersList);
     }
 
     /** Help method for requestOffers. **/
@@ -82,22 +81,22 @@ public class OffersPresenter extends
 //        LOGGER.fine("A-" + map.get(OffersFlexTable.RESULT_ACTION));
 //        LOGGER.fine("T-" + map.get(OffersFlexTable.RESULT_TYPE));
 //        LOGGER.fine("ID-" + map.get(OffersFlexTable.RESULT_ID));
-        if (map.get(OffersFlexTable.RESULT_TYPE) == OffersFlexTable.ACTION_SORT) {
-            //just pure table thing
-            return;
-        }
-        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_OFFER) {
-            view.getAcceptBtn().setEnabled(true);
-            view.getAnswerBtn().setEnabled(true);
-            view.getRefuseBtn().setEnabled(true);
-        }
-        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_DEMAND) {
-            view.getAcceptBtn().setEnabled(false);
-            view.getAnswerBtn().setEnabled(false);
-            view.getRefuseBtn().setEnabled(false);
-            //demandDetail call
-            eventBus.showDemandDetail(map.get(OffersFlexTable.RESULT_ID));
-        }
+//        if (map.get(OffersFlexTable.RESULT_TYPE) == OffersFlexTable.ACTION_SORT) {
+//            //just pure table thing
+//            return;
+//        }
+//        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_OFFER) {
+//            view.getAcceptBtn().setEnabled(true);
+//            view.getAnswerBtn().setEnabled(true);
+//            view.getRefuseBtn().setEnabled(true);
+//        }
+//        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_DEMAND) {
+//            view.getAcceptBtn().setEnabled(false);
+//            view.getAnswerBtn().setEnabled(false);
+//            view.getRefuseBtn().setEnabled(false);
+//            //demandDetail call
+//            eventBus.showDemandDetail(map.get(OffersFlexTable.RESULT_ID));
+//        }
         //offer message
         //toggle - to disable buttons
     }
