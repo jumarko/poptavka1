@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Entity
 // use slightly different name because "User" is a reserved word
-@Table(name = "UserTable")
+@Table(name = "UserT")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends DomainObject {
