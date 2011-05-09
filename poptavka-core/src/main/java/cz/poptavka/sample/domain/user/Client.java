@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 //@org.hibernate.annotations.Table(comment = )
 @Audited
-public class Client extends BusinessUser {
+public class Client extends BusinessUserRole {
 
     @OneToMany(mappedBy = "client")
     private List<Demand> demands;

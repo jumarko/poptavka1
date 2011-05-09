@@ -35,6 +35,9 @@ import java.util.List;
 @Audited
 public class BusinessUser extends User {
 
+    @OneToMany(mappedBy = "businessUser")
+    private List<BusinessUserRole> businessUserRoles;
+
     @Enumerated(value = EnumType.STRING)
     @Column(length = Constants.ENUM_FIELD_LENGTH)
     private BusinessType businessType;
@@ -51,14 +54,6 @@ public class BusinessUser extends User {
     @Cascade(value = CascadeType.ALL)
     private List<Address> addresses;
 
-    /**
-     *  Verfification state of client. No default value!
-     * @see {@link cz.poptavka.sample.domain.user.BusinessUser.Verification} enum
-     */
-    @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
-    private Verification verification;
-
     @NotAudited
     @OneToMany(mappedBy = "user")
     @Cascade(value = CascadeType.ALL)
@@ -71,6 +66,15 @@ public class BusinessUser extends User {
 
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
+
+    public List<BusinessUserRole> getBusinessUserRoles() {
+        return businessUserRoles;
+    }
+
+    public void setBusinessUserRoles(List<BusinessUserRole> businessUserRoles) {
+        this.businessUserRoles = businessUserRoles;
+    }
+
     public BusinessType getBusinessType() {
         return businessType;
     }
@@ -93,14 +97,6 @@ public class BusinessUser extends User {
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
-    }
-
-    public Verification getVerification() {
-        return verification;
-    }
-
-    public void setVerification(Verification verification) {
-        this.verification = verification;
     }
 
     public List<UserService> getUserServices() {
@@ -143,7 +139,6 @@ public class BusinessUser extends User {
         sb.append("BusinessUser");
         sb.append("{id=").append(getId());
         sb.append(", businessUserData=").append(ToStringUtils.printId(businessUserData));
-        sb.append(", verified=").append(verification);
         sb.append('}');
         return sb.toString();
     }

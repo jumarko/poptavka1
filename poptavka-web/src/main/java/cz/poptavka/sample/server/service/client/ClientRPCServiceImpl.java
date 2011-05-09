@@ -64,7 +64,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 .identificationNumber(clientDetail.getIdentifiacationNumber())
                 .taxId(clientDetail.getTaxId())
                 .build();
-        newClient.setBusinessUserData(businessUserData);
+        newClient.getBusinessUser().setBusinessUserData(businessUserData);
 
         /** Address. **/
         /** Need to fix City selection for frontEnd - think about it **/
@@ -80,10 +80,10 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         address.setZipCode(clientDetail.getAddress().getZipCode());
         List<Address> addresses = new ArrayList<Address>();
         addresses.add(address);
-        newClient.setAddresses(addresses);
+        newClient.getBusinessUser().setAddresses(addresses);
         /** Login & pwd information. **/
-        newClient.setEmail(clientDetail.getEmail());
-        newClient.setPassword(clientDetail.getPassword());
+        newClient.getBusinessUser().setEmail(clientDetail.getEmail());
+        newClient.getBusinessUser().setPassword(clientDetail.getPassword());
 
         Client newClient2 = clientService.create(newClient);
         return newClient2.getId();
@@ -93,7 +93,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         List<Client> clients = clientService.getAll();
 
         for (Client cl : clients) {
-            if (cl.getEmail().equals(client.getLogin()) && cl.getPassword().equals(client.getPassword())) {
+            if (cl.getBusinessUser().getEmail().equals(client.getLogin())
+                    && cl.getBusinessUser().getPassword().equals(client.getPassword())) {
                 return cl.getId();
             }
         }

@@ -257,7 +257,7 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
     private Client createExampleClient() {
         final Client client = new Client();
-        client.setBusinessUserData(
+        client.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("Elv\u00edra").personLastName("Vytret\u00e1").build());
         return client;
     }

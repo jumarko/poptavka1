@@ -1,16 +1,15 @@
 package cz.poptavka.sample.client.user.demands;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,9 +23,11 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 @Presenter(view = DemandsLayoutView.class)
 public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
 
+    private static final long TEST_CLIENT_ID = 1L;
+
     //will be assigned during login process
     //devel client with ID = 17
-    private long clientId = 119;
+    private long clientId = TEST_CLIENT_ID;
     private ArrayList<DemandDetail> clientsDemands = null;
     private ArrayList<ArrayList<OfferDetail>> client = new ArrayList<ArrayList<OfferDetail>>();
     private boolean sendDemandsFlag = false;

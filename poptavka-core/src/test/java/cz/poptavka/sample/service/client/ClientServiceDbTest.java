@@ -34,8 +34,8 @@ public class ClientServiceDbTest extends RealDbTest {
     @Transactional(propagation = Propagation.REQUIRED)
     public void testCreateClient() {
         final Client newClient = new Client();
-        newClient.setEmail("test@poptavam.com");
-        newClient.setBusinessUserData(
+        newClient.getBusinessUser().setEmail("test@poptavam.com");
+        newClient.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("Test").personLastName("Client").build());
         this.clientService.create(newClient);
 
@@ -43,6 +43,6 @@ public class ClientServiceDbTest extends RealDbTest {
                 new ClientSearchCriteria("Test", "Client"));
         Assert.assertNotNull(peristedClient);
         Assert.assertNotNull(peristedClient.get(0).getId());
-        Assert.assertEquals("test@poptavam.com", peristedClient.get(0).getEmail());
+        Assert.assertEquals("test@poptavam.com", peristedClient.get(0).getBusinessUser().getEmail());
     }
 }

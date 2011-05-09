@@ -249,8 +249,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
 
     @SuppressWarnings("unchecked")
     public T save(T entity) {
-        em().merge(entity);
-        return entity;
+        return em().merge(entity);
     }
 
     /**
@@ -260,6 +259,16 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         getHibernateSession().update(entity);
         return entity;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public T saveOrUpdate(final T entity) {
+        getHibernateSession().saveOrUpdate(entity);
+        return entity;
+    }
+
+
 
     /**
      * {@inheritDoc}

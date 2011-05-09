@@ -61,6 +61,7 @@
     </bean>
 
     <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">
+        <constructor-arg ref="generalService" />
         <property name="dao" ref="clientDao"/>
     </bean>
 

@@ -55,8 +55,8 @@ public class DemandServiceDbTest extends RealDbTest {
 
     private Client createNewClient() {
         final Client newClient = new Client();
-        newClient.setEmail("test@poptavam.com");
-        newClient.setBusinessUserData(
+        newClient.getBusinessUser().setEmail("test@poptavam.com");
+        newClient.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("Test").personLastName("Client").build());
         return this.clientService.create(newClient);
     }

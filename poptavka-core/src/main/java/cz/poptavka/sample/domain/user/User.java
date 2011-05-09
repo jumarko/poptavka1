@@ -7,6 +7,7 @@ import cz.poptavka.sample.domain.user.rights.AccessRole;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -41,9 +42,13 @@ public class User extends DomainObject {
     @NotAudited
     private List<AccessRole> accessRoles;
 
-    @OneToOne(optional = false)
+    /**
+     * Settings of this user. Each user has some settings. If user is removed there is no reason to store his
+     * settings anymore.
+     */
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     @NotAudited
-    private Settings settings;
+    private Settings settings = new Settings();
 
 
     @OneToOne

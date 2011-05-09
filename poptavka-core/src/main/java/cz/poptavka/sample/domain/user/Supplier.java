@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Entity
 @Audited
-public class Supplier extends BusinessUser {
+public class Supplier extends BusinessUserRole {
 
     @ManyToMany
     @NotAudited

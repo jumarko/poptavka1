@@ -26,6 +26,7 @@ public class ClientDaoImpl extends GenericHibernateDao<Client> implements Client
 
         // query by example
         final Criteria personCriteria = getHibernateSession().createCriteria(Client.class)
+                .createCriteria("businessUser")
                 .createCriteria("businessUserData");
         personCriteria.add(Example.create(
                 new BusinessUserData.Builder()
@@ -33,5 +34,13 @@ public class ClientDaoImpl extends GenericHibernateDao<Client> implements Client
                         .personLastName(clientSearchCritera.getSurName())
                         .build()));
         return personCriteria.list();
+    }
+
+    @Override
+    public Client update(Client client) {
+        // save businessuser
+//        final Client mergedClient = save(client);
+        return super.update(client);
+
     }
 }

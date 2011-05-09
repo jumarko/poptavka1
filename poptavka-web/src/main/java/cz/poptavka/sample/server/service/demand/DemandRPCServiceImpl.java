@@ -158,8 +158,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 //                detail.setSupplierName(offer.getSupplier().getPerson().getFirstName()
 //                        + " " + offer.getSupplier().getPerson().getLastName());
 //            }
-            if (offer.getSupplier().getBusinessUserData() != null) {
-                detail.setSupplierName(offer.getSupplier().getBusinessUserData().getCompanyName());
+            if (offer.getSupplier().getBusinessUser().getBusinessUserData() != null) {
+                detail.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
             } else {
                 detail.setSupplierName("unknown");
             }

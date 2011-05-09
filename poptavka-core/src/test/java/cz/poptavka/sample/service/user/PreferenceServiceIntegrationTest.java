@@ -49,8 +49,8 @@ public class PreferenceServiceIntegrationTest extends DBUnitBaseTest {
 
         final Client firstUser = this.clientService.getById(USER_WITH_PREFERECENCES);
         Assert.assertNotNull(firstUser);
-        Assert.assertNotNull(firstUser.getSettings());
-        final List<Preference> userPreferences = firstUser.getSettings().getPreferences();
+        Assert.assertNotNull(firstUser.getBusinessUser().getSettings());
+        final List<Preference> userPreferences = firstUser.getBusinessUser().getSettings().getPreferences();
         Assert.assertEquals(2, userPreferences.size());
 
         checkPreferenceExist(new Preference(USER_COLOR_FAVOURITE, "RED"), userPreferences);

@@ -17,7 +17,6 @@ import cz.poptavka.sample.util.date.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,7 +39,6 @@ import java.util.Map;
         "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
 // TODO: jumar fix "cannot inser null value into non-nullable settings_id" by creating the new client
-@Ignore
 public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
@@ -348,11 +346,11 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
 
         final Client newClient = new Client();
-        newClient.setEmail("test@poptavam.com");
+        newClient.getBusinessUser().setEmail("test@poptavam.com");
         final String clientSurname = "Client";
-        newClient.setBusinessUserData(
+        newClient.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("Test").personLastName(clientSurname).build());
-        newClient.setSettings(new Settings());
+        newClient.getBusinessUser().setSettings(new Settings());
         this.clientService.create(newClient);
 
         demand.setClient(clientService.getById(newClient.getId()));
@@ -363,7 +361,8 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(price, createdDemand.getPrice());
         Assert.assertEquals(DemandStatus.NEW, createdDemand.getStatus());
         Assert.assertEquals(validTo, createdDemand.getValidTo());
-        Assert.assertEquals(clientSurname, createdDemand.getClient().getBusinessUserData().getPersonLastName());
+        Assert.assertEquals(clientSurname,
+                createdDemand.getClient().getBusinessUser().getBusinessUserData().getPersonLastName());
 
     }
 

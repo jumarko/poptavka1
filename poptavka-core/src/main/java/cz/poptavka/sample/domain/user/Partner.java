@@ -10,5 +10,5 @@ import javax.persistence.Entity;
  */
 @Entity
 @Audited
-public class Partner extends BusinessUser {
+public class Partner extends BusinessUserRole {
 }

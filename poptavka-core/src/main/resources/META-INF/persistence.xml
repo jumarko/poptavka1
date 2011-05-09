@@ -8,7 +8,7 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
     <persistence-unit name="poptavkaPU">
         <properties>
             <property name="hibernate.archive.autodetection" value="class, hbm"/>
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.connection.useUnicode" value="true"/>
             <property name="hibernate.connection.characterEncoding" value="UTF-8"/>

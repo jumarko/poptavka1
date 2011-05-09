@@ -65,6 +65,13 @@ public interface GenericDao<T extends DomainObject> {
     T save(T entity);
 
     /**
+     * Save the state entity or updated it).
+     * @param entity
+     * @return
+     */
+    T saveOrUpdate(final T entity);
+
+    /**
      * Update the persistent instance with the identifier of the given detached instance.
      * If there is a persistent instance with the same identifier, an exception is thrown.
      * This operation cascades to associated instances if the association is mapped with cascade="save-update".
