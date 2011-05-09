@@ -3,7 +3,6 @@ package cz.poptavka.sample.application.scripting;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import java.io.IOException;
  */
 @DataSet(path = "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
         dtd = "classpath:test.dtd")
-@Ignore
 public class ScriptExecutorTest extends DBUnitBaseTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptExecutorTest.class);
