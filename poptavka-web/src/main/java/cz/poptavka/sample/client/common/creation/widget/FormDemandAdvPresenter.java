@@ -35,7 +35,7 @@ public class FormDemandAdvPresenter extends
     /** toValidate() **/
     public void onValidateDemandAdvForm() {
         if (view.isValid()) {
-            eventBus.formNextStep();
+//            eventBus.formNextStep();
         }
     }
 

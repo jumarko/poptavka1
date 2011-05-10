@@ -15,7 +15,6 @@
             display: none;
         }
     </ui:style>
-
     <g:HTMLPanel>
                 <g:Grid>
                     <g:row>
@@ -67,5 +66,5 @@
                         </g:customCell>
                     </g:row>
                 </g:Grid>
-    </g:HTMLPanel>
+                </g:HTMLPanel>
 </ui:UiBinder>

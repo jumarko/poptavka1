@@ -35,7 +35,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
          * Doing it this way only to keep standart gwt-class on tabLayoutPanel
          */
         StyleResource.INSTANCE.layout().ensureInjected();
-        tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().userPanelLayout());
+        tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().fullSize());
     }
 
     public void setBody(Widget body) {

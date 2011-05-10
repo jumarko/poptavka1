@@ -26,8 +26,8 @@ public interface LayoutResource extends CssResource {
     String loginArea();
 
     /** UserView.class **/
-    @ClassName("layout-tabPanel")
-    String userPanelLayout();
+    @ClassName("full-size-panel")
+    String fullSize();
 
 
     @ClassName("main-menu-container")
@@ -61,11 +61,7 @@ public interface LayoutResource extends CssResource {
     @ClassName("solid-back")
     String solidBackground();
 
-    @ClassName("elem-hidden")
-    String elemHiddenOn();
 
-    @ClassName("elem-visible")
-    String elemHiddenOff();
 
     @ClassName("error-field")
     String errorField();

@@ -38,15 +38,12 @@ body {
     border-bottom: thin black solid;
 }
 
-.layout-tabPanel {
+.full-size-panel {
     width: 100%;
     height: 100%;
 }
 
 /** DELETE AFTER THIS LINE **/
-
-
-
 
 
 .max-size {
@@ -100,14 +97,6 @@ body {
 
 .error-field {
     background-color: #ffcece;
-}
-
-.elem-hidden {
-    visibility: hidden;
-}
-
-.elem-visible {
-    visibility: visible;
 }
 
 .resizeIt {

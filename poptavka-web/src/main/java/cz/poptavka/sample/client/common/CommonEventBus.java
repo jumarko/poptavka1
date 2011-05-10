@@ -106,11 +106,11 @@ public interface CommonEventBus extends EventBus {
     void submitUserForm();
 
     /** Form navigation. **/
-    @Event(handlers = DemandCreationPresenter.class)
-    void formNextStep();
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void formBackStep();
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void formNextStep();
+//
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void formBackStep();
 
     /** Form get data. **/
     @Event(handlers = FormDemandBasicPresenter.class)

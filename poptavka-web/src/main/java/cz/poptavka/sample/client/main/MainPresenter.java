@@ -59,11 +59,11 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public void onStart() {
         LOGGER.info("Initializing application ... ");
         /** for public part development **/
-//        LOGGER.info("    > Home Module");
-//        eventBus.atHome();
+        LOGGER.info("    > Home Module");
+        eventBus.atHome();
         /** for user part development **/
-        LOGGER.info("    > User Module");
-        eventBus.atAccount();
+//        LOGGER.info("    > User Module");
+//        eventBus.atAccount();
     }
 
     /**

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -12,8 +11,6 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import cz.poptavka.sample.client.resources.StyleResource;
 
 //@Singleton
 public class CategorySelectorView extends Composite implements CategorySelectorPresenter.CategorySelectorInterface {
@@ -34,10 +31,6 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        StyleResource.INSTANCE.layout().ensureInjected();
-
-        //set width according to page width
-        masterPanel.setWidth((Document.get().getElementById("page").getClientWidth() + "px"));
     }
 
     public Widget getWidgetView() {

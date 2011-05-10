@@ -41,7 +41,7 @@ public class FormDemandBasicPresenter
     public void onValidateDemandBasicForm() {
         LOGGER.fine("validating basic form .....");
         if (view.isValid()) {
-            eventBus.formNextStep();
+//            eventBus.formNextStep();
         }
     }
 

@@ -5,3 +5,11 @@
     height: 160px;
     background: url("images/loader.gif") no-repeat center;
 }
+
+.elem-hidden {
+    display: none;
+}
+
+.elem-visible {
+    display: block;
+}
