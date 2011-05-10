@@ -37,7 +37,7 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
 
     public LocalitySelectorView() {
         initWidget(uiBinder.createAndBindUi(this));
-        StyleResource.INSTANCE.cssBase().ensureInjected();
+        StyleResource.INSTANCE.layout().ensureInjected();
     }
 
     @Override

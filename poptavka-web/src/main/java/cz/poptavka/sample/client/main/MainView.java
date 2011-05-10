@@ -2,11 +2,11 @@ package cz.poptavka.sample.client.main;
 
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,10 +19,10 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     interface Binder extends UiBinder<Widget, MainView> {    }
 
     /** Main UI containers. **/
-    @UiField HTMLPanel layoutMaster;
+    @UiField DockLayoutPanel layoutMaster;
     @UiField HTMLPanel headerHolder;
     @UiField SimplePanel bodyHolder;
-//    @UiField HTMLPanel footerHolder;
+    @UiField HTMLPanel footerHolder;
 
     @UiField Anchor loginButton;
 
@@ -31,11 +31,8 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
      */
     public MainView() {
         initWidget(BINDER.createAndBindUi(this));
-        //styling layout - styled in UiBinder
-        StyleResource.INSTANCE.cssBase().ensureInjected();
-        layoutMaster.getElement().setId("page");
-        Document.get().getElementById("footerContainer")
-            .addClassName(StyleResource.INSTANCE.cssBase().footerContainer());
+        //styling layout - styled in UiBinder, but this is required
+        StyleResource.INSTANCE.layout().ensureInjected();
     }
 
     /**
@@ -47,19 +44,6 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
         bodyHolder.setWidget(body);
     }
 
-    public void setListOfDemands(Widget demands) {
-        bodyHolder.setWidget(demands);
-    }
-
-    /**
-     * Sets widget to header Login Area. Designed for Login Widget only.
-     *
-     * @param login login widget
-     */
-    public void setLoginWidget(Widget login) {
-        headerHolder.add(login, "loginArea");
-    }
-
     @Override
     public Anchor getLoginButton() {
         return loginButton;
@@ -68,9 +52,9 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     @Override
     public void toggleMainLayout(boolean switchToUserLayout) {
         if (switchToUserLayout) {
-            layoutMaster.setStyleName(StyleResource.INSTANCE.cssBase().layoutContainerUser());
+            layoutMaster.setStyleName(StyleResource.INSTANCE.layout().layoutUser());
         } else {
-            layoutMaster.setStyleName(StyleResource.INSTANCE.cssBase().layoutContainer());
+            layoutMaster.setStyleName(StyleResource.INSTANCE.layout().layoutPublic());
         }
     }
 

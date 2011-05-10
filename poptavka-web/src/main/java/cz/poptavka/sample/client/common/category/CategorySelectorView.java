@@ -34,7 +34,7 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        StyleResource.INSTANCE.cssBase().ensureInjected();
+        StyleResource.INSTANCE.layout().ensureInjected();
 
         //set width according to page width
         masterPanel.setWidth((Document.get().getElementById("page").getClientWidth() + "px"));

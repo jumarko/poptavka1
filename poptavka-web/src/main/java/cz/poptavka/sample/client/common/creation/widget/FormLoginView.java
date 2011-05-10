@@ -61,11 +61,11 @@ public class FormLoginView extends Composite implements FormLoginPresenter.FormL
     public boolean isValid() {
         boolean isValid = true;
         if (passBox.getText().equals("")) {
-            passBox.setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+            passBox.setStyleName(StyleResource.INSTANCE.layout().errorField());
             isValid = false;
         }
         if (mailBox.getText().equals("")) {
-            mailBox.setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+            mailBox.setStyleName(StyleResource.INSTANCE.layout().errorField());
             isValid = false;
         }
         return isValid;

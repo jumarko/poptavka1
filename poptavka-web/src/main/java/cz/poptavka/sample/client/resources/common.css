@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+
+.small-loader {
+    width: 200px;
+    height: 160px;
+    background: url("images/loader.gif") no-repeat center;
+}

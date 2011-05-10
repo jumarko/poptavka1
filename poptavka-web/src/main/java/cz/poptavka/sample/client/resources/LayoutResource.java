@@ -2,19 +2,33 @@ package cz.poptavka.sample.client.resources;
 
 import com.google.gwt.resources.client.CssResource;
 
-public interface PoptavkaBaseStyle extends CssResource {
+/**
+ *
+ * GWT Wrapper for base app layout.
+ *
+ * @author Beho
+ *
+ */
+public interface LayoutResource extends CssResource {
 
-    @ClassName("layout-container")
-    String layoutContainer();
-
-    @ClassName("layout-container-user")
-    String layoutContainerUser();
-
+    /** MainView.class **/
+    @ClassName("layout-public-main")
+    String layoutPublic();
+    @ClassName("layout-user-main")
+    String layoutUser();
     @ClassName("header-container")
     String headerContainer();
-
     @ClassName("footer-container")
     String footerContainer();
+    @ClassName("body-container")
+    String bodyContainer();
+    @ClassName("login-area")
+    String loginArea();
+
+    /** UserView.class **/
+    @ClassName("layout-tabPanel")
+    String userPanelLayout();
+
 
     @ClassName("main-menu-container")
     String mainMenuContainer();
@@ -22,8 +36,7 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("side-menu-container")
     String sideMenuContainer();
 
-    @ClassName("body-container")
-    String bodyContainer();
+
 
     @ClassName("max-size")
     String maxSize();
@@ -31,8 +44,7 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("closed")
     String closedWidget();
 
-    @ClassName("login-area")
-    String loginArea();
+
 
     @ClassName("creation-hidden")
     String creationHidden();
@@ -49,9 +61,6 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("solid-back")
     String solidBackground();
 
-    @ClassName("common-list-loader")
-    String commonListLoader();
-
     @ClassName("elem-hidden")
     String elemHiddenOn();
 
@@ -61,5 +70,7 @@ public interface PoptavkaBaseStyle extends CssResource {
     @ClassName("error-field")
     String errorField();
 
+    @ClassName("resizeIt")
+    String resize();
 
 }

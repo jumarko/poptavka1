@@ -26,11 +26,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public interface MainViewInterface {
         void setBodyWidget(Widget body);
 
-        void setLoginWidget(Widget login);
-
         void toggleMainLayout(boolean switchToUserLayout);
-
-        void setListOfDemands(Widget demands);
 
         // TODO eventually change to hyperlink
         Anchor getLoginButton();
@@ -56,14 +52,16 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     /**
-     * Initial Event. Calls all default modules to load: LoginModule, HomeModule
+     * Initial Event. Calls all default modules to load: HomeModule
+     *
+     * For development purposes User Module can be loaded instantly
      */
     public void onStart() {
         LOGGER.info("Initializing application ... ");
-        //for home par development
+        /** for public part development **/
 //        LOGGER.info("    > Home Module");
 //        eventBus.atHome();
-//        for user part development
+        /** for user part development **/
         LOGGER.info("    > User Module");
         eventBus.atAccount();
     }
@@ -76,14 +74,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public void onSetBodyHolderWidget(Widget body) {
         view.setBodyWidget(body);
     }
-    /**
-     * Sets widget to View's demands list section. Demands list section can hold one widget only.
-     *
-     * @param demands list widget to be inserted
-     */
-    public void onListOfDemandsWidget(Widget demands) {
-        view.setListOfDemands(demands);
-    }
+
     /**
      * Crossroad method for placing widget from common package.
      *

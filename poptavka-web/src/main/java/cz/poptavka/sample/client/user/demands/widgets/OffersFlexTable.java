@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ToggleButton;
@@ -51,9 +53,11 @@ public class OffersFlexTable extends FlexTable {
     private ArrayList<ArrayList<OfferDetail>> offers = new ArrayList<ArrayList<OfferDetail>>();
 
     public OffersFlexTable() {
+        /** TODO to make thead **/
+        initTable();
         this.setHTML(0, COULMN_SIGN, "&nbsp;&nbsp;&nbsp;");
-        this.setHTML(0, COLUMN_DEMAND, "<strong>Detail</strong>");
-        this.setHTML(0, COLUMN_PRICE, "<strong>Cena</strong>");
+        this.setHTML(0, COLUMN_DEMAND, "<strong>" + MSGS.demand() + "</strong>");
+        this.setHTML(0, COLUMN_PRICE, "<strong>" + MSGS.price() + "</strong>");
         this.setWidget(0, COLUMN_RATING, new Image(StyleResource.INSTANCE.images().star()));
         this.setHTML(0, COLUMN_DATE, "<strong>" + MSGS.endDate() + "</strong>");
         /* style. */
@@ -62,6 +66,27 @@ public class OffersFlexTable extends FlexTable {
         setStyleName(StyleResource.INSTANCE.table().clickTable());
         setCellSpacing(0);
     }
+
+    private void initTable() {
+        Element thead = DOM.createTHead();
+        DOM.insertChild(this.getElement(), thead, 0);
+        //update this condition
+        for (int row = 0; row < 1; row++) {
+            Element tr = DOM.createTR();
+            DOM.appendChild(thead, tr);
+            for (int col = 0; col < 1; col++) {
+                Element th = DOM.createTH();
+                DOM.appendChild(tr, th);
+                // NB!!!! camelback on attributes for IE or despair
+                //DOM.setElementAttribute(th, "colSpan", String.valueOf(headerModel.getHeaderSpan(row, col)));
+                DOM.setElementAttribute(th, "align", "left");
+                DOM.setElementAttribute(th, "border", "1");
+                //set header text
+            //    DOM.setInnerText(th, headerModel.getHeaderText(row, col));
+            }
+        }
+    }
+
 
     public void setData(ArrayList<DemandDetail> demands) {
         if (this.demands.hashCode() != demands.hashCode()) {
@@ -84,9 +109,9 @@ public class OffersFlexTable extends FlexTable {
         this.setHTML(nextRow, COLUMN_DATE,
                 (demand.getEndDate() != null ? demand.getEndDate().toString() : MSGS.emptyField()));
         this.setHTML(nextRow, COLUMN_ID, demand.getId() + "");
-        this.getCellFormatter().addStyleName(nextRow, COLUMN_ID, StyleResource.INSTANCE.cssBase().closedWidget());
+        this.getCellFormatter().addStyleName(nextRow, COLUMN_ID, StyleResource.INSTANCE.layout().closedWidget());
         this.setHTML(nextRow, COLUMN_TYPE, TYPE_DEMAND + "");
-        this.getCellFormatter().addStyleName(nextRow, COLUMN_TYPE, StyleResource.INSTANCE.cssBase().closedWidget());
+        this.getCellFormatter().addStyleName(nextRow, COLUMN_TYPE, StyleResource.INSTANCE.layout().closedWidget());
         if ((nextRow % 2) == 0) {
             getRowFormatter().addStyleName(nextRow, StyleResource.INSTANCE.table().evenRow());
         }
@@ -182,9 +207,9 @@ public class OffersFlexTable extends FlexTable {
         //this.setHTML(row, COLUMN_ID, "" + offer.getMessageId());
         this.setHTML(row, COLUMN_ID, "" + 0);
 
-        this.getCellFormatter().addStyleName(row, COLUMN_ID, StyleResource.INSTANCE.cssBase().closedWidget());
+        this.getCellFormatter().addStyleName(row, COLUMN_ID, StyleResource.INSTANCE.layout().closedWidget());
         this.setHTML(row, COLUMN_TYPE, "" + TYPE_OFFER);
-        this.getCellFormatter().addStyleName(row, COLUMN_TYPE, StyleResource.INSTANCE.cssBase().closedWidget());
+        this.getCellFormatter().addStyleName(row, COLUMN_TYPE, StyleResource.INSTANCE.layout().closedWidget());
     }
 
     private void hideOffers(int clickedDemand) {

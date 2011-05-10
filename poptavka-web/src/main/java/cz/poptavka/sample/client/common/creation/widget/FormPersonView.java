@@ -44,10 +44,10 @@ public class FormPersonView extends Composite implements FormPersonPresenter.For
     public boolean isValid() {
         int errorCount = 0;
         for (TextBox item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.cssBase().errorField());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
             if (item.getText().length() == 0) {
                 errorCount++;
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
             }
         }
         return errorCount == 0;

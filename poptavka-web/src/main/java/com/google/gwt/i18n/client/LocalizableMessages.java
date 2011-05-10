@@ -11,4 +11,7 @@ public interface LocalizableMessages extends Messages {
     String answer();
     String refuse();
     String accept();
+    //offer table
+    String price();
+    String demand();
 }

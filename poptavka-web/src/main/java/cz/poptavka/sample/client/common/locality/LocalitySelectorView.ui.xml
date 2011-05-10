@@ -9,7 +9,7 @@
             <g:ListBox ui:field='regionList' visibleItemCount='10' width="200"></g:ListBox>
             <g:ListBox ui:field='districtList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
             <g:ListBox ui:field='cityList' visibleItemCount='10' visible='false' width="200"></g:ListBox>
-            <g:HTML ui:field='loader' visible='false' styleName='{res.cssBase.commonListLoader}' />
+            <g:HTML ui:field='loader' visible='false' styleName='{res.common.smallLoader}' />
         </g:HorizontalPanel>
         <strong><ui:msg key="selectedLocs">Selected</ui:msg>:</strong><br />
         <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>

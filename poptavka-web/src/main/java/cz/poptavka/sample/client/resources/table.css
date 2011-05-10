@@ -3,6 +3,10 @@
     cursor: pointer;
 }
 
+.click-table tr {
+    width: 120px;
+}
+
 .click-table tr:hover {
     background-color: black;
     color: white;

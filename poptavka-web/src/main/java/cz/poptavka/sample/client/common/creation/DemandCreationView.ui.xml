@@ -21,7 +21,7 @@
         }
     </ui:style>
 
-    <g:AbsolutePanel height="460px"  ui:field='absolutePanel' styleName='{res.cssBase.solidBackground}'>
+    <g:AbsolutePanel height="460px"  ui:field='absolutePanel' styleName='{res.layout.solidBackground}'>
         <g:at left="0" top="0">
         <!-- STEP ONE -->
             <g:VerticalPanel ui:field="stepOne">
@@ -43,7 +43,7 @@
         </g:at>
         <!-- STEP TWO -->
         <g:at left="0" top="465">
-            <g:VerticalPanel ui:field="stepTwo" width="600px" height="420px" styleName='{res.cssBase.solidBackground}'>
+            <g:VerticalPanel ui:field="stepTwo" width="600px" height="420px" styleName='{res.layout.solidBackground}'>
                 <g:HTML styleName='{style.clickable}'><div><strong>#2 <ui:msg key="catsSelection">Category selection</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="categoryHolder"/>
                 <g:Cell verticalAlignment="ALIGN_BOTTOM" horizontalAlignment="ALIGN_RIGHT">
@@ -58,7 +58,7 @@
         </g:at>
         <!-- STEP THREE -->
         <g:at left="0" top="465">
-            <g:VerticalPanel height="400px" ui:field="stepThree" width="600px" styleName='{res.cssBase.solidBackground}'>
+            <g:VerticalPanel height="400px" ui:field="stepThree" width="600px" styleName='{res.layout.solidBackground}'>
                 <g:HTML styleName='{style.clickable}'><div><strong>#3 <ui:msg key="locsSelection">Locality selection</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="localityHolder"/>
                 <!-- <cl:LocalitySelectorView ui:field="localityWidget"/> -->
@@ -74,7 +74,7 @@
         </g:at>
         <!-- STEP FOUR -->
         <g:at left="0" top="465">
-            <g:VerticalPanel height="380px" width="600px" ui:field="stepFour" styleName='{res.cssBase.solidBackground}'>
+            <g:VerticalPanel height="380px" width="600px" ui:field="stepFour" styleName='{res.layout.solidBackground}'>
                 <g:HTML styleName='{style.clickable}'><div><strong>#4 <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg></strong></div></g:HTML>
                 <g:SimplePanel ui:field="advInfoHolder"/>
                 <g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_BOTTOM">
@@ -89,7 +89,7 @@
         </g:at>
         <!-- STEP FIVE -->
         <g:at left="0" top="465">
-            <g:VerticalPanel ui:field="stepFive" width="600px" height="360px" styleName='{res.cssBase.solidBackground}' >
+            <g:VerticalPanel ui:field="stepFive" width="600px" height="360px" styleName='{res.layout.solidBackground}' >
                 <g:HTML styleName='{style.clickable}'><div><strong>#5 <ui:msg key="loginOrRegister">Log in or register</ui:msg></strong></div></g:HTML>
                 <g:Cell verticalAlignment="ALIGN_TOP">
                   <g:SimplePanel ui:field="userFormHolder"></g:SimplePanel>

@@ -4,35 +4,27 @@
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <ui:style>
-        .login-area {
-            float: right;
-            border-bottom: thin black solid;
-        }
-    </ui:style>
+    <g:DockLayoutPanel ui:field="layoutMaster" styleName="{res.layout.layoutPublic}" unit="EM">
+        <g:north size="4">
+            <g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
+                <div id="loginArea" class='{res.layout.loginArea}' >
+                    <g:Anchor ui:field="loginButton" ><ui:msg key="logIn">Log In</ui:msg></g:Anchor>
+                    <a href="#"><ui:msg key="help">Help</ui:msg></a>
+                    <a href="#"><ui:msg key="about">About</ui:msg></a>
+                    <br />
+                    Current locale: <ui:msg key="locDef">Default</ui:msg>
+                </div>
+            </g:HTMLPanel>
+        </g:north>
+        <g:south size="5">
+            <g:HTMLPanel ui:field='footerHolder' styleName='{res.layout.footerContainer}'>
+                 TODO: REPLACE footer - will be hardcoded in host page - BUT no more - pure GWT layout design
+            </g:HTMLPanel>
+        </g:south>
+        <g:center>
+            <g:SimplePanel ui:field='bodyHolder' styleName='{res.layout.bodyContainer}'>
 
-    <g:HTMLPanel ui:field="layoutMaster" styleName="{res.cssBase.layoutContainer}">
-
-        <g:HTMLPanel ui:field='headerHolder' styleName='{res.cssBase.headerContainer}'>
-            <div id="loginArea" class='{style.login-area}' >
-                <g:Anchor ui:field="loginButton" ><ui:msg key="logIn">Log In</ui:msg></g:Anchor>
-                <a href="#"><ui:msg key="help">Help</ui:msg></a>
-                <a href="#"><ui:msg key="about">About</ui:msg></a>
-                <br />
-                Current locale: <ui:msg key="locDef">Default</ui:msg>
-            </div>
-        </g:HTMLPanel>
-
-        <g:ScrollPanel ui:field='bodyHolder' styleName='{res.cssBase.bodyContainer}'>
-            <!--  <g:SimplePanel ui:field='bodyHolder' styleName='{res.cssBase.bodyContainer}'> -->
-                <!-- ony one child widget allowed -->
-                <!-- designed for root child view  -->
-            <!--  </g:SimplePanel> -->
-        </g:ScrollPanel>
-<!--
-        <g:HTMLPanel ui:field='footerHolder' styleName='{res.cssBase.footerContainer}'>
-             TODO: REPLACE footer - will be hardcoded in host page
-        </g:HTMLPanel>
--->
-    </g:HTMLPanel>
+            </g:SimplePanel>
+        </g:center>
+    </g:DockLayoutPanel>
 </ui:UiBinder>

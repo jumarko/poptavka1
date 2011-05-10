@@ -37,7 +37,7 @@ public class DemandsView extends Composite implements DemandsPresenter.DemandsVi
         myPager = new FlexPagerView();
         verticalContent.add(myPager);
         // styling layout - styled in UiBinder
-        StyleResource.INSTANCE.cssBase().ensureInjected();
+        StyleResource.INSTANCE.layout().ensureInjected();
     }
 
     @Override

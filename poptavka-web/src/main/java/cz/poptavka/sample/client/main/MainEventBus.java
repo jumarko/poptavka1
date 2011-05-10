@@ -71,14 +71,6 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void setBodyHolderWidget(Widget body);
 
-    /**
-     * Sets widget to login-area section of header widget. Designed for Login Wigdet.
-     *
-     * @param login login widget
-     */
-    @Event(handlers = MainPresenter.class)
-    void listOfDemandsWidget(Widget body);
-
     @BeforeLoadChildModule
     @Event(handlers = MainPresenter.class)
     void beforeLoad();

@@ -52,9 +52,9 @@ public class FormDemandAdvView extends Composite implements FormDemandAdvPresent
     public boolean isValid() {
         int errorCount = 0;
         for (HasValue item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.cssBase().errorField());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
             if (item.getValue() == null) {
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
                 errorCount++;
             }
         }

@@ -2,27 +2,27 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:w="urn:import:cz.poptavka.sample.client.user.demands.widgets">
-    <ui:style>
-        .important {
-            font-weight: bold;
-        }
-    </ui:style>
-    <g:HTMLPanel>
-         <g:VerticalPanel>
-             <g:HorizontalPanel>
-                 <g:HTML>
-                     <ui:msg key="offers">Offers</ui:msg>
-                 </g:HTML>
-                 <g:Button ui:field='answerBtn' enabled="false"><ui:msg key="answer">Answer</ui:msg></g:Button>
-                 <g:Button ui:field='refuseBtn' enabled="false"><ui:msg key="refuse">Refuse</ui:msg></g:Button>
-                 <g:Button ui:field='acceptBtn' enabled="false"><ui:msg key="accept">Accept</ui:msg></g:Button>
-             </g:HorizontalPanel>
-             <w:OffersFlexTable ui:field="table"></w:OffersFlexTable>
-             <w:OfferDetailView></w:OfferDetailView>
-             <w:OffersViewWrapper></w:OffersViewWrapper>
-         </g:VerticalPanel>
-         <g:HorizontalSplitPanel>
 
-         </g:HorizontalSplitPanel>
-    </g:HTMLPanel>
+    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+
+    <g:SplitLayoutPanel styleName='{res.layout.userPanelLayout}'>
+        <g:west size="450">
+             <g:FlowPanel>
+                 <g:HorizontalPanel>
+                     <g:HTML>
+                         <ui:msg key="offers">Offers</ui:msg>
+                     </g:HTML>
+                     <g:Button ui:field='answerBtn' enabled="false"><ui:msg key="answer">Answer</ui:msg></g:Button>
+                     <g:Button ui:field='refuseBtn' enabled="false"><ui:msg key="refuse">Refuse</ui:msg></g:Button>
+                     <g:Button ui:field='acceptBtn' enabled="false"><ui:msg key="accept">Accept</ui:msg></g:Button>
+                 </g:HorizontalPanel>
+                 <w:OffersFlexTable ui:field="table"></w:OffersFlexTable>
+             </g:FlowPanel>
+         </g:west>
+         <g:center>
+             <g:HTML>
+                 <h1>Click on Demand</h1>
+             </g:HTML>
+         </g:center>
+    </g:SplitLayoutPanel>
 </ui:UiBinder>

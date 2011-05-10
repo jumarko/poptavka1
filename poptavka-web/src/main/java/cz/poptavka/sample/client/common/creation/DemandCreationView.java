@@ -69,8 +69,8 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        StyleResource.INSTANCE.cssBase().ensureInjected();
-        btnFiveRegAndCreate.setStyleName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
+        StyleResource.INSTANCE.layout().ensureInjected();
+        btnFiveRegAndCreate.setStyleName(StyleResource.INSTANCE.layout().elemHiddenOn());
         stepFive.setVerticalAlignment(HasVerticalAlignment.ALIGN_TOP);
     }
 
@@ -212,11 +212,11 @@ public class DemandCreationView extends Composite implements DemandCreationPrese
     @Override
     public void toggleRegAndCreateButton() {
         LOGGER.fine(btnFiveRegAndCreate.getStylePrimaryName()
-            + " VS " + StyleResource.INSTANCE.cssBase().elemHiddenOn());
-        if (btnFiveRegAndCreate.getStylePrimaryName().equals(StyleResource.INSTANCE.cssBase().elemHiddenOn())) {
-            btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOff());
+            + " VS " + StyleResource.INSTANCE.layout().elemHiddenOn());
+        if (btnFiveRegAndCreate.getStylePrimaryName().equals(StyleResource.INSTANCE.layout().elemHiddenOn())) {
+            btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.layout().elemHiddenOff());
         } else {
-            btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.cssBase().elemHiddenOn());
+            btnFiveRegAndCreate.setStylePrimaryName(StyleResource.INSTANCE.layout().elemHiddenOn());
         }
     }
 

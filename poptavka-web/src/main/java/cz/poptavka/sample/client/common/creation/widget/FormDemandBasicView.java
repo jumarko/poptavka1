@@ -62,14 +62,14 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
     public boolean isValid() {
         int errorCount = 0;
         for (HasValue item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.cssBase().errorField());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
             if (item.getValue() == null) {
                 errorCount++;
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
             } else {
                 if (item.getValue().toString().equals("")) {
                     errorCount++;
-                    ((Widget) item).setStyleName(StyleResource.INSTANCE.cssBase().errorField());
+                    ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
                 }
             }
         }

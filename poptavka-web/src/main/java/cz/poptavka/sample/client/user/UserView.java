@@ -5,17 +5,21 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DecoratedTabBar;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import cz.poptavka.sample.client.resources.StyleResource;
 
 public class UserView extends Composite implements UserPresenter.UserViewInterface {
 
     private static UserViewUiBinder uiBinder = GWT.create(UserViewUiBinder.class);
     interface UserViewUiBinder extends UiBinder<Widget, UserView> { }
 
+//    @UiField
+//    DecoratedTabBar tabBar;
     @UiField
-    DecoratedTabBar tabBar;
+    TabLayoutPanel tabLayoutPanel;
     @UiField
     SimplePanel tabPanel;
     //tabs
@@ -26,14 +30,12 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     Anchor categoriesTab = new Anchor("Kategorie");
 
     public void createView() {
-
         initWidget(uiBinder.createAndBindUi(this));
-
-        tabBar.addTab(demandsTab);
-        tabBar.addTab(messagesTab);
-        tabBar.addTab(settingsTab);
-        tabBar.addTab(contactsTab);
-        tabBar.addTab(categoriesTab);
+        /**
+         * Doing it this way only to keep standart gwt-class on tabLayoutPanel
+         */
+        StyleResource.INSTANCE.layout().ensureInjected();
+        tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().userPanelLayout());
     }
 
     public void setBody(Widget body) {
