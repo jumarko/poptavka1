@@ -1,9 +1,9 @@
 package cz.poptavka.sample.service.user;
 
 import com.googlecode.ehcache.annotations.Cacheable;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.user.SupplierDao;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GenericServiceImpl;
@@ -21,7 +21,9 @@ import java.util.Set;
 public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDao> implements SupplierService {
 
 
-    private SupplierDao supplierDao;
+    public SupplierServiceImpl(SupplierDao supplierDao) {
+        setDao(supplierDao);
+    }
 
 
     /** {@inheritDoc} */
@@ -34,13 +36,13 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     /** {@inheritDoc} */
     @Override
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Locality... localities) {
-        return this.supplierDao.getSuppliers(localities, resultCriteria);
+        return this.getDao().getSuppliers(localities, resultCriteria);
     }
 
     /** {@inheritDoc} */
     public Map<Locality, Long> getSuppliersCountForAllLocalities() {
         final List<Map<String, Object>> suppliersCountForAllLocalities =
-                this.supplierDao.getSuppliersCountForAllLocalities();
+                this.getDao().getSuppliersCountForAllLocalities();
 
         // convert to suitable Map: <locality, suppliersCountForLocality>
         final Map<Locality, Long> suppliersCountForLocalitiesMap =
@@ -56,19 +58,19 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     /** {@inheritDoc} */
     @Override
     public long getSuppliersCount(Locality... localities) {
-        return this.supplierDao.getSuppliersCount(localities);
+        return this.getDao().getSuppliersCount(localities);
     }
 
     /** {@inheritDoc} */
     @Override
     public long getSuppliersCountQuick(Locality locality) {
-        return this.supplierDao.getSuppliersCountQuick(locality);
+        return this.getDao().getSuppliersCountQuick(locality);
     }
 
     /** {@inheritDoc} */
     @Override
     public long getSuppliersCountWithoutChildren(Locality locality) {
-        return this.supplierDao.getSuppliersCountWithoutChildren(locality);
+        return this.getDao().getSuppliersCountWithoutChildren(locality);
     }
 
     /** {@inheritDoc} */
@@ -79,13 +81,13 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
 
     @Override
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Category... categories) {
-        return this.supplierDao.getSuppliers(categories, resultCriteria);
+        return this.getDao().getSuppliers(categories, resultCriteria);
     }
 
     /** {@inheritDoc} */
     public Map<Category, Long> getSuppliersCountForAllCategories() {
         final List<Map<String, Object>> suppliersCountForAllCategories =
-                this.supplierDao.getSuppliersCountForAllCategories();
+                this.getDao().getSuppliersCountForAllCategories();
 
         // convert to suitable Map: <locality, suppliersCountForLocality>
         final Map<Category, Long> suppliersCountForCategoriesMap =
@@ -102,24 +104,19 @@ public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDa
     @Override
     @Cacheable(cacheName = "cache5min")
     public long getSuppliersCount(Category... categories) {
-        return this.supplierDao.getSuppliersCount(categories);
+        return this.getDao().getSuppliersCount(categories);
     }
 
     /** {@inheritDoc} */
     @Override
     public long getSuppliersCountQuick(Category category) {
-        return this.supplierDao.getSuppliersCountQuick(category);
+        return this.getDao().getSuppliersCountQuick(category);
     }
 
     /** {@inheritDoc} */
     @Override
     public long getSuppliersCountWithoutChildren(Category category) {
-        return this.supplierDao.getSuppliersCountWithoutChildren(category);
+        return this.getDao().getSuppliersCountWithoutChildren(category);
     }
 
-    //---------------------------------- GETTERS and SETTERS -----------------------------------------------------------
-
-    public void setSupplierDao(SupplierDao supplierDao) {
-        this.supplierDao = supplierDao;
-    }
 }

@@ -13,15 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class PreferenceServiceImpl extends GenericServiceImpl<Preference, PreferenceDao> implements PreferenceService {
 
-    private PreferenceDao preferenceDao;
-
-    public void setPreferenceDao(PreferenceDao preferenceDao) {
-        this.preferenceDao = preferenceDao;
+    public PreferenceServiceImpl(PreferenceDao preferenceDao) {
+        setDao(preferenceDao);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Preference getPreference(String key) {
-        return this.preferenceDao.getPreference(key);
+        return this.getDao().getPreference(key);
     }
 }

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cz.poptavka.sample.domain.mail;
+package cz.poptavka.sample.domain.message;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -17,6 +17,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -42,10 +43,14 @@ public class Message extends DomainObject {
     private Message threadRoot;
 
     /* immediate parent of this message - to what this message is a reply */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Message parent;
 
-    /* the first child of this message - the first reply to rhis message */
+    /** All direct responses to this message, i.e. all messages for which this message is a parent. */
+    @OneToMany(mappedBy = "parent")
+    private List<Message> children;
+
+    /* the first child of this message - the first reply to trhis message */
     @ManyToOne
     private Message firstBorn;
 
@@ -76,7 +81,7 @@ public class Message extends DomainObject {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date sent;
 
-    @OneToMany
+    @OneToMany(mappedBy = "message")
     private List<MessageUserRole> roles;
 
     /* a demand to which this message pertains */
@@ -112,6 +117,14 @@ public class Message extends DomainObject {
 
     public void setParent(Message parent) {
         this.parent = parent;
+    }
+
+    public List<Message> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Message> children) {
+        this.children = children;
     }
 
     public Message getFirstBorn() {
@@ -228,7 +241,7 @@ public class Message extends DomainObject {
         sb.append(", firstBorn.id=").append(ToStringUtils.printId(firstBorn));
         sb.append(", nextSibling.id=").append(ToStringUtils.printId(nextSibling));
         sb.append("{subject='").append(subject).append('\'');
-        sb.append("{sender.email='").append(sender.getEmail()).append('\'');
+        sb.append("{sender.email='").append(sender != null ? sender.getEmail() : "").append('\'');
         sb.append("{messageState='").append(messageState).append('\'');
         sb.append('}');
         return sb.toString();

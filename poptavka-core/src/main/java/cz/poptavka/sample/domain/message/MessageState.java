@@ -4,13 +4,12 @@
  * file a sent message in the Inbox, but its state will show that it is a sent
  * message.
  */
-package cz.poptavka.sample.domain.mail;
+package cz.poptavka.sample.domain.message;
 
 /**
  *
  * @author Vojtech Hubr
  *         Date 12.4.11
-
  */
 public enum MessageState {
 

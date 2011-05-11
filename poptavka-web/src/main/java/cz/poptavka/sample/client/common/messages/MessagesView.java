@@ -1,8 +1,5 @@
 package cz.poptavka.sample.client.common.messages;
 
-import java.util.logging.Logger;
-
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -14,10 +11,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.view.ReverseViewInterface;
-
 import cz.poptavka.sample.client.common.messages.message.MessageView;
 import cz.poptavka.sample.client.user.problems.Problem;
-import cz.poptavka.sample.domain.mail.Message;
+import cz.poptavka.sample.domain.message.Message;
+
+import java.util.logging.Logger;
 
 public class MessagesView extends Composite
     implements  ReverseViewInterface<MessagesPresenter>, MessagesPresenter.MessagesViewInterface {

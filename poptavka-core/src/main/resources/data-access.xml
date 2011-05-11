@@ -21,11 +21,11 @@
         <property name="dataSource" ref="poptavkaDataSource" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="${showSql}"/>
+                <property name="showSql" value="${db.showSql}"/>
                 <!-- WATCH OUT when changing "generateDdl" settings to true -> then "hbm2ddl.auto" is automatically set
                      to update regardless of settings in persistence.xml!
                      @see HibernateJpaVendorAdapter -->
-                <property name="generateDdl" value="${generateDdl}"/>
+                <property name="generateDdl" value="${db.generateDdl}"/>
                 <property name="databasePlatform" value="${db.dialect}"/>
             </bean>
         </property>

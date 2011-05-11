@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cz.poptavka.sample.domain.mail;
+package cz.poptavka.sample.domain.message;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -22,6 +23,10 @@ import javax.persistence.ManyToOne;
  * Associates a user to a message and assigns him/her a role
  */
 @Entity
+@NamedQuery(name = "getUserMessageThreads",
+        query = "select messageUserRole.message "
+                + " from MessageUserRole messageUserRole"
+                + " where messageUserRole.user = :user")
 public class MessageUserRole extends DomainObject {
     @ManyToOne
     private User user;
@@ -30,7 +35,7 @@ public class MessageUserRole extends DomainObject {
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = Constants.ENUM_FIELD_LENGTH)
-    private RoleType type;
+    private MessageUserRoleType type;
 
     public Message getMessage() {
         return message;
@@ -40,11 +45,11 @@ public class MessageUserRole extends DomainObject {
         this.message = message;
     }
 
-    public RoleType getType() {
+    public MessageUserRoleType getType() {
         return type;
     }
 
-    public void setType(RoleType type) {
+    public void setType(MessageUserRoleType type) {
         this.type = type;
     }
 
@@ -61,7 +66,7 @@ public class MessageUserRole extends DomainObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("MessageserRole");
         sb.append("{user.email='").append(user.getEmail()).append('\'');
-        sb.append("{type='").append(type).append('\'');
+        sb.append("{roleType='").append(type).append('\'');
         sb.append("{message='").append(message).append('\'');
         sb.append('}');
         return sb.toString();

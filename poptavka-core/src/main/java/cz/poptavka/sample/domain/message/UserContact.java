@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cz.poptavka.sample.domain.mail;
+package cz.poptavka.sample.domain.message;
 
 
 import cz.poptavka.sample.domain.common.DomainObject;

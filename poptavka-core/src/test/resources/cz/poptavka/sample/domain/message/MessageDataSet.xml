@@ -1,0 +1,58 @@
+<!DOCTYPE dataset SYSTEM "../../../../test.dtd">
+        <!-- This data set uses objects defined in UserDataSet.xml -->
+<dataset>
+
+    <!-- Thread root -->
+    <MESSAGE ID="1"
+             CREATED="2011-05-11"
+             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             FIRSTBORN_ID="3"
+             SUBJECT="Dnes nepridem - zajtra" />
+
+    <!-- Reply to the original (thread root) message -->
+    <MESSAGE ID="3" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
+             CREATED="2011-05-11"
+             PARENT_ID="1"
+             SUBJECT="Re: Dnes nepridem - zajtra "
+             SENDER_ID="111111111"
+             FIRSTBORN_ID="2"
+             THREADROOT_ID="1" />
+
+    <!-- Reply to the reply of original (thread root) message -->
+    <MESSAGE ID="2"
+             CREATED="2011-05-12"
+             BODY="Ahoj, teta, viem, ze som vcera pisal, ze dnes pridem, ale opat nemozem - snad zajtra :). "
+             SUBJECT="Re: Re: Dnes nepridem - zajtra "
+             PARENT_ID="3"
+             SENDER_ID="111111112"
+             NEXTSIBLING_ID="4"
+             THREADROOT_ID="1" />
+
+    <!-- Second Reply to the reply to the original (thread root) message -->
+    <MESSAGE ID="4"
+             CREATED="2011-05-12"
+             SUBJECT="Re: Re: Dnes nepridem - zajtra - ZMENA!"
+             BODY="Ahoj, teta, opat zmena - predsa len dojdem dnes pre tu slivovicu!"
+             PARENT_ID="3"
+             SENDER_ID="111111112"
+             THREADROOT_ID="1" />
+
+    <MESSAGEUSERROLE ID="1" MESSAGE_ID="1" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="2" MESSAGE_ID="1" USER_ID="111111111" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="3" MESSAGE_ID="2" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="4" MESSAGE_ID="2" USER_ID="111111111" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="5" MESSAGE_ID="3" USER_ID="111111111" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="6" MESSAGE_ID="3" USER_ID="111111112" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="7" MESSAGE_ID="4" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="8" MESSAGE_ID="4" USER_ID="111111111" TYPE="TO"/>
+
+
+    !-- Completely different Thread root -->
+    <MESSAGE ID="5"
+             BODY="Ahoj, ahoj, ahoj, dnes, kupit, slivowitz."
+             PARENT_ID="[NULL]"
+             SUBJECT="Spam - ahoj, ahoj" />
+
+</dataset>

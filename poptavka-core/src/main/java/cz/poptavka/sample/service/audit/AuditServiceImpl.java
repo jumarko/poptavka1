@@ -18,9 +18,10 @@ public class AuditServiceImpl implements AuditService {
     @Autowired
     private AuditDao auditDao;
 
-    public void setAuditDao(AuditDao auditDao) {
+    public AuditServiceImpl(AuditDao auditDao) {
         this.auditDao = auditDao;
     }
+
 
     @Override
     public <T> T find(Class<T> cls, Object primaryKey, Number revision)

@@ -1,8 +1,8 @@
 package cz.poptavka.sample.service.demand;
 
 import com.googlecode.ehcache.annotations.Cacheable;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.CategoryDao;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +17,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements  CategoryService {
 
+
+    public CategoryServiceImpl(CategoryDao categoryDao) {
+        setDao(categoryDao);
+    }
 
     /** {@inheritDoc} */
     @Override

@@ -22,32 +22,28 @@
     </bean>
 
 
-    <bean id="clientDao"
-          class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
+    <bean id="clientDao" class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
 
     <bean id="preferenceDao" class="cz.poptavka.sample.dao.user.PreferenceDaoImpl" />
 
-    <bean id="demandDao"
-          class="cz.poptavka.sample.dao.demand.DemandDaoImpl">
+    <bean id="demandDao" class="cz.poptavka.sample.dao.demand.DemandDaoImpl">
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="auditDao"
-          class="cz.poptavka.sample.dao.audit.AuditDaoImpl" />
+    <bean id="auditDao" class="cz.poptavka.sample.dao.audit.AuditDaoImpl" />
 
-    <bean id="treeItemDao"
-          class="cz.poptavka.sample.dao.common.TreeItemDaoImpl" />
+    <bean id="treeItemDao" class="cz.poptavka.sample.dao.common.TreeItemDaoImpl" />
 
-    <bean id="localityDao"
-          class="cz.poptavka.sample.dao.address.LocalityDaoImpl" />
+    <bean id="localityDao" class="cz.poptavka.sample.dao.address.LocalityDaoImpl" />
 
-    <bean id="categoryDao"
-          class="cz.poptavka.sample.dao.demand.CategoryDaoImpl" />
+    <bean id="categoryDao" class="cz.poptavka.sample.dao.demand.CategoryDaoImpl" />
 
-    <bean id="supplierDao"
-          class="cz.poptavka.sample.dao.user.SupplierDaoImpl">
+    <bean id="supplierDao" class="cz.poptavka.sample.dao.user.SupplierDaoImpl">
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
+
+    <bean id="messageDao" class="cz.poptavka.sample.dao.message.MessageDaoImpl" />
+
 
 
 
@@ -57,7 +53,7 @@
         <constructor-arg ref="generalDao" />
     </bean>
     <bean id="treeItemService" class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
-        <property name="treeItemDao" ref="treeItemDao" />
+        <constructor-arg ref="treeItemDao" />
     </bean>
 
     <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">
@@ -66,35 +62,34 @@
     </bean>
 
     <bean id="preferenceService" class="cz.poptavka.sample.service.user.PreferenceServiceImpl">
-        <property name="dao" ref="preferenceDao"/>
-        <property name="preferenceDao" ref="preferenceDao"/>
+        <constructor-arg ref="preferenceDao" />
     </bean>
 
-    <bean id="demandService"
-          class="cz.poptavka.sample.service.demand.DemandServiceImpl">
-        <property name="dao" ref="demandDao"/>
-        <property name="demandDao" ref="demandDao"/>
+    <bean id="demandService" class="cz.poptavka.sample.service.demand.DemandServiceImpl">
+        <constructor-arg ref="demandDao" />
     </bean>
 
 
     <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl">
-        <property name="dao" ref="categoryDao" />
+        <constructor-arg ref="categoryDao" />
     </bean>
 
-    <bean id="localityService"
-          class="cz.poptavka.sample.service.address.LocalityServiceImpl">
-        <property name="dao" ref="localityDao"/>
+    <bean id="localityService" class="cz.poptavka.sample.service.address.LocalityServiceImpl">
+        <constructor-arg ref="localityDao" />
     </bean>
 
-    <bean id="auditService"
-          class="cz.poptavka.sample.service.audit.AuditServiceImpl">
-        <property name="auditDao" ref="auditDao" />
+    <bean id="auditService" class="cz.poptavka.sample.service.audit.AuditServiceImpl">
+        <constructor-arg ref="auditDao" />
     </bean>
 
     <bean id="loginService" class="cz.poptavka.sample.service.user.LoginServiceImpl"/>
 
     <bean id="supplierService" class="cz.poptavka.sample.service.user.SupplierServiceImpl">
-        <property name="supplierDao" ref="supplierDao" />
+        <constructor-arg ref="supplierDao" />
+    </bean>
+
+    <bean id="messageService" class="cz.poptavka.sample.service.message.MessageServiceImpl">
+        <constructor-arg ref="messageDao" />
     </bean>
 
     <!-- Jobs -->

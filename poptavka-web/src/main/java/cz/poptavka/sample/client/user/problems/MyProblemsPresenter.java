@@ -6,9 +6,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
-import cz.poptavka.sample.domain.mail.Message;
+import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.user.User;
 
 import java.util.ArrayList;

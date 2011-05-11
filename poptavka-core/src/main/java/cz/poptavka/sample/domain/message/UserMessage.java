@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cz.poptavka.sample.domain.mail;
+package cz.poptavka.sample.domain.message;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
@@ -12,10 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
+ * Stores message attributes for a given user.
  *
   * @author Vojtech Hubr
  *         Date 12.4.11
- * Stores message attributes for a given user
  */
 @Entity
 public class UserMessage extends DomainObject {

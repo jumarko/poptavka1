@@ -7,9 +7,9 @@ package cz.poptavka.sample.service.demand;
 
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
@@ -33,14 +33,16 @@ import java.util.Set;
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
 
-    private DemandDao demandDao;
+    public DemandServiceImpl(DemandDao demandDao) {
+        setDao(demandDao);
+    }
 
 
     @Override
     @Cacheable(cacheName = "cache5h")
     @Transactional(readOnly = true)
     public List<DemandType> getDemandTypes() {
-        return demandDao.getDemandTypes();
+        return getDao().getDemandTypes();
     }
 
     @Override
@@ -48,7 +50,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Transactional(readOnly = true)
     public DemandType getDemandType(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
-        return demandDao.getDemandType(code);
+        return getDao().getDemandType(code);
     }
 
     /** {@inheritDoc} */
@@ -66,7 +68,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         final ResultProvider<Demand> demandProvider = new ResultProvider<Demand>(resultCriteria) {
             @Override
             public Collection<Demand> getResult() {
-                return DemandServiceImpl.this.demandDao.getDemands(localities, getResultCriteria());
+                return DemandServiceImpl.this.getDao().getDemands(localities, getResultCriteria());
             }
         };
 
@@ -77,7 +79,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     /** {@inheritDoc} */
     @Transactional(readOnly = true)
     public Map<Locality, Long> getDemandsCountForAllLocalities() {
-        final List<Map<String, Object>> demandsCountForAllLocalities = this.demandDao.getDemandsCountForAllLocalities();
+        final List<Map<String, Object>> demandsCountForAllLocalities = this.getDao().getDemandsCountForAllLocalities();
 
         // convert to suitable Map: <locality, demandsCountForLocality>
         final Map<Locality, Long> demandsCountForLocalitiesMap =
@@ -101,7 +103,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getDemandsCount(Locality... localities) {
-        return this.demandDao.getDemandsCount(localities);
+        return this.getDao().getDemandsCount(localities);
     }
 
 
@@ -109,14 +111,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Locality locality) {
-        return this.demandDao.getDemandsCountQuick(locality);
+        return this.getDao().getDemandsCountQuick(locality);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public long getDemandsCountWithoutChildren(Locality locality) {
-        return this.demandDao.getDemandsCountWithoutChildren(locality);
+        return this.getDao().getDemandsCountWithoutChildren(locality);
     }
 
     /** {@inheritDoc} */
@@ -129,13 +131,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     /** {@inheritDoc} */
     @Override
     public Set<Demand> getDemands(ResultCriteria resultCriteria, Category... categories) {
-        return this.demandDao.getDemands(categories, resultCriteria);
+        return this.getDao().getDemands(categories, resultCriteria);
     }
 
     /** {@inheritDoc} */
     @Transactional(readOnly = true)
     public Map<Category, Long> getDemandsCountForAllCategories() {
-        final List<Map<String, Object>> demandsCountForAllCategories = this.demandDao.getDemandsCountForAllCategories();
+        final List<Map<String, Object>> demandsCountForAllCategories = this.getDao().getDemandsCountForAllCategories();
 
         // convert to suitable Map: <locality, demandsCountForLocality>
         final Map<Category, Long> demandsCountForCategoriesMap =
@@ -157,26 +159,21 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
     public long getDemandsCount(Category... categories) {
-        return this.demandDao.getDemandsCount(categories);
+        return this.getDao().getDemandsCount(categories);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Category category) {
-        return this.demandDao.getDemandsCountQuick(category);
+        return this.getDao().getDemandsCountQuick(category);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public long getDemandsCountWithoutChildren(Category category) {
-        return this.demandDao.getDemandsCountWithoutChildren(category);
-    }
-
-    //--------------------- GETTERS AND SETTERS ------------------------------------------------------------------------
-    public void setDemandDao(DemandDao demandDao) {
-        this.demandDao = demandDao;
+        return this.getDao().getDemandsCountWithoutChildren(category);
     }
 
 }

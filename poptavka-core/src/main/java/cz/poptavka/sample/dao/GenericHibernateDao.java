@@ -361,12 +361,12 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      * @return result of the search
      */
     @SuppressWarnings("unchecked")
-    protected List<T> findByCriteria(Criterion... criterion) {
+    protected List<T> findByCriteria(ResultCriteria resultCriteria, Criterion... criterion) {
         Criteria crit = getHibernateSession().createCriteria(persistentClass);
         for (Criterion c : criterion) {
             crit.add(c);
         }
-        return crit.list();
+        return buildResultCriteria(crit, resultCriteria).list();
     }
 
     /**

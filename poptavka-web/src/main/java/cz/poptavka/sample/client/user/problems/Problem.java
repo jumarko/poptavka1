@@ -1,9 +1,9 @@
 package cz.poptavka.sample.client.user.problems;
 
+import cz.poptavka.sample.domain.message.Message;
+
 import java.util.Date;
 import java.util.List;
-
-import cz.poptavka.sample.domain.mail.Message;
 
 /**
  * Private class for Fake Data.

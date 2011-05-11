@@ -38,7 +38,6 @@ import java.util.Map;
         "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
-// TODO: jumar fix "cannot inser null value into non-nullable settings_id" by creating the new client
 public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired

@@ -1,9 +1,6 @@
 package cz.poptavka.sample.client.common.messages.message;
 
 
-import java.util.Date;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -20,8 +17,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import cz.poptavka.sample.domain.message.Message;
 
-import cz.poptavka.sample.domain.mail.Message;
+import java.util.Date;
+import java.util.logging.Logger;
 
 public class MessageView extends Composite
         implements MessagePresenter.MessageViewInterface {

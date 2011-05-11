@@ -71,6 +71,12 @@ public abstract class DBUnitBaseTest {
      */
     private static final IDataTypeFactory DATA_TYPE_FACTORY =  new org.dbunit.ext.hsqldb.HsqldbDataTypeFactory();
 
+    // Commands for disabling/enabling foreign key checks - useful in some corner cases, e.g. circular
+    // foreign key references
+    private static final String DISABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET REFERENTIAL_INTEGRITY FALSE";
+    private static final String ENABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET REFERENTIAL_INTEGRITY TRUE";
+    private boolean foreignKeyChecksDisabled = false;
+
     @Autowired
     private DataSource dataSource;
 
@@ -85,6 +91,7 @@ public abstract class DBUnitBaseTest {
         generateDtdIfNeeded();
 
         try {
+            disableForeignKeyChecksIfRequired();
             DatabaseOperation.CLEAN_INSERT.execute(getConnection(), getDataSet());
         } catch (Exception e) {
             throw new IllegalStateException("An exception occured while loading test data into the database"
@@ -92,6 +99,23 @@ public abstract class DBUnitBaseTest {
                     + ", DataSet: " + this.dataSetsFilePaths
                     + ", DTD: " + this.dataSetDtdFilePath
                     + ". Check the paths to the xml and DTD and verify that DTD is correctly bind to the xml.");
+        }
+    }
+
+    /**
+     * If client requires disabling of foreign key checks do this.
+     * @throws Exception
+     * @see @DataSet annotation
+     */
+    private synchronized void disableForeignKeyChecksIfRequired() throws Exception {
+        if (this.getClass().getAnnotation(DataSet.class).disableForeignKeyChecks()) {
+            // if disabling foreign key checks is required by annotation then do that
+            getConnection().getConnection().prepareStatement(DISABLE_FOREIGN_KEY_CHECKS_STATEMENT).execute();
+            foreignKeyChecksDisabled = true;
+        } else if (foreignKeyChecksDisabled) {
+            // enable referential integrity checks again - if it has been disabled
+            getConnection().getConnection().prepareStatement(ENABLE_FOREIGN_KEY_CHECKS_STATEMENT).execute();
+            foreignKeyChecksDisabled = false;
         }
     }
 

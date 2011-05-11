@@ -1,7 +1,7 @@
 package cz.poptavka.sample.service.common;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.common.TreeItemDao;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.TreeItem;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +17,7 @@ public class TreeItemServiceImpl implements TreeItemService {
 
     private TreeItemDao treeItemDao;
 
-    public void setTreeItemDao(TreeItemDao treeItemDao) {
+    public TreeItemServiceImpl(TreeItemDao treeItemDao) {
         this.treeItemDao = treeItemDao;
     }
 

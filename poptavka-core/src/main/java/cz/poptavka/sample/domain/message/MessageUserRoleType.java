@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cz.poptavka.sample.domain.mail;
+package cz.poptavka.sample.domain.message;
 
 /**
  *
@@ -11,18 +11,18 @@ package cz.poptavka.sample.domain.mail;
  *         Date 12.4.11
 
  */
-public enum RoleType {
+public enum MessageUserRoleType {
     SENDER("SENDER"),
 
     TO("TO"),
-    /* carbon coby (will be displayed to all the addressees) */
+    /* carbon copy (will be displayed to all the addressees) */
     CC("CC"),
     /* blind carbon copy (will NOT be displayed to the addresses) */
     BCC("BCC");
 
     private final String value;
 
-    RoleType(String value) {
+    MessageUserRoleType(String value) {
         this.value = value;
     }
 }

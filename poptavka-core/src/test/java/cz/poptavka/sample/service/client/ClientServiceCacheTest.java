@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *         Date: 8.1.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 // this class "corrupts" the clientService bean with mocking dao, therefore this bean must be reinitialize
 @DirtiesContext
 public class ClientServiceCacheTest {

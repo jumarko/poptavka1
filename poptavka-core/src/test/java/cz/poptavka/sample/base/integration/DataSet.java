@@ -30,4 +30,13 @@ public @interface DataSet {
      * in that case).
      */
     String dtd() default "";
+
+    /**
+     * Indicates wheter foreign key checks should be disabled or not. Can be useful in some (corner) cases,
+     * e.g. when circular dependencies on foreign key occurs.
+     *
+     * @see MessageDataSet.xml, MessageDataIntegregionTest
+     *
+     */
+    boolean disableForeignKeyChecks() default false;
 }
