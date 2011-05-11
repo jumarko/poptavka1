@@ -8,9 +8,22 @@ public interface CommonResource extends CssResource {
     @ClassName("small-loader")
     String smallLoader();
 
+    @ClassName("elem-visible")
+    String elemHiddenOff();
+
     @ClassName("elem-hidden")
     String elemHiddenOn();
 
-    @ClassName("elem-visible")
-    String elemHiddenOff();
+    @ClassName("info-message")
+    String infoMessage();
+
+    @ClassName("error-message")
+    String errorMessage();
+
+    @ClassName("disabled-text")
+    String disabledText();
+
+    @ClassName("loading-popup")
+    String loadingPopup();
+
 }

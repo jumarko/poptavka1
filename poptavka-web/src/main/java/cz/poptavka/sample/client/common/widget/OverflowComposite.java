@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.common;
+package cz.poptavka.sample.client.common.widget;
 
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.user.client.ui.Composite;

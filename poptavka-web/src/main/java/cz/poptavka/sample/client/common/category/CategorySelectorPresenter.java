@@ -35,6 +35,8 @@ public class CategorySelectorPresenter extends
 
         ListBox getSelectedList();
 
+        boolean isValid();
+
         void addToSelectedList(String text, String value);
 
         void removeFromSelectedList();
@@ -48,6 +50,8 @@ public class CategorySelectorPresenter extends
         ScrollPanel getScrollPanel();
 
         void clearChildrenLists(int i);
+
+        ArrayList<String> getSelectedCategoryCodes();
     }
 
     private static final Logger LOGGER = Logger.getLogger("CategorySelectorPresenter");
@@ -72,17 +76,6 @@ public class CategorySelectorPresenter extends
         ListBox listBox = view.createListAtIndex(newListPosition);
         setAndDisplayData(listBox, list);
         addCategoryChangeHandler(listBox, newListPosition);
-    }
-
-    /** Demand cration getValues method. **/
-    public void onGetSelectedCategoryCodes() {
-        LOGGER.info("Getting/Pushing categories");
-        ListBox tmp = view.getSelectedList();
-        ArrayList<String> codes = new ArrayList<String>();
-        for (int i = 0; i < tmp.getItemCount(); i++) {
-            codes.add(tmp.getValue(i));
-        }
-        eventBus.pushSelectedCategoryCodes(codes);
     }
 
     private void setAndDisplayData(final ListBox box, final ArrayList<CategoryDetail> list) {

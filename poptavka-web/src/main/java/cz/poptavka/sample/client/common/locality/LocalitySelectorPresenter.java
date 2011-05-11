@@ -36,11 +36,15 @@ public class LocalitySelectorPresenter
 
         void toggleLoader();
 
+        boolean isValid();
+
         void addToSelectedList();
 
         void removeFromSelectedList();
 
         Widget getWidgetView();
+
+        ArrayList<String> getSelectedLocalityCodes();
     }
 
     private static final Logger LOGGER = Logger.getLogger("LocalitySelectorPresenter");
@@ -117,16 +121,6 @@ public class LocalitySelectorPresenter
             }
 
         });
-    }
-
-    public void onGetSelectedLocalityCodes() {
-        LOGGER.info("Getting/Pushing localities");
-        ListBox tmp = view.getSelectedList();
-        ArrayList<String> codes = new ArrayList<String>();
-        for (int i = 0; i < tmp.getItemCount(); i++) {
-            codes.add(tmp.getValue(i));
-        }
-        eventBus.pushSelectedLocalityCodes(codes);
     }
 
 }

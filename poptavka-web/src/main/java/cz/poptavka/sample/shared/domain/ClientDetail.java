@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class ClientDetail implements Serializable {
 
     private String email;
-    private String login;
     private String passowrd;
     /** person **/
     private String firstName;
@@ -29,7 +28,6 @@ public class ClientDetail implements Serializable {
 
     public ClientDetail(String email, String password) {
         this.email = email;
-        this.login = email;
         this.passowrd = password;
     }
 
@@ -37,16 +35,8 @@ public class ClientDetail implements Serializable {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public String getPassword() {

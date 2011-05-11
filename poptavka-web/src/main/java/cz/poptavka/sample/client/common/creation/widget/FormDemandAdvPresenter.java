@@ -32,15 +32,4 @@ public class FormDemandAdvPresenter extends
         embedToWidget.setWidget(view.getWidgetView());
     }
 
-    /** toValidate() **/
-    public void onValidateDemandAdvForm() {
-        if (view.isValid()) {
-//            eventBus.formNextStep();
-        }
-    }
-
-    public void onGetAdvInfoValues() {
-        LOGGER.info("Getting/Pushing adv. values");
-        eventBus.pushAdvInfoValues(view.getValues());
-    }
 }

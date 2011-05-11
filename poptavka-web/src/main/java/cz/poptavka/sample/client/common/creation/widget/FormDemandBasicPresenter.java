@@ -25,11 +25,6 @@ public class FormDemandBasicPresenter
         boolean isValid();
 
         HashMap<String, Object> getValues();
-
-    }
-
-    @Override
-    public void bindView() {
     }
 
     /** Injecting widget. **/
@@ -37,18 +32,4 @@ public class FormDemandBasicPresenter
         embedToWidget.setWidget(view.getWidgetView());
     }
 
-    /** toValidate() **/
-    public void onValidateDemandBasicForm() {
-        LOGGER.fine("validating basic form .....");
-        if (view.isValid()) {
-//            eventBus.formNextStep();
-        }
-    }
-
-    public void onGetBasicInfoValues() {
-        LOGGER.info("Getting/Pushing basic values");
-        HashMap<String, Object> map = view.getValues();
-        LOGGER.info("Getting/Pushing basic values");
-        eventBus.pushBasicInfoValues(map);
-    }
 }

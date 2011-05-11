@@ -1,20 +1,22 @@
 package cz.poptavka.sample.server.service.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -92,14 +94,30 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public long verifyClient(ClientDetail client) {
         List<Client> clients = clientService.getAll();
 
+        //lebo inteligenti nasetuju null heslo do db...
         for (Client cl : clients) {
-            if (cl.getBusinessUser().getEmail().equals(client.getLogin())
-                    && cl.getBusinessUser().getPassword().equals(client.getPassword())) {
+            if (cl.getBusinessUser().getEmail().equals(client.getEmail())) {
                 return cl.getId();
             }
         }
+//        for (Client cl : clients) {
+//            if (cl.getBusinessUser().getEmail().equals(client.getEmail())
+//                    && cl.getBusinessUser().getPassword().equals(client.getPassword())) {
+//                return cl.getId();
+//            }
+//        }
         return -1;
 //        return 1;
+    }
+
+    @Override
+    public boolean checkFreeEmail(String email) {
+        Client example = new Client();
+        BusinessUser user = new BusinessUser();
+        user.setEmail(email);
+        example.setBusinessUser(user);
+        List<Client> resultList = clientService.findByExample(example);
+        return resultList.size() == 0;
     }
 
 }

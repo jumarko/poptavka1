@@ -3,11 +3,13 @@
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation.widget"
     xmlns:cl="urn:import:cz.poptavka.sample.client.common.locality"
+    xmlns:cm="urn:import:cz.poptavka.sample.client.common.widget"
     xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
     >
 
     <!-- injecting style resources -->
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages'/>
 
     <g:SplitLayoutPanel>
         <g:north size="600">
@@ -17,8 +19,9 @@
                     1. <ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
                 </g:header>
                 <g:DockLayoutPanel unit="EM" height="100%">
-                    <g:south size="3">
-                        <g:HTML>Validation message</g:HTML>
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='basicStatus' style='{res.common.infoMessage}'
+                            message='{text.basicMessage}' description='{text.basicDescription}' />
                     </g:south>
                     <g:center>
                         <g:SimplePanel ui:field="basicInfoHolder"/>
@@ -29,19 +32,43 @@
                 <g:header size="30">
                     2. <ui:msg key="catsSelection">Category selection</ui:msg>
                 </g:header>
-                <g:SimplePanel ui:field="categoryHolder"/>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='categoryStatus' style='{res.common.infoMessage}'
+                            message='{text.catMessage}' description='{text.catDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="categoryHolder"/>
+                    </g:center>
+                </g:DockLayoutPanel>
             </g:stack>
             <g:stack>
                 <g:header size="30">
                     3. <ui:msg key="locsSelection">Locality selection</ui:msg>
                 </g:header>
-                <g:SimplePanel ui:field="localityHolder"/>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='localityStatus' style='{res.common.infoMessage}'
+                            message='{text.locMessage}' description='{text.locDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="localityHolder"/>
+                    </g:center>
+                </g:DockLayoutPanel>
             </g:stack>
             <g:stack>
                 <g:header size="30">
                     4. <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
                 </g:header>
-                <g:SimplePanel ui:field="advInfoHolder"/>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='advStatus' style='{res.common.infoMessage}'
+                            message='{text.advMessage}' description='{text.advDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="advInfoHolder"/>
+                    </g:center>
+                </g:DockLayoutPanel>
             </g:stack>
             <g:stack>
                 <g:header size="30">
@@ -51,19 +78,29 @@
                     <g:north size="20">
                         <g:SimplePanel ui:field="userFormHolder"/>
                     </g:north>
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='userStatus' style='{res.common.infoMessage}'
+                            message='{text.loginMessage}' description='{text.loginDescription}' />
+                    </g:south>
                     <g:center>
-                        <g:FlowPanel>
-                            <g:Button ui:field="demandCreateBtn" >
-                                <ui:msg key='regAndCreate'>Register and Create</ui:msg>
-                            </g:Button>
-                        </g:FlowPanel>
+                        <g:HTMLPanel>
+                            <div style="margin-left: 200px;">
+                                <br />
+                                <g:Button ui:field="demandCreateBtn" visible="false">
+                                    <ui:msg key='regAndCreate'>Register and Create</ui:msg>
+                                </g:Button>
+                            </div>
+                        </g:HTMLPanel>
                     </g:center>
                 </g:DockLayoutPanel>
             </g:stack>
         </g:StackLayoutPanel>
         </g:north>
         <g:center>
-            <g:HTML>HaHaHa :)</g:HTML>
+            <g:HTMLPanel styleName='{res.layout.maxSize}'>
+                Empty
+                <g:Button>Button</g:Button>
+            </g:HTMLPanel>
         </g:center>
     </g:SplitLayoutPanel>
 </ui:UiBinder>

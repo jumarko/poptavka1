@@ -47,7 +47,6 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
 
         widgets.add(titleBox);
         widgets.add(descriptionBox);
-        widgets.add(priceBox);
         widgets.add(finishDateBox);
         widgets.add(expireDateBox);
 
@@ -73,9 +72,6 @@ public class FormDemandBasicView extends Composite implements FormDemandBasicPre
                 }
             }
         }
-        //devel only
-//        return true;
-//        production
         return errorCount == 0;
     }
 

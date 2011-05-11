@@ -13,3 +13,53 @@
 .elem-visible {
     display: block;
 }
+
+/** common widgets **/
+.info-message {
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.info-message div {
+    padding: 5px;
+    border: solid #F4E6C4 1px;
+    background-color: #F7F9F2;
+}
+
+.info-message div:hover {
+    background-color: #F7EBCD;
+    cursor: help;
+}
+
+.error-message {
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.error-message div {
+    padding: 5px;
+    border: solid #F0B6C3 1px;
+    background-color: #F8CFC4;
+}
+
+.error-message div:hover {
+    background-color: #FFB6C3;
+    cursor: help;
+}
+
+.disabled-text {
+    background-color: gray;;
+}
+
+.loading-popup {
+    z-index: 101;
+    border: 1px solid black;
+    font-weight: bold;
+    min-width: 120px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: white;
+    text-align: center;
+}

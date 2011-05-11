@@ -79,4 +79,16 @@ public interface HomeEventBus extends EventBus {
     @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();
 
+    /**
+     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working
+     */
+    @Event(forwardToParent = true)
+    void displayLoadingPopup(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void changeLoadingMessage(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void hideLoadingPopup();
+
 }

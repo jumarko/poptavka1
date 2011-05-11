@@ -16,4 +16,6 @@ public interface ClientRPCServiceAsync {
 
     void verifyClient(ClientDetail client, AsyncCallback<Long> callback);
 
+    void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
+
 }

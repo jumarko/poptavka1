@@ -1,10 +1,14 @@
 package cz.poptavka.sample.client.common;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
@@ -15,9 +19,6 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -145,6 +146,8 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
 
             @Override
             public void onSuccess(String result) {
+                //signal event
+                eventBus.hideLoadingPopup();
                 Window.alert(result);
             }
         });
@@ -158,6 +161,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
      * @param client existing user detail
      */
     public void onVerifyExistingClient(ClientDetail client) {
+        LOGGER.fine("verify start");
         clientService.verifyClient(client, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -166,9 +170,12 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             }
             @Override
             public void onSuccess(Long clientId) {
+                LOGGER.fine("verify result");
                 if (clientId != -1) {
-                    eventBus.setClientId(clientId);
-                    eventBus.getBasicInfoValues();
+                    eventBus.prepareNewDemandForNewClient(clientId);
+                } else {
+                    eventBus.hideLoadingPopup();
+                    eventBus.showLoginError();
                 }
             }
         });
@@ -189,9 +196,23 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             @Override
             public void onSuccess(Long clientId) {
                 if (clientId != -1) {
-                    eventBus.setClientId(clientId);
-                    eventBus.getBasicInfoValues();
+                    eventBus.prepareNewDemandForNewClient(clientId);
                 }
+            }
+        });
+    }
+
+    public void onCheckFreeEmail(String email) {
+        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                LOGGER.fine("result of compare " + result);
+                eventBus.checkFreeEmailResponse(result);
             }
         });
     }

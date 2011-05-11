@@ -94,4 +94,18 @@ public class CategorySelectorView extends Composite implements CategorySelectorP
         return masterPanel;
     }
 
+    @Override
+    public boolean isValid() {
+        return selectedList.getItemCount() > 0;
+    }
+
+    /** Demand cration getValues method. **/
+    public ArrayList<String> getSelectedCategoryCodes() {
+        ArrayList<String> codes = new ArrayList<String>();
+        for (int i = 0; i < selectedList.getItemCount(); i++) {
+            codes.add(selectedList.getValue(i));
+        }
+        return codes;
+    }
+
 }

@@ -18,4 +18,6 @@ public interface ClientRPCService extends RemoteService {
 
     long verifyClient(ClientDetail client);
 
+    boolean checkFreeEmail(String email);
+
 }

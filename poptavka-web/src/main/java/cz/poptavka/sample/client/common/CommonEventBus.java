@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.common;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -14,12 +13,10 @@ import cz.poptavka.sample.client.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.common.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.common.creation.DemandCreationView;
-import cz.poptavka.sample.client.common.creation.widget.FormCompanyPresenter;
 import cz.poptavka.sample.client.common.creation.widget.FormDemandAdvPresenter;
 import cz.poptavka.sample.client.common.creation.widget.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.common.creation.widget.FormLoginPresenter;
-import cz.poptavka.sample.client.common.creation.widget.FormPersonPresenter;
-import cz.poptavka.sample.client.common.creation.widget.FormUserWrapperPresenter;
+import cz.poptavka.sample.client.common.creation.widget.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -82,67 +79,10 @@ public interface CommonEventBus extends EventBus {
     void initDemandAdvForm(SimplePanel embedToWidget);
 
     @Event(handlers = FormLoginPresenter.class)
-    void initFormLogin(SimplePanel embedToWidget);
+    void initLoginForm(SimplePanel embedToWidget);
 
-    @Event(handlers = FormUserWrapperPresenter.class)
-    void initNewUserForm(SimplePanel embedToWidget);
-
-    @Event(handlers = FormPersonPresenter.class,
-            activate = FormPersonPresenter.class, deactivate = FormCompanyPresenter.class)
-    void initPersonForm(HasOneWidget embedToWidget);
-
-    @Event(handlers = FormCompanyPresenter.class,
-            activate = FormCompanyPresenter.class, deactivate = FormPersonPresenter.class)
-    void initCompanyForm(HasOneWidget embedToWidget);
-
-    /** Form Validation methods. **/
-    @Event(handlers = FormDemandBasicPresenter.class)
-    void validateDemandBasicForm();
-
-    @Event(handlers = FormDemandAdvPresenter.class)
-    void validateDemandAdvForm();
-
-    @Event(handlers = {FormCompanyPresenter.class, FormPersonPresenter.class })
-    void submitUserForm();
-
-    /** Form navigation. **/
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void formNextStep();
-//
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void formBackStep();
-
-    /** Form get data. **/
-    @Event(handlers = FormDemandBasicPresenter.class)
-    void getBasicInfoValues();
-
-    @Event(handlers = CategorySelectorPresenter.class)
-    void getSelectedCategoryCodes();
-
-    @Event(handlers = LocalitySelectorPresenter.class)
-    void getSelectedLocalityCodes();
-
-    @Event(handlers = FormDemandAdvPresenter.class)
-    void getAdvInfoValues();
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void pushBasicInfoValues(HashMap<String, Object> basicValues);
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void pushSelectedCategoryCodes(ArrayList<String> categories);
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void pushSelectedLocalityCodes(ArrayList<String> localities);
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void pushAdvInfoValues(HashMap<String, Object> advValues);
-
-    /** submit new demand. **/
-    @Event(handlers = DemandCreationPresenter.class)
-    void submitNewDemand();
-
-    @Event(handlers = DemandCreationPresenter.class)
-    void setClientId(long clientId);
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void initRegistrationForm(SimplePanel embedToWidget);
 
     @Event(handlers = CommonHandler.class)
     void verifyExistingClient(ClientDetail client);
@@ -153,5 +93,28 @@ public interface CommonEventBus extends EventBus {
     @Event(handlers = DemandCreationPresenter.class)
     void toggleCreateAndRegButton();
 
+    @Event(handlers = CommonHandler.class)
+    void checkFreeEmail(String value);
+
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void checkFreeEmailResponse(Boolean result);
+
+    @Event(handlers = DemandCreationPresenter.class)
+    void prepareNewDemandForNewClient(Long clientId);
+
+    @Event(handlers = DemandCreationPresenter.class)
+    void showLoginError();
+
+    /**
+     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working
+     */
+    @Event(forwardToParent = true)
+    void displayLoadingPopup(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void changeLoadingMessage(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void hideLoadingPopup();
 
 }

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.common.locality;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.google.gwt.core.client.GWT;
@@ -96,5 +97,18 @@ public class LocalitySelectorView extends Composite implements LocalitySelectorP
         String item = selectedList.getItemText(index);
         selectedListStrings.remove(item);
         selectedList.removeItem(index);
+    }
+
+    @Override
+    public boolean isValid() {
+        return selectedList.getItemCount() > 0;
+    }
+
+    public ArrayList<String> getSelectedLocalityCodes() {
+        ArrayList<String> codes = new ArrayList<String>();
+        for (int i = 0; i < selectedList.getItemCount(); i++) {
+            codes.add(selectedList.getValue(i));
+        }
+        return codes;
     }
 }

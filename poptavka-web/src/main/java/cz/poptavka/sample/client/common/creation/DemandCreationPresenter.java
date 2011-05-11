@@ -1,20 +1,33 @@
 package cz.poptavka.sample.client.common.creation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.common.CommonEventBus;
+import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import cz.poptavka.sample.client.common.creation.widget.FormDemandAdvPresenter.FormDemandAdvViewInterface;
+import cz.poptavka.sample.client.common.creation.widget.FormDemandBasicPresenter.FormDemandBasicInterface;
+import cz.poptavka.sample.client.common.creation.widget.FormUserRegistrationPresenter.FormRegistrationInterface;
+import cz.poptavka.sample.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import cz.poptavka.sample.client.common.widget.ProvidesValidate;
+import cz.poptavka.sample.client.common.widget.StatusIconLabel;
+import cz.poptavka.sample.client.common.widget.StatusIconLabel.State;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
 @Presenter(view = DemandCreationView.class)
@@ -23,7 +36,12 @@ public class DemandCreationPresenter
 
     private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
 
+    private static final LocalizableMessages MSGS = GWT
+            .create(LocalizableMessages.class);
+
     public interface CreationViewInterface extends LazyView {
+
+        StackLayoutPanel getMainPanel();
 
         SimplePanel getBasicInfoHolder();
 
@@ -40,6 +58,8 @@ public class DemandCreationPresenter
         Widget getWidgetView();
 
         void toggleRegAndCreateButton();
+
+        StatusIconLabel getStatusLabel(int order);
     }
 
     private DemandDetail newDemand = new DemandDetail();
@@ -48,17 +68,31 @@ public class DemandCreationPresenter
     private long clientId;
 
     public void bindView() {
+        view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+            @Override
+            public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
+                int eventItem = event.getItem();
+                if (view.getMainPanel().getVisibleIndex() < eventItem) {
+                    boolean result = canContinue(eventItem);
+                    view.getStatusLabel(eventItem).setPassedSmall(result);
+                    if (!canContinue(eventItem)) {
+                        event.cancel();
+                    }
+                }
+            }
+        });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.submitUserForm();
+                if (canContinue(LOGIN)) {
+                    registerNewCient();
+                }
             }
         });
     }
 
-
     /**
-     * Init method call.
+     * Init method call. TODO decide when other parts should be built.
      *
      * @param homeSection
      */
@@ -75,42 +109,39 @@ public class DemandCreationPresenter
         LOGGER.info(" -> Advanced Form");
         eventBus.initDemandAdvForm(view.getAdvInfoHolder());
         LOGGER.info(" -> User Holder Form");
-        eventBus.initFormLogin(view.getUserFormHolder());
+        eventBus.initLoginForm(view.getUserFormHolder());
     }
 
-    public void onPushBasicInfoValues(HashMap<String, Object> basicValues) {
-        LOGGER.info("setting basic info");
-        newDemand.setBasicInfo(basicValues);
-        eventBus.getSelectedCategoryCodes();
-        LOGGER.info("After eventBus call");
+    private void registerNewCient() {
+        FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getUserFormHolder().getWidget();
+        ClientDetail newClient = registerWidget.getNewClient();
+        eventBus.registerNewClient(newClient);
+        //signal event
+        eventBus.displayLoadingPopup(MSGS.progressRegisterClient());
     }
 
-    public void onPushSelectedCategoryCodes(ArrayList<String> categories) {
-        LOGGER.info("setting categories");
-        newDemand.setCategories(categories);
-        eventBus.getSelectedLocalityCodes();
-    }
+    /**
+     * Called from Commonhandler after successful login/registration
+     *
+     * @param clientId id of newly created client/id of logged user
+     */
+    public void onPrepareNewDemandForNewClient(Long clientId) {
+        eventBus.changeLoadingMessage(MSGS.progressGettingDemandData());
+        this.clientId = clientId;
 
-    public void onPushSelectedLocalityCodes(ArrayList<String> localities) {
-        LOGGER.info("setting localities");
-        newDemand.setLocalities(localities);
-        eventBus.getAdvInfoValues();
-    }
+        FormDemandBasicInterface basicValues = (FormDemandBasicInterface) view.getBasicInfoHolder().getWidget();
+        CategorySelectorInterface categoryValues = (CategorySelectorInterface) view.getCategoryHolder().getWidget();
+        LocalitySelectorInterface localityValues = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
+        FormDemandAdvViewInterface advValues = (FormDemandAdvViewInterface) view.getAdvInfoHolder().getWidget();
 
-    public void onPushAdvInfoValues(HashMap<String, Object> advValues) {
-        LOGGER.info("setting advanced info");
-        newDemand.setAdvInfo(advValues);
-        onSubmitNewDemand();
-    }
+        DemandDetail demand = new DemandDetail();
+        demand.setBasicInfo(basicValues.getValues());
+        demand.setCategories(categoryValues.getSelectedCategoryCodes());
+        demand.setLocalities(localityValues.getSelectedLocalityCodes());
+        demand.setAdvInfo(advValues.getValues());
 
-    public void onSubmitNewDemand() {
-        LOGGER.fine("submiting new demand");
-        eventBus.createDemand(newDemand, clientId);
-    }
-
-    public void onSetClientId(long id) {
-        this.clientId = id;
-        LOGGER.info("Current User's Id is: " + clientId);
+        eventBus.createDemand(demand, clientId);
+        eventBus.changeLoadingMessage(MSGS.progressCreatingDemand());
     }
 
     /** Done automatically in step five, when option: register new client is selected. **/
@@ -119,4 +150,44 @@ public class DemandCreationPresenter
         view.toggleRegAndCreateButton();
     }
 
+    /** showing errof after login failure **/
+    public void onShowLoginError() {
+        view.getStatusLabel(LOGIN).setStyleState(StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
+        view.getStatusLabel(LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
+    }
+
+    private static final int BASIC = 1;
+    private static final int CATEGORY = 2;
+    private static final int LOCALITY = 3;
+    private static final int ADVANCED = 4;
+    private static final int LOGIN = 5;
+
+    private boolean canContinue(int step) {
+        if (step == BASIC) {
+            FormDemandBasicInterface widget =
+                (FormDemandBasicInterface) view.getBasicInfoHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == CATEGORY) {
+            CategorySelectorInterface widget =
+                (CategorySelectorInterface) view.getCategoryHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == LOCALITY) {
+            LocalitySelectorInterface widget =
+                (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == ADVANCED) {
+            FormDemandAdvViewInterface widget =
+                (FormDemandAdvViewInterface) view.getAdvInfoHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == LOGIN) {
+            ProvidesValidate widget = (ProvidesValidate) view.getUserFormHolder().getWidget();
+            return widget.isValid();
+        }
+        //can't reach
+        return false;
+    }
 }

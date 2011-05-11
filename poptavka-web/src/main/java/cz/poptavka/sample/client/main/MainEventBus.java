@@ -85,10 +85,21 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void setUserLayout();
 
-
     @Event(modulesToLoad = CommonModule.class)
     void getRootCategories();
 
     @Event(modulesToLoad = HomeModule.class)
     void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
+
+    /**
+     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working
+     */
+    @Event(handlers = MainPresenter.class)
+    void displayLoadingPopup(String loadingMessage);
+
+    @Event(handlers = MainPresenter.class)
+    void changeLoadingMessage(String loadingMessage);
+
+    @Event(handlers = MainPresenter.class)
+    void hideLoadingPopup();
 }
