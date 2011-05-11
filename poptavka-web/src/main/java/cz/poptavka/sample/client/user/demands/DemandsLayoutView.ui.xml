@@ -4,7 +4,7 @@
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <g:DockLayoutPanel unit="EM" styleName='{res.layout.userPanelLayout}'>
+    <g:DockLayoutPanel unit="EM" styleName='{res.layout.maxSize}'>
         <g:west size="15">
             <g:HTMLPanel>
                 <ul>
@@ -28,18 +28,18 @@
         </g:west>
         <g:center>
             <g:SimplePanel ui:field="contentPanel">
-            <g:HTML><center><h1>Welcome Screen</h1></center>
-                This is the initial page. <br /><br />
-                <strong>Features:</strong>
-                <ul>
-                    <li>feature</li>
-                    <li>feature</li>
-                    <li>feature</li>
-                    <li>feature</li>
-                    <li>feature</li>
-                </ul>
-            </g:HTML>
-        </g:SimplePanel>
+                <g:HTML><center><h1>Welcome Screen</h1></center>
+                    This is the initial page. <br /><br />
+                    <strong>Features:</strong>
+                    <ul>
+                        <li>feature</li>
+                        <li>feature</li>
+                        <li>feature</li>
+                        <li>feature</li>
+                        <li>feature</li>
+                    </ul>
+                </g:HTML>
+            </g:SimplePanel>
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>
