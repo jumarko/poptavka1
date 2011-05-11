@@ -41,15 +41,28 @@ public class ClientServiceImpl extends GenericServiceImpl<Client, ClientDao> imp
         return this.getDao().searchByCriteria(clientSearchCritera);
     }
 
+
+    @Override
+    public Client update(Client client) {
+        createBusinessUserIfNotExist(client);
+        return getDao().update(client);
+    }
+
+
+    //---------------------------------------------- HELPER METHEODS ---------------------------------------------------
     @Override
     @Transactional
     public Client create(Client client) {
         Preconditions.checkArgument(client != null, "Client must have BusinessUser assigned!");
+        createBusinessUserIfNotExist(client);
+        return super.create(client);
+    }
+
+    private void createBusinessUserIfNotExist(Client client) {
         if (isNewBusinessUser(client)) {
             final BusinessUser savedBusinessUserEntity = generalService.save(client.getBusinessUser());
             client.setBusinessUser(savedBusinessUserEntity);
         }
-        return super.create(client);
     }
 
     private boolean isNewBusinessUser(Client client) {
@@ -57,8 +70,4 @@ public class ClientServiceImpl extends GenericServiceImpl<Client, ClientDao> imp
     }
 
 
-    @Override
-    public Client update(Client client) {
-        return getDao().update(client);
-    }
 }
