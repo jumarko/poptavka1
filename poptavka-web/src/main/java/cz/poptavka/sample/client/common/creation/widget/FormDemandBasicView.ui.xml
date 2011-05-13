@@ -1,70 +1,73 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation.widget"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cc="urn:import:cz.poptavka.sample.client.common.creation.widget"
     xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
     <ui:style>
         .clickable {
             cursor: pointer;
         }
+
         .clickable div:hover {
             background-color: #EEE;
         }
+
         .hiddenField {
             display: none;
         }
     </ui:style>
     <g:HTMLPanel>
-                <g:Grid>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML><ui:msg key="demandTitle">Title</ui:msg></g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:TextBox ui:field="titleBox"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML><ui:msg key="description">Description</ui:msg></g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <cc:RichTextToolbarWidget ui:field="descriptionBox"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML><ui:msg key="price">Price</ui:msg></g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:LongBox ui:field="priceBox"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML><ui:msg key="endDate">End Date</ui:msg></g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <p1:DateBox ui:field="finishDateBox"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML><ui:msg key="expireDate">Expire Date</ui:msg></g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <p1:DateBox ui:field="expireDateBox"/>
-                        </g:customCell>
-                    </g:row>
-                    <g:row>
-                        <g:customCell>
-                            <g:HTML><ui:msg key="attachment">Attachment</ui:msg></g:HTML>
-                        </g:customCell>
-                        <g:customCell>
-                            <g:FileUpload/>
-                        </g:customCell>
-                    </g:row>
-                </g:Grid>
-                </g:HTMLPanel>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <ui:msg key="demandTitle">Title</ui:msg>
+                            </td>
+                            <td>
+                                <g:TextBox ui:field="titleBox" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ui:msg key="price">Price</ui:msg>
+                            </td>
+                            <td>
+                                <g:LongBox ui:field="priceBox" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <ui:msg key="endDate">End Date</ui:msg>
+                            </td>
+                            <td>
+                                <p1:DateBox ui:field="finishDateBox" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ui:msg key="expireDate">Expire Date</ui:msg>
+                            </td>
+                            <td>
+                                <p1:DateBox ui:field="expireDateBox" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <ui:msg key="description">Description</ui:msg>
+        <cc:RichTextToolbarWidget ui:field="descriptionBox" />
+
+        <ui:msg key="attachment">Attachment</ui:msg>
+        <g:FileUpload />
+
+    </g:HTMLPanel>
 </ui:UiBinder>

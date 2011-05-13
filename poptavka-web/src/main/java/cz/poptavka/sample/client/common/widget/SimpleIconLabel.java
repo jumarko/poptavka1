@@ -1,7 +1,9 @@
 package cz.poptavka.sample.client.common.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.VerticalAlign;
 import com.google.gwt.event.dom.client.HasMouseOutHandlers;
 import com.google.gwt.event.dom.client.HasMouseOverHandlers;
@@ -26,6 +28,7 @@ public class SimpleIconLabel extends Composite implements HasMouseOverHandlers, 
     interface SimpleIconLabelUiBinder extends UiBinder<Widget, SimpleIconLabel> {    }
 
     @UiField HTMLPanel wrapper;
+    @UiField DivElement inliner;
     @UiField SpanElement message;
     @UiField Image image;
 
@@ -108,6 +111,12 @@ public class SimpleIconLabel extends Composite implements HasMouseOverHandlers, 
             panel.setPopupPosition(x, y);
             panel.show();
         }
+    }
+
+    public void setInline(boolean inline) {
+        wrapper.getElement().getStyle().setDisplay(Display.INLINE);
+        inliner.getStyle().setDisplay(Display.INLINE);
+        image.getElement().getStyle().setVerticalAlign(VerticalAlign.TEXT_BOTTOM);
     }
 
 }

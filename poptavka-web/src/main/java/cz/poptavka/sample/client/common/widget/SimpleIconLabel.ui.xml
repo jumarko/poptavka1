@@ -6,7 +6,7 @@
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
     <g:HTMLPanel ui:field="wrapper">
-        <div>
+        <div ui:field='inliner'>
             <g:Image ui:field="image" styleName='' resource="{res.images.infoIcon16}"/>
             <span ui:field="message" />
         </div>

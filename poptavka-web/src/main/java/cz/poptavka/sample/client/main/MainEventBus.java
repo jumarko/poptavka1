@@ -59,9 +59,11 @@ public interface MainEventBus extends EventBus {
     @Event(modulesToLoad = UserModule.class)
     void setTabWidget(Widget widget);
 
-
     @Event(modulesToLoad = CommonModule.class)
     void atCreateDemand(boolean homeSection);
+
+    @Event(modulesToLoad = CommonModule.class)
+    void atRegisterSupplier();
 
     /**
      * Sets widget to View's body section. Body section can hold one widget only.

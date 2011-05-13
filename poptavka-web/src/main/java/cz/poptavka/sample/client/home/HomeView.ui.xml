@@ -13,6 +13,9 @@
             <g:Hyperlink ui:field="linkDisplayDemands"><ui:msg key="displayDemandsLink">Display Demands</ui:msg></g:Hyperlink>
             <!-- remove next HTML widget for production -->
             <g:HTML>&nbsp;</g:HTML>
+            <g:Hyperlink ui:field="linkRegisterSupplier"><ui:msg key="registerSupplier">Register Supplier</ui:msg></g:Hyperlink>
+            <!-- remove next HTML widget for production -->
+            <g:HTML>&nbsp;</g:HTML>
             <g:Button ui:field="button3">Button 3</g:Button>
             <g:Button ui:field="button4">Button 4</g:Button>
             <g:Button ui:field="button5">Button 5</g:Button>

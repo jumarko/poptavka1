@@ -19,17 +19,24 @@ import cz.poptavka.sample.client.common.creation.widget.FormLoginPresenter;
 import cz.poptavka.sample.client.common.creation.widget.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
+import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
+import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 @Events(startView = DemandCreationView.class, module = CommonModule.class)
 public interface CommonEventBus extends EventBus {
 
     @Event(handlers = {DemandCreationPresenter.class })
     void atCreateDemand(boolean homeSection);
+
+    @Event(handlers = SupplierCreationPresenter.class)
+    void atRegisterSupplier();
 
     @Event(forwardToParent = true)
     void setAnchorWidget(boolean homeSection, AnchorEnum anchor, Widget content, boolean clearOthers);
@@ -96,7 +103,7 @@ public interface CommonEventBus extends EventBus {
     @Event(handlers = CommonHandler.class)
     void checkFreeEmail(String value);
 
-    @Event(handlers = FormUserRegistrationPresenter.class)
+    @Event(handlers = {FormUserRegistrationPresenter.class, SupplierInfoPresenter.class })
     void checkFreeEmailResponse(Boolean result);
 
     @Event(handlers = DemandCreationPresenter.class)
@@ -116,5 +123,15 @@ public interface CommonEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void hideLoadingPopup();
+
+    /** Supplier registration **/
+    @Event(handlers = SupplierServicePresenter.class)
+    void initServiceForm(SimplePanel serviceHolder);
+
+    @Event(handlers = SupplierInfoPresenter.class)
+    void initSupplierForm(SimplePanel supplierInfoHolder);
+
+    @Event(handlers = CommonHandler.class)
+    void registerSupplier(SupplierDetail newSupplier);
 
 }

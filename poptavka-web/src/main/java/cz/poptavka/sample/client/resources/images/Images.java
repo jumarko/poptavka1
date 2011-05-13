@@ -54,4 +54,12 @@ public interface Images extends ClientBundle {
     @Source("loader32.gif")
     ImageResource loadIcon32();
 
+    @Source("goldStar16.png")
+    ImageResource starGold();
+
+    @Source("silverStar16.png")
+    ImageResource starSilver();
+
+    @Source("bronzeStar16.png")
+    ImageResource starBronze();
 }

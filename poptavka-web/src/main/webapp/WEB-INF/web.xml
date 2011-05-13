@@ -57,6 +57,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>SupplierRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.supplier.SupplierRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SupplierRPCService</servlet-name>
+        <url-pattern>/poptavka/service/supplier</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>DemandRPCService</servlet-name>
         <servlet-class>cz.poptavka.sample.server.service.demand.DemandRPCServiceImpl</servlet-class>
     </servlet>

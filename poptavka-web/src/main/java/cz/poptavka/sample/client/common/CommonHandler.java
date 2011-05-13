@@ -14,11 +14,13 @@ import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -35,6 +37,7 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
     private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
     private ClientRPCServiceAsync clientService = null;
+    private SupplierRPCServiceAsync supplierService = null;
 
     private static final Logger LOGGER = Logger.getLogger("CommonHandler");
 
@@ -56,6 +59,11 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
     @Inject
     void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
         clientService = service;
+    }
+
+    @Inject
+    void setSupplierRPCService(SupplierRPCServiceAsync service) {
+        supplierService = service;
     }
 
     public void onGetLocalities() {
@@ -213,6 +221,23 @@ public class CommonHandler extends BaseEventHandler<CommonEventBus> {
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);
                 eventBus.checkFreeEmailResponse(result);
+            }
+        });
+    }
+
+    public void onRegisterSupplier(SupplierDetail newSupplier) {
+        supplierService.createNewSupplier(newSupplier, new AsyncCallback<Long>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                eventBus.hideLoadingPopup();
+                Window.alert("Unexpected error occured! \n" + arg0.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Long supplierId) {
+                // TODO Auto-generated method stub
+                eventBus.hideLoadingPopup();
+                Window.alert("New Supplier registered with id: " + supplierId);
             }
         });
     }

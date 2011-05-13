@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 
@@ -26,11 +28,10 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private ClientService clientService;
 
     private LocalityService localityService;
+    private CategoryService categoryService;
 
     public ArrayList<ClientDetail> getAllClients() {
         // TODO Auto-generated method stub
-        LOGGER.info("Getting fake clients");
-//        return clientService.getAll();
         return null;
     }
 
@@ -43,6 +44,11 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
+    }
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     public void sendClientId(long id) {
@@ -91,23 +97,26 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return newClient2.getId();
     }
 
+    /**
+     * Verifies if client exists in db.
+     *
+     * @param client light-weight Client entity
+     * @return client's ID if exists, -1 if does not
+     */
     public long verifyClient(ClientDetail client) {
         List<Client> clients = clientService.getAll();
 
-        //lebo inteligenti nasetuju null heslo do db...
         for (Client cl : clients) {
-            if (cl.getBusinessUser().getEmail().equals(client.getEmail())) {
-                return cl.getId();
+            try {
+                if (cl.getBusinessUser().getEmail().equals(client.getEmail())
+                        && cl.getBusinessUser().getPassword().equals(client.getPassword())) {
+                    return cl.getId();
+                }
+            } catch (NullPointerException ex) {
+                System.out.println("Client id:" + cl.getId() + " contains NULL value, where it shouldn't be");
             }
         }
-//        for (Client cl : clients) {
-//            if (cl.getBusinessUser().getEmail().equals(client.getEmail())
-//                    && cl.getBusinessUser().getPassword().equals(client.getPassword())) {
-//                return cl.getId();
-//            }
-//        }
         return -1;
-//        return 1;
     }
 
     @Override
@@ -117,7 +126,30 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         user.setEmail(email);
         example.setBusinessUser(user);
         List<Client> resultList = clientService.findByExample(example);
-        return resultList.size() == 0;
+        for (Client cl : resultList) {
+            try {
+                if (cl.getBusinessUser().getEmail().equals(email)) {
+                    return false;
+                }
+            } catch (NullPointerException ex) {
+                //ignore, because in production this can not happen
+            }
+        }
+        return true;
+    }
+
+    private Locality getLocalityByExample(String searchString) {
+        Locality loc = new Locality();
+        loc.setName(searchString);
+        List<Locality> results = localityService.findByExample(loc);
+        return (results.size() == 0) ? results.get(0) : null;
+    }
+
+    private Category getCategoryByExample(String searchString) {
+        Category loc = new Category();
+        loc.setName(searchString);
+        List<Category> results = categoryService.findByExample(loc);
+        return (results.size() == 0) ? results.get(0) : null;
     }
 
 }

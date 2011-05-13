@@ -1,5 +1,7 @@
 package com.google.gwt.i18n.client;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 public interface LocalizableMessages extends Messages {
 
     String logIn();
@@ -23,6 +25,15 @@ public interface LocalizableMessages extends Messages {
     String passwordsMatch();
     String passwordsUnmatch();
 
+    //supplier registration
+    //service definitions
+    String serviceOne();
+    String serviceOneDescription();
+    String serviceTwo();
+    String serviceTwoDescription();
+    String serviceThree();
+    String serviceThreeDescription();
+
     //status messages, description
     String basicMessage();
     String basicDescription();
@@ -44,4 +55,5 @@ public interface LocalizableMessages extends Messages {
     String progressLogingUser();
     String wrongLoginDescription();
     String wrongLoginMessage();
+    SafeHtml close();
 }
