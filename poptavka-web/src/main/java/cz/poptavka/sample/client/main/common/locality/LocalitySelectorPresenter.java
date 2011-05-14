@@ -15,7 +15,6 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.MainEventBus;
-import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Presenter(view = LocalitySelectorView.class)
@@ -32,7 +31,7 @@ public class LocalitySelectorPresenter
 
         ListBox getSelectedList();
 
-        String getSelectedItem(LocalityType type);
+        String getSelectedItem(int localityType);
 
         void toggleLoader();
 
@@ -56,7 +55,7 @@ public class LocalitySelectorPresenter
                 view.toggleLoader();
                 view.getTownshipList().setVisible(false);
                 view.getCityList().setVisible(false);
-                eventBus.getChildLocalities(LocalityType.DISTRICT, view.getSelectedItem(LocalityType.REGION));
+                eventBus.getChildLocalities(LocalityDetail.DISTRICT, view.getSelectedItem(LocalityDetail.REGION));
             }
         });
         view.getTownshipList().addChangeHandler(new ChangeHandler() {
@@ -64,7 +63,7 @@ public class LocalitySelectorPresenter
             public void onChange(ChangeEvent event) {
                 view.toggleLoader();
                 view.getCityList().setVisible(false);
-                eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.DISTRICT));
+                eventBus.getChildLocalities(LocalityDetail.CITY, view.getSelectedItem(LocalityDetail.DISTRICT));
             }
         });
         view.getCityList().addClickHandler(new ClickHandler() {
@@ -87,16 +86,16 @@ public class LocalitySelectorPresenter
         embedWidget.setWidget(view.getWidgetView());
     }
 
-    public void onSetLocalityData(LocalityType type, ArrayList<LocalityDetail> list) {
-        switch (type) {
-            case REGION:
+    public void onSetLocalityData(int localityType, ArrayList<LocalityDetail> list) {
+        switch (localityType) {
+            case LocalityDetail.REGION:
                 setData(view.getDistrictList(), list);
                 break;
-            case DISTRICT:
+            case LocalityDetail.DISTRICT:
                 view.toggleLoader();
                 setData(view.getTownshipList(), list);
                 break;
-            case CITY:
+            case LocalityDetail.CITY:
                 view.toggleLoader();
                 setData(view.getCityList(), list);
                 break;

@@ -60,7 +60,8 @@ public class DemandCreationPresenter
                 int eventItem = event.getItem();
                 if (view.getMainPanel().getVisibleIndex() < eventItem) {
                     boolean result = canContinue(eventItem);
-                    if (result) {
+                    if (!result) {
+                        // TODO change to global status changer eventBus call
                         event.cancel();
                     } else {
                         // TODO change to global status changer eventBus call
@@ -150,6 +151,7 @@ public class DemandCreationPresenter
 
     private boolean canContinue(int step) {
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
+        LOGGER.fine(widget.getClass().getName());
         return widget.isValid();
     }
 }

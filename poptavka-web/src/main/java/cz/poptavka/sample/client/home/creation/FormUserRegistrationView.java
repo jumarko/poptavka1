@@ -49,6 +49,9 @@ public class FormUserRegistrationView extends Composite
     @UiField StatusIconLabel mailStatus;
     @UiField StatusIconLabel pwdStatus;
     @UiField StatusIconLabel pwdCheckStatus;
+    private boolean mailFlag = false;
+    private boolean passFlag = false;
+    private boolean passLength = false;
 
     @Override
     public void createView() {
@@ -85,6 +88,9 @@ public class FormUserRegistrationView extends Composite
                     ((Widget) item).setStyleName(StyleResource.INSTANCE.common().errorField());
                 }
             }
+        }
+        if (!(mailFlag && passFlag && passLength)) {
+            errorCount++;
         }
         return errorCount == 0;
     }
@@ -179,6 +185,21 @@ public class FormUserRegistrationView extends Composite
     @Override
     public PasswordTextBox getPwdConfirmBox() {
         return passConfirmBox;
+    }
+
+    @Override
+    public void setMailFlag(boolean flag) {
+        this.mailFlag = flag;
+    }
+
+    @Override
+    public void setPasswordFlag(boolean flag) {
+        this.passFlag = flag;
+    }
+
+    @Override
+    public void setPasswordLengthFlag(boolean flag) {
+        this.passLength = flag;
     }
 
 

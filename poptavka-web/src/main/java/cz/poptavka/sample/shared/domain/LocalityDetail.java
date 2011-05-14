@@ -10,6 +10,10 @@ import java.io.Serializable;
  */
 public class LocalityDetail implements Serializable {
 
+    public static final int REGION = 0;
+    public static final int DISTRICT = 1;
+    public static final int CITY = 2;
+
     /**
      * Generated serialVersionUID.
      */

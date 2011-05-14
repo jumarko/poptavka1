@@ -52,7 +52,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onSuccess(ArrayList<LocalityDetail> list) {
-                eventBus.setLocalityData(LocalityType.REGION, list);
+                eventBus.setLocalityData(LocalityDetail.REGION, list);
             }
             @Override
             public void onFailure(Throwable arg0) {
@@ -61,7 +61,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         });
     }
 
-    public void onGetChildLocalities(final LocalityType type, String locCode) {
+    public void onGetChildLocalities(final int localityType, String locCode) {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -69,7 +69,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
             }
             @Override
             public void onSuccess(ArrayList<LocalityDetail> list) {
-                eventBus.setLocalityData(type, list);
+                eventBus.setLocalityData(localityType, list);
             }
         });
     }
@@ -99,7 +99,6 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                 public void onFailure(Throwable arg0) {
                     // TODO Auto-generated method stub
                 }
-
                 @Override
                 public void onSuccess(ArrayList<CategoryDetail> list) {
                     eventBus.setCategoryListData(newListPosition, list);
@@ -112,7 +111,6 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                 public void onSuccess(ArrayList<CategoryDetail> list) {
                     eventBus.setCategoryListData(newListPosition, list);
                 }
-
                 @Override
                 public void onFailure(Throwable arg0) {
                     // TODO Auto-generated method stub

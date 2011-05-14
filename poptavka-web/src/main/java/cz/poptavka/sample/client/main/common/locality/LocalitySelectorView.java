@@ -14,7 +14,7 @@ import com.google.inject.Singleton;
 
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Singleton
 public class LocalitySelectorView extends Composite
@@ -68,11 +68,11 @@ public class LocalitySelectorView extends Composite
     }
 
     @Override
-    public String getSelectedItem(LocalityType type) {
-        switch (type) {
-            case REGION:
+    public String getSelectedItem(int localityType) {
+        switch (localityType) {
+            case LocalityDetail.REGION:
                 return regionList.getValue(regionList.getSelectedIndex());
-            case DISTRICT:
+            case LocalityDetail.DISTRICT:
                 return districtList.getValue(districtList.getSelectedIndex());
             default:
                 return cityList.getValue(cityList.getSelectedIndex());

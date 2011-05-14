@@ -3,8 +3,6 @@ package cz.poptavka.sample.client.main.common.category;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Grid;
@@ -46,6 +44,8 @@ public class CategorySelectorPresenter
         void clearChildrenLists(int i);
 
         ArrayList<String> getSelectedCategoryCodes();
+
+        void showLoader(int index);
     }
 
     private static final Logger LOGGER = Logger.getLogger("CategorySelectorPresenter");
@@ -65,6 +65,11 @@ public class CategorySelectorPresenter
         embedWidget.setWidget(view.getWidgetView());
     }
 
+    private void postRequest(int index, String category) {
+        view.showLoader(index);
+        eventBus.getChildListCategories(index, category);
+    }
+
     public void onSetCategoryListData(int newListPosition, ArrayList<CategoryDetail> list) {
         ListBox listBox = view.createListAtIndex(newListPosition);
         setAndDisplayData(listBox, list);
@@ -72,6 +77,10 @@ public class CategorySelectorPresenter
     }
 
     private void setAndDisplayData(final ListBox box, final ArrayList<CategoryDetail> list) {
+        /** DEVEL PART **/
+        int columCount = view.getListHolder().getColumnCount();
+
+        /** END **/
         box.setVisible(true);
         LOGGER.info("Filling list...");
         for (int i = 0; i < list.size(); i++) {
@@ -81,7 +90,6 @@ public class CategorySelectorPresenter
 
         //check if possible to display, if needed resize table
         int positionToInsert = view.getListIndex();
-        int columCount = view.getListHolder().getColumnCount();
         if (columCount == positionToInsert) {
             view.getListHolder().resizeColumns(columCount + 1);
 
@@ -91,17 +99,22 @@ public class CategorySelectorPresenter
     }
 
     private void addCategoryChangeHandler(final ListBox box, final int index) {
-        box.addChangeHandler(new ChangeHandler() {
+        box.addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent arg0) {
+            public void onClick(ClickEvent event) {
                 String text = box.getItemText(box.getSelectedIndex());
                 String value = box.getValue(box.getSelectedIndex());
-                if (text.contains(" >")) {
-                    view.clearChildrenLists(index);
-                    eventBus.getChildListCategories(index + 1, box.getValue(box.getSelectedIndex()));
-                    LOGGER.fine("Next table is at index " + index + 1);
+                boolean notLeaf = text.contains(" >");
+                if (event.isControlKeyDown() && notLeaf) {
+                    view.addToSelectedList(text.substring(0, text.indexOf(" >")), value);
                 } else {
-                    view.addToSelectedList(text, value);
+                    if (text.contains(" >")) {
+                        view.clearChildrenLists(index);
+                        postRequest(index + 1, box.getValue(box.getSelectedIndex()));
+                        LOGGER.fine("Next table is at index " + index + 1);
+                    } else {
+                        view.addToSelectedList(text, value);
+                    }
                 }
             }
         });

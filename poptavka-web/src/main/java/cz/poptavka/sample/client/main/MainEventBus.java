@@ -20,7 +20,6 @@ import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.user.UserModule;
-import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -104,13 +103,13 @@ public interface MainEventBus extends EventBus {
     void initLocalityWidget(SimplePanel embedToWidget);
 
     @Event(handlers = LocalitySelectorPresenter.class)
-    void setLocalityData(LocalityType type, ArrayList<LocalityDetail> localityList);
+    void setLocalityData(int localityType, ArrayList<LocalityDetail> localityList);
 
     @Event(handlers = MainHandler.class)
     void getRootLocalities();
 
     @Event(handlers = MainHandler.class)
-    void getChildLocalities(LocalityType type, String locCode);
+    void getChildLocalities(int localityType, String locCode);
 
     /** NO EDITING AFTER THIS LINE
      * Every Child Module HAVE TO implement this method calls.

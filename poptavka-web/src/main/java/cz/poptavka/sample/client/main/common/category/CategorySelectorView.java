@@ -6,13 +6,16 @@ import java.util.HashSet;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
+import cz.poptavka.sample.client.resources.StyleResource;
 
 
 //@Singleton
@@ -48,7 +51,7 @@ public class CategorySelectorView extends Composite
 
     @Override
     public void addToSelectedList(String text, String value) {
-        if (!selectedListStrings.contains(value)) {
+        if (!selectedListStrings.contains(text)) {
             selectedList.addItem(text, value);
             selectedListStrings.add(text);
         }
@@ -111,5 +114,24 @@ public class CategorySelectorView extends Composite
         }
         return codes;
     }
+
+    @Override
+    public void showLoader(int index) {
+        try {
+            int columCount = categoryListHolder.getColumnCount();
+            int positionToInsert = getListIndex() + 1;
+            if (columCount == positionToInsert) {
+                categoryListHolder.resizeColumns(columCount + 1);
+            }
+            HTML html = new HTML("&nbsp;");
+            categoryListHolder.setWidget(0, index, html);
+            html.setStyleName(StyleResource.INSTANCE.common().smallLoader());
+        } catch (Exception ex) {
+            Window.alert(ex.getMessage() + "\nColumn count: " + categoryListHolder.getColumnCount()
+                    + " posToInsert: " + getListIndex());
+        }
+    }
+
+
 
 }

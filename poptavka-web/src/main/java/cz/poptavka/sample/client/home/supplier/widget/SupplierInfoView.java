@@ -45,6 +45,9 @@ public class SupplierInfoView extends Composite
     @UiField StatusIconLabel pwdStatus;
     @UiField StatusIconLabel pwdCheckStatus;
     @UiField RichTextToolbarWidget richText;
+    private boolean mailFlag = false;
+    private boolean passFlag = false;
+    private boolean passLength = false;
 
     @Override
     public void createView() {
@@ -74,6 +77,9 @@ public class SupplierInfoView extends Composite
         ((Widget) richText).removeStyleName(StyleResource.INSTANCE.common().errorField());
         if (richText.getValue().length() < MIN_SIZE) {
             ((Widget) richText).setStyleName(StyleResource.INSTANCE.common().errorField());
+            errorCount++;
+        }
+        if (!(mailFlag && passFlag && passLength)) {
             errorCount++;
         }
         return errorCount == 0;
@@ -154,6 +160,21 @@ public class SupplierInfoView extends Composite
         sup.setAddress(address);
 
         return sup;
+    }
+
+    @Override
+    public void setMailFlag(boolean flag) {
+        this.mailFlag = flag;
+    }
+
+    @Override
+    public void setPasswordFlag(boolean flag) {
+        this.passFlag = flag;
+    }
+
+    @Override
+    public void setPasswordLengthFlag(boolean flag) {
+        this.passLength = flag;
     }
 
 }

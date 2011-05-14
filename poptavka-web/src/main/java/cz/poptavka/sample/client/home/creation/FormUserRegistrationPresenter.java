@@ -54,6 +54,12 @@ public class FormUserRegistrationPresenter extends
         void toggleCompanyButtons(boolean toggle);
 
         ClientDetail getNewClient();
+
+        void setMailFlag(boolean flag);
+
+        void setPasswordFlag(boolean flag);
+
+        void setPasswordLengthFlag(boolean flag);
     }
 
     @Override
@@ -110,34 +116,53 @@ public class FormUserRegistrationPresenter extends
 
     public void onCheckFreeEmailResponse(Boolean isAvailable) {
         if (isAvailable) {
+            view.setMailFlag(true);
+
+            // TODO change to global status changer eventBus call
             view.getMailStatus().setState(State.ACCEPT_16);
             view.getMailStatus().setDescription(MSGS.mailAvailable());
         } else {
+            view.setMailFlag(false);
+
+            // TODO change to global status changer eventBus call
             view.getMailStatus().setState(State.ERROR_16);
         }
     }
 
     /** Visualization methods **/
     private void initVisualMailCheck(String value) {
+        // TODO change to global status changer eventBus call
         view.getMailStatus().setState(State.LOAD_24);
         view.getMailStatus().setVisible(true);
-
         if (value.contains("@") && value.contains(".")) {
             eventBus.checkFreeEmail(value);
         } else {
+            // TODO change to global status changer eventBus call
             view.getMailStatus().setStateWithDescription(State.ERROR_16, MSGS.malformedEmail());
         }
     }
 
+    private static final int SHORT = 5;
+    private static final int LONG = 8;
+
     private void initVisualPwdCheck(String value) {
         view.getPwdStatus().setVisible(true);
-        if (value.length() < 6) {
+        if (value.length() <= SHORT) {
+
+            // TODO change to global status changer eventBus call
             view.getPwdStatus().setStateWithDescription(State.ERROR_16, MSGS.shortPassword());
+            view.setPasswordLengthFlag(false);
+            return;
         }
-        if ((value.length() <= 8) && (value.length() > 5)) {
+        view.setPasswordLengthFlag(true);
+        if ((value.length() <= LONG) && (value.length() > SHORT)) {
+
+            // TODO change to global status changer eventBus call
             view.getPwdStatus().setStateWithDescription(State.INFO_16, MSGS.semiStrongPassword());
         }
-        if (value.length() > 8) {
+        if (value.length() > LONG) {
+
+            // TODO change to global status changer eventBus call
             view.getPwdStatus().setStateWithDescription(State.ACCEPT_16, MSGS.strongPassword());
         }
     }
@@ -145,8 +170,14 @@ public class FormUserRegistrationPresenter extends
     private void initVisualPwdConfirmCheck() {
         view.getPwdConfirmStatus().setVisible(true);
         if (!view.getPwdBox().getText().equals(view.getPwdConfirmBox().getText())) {
+            view.setMailFlag(false);
+
+            // TODO change to global status changer eventBus call
             view.getPwdConfirmStatus().setStateWithDescription(State.ERROR_16, MSGS.passwordsUnmatch());
         } else {
+            view.setMailFlag(true);
+
+            // TODO change to global status changer eventBus call
             view.getPwdConfirmStatus().setStateWithDescription(State.ACCEPT_16, MSGS.passwordsMatch());
         }
     }
