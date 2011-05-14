@@ -32,6 +32,9 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
         // TODO eventually change to hyperlink
         Anchor getLoginButton();
+
+        Boolean getCompactDisplay();
+
     }
 
     private boolean loggedIn = false;
@@ -66,6 +69,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         /** for user part development **/
 //        LOGGER.info("    > User Module");
 //        eventBus.atAccount();
+        eventBus.compactModeResponse(view.getCompactDisplay());
     }
 
     /**
@@ -120,4 +124,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         popup.show();
     }
 
+    public void onCompactModeCheck() {
+        eventBus.compactModeResponse(view.getCompactDisplay());
+    }
 }

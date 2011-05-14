@@ -12,11 +12,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.LongBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import cz.poptavka.sample.client.main.common.RichTextToolbarWidget;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 public class FormDemandBasicView extends Composite
@@ -34,14 +34,13 @@ public class FormDemandBasicView extends Composite
 
     @UiField TextBox titleBox;
     @UiField LongBox priceBox;
-    @UiField(provided = true) RichTextToolbarWidget descriptionBox;
+    @UiField TextArea descriptionBox;
     @UiField DateBox finishDateBox;
     @UiField DateBox expireDateBox;
     //place for uploadFiles button
     //place for addNextAttachment button
 
     public void createView() {
-        descriptionBox = new RichTextToolbarWidget();
         initWidget(uiBinder.createAndBindUi(this));
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         finishDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -51,6 +50,8 @@ public class FormDemandBasicView extends Composite
         widgets.add(descriptionBox);
         widgets.add(finishDateBox);
         widgets.add(expireDateBox);
+
+        descriptionBox.setSize("500px", "150px");
 
     }
 

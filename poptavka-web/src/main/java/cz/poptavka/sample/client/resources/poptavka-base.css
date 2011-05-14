@@ -27,7 +27,23 @@ body {
 }
 
 .footer-container {
+    position: absolute;
+    border-top: 2px black dotted;
     background-color: #D0D0D0;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 0px;
+}
+
+.footer-toggle {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    border: thin solid black;
+    border-bottom: none;
+    cursor: pointer;
 }
 
 .body-container {

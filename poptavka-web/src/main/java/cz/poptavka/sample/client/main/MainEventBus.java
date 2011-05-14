@@ -111,6 +111,12 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainHandler.class)
     void getChildLocalities(int localityType, String locCode);
 
+    @Event(handlers = MainPresenter.class)
+    void compactModeCheck();
+
+    @Event(broadcastTo = CompactModeBroadcast.class, passive = true)
+    void compactModeResponse(Boolean compactDisplay);
+
     /** NO EDITING AFTER THIS LINE
      * Every Child Module HAVE TO implement this method calls.
      * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
@@ -127,4 +133,5 @@ public interface MainEventBus extends EventBus {
 
     @Event(handlers = MainPresenter.class)
     void setUserLayout();
+
 }

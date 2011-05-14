@@ -64,9 +64,10 @@
             </tr>
         </table>
 
-        <ui:msg key="description">Description</ui:msg>
-        <cm:RichTextToolbarWidget ui:field="descriptionBox" />
-
+        <strong><ui:msg key="description">Description</ui:msg></strong>
+        <br />
+        <g:TextArea ui:field="descriptionBox"/>
+        <br />
         <ui:msg key="attachment">Attachment</ui:msg>
         <g:FileUpload />
 

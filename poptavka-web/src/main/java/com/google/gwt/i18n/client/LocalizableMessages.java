@@ -1,6 +1,5 @@
 package com.google.gwt.i18n.client;
 
-import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface LocalizableMessages extends Messages {
 
@@ -8,6 +7,8 @@ public interface LocalizableMessages extends Messages {
     String logOut();
     String endDate();
     String emptyField();
+    String footerDisplay();
+    String footerHide();
 
     //offers view - buttons
     String answer();
@@ -55,5 +56,5 @@ public interface LocalizableMessages extends Messages {
     String progressLogingUser();
     String wrongLoginDescription();
     String wrongLoginMessage();
-    SafeHtml close();
+    String close();
 }

@@ -24,6 +24,8 @@ public interface LayoutResource extends CssResource {
     String bodyContainer();
     @ClassName("login-area")
     String loginArea();
+    @ClassName("footer-toggle")
+    String footerToggle();
 
     /** UserView.class **/
     @ClassName("full-size-panel")
