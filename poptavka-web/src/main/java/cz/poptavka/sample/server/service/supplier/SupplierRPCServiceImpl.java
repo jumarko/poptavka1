@@ -21,6 +21,11 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = 6985305269091931821L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierRPCServiceImpl.class);
 
     private SupplierService supplierService;

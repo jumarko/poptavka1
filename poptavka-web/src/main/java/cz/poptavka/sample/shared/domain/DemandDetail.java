@@ -8,6 +8,10 @@ import java.util.HashMap;
 
 public class DemandDetail implements Serializable {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -530982467233195456L;
     private long id;
     private String title;
     private String description;
@@ -21,7 +25,7 @@ public class DemandDetail implements Serializable {
     private int minRating;
     private String demandType;
 
-    /** for serialization **/
+    /** for serialization. **/
     public DemandDetail() {
     }
 

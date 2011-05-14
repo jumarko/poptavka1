@@ -17,18 +17,18 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.common.CommonEventBus;
-import cz.poptavka.sample.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
-import cz.poptavka.sample.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
-import cz.poptavka.sample.client.common.widget.StatusIconLabel;
+import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierServiceWidget;
+import cz.poptavka.sample.client.main.common.StatusIconLabel;
+import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
-    extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, CommonEventBus> {
+    extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, HomeEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    SupplierCreationPresenter");
 
@@ -92,13 +92,14 @@ public class SupplierCreationPresenter
     }
 
     /**
-     * Init method call. TODO decide when other parts should be built.
+     * Init method call.
+     * TODO decide WHEN other parts should be built.
      *
      * @param homeSection
      */
     public void onAtRegisterSupplier() {
         LOGGER.info("Initializing Supplier Registration Widget ... ");
-        eventBus.setAnchorWidget(true, AnchorEnum.THIRD, view.getWidgetView(), true);
+        eventBus.setHomeWidget(AnchorEnum.THIRD, view.getWidgetView(), true);
 //        //init parts
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
@@ -122,7 +123,7 @@ public class SupplierCreationPresenter
 
         eventBus.registerSupplier(newSupplier);
         //signal event
-        eventBus.displayLoadingPopup(MSGS.progressRegisterClient());
+        eventBus.loadingShow(MSGS.progressRegisterClient());
     }
 
     private static final int INFO = 1;

@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 public class CategoryDetail implements Serializable {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -8677227400869014970L;
+
     private long id;
     private String name;
     private long demands;
@@ -23,11 +28,11 @@ public class CategoryDetail implements Serializable {
         init(id, name, demands, suppliers);
     }
 
-    private void init(Long id, String name, long demands, long suppliers) {
-        this.id = id;
-        this.name = name;
-        this.demands = demands;
-        this.suppliers = suppliers;
+    private void init(Long catId, String nameString, long demandCount, long supplierCount) {
+        this.id = catId;
+        this.name = nameString;
+        this.demands = demandCount;
+        this.suppliers = supplierCount;
     }
 
     public long getId() {

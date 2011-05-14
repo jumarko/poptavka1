@@ -5,13 +5,16 @@ import java.util.ArrayList;
 
 public class ClientDetail implements Serializable {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -8493217107010404220L;
+
     private String email;
     private String passowrd;
-    /** person **/
     private String firstName;
     private String lastName;
     private String phone;
-    /** company **/
     private String identifiacationNumber;
     private String companyName = null;
     private String taxId = null;
@@ -22,7 +25,6 @@ public class ClientDetail implements Serializable {
 
     private ArrayList<String> demandsId;
 
-    /** for serialization **/
     public ClientDetail() {
     }
 

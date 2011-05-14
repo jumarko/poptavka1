@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.common.creation.widget.RichTextToolbarWidget;
-import cz.poptavka.sample.client.common.widget.ProvidesValidate;
-import cz.poptavka.sample.client.common.widget.StatusIconLabel;
+import cz.poptavka.sample.client.main.common.ProvidesValidate;
+import cz.poptavka.sample.client.main.common.RichTextToolbarWidget;
+import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;

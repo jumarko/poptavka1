@@ -25,7 +25,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     private static final Logger LOGGER = Logger.getLogger("MainPresenter");
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private PopupPanel popup = new PopupPanel();
+    private PopupPanel popup = null;
 
     public interface MainViewInterface {
         void setBodyWidget(Widget body);
@@ -80,6 +80,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     /**
+     * TODO revisit this code, suspition it's useless     *
+     *
      * Crossroad method for placing widget from common package.
      *
      * @param homeSection boolean if target section si home section
@@ -91,7 +93,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         if (homeSection) {
             eventBus.setHomeWidget(anchor, content, clearOthers);
         } else {
-            eventBus.setTabWidget(content);
+//            eventBus.setTabWidget(content);
         }
     }
 
@@ -115,27 +117,26 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         view.toggleMainLayout(true);
     }
 
-    public void onDisplayLoadingPopup(String loadingMessage) {
+    public void onLoadingShow(String loadingMessage) {
+        if (!(popup == null)) {
+            LoadingPopup popupContent = (LoadingPopup) popup.getWidget();
+            popupContent.setMessage(loadingMessage);
+        } else {
+            createLoadingPopup(loadingMessage);
+        }
+    }
+
+    public void onLoadingHide() {
+        popup.hide();
+        popup = null;
+    }
+
+    private void createLoadingPopup(String loadingMessage) {
         popup = new PopupPanel(false, false);
         popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
         popup.setWidget(new LoadingPopup(loadingMessage));
         popup.setPopupPosition((Window.getClientWidth() / 2) - 60, (Window.getClientHeight() / 2) - 35);
         popup.show();
-    }
-
-
-    public void onChangeLoadingMessage(String loadingMessage) {
-        if (!(popup == null)) {
-            LoadingPopup popupContent = (LoadingPopup) popup.getWidget();
-            popupContent.setMessage(loadingMessage);
-        } else {
-            onDisplayLoadingPopup(loadingMessage);
-        }
-    }
-
-    public void onHideLoadingPopup() {
-        popup.hide();
-        popup = null;
     }
 
 }

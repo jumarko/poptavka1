@@ -23,8 +23,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.common.widget.OverflowComposite;
-import cz.poptavka.sample.client.common.widget.StatusIconLabel;
+import cz.poptavka.sample.client.main.common.OverflowComposite;
+import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 public class SupplierCreationView extends OverflowComposite implements SupplierCreationPresenter.CreationViewInterface {
@@ -43,20 +43,24 @@ public class SupplierCreationView extends OverflowComposite implements SupplierC
     @UiField SimplePanel supplierInfoHolder;
 
     //step2
-//    @UiField VerticalPanel stepTwo;
     @UiField SimplePanel categoryHolder;
     //step3
-//    @UiField VerticalPanel stepThree;
     @UiField SimplePanel localityHolder;
     //step4
-//    @UiField VerticalPanel stepFour;
     @UiField SimplePanel serviceHolder;
     @UiField Button registerBtn;
     @UiField Anchor conditionLink;
 
     @UiField StatusIconLabel basicStatus, categoryStatus, localityStatus, serviceStatus;
 
+    @UiField SimplePanel tableHolder;
+
     public void createView() {
+        ArrayList<String> titles = new ArrayList<String>();
+        titles.add("Item-A");
+        titles.add("Item-B");
+        titles.add("Item-C");
+        titles.add("Item-D");
         initWidget(uiBinder.createAndBindUi(this));
 
         /** filling status list **/

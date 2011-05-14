@@ -15,6 +15,10 @@ import java.util.logging.Logger;
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -5635188205093095585L;
     private CategoryService categoryService;
     private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 

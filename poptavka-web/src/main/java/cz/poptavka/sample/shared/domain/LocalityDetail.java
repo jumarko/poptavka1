@@ -3,12 +3,17 @@ package cz.poptavka.sample.shared.domain;
 import java.io.Serializable;
 
 /**
- * Low-bandwitdh representation of Locality designed for direct use on frontend
+ * Low-bandwitdh representation of Locality designed for direct use on frontend.
  *
  * @author Beho
  *
  */
 public class LocalityDetail implements Serializable {
+
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = 8480517227278818048L;
 
     private String name;
     private String code;

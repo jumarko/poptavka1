@@ -20,7 +20,7 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
             eventBus.atHome();
         }
         if (historyName.equals("atCreateDemand")) {
-            eventBus.atCreateDemand(true);
+            eventBus.atCreateDemand();
         }
         if (historyName.equals("atDemands")) {
             eventBus.atDemands();

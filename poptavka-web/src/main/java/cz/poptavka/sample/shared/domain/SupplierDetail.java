@@ -2,17 +2,20 @@ package cz.poptavka.sample.shared.domain;
 
 import java.util.ArrayList;
 
-import cz.poptavka.sample.domain.product.Service;
-
 
 public class SupplierDetail extends ClientDetail {
+
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -8271479725303195283L;
 
     private int overallRating;
     private boolean certified;
     private String description;
     private ArrayList<String> localities;
     private ArrayList<String> categories;
-    private Service service;
+    private int serviceId;
 
     public SupplierDetail() {
         super();
@@ -61,12 +64,12 @@ public class SupplierDetail extends ClientDetail {
         this.description = description;
     }
 
-    public Service getService() {
-        return service;
+    public int getService() {
+        return serviceId;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setService(int service) {
+        this.serviceId = service;
     }
 
 

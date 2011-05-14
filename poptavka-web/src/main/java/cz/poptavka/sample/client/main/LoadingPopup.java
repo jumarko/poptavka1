@@ -7,7 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.common.widget.SimpleIconLabel;
+import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 public class LoadingPopup extends Composite {

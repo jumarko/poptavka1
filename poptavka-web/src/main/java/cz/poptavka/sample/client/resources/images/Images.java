@@ -15,11 +15,20 @@ public interface Images extends ClientBundle {
     @Source("zoom-out.gif")
     ImageResource zoomOut();
 
-    @Source("offers-open.png")
-    ImageResource offerOpen();
+    @Source("btn-center.png")
+    ImageResource showMiddle();
 
-    @Source("offers-opened.png")
-    ImageResource offerOpened();
+    @Source("btn-down.png")
+    ImageResource showDown();
+
+    @Source("btn-up.png")
+    ImageResource showUp();
+
+    @Source("sort-down.png")
+    ImageResource sortDown();
+
+    @Source("sort-up.png")
+    ImageResource sortUp();
 
     @Source("accept-icon.png")
     ImageResource acceptIcon();

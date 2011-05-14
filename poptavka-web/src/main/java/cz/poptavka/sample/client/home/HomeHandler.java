@@ -1,7 +1,20 @@
 package cz.poptavka.sample.client.home;
 
+import java.util.logging.Logger;
+
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+
+import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
+import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 /**
  * Handler for RPC calls for localities & categories
@@ -12,60 +25,116 @@ import com.mvp4g.client.event.BaseEventHandler;
 @EventHandler
 public class HomeHandler extends BaseEventHandler<HomeEventBus> {
 
-//    private LocalityRPCServiceAsync localityService = null;
-//    private CategoryRPCServiceAsync categoryService = null;
-//
-//    @InjectService
-//    public void setLocalityService(LocalityRPCServiceAsync service) {
-//        localityService = service;
-//    }
-//
-//    @InjectService
-//    public void setCategoryService(CategoryRPCServiceAsync service) {
-//        categoryService = service;
-//    }
-//
-//    public void onGetLocalities(final LocalityType type) {
-//        localityService.getLocalities(type, new AsyncCallback<List<LocalityDetail>>() {
-//            @Override
-//            public void onSuccess(List<LocalityDetail> list) {
-//                eventBus.displayLocalityList(type, list);
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable arg0) {
-//                //empty
-//            }
-//        });
-//    }
-//
-//    public void onGetChildLocalities(final LocalityType type, String locCode) {
-//        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
-//            @Override
-//            public void onFailure(Throwable arg0) {
-//                //empty
-//            }
-//
-//            @Override
-//            public void onSuccess(List<LocalityDetail> list) {
-//                eventBus.displayLocalityList(type, list);
-//            }
-//        });
-//    }
-//
-//    public void onGetRootCategories() {
-//        categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
-//
-//            @Override
-//            public void onFailure(Throwable arg0) {
-//                //empty
-//            }
-//
-//            @Override
-//            public void onSuccess(ArrayList<CategoryDetail> list) {
-//                eventBus.displayRootCategories(list);
-//            }
-//        });
-//    }
+
+    private LocalityRPCServiceAsync localityService = null;
+    private CategoryRPCServiceAsync categoryService = null;
+    private DemandRPCServiceAsync demandService = null;
+    private ClientRPCServiceAsync clientService = null;
+    private SupplierRPCServiceAsync supplierService = null;
+
+    private static final Logger LOGGER = Logger.getLogger("MainHandler");
+
+    @Inject
+    public void setLocalityService(LocalityRPCServiceAsync service) {
+        localityService = service;
+    }
+
+    @Inject
+    public void setCategoryService(CategoryRPCServiceAsync service) {
+        categoryService = service;
+    }
+
+    @Inject
+    void setDemandService(DemandRPCServiceAsync service) {
+        demandService = service;
+    }
+
+    @Inject
+    void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
+        clientService = service;
+    }
+
+    @Inject
+    void setSupplierRPCService(SupplierRPCServiceAsync service) {
+        supplierService = service;
+    }
+
+    /**
+     * Verify identity of user, if exists in the system.
+     * If so, new demand is created.
+     *
+     * @param client existing user detail
+     */
+    public void onVerifyExistingClient(ClientDetail client) {
+        LOGGER.fine("verify start");
+        clientService.verifyClient(client, new AsyncCallback<Long>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO Auto-generated method stub
+
+            }
+            @Override
+            public void onSuccess(Long clientId) {
+                LOGGER.fine("verify result");
+                if (clientId != -1) {
+                    eventBus.prepareNewDemandForNewClient(clientId);
+                } else {
+                    eventBus.loadingHide();
+                    eventBus.loginError();
+                }
+            }
+        });
+    }
+
+    public void onCheckFreeEmail(String email) {
+        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                LOGGER.fine("result of compare " + result);
+                eventBus.checkFreeEmailResponse(result);
+            }
+        });
+    }
+
+    /**
+     * Method registers new client and afterwards creates new demand.
+     *
+     * @param client newly created client
+     */
+    public void onRegisterNewClient(ClientDetail client) {
+        clientService.createNewClient(client, new AsyncCallback<Long>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void onSuccess(Long clientId) {
+                if (clientId != -1) {
+                    eventBus.prepareNewDemandForNewClient(clientId);
+                }
+            }
+        });
+    }
+
+    public void onRegisterSupplier(SupplierDetail newSupplier) {
+        supplierService.createNewSupplier(newSupplier, new AsyncCallback<Long>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                eventBus.loadingHide();
+                Window.alert("Unexpected error occured! \n" + arg0.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Long supplierId) {
+                eventBus.loadingHide();
+                Window.alert("New Supplier registered with id: " + supplierId);
+            }
+        });
+    }
 
 }

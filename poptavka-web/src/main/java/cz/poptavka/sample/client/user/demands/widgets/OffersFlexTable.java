@@ -99,8 +99,8 @@ public class OffersFlexTable extends FlexTable {
 
     public void setDemandRow(DemandDetail demand) {
         int nextRow = this.getRowCount();
-        ToggleButton button = new ToggleButton(new Image(StyleResource.INSTANCE.images().offerOpen()),
-                new Image(StyleResource.INSTANCE.images().offerOpened()));
+        ToggleButton button = new ToggleButton(new Image(StyleResource.INSTANCE.images().showMiddle()),
+                new Image(StyleResource.INSTANCE.images().showDown()));
         this.setWidget(nextRow, COULMN_SIGN, button);
         this.setHTML(nextRow, COLUMN_DEMAND, demand.getTitle());
         this.setHTML(nextRow, COLUMN_PRICE,

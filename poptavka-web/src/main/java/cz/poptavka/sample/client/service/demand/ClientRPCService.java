@@ -14,8 +14,6 @@ public interface ClientRPCService extends RemoteService {
 
     long createNewClient(ClientDetail clientDetail);
 
-    void sendClientId(long id);
-
     long verifyClient(ClientDetail client);
 
     boolean checkFreeEmail(String email);

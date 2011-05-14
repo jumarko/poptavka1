@@ -29,7 +29,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
     private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
 
-    private static final Logger LOGGER = Logger.getLogger("CommonHandler");
+    private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
     public void setLocalityService(LocalityRPCServiceAsync service) {

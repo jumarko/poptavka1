@@ -58,8 +58,7 @@
     border: 1px solid black;
     font-weight: bold;
     min-width: 120px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px;
     background-color: white;
     text-align: center;
 }

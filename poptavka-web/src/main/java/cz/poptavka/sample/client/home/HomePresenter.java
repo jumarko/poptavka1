@@ -39,7 +39,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     public void bindView() {
         view.setHomeToken(getTokenGenerator().atHome());
 
-        view.setCreateDemandToken(getTokenGenerator().atCreateDemand(true));
+        view.setCreateDemandToken(getTokenGenerator().atCreateDemand());
 
         view.setDisplayDemandsToken(getTokenGenerator().atDemands());
 

@@ -10,8 +10,6 @@ public interface ClientRPCServiceAsync {
 
     void getAllClients(AsyncCallback<ArrayList<ClientDetail>> callback);
 
-    void sendClientId(long id, AsyncCallback<Void> callback);
-
     void createNewClient(ClientDetail clientDetail, AsyncCallback<Long> callback);
 
     void verifyClient(ClientDetail client, AsyncCallback<Long> callback);

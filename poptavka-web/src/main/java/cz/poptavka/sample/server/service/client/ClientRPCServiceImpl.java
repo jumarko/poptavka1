@@ -22,8 +22,12 @@ import cz.poptavka.sample.shared.domain.ClientDetail;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -5905531608577218017L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
-    private static final String HULICE_CODE = "529737";
 
     private ClientService clientService;
 
@@ -31,7 +35,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private CategoryService categoryService;
 
     public ArrayList<ClientDetail> getAllClients() {
-        // TODO Auto-generated method stub
+        // TODO do we need this method?
         return null;
     }
 
@@ -51,11 +55,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.categoryService = categoryService;
     }
 
-    public void sendClientId(long id) {
-        // TODO Auto-generated method stub
-
-    }
-
     /**
      * Create new Client - person or company.
      *
@@ -73,16 +72,9 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 .taxId(clientDetail.getTaxId())
                 .build();
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
-
         /** Address. **/
-        /** Need to fix City selection for frontEnd - think about it **/
-        String addressName = clientDetail.getAddress().getCityName();
-
-        /** need for fix this **/
-//        LocalityRPCServiceImpl localityService = new LocalityRPCServiceImpl();
-//        Locality city = localityService.getLocality("Brno");
-        final Locality city = this.localityService.getLocality(HULICE_CODE);
-        final Address address = new Address();
+        Locality city = getLocalityByExample(clientDetail.getAddress().getCityName());
+        Address address = new Address();
         address.setCity(city);
         address.setStreet(clientDetail.getAddress().getStreet());
         address.setZipCode(clientDetail.getAddress().getZipCode());
@@ -93,8 +85,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
 
-        Client newClient2 = clientService.create(newClient);
-        return newClient2.getId();
+        newClient = clientService.create(newClient);
+        return newClient.getId();
     }
 
     /**
@@ -127,12 +119,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         example.setBusinessUser(user);
         List<Client> resultList = clientService.findByExample(example);
         for (Client cl : resultList) {
-            try {
-                if (cl.getBusinessUser().getEmail().equals(email)) {
-                    return false;
-                }
-            } catch (NullPointerException ex) {
-                //ignore, because in production this can not happen
+            if (cl.getBusinessUser().getEmail().equals(email)) {
+                return false;
             }
         }
         return true;
@@ -142,14 +130,14 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         Locality loc = new Locality();
         loc.setName(searchString);
         List<Locality> results = localityService.findByExample(loc);
-        return (results.size() == 0) ? results.get(0) : null;
+        return (results.size() != 0) ? results.get(0) : null;
     }
 
     private Category getCategoryByExample(String searchString) {
         Category loc = new Category();
         loc.setName(searchString);
         List<Category> results = categoryService.findByExample(loc);
-        return (results.size() == 0) ? results.get(0) : null;
+        return (results.size() != 0) ? results.get(0) : null;
     }
 
 }

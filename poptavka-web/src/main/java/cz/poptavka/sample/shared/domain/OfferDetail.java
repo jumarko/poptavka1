@@ -6,6 +6,11 @@ import java.util.Date;
 
 public class OfferDetail implements Serializable {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -563380651738612866L;
+
     private BigDecimal price;
     private boolean displayed = false;
     private Date finishDate;
@@ -58,11 +63,7 @@ public class OfferDetail implements Serializable {
         this.messageId = id;
     }
     public long getMessageId() {
-        // TODO Auto-generated method stub
         return messageId;
     }
-
-
-
 
 }

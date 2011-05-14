@@ -19,4 +19,7 @@ public interface TableStyle extends CssResource {
     @ClassName("selected-offer")
     String selectedOffer();
 
+    /** here start new **/
+    @ClassName("hidden-field")
+    String hiddenField();
 }
