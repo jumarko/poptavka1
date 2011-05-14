@@ -11,9 +11,10 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 
-public class FormLoginView extends Composite implements FormLoginPresenter.FormLoginInterface {
+public class FormLoginView extends Composite implements FormLoginPresenter.FormLoginInterface, ProvidesValidate {
 
     private static FormLoginViewUiBinder uiBinder = GWT.create(FormLoginViewUiBinder.class);
 
@@ -61,11 +62,11 @@ public class FormLoginView extends Composite implements FormLoginPresenter.FormL
     public boolean isValid() {
         boolean isValid = true;
         if (passBox.getText().equals("")) {
-            passBox.setStyleName(StyleResource.INSTANCE.layout().errorField());
+            passBox.setStyleName(StyleResource.INSTANCE.common().errorField());
             isValid = false;
         }
         if (mailBox.getText().equals("")) {
-            mailBox.setStyleName(StyleResource.INSTANCE.layout().errorField());
+            mailBox.setStyleName(StyleResource.INSTANCE.common().errorField());
             isValid = false;
         }
         return isValid;

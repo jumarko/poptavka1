@@ -15,7 +15,6 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.HomeModule;
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
@@ -41,12 +40,6 @@ public interface MainEventBus extends EventBus {
     @InitHistory
     @Event(handlers = MainPresenter.class)
     void start();
-
-    @Event(handlers = MainPresenter.class)
-    void setAnchorWidget(boolean homeSection, AnchorEnum anchor, Widget content, boolean clearOthers);
-
-    @Event(modulesToLoad = HomeModule.class)
-    void setHomeWidget(AnchorEnum anchor, Widget content, boolean clearOthers);
 
     /** Init home module (unlogged user). */
     @Event(modulesToLoad = HomeModule.class)

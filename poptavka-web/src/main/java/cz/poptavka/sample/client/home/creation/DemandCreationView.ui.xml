@@ -95,7 +95,7 @@
         </g:StackLayoutPanel>
         </g:north>
         <g:center>
-            <g:HTMLPanel styleName='{res.layout.maxSize}'>
+            <g:HTMLPanel styleName='{res.layout.fullSize}'>
                 Empty
                 <g:Button>Button</g:Button>
             </g:HTMLPanel>

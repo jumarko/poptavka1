@@ -43,62 +43,14 @@ body {
     height: 100%;
 }
 
+.home-menu {
+    list-style-type: square;
+    display: inline;
+}
+
+.home-menu li {
+    display: inline;
+}
+
+
 /** DELETE AFTER THIS LINE **/
-
-
-.max-size {
-    width: 100%;
-    height: 100%;
-}
-
-/* 	Poptavka basic layout definitions - end */
-
-
-.main-menu-container {
-    height: 50px;
-    width: 100%;
-    background-color: #7FB0F0;
-}
-
-.side-menu-container {
-    width: 200px;
-    background-color: #E9E9E9;
-}
-
-/* experimental class */
-.closed {
-    display: none;
-}
-
-.creation-hidden {
-    left: 0px;
-    top: 470px;
-}
-
-.creation-second {
-    left: 0px;
-    top: 20px;
-}
-
-.creation-third{
-    left: 0px;
-    top: 40px;
-}
-
-.creation-fourth{
-    left: 0px;
-    top: 60px;
-}
-
-.solid-back {
-    border-top: 1px solid black;
-    background-color: white;
-}
-
-.error-field {
-    background-color: #ffcece;
-}
-
-.resizeIt {
-    height: 1.5em;
-}

@@ -5,7 +5,7 @@
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <g:SplitLayoutPanel styleName='{res.layout.maxSize}'>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="450">
              <g:FlowPanel>
                  <g:HorizontalPanel>

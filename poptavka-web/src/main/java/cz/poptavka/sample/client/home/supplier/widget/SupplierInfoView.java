@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.main.common.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.RichTextToolbarWidget;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
@@ -26,6 +26,8 @@ public class SupplierInfoView extends Composite
     interface FormUserRegistrationUiBinder extends UiBinder<Widget, SupplierInfoView> {
     }
     private ArrayList<TextBox> widgets = new ArrayList<TextBox>();
+
+    private static final int MIN_SIZE = 10;
 
     @UiField TextBox companyNameBox;
     @UiField TextBox companyIdBox;
@@ -63,15 +65,15 @@ public class SupplierInfoView extends Composite
     public boolean isValid() {
         int errorCount = 0;
         for (TextBox item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.common().errorField());
             if (item.getText().length() == 0) {
                 errorCount++;
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.common().errorField());
             }
         }
-        ((Widget) richText).removeStyleName(StyleResource.INSTANCE.layout().errorField());
-        if (richText.getValue().length() < 10) {
-            ((Widget) richText).setStyleName(StyleResource.INSTANCE.layout().errorField());
+        ((Widget) richText).removeStyleName(StyleResource.INSTANCE.common().errorField());
+        if (richText.getValue().length() < MIN_SIZE) {
+            ((Widget) richText).setStyleName(StyleResource.INSTANCE.common().errorField());
             errorCount++;
         }
         return errorCount == 0;

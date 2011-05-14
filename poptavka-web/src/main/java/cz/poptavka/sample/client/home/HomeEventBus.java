@@ -10,7 +10,6 @@ import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
@@ -19,7 +18,6 @@ import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
-import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.client.user.problems.MyProblemsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
@@ -58,12 +56,10 @@ public interface HomeEventBus extends EventBus {
      * Assign widget to selected part and automatically removes previous widget. Optionally can remove widgets from
      * others anchors
      *
-     * @param anchor to be connected to
      * @param content
-     * @param clearOthers if true, removes widgets from other anchors
      */
     @Event(handlers = HomePresenter.class)
-    void setHomeWidget(AnchorEnum anchor, Widget content, boolean clearOthers);
+    void setBodyWidget(Widget content);
 
     /** Demand creation */
     @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
@@ -95,7 +91,7 @@ public interface HomeEventBus extends EventBus {
     void registerNewClient(ClientDetail newClient);
 
     @Event(handlers = DemandCreationPresenter.class)
-    void prepareNewDemandForNewClient(long clientId);
+    void prepareNewDemandForNewClient(Long clientId);
 
     @Event(forwardToParent = true)
     void createDemand(DemandDetail newDemand, Long clientId);
@@ -111,13 +107,13 @@ public interface HomeEventBus extends EventBus {
 
     /** Home category display widget and related call */
     @Event(handlers = CategoryDisplayPresenter.class)
-    void initCategoryDisplay(AnchorEnum anchor);
+    void initCategoryDisplay(SimplePanel holderWidget);
 
     @Event(handlers = CategoryDisplayPresenter.class)
     void displayRootCategories(ArrayList<CategoryDetail> list);
 
     @Event(handlers = CategoryDisplayPresenter.class)
-    void setCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> list);
+    void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
     @Event(forwardToParent = true)
     void getRootCategories();
@@ -141,9 +137,8 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomeHandler.class)
     void checkFreeEmail(String value);
 
-    @Event(handlers = {FormUserRegistrationPresenter.class })
-    void checkFreeEmailResponse(boolean result);
-
+    @Event(handlers = FormUserRegistrationPresenter.class)
+    void checkFreeEmailResponse(Boolean result);
 
     @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();

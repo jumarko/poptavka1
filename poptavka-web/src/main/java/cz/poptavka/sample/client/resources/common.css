@@ -53,6 +53,10 @@
     background-color: gray;;
 }
 
+.error-field {
+    background-color: #ffcece;
+}
+
 .loading-popup {
     z-index: 101;
     border: 1px solid black;

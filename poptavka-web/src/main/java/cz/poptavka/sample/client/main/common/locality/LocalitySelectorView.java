@@ -12,11 +12,13 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.address.LocalityType;
 
 @Singleton
-public class LocalitySelectorView extends Composite implements LocalitySelectorPresenter.LocalitySelectorInterface {
+public class LocalitySelectorView extends Composite
+    implements LocalitySelectorPresenter.LocalitySelectorInterface, ProvidesValidate  {
 
     private static LocalitySelectorUiBinder uiBinder = GWT.create(LocalitySelectorUiBinder.class);
 

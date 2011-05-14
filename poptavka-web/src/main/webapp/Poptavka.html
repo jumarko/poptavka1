@@ -8,16 +8,12 @@
         <script type="text/javascript"  src="poptavka/poptavka.nocache.js"></script>
         <script type="text/javascript">
         function hideLoading() {
-            document.getElementById("loading").style.display = "none";
+            document.getElementById("appLoading").style.display = "none";
         }
         </script>
     </head>
     <body onload="hideLoading()">
-        <div id="gwt-container"></div>
-        <!-- <div id="footerContainer">hadrcoded foot in hosted HTML page</div> -->
-        <div id="gwt-modules-loading" style="position: absolute; background-color: white; opacity: 0.3; top: 0px; left: 0px; height: 100%; width: 100%; z-index: 99;"></div>
-        <div id="loading" style="position: absolute; background: url('images/loader.gif') center no-repeat; height: 100%; width: 100%; z-index: 100; top: 0px; left: 0px"></div>
-
+        <div id="appLoading" style="position: absolute; background: url('images/loader.gif') center no-repeat; height: 100%; width: 100%; z-index: 100; top: 0px; left: 0px"></div>
         <iframe src="javascript:''" id="__gwt_historyFrame" style="width:0;height:0;border:0"></iframe>
     </body>
 </html>

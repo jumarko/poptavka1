@@ -4,8 +4,6 @@ package cz.poptavka.sample.client.main;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -16,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 @Presenter(view = MainView.class)
@@ -79,32 +77,12 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         view.setBodyWidget(body);
     }
 
-    /**
-     * TODO revisit this code, suspition it's useless     *
-     *
-     * Crossroad method for placing widget from common package.
-     *
-     * @param homeSection boolean if target section si home section
-     * @param anchor actual anchor where to place the content
-     * @param content content to be placed
-     * @param clearOthers boolean if widgets from others anchors should be removed
-     */
-    public void onSetAnchorWidget(boolean homeSection, AnchorEnum anchor, Widget content, boolean clearOthers) {
-        if (homeSection) {
-            eventBus.setHomeWidget(anchor, content, clearOthers);
-        } else {
-//            eventBus.setTabWidget(content);
-        }
-    }
-
     public void onBeforeLoad() {
-        Document.get().getElementById("gwt-modules-loading").getStyle().setDisplay(Display.BLOCK);
-        Document.get().getElementById("loading").getStyle().setDisplay(Display.BLOCK);
+        eventBus.loadingShow("Loading");
     }
 
     public void onAfterLoad() {
-        Document.get().getElementById("gwt-modules-loading").getStyle().setDisplay(Display.NONE);
-        Document.get().getElementById("loading").getStyle().setDisplay(Display.NONE);
+        eventBus.loadingHide();
     }
 
     public void onSetPublicLayout() {
@@ -131,11 +109,14 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         popup = null;
     }
 
+    private static final int OFFSET_X = 60;
+    private static final int OFFSET_Y = 35;
+
     private void createLoadingPopup(String loadingMessage) {
         popup = new PopupPanel(false, false);
         popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
         popup.setWidget(new LoadingPopup(loadingMessage));
-        popup.setPopupPosition((Window.getClientWidth() / 2) - 60, (Window.getClientHeight() / 2) - 35);
+        popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X, (Window.getClientHeight() / 2) - OFFSET_Y);
         popup.show();
     }
 

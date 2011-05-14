@@ -17,14 +17,13 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.HomeEventBus;
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter.FormRegistrationInterface;
-import cz.poptavka.sample.client.main.common.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter.FormDemandAdvViewInterface;
 import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter.FormDemandBasicInterface;
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.ClientDetail;
@@ -43,23 +42,15 @@ public class DemandCreationPresenter
 
         StackLayoutPanel getMainPanel();
 
-        SimplePanel getBasicInfoHolder();
-
-        SimplePanel getLocalityHolder();
-
-        SimplePanel getCategoryHolder();
-
-        SimplePanel getAdvInfoHolder();
-
-        SimplePanel getUserFormHolder();
-
-        HasClickHandlers getCreateDemandButton();
-
         Widget getWidgetView();
 
         void toggleLoginRegistration();
 
         StatusIconLabel getStatusLabel(int order);
+
+        SimplePanel getHolderPanel(int order);
+
+        HasClickHandlers getCreateDemandButton();
     }
 
     public void bindView() {
@@ -69,16 +60,18 @@ public class DemandCreationPresenter
                 int eventItem = event.getItem();
                 if (view.getMainPanel().getVisibleIndex() < eventItem) {
                     boolean result = canContinue(eventItem);
-                    view.getStatusLabel(eventItem).setPassedSmall(result);
-                    if (!canContinue(eventItem)) {
+                    if (result) {
                         event.cancel();
+                    } else {
+                        // TODO change to global status changer eventBus call
+                        view.getStatusLabel(eventItem).setPassedSmall(result);
                     }
                 }
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent arg0) {
+            public void onClick(ClickEvent event) {
                 if (canContinue(LOGIN)) {
                     registerNewCient();
                 }
@@ -93,22 +86,16 @@ public class DemandCreationPresenter
      */
     public void onAtCreateDemand() {
         LOGGER.info("Initializing Demand Creation View Widget ... ");
-        eventBus.setHomeWidget(AnchorEnum.THIRD, view.getWidgetView(), true);
-//        //init parts
-        LOGGER.info(" -> Basic Form");
-        eventBus.initDemandBasicForm(view.getBasicInfoHolder());
-        LOGGER.info(" -> Category Widget");
-        eventBus.initCategoryWidget(view.getCategoryHolder());
-        LOGGER.info(" -> Locality Widget");
-        eventBus.initLocalityWidget(view.getLocalityHolder());
-        LOGGER.info(" -> Advanced Form");
-        eventBus.initDemandAdvForm(view.getAdvInfoHolder());
-        LOGGER.info(" -> User Holder Form");
-        eventBus.initLoginForm(view.getUserFormHolder());
+        eventBus.setBodyWidget(view.getWidgetView());
+        eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
+        eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
+        eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
+        eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
+        eventBus.initLoginForm(view.getHolderPanel(LOGIN));
     }
 
     private void registerNewCient() {
-        FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getUserFormHolder().getWidget();
+        FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
         ClientDetail newClient = registerWidget.getNewClient();
         eventBus.registerNewClient(newClient);
         //signal event
@@ -123,10 +110,14 @@ public class DemandCreationPresenter
     public void onPrepareNewDemandForNewClient(Long id) {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
-        FormDemandBasicInterface basicValues = (FormDemandBasicInterface) view.getBasicInfoHolder().getWidget();
-        CategorySelectorInterface categoryValues = (CategorySelectorInterface) view.getCategoryHolder().getWidget();
-        LocalitySelectorInterface localityValues = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
-        FormDemandAdvViewInterface advValues = (FormDemandAdvViewInterface) view.getAdvInfoHolder().getWidget();
+        FormDemandBasicInterface basicValues =
+            (FormDemandBasicInterface) view.getHolderPanel(BASIC).getWidget();
+        CategorySelectorInterface categoryValues =
+            (CategorySelectorInterface) view.getHolderPanel(CATEGORY).getWidget();
+        LocalitySelectorInterface localityValues =
+            (LocalitySelectorInterface) view.getHolderPanel(LOCALITY).getWidget();
+        FormDemandAdvViewInterface advValues =
+            (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
 
         DemandDetail demand = new DemandDetail();
         demand.setBasicInfo(basicValues.getValues());
@@ -146,6 +137,7 @@ public class DemandCreationPresenter
 
     /** showing error after login failure. **/
     public void onLoginError() {
+        // TODO change to global status changer eventBus call
         view.getStatusLabel(LOGIN).setStyleState(StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
         view.getStatusLabel(LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
@@ -157,31 +149,7 @@ public class DemandCreationPresenter
     private static final int LOGIN = 5;
 
     private boolean canContinue(int step) {
-        if (step == BASIC) {
-            FormDemandBasicInterface widget =
-                (FormDemandBasicInterface) view.getBasicInfoHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == CATEGORY) {
-            CategorySelectorInterface widget =
-                (CategorySelectorInterface) view.getCategoryHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == LOCALITY) {
-            LocalitySelectorInterface widget =
-                (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == ADVANCED) {
-            FormDemandAdvViewInterface widget =
-                (FormDemandAdvViewInterface) view.getAdvInfoHolder().getWidget();
-            return widget.isValid();
-        }
-        if (step == LOGIN) {
-            ProvidesValidate widget = (ProvidesValidate) view.getUserFormHolder().getWidget();
-            return widget.isValid();
-        }
-        //can't reach
-        return false;
+        ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
+        return widget.isValid();
     }
 }

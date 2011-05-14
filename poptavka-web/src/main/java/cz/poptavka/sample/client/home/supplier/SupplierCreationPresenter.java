@@ -18,7 +18,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.HomeEventBus;
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierServiceWidget;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
@@ -99,8 +98,8 @@ public class SupplierCreationPresenter
      */
     public void onAtRegisterSupplier() {
         LOGGER.info("Initializing Supplier Registration Widget ... ");
-        eventBus.setHomeWidget(AnchorEnum.THIRD, view.getWidgetView(), true);
-//        //init parts
+        eventBus.setBodyWidget(view.getWidgetView());
+        //init parts
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
         LOGGER.info(" -> Category Widget");
@@ -152,7 +151,7 @@ public class SupplierCreationPresenter
 //                (FormDemandAdvViewInterface) view.getServiceHolder().getWidget();
 //            return widget.isValid();
 //        }
-        //can't reach
+//        //can't reach
 //        return false;
 
         //DEVEL

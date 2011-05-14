@@ -20,12 +20,8 @@ import cz.poptavka.sample.client.main.MainEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Presenter(view = CategorySelectorView.class)
-public class CategorySelectorPresenter extends
-    LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, MainEventBus> {
-
-    public enum CategoryType {
-        ROOT, MAIN, LEAF
-    }
+public class CategorySelectorPresenter
+    extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, MainEventBus> {
 
     public interface CategorySelectorInterface extends LazyView {
 

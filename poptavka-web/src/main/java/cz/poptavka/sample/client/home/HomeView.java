@@ -1,19 +1,16 @@
 package cz.poptavka.sample.client.home;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+import cz.poptavka.sample.client.resources.StyleResource;
 
 /**
  * Main view for home/unlogged user aka public section.
@@ -28,78 +25,30 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     interface HomeViewUiBinder extends UiBinder<Widget, HomeView> {
     }
 
-    private Map<AnchorEnum, Widget> widgetMap = new HashMap<AnchorEnum, Widget>();
-
-    @UiField
-    HTMLPanel container;
+    @UiField HTMLPanel container;
     //menu section
+
+    @UiField UListElement menuList;
     @UiField Hyperlink linkHome;
     @UiField Hyperlink linkCreateDemand;
     @UiField Hyperlink linkDisplayDemands;
     @UiField Hyperlink linkRegisterSupplier;
 
-    @UiField
-    Button button3;
-    @UiField
-    Button button4;
-    @UiField
-    Button button5;
+    @UiField SimplePanel contentHolder;
 
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
     }
 
-    public void setContent(AnchorEnum anchor, Widget body, boolean clearOthers) {
-        if (clearOthers) {
-            for (AnchorEnum anchorToClear : AnchorEnum.values()) {
-                shouldRemoveWidget(anchorToClear);
-            }
-        } else {
-            shouldRemoveWidget(anchor);
-        }
-        widgetMap.put(anchor, body);
-        switch (anchor) {
-            case FIRST:
-                container.add(body, "first");
-                widgetMap.put(anchor, body);
-                break;
-            case SECOND:
-                container.add(body, "second");
-                widgetMap.put(anchor, body);
-                break;
-            case THIRD:
-                container.add(body, "third");
-                widgetMap.put(anchor, body);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Returns this view instance.
-     */
     @Override
     public Widget getWidgetView() {
         return this;
     }
 
-    /**
-     * check and eventually remove widget from anchor.
-     *
-     * @param anchor
-     */
-    private void shouldRemoveWidget(AnchorEnum anchor) {
-        if (widgetMap.containsKey(anchor)) {
-            container.remove(widgetMap.get(anchor));
-            widgetMap.remove(anchor);
-        }
-    }
-
-    @Override
-    public HasClickHandlers getButton3Btn() {
-        return button3;
+    public void setBody(Widget body) {
+        contentHolder.setWidget(body);
     }
 
     @Override

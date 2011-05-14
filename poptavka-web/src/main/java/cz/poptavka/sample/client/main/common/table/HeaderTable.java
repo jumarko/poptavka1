@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.main.common;
+package cz.poptavka.sample.client.main.common.table;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;

@@ -109,9 +109,9 @@ public class OffersFlexTable extends FlexTable {
         this.setHTML(nextRow, COLUMN_DATE,
                 (demand.getEndDate() != null ? demand.getEndDate().toString() : MSGS.emptyField()));
         this.setHTML(nextRow, COLUMN_ID, demand.getId() + "");
-        this.getCellFormatter().addStyleName(nextRow, COLUMN_ID, StyleResource.INSTANCE.layout().closedWidget());
+        this.getCellFormatter().addStyleName(nextRow, COLUMN_ID, StyleResource.INSTANCE.table().hiddenField());
         this.setHTML(nextRow, COLUMN_TYPE, TYPE_DEMAND + "");
-        this.getCellFormatter().addStyleName(nextRow, COLUMN_TYPE, StyleResource.INSTANCE.layout().closedWidget());
+        this.getCellFormatter().addStyleName(nextRow, COLUMN_TYPE, StyleResource.INSTANCE.table().hiddenField());
         if ((nextRow % 2) == 0) {
             getRowFormatter().addStyleName(nextRow, StyleResource.INSTANCE.table().evenRow());
         }
@@ -207,9 +207,9 @@ public class OffersFlexTable extends FlexTable {
         //this.setHTML(row, COLUMN_ID, "" + offer.getMessageId());
         this.setHTML(row, COLUMN_ID, "" + 0);
 
-        this.getCellFormatter().addStyleName(row, COLUMN_ID, StyleResource.INSTANCE.layout().closedWidget());
+        this.getCellFormatter().addStyleName(row, COLUMN_ID, StyleResource.INSTANCE.table().hiddenField());
         this.setHTML(row, COLUMN_TYPE, "" + TYPE_OFFER);
-        this.getCellFormatter().addStyleName(row, COLUMN_TYPE, StyleResource.INSTANCE.layout().closedWidget());
+        this.getCellFormatter().addStyleName(row, COLUMN_TYPE, StyleResource.INSTANCE.table().hiddenField());
     }
 
     private void hideOffers(int clickedDemand) {

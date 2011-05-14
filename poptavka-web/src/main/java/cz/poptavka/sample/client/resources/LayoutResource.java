@@ -29,44 +29,11 @@ public interface LayoutResource extends CssResource {
     @ClassName("full-size-panel")
     String fullSize();
 
+    @ClassName("home-menu")
+    String homeMenu();
 
-    @ClassName("main-menu-container")
-    String mainMenuContainer();
-
-    @ClassName("side-menu-container")
-    String sideMenuContainer();
+    /** DELETE AFTER THIS LINE **/
 
 
-
-    @ClassName("max-size")
-    String maxSize();
-
-    @ClassName("closed")
-    String closedWidget();
-
-
-
-    @ClassName("creation-hidden")
-    String creationHidden();
-
-    @ClassName("creation-second")
-    String displaySecondPart();
-
-    @ClassName("creation-third")
-    String displayThirdPart();
-
-    @ClassName("creation-fourth")
-    String displayFourthPart();
-
-    @ClassName("solid-back")
-    String solidBackground();
-
-
-
-    @ClassName("error-field")
-    String errorField();
-
-    @ClassName("resizeIt")
-    String resize();
 
 }

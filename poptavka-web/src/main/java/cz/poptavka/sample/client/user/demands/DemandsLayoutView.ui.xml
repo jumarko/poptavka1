@@ -4,7 +4,7 @@
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <g:DockLayoutPanel unit="EM" styleName='{res.layout.maxSize}'>
+    <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
         <g:west size="15">
             <g:HTMLPanel>
                 <ul>

@@ -14,6 +14,9 @@ public interface CommonResource extends CssResource {
     @ClassName("elem-hidden")
     String elemHiddenOn();
 
+    @ClassName("error-field")
+    String errorField();
+
     @ClassName("info-message")
     String infoMessage();
 

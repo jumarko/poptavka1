@@ -33,26 +33,15 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
 
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
 
-    //step1
+    private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
+
     @UiField StackLayoutPanel mainPanel;
-    @UiField SimplePanel basicInfoHolder;
-
-    //step2
-//    @UiField VerticalPanel stepTwo;
-    @UiField SimplePanel categoryHolder;
-    //step3
-//    @UiField VerticalPanel stepThree;
-    @UiField SimplePanel localityHolder;
-    //step4
-//    @UiField VerticalPanel stepFour;
-    @UiField SimplePanel advInfoHolder;
-    //step5
-//    @UiField VerticalPanel stepFive;
     @UiField DockLayoutPanel userFormPanel;
-    @UiField SimplePanel userFormHolder;
-    @UiField Button demandCreateBtn;
 
+    @UiField SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder;
     @UiField StatusIconLabel basicStatus, categoryStatus, localityStatus, advStatus, userStatus;
+
+    @UiField Button demandCreateBtn;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -61,45 +50,19 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         StatusIconLabel[] array = {basicStatus, categoryStatus, localityStatus, advStatus, userStatus};
         statusLabels = Arrays.asList(array);
 
+        SimplePanel[] panels = {basicInfoHolder, categoryHolder, localityHolder, advInfoHolder, userFormHolder};
+        holderPanels  = Arrays.asList(panels);
+
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();
-        setParentOverflow(basicInfoHolder, Overflow.AUTO);
-        setParentOverflow(categoryHolder, Overflow.AUTO);
-        setParentOverflow(localityHolder, Overflow.AUTO);
-        setParentOverflow(advInfoHolder, Overflow.AUTO);
-        setParentOverflow(userFormPanel, Overflow.AUTO);
-
-//        basicStatus.set
+        for (SimplePanel panel : holderPanels) {
+            setParentOverflow(panel, Overflow.AUTO);
+        }
     }
 
     @Override
     public Widget getWidgetView() {
         return this;
-    }
-
-    @Override
-    public SimplePanel getLocalityHolder() {
-        return localityHolder;
-    }
-
-    @Override
-    public SimplePanel getCategoryHolder() {
-        return categoryHolder;
-    }
-
-    @Override
-    public SimplePanel getBasicInfoHolder() {
-        return basicInfoHolder;
-    }
-
-    @Override
-    public SimplePanel getAdvInfoHolder() {
-        return advInfoHolder;
-    }
-
-    @Override
-    public SimplePanel getUserFormHolder() {
-        return userFormHolder;
     }
 
     @Override
@@ -131,6 +94,11 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
         } else {
             userStatus.setTexts(MSGS.loginMessage(), MSGS.loginDescription());
         }
+    }
+
+    @Override
+    public SimplePanel getHolderPanel(int order) {
+        return holderPanels.get(order - 1);
     }
 
 }

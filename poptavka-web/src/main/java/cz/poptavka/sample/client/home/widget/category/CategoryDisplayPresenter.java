@@ -8,13 +8,12 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.home.HomeEventBus;
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
-import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategoryType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Presenter(view = CategoryDisplayView.class)
@@ -29,21 +28,16 @@ public class CategoryDisplayPresenter
 
     private static final Logger LOGGER = Logger.getLogger(CategoryDisplayPresenter.class.getName());
 
-    public void bind() {
-
-    }
-
-
-    public void onInitCategoryDisplay(AnchorEnum anchor) {
+    public void onInitCategoryDisplay(SimplePanel holderWidget) {
         eventBus.getRootCategories();
-        eventBus.setHomeWidget(anchor, view.getWidgetView(), false);
+        holderWidget.setWidget(view.getWidgetView());
     }
 
     public void onDisplayRootCategories(ArrayList<CategoryDetail> list) {
         setData(view.getCategoryView(), list);
     }
 
-    public void onSetCategoryDisplayData(CategoryType type, ArrayList<CategoryDetail> details) {
+    public void onSetCategoryDisplayData(ArrayList<CategoryDetail> details) {
         setData(view.getCategoryView(), details);
     }
 

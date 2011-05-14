@@ -16,7 +16,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 
-public class FormDemandAdvView extends Composite implements FormDemandAdvPresenter.FormDemandAdvViewInterface {
+public class FormDemandAdvView extends Composite
+    implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate  {
 
     private static FormDemandAdvViewUiBinder uiBinder = GWT.create(FormDemandAdvViewUiBinder.class);
     interface FormDemandAdvViewUiBinder extends UiBinder<Widget, FormDemandAdvView> {    }
@@ -47,9 +48,9 @@ public class FormDemandAdvView extends Composite implements FormDemandAdvPresent
     public boolean isValid() {
         int errorCount = 0;
         for (HasValue item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.common().errorField());
             if (item.getValue() == null) {
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.common().errorField());
                 errorCount++;
             }
         }

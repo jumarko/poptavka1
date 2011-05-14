@@ -1,20 +1,20 @@
 package cz.poptavka.sample.client.user.problems;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import cz.poptavka.sample.client.home.HomePresenter.AnchorEnum;
+
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.user.User;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  *
@@ -56,7 +56,7 @@ public class MyProblemsPresenter
 
     public void onDisplayProblems() {
         // Initialize Problems
-        eventBus.setHomeWidget(AnchorEnum.FIRST, view.getWidgetView(), true);
+        eventBus.setBodyWidget(view.getWidgetView());
         // Initialize Messages
         view.displayProblems(this.getProblems());
     }

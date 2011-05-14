@@ -12,9 +12,12 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
+
 
 //@Singleton
-public class CategorySelectorView extends Composite implements CategorySelectorPresenter.CategorySelectorInterface {
+public class CategorySelectorView extends Composite
+    implements CategorySelectorPresenter.CategorySelectorInterface, ProvidesValidate {
 
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
     interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {    }

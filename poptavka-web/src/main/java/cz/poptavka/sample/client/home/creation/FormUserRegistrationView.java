@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.main.common.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
@@ -71,18 +71,18 @@ public class FormUserRegistrationView extends Composite
     public boolean isValid() {
         int errorCount = 0;
         for (TextBox item : widgets) {
-            ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
+            ((Widget) item).removeStyleName(StyleResource.INSTANCE.common().errorField());
             if (item.getText().length() == 0) {
                 errorCount++;
-                ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
+                ((Widget) item).setStyleName(StyleResource.INSTANCE.common().errorField());
             }
         }
         if (companyRadio.getValue()) {
             for (TextBox item : companyWidgets) {
-                ((Widget) item).removeStyleName(StyleResource.INSTANCE.layout().errorField());
+                ((Widget) item).removeStyleName(StyleResource.INSTANCE.common().errorField());
                 if (item.getText().length() == 0) {
                     errorCount++;
-                    ((Widget) item).setStyleName(StyleResource.INSTANCE.layout().errorField());
+                    ((Widget) item).setStyleName(StyleResource.INSTANCE.common().errorField());
                 }
             }
         }

@@ -12,7 +12,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.HomeEventBus;
-import cz.poptavka.sample.client.main.common.ProvidesValidate;
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 
 @Presenter(view = FormLoginView.class)
