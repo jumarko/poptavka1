@@ -87,7 +87,6 @@ public class DemandCreationPresenter
      * @param homeSection
      */
     public void onAtCreateDemand() {
-        eventBus.compactModeCheck();
         LOGGER.info("Initializing Demand Creation View Widget ... ");
         eventBus.setBodyWidget(view.getWidgetView());
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
@@ -155,9 +154,5 @@ public class DemandCreationPresenter
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
         LOGGER.fine(widget.getClass().getName());
         return widget.isValid();
-    }
-
-    public void onCompactModeResponse(Boolean compactDisplay) {
-
     }
 }

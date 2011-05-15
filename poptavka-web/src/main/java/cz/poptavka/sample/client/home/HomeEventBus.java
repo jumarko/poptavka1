@@ -146,10 +146,6 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atRegisterSupplier();
 
-    /** compact mode check **/
-    @Event(handlers = DemandCreationPresenter.class)
-    void compactModeResponse(Boolean compactDisplay);
-
     /** DO NOT EDIT **/
     /** Popup methods for shoving, changing text and hiding,
      * for letting user know, that application is still working.

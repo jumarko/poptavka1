@@ -12,16 +12,16 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 
-public class MainView extends ResizeComposite implements MainPresenter.MainViewInterface {
+public class MainView extends Composite implements MainPresenter.MainViewInterface {
 
     private static final Binder BINDER = GWT.create(Binder.class);
     interface Binder extends UiBinder<Widget, MainView> {    }
@@ -102,26 +102,5 @@ public class MainView extends ResizeComposite implements MainPresenter.MainViewI
         }
     }
 
-    @Override
-    public void onResize() {
-        checkBrowsersDimensions();
-//        LOGGER.fine("call");
-//        eventBus.compactModeResponse(compactDisplay);
-//        LOGGER.fine("after call");
-    }
-
-    private void checkBrowsersDimensions() {
-//        LOGGER.fine("X: " + Window.getClientWidth() + " Y: " + Window.getClientHeight());
-//
-//        int x = Window.getClientWidth();
-//        int y = Window.getClientHeight();
-//
-//        compactDisplay = (y < 700);
-    }
-
-    @Override
-    public Boolean getCompactDisplay() {
-        return compactDisplay;
-    }
 
 }
