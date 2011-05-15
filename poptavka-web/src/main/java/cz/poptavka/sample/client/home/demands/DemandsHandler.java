@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.home.demands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -162,7 +163,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
     }
 
     public void onGetDemandsByCategories(Category[] categories) {
-        LOGGER.info("Display demand by category: " + categories.toString());
+        LOGGER.info("Display demand by category: " + Arrays.toString(categories));
         ResultCriteria resultCriteria = new ResultCriteria.Builder().build();
         eventBus.getResultsCriteria(resultCriteria);
         demandService.getDemands(resultCriteria, categories,

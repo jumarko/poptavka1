@@ -205,8 +205,10 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
                     switch (orderBy.getValue()) {
                         case ASC:
                             entityCriteria.addOrder(Order.asc(orderByColumn));
+                            break;
                         case DESC:
                             entityCriteria.addOrder(Order.desc(orderByColumn));
+                            break;
                         default:
                             entityCriteria.addOrder(Order.asc(orderByColumn));
                     }

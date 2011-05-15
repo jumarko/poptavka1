@@ -117,17 +117,23 @@ public class Script {
 
     //----------------------------------- PRIVATE METHODS --------------------------------------------------------------
     private String getScriptCode(Script script) throws IOException {
-        BufferedReader scriptReader = new BufferedReader(
-                new InputStreamReader(getClass().getResourceAsStream(script.getFileName())));
+        BufferedReader scriptReader = null;
+        try {
+            scriptReader = new BufferedReader(
+                    new InputStreamReader(getClass().getResourceAsStream(script.getFileName())));
 
-        StringBuilder scriptCode = new StringBuilder();
-        String line = null;
-        while ((line = scriptReader.readLine()) != null) {
-            scriptCode.append(line).append(NEW_LINE);
+            StringBuilder scriptCode = new StringBuilder();
+            String line = null;
+            while ((line = scriptReader.readLine()) != null) {
+                scriptCode.append(line).append(NEW_LINE);
+            }
+
+            return scriptCode.toString();
+        } finally {
+            if (scriptReader != null) {
+                scriptReader.close();
+            }
         }
-
-        return scriptCode.toString();
     }
-
 
 }

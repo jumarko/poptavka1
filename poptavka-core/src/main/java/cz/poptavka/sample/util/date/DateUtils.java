@@ -1,6 +1,7 @@
 package cz.poptavka.sample.util.date;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -34,7 +35,7 @@ public final class DateUtils {
             return org.apache.commons.lang.time.DateUtils.parseDate(dateString, DATE_FORMATS);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Date string is not in supported date format. Allowed formats: "
-                    + DATE_FORMATS);
+                    + Arrays.toString(DATE_FORMATS));
         }
     }
 }
