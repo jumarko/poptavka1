@@ -22,12 +22,15 @@ import java.util.List;
 /**
  * Sample tests of synchronous methods used for messaging.
  *
+ * <p>
+ *     This test should be ignored. It servers as a demonstrative example of sending and consuming messages.
+ *
  * @author Juraj Martinka
  *         Date: 5.5.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:messaging-config.xml")
-// Messaging is not completely ready
+// This is only demonstrative, not normal test
 @Ignore
 public class RabbitMQClientSynchronousTest {
 

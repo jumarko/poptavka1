@@ -9,12 +9,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
+ *
+ * Demonstration of asynchronous messaging.
+ * * <p>
+ *     This test should be ignored. It servers as a demonstrative example of sending and consuming messages.
+
  * @author Juraj Martinka
  *         Date: 5.5.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:messaging-config-test.xml")
-// Messaging is not completely ready
+// Ignored beause it is only demonstration - not real test
 @Ignore
 public class MessageSenderTest {
 
@@ -31,7 +36,6 @@ public class MessageSenderTest {
 
 
     @Test
-//    @Ignore
     public void testSend() throws Exception {
 
         final int sleepInterval = HUNDRED_MS;

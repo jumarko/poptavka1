@@ -26,7 +26,7 @@
     </bean>
 
     <!-- Spring AMQP Template -->
-    <bean id="template"
+    <bean id="messageTemplate"
           class="org.springframework.amqp.rabbit.core.RabbitTemplate">
         <property name="connectionFactory" ref="rabbitConnFactory" />
         <property name="messageConverter">
