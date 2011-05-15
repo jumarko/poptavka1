@@ -157,9 +157,5 @@ public interface HomeEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void loadingHide();
-
-    @Event(forwardToParent = true)
-    void compactModeCheck();
-
     /** NO METHODS AFTER THIS **/
 }

@@ -8,7 +8,7 @@
         type='cz.poptavka.sample.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <g:StackLayoutPanel ui:field='mainPanel' styleName= height="95%">
+    <g:StackLayoutPanel ui:field='mainPanel' height="95%">
         <g:stack>
             <g:header size="19">
                 1.
