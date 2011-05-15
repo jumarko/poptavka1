@@ -59,7 +59,7 @@ public class CategoryServiceTest extends DBUnitBaseTest {
     }
 
 
-//---------------------------------------------- HELPER METHEODS -------------------------------------------------------
+//---------------------------------------------- HELPER METHODS -------------------------------------------------------
 
     private void checkCategory(List<Category> rootCategories, int categoryIndex,
                                String expectedCode, String expectedName) {

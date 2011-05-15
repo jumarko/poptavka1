@@ -14,8 +14,8 @@ import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
-import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +40,17 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private static final long serialVersionUID = -4661806018739964100L;
 
     private DemandService demandService;
-    private ClientService clientService;
+    private GeneralService generalService;
 
     public DemandService getDemandService() {
         return demandService;
     }
 
-
     @Autowired
-    public void setClientService(ClientService clientService) {
-        this.clientService = clientService;
+    public void setGeneralService(GeneralService generalService) {
+        this.generalService = generalService;
     }
+
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -96,7 +96,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getExpireDate());
-        demand.setClient(clientService.getById(cliendId));
+        demand.setClient(this.generalService.find(Client.class, cliendId));
         demandService.create(demand);
         return "Done";
     }
@@ -132,7 +132,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     public ArrayList<DemandDetail> getClientDemands(long id) {
-        Client client = clientService.getById(id);
+        Client client = this.generalService.find(Client.class, id);
         return toArrayList(client.getDemands());
     }
 

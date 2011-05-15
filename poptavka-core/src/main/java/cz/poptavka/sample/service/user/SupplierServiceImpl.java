@@ -6,7 +6,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.service.GenericServiceImpl;
+import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
 
 import java.util.HashMap;
@@ -18,10 +18,11 @@ import java.util.Set;
  * @author Juraj Martinka
  *         Date: 12.2.11
  */
-public class SupplierServiceImpl extends GenericServiceImpl<Supplier, SupplierDao> implements SupplierService {
+public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, SupplierDao> implements SupplierService {
 
 
-    public SupplierServiceImpl(SupplierDao supplierDao) {
+    public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao) {
+        super(generalService);
         setDao(supplierDao);
     }
 

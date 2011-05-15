@@ -91,7 +91,7 @@ public final class ReflectionUtils {
     }
 
 
-    //---------------------------------------------- HELPER METHEODS ---------------------------------------------------
+    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
 
     private static Method getAccessor(Class aClass, String fieldName, String[] accessorPrefixes) {
 

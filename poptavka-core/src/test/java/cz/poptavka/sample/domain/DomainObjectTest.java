@@ -157,7 +157,7 @@ public class DomainObjectTest {
      * <p>
      * Domain objects are used with GWT module, therefore they can be associated only to the other domain objects
      * or external classes.
-     * It means, the cannot use any classes from <code>cz.poptavka.**</code> with the one exception:
+     * It means, they cannot use any classes from <code>cz.poptavka.**</code> with the one exception:
      * <code>cz.poptavka.sample.domain.**</code>
      */
     @Test

@@ -4,6 +4,7 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.settings.Preference;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.service.GeneralService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
@@ -31,7 +32,7 @@ public class PreferenceServiceIntegrationTest extends DBUnitBaseTest {
     private PreferenceService preferenceService;
 
     @Autowired
-    private ClientService clientService;
+    private GeneralService generalService;
 
     @Test
     public void testGetPreference() throws Exception {
@@ -47,7 +48,7 @@ public class PreferenceServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetPreferenceForClient() throws Exception {
 
-        final Client firstUser = this.clientService.getById(USER_WITH_PREFERECENCES);
+        final Client firstUser = this.generalService.find(Client.class, USER_WITH_PREFERECENCES);
         Assert.assertNotNull(firstUser);
         Assert.assertNotNull(firstUser.getBusinessUser().getSettings());
         final List<Preference> userPreferences = firstUser.getBusinessUser().getSettings().getPreferences();
@@ -58,7 +59,7 @@ public class PreferenceServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
-    //---------------------------------------------- HELPER METHEODS ---------------------------------------------------
+    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
 
     /**
      * Checks whether given preference <code>preferenceToCheck</code> is between preferences in

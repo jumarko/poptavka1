@@ -85,6 +85,7 @@
     <bean id="loginService" class="cz.poptavka.sample.service.user.LoginServiceImpl"/>
 
     <bean id="supplierService" class="cz.poptavka.sample.service.user.SupplierServiceImpl">
+        <constructor-arg ref="generalService" />
         <constructor-arg ref="supplierDao" />
     </bean>
 

@@ -45,7 +45,7 @@ public class BusinessUserTest extends DBUnitBaseTest {
     }
 
 
-    //---------------------------------------------- HELPER METHEODS ---------------------------------------------------
+    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Checks if given user <code>businessUser</code> has role specified by
      * @param businessRoleClass class

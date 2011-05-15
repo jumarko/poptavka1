@@ -5,18 +5,13 @@
 
 package cz.poptavka.sample.dao.user;
 
-import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.service.user.ClientSearchCriteria;
-
-import java.util.List;
 
 
 /**
  *
- * @author Excalibur
+ * @author Juraj Martinka
  */
-public interface ClientDao extends GenericDao<Client> {
+public interface ClientDao extends BusinessUserRoleDao<Client> {
 
-    List<Client> searchByCriteria(ClientSearchCriteria clientSearchCritera);
 }

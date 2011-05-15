@@ -1,6 +1,5 @@
 package cz.poptavka.sample.dao.user;
 
-import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
@@ -14,7 +13,7 @@ import java.util.Set;
  * @author Juraj Martinka
  *         Date: 12.2.11
  */
-public interface SupplierDao extends GenericDao<Supplier> {
+public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
 
     /**
      * Load all suppliers associated to the given locality (-ies) while applying additional criteria

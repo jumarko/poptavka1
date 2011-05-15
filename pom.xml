@@ -60,6 +60,7 @@
         <maven-surefire-plugin.version>2.7.1</maven-surefire-plugin.version>
 	    <spring.amqp.version>1.0.0.RC1</spring.amqp.version>
 	    <rabbitmq.version>2.2.0</rabbitmq.version>
+        <jackson.version>1.8.0</jackson.version>
     </properties>
 
     <pluginRepositories>
@@ -573,6 +574,17 @@
                 <groupId>com.rabbitmq</groupId>
                 <artifactId>amqp-client</artifactId>
                 <version>${rabbitmq.version}</version>
+            </dependency>
+            <!-- AMQP json serializer dependencies -->
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
 

@@ -5,7 +5,7 @@ import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.service.user.ClientSearchCriteria;
+import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +40,10 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testSearchClientByName() {
         final List<Client> clients = clientService.searchByCriteria(
-                new ClientSearchCriteria("Elv\u00edra", "Vytret\u00e1"));
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withName("Elv\u00edra")
+                        .withSurName("Vytret\u00e1")
+                        .build());
         Assert.assertNotNull(clients);
         Assert.assertEquals(1, clients.size());
         final Client client = clients.get(0);
@@ -48,7 +51,10 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertTrue("Vytret\u00e1".equals(client.getBusinessUser().getBusinessUserData().getPersonLastName()));
 
 
-        final List<Client> clients2 = clientService.searchByCriteria(new ClientSearchCriteria("Elv\u00edra", null));
+        final List<Client> clients2 = clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withName("Elv\u00edra")
+                        .build());
         Assert.assertNotNull(clients);
         Assert.assertEquals(2, clients2.size());
         Assert.assertTrue("Elv\u00edra".equals(
@@ -64,7 +70,11 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testUpdateClient() {
-        final List<Client> clients = clientService.searchByCriteria(new ClientSearchCriteria("Velislav", "Kroko"));
+        final List<Client> clients = clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withName("Velislav")
+                        .withSurName("Kroko")
+                        .build());
         Assert.assertNotNull(clients);
         Assert.assertEquals(1, clients.size());
 
@@ -72,12 +82,15 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         clientToModify.getBusinessUser().getBusinessUserData().setPersonLastName("Krokovic");
         this.clientService.update(clientToModify);
 
-        final List<Client> peristedClient = this.clientService.searchByCriteria(
-                new ClientSearchCriteria("Velislav", "Krokovic"));
-        Assert.assertNotNull(peristedClient);
-        Assert.assertNotNull(peristedClient.get(0).getId());
+        final List<Client> persistedClient = this.clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withName("Velislav")
+                        .withSurName("Krokovic")
+                        .build());
+        Assert.assertNotNull(persistedClient);
+        Assert.assertNotNull(persistedClient.get(0).getId());
         Assert.assertEquals("My Second Company",
-                peristedClient.get(0).getBusinessUser().getBusinessUserData().getCompanyName());
+                persistedClient.get(0).getBusinessUser().getBusinessUserData().getCompanyName());
     }
 
 
@@ -90,10 +103,13 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         newClient.getBusinessUser().setSettings(new Settings());
         this.clientService.create(newClient);
 
-        final List<Client> peristedClient = this.clientService.searchByCriteria(
-                new ClientSearchCriteria("New", "Client"));
-        Assert.assertNotNull(peristedClient);
-        Assert.assertNotNull(peristedClient.get(0).getId());
-        Assert.assertEquals("new@client.com", peristedClient.get(0).getBusinessUser().getEmail());
+        final List<Client> persistedClient = this.clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withName("New")
+                        .withSurName("Client")
+                        .build());
+        Assert.assertNotNull(persistedClient);
+        Assert.assertNotNull(persistedClient.get(0).getId());
+        Assert.assertEquals("new@client.com", persistedClient.get(0).getBusinessUser().getEmail());
     }
 }

@@ -65,7 +65,7 @@ public class Supplier extends BusinessUserRole {
         this.categories = categories;
     }
 
-    public boolean isCertified() {
+    public Boolean isCertified() {
         return certified;
     }
 

@@ -1,9 +1,8 @@
 package cz.poptavka.sample.dao.user;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
@@ -19,7 +18,7 @@ import java.util.Set;
  * @author Juraj Martinka
  *         Date: 12.2.11
  */
-public class SupplierDaoImpl extends GenericHibernateDao<Supplier> implements SupplierDao {
+public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implements SupplierDao {
 
     private TreeItemDao treeItemDao;
 

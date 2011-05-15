@@ -1,6 +1,7 @@
 package cz.poptavka.sample.messaging.sample;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,17 +32,22 @@ import java.util.List;
 public class RabbitMQClientSynchronousTest {
 
     private static final String COMPLEX_MESSAGE_TITLE = "New complex message";
+    private static final String TEST_QUEUE_NAME = "test.queue";
     @Autowired
     private AmqpAdmin admin;
     @Autowired
     private AmqpTemplate template;
 
+
+    @Before
+    public void setUp() {
+        admin.declareQueue(new Queue(TEST_QUEUE_NAME));
+    }
+
     @Test
-    @Ignore
     public void simpleProducerConsumerTest() {
         try {
             String sent = "Catch the rabbit! " + new Date();
-            admin.declareQueue(new Queue("test.queue"));
 
             // write message
             template.convertAndSend(sent);
@@ -59,12 +65,14 @@ public class RabbitMQClientSynchronousTest {
 
 
     /**
-     * Tests sending and receiveing (i.e. conversion) of complex DTO objects, not just simple strings.
+     * Tests sending and receiving (i.e. conversion) of complex DTO objects, not just simple strings.
+     * <p>
+     *     More portable {@link org.springframework.amqp.support.converter.JsonMessageConverter} is used instead of
+     * Java serialization -> see configuration in <code>messaging-config.xml</code>.
      */
     @Test
     public void testComplexDtoObjects() {
         try {
-            admin.declareQueue(new Queue("test.queue"));
 
             // write message - twice
             template.convertAndSend(createComplexMessage());
@@ -84,7 +92,12 @@ public class RabbitMQClientSynchronousTest {
     }
 
 
-    //---------------------------------------------- HELPER METHEODS ---------------------------------------------------
+    /**
+     * Tests sending and receiving (i.e. conversion) of complex DTO objects, not just simple strings.
+     *
+     */
+
+    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     private Message createComplexMessage() {
 
         final Message message = new Message();
@@ -160,6 +173,10 @@ public class RabbitMQClientSynchronousTest {
         private T content;
 
         private Long timestamp = System.currentTimeMillis();
+
+        public MessageItem() {
+            // default constructor for json converter
+        }
 
         public MessageItem(T content) {
             this.content = content;

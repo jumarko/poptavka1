@@ -4,6 +4,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+
+    <!-- Load properties from messaging.properties file -->
+    <bean id="messagingPropertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/messaging.properties</value>
+            </list>
+        </property>
+    </bean>
+
     <!-- Connection Factory -->
     <bean id="rabbitConnFactory"
           class="org.springframework.amqp.rabbit.connection.SingleConnectionFactory">
@@ -19,13 +29,12 @@
     <bean id="template"
           class="org.springframework.amqp.rabbit.core.RabbitTemplate">
         <property name="connectionFactory" ref="rabbitConnFactory" />
-        <!--<property name="messageConverter">-->
-            <!--<bean class="org.springframework.amqp.support.converter.JsonMessageConverter">-->
-                <!--&lt;!&ndash; TODO check if custom class mapper is neccesary &ndash;&gt;-->
-                <!--&lt;!&ndash; if necessary, override the DefaultClassMapper &ndash;&gt;-->
-                <!--&lt;!&ndash;<property name="classMapper" ref="customClassMapper"/>&ndash;&gt;-->
-            <!--</bean>-->
-        <!--</property>-->
+        <property name="messageConverter">
+            <bean class="org.springframework.amqp.support.converter.JsonMessageConverter">
+                <!-- if necessary, override the DefaultClassMapper -->
+                <!--<property name="classMapper" ref="customClassMapper"/>-->
+            </bean>
+        </property>
         <property name="routingKey" value="${amqp.routingKey}"/>
         <property name="queue" value="${amqp.queue}"/>
 

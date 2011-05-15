@@ -4,6 +4,8 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.settings.Settings;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
@@ -11,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -133,6 +136,59 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         checkSuppliersCountWithoutChildrenByCategory("cat1131", 0);
         checkSuppliersCountWithoutChildrenByCategory("cat1132", 0);
     }
+
+
+    @Test
+    public void testCreateSupplier() {
+        final Supplier newSupplier = new Supplier();
+        newSupplier.getBusinessUser().setEmail("new@supplier.com");
+        newSupplier.getBusinessUser().setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("New").personLastName("Supplier").build());
+        newSupplier.getBusinessUser().setSettings(new Settings());
+        this.supplierService.create(newSupplier);
+
+        final List<Supplier> persistedSupplier = this.supplierService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withName("New")
+                        .withSurName("Supplier")
+                        .build());
+        Assert.assertNotNull(persistedSupplier);
+        Assert.assertNotNull(persistedSupplier.get(0).getId());
+        Assert.assertEquals("new@supplier.com", persistedSupplier.get(0).getBusinessUser().getEmail());
+    }
+
+
+
+    @Test
+    public void testUpdateSupplier() {
+        // company name by which the tested supplier can be found
+        final String supplierCompanyName = "My Third Company";
+
+        final List<Supplier> suppliers = this.supplierService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withCompanyName(supplierCompanyName)
+                        .build());
+        Assert.assertNotNull(suppliers);
+        Assert.assertEquals(1, suppliers.size());
+
+        final Supplier supplierToModify = suppliers.get(0);
+        // remember original certification of supplier
+        final boolean isCertified = supplierToModify.isCertified() != null ? supplierToModify.isCertified() : false;
+
+        // change certification to opposite value
+        supplierToModify.setCertified(!isCertified);
+        this.supplierService.update(supplierToModify);
+
+        final List<Supplier> persistedSupplier = this.supplierService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withCompanyName(supplierCompanyName)
+                        .build());
+        Assert.assertNotNull(persistedSupplier);
+        Assert.assertNotNull(persistedSupplier.get(0).getId());
+        // check if certification has been changed correctly
+        Assert.assertEquals(!isCertified, persistedSupplier.get(0).isCertified());
+    }
+
 
 
     //----------------------------------------- HELPER METHODS ---------------------------------------------------------

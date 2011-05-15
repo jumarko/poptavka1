@@ -1,14 +1,19 @@
 package cz.poptavka.sample.service;
 
+import com.google.common.base.Preconditions;
 import cz.poptavka.sample.base.RealDbTest;
+import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.util.date.DateUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -19,22 +24,36 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
  *
  * Test class which can connect to the real db and create some basic data.
+ * <p>
+ * All methods must be marked as Ignored by default! If someone wants to insert test data then he must
+ * remove @Ignore annotation at particular method manually and run the test method.
+ * Then the @Ignore has to be set on that method again.
+ *
  * @author Juraj Martinka
  *         Date: 9.5.11
  */
 public class BasicDataInsertingTest extends RealDbTest {
 
 
+    private static final String JIHOMORAVSKY_KRAJ_CODE = "CZ064";
     @Autowired
     private ClientService clientService;
 
     @Autowired
+    private SupplierService supplierService;
+
+    @Autowired
     private DemandService demandService;
+
+    @Autowired
+    private LocalityService localityService;
+
 
 
 
@@ -80,5 +99,33 @@ public class BasicDataInsertingTest extends RealDbTest {
         Assert.assertEquals(validTo, createdDemand.getValidTo());
         Assert.assertEquals(clientSurname,
                 createdDemand.getClient().getBusinessUser().getBusinessUserData().getPersonLastName());
+    }
+
+
+    @Ignore
+    @Test
+    @Transactional(propagation = Propagation.REQUIRED)
+    // DO NOT ROLLBACK! We really do want to store some sample data into the database
+    @Rollback(false)
+    public void createTestSuppliers() {
+        final Supplier newSupplier = new Supplier();
+
+        // set basic data
+        newSupplier.getBusinessUser().setEmail("janko.hrasko@poptavam.com");
+        final BusinessUserData newBusinessUserData = new BusinessUserData();
+        newBusinessUserData.setPersonFirstName("Janko");
+        newBusinessUserData.setPersonLastName("Hrasko");
+        newBusinessUserData.setCompanyName("JankoHrasko s.r.o");
+        newBusinessUserData.setPhone("+420725648999");
+        newSupplier.getBusinessUser().setBusinessUserData(newBusinessUserData);
+
+        newSupplier.setCertified(false);
+
+        // set supplier locality
+        final Locality locality = localityService.getLocality(JIHOMORAVSKY_KRAJ_CODE);
+        Preconditions.checkState(locality != null, "Locality with code [" + JIHOMORAVSKY_KRAJ_CODE + "] must exist!");
+        newSupplier.setLocalities(Arrays.asList(locality));
+
+        this.supplierService.create(newSupplier);
     }
 }

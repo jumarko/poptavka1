@@ -3,8 +3,8 @@ package cz.poptavka.sample.service.client;
 import cz.poptavka.sample.base.RealDbTest;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.service.user.ClientSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.UserSearchCriteria;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -40,7 +40,10 @@ public class ClientServiceDbTest extends RealDbTest {
         this.clientService.create(newClient);
 
         final List<Client> peristedClient = this.clientService.searchByCriteria(
-                new ClientSearchCriteria("Test", "Client"));
+                UserSearchCriteria.Builder.userSearchCriteria()
+                .withName("Test")
+                .withSurName("Test")
+                .build());
         Assert.assertNotNull(peristedClient);
         Assert.assertNotNull(peristedClient.get(0).getId());
         Assert.assertEquals("test@poptavam.com", peristedClient.get(0).getBusinessUser().getEmail());

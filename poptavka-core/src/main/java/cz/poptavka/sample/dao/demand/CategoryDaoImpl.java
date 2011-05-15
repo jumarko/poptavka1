@@ -42,7 +42,7 @@ public class CategoryDaoImpl extends GenericHibernateDao<Category> implements Ca
         return (Category) runNamedQueryForSingleResult("getCategoryByCode", params);
     }
 
-    //---------------------------------------------- HELPER METHEODS ---------------------------------------------------
+    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
 
     private boolean orderByNotSpecified(ResultCriteria resultCriteria) {
         return resultCriteria == null || resultCriteria.getOrderByColumns() == null

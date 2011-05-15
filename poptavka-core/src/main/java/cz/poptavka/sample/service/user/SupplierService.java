@@ -1,11 +1,10 @@
 package cz.poptavka.sample.service.user;
 
 import cz.poptavka.sample.dao.user.SupplierDao;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.service.GenericService;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +16,7 @@ import java.util.Set;
  * @author Juraj Martinka
  *         Date: 12.2.11
  */
-public interface SupplierService extends GenericService<Supplier, SupplierDao> {
+public interface SupplierService extends BusinessUserRoleService<Supplier, SupplierDao> {
 
     /**
      * Load all suppliers associated to the given locality (-ies).
