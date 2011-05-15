@@ -3,6 +3,8 @@ package cz.poptavka.sample.client.home.creation;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -91,9 +93,15 @@ public class DemandCreationPresenter
         eventBus.setBodyWidget(view.getWidgetView());
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
         eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
-        eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
-        eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
-        eventBus.initLoginForm(view.getHolderPanel(LOGIN));
+
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+            @Override
+            public void execute() {
+                eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
+                eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
+                eventBus.initLoginForm(view.getHolderPanel(LOGIN));
+            }
+        });
     }
 
     private void registerNewCient() {

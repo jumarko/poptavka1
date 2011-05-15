@@ -68,5 +68,21 @@ body {
     display: inline;
 }
 
+.stackLayout {
+    border-bottom: 1px solid #bbbbbb;
+}
 
+.stackLayoutPanelHeader {
+    cursor: pointer;
+    cursor: hand;
+    font-weight: bold;
+    padding-left: 3px;
+    border: 1px solid #bbbbbb;
+    border-bottom: 0px;
+    background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px -989px;
+}
+
+div.stackLayoutPanelHeader:hover {
+  background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px -1464px;
+}
 /** DELETE AFTER THIS LINE **/

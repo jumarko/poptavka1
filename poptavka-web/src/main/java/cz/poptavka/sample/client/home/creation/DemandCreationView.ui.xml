@@ -8,12 +8,16 @@
         type='cz.poptavka.sample.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <g:StackLayoutPanel ui:field='mainPanel' height="95%">
+    <g:HTMLPanel>
+    <g:StackLayoutPanel ui:field='mainPanel'
+        styleName='{res.layout.stackLayout}' height="95%">
         <g:stack>
-            <g:header size="19">
-                1.
-                <ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
-            </g:header>
+            <g:customHeader size="19">
+                <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                    1.
+                    <ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
+                </g:HTML>
+            </g:customHeader>
             <g:DockLayoutPanel unit="EM" height="100%">
                 <g:south size="4">
                     <cm:StatusIconLabel ui:field='basicStatus'
@@ -26,10 +30,12 @@
             </g:DockLayoutPanel>
         </g:stack>
         <g:stack>
-            <g:header size="19">
+            <g:customHeader size="19">
+                <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
                 2.
                 <ui:msg key="catsSelection">Category selection</ui:msg>
-            </g:header>
+                </g:HTML>
+            </g:customHeader>
             <g:DockLayoutPanel unit="EM" height="100%">
                 <g:south size="4">
                     <cm:StatusIconLabel ui:field='categoryStatus'
@@ -42,10 +48,12 @@
             </g:DockLayoutPanel>
         </g:stack>
         <g:stack>
-            <g:header size="19">
+            <g:customHeader size="19">
+                <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
                 3.
                 <ui:msg key="locsSelection">Locality selection</ui:msg>
-            </g:header>
+                </g:HTML>
+            </g:customHeader>
             <g:DockLayoutPanel unit="EM" height="100%">
                 <g:south size="4">
                     <cm:StatusIconLabel ui:field='localityStatus'
@@ -58,10 +66,12 @@
             </g:DockLayoutPanel>
         </g:stack>
         <g:stack>
-            <g:header size="19">
+            <g:customHeader size="19">
+                <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
                 4.
                 <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
-            </g:header>
+                </g:HTML>
+            </g:customHeader>
             <g:DockLayoutPanel unit="EM" height="100%">
                 <g:south size="4">
                     <cm:StatusIconLabel ui:field='advStatus'
@@ -74,10 +84,12 @@
             </g:DockLayoutPanel>
         </g:stack>
         <g:stack>
-            <g:header size="19">
+            <g:customHeader size="19">
+                <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
                 5.
                 <ui:msg key="loginOrRegister">Log in or register</ui:msg>
-            </g:header>
+                </g:HTML>
+            </g:customHeader>
             <g:DockLayoutPanel unit="EM" ui:field='userFormPanel'>
                 <g:north size="20">
                     <g:SimplePanel ui:field="userFormHolder" />
@@ -100,5 +112,5 @@
             </g:DockLayoutPanel>
         </g:stack>
     </g:StackLayoutPanel>
-
+    </g:HTMLPanel>
 </ui:UiBinder>

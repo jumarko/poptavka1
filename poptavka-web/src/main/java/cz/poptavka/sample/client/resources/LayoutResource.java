@@ -31,6 +31,12 @@ public interface LayoutResource extends CssResource {
     @ClassName("full-size-panel")
     String fullSize();
 
+    /** DemandCreation.class **/
+    @ClassName("stackLayout")
+    String stackLayout();
+    @ClassName("stackLayoutPanelHeader")
+    String stackLayoutPanelHeader();
+
     @ClassName("home-menu")
     String homeMenu();
 
