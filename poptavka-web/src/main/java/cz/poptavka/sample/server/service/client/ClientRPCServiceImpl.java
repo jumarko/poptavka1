@@ -1,12 +1,5 @@
 package cz.poptavka.sample.server.service.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -19,6 +12,12 @@ import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.ClientDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -117,13 +116,10 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         BusinessUser user = new BusinessUser();
         user.setEmail(email);
         example.setBusinessUser(user);
+
+        // email is free if no user with such an email exists
         List<Client> resultList = clientService.findByExample(example);
-        for (Client cl : resultList) {
-            if (cl.getBusinessUser().getEmail().equals(email)) {
-                return false;
-            }
-        }
-        return true;
+        return resultList.isEmpty();
     }
 
     private Locality getLocalityByExample(String searchString) {

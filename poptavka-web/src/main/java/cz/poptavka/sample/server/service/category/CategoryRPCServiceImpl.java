@@ -6,7 +6,6 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 
     @Autowired
-    @Required
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
     }

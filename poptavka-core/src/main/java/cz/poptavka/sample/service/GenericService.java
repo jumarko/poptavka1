@@ -13,7 +13,7 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      * get the entity with given id.
      * @param id
      * @return entity
-     * @throws DomainObjectNotFoundException if no object is found
+     * @throws cz.poptavka.sample.exception.DomainObjectNotFoundException if no object is found
      */
     T getById(long id);
 
@@ -83,7 +83,7 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      *  The default setting is that NULL and ZERO values are excluded! If you want to bypass these restrictions, you
      *  must use the more general method {@link #findByExampleCustom(org.hibernate.criterion.Example)}.
      *  <p>
-     *  Only basic types (such as String, int, Date, etc.) are used for filtering. Assocation types are ignored.
+     *  Only basic types (such as String, int, Date, etc.) are used for filtering. Association types are ignored.
      *  (For more information on associated types check the source code of {@link Example}).
      *  Otherwise this method cannot be used and more complicated criteria must be constructed manually.
      *  E.g. following code IS NOT WORKING:
@@ -100,7 +100,7 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
 
     /**
      * The same as {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)}
-     * but additonal criteria are applied on the result.
+     * but additional criteria are applied on the result.
      *
      * <p>
      * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}
@@ -130,7 +130,7 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
 
     /**
      * The same as {@link #findByExampleCustom(org.hibernate.criterion.Example)}
-     * but additonal criteria are applied on the result.
+     * but additional criteria are applied on the result.
      *
      * <p>
      * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}

@@ -8,18 +8,8 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-    <!-- SearchProcessor -->
-    <bean id="mySearchProcessor" class="com.googlecode.genericdao.search.jpa.JPASearchProcessor">
-        <constructor-arg ref="metadataUtil" />
-    </bean>
-    <bean id="metadataUtil" class="com.googlecode.genericdao.search.jpa.hibernate.HibernateMetadataUtil"
-          factory-method="getInstanceForEntityManagerFactory">
-        <constructor-arg ref="entityManagerFactory" />
-    </bean>
-    <bean id="generalDao" class="cz.poptavka.sample.dao.DecoratedGeneralDAOImpl">
-        <constructor-arg ref="mySearchProcessor"/>
-    </bean>
+    <!-- Dependencies on beans from data-access.xml exists therefore we must import it -->
+    <import resource="data-access.xml"/>
 
 
     <bean id="clientDao" class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
@@ -43,9 +33,6 @@
     </bean>
 
     <bean id="messageDao" class="cz.poptavka.sample.dao.message.MessageDaoImpl" />
-
-
-
 
 
     <!-- Service -->
@@ -103,19 +90,5 @@
     <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>
 
     <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
-
-    <!-- Gilead configuration -->
-    <bean id="persistenceUtil" class="net.sf.gilead.core.hibernate.jpa.HibernateJpaUtil">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-
-    <bean id="proxyStore" class="net.sf.gilead.core.store.stateful.HttpSessionProxyStore">
-        <property name="persistenceUtil" ref="persistenceUtil"/>
-    </bean>
-
-    <bean id="beanManager" class="net.sf.gilead.core.PersistentBeanManager">
-        <property name="proxyStore" ref="proxyStore"/>
-        <property name="persistenceUtil" ref="persistenceUtil"/>
-    </bean>
 
 </beans>

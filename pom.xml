@@ -61,6 +61,7 @@
 	    <spring.amqp.version>1.0.0.RC1</spring.amqp.version>
 	    <rabbitmq.version>2.2.0</rabbitmq.version>
         <jackson.version>1.8.0</jackson.version>
+        <gwt-syncproxy.version>2.0</gwt-syncproxy.version>
     </properties>
 
     <pluginRepositories>
@@ -97,6 +98,19 @@
     </pluginRepositories>
 
     <repositories>
+        <!-- Our own repository -->
+        <repository>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</releases>
+			<id>poptavka.maven.repository</id>
+			<name>Maven repository for Poptavka project</name>
+			<url>http://46.137.95.172:8080/maven</url>
+			<layout>default</layout>
+		</repository>
+
         <repository>
             <id>Nexus</id>
             <name>JBoss Maven repository</name>
@@ -618,6 +632,20 @@
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-api-mockito</artifactId>
                 <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- GWT testing -->
+            <dependency>
+                <groupId>com.googlecode.gwt</groupId>
+                <artifactId>syncproxy</artifactId>
+                <version>${gwt-syncproxy.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-dev</artifactId>
+                <version>${gwt.version}</version>
                 <scope>test</scope>
             </dependency>
 

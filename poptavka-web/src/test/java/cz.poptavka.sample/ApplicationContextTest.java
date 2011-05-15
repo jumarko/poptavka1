@@ -8,19 +8,21 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.servlet.ServletException;
+
 /**
  * @author Juraj Martinka
  *         Date: 30.1.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:/**applicationContext-web.xml" })
+@ContextConfiguration(locations = { "classpath*:applicationContext-test.xml" })
 public class ApplicationContextTest {
 
     @Autowired
     private ApplicationContext applicationContext;
 
     @Test
-    public void testGetApplicationContext() {
+    public void testGetApplicationContext() throws ServletException {
         Assert.assertNotNull(this.applicationContext);
     }
 }

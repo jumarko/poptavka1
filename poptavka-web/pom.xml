@@ -184,6 +184,18 @@
             <groupId>net.sf.gilead</groupId>
             <artifactId>gilead4gwt</artifactId>
         </dependency>
+
+
+        <!-- GWT testing -->
+        <dependency>
+            <groupId>com.googlecode.gwt</groupId>
+            <artifactId>syncproxy</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+        </dependency>
+
     </dependencies>
     <profiles>
         <profile>
@@ -295,6 +307,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                <excludes>
+                    <exclude>**/*GwtTest.java</exclude>
+                    <exclude>**/*RpcServiceTest.java</exclude>
+                </excludes>
+                </configuration>
             </plugin>
 
         </plugins>

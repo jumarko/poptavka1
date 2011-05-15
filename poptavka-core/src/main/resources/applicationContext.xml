@@ -21,8 +21,6 @@
         </property>
     </bean>
 
-
-    <import resource="data-access.xml"/>
     <import resource="spring-ehcache.xml"/>
     <import resource="beans.xml" />
     <import resource="aspects.xml" />
