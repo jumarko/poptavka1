@@ -45,12 +45,21 @@ public class AdditionalInfoFiller implements JobTask {
         LOGGER.info("Job AdditionalInfoFiller is being executed...");
 
 //        // fill localities' info
+        LOGGER.info("Localities additional info filling starting...");
+        final long localitiesFillStartTime = System.currentTimeMillis();
         setAdditionalInfoForAllItems(this.demandService.getDemandsCountForAllLocalities(),
                 this.supplierService.getSuppliersCountForAllLocalities());
+        LOGGER.info("Localities additional info filling finished in ["
+                + (System.currentTimeMillis() - localitiesFillStartTime) + "] ms.");
 
         // fill categories' info
+        LOGGER.info("Categories additional info filling starting...");
+        final long categoriesFillStartTime = System.currentTimeMillis();
         setAdditionalInfoForAllItems(this.demandService.getDemandsCountForAllCategories(),
                 this.supplierService.getSuppliersCountForAllCategories());
+        LOGGER.info("Categories additional info filling finished in ["
+                        + (System.currentTimeMillis() - categoriesFillStartTime) + "] ms.");
+
 
         LOGGER.info("Job AdditionalInfoFiller has finished.");
     }
