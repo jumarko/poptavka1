@@ -37,9 +37,10 @@ public class DemandConverterTest extends BasicIntegrationTest {
 
         Assert.assertEquals(TestingDemand.TEST_DEMAND_1_EMAIL, businessUser.getEmail());
         Assert.assertEquals(Verification.EXTERNAL, domainDemand.getClient().getVerification());
-        Assert.assertEquals(TestingDemand.TEST_DEMAND_1_CONTACT_PERSON,
+        Assert.assertEquals(TestingDemand.TEST_DEMAND_1_CONTACT_PERSON.split(" ")[1],
                 businessUser.getBusinessUserData().getPersonLastName());
-        Assert.assertNull(businessUser.getBusinessUserData().getPersonFirstName());
+        Assert.assertEquals(TestingDemand.TEST_DEMAND_1_CONTACT_PERSON.split(" ")[0],
+                businessUser.getBusinessUserData().getPersonFirstName());
         Assert.assertEquals(TestingDemand.TEST_DEMAND_1_PHONE, businessUser.getBusinessUserData().getPhone());
         Assert.assertEquals(TestingDemand.TEST_DEMAND_1_COMPANY, businessUser.getBusinessUserData().getCompanyName());
         Assert.assertEquals(TestingDemand.TEST_DEMAND_1_DIC, businessUser.getBusinessUserData().getTaxId());

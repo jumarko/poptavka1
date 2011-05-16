@@ -40,6 +40,7 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
     private static final Logger LOGGER = LoggerFactory.getLogger(DemandConverter.class);
 
     private static final String STREET_CITY_SEPARATOR = ", ";
+    private static final String PERSON_NAMES_SEPARATOR = " +";
     private GeneralService generalService;
 
     private DemandService demandService;
@@ -208,7 +209,22 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
         }
         // TODO: parse contact person's names and store them into the separated fields
         if (StringUtils.isBlank(clientBusinessUserData.getPersonLastName())) {
-            clientBusinessUserData.setPersonLastName(sourceDemand.getContactPerson());
+            // try to parse the contact name
+            final String contactPerson = sourceDemand.getContactPerson();
+            if (StringUtils.isNotBlank(contactPerson)) {
+                final String[] personNames = contactPerson.split(PERSON_NAMES_SEPARATOR);
+
+                // last name is the last part of person names
+                clientBusinessUserData.setPersonLastName(personNames[personNames.length - 1]);
+
+                // first name is any string before last name
+                if (personNames.length > 1) {
+                    final String[] personFirstNames = Arrays.copyOf(personNames, personNames.length - 1);
+                    // join all parts of person first name into the one string
+                    clientBusinessUserData.setPersonFirstName(
+                            StringUtils.join(personFirstNames, PERSON_NAMES_SEPARATOR));
+                }
+            }
         }
     }
 
