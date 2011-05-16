@@ -41,7 +41,7 @@ public class MessageSenderTest {
         final int sleepInterval = HUNDRED_MS;
 
         for (int i = 0; i < NUMBER_OF_SENT_MESSAGES; i++) {
-            sender.send("Hi, Guy! This is " + (i + 1) + ". message");
+            sender.send("Hi, Elv\u00edra! This is " + (i + 1) + ". message");
             Thread.sleep(sleepInterval);
         }
 
