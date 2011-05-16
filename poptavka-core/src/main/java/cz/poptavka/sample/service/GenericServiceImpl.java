@@ -140,17 +140,20 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public List<Dom> findByExample(Dom example) {
         return this.dao.findByExample(example);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public List<Dom> findByExample(Dom example, ResultCriteria resultCriteria) {
         return this.dao.findByExample(example, resultCriteria);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Dom> findByExampleCustom(Example customExample) {
         Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
         return this.dao.findByExampleCustom(customExample);
@@ -158,6 +161,7 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public List<Dom> findByExampleCustom(Example customExample, ResultCriteria resultCriteria) {
         return this.dao.findByExampleCustom(customExample, resultCriteria);
     }
