@@ -48,12 +48,12 @@ public class LocalitySelectorView extends Composite
 
     @Override
     public ListBox getDistrictList() {
-        return regionList;
+        return districtList;
     }
 
     @Override
-    public ListBox getTownshipList() {
-        return districtList;
+    public ListBox getRegionList() {
+        return regionList;
     }
 
     @Override
@@ -77,11 +77,30 @@ public class LocalitySelectorView extends Composite
         }
     }
 
-    public void addToSelectedList() {
-        int index = cityList.getSelectedIndex();
-        String itemText = cityList.getItemText(index);
+    public void addToSelectedList(int localityType) {
+        String itemText = null;
+        String itemValue = null;
+        int index = -1;
+
+        switch (localityType) {
+            case LocalityDetail.DISTRICT:
+                index = districtList.getSelectedIndex();
+                itemText = districtList.getItemText(index);
+                itemValue = districtList.getValue(index);
+                break;
+            case LocalityDetail.REGION:
+                index = regionList.getSelectedIndex();
+                itemText = regionList.getItemText(index);
+                itemValue = regionList.getValue(index);
+                break;
+            default:
+                index = cityList.getSelectedIndex();
+                itemText = cityList.getItemText(index);
+                itemValue = cityList.getValue(index);
+                break;
+        }
         if (!selectedListStrings.contains(itemText)) {
-            selectedList.addItem(cityList.getItemText(index), cityList.getValue(index));
+            selectedList.addItem(itemText, itemValue);
             selectedListStrings.add(itemText);
         }
     }

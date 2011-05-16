@@ -24,11 +24,12 @@ public class LocalitySelectorPresenter
 
     /** View interface methods. **/
     public interface LocalitySelectorInterface extends LazyView {
+
+        ListBox getRegionList();
+
         ListBox getDistrictList();
 
         ListBox getCityList();
-
-        ListBox getTownshipList();
 
         ListBox getSelectedList();
 
@@ -38,7 +39,7 @@ public class LocalitySelectorPresenter
 
         boolean isValid();
 
-        void addToSelectedList();
+        void addToSelectedList(int type);
 
         void removeFromSelectedList();
 
@@ -50,27 +51,35 @@ public class LocalitySelectorPresenter
     private static final Logger LOGGER = Logger.getLogger("LocalitySelectorPresenter");
 
     public void bindView() {
-        view.getDistrictList().addChangeHandler(new ChangeHandler() {
+        view.getRegionList().addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent arg0) {
-                view.toggleLoader();
-                view.getTownshipList().setVisible(false);
-                view.getCityList().setVisible(false);
-                eventBus.getChildLocalities(LocalityDetail.DISTRICT, view.getSelectedItem(LocalityDetail.REGION));
+            public void onClick(ClickEvent event) {
+                if (event.isControlKeyDown()) {
+                    view.addToSelectedList(LocalityDetail.REGION);
+                } else {
+                    view.toggleLoader();
+                    view.getDistrictList().setVisible(false);
+                    view.getCityList().setVisible(false);
+                    eventBus.getChildLocalities(LocalityDetail.DISTRICT, view.getSelectedItem(LocalityDetail.REGION));
+                }
             }
         });
-        view.getTownshipList().addChangeHandler(new ChangeHandler() {
+        view.getDistrictList().addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent event) {
-                view.toggleLoader();
-                view.getCityList().setVisible(false);
-                eventBus.getChildLocalities(LocalityDetail.CITY, view.getSelectedItem(LocalityDetail.DISTRICT));
+            public void onClick(ClickEvent event) {
+                if (event.isControlKeyDown()) {
+                    view.addToSelectedList(LocalityDetail.DISTRICT);
+                } else {
+                    view.toggleLoader();
+                    view.getCityList().setVisible(false);
+                    eventBus.getChildLocalities(LocalityDetail.CITY, view.getSelectedItem(LocalityDetail.DISTRICT));
+                }
             }
         });
         view.getCityList().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                view.addToSelectedList();
+                view.addToSelectedList(LocalityDetail.CITY);
             }
         });
         view.getSelectedList().addChangeHandler(new ChangeHandler() {
@@ -89,12 +98,12 @@ public class LocalitySelectorPresenter
 
     public void onSetLocalityData(int localityType, ArrayList<LocalityDetail> list) {
         switch (localityType) {
-            case LocalityDetail.REGION:
-                setData(view.getDistrictList(), list);
-                break;
             case LocalityDetail.DISTRICT:
                 view.toggleLoader();
-                setData(view.getTownshipList(), list);
+                setData(view.getDistrictList(), list);
+                break;
+            case LocalityDetail.REGION:
+                setData(view.getRegionList(), list);
                 break;
             case LocalityDetail.CITY:
                 view.toggleLoader();

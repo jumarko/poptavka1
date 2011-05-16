@@ -156,11 +156,13 @@ public class FormUserRegistrationPresenter extends
         }
         view.setPasswordLengthFlag(true);
         if ((value.length() <= LONG) && (value.length() > SHORT)) {
+            view.setPasswordFlag(true);
 
             // TODO change to global status changer eventBus call
             view.getPwdStatus().setStateWithDescription(State.INFO_16, MSGS.semiStrongPassword());
         }
         if (value.length() > LONG) {
+            view.setPasswordFlag(true);
 
             // TODO change to global status changer eventBus call
             view.getPwdStatus().setStateWithDescription(State.ACCEPT_16, MSGS.strongPassword());

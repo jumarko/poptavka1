@@ -98,6 +98,9 @@ public class SupplierCreationPresenter
      */
     public void onAtRegisterSupplier() {
         LOGGER.info("Initializing Supplier Registration Widget ... ");
+
+        view.getMainPanel().showWidget(0);
+
         eventBus.setBodyWidget(view.getWidgetView());
         //init parts
         LOGGER.info(" -> Supplier Info Form");

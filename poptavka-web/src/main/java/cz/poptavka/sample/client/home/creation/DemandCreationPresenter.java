@@ -90,9 +90,11 @@ public class DemandCreationPresenter
      */
     public void onAtCreateDemand() {
         LOGGER.info("  INIT DemandCreation Widget");
-        eventBus.setBodyWidget(view.getWidgetView());
+        view.getMainPanel().showWidget(0);
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
         eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
+
+        eventBus.setBodyWidget(view.getWidgetView());
 
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
             @Override
