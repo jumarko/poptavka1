@@ -1,5 +1,6 @@
 package cz.poptavka.sample.application.logging;
 
+import cz.poptavka.sample.base.integration.BasicIntegrationTest;
 import cz.poptavka.sample.dao.demand.DemandDao;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -7,18 +8,13 @@ import cz.poptavka.sample.service.GenericService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Juraj Martinka
  *         Date: 10.4.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
-public class ExceptionLoggerTest {
+public class ExceptionLoggerTest extends BasicIntegrationTest {
 
     @Autowired
     private ExceptionLogger exceptionLogger;

@@ -1,12 +1,10 @@
 package cz.poptavka.sample.service.demand;
 
+import cz.poptavka.sample.base.integration.BasicIntegrationTest;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.service.common.TreeItemService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
@@ -14,9 +12,7 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 12.2.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
-public class PrintCategories {
+public class PrintCategories extends BasicIntegrationTest {
 
     @Autowired
     private CategoryService categoryService;

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.audit;
 
+import cz.poptavka.sample.base.integration.BasicIntegrationTest;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.service.user.ClientService;
@@ -8,10 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -40,9 +38,7 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 8.1.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
-public class AuditServiceTest {
+public class AuditServiceTest extends BasicIntegrationTest {
 
     /**
      * Template used for programmatic transaction handling, because audited data must be commited before loading

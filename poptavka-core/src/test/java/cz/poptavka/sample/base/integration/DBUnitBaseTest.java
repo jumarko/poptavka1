@@ -14,10 +14,7 @@ import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -45,11 +42,9 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 9.1.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-test.xml" })
 // must be transactional to roll-back the created data after each test
 @Transactional
-public abstract class DBUnitBaseTest {
+public abstract class DBUnitBaseTest extends BasicIntegrationTest {
 
     /** Default suffix which will be used when constructing default name of xml file. **/
     private static final String DEFAULT_SUFFIX = "DataSet.xml";
