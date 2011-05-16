@@ -17,8 +17,6 @@ import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 
-
-//@Singleton
 public class CategorySelectorView extends Composite
     implements CategorySelectorPresenter.CategorySelectorInterface, ProvidesValidate {
 
@@ -30,10 +28,10 @@ public class CategorySelectorView extends Composite
 
     @UiField ScrollPanel masterPanel;
     @UiField Grid categoryListHolder;
-    private ArrayList<ListBox> subcategories = new ArrayList<ListBox>();
+    private ArrayList<ListBox> listBoxes = new ArrayList<ListBox>();
 
     @UiField ListBox selectedList;
-    private HashSet<String> selectedListStrings = new HashSet<String>();
+    private HashSet<String> selectedListTitles = new HashSet<String>();
 
     @Override
     public void createView() {
@@ -51,9 +49,9 @@ public class CategorySelectorView extends Composite
 
     @Override
     public void addToSelectedList(String text, String value) {
-        if (!selectedListStrings.contains(text)) {
+        if (!selectedListTitles.contains(text)) {
             selectedList.addItem(text, value);
-            selectedListStrings.add(text);
+            selectedListTitles.add(text);
         }
     }
 
@@ -61,14 +59,14 @@ public class CategorySelectorView extends Composite
     public void removeFromSelectedList() {
         int index = selectedList.getSelectedIndex();
         String item = selectedList.getItemText(index);
-        selectedListStrings.remove(item);
+        selectedListTitles.remove(item);
         selectedList.removeItem(index);
     }
 
     /** Returns actual free depth level. **/
     @Override
-    public int getListIndex() {
-        return ((subcategories.size() - 1) >= 0 ? (subcategories.size() - 1) : 0);
+    public int getFreeListIndex() {
+        return ((listBoxes.size() - 1) >= 0 ? (listBoxes.size() - 1) : 0);
     }
 
     @Override
@@ -81,19 +79,19 @@ public class CategorySelectorView extends Composite
         ListBox list = new ListBox();
         list.setVisibleItemCount(TEN);
         list.setWidth("200");
-        if (subcategories.isEmpty()) {
-            subcategories.add(list);
+        if (listBoxes.isEmpty()) {
+            listBoxes.add(list);
         } else {
-            subcategories.add(index, list);
+            listBoxes.add(index, list);
         }
         return list;
     }
 
     @Override
     public void clearChildrenLists(int index) {
-        for (int i = getListIndex(); i > index; i--) {
+        for (int i = getFreeListIndex(); i > index; i--) {
             categoryListHolder.clearCell(0, i);
-            subcategories.remove(i);
+            listBoxes.remove(i);
         }
     }
 
@@ -119,7 +117,7 @@ public class CategorySelectorView extends Composite
     public void showLoader(int index) {
         try {
             int columCount = categoryListHolder.getColumnCount();
-            int positionToInsert = getListIndex() + 1;
+            int positionToInsert = getFreeListIndex() + 1;
             if (columCount == positionToInsert) {
                 categoryListHolder.resizeColumns(columCount + 1);
             }
@@ -128,7 +126,7 @@ public class CategorySelectorView extends Composite
             html.setStyleName(StyleResource.INSTANCE.common().smallLoader());
         } catch (Exception ex) {
             Window.alert(ex.getMessage() + "\nColumn count: " + categoryListHolder.getColumnCount()
-                    + " posToInsert: " + getListIndex());
+                    + " posToInsert: " + getFreeListIndex());
         }
     }
 

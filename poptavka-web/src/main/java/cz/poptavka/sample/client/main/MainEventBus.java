@@ -15,9 +15,8 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.HomeModule;
+import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
-import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
-import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -76,17 +75,17 @@ public interface MainEventBus extends EventBus {
     void afterLoad();
 
     /** Demand Creation common method calls */
-    @Event(handlers = FormDemandBasicPresenter.class)
+    @Event(handlers = MainPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
 
-    @Event(handlers = FormDemandAdvPresenter.class)
+    @Event(handlers = MainPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
 
     @Event(handlers = MainHandler.class)
     void createDemand(DemandDetail detail, Long clientId);
 
     /** CategorySelection section **/
-    @Event(handlers = CategorySelectorPresenter.class)
+    @Event(handlers = MainPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget);
 
     @Event(handlers = CategorySelectorPresenter.class)
@@ -99,7 +98,7 @@ public interface MainEventBus extends EventBus {
     void getChildListCategories(int newListPosition, String categoryId);
 
     /** LocalitySelector section **/
-    @Event(handlers = LocalitySelectorPresenter.class)
+    @Event(handlers = MainPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget);
 
     @Event(handlers = LocalitySelectorPresenter.class)
@@ -110,6 +109,20 @@ public interface MainEventBus extends EventBus {
 
     @Event(handlers = MainHandler.class)
     void getChildLocalities(int localityType, String locCode);
+
+    /** Supplier registration **/
+    @Event(handlers = MainPresenter.class)
+    void initServiceForm(SimplePanel serviceHolder);
+
+    @Event(handlers = MainPresenter.class)
+    void initSupplierForm(SimplePanel supplierInfoHolder);
+
+    @Event(handlers = MainHandler.class)
+    void checkFreeEmail(String value);
+
+    @Event(handlers = SupplierInfoPresenter.class,
+            modulesToLoad = HomeModule.class)
+    void checkFreeEmailResponse(Boolean result);
 
     /** NO EDITING AFTER THIS LINE
      * Every Child Module HAVE TO implement this method calls.

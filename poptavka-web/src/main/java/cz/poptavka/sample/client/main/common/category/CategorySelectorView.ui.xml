@@ -9,7 +9,8 @@
             <g:Grid ui:field='categoryListHolder'>
                 <g:row>
                     <g:customCell>
-                        <g:ListBox visibleItemCount='10' width="200"/>
+                    <g:HTML></g:HTML>
+<!--                         <g:ListBox visibleItemCount='10' width="200"/> -->
                     </g:customCell>
                 </g:row>
             </g:Grid>

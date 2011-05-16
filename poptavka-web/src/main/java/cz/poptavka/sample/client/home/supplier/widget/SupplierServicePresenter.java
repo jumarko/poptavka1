@@ -17,7 +17,7 @@ public class SupplierServicePresenter extends
         Widget getWidgetView();
     }
 
-    public void onInitServiceForm(SimplePanel embedToWidget) {
+    public void initServiceForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
     }
 

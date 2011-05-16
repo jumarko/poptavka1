@@ -10,6 +10,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -30,6 +31,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
+    @Inject
+    private ClientRPCServiceAsync clientService = null;
 
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
@@ -142,4 +145,20 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         });
         LOGGER.info("submitting new demand");
     }
+
+    public void onCheckFreeEmail(String email) {
+        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+            }
+
+            @Override
+            public void onSuccess(Boolean result) {
+                LOGGER.fine("result of compare " + result);
+                eventBus.checkFreeEmailResponse(result);
+//                eventBus.checkFreeEmailResponse();
+            }
+        });
+    }
+
 }

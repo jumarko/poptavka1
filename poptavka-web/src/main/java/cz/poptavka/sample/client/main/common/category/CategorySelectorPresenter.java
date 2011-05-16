@@ -17,7 +17,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.MainEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
-@Presenter(view = CategorySelectorView.class)
+@Presenter(view = CategorySelectorView.class, multiple = true)
 public class CategorySelectorPresenter
     extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, MainEventBus> {
 
@@ -33,7 +33,7 @@ public class CategorySelectorPresenter
 
         void removeFromSelectedList();
 
-        int getListIndex();
+        int getFreeListIndex();
 
         ListBox createListAtIndex(int index);
 
@@ -59,8 +59,9 @@ public class CategorySelectorPresenter
         });
     }
 
-    public void onInitCategoryWidget(SimplePanel embedWidget) {
+    public void initCategoryWidget(SimplePanel embedWidget) {
         LOGGER.info("init Category Widget ... ");
+        view.getListHolder().resizeColumns(0);
         eventBus.getChildListCategories(0, "ALL_CATEGORIES");
         embedWidget.setWidget(view.getWidgetView());
     }
@@ -89,10 +90,9 @@ public class CategorySelectorPresenter
         LOGGER.info("List filled");
 
         //check if possible to display, if needed resize table
-        int positionToInsert = view.getListIndex();
+        int positionToInsert = view.getFreeListIndex();
         if (columCount == positionToInsert) {
             view.getListHolder().resizeColumns(columCount + 1);
-
         }
         view.getListHolder().setWidget(0, positionToInsert, box);
         view.getScrollPanel().scrollToRight();

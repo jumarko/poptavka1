@@ -7,6 +7,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
+
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
 
@@ -28,6 +30,8 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     }
 
+    private DemandCreationPresenter demandCreation;
+
     public void bindView() {
         view.setHomeToken(getTokenGenerator().atHome());
 
@@ -39,7 +43,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     }
 
     public void onAtHome() {
-        LOGGER.info(" on init view ...");
+        LOGGER.info("INIT Home Widget");
         onDisplayMenu();
         // TODO initial homepage widget compilation
     }

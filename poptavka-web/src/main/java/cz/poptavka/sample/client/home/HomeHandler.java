@@ -86,21 +86,6 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
         });
     }
 
-    public void onCheckFreeEmail(String email) {
-        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-
-            }
-
-            @Override
-            public void onSuccess(Boolean result) {
-                LOGGER.fine("result of compare " + result);
-                eventBus.checkFreeEmailResponse(result);
-            }
-        });
-    }
-
     /**
      * Method registers new client and afterwards creates new demand.
      *

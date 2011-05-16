@@ -40,6 +40,54 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
+
+//        ARRAYLIST<STRING> TITLES = NEW ARRAYLIST<STRING>();
+//        TITLES.ADD("DESCRIPTION");
+//        TITLES.ADD("PRICE");
+//        TITLES.ADD("DURATION");
+//
+//        FINAL RADIOTABLE RADIOTABLE = NEW RADIOTABLE(TITLES, TRUE, 1);
+//        CONTENTHOLDER.SETWIDGET(RADIOTABLE);
+//
+//        ARRAYLIST<STRING> ITEM1 = NEW ARRAYLIST<STRING>();
+//        ITEM1.ADD("17");
+//        ITEM1.ADD("");
+//        ITEM1.ADD("BLA BLA BLA SERVICE");
+//        ITEM1.ADD("1000 KC");
+//        ITEM1.ADD("3 MONTHS");
+//        ARRAYLIST<STRING> ITEM2 = NEW ARRAYLIST<STRING>();
+//        ITEM2.ADD("175");
+//        ITEM2.ADD("");
+//        ITEM2.ADD("BLA BLA BLA SERVICE +");
+//        ITEM2.ADD("3000 KC");
+//        ITEM2.ADD("6 MONTHS");
+//        ARRAYLIST<STRING> ITEM3 = NEW ARRAYLIST<STRING>();
+//        ITEM3.ADD("117");
+//        ITEM3.ADD("");
+//        ITEM3.ADD("BLA BLA BLA SERVICE ++");
+//        ITEM3.ADD("9000 KC");
+//        ITEM3.ADD("9 MONTHS");
+//        ARRAYLIST<STRING> ITEM4 = NEW ARRAYLIST<STRING>();
+//        ITEM4.ADD("117");
+//        ITEM4.ADD("");
+//        ITEM4.ADD("BLA BLA BLA SERVICE +++");
+//        ITEM4.ADD("11000 KC");
+//        ITEM4.ADD("12 MONTHS");
+//
+//        ARRAYLIST<ARRAYLIST<STRING>> DATA = NEW ARRAYLIST<ARRAYLIST<STRING>>();
+//        DATA.ADD(ITEM1);
+//        DATA.ADD(ITEM2);
+//        DATA.ADD(ITEM3);
+//        DATA.ADD(ITEM4);
+//
+//        RADIOTABLE.SETDATA(DATA);
+//        RADIOTABLE.ADDCLICKHANDLER(NEW CLICKHANDLER() {
+//
+//            @OVERRIDE
+//            PUBLIC VOID ONCLICK(CLICKEVENT ARG0) {
+//                RADIOTABLE.GETCLICKEDROW(ARG0);
+//            }
+//        });
     }
 
     @Override

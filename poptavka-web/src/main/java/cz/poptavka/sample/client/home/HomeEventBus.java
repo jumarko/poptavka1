@@ -15,8 +15,6 @@ import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
-import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
-import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.user.problems.MyProblemsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -32,23 +30,15 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
         })
 public interface HomeEventBus extends EventBus {
 
+    /** init method  **/
+    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
+    String atHome();
+
     /** init method. **/
     @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
     void displayMenu();
 
-    /** init method. **/
-    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atHome();
-
-    /** Method for setting public UI layout. */
-    @Event(forwardToParent = true)
-    void setPublicLayout();
-
-    /**
-     * Display HomeView - parent Widget for public section.
-     *
-     * @param body
-     */
+    /** Display HomeView - parent Widget for public section. **/
     @Event(forwardToParent = true)
     void setBodyHolderWidget(Widget body);
 
@@ -61,10 +51,17 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomePresenter.class)
     void setBodyWidget(Widget content);
 
-    /** Demand creation */
+    /** navigation events  */
     @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atCreateDemand();
 
+    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
+    String atDemands();
+
+    @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
+    String atRegisterSupplier();
+
+    /** main module calls - common widgets */
     @Event(forwardToParent = true)
     void initDemandBasicForm(SimplePanel holderWidget);
 
@@ -77,15 +74,35 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initDemandAdvForm(SimplePanel holderWidget);
 
+    @Event(forwardToParent = true)
+    void initServiceForm(SimplePanel serviceHolder);
+
+    @Event(forwardToParent = true)
+    void initSupplierForm(SimplePanel supplierInfoHolder);
+
+    /** main module calls - Handler calls */
+    @Event(forwardToParent = true)
+    void createDemand(DemandDetail newDemand, Long clientId);
+
+    @Event(forwardToParent = true)
+    void getRootCategories();
+
+    @Event(forwardToParent = true)
+    void checkFreeEmail(String value);
+
+    /** demand creation related events **/
     @Event(handlers = FormLoginPresenter.class)
     void initLoginForm(SimplePanel holderWidget);
 
     @Event(handlers = DemandCreationPresenter.class)
     void toggleLoginRegistration();
 
+    @Event(handlers = FormUserRegistrationPresenter.class, passive = true)
+    void checkFreeEmailResponse(Boolean result);
+//    void checkFreeEmailResponse();
+
     @Event(handlers = FormUserRegistrationPresenter.class)
     void initRegistrationForm(SimplePanel holderWidget);
-
     //logic flow order representing registering client and then creating his demand
     @Event(handlers = HomeHandler.class)
     void registerNewClient(ClientDetail newClient);
@@ -93,13 +110,9 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = DemandCreationPresenter.class)
     void prepareNewDemandForNewClient(Long clientId);
 
-    @Event(forwardToParent = true)
-    void createDemand(DemandDetail newDemand, Long clientId);
-
     //alternative way of loging - verifying
     @Event(handlers = HomeHandler.class)
     void verifyExistingClient(ClientDetail client);
-
     //error output
     @Event(handlers = DemandCreationPresenter.class)
     void loginError();
@@ -115,38 +128,24 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
-    @Event(forwardToParent = true)
-    void getRootCategories();
-
     /** TODO Martin Sl. - move to correct place */
     /** display MyProblems module */
     @Event(modulesToLoad = MyProblemsModule.class)
     void displayProblems();
 
     /** Supplier registration **/
-    @Event(handlers = SupplierServicePresenter.class)
-    void initServiceForm(SimplePanel serviceHolder);
-
-    @Event(handlers = SupplierInfoPresenter.class)
-    void initSupplierForm(SimplePanel supplierInfoHolder);
-
     @Event(handlers = HomeHandler.class)
     void registerSupplier(SupplierDetail newSupplier);
 
     /** Common method calls **/
-    @Event(handlers = HomeHandler.class)
-    void checkFreeEmail(String value);
 
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void checkFreeEmailResponse(Boolean result);
-
-    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
-    String atDemands();
-
-    @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atRegisterSupplier();
 
     /** DO NOT EDIT **/
+
+    /** Method for setting public UI layout. */
+    @Event(forwardToParent = true)
+    void setPublicLayout();
+
     /** Popup methods for shoving, changing text and hiding,
      * for letting user know, that application is still working.
      * Every Child Module HAVE TO implement this method calls.
@@ -158,4 +157,5 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void loadingHide();
     /** NO METHODS AFTER THIS **/
+
 }

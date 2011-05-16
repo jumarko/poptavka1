@@ -12,17 +12,18 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.MainEventBus;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
-@Presenter(view = LocalitySelectorView.class)
+@Presenter(view = LocalitySelectorView.class, multiple = true)
 public class LocalitySelectorPresenter
-    extends BasePresenter<LocalitySelectorPresenter.LocalitySelectorInterface, MainEventBus> {
+    extends LazyPresenter<LocalitySelectorPresenter.LocalitySelectorInterface, MainEventBus> {
 
     /** View interface methods. **/
-    public interface LocalitySelectorInterface  {
+    public interface LocalitySelectorInterface extends LazyView {
         ListBox getDistrictList();
 
         ListBox getCityList();
@@ -48,7 +49,7 @@ public class LocalitySelectorPresenter
 
     private static final Logger LOGGER = Logger.getLogger("LocalitySelectorPresenter");
 
-    public void bind() {
+    public void bindView() {
         view.getDistrictList().addChangeHandler(new ChangeHandler() {
             @Override
             public void onChange(ChangeEvent arg0) {
@@ -80,7 +81,7 @@ public class LocalitySelectorPresenter
         });
     }
 
-    public void onInitLocalityWidget(SimplePanel embedWidget) {
+    public void initLocalityWidget(SimplePanel embedWidget) {
         LOGGER.info("Initializing widget view, RPC call... ");
         eventBus.getRootLocalities();
         embedWidget.setWidget(view.getWidgetView());

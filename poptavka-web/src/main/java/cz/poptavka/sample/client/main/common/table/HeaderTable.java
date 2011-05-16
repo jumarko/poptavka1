@@ -28,6 +28,8 @@ public abstract class HeaderTable extends FlexTable {
 
     protected static final int COLUMN_ID = 0;
 
+    protected int constantsCount = 1;
+
     private ArrayList<String> columnTitles;
     private HashSet<Integer> hiddenColumns = new HashSet<Integer>();
     private boolean clickable = false;
@@ -43,10 +45,11 @@ public abstract class HeaderTable extends FlexTable {
      */
     public HeaderTable(ArrayList<String> titles, boolean clickable) {
         super();
+        style.INSTANCE.table().ensureInjected();
         this.setCellSpacing(0);
+        this.clickable = clickable;
         columnTitles = titles;
         initTableHead(titles);
-        this.clickable = clickable;
     }
 
     /**
@@ -70,8 +73,8 @@ public abstract class HeaderTable extends FlexTable {
 
         /** first column is ID column, invisible by default **/
         Element idColumn = DOM.createTH();
-        idColumn.setClassName(style.table().hiddenField());
-        idColumn.setInnerText("ABA");
+        idColumn.addClassName(style.table().hiddenField());
+        idColumn.setInnerText("ID");
         getColumnFormatter().setStylePrimaryName(COLUMN_ID, StyleResource.INSTANCE.table().hiddenField());
         DOM.appendChild(tr, idColumn);
         DOM.appendChild(thead, tr);
@@ -95,6 +98,7 @@ public abstract class HeaderTable extends FlexTable {
     private class HeaderClickListener implements EventListener {
         @Override
         public void onBrowserEvent(Event event) {
+            LOGGER.fine("ON_BROWSER_EVENT");
             event.stopPropagation();
             event.preventDefault();
             if (event.getTypeInt() == Event.ONCONTEXTMENU) {
@@ -105,7 +109,6 @@ public abstract class HeaderTable extends FlexTable {
                 menuPopup.add(initColumnController());
                 menuPopup.setPopupPosition(event.getClientX(), event.getClientY());
                 menuPopup.show();
-
             }
             if (event.getTypeInt() == Event.ONCLICK) {
                 // TODO implement sorting
@@ -119,7 +122,7 @@ public abstract class HeaderTable extends FlexTable {
         private int handlingColumn;
 
         public HeaderCommand(int handlingColumn) {
-            this.handlingColumn = handlingColumn + 1;
+            this.handlingColumn = handlingColumn + constantsCount;
         }
 
         @Override
@@ -130,7 +133,7 @@ public abstract class HeaderTable extends FlexTable {
 
     private Widget initColumnController() {
         MenuBar items = new MenuBar(true);
-        for (int i = 0; i <= columnTitles.size(); i++) {
+        for (int i = 0; i < columnTitles.size(); i++) {
             MenuItem item = new MenuItem(columnTitles.get(i), new HeaderCommand(i));
             items.addItem(item);
         }
@@ -156,6 +159,14 @@ public abstract class HeaderTable extends FlexTable {
             }
             hiddenColumns.add(index);
         }
+    }
+
+    protected void addSpecialColumn(int indexToInsert, String title) {
+        LOGGER.fine("Inserting column");
+        com.google.gwt.dom.client.Element thead = this.getElement().getElementsByTagName("thead").getItem(0);
+        Element tr = (Element) thead.getFirstChildElement();
+        Element newChild = DOM.createTH();
+        DOM.insertChild(tr, newChild, indexToInsert);
     }
 
     public abstract void getClickedRow(ClickEvent event);

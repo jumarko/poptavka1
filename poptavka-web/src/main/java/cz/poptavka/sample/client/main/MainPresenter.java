@@ -10,11 +10,18 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
+import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.client.main.common.LoadingPopup;
+import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
+import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
+import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
+import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 @Presenter(view = MainView.class)
@@ -36,6 +43,14 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     private boolean loggedIn = false;
+
+    /** list of reusable widgets **/
+    private CategorySelectorPresenter categorySelector = null;
+    private LocalitySelectorPresenter localitySelector = null;
+    private FormDemandBasicPresenter demandBasicForm = null;
+    private FormDemandAdvPresenter demandAdvForm = null;
+    private SupplierServicePresenter supplierService = null;
+    private SupplierInfoPresenter supplierInfo = null;
 
     @Override
     public void bind() {
@@ -119,6 +134,55 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         popup.setWidget(new LoadingPopup(loadingMessage));
         popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X, (Window.getClientHeight() / 2) - OFFSET_Y);
         popup.show();
+    }
+
+    /** multiple presenters handling methods **/
+    public void onInitCategoryWidget(SimplePanel holderPanel) {
+        if (categorySelector != null) {
+            eventBus.removeHandler(categorySelector);
+        }
+        categorySelector = eventBus.addHandler(CategorySelectorPresenter.class);
+        categorySelector.initCategoryWidget(holderPanel);
+    }
+
+    public void onInitLocalityWidget(SimplePanel holderPanel) {
+        if (localitySelector != null) {
+            eventBus.removeHandler(localitySelector);
+        }
+        localitySelector = eventBus.addHandler(LocalitySelectorPresenter.class);
+        localitySelector.initLocalityWidget(holderPanel);
+    }
+
+    public void onInitDemandBasicForm(SimplePanel holderWidget) {
+        if (demandBasicForm != null) {
+            eventBus.removeHandler(demandBasicForm);
+        }
+        demandBasicForm = eventBus.addHandler(FormDemandBasicPresenter.class);
+        demandBasicForm.initDemandBasicForm(holderWidget);
+    }
+
+    public void onInitDemandAdvForm(SimplePanel holderWidget) {
+        if (demandAdvForm != null) {
+            eventBus.removeHandler(demandAdvForm);
+        }
+        demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
+        demandAdvForm.initDemandAdvForm(holderWidget);
+    }
+
+    public void onInitServiceForm(SimplePanel serviceHolder) {
+        if (supplierService != null) {
+            eventBus.removeHandler(supplierService);
+        }
+        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
+        supplierService.initServiceForm(serviceHolder);
+    }
+
+    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
+        if (supplierInfo != null) {
+            eventBus.removeHandler(supplierInfo);
+        }
+        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
+        supplierInfo.onInitSupplierForm(supplierInfoHolder);
     }
 
 }

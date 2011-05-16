@@ -10,13 +10,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Singleton;
 
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
-@Singleton
 public class LocalitySelectorView extends Composite
     implements LocalitySelectorPresenter.LocalitySelectorInterface, ProvidesValidate  {
 
@@ -38,7 +36,7 @@ public class LocalitySelectorView extends Composite
 
     @UiField ListBox selectedList;
 
-    public LocalitySelectorView() {
+    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.layout().ensureInjected();
     }

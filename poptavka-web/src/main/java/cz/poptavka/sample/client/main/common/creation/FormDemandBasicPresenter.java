@@ -10,7 +10,7 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.MainEventBus;
 
-@Presenter(view = FormDemandBasicView.class)
+@Presenter(view = FormDemandBasicView.class, multiple = true)
 public class FormDemandBasicPresenter
     extends LazyPresenter<FormDemandBasicPresenter.FormDemandBasicInterface, MainEventBus> {
 
@@ -24,7 +24,7 @@ public class FormDemandBasicPresenter
     }
 
     /** Injecting widget. **/
-    public void onInitDemandBasicForm(SimplePanel embedToWidget) {
+    public void initDemandBasicForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
     }
 

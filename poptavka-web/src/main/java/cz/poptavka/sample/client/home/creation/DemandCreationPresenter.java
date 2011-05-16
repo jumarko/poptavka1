@@ -89,7 +89,7 @@ public class DemandCreationPresenter
      * @param homeSection
      */
     public void onAtCreateDemand() {
-        LOGGER.info("Initializing Demand Creation View Widget ... ");
+        LOGGER.info("  INIT DemandCreation Widget");
         eventBus.setBodyWidget(view.getWidgetView());
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
         eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
