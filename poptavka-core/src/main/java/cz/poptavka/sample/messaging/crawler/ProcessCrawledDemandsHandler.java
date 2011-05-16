@@ -1,12 +1,15 @@
 package cz.poptavka.sample.messaging.crawler;
 
 import com.google.common.base.Preconditions;
+import cz.poptavka.crawldemands.demand.Demand;
 import cz.poptavka.sample.service.demand.ProcessCrawledDemandsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
+
+import java.util.Arrays;
 
 /**
  * Message listener which process incoming crawled demands.
@@ -39,11 +42,11 @@ public class ProcessCrawledDemandsHandler implements MessageListener {
      */
     @Override
     public void onMessage(Message message) {
-//        final Demand[] newCrawledDemands = (Demand[]) this.messagingTemplate.receiveAndConvert();
-//        LOGGER.info("\n========================================================================");
-//        LOGGER.info("New crawled demand arrived: " + Arrays.toString(newCrawledDemands));
-//
-//        processCrawledDemandsService.processCrawledDemands(newCrawledDemands);
+        final Demand[] newCrawledDemands = (Demand[]) this.messagingTemplate.receiveAndConvert();
+        LOGGER.info("\n========================================================================");
+        LOGGER.info("New crawled demand arrived: " + Arrays.toString(newCrawledDemands));
+
+        processCrawledDemandsService.processCrawledDemands(newCrawledDemands);
     }
 
 }

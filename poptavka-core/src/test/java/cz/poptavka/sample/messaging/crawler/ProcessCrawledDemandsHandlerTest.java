@@ -1,6 +1,7 @@
 package cz.poptavka.sample.messaging.crawler;
 
 import cz.poptavka.sample.base.integration.BasicIntegrationTest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.amqp.core.MessageListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Juraj Martinka
  *         Date: 16.5.11
  */
+// This class is not real test, only fake - ignore it!
+@Ignore
 public class ProcessCrawledDemandsHandlerTest extends BasicIntegrationTest {
 
     @Autowired
@@ -16,7 +19,7 @@ public class ProcessCrawledDemandsHandlerTest extends BasicIntegrationTest {
 
     @Test
     public void testOnMessage() throws Exception {
-        // check if following method is called continuously until all messages are processed
+
         int timeoutMs = 20000;
         final int sleepPeriod = 1000;
         while (timeoutMs > 0) {
@@ -27,6 +30,8 @@ public class ProcessCrawledDemandsHandlerTest extends BasicIntegrationTest {
             }
             timeoutMs = timeoutMs - sleepPeriod;
         }
+
+        // check if following method is called continuously until all messages are processed
 //        processCrawledDemandsHandler.onMessage();
     }
 }

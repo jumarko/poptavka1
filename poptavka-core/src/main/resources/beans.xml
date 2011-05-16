@@ -107,10 +107,12 @@
         <constructor-arg ref="messageTemplate" />
         <constructor-arg ref="processCrawledDemandsService" />
     </bean>
-    <bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer"
-        p:connectionFactory-ref="rabbitConnFactory"
-        p:queueNames="${amqp.queue}"
-        p:messageListener-ref="processCrawledDemandsHandler" />
+    <!-- Temporary disable processing of incoming crawled demands until more suitable strategy
+        for communication with crawler is implemented. -->
+    <!--<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer"-->
+        <!--p:connectionFactory-ref="rabbitConnFactory"-->
+        <!--p:queueNames="${amqp.queue}"-->
+        <!--p:messageListener-ref="processCrawledDemandsHandler" />-->
 
     <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
 
