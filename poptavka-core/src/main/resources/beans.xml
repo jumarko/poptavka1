@@ -10,6 +10,8 @@
 
     <!-- Dependencies on beans from data-access.xml exists therefore we must import it -->
     <import resource="data-access.xml"/>
+    <!-- messaging -->
+    <import resource="messaging-config.xml" />
 
 
     <bean id="clientDao" class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
@@ -54,6 +56,8 @@
 
     <bean id="demandService" class="cz.poptavka.sample.service.demand.DemandServiceImpl">
         <constructor-arg ref="demandDao" />
+        <property name="clientService" ref="clientService" />
+        <property name="supplierService" ref="supplierService" />
     </bean>
 
 
@@ -80,6 +84,11 @@
         <constructor-arg ref="messageDao" />
     </bean>
 
+    <bean id="processCrawledDemandsService" class="cz.poptavka.sample.service.demand.ProcessCrawledDemandsServiceImpl">
+        <constructor-arg ref="demandConverter" />
+        <constructor-arg ref="demandService" />
+    </bean>
+
     <!-- Jobs -->
     <bean id="additionalInfoFiller" class="cz.poptavka.sample.service.jobs.AdditionalInfoFiller">
         <property name="demandService" ref="demandService" />
@@ -88,6 +97,20 @@
 
     <!-- Other -->
     <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>
+
+    <bean id="demandConverter" class="cz.poptavka.sample.messaging.crawler.DemandConverter">
+        <constructor-arg ref="generalService" />
+        <constructor-arg ref="demandService" />
+        <constructor-arg ref="localityService" />
+    </bean>
+    <bean id="processCrawledDemandsHandler" class="cz.poptavka.sample.messaging.crawler.ProcessCrawledDemandsHandler">
+        <constructor-arg ref="messageTemplate" />
+        <constructor-arg ref="processCrawledDemandsService" />
+    </bean>
+    <bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer"
+        p:connectionFactory-ref="rabbitConnFactory"
+        p:queueNames="${amqp.queue}"
+        p:messageListener-ref="processCrawledDemandsHandler" />
 
     <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
 

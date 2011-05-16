@@ -24,8 +24,6 @@
     <import resource="spring-ehcache.xml"/>
     <import resource="beans.xml" />
     <import resource="aspects.xml" />
-    <!-- messaging -->
-    <import resource="messaging-config.xml" />
 
     <!-- Task scheduling -->
     <task:annotation-driven />

@@ -5,6 +5,13 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import javax.persistence.Entity;
 
 /**
+ * Very simple template containing only one (potentially long) string
+ * which is reffered as a <code>prefilledInputs</code>
+ * <p>
+ * This template can be used for various purposes.
+ *
+ * @see Category
+ *
  * @author Juraj Martinka
  *         Date: 10.4.11
  */

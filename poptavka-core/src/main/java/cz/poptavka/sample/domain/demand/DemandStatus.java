@@ -1,7 +1,6 @@
 package cz.poptavka.sample.domain.demand;
 
 /**
- * TODO martinka: add all relevant demand statuses.
  *
  * @author Juraj Martinka
  *         Date: 31.1.11

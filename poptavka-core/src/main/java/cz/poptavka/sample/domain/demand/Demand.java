@@ -77,6 +77,9 @@ public class Demand extends DomainObject {
      * <p>
      * Many times is more handy to work with {@link cz.poptavka.sample.domain.demand.DemandType#getType()}
      * instead of wrapper object.
+     * <p>
+     *     If this type is not specified then it should be automatically set to the "attractive" when storing
+     *     new demand => @see {@link cz.poptavka.sample.service.demand.DemandServiceImpl#create(Demand)}
      */
     @Audited
     @ManyToOne(optional = false)
@@ -129,7 +132,7 @@ public class Demand extends DomainObject {
     private List<Offer> offers;
 
     //----------------------------------  Attributes for demands gathered from external systems ------------------------
-    //----------------------------------  such epoptavka.cz, aaapoptavka.cz, etc. --------------------------------------
+    //----------------------------------  such as epoptavka.cz, aaapoptavka.cz, etc. -----------------------------------
 
     /** Arbitrary category specification for demands gathered from external system. */
     private String foreignCategory;

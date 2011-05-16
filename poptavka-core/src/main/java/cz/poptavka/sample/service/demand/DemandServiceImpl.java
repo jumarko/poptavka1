@@ -13,8 +13,12 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandType;
+import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.ResultProvider;
+import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.SupplierService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +36,40 @@ import java.util.Set;
  */
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
+    private ClientService clientService;
+    private SupplierService supplierService;
+
 
     public DemandServiceImpl(DemandDao demandDao) {
         setDao(demandDao);
+    }
+
+
+    /**
+     * Create new demand.
+     * <p>
+     *     Some default values can be filled if they are not specified in <code>demand</code> object.
+     *     <ul>
+     *        <li>Demand#type -- set to "normal" if it is not specified (null)</li>
+     *     </ul>
+     * @param demand
+     * @return
+     */
+    @Override
+    @Transactional
+    public Demand create(Demand demand) {
+        if (demand.getType() == null) {
+            // default demand type is "normal"
+            demand.setType(getDemandType(DemandType.Type.NORMAL.getValue()));
+        }
+
+        if (isNewClient(demand)) {
+            this.clientService.create(demand.getClient());
+        }
+
+        createSuppliersIfNecessary(demand);
+
+        return super.create(demand);
     }
 
 
@@ -174,6 +209,32 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Transactional(readOnly = true)
     public long getDemandsCountWithoutChildren(Category category) {
         return this.getDao().getDemandsCountWithoutChildren(category);
+    }
+
+
+    //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
+
+    //---------------------------------------------- HELPER METHODS ----------------------------------------------------
+
+    private boolean isNewClient(Demand demand) {
+        return demand.getClient().getId() == null;
+    }
+
+    private void createSuppliersIfNecessary(Demand demand) {
+        if (CollectionUtils.isNotEmpty(demand.getSuppliers())) {
+            for (Supplier supplier : demand.getSuppliers()) {
+                if (supplier.getId() == null) {
+                    this.supplierService.create(supplier);
+                }
+            }
+        }
     }
 
 }
