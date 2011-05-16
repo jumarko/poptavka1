@@ -1,5 +1,6 @@
 package cz.poptavka.sample.server.service.client;
 
+import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -8,6 +9,7 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
@@ -28,8 +30,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
 
+    private GeneralService generalService;
     private ClientService clientService;
-
     private LocalityService localityService;
     private CategoryService categoryService;
 
@@ -43,7 +45,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.clientService = clientService;
     }
 
-
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
@@ -53,6 +54,12 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
+
+    @Autowired
+    public void setGeneralService(GeneralService generalService) {
+        this.generalService = generalService;
+    }
+
 
     /**
      * Create new Client - person or company.
@@ -112,14 +119,12 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public boolean checkFreeEmail(String email) {
-        Client example = new Client();
-        BusinessUser user = new BusinessUser();
-        user.setEmail(email);
-        example.setBusinessUser(user);
+        // try to find user with given email
+        final BusinessUser userByEmail = (BusinessUser) generalService.searchUnique(new Search(BusinessUser.class)
+                        .addFilterEqual("email", email));
 
-        // email is free if no user with such an email exists
-        List<Client> resultList = clientService.findByExample(example);
-        return resultList.isEmpty();
+        // email is free if no such user exists
+        return userByEmail == null;
     }
 
     private Locality getLocalityByExample(String searchString) {
