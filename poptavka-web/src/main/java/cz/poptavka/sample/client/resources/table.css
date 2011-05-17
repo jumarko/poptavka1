@@ -29,7 +29,23 @@
     background-color: #abcdef;
 }
 
-
 .hidden-field {
     display: none;
+}
+
+/* @eval tableMenuItem com.module */
+.column-visible {
+    padding: 3px;
+    padding-left: 20px;
+    background: url("images/checkbox2.gif")	left no-repeat;
+}
+
+td.column-visible:hover {
+    background-color: green;
+}
+
+.column-hidden {
+    padding: 3px;
+    padding-left: 20px;
+    background: url("images/checkbox1.gif")	left no-repeat;
 }

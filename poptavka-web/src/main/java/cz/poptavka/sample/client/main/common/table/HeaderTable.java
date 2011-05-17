@@ -21,13 +21,19 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 
+/**
+ * Base class structure for dynamic table widgets. Every child class in case of increasing constants count, HAVE TO
+ * increase attribute constantsCount
+ *
+ * @author Beho
+ *
+ */
 public abstract class HeaderTable extends FlexTable {
 
-    private static final Logger LOGGER = Logger.getLogger(HeaderTable.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(HeaderTable.class.getName());
 
+    /** Constants. **/
     protected static final int COLUMN_ID = 0;
-
     protected int constantsCount = 1;
 
     private ArrayList<String> columnTitles;
@@ -95,48 +101,21 @@ public abstract class HeaderTable extends FlexTable {
         }
     }
 
-    private class HeaderClickListener implements EventListener {
-        @Override
-        public void onBrowserEvent(Event event) {
-            LOGGER.fine("ON_BROWSER_EVENT");
-            event.stopPropagation();
-            event.preventDefault();
-            if (event.getTypeInt() == Event.ONCONTEXTMENU) {
-                LOGGER.fine("RIGHT-CLICKED");
-                PopupPanel menuPopup = new PopupPanel(true);
-                menuPopup.setStylePrimaryName("no_style");
-                menuPopup.getElement().getStyle().setPadding(5, Unit.PX);
-                menuPopup.add(initColumnController());
-                menuPopup.setPopupPosition(event.getClientX(), event.getClientY());
-                menuPopup.show();
-            }
-            if (event.getTypeInt() == Event.ONCLICK) {
-                // TODO implement sorting
-                // Sort popup
-            }
-        }
-
-    }
-
-    private class HeaderCommand implements Command {
-        private int handlingColumn;
-
-        public HeaderCommand(int handlingColumn) {
-            this.handlingColumn = handlingColumn + constantsCount;
-        }
-
-        @Override
-        public void execute() {
-            toggleColumnVisibility(handlingColumn);
-        }
-    }
-
+    /** Header RIGHT-CLICK popup menu. **/
     private Widget initColumnController() {
         MenuBar items = new MenuBar(true);
+        String visibleColumn = style.table().columnVisible();
+        String hiddenColumn = style.table().columnHidden();
         for (int i = 0; i < columnTitles.size(); i++) {
-            MenuItem item = new MenuItem(columnTitles.get(i), new HeaderCommand(i));
+            MenuItem item = new MenuItem(columnTitles.get(i), new HeaderRightCommand(i));
+            if (hiddenColumns.contains(new Integer(i + constantsCount))) {
+                item.setStylePrimaryName(hiddenColumn);
+            } else {
+                item.setStylePrimaryName(visibleColumn);
+            }
             items.addItem(item);
         }
+        items.getElement().setAttribute("id", "menu-bar");
         return items;
     }
 
@@ -159,6 +138,7 @@ public abstract class HeaderTable extends FlexTable {
             }
             hiddenColumns.add(index);
         }
+        DOM.getElementById("menu-bar").removeFromParent();
     }
 
     protected void addSpecialColumn(int indexToInsert, String title) {
@@ -170,5 +150,40 @@ public abstract class HeaderTable extends FlexTable {
     }
 
     public abstract void getClickedRow(ClickEvent event);
+
+    private class HeaderClickListener implements EventListener {
+        @Override
+        public void onBrowserEvent(Event event) {
+            LOGGER.fine("ON_BROWSER_EVENT");
+            event.stopPropagation();
+            event.preventDefault();
+            if (event.getTypeInt() == Event.ONCONTEXTMENU) {
+                LOGGER.fine("RIGHT-CLICKED");
+                PopupPanel menuPopup = new PopupPanel(true);
+                menuPopup.setStylePrimaryName("no_style");
+                menuPopup.getElement().getStyle().setPadding(5, Unit.PX);
+                menuPopup.add(initColumnController());
+                menuPopup.setPopupPosition(event.getClientX(), event.getClientY());
+                menuPopup.show();
+            }
+            if (event.getTypeInt() == Event.ONCLICK) {
+                // TODO implement sorting
+                // Sort popup
+            }
+        }
+    }
+
+    private class HeaderRightCommand implements Command {
+        private int handlingColumn;
+
+        public HeaderRightCommand(int handlingColumn) {
+            this.handlingColumn = handlingColumn + constantsCount;
+        }
+
+        @Override
+        public void execute() {
+            toggleColumnVisibility(handlingColumn);
+        }
+    }
 
 }

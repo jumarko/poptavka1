@@ -221,7 +221,7 @@
                                 <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
                             </i18nConstantsBundles>
 
-                            <extraJvmArgs>-noverify -javaagent:${JREBEL_HOME}/jrebel.jar -Xmx768m -Xms512m -XX:MaxPermSize=512m</extraJvmArgs>
+                            <extraJvmArgs>-noverify -javaagent:${JREBEL_HOME}/jrebel.jar -Xmx2048m -Xms512m -XX:MaxPermSize=1024m -XX:+HeapDumpOnOutOfMemoryError</extraJvmArgs>
                             <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
                         </configuration>
                     </plugin>
