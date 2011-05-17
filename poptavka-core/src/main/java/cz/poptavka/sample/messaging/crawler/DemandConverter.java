@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.crawldemands.demand.Demand;
 import cz.poptavka.sample.domain.address.Address;
+import cz.poptavka.sample.domain.address.AddressType;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
@@ -61,6 +63,21 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
 
         final cz.poptavka.sample.domain.demand.Demand domainDemand = new cz.poptavka.sample.domain.demand.Demand();
 
+        domainDemand.setStatus(DemandStatus.TEMPORARY);
+        domainDemand.setTitle(sourceDemand.getName());
+        domainDemand.setDescription(sourceDemand.getDescription());
+        domainDemand.setForeignLink(sourceDemand.getLink());
+        setDemandType(sourceDemand, domainDemand);
+        // TODO: Crawler must set origin by itself
+//        domainDemand.setOrigin(this.demandService.getDemandOrigin("epoptavka.cz"));
+        domainDemand.setForeignCategory(sourceDemand.getCategory());
+        setLocalities(sourceDemand, domainDemand);
+
+        // TODO: test edge cases - such as January or December
+        // TODO: make contract with crawler about stable date format
+        // set demand validTo
+        setValidTo(sourceDemand, domainDemand);
+
         // assign client and supplier to the new demand
         setClientAndSupplier(domainDemand, sourceDemand);
 
@@ -71,49 +88,38 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
         // set client's overal rating
         domainDemand.getClient().setOveralRating(0);
 
-        setDemandType(sourceDemand, domainDemand);
-
-        domainDemand.setForeignCategory(sourceDemand.getCategory());
-
         Preconditions.checkState(domainDemand.getClient().getBusinessUser() != null,
                 "BusinessUser must be already set for new Demand when demand's address is being set.");
 
         setClientAddress(sourceDemand, domainDemand);
 
-        // TODO:  clientDescription is not used at this moment
-        // sourceDemand.getClientDescription()
 
         // set business user's data information
         setBusinessUserData(sourceDemand, domainDemand);
 
-        // TODO:  www is not used at this moment
-//        sourceDemand.getWww()
-
-        domainDemand.setForeignLink(sourceDemand.getLink());
-
-        domainDemand.setTitle(sourceDemand.getName());
-
-        setLocalities(sourceDemand, domainDemand);
-
-
-        // set demand description
-        domainDemand.setDescription(sourceDemand.getDescription());
-
-        // originalHtml is not interesting for us -> WON'T BE SAVED
-
-        // demand dateOfCreation is not stored at this time
-
-        // linkToCommercialRegister is not stored at this time - It is not set by crawler (at least now), either.
-
-        // demand endDate is not stored -> it should be ended by supplier
-
-
-        // TODO: test edge cases - such as January or December
-        // TODO: make contract with crawler about stable date format
-        // set demand validTo
-        setValidTo(sourceDemand, domainDemand);
 
         return domainDemand;
+
+        //----------------------------------  Attributes that are not filled (converted) -------------------------------
+
+        // TODO:  www is not used at this moment
+        //  sourceDemand.getWww()
+
+
+        // clientDescription is not used at this moment
+        // sourceDemand.getClientDescription()
+
+        // originalHtml is not interesting for us -> WON'T BE SAVED
+//        sourceDemand.getOriginalHtml()
+
+        // demand dateOfCreation is not stored at this time
+//        sourceDemand.getDateOfCreation()
+
+        // linkToCommercialRegister is not stored at this time - It is not set by crawler (at least now), either.
+//        sourceDemand.getLinkToCommercialRegister()
+
+        // demand endDate is not stored -> it should be ended by supplier
+//        sourceDemand.getEndDate()
     }
 
 
@@ -184,6 +190,7 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
             // TODO: at this moment, all address info from crawler is stored in Address#street field
             // --> extract address information into the more meaningful fields.
             newClientAddress.setStreet(sourceDemand.getStreet() + STREET_CITY_SEPARATOR + sourceDemand.getCity());
+            newClientAddress.setAddressType(AddressType.FOREIGN);
             domainDemand.getClient().getBusinessUser().setAddresses(Arrays.asList(newClientAddress));
         }
     }
