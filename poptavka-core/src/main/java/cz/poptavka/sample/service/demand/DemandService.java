@@ -10,6 +10,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.service.GenericService;
 
@@ -41,6 +42,26 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @throws IllegalArgumentException if given code is empty
      */
     DemandType getDemandType(String code);
+
+
+    /**
+     * Load all demand origins available for demands.
+     *
+     * @retun all possible demand's origins
+     * @see cz.poptavka.sample.domain.demand.DemandOrigin
+     */
+    List<DemandOrigin> getDemandOrigins();
+
+    /**
+     * Load specific demand origin that is uniquely identified by its code.
+     *
+     * @param code unique code of Demand origin
+     * @return demand origin with given code or null if no such demand origin exists
+     * @throws IllegalArgumentException if given code is empty
+     *
+     * @see DemandOrigin
+     */
+    DemandOrigin getDemandOrigin(String code);
 
     /**
      * Load all demands associated to the given locality (-ies).
@@ -99,7 +120,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     long getDemandsCountQuick(Locality locality);
 
-     /** @see DemandDao#getDemandsCountWithoutChildren(cz.poptavka.sample.domain.address.Locality)  */
+    /** @see DemandDao#getDemandsCountWithoutChildren(cz.poptavka.sample.domain.address.Locality)  */
     long getDemandsCountWithoutChildren(Locality locality);
 
 
@@ -143,7 +164,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     long getDemandsCount(Category... categories);
 
-     /**
+    /**
      * Similar to the {@link #getDemandsCount(cz.poptavka.sample.domain.demand.Category...)}
      * but with better performance.
      * This includes restriction to the one category.

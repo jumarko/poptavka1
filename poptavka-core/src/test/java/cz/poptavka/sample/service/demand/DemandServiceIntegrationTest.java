@@ -6,6 +6,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.settings.Settings;
@@ -86,6 +87,35 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     public void testGetDemandTypeForBlankCode() {
         String demandTypeCode = null;
         DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+    }
+
+
+    @Test
+    public void testGetDemandOrigins() {
+        final List<DemandOrigin> demandOrigins = this.demandService.getDemandOrigins();
+        Assert.assertEquals(3, demandOrigins.size());
+        checkDemandOriginExists("epoptavka.cz", demandOrigins);
+        checkDemandOriginExists("poptavam.com", demandOrigins);
+        checkDemandOriginExists("isvzus.cz", demandOrigins);
+    }
+
+    @Test
+    public void testGetDemandOrigin() {
+        checkGetDemandOriginByCode("epoptavka.cz");
+        checkGetDemandOriginByCode("poptavam.com");
+        checkGetDemandOriginByCode("isvzus.cz");
+
+        // check once again - this time the cached value should be returned
+        checkGetDemandOriginByCode("epoptavka.cz");
+    }
+
+
+    @Test
+    public void testGetDemandOriginForWrongCode() {
+        final String nonexistingDemandOriginCode = "normal";
+        final DemandOrigin nonexistingDemandOrigin = this.demandService.getDemandOrigin(nonexistingDemandOriginCode);
+        Assert.assertNull("DemandOrigin with code [" + nonexistingDemandOriginCode + "] should not exist.",
+                nonexistingDemandOrigin);
     }
 
 
@@ -377,6 +407,15 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         }));
     }
 
+    private void checkDemandOriginExists(final String demandOriginCode, final List<DemandOrigin> demandOrigins) {
+        Assert.assertTrue(CollectionUtils.exists(demandOrigins, new Predicate() {
+            @Override
+            public boolean evaluate(Object object) {
+                return demandOriginCode.equals(((DemandOrigin) object).getCode());
+            }
+        }));
+    }
+
     private void checkDemandExists(Collection<Demand> loc2Demands, final long demandId) {
         Assert.assertTrue(CollectionUtils.exists(loc2Demands, new Predicate() {
             @Override
@@ -390,6 +429,11 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     private void checkGetDemandTypeByCode(String demandTypeCode) {
         final DemandType demandType = this.demandService.getDemandType(demandTypeCode);
         Assert.assertEquals(demandTypeCode, demandType.getCode());
+    }
+
+    private void checkGetDemandOriginByCode(String demandOriginCode) {
+        final DemandOrigin demandOrigin = this.demandService.getDemandOrigin(demandOriginCode);
+        Assert.assertEquals(demandOriginCode, demandOrigin.getCode());
     }
 
     private void checkDemandsByLocality(int expectedDemandsNumber, String... localityCodes) {

@@ -12,10 +12,12 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.ResultProvider;
+import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import org.apache.commons.collections.CollectionUtils;
@@ -38,6 +40,8 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     private ClientService clientService;
     private SupplierService supplierService;
+
+    private RegisterService registerService;
 
 
     public DemandServiceImpl(DemandDao demandDao) {
@@ -73,21 +77,34 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
 
+    //----------------------------------  Methods for DemandType-s -----------------------------------------------------
     @Override
-    @Cacheable(cacheName = "cache5h")
-    @Transactional(readOnly = true)
     public List<DemandType> getDemandTypes() {
-        return getDao().getDemandTypes();
+        return this.registerService.getAllValues(DemandType.class);
     }
 
     @Override
-    @Cacheable(cacheName = "cache5h")
-    @Transactional(readOnly = true)
     public DemandType getDemandType(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
-        return getDao().getDemandType(code);
+        return this.registerService.getValue(code, DemandType.class);
     }
 
+
+    //----------------------------------  Methods for DemandOrigin-s ---------------------------------------------------
+    @Override
+    public List<DemandOrigin> getDemandOrigins() {
+        return this.registerService.getAllValues(DemandOrigin.class);
+    }
+
+    @Override
+    public DemandOrigin getDemandOrigin(String code) {
+        Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand origin is empty!");
+        return this.registerService.getValue(code, DemandOrigin.class);
+    }
+
+
+
+    //----------------------------------  Methods for Demands ----------------------------------------------------------
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
@@ -219,6 +236,10 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
+    }
+
+    public void setRegisterService(RegisterService registerService) {
+        this.registerService = registerService;
     }
 
     //---------------------------------------------- HELPER METHODS ----------------------------------------------------

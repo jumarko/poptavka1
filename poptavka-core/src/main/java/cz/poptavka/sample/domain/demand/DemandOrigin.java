@@ -1,6 +1,6 @@
 package cz.poptavka.sample.domain.demand;
 
-import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.register.Register;
 
 import javax.persistence.Entity;
 
@@ -14,7 +14,7 @@ import javax.persistence.Entity;
  *         Date: 22.4.11
  */
 @Entity
-public class DemandOrigin extends DomainObject {
+public class DemandOrigin extends Register {
 
     /** link to the source of demand. */
     private String url;
@@ -55,7 +55,8 @@ public class DemandOrigin extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("DemandOrigin");
-        sb.append("{url='").append(url).append('\'');
+        sb.append("{code='").append(getCode()).append('\'');
+        sb.append(", url='").append(url).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append('}');

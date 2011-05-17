@@ -41,6 +41,11 @@
     <bean id="generalService" class="cz.poptavka.sample.service.GeneralServiceImpl">
         <constructor-arg ref="generalDao" />
     </bean>
+
+    <bean id="registerService" class="cz.poptavka.sample.service.register.RegisterServiceImpl">
+        <constructor-arg ref="generalService" />
+    </bean>
+
     <bean id="treeItemService" class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
         <constructor-arg ref="treeItemDao" />
     </bean>
@@ -58,6 +63,7 @@
         <constructor-arg ref="demandDao" />
         <property name="clientService" ref="clientService" />
         <property name="supplierService" ref="supplierService" />
+        <property name="registerService" ref="registerService" />
     </bean>
 
 

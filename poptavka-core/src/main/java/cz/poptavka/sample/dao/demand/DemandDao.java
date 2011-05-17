@@ -10,7 +10,6 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.domain.demand.DemandType;
 
 import java.util.List;
 import java.util.Map;
@@ -21,23 +20,6 @@ import java.util.Set;
  * @author Excalibur
  */
 public interface DemandDao extends GenericDao<Demand> {
-
-
-
-    /**
-     * Load all types available for demands.
-     *
-     * @retun all demand's types
-     */
-    List<DemandType> getDemandTypes();
-
-    /**
-     * Load specific demand type that is uniquely identified by its code.
-     *
-     * @param code unique code of Demand type
-     * @return demand type with given code or null if no such demand type exists
-     */
-    DemandType getDemandType(String code);
 
 
     /**

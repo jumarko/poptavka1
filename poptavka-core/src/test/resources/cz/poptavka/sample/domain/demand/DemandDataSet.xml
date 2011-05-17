@@ -6,6 +6,11 @@
     <DEMANDTYPE ID="2" CODE="attractive" />
     <DEMANDTYPE ID="3" CODE="all" />
 
+    <DEMANDORIGIN ID="1" CODE="epoptavka.cz" DESCRIPTION="poptavky povodom z epoptavka.cz" NAME="epoptavka.cz" URL="http://epoptavka.cz"/>
+    <DEMANDORIGIN ID="2" CODE="poptavam.com" DESCRIPTION="Poptavky povodom z poptavam.com" NAME="poptavam.com" URL="http://poptavam.com"/>
+    <DEMANDORIGIN ID="3" CODE="isvzus.cz" DESCRIPTION="Poptavky z verejneho  informacneho portalu" NAME="isvzus.cz" URL="http://www.isvzus.cz"/>
+
+
     <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."        PRICE="10000" STATUS="NEW" />
     <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."    PRICE="10000" STATUS="NEW" />
     <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3" DESCRIPTION="3: All request for java application."           PRICE="1200" />

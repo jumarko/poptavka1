@@ -1,12 +1,9 @@
 package cz.poptavka.sample.domain.demand;
 
-import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.register.Register;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 
 /**
  * Type of demand. It is closely connected to the business relation to the {@link cz.poptavka.sample.domain.user.User}
@@ -17,14 +14,7 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @Audited
-@NamedQueries({ @NamedQuery(name = DemandType.GET_ALL_DEMAND_TYPES_QUERY, query = "from DemandType"),
-@NamedQuery(name = DemandType.GET_DEMAND_TYPE_QUERY, query = "from DemandType dt where dt.code = :code") })
-public class DemandType extends DomainObject {
-
-    public static final String GET_ALL_DEMAND_TYPES_QUERY = "getAllDemandTypes";
-    public static final String GET_DEMAND_TYPE_QUERY = "getDemandType";
-
-
+public class DemandType extends Register {
 
     /**
      * Enum for handy work with demand type.
@@ -63,9 +53,6 @@ public class DemandType extends DomainObject {
     }
 
 
-    @Column(length = 32, nullable = false)
-    private String code;
-
     private String description;
 
 
@@ -73,18 +60,10 @@ public class DemandType extends DomainObject {
     }
 
     public DemandType(String code, String description) {
-        this.code = code;
+        super(code);
         this.description = description;
     }
 
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getDescription() {
         return description;
@@ -104,7 +83,7 @@ public class DemandType extends DomainObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("DemandType");
-        sb.append("{code='").append(code).append('\'');
+        sb.append("{code='").append(getCode()).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append('}');
         return sb.toString();

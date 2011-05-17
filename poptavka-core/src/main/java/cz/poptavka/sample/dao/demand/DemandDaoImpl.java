@@ -11,7 +11,6 @@ import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
 
 import javax.persistence.Query;
@@ -30,20 +29,6 @@ import java.util.Set;
 public class DemandDaoImpl extends GenericHibernateDao<Demand> implements DemandDao {
 
     private TreeItemDao treeItemDao;
-
-
-    @Override
-    public List<DemandType> getDemandTypes() {
-        return runNamedQuery(DemandType.GET_ALL_DEMAND_TYPES_QUERY, null);
-    }
-
-
-    @Override
-    public DemandType getDemandType(String code) {
-        final HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("code", code);
-        return (DemandType) runNamedQueryForSingleResult(DemandType.GET_DEMAND_TYPE_QUERY, params);
-    }
 
 
     /** {@inheritDoc} */
