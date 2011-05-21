@@ -2,11 +2,11 @@ package cz.poptavka.sample.client.user.demands.tab;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
@@ -15,6 +15,14 @@ public class MyDemandsPresenter extends LazyPresenter<MyDemandsPresenter.MyDeman
 
     public interface MyDemandsInterface extends LazyView {
         Widget getWidgetView();
+
+        Button getAnswerBtn();
+
+        Button getEditBtn();
+
+        Button getCloseBtn();
+
+        Button getCancelBtn();
     }
 
     public void onInvokeMyDemands() {
