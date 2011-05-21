@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.module.ChildModule;
@@ -24,6 +25,7 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
+@Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
         @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true),
         @ChildModule(moduleClass = MyProblemsModule.class, autoDisplay = false, async = true)

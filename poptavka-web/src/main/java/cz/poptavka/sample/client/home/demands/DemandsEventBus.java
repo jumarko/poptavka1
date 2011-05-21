@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
@@ -22,6 +23,7 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
  *
  */
 @Events(startView = DemandsView.class, module = DemandsModule.class)
+@Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface DemandsEventBus extends EventBus {
 
     /**

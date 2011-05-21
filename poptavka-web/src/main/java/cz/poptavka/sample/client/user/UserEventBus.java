@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
@@ -19,6 +20,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 
 
 @Events(startView = UserView.class, module = UserModule.class)
+@Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
