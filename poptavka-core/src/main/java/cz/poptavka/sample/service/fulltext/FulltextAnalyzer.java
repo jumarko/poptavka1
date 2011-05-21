@@ -23,9 +23,13 @@ import java.util.Set;
 
 /**
  * Wrapper for {@link CzechAnalyzer} that add {@link ASCIIFoldingFilter}
- * and to set the used Lucene Version to 3.1.
- * This class will  replaced by CzechAnalyzer itself after upgrade of Hibernate Search to use Lucene version
- * 3.1 or greater.
+ * and set the used Lucene Version to 3.1.
+ * <p>
+ * This class will  replaced by CzechAnalyzer itself after upgrade of Hibernate Search to use Lucene versio
+ * 3.1 or greater - filter {@link ASCIIFoldingFilter} can be specified by {@link org.hibernate.annotations.FilterDef}
+ * annotation and enabled in {@link HibernateFulltextSearchService#search(Class, String[], String)} method.
+ * For more details see Hibernate Search documentaiton - chapter 5.3 Filters>
+ * <a href="http://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#query-filter">Filters</a>.
  *
  * <p>
  *     Implemenation of this class is almost completely copied from {@link org.apache.lucene.analysis.cz.CzechAnalyzer}

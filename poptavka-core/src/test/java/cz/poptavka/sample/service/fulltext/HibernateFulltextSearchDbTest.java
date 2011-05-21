@@ -28,13 +28,13 @@ public class HibernateFulltextSearchDbTest extends RealDbTest {
     private static volatile boolean fulltextIndexInitialized = false;
 
     /**
-     * Create initial fulltext index - only once per test class due the performance reasons.
+     * Creates initial fulltext index - only once per test class due the performance reasons.
      */
     @Before
     public synchronized void createInitialFulltextIndex() {
-        // TODO: check, if this can be potentially slow
         if (!fulltextIndexInitialized) {
             fulltextSearchService.createInitialFulltextIndex();
+            fulltextIndexInitialized = true;
         }
     }
 

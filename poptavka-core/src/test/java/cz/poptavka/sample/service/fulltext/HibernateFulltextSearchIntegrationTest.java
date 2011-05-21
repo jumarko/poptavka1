@@ -30,10 +30,18 @@ public class HibernateFulltextSearchIntegrationTest extends DBUnitBaseTest {
     @Autowired
     private FulltextSearchService fulltextSearchService;
 
+    private static volatile boolean fulltextIndexInitialized = false;
 
+
+    /**
+     * Creates initial fulltext index - only once per test class due the performance reasons.
+     */
     @Before
     public void createFulltextIndex() {
-        this.fulltextSearchService.createInitialFulltextIndex();
+        if (!fulltextIndexInitialized) {
+            fulltextSearchService.createInitialFulltextIndex();
+            fulltextIndexInitialized = true;
+        }
     }
 
 
