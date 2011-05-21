@@ -42,6 +42,8 @@
         <constructor-arg ref="generalDao" />
     </bean>
 
+    <bean id="fulltextSearchService" class="cz.poptavka.sample.service.fulltext.HibernateFulltextSearchService" />
+
     <bean id="registerService" class="cz.poptavka.sample.service.register.RegisterServiceImpl">
         <constructor-arg ref="generalService" />
     </bean>

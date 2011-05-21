@@ -14,6 +14,10 @@ import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,14 +38,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * The core domain class which represents demand entered by client.
  *
- * @author Excalibur
+ * @author Juraj Martinka
  */
 @Entity
 @Audited
+@Indexed
 public class Demand extends DomainObject {
 
+    /** Fields that are available for full-text search. */
+    public static final String[] DEMAND_FULLTEXT_FIELDS = new String[] {"title" , "description"};
+
     @Column(length = 100, nullable = false)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String title;
 
     /**
@@ -53,6 +63,7 @@ public class Demand extends DomainObject {
      */
     @Lob
     @Column(name = "description")
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String description;
 
     private BigDecimal price;

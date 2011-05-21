@@ -1,11 +1,28 @@
 package cz.poptavka.sample.domain.common;
 
+import cz.poptavka.sample.service.fulltext.FulltextAnalyzer;
+import org.hibernate.search.annotations.Analyzer;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
+/**
+ * Base class for al domain objects.
+ * Main responsibilities:
+ * <ol>
+ *     <li>Handles ID field mapping at one place.</li>
+ *     <li>Defines "caseAccentInsensitiveAnalyzer" which enables case and accent insensitive fulltext search
+ *         to be available on all domain objects. Particular object must use this Analyzer through annotation
+ *        {@link org.hibernate.search.annotations.Analyzer}.
+ *        See also {@link cz.poptavka.sample.service.fulltext.HibernateFulltextSearchService}
+ *     </li>
+ * </ol>
+ *
+ */
+@Analyzer(impl = FulltextAnalyzer.class)
 @MappedSuperclass
 public abstract class DomainObject implements Serializable {
 

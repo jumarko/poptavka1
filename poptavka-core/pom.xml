@@ -87,6 +87,20 @@
             <groupId>com.googlecode.genericdao</groupId>
             <artifactId>search-jpa-hibernate</artifactId>
         </dependency>
+        <!--Hibernate Search-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-analyzers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>net.sf.gilead</groupId>
@@ -215,6 +229,11 @@
             <artifactId>spock-core</artifactId>
             <version>0.5-groovy-1.7</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-analyzers</artifactId>
+            <version>3.4.0.CR1</version>
         </dependency>
     </dependencies>
 

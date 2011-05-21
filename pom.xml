@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -29,6 +30,8 @@
         <hibernate.version>3.5.5-Final</hibernate.version>
         <hibernate-jpamodelgen.version>1.0.0.Final</hibernate-jpamodelgen.version>
         <genericdao.version>1.0.0</genericdao.version>
+        <hibernate-search.version>3.4.0.Final</hibernate-search.version>
+        <lucene.version>3.1.0</lucene.version>
         <ehcache.version>1.2.3</ehcache.version>
         <ehcache-spring-annotations.version>1.1.2</ehcache-spring-annotations.version>
         <mockito.version>1.8.5</mockito.version>
@@ -93,6 +96,21 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+          <id>jboss-public-repository-group</id>
+          <name>JBoss Public Maven Repository Group</name>
+          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </snapshots>
         </pluginRepository>
 
     </pluginRepositories>
@@ -302,6 +320,29 @@
                 <groupId>com.googlecode.genericdao</groupId>
                 <artifactId>search-jpa-hibernate</artifactId>
                 <version>${genericdao.version}</version>
+            </dependency>
+            <!--Hibernate Search-->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-search</artifactId>
+                <version>${hibernate-search.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-search-analyzers</artifactId>
+                <version>${hibernate-search.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.lucene</groupId>
+                        <artifactId>lucene-analyzers</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- Most recent lucene analyzers-->
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analyzers</artifactId>
+                <version>${lucene.version}</version>
             </dependency>
 
             <!--logging -->
