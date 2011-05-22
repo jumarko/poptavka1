@@ -12,7 +12,7 @@
 		type='cz.poptavka.sample.client.resources.StyleResource' />
 
 	<g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-		<g:west size="450">
+		<g:west size="650">
 			<g:FlowPanel>
 				<g:HorizontalPanel>
 					<g:HTML>

@@ -32,20 +32,19 @@ public class MyDemandsPresenter extends
         CellTable<DemandDetail> getCellTable();
 
         void setMyDemandDetail(String name);
-    }
 
-    final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
+        SingleSelectionModel<DemandDetail> getSelectionModel();
+    }
 
     public void onInvokeMyDemands() {
         eventBus.displayContent(view.getWidgetView());
     }
 
     public void bindView() {
-        view.getCellTable().setSelectionModel(selectionModel);
         view.getCellTable().getSelectionModel()
                 .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
                     public void onSelectionChange(SelectionChangeEvent event) {
-                        DemandDetail selected = selectionModel
+                        DemandDetail selected = view.getSelectionModel()
                                 .getSelectedObject();
                         if (selected != null) {
                             eventBus.getDemandDetail(selected.getTitle());
