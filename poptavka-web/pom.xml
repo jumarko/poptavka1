@@ -274,7 +274,7 @@
                         <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
                     </i18nConstantsBundles>
                     <!--                    <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern>-->
-                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                    <extraJvmArgs>-Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m</extraJvmArgs>
                     <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
                 </configuration>
             </plugin>
