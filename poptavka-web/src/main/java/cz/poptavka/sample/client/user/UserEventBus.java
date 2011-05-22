@@ -114,5 +114,6 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = OffersPresenter.class)
     void setDetailSection(Widget widget);
 
-
+    @Event(handlers = MyDemandsPresenter.class)
+    void getDemandDetail(String name);
 }

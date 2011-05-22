@@ -35,9 +35,7 @@
 			</g:FlowPanel>
 		</g:west>
 		<g:center>
-			<g:HTML>
-				<h1>Click on Demand</h1>
-			</g:HTML>
+			<g:SimplePanel ui:field="myDemandDetail"></g:SimplePanel>
 		</g:center>
 	</g:SplitLayoutPanel>
 </ui:UiBinder>
