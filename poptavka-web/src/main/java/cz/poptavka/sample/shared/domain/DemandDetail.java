@@ -32,7 +32,8 @@ public class DemandDetail implements Serializable {
     public void setBasicInfo(HashMap<String, Object> map) {
         this.title = (String) map.get("title");
         this.description = (String) map.get("description");
-        this.price = (BigDecimal) map.get("price");
+        // TODO praso - refactor this code bellow
+        this.price = BigDecimal.valueOf(((Long) map.get("price")).longValue());
         this.endDate = (Date) map.get("endDate");
         this.expireDate = (Date) map.get("expireDate");
     }
