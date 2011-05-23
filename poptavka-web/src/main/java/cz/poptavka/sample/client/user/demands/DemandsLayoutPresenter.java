@@ -47,12 +47,15 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
         void setOffersToken(String link);
 
         void setNewDemandToken(String link);
+
+        void setMyDemandsOperatorToken(String linkString);
     }
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+        view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
     }
 
     public void onAtAccount(UserDetail user) {

@@ -22,7 +22,7 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
 
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField SimplePanel contentPanel;
-    @UiField Hyperlink myDemandsLink, offersLink, newDemandLink;
+    @UiField Hyperlink myDemandsLink, offersLink, newDemandLink, myDemandsOperatorLink;
 
     public DemandsLayoutView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -65,6 +65,10 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
 
     public void setNewDemandToken(String linkString) {
         newDemandLink.setTargetHistoryToken(linkString);
+    }
+
+    public void setMyDemandsOperatorToken(String linkString) {
+        myDemandsOperatorLink.setTargetHistoryToken(linkString);
     }
 
 }

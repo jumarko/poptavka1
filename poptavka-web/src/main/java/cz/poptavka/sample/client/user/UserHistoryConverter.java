@@ -22,6 +22,9 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
         if (historyName.equals("invokeNewDemand")) {
 //            eventBus.invokeNewDemand();
         }
+        if (historyName.equals("invokeMyDemandsOperator")) {
+//          eventBus.invokeNewDemand();
+        }
     }
 
     @Override

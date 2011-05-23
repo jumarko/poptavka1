@@ -23,6 +23,11 @@
                             <ui:msg key="createDemandLink">New Demand</ui:msg>
                         </g:Hyperlink>
                     </li>
+                    <li>
+                        <g:Hyperlink ui:field="myDemandsOperatorLink">
+                            <ui:msg key="myDemandsOperatorLink">My Demands - operator</ui:msg>
+                        </g:Hyperlink>
+                    </li>
                 </ul>
             </g:HTMLPanel>
         </g:west>

@@ -11,6 +11,7 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.common.messages.MessagesPresenter;
 import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
+import cz.poptavka.sample.client.user.demands.tab.MyDemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
@@ -70,21 +71,27 @@ public interface UserEventBus extends EventBus {
     /** DEMAND tab methods **/
     @Event(handlers = MyDemandsPresenter.class,
             activate = MyDemandsPresenter.class,
-            deactivate = {OffersPresenter.class, NewDemandPresenter.class },
+            deactivate = {OffersPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
             historyConverter = UserHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = OffersPresenter.class,
             activate = OffersPresenter.class,
-            deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class },
+            deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
             historyConverter = UserHistoryConverter.class)
     String invokeOffers();
 
     @Event(handlers = NewDemandPresenter.class,
             activate = NewDemandPresenter.class,
-            deactivate = {OffersPresenter.class, MyDemandsPresenter.class },
+            deactivate = {OffersPresenter.class, MyDemandsPresenter.class, MyDemandsOperatorPresenter.class },
             historyConverter = UserHistoryConverter.class)
     String invokeNewDemand();
+
+    @Event(handlers = MyDemandsOperatorPresenter.class,
+            activate = MyDemandsOperatorPresenter.class,
+            deactivate = {OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class },
+            historyConverter = UserHistoryConverter.class)
+    String invokeMyDemandsOperator();
 
     //for operator only
     @Event
