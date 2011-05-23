@@ -1,8 +1,11 @@
 package cz.poptavka.sample.domain.settings;
 
 import cz.poptavka.sample.domain.common.DomainObject;
-
+import cz.poptavka.sample.util.orm.Constants;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * @author Juraj Martinka
@@ -14,6 +17,10 @@ public class Notification extends DomainObject {
     private String name;
 
     private String description;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    private NotificationType notificationType;
 
     public String getName() {
         return name;
@@ -31,12 +38,21 @@ public class Notification extends DomainObject {
         this.description = description;
     }
 
+    public NotificationType getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(NotificationType notificationType) {
+        this.notificationType = notificationType;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Notification");
         sb.append("{name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
+        sb.append(", notificationType='").append(notificationType).append('\'');
         sb.append('}');
         return sb.toString();
     }
