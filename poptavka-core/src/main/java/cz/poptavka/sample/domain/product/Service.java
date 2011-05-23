@@ -1,10 +1,13 @@
 package cz.poptavka.sample.domain.product;
 
 import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.util.orm.Constants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * Represents a "product" that is offer to the some kind of {@link cz.poptavka.sample.domain.user.BusinessUser}.
@@ -13,7 +16,7 @@ import java.math.BigDecimal;
  * <p>
  * Some examples of services are:
  * <ul>
-*      <li>Classic client</li>
+ *      <li>Classic client</li>
  *     <li>Attractive client</li>
  *     <li>VIP Client</li>
  * </ul>
@@ -33,6 +36,20 @@ public class Service extends DomainObject {
 
     private boolean valid;
 
+    /**
+     * Number of months during which the particular service is active. After
+     * expiration the system will notify user to re-new the service which means
+     * that new UserService object will be created.
+     */
+    private Integer prepaidMonths;
+
+    /**
+     * Service type that indicates which role has ordered this system. It can be
+     * Client, Supplier or Partner
+     */
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    private ServiceType serviceType;
 
     public String getTitle() {
         return title;
@@ -66,6 +83,21 @@ public class Service extends DomainObject {
         this.valid = valid;
     }
 
+    public Integer getPrepaidMonths() {
+        return prepaidMonths;
+    }
+
+    public void setPrepaidMonths(Integer prepaidMonths) {
+        this.prepaidMonths = prepaidMonths;
+    }
+
+    public ServiceType getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
+    }
 
     @Override
     public String toString() {
@@ -75,6 +107,8 @@ public class Service extends DomainObject {
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
         sb.append(", valid=").append(valid);
+        sb.append(", prepaidMonths=").append(prepaidMonths);
+        sb.append(", serviceType=").append(serviceType);
         sb.append('}');
         return sb.toString();
     }
