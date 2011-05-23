@@ -4,7 +4,10 @@ import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.product.Service;
+import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
@@ -27,9 +30,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -5905531608577218017L;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
-
     private GeneralService generalService;
     private ClientService clientService;
     private LocalityService localityService;
@@ -60,7 +61,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.generalService = generalService;
     }
 
-
     /**
      * Create new Client - person or company.
      *
@@ -69,14 +69,15 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public long createNewClient(ClientDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
-        final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(clientDetail.getCompanyName())
-                .personFirstName(clientDetail.getFirstName())
-                .personLastName(clientDetail.getLastName())
-                .phone(clientDetail.getPhone())
-                .identificationNumber(clientDetail.getIdentifiacationNumber())
-                .taxId(clientDetail.getTaxId())
-                .build();
+        final BusinessUserData businessUserData = new BusinessUserData.Builder().
+                companyName(clientDetail.
+                getCompanyName()).
+                personFirstName(clientDetail.getFirstName()).
+                personLastName(clientDetail.getLastName()).
+                phone(clientDetail.getPhone()).
+                identificationNumber(clientDetail.
+                getIdentifiacationNumber()).
+                taxId(clientDetail.getTaxId()).build();
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
         /** Address. **/
         Locality city = getLocalityByExample(clientDetail.getAddress().getCityName());
@@ -90,6 +91,19 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         /** Login & pwd information. **/
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
+        /** Set service for new client **/
+        UserService userService = new UserService();
+        userService.setUser(newClient.getBusinessUser());
+        userService.setStatus(Status.INACTIVE);
+        // TODO ivlcek - nastavit datum vytvorenia UserService aby sme mohli
+        // objednannu service zrusit ak client neaktivuje svoj ucet do 14 dni
+        // budeme to ziskavat cez AUD entitu alebo novy atribut. AUD entitu pre
+        // UserService nemame a je urcite nutna
+        // TODO ivlcek - create constants for ciselnik Services or use Constants class
+        userService.setService(this.generalService.find(Service.class, 4L));
+        List<UserService> userServices = new ArrayList<UserService>();
+        userServices.add(userService);
+        newClient.getBusinessUser().setUserServices(userServices);
 
         newClient = clientService.create(newClient);
         return newClient.getId();
@@ -120,8 +134,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Override
     public boolean checkFreeEmail(String email) {
         // try to find user with given email
-        final BusinessUser userByEmail = (BusinessUser) generalService.searchUnique(new Search(BusinessUser.class)
-                        .addFilterEqual("email", email));
+        final BusinessUser userByEmail = (BusinessUser) generalService.searchUnique(
+                new Search(BusinessUser.class).addFilterEqual("email", email));
 
         // email is free if no such user exists
         return userByEmail == null;
@@ -140,5 +154,4 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         List<Category> results = categoryService.findByExample(loc);
         return (results.size() != 0) ? results.get(0) : null;
     }
-
 }
