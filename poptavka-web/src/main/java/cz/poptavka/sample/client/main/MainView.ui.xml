@@ -11,20 +11,31 @@
         styleName="{res.layout.layoutPublic}" unit="PX">
         <g:north size="50">
             <g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
-                <div id="loginArea" class='{res.layout.loginArea}'>
-                    <g:Anchor ui:field="loginButton">
-                        <ui:msg key="logIn">Log In</ui:msg>
-                    </g:Anchor>
-                    <a href="#">
-                        <ui:msg key="help">Help</ui:msg>
-                    </a>
-                    <a href="#">
-                        <ui:msg key="about">About</ui:msg>
-                    </a>
-                    <br />
-                    Current locale:
-                    <ui:msg key="locDef">Default</ui:msg>
-                </div>
+<!--                 old type -->
+<!--                 <div id="loginArea" class='{res.layout.loginArea}'> -->
+
+<!-- 					new type -->
+                    <div style="position: absolute; right: 0px; top: 0px; z-index: 150;">
+                        <div>
+                            <g:Hyperlink ui:field="loginButton">
+                                <ui:msg key="logIn">Log In</ui:msg>
+                            </g:Hyperlink>
+                        </div>
+                        <div id="loginAnchor" style="position: absolute; width: 150px; right: 0px; z-index: 151;">
+                            SOME TEXT <br /><br />
+                            SOME TEXT
+                        </div>
+                    </div>
+<!--                     <a href="#"> -->
+<!--                         <ui:msg key="help">Help</ui:msg> -->
+<!--                     </a> -->
+<!--                     <a href="#"> -->
+<!--                         <ui:msg key="about">About</ui:msg> -->
+<!--                     </a> -->
+<!--                     <br /> -->
+<!--                     Current locale: -->
+<!--                     <ui:msg key="locDef">Default</ui:msg> -->
+<!--                 </div> -->
             </g:HTMLPanel>
         </g:north>
         <g:south size="0">

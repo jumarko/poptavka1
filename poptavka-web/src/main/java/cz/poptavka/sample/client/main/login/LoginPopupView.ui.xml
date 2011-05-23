@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <g:HTMLPanel>
+        <div style="padding: 5px 20px 0px 20px;">
+            <p>
+                <ui:msg key="email">E-mail</ui:msg><br />
+                <g:TextBox ui:field="mailBox"/>
+            </p>
+            <p>
+                <ui:msg key="pass">Password</ui:msg><br />
+                <g:PasswordTextBox ui:field="passBox"/>
+            </p>
+            <div id="loginStatus">&nbsp;</div>
+            <p style="text-align: center;">
+                <g:Button ui:field="loginBtn">
+                    <ui:msg key="login">Login</ui:msg>
+                </g:Button>
+                <g:Button ui:field="cancelBtn">
+                    <ui:msg key="cancel">Cancel</ui:msg>
+                </g:Button>
+            </p>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

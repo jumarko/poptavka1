@@ -18,5 +18,4 @@ public interface ClientRPCService extends RemoteService {
 
     boolean checkFreeEmail(String email);
 
-
 }

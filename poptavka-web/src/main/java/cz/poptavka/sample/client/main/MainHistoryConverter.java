@@ -20,8 +20,7 @@ public class MainHistoryConverter implements HistoryConverter<MainEventBus> {
     @Override
     public void convertFromToken(String historyName, String param,
             MainEventBus eventBus) {
-        LOGGER.fine("historyName: " + historyName);
-        LOGGER.fine("param: " + param);
+        eventBus.login();
     }
 
     @Override

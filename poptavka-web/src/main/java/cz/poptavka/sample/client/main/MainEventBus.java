@@ -19,10 +19,12 @@ import cz.poptavka.sample.client.home.HomeModule;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
+import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Events(startView = MainView.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -41,13 +43,18 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void start();
 
+    /** Login popup display **/
+    @Event(handlers = LoginPopupPresenter.class, historyConverter = MainHistoryConverter.class)
+    String login();
+
     /** Init home module (unlogged user). */
     @Event(modulesToLoad = HomeModule.class)
     void atHome();
 
     /** Init user module (logged user). */
     @Event(modulesToLoad = UserModule.class)
-    void atAccount();
+    void atAccount(UserDetail user);
+
 //
 //    NEEDED ?
 
@@ -142,5 +149,7 @@ public interface MainEventBus extends EventBus {
 
     @Event(handlers = MainPresenter.class)
     void setUserLayout();
+
+
 
 }

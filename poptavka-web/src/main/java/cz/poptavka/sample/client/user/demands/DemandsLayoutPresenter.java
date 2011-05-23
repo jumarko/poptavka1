@@ -7,6 +7,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -54,7 +55,7 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
     }
 
-    public void onAtAccount() {
+    public void onAtAccount(UserDetail user) {
         eventBus.setTabWidget(view.getWidgetView());
         if (clientsDemands == null) {
             eventBus.getClientsDemands(clientId);

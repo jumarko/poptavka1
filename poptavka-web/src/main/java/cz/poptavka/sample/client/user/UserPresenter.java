@@ -7,6 +7,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.shared.domain.UserDetail;
+
 /**
  * Main presenter for User account.
  *
@@ -24,7 +26,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         Widget getWidgetView();
     }
 
-    public void onAtAccount() {
+    public void onAtAccount(UserDetail user) {
         eventBus.setUserLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
 //        eventBus.invokeMyDemands();

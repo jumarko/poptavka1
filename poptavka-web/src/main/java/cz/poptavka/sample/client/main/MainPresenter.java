@@ -4,11 +4,9 @@ package cz.poptavka.sample.client.main;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,8 +35,9 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
         void toggleMainLayout(boolean switchToUserLayout);
 
-        // TODO eventually change to hyperlink
-        Anchor getLoginButton();
+        HTMLPanel getHeaderHolder();
+
+        void setLoginToken(String loginToken);
 
     }
 
@@ -54,19 +53,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
     @Override
     public void bind() {
-        view.getLoginButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent arg0) {
-                if (loggedIn) {
-                    eventBus.atHome();
-                    view.getLoginButton().setText(MSGS.logIn());
-                } else {
-                    eventBus.atAccount();
-                    view.getLoginButton().setText(MSGS.logOut());
-                }
-                loggedIn = !loggedIn;
-            }
-        });
+        view.setLoginToken(getTokenGenerator().login());
     }
 
     /**

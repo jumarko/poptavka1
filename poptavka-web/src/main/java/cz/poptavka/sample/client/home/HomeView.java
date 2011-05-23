@@ -1,7 +1,11 @@
 package cz.poptavka.sample.client.home;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.UListElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -10,6 +14,7 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.main.common.table.RadioTable;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 /**
@@ -41,53 +46,53 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
 
-//        ARRAYLIST<STRING> TITLES = NEW ARRAYLIST<STRING>();
-//        TITLES.ADD("DESCRIPTION");
-//        TITLES.ADD("PRICE");
-//        TITLES.ADD("DURATION");
-//
-//        FINAL RADIOTABLE RADIOTABLE = NEW RADIOTABLE(TITLES, TRUE, 1);
-//        CONTENTHOLDER.SETWIDGET(RADIOTABLE);
-//
-//        ARRAYLIST<STRING> ITEM1 = NEW ARRAYLIST<STRING>();
-//        ITEM1.ADD("17");
-//        ITEM1.ADD("");
-//        ITEM1.ADD("BLA BLA BLA SERVICE");
-//        ITEM1.ADD("1000 KC");
-//        ITEM1.ADD("3 MONTHS");
-//        ARRAYLIST<STRING> ITEM2 = NEW ARRAYLIST<STRING>();
-//        ITEM2.ADD("175");
-//        ITEM2.ADD("");
-//        ITEM2.ADD("BLA BLA BLA SERVICE +");
-//        ITEM2.ADD("3000 KC");
-//        ITEM2.ADD("6 MONTHS");
-//        ARRAYLIST<STRING> ITEM3 = NEW ARRAYLIST<STRING>();
-//        ITEM3.ADD("117");
-//        ITEM3.ADD("");
-//        ITEM3.ADD("BLA BLA BLA SERVICE ++");
-//        ITEM3.ADD("9000 KC");
-//        ITEM3.ADD("9 MONTHS");
-//        ARRAYLIST<STRING> ITEM4 = NEW ARRAYLIST<STRING>();
-//        ITEM4.ADD("117");
-//        ITEM4.ADD("");
-//        ITEM4.ADD("BLA BLA BLA SERVICE +++");
-//        ITEM4.ADD("11000 KC");
-//        ITEM4.ADD("12 MONTHS");
-//
-//        ARRAYLIST<ARRAYLIST<STRING>> DATA = NEW ARRAYLIST<ARRAYLIST<STRING>>();
-//        DATA.ADD(ITEM1);
-//        DATA.ADD(ITEM2);
-//        DATA.ADD(ITEM3);
-//        DATA.ADD(ITEM4);
-//
-//        RADIOTABLE.SETDATA(DATA);
-//        RADIOTABLE.ADDCLICKHANDLER(NEW CLICKHANDLER() {
-//
-//            @OVERRIDE
-//            PUBLIC VOID ONCLICK(CLICKEVENT ARG0) {
-//                RADIOTABLE.GETCLICKEDROW(ARG0);
-//            }
-//        });
+        ArrayList<String> titles = new ArrayList<String>();
+        titles.add("DESCRIPTION");
+        titles.add("PRICE");
+        titles.add("DURATION");
+
+        final RadioTable radioTable = new RadioTable(titles, true, 1);
+        contentHolder.setWidget(radioTable);
+
+        ArrayList<String> item1 = new ArrayList<String>();
+        item1.add("17");
+        item1.add("");
+        item1.add("BLA BLA BLA SERVICE");
+        item1.add("1000 KC");
+        item1.add("3 MONTHS");
+        ArrayList<String> item2 = new ArrayList<String>();
+        item2.add("175");
+        item2.add("");
+        item2.add("BLA BLA BLA SERVICE +");
+        item2.add("3000 KC");
+        item2.add("6 MONTHS");
+        ArrayList<String> item3 = new ArrayList<String>();
+        item3.add("117");
+        item3.add("");
+        item3.add("BLA BLA BLA SERVICE ++");
+        item3.add("9000 KC");
+        item3.add("9 MONTHS");
+        ArrayList<String> item4 = new ArrayList<String>();
+        item4.add("117");
+        item4.add("");
+        item4.add("BLA BLA BLA SERVICE +++");
+        item4.add("11000 KC");
+        item4.add("12 MONTHS");
+
+        ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+        data.add(item1);
+        data.add(item2);
+        data.add(item3);
+        data.add(item4);
+
+        radioTable.setData(data);
+        radioTable.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                radioTable.getClickedRow(event);
+            }
+        });
     }
 
     @Override

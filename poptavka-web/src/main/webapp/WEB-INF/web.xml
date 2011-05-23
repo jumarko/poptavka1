@@ -92,6 +92,15 @@
         <url-pattern>/poptavka/service/category</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>UserRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.user.UserRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserRPCService</servlet-name>
+        <url-pattern>/poptavka/service/user</url-pattern>
+    </servlet-mapping>
+
 <!-- AJAX Crawlability filter - start -->
     <filter>
         <filter-name>Crawlfilter</filter-name>

@@ -11,11 +11,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -40,7 +40,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     @UiField HTMLPanel footerHolder;
 
     /** login area **/
-    @UiField Anchor loginButton;
+    @UiField Hyperlink loginButton;
 
     @UiField HTML footController;
 
@@ -52,6 +52,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
         //styling layout - styled in UiBinder, but this is required
         StyleResource.INSTANCE.layout().ensureInjected();
         initFooterToggle();
+
     }
 
     /**
@@ -61,11 +62,6 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
      */
     public void setBodyWidget(Widget body) {
         bodyHolder.setWidget(body);
-    }
-
-    @Override
-    public Anchor getLoginButton() {
-        return loginButton;
     }
 
     @Override
@@ -100,6 +96,16 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
             centerParentStyle.setBottom(0, Unit.PX);
             footController.setText(MSGS.footerDisplay());
         }
+    }
+
+    @Override
+    public HTMLPanel getHeaderHolder() {
+        return headerHolder;
+    }
+
+    @Override
+    public void setLoginToken(String loginToken) {
+        loginButton.setTargetHistoryToken(loginToken);
     }
 
 
