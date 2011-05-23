@@ -8,6 +8,9 @@ import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.settings.Notification;
+import cz.poptavka.sample.domain.settings.NotificationItem;
+import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
@@ -104,6 +107,15 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         List<UserService> userServices = new ArrayList<UserService>();
         userServices.add(userService);
         newClient.getBusinessUser().setUserServices(userServices);
+        /** Notifications for new client. **/
+        List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
+        NotificationItem notificationItem = new NotificationItem();
+        // TODO ivlcek - create constant for Notifications in DB
+        notificationItem.setNotification(this.generalService.find(Notification.class, 10L));
+        notificationItem.setEnabled(true);
+        notificationItem.setPeriod(Period.INSTANTLY);
+        notificationItems.add(notificationItem);
+        newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
 
         newClient = clientService.create(newClient);
         return newClient.getId();
