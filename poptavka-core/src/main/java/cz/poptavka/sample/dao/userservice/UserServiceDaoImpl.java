@@ -15,6 +15,13 @@ import java.util.List;
  */
 public class UserServiceDaoImpl extends GenericHibernateDao<UserService> implements UserServiceDao {
 
+    /**
+     * Get all services that were ever associated with particular <code>businessUser</code>
+     *
+     * @param businessUser
+     * @return all userServices of given businessUser
+     * @see UserService
+     */
     @Override
     public List<UserService> getUsersServices(BusinessUser businessUser) {
         throw new UnsupportedOperationException("Not supported yet.");

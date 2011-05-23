@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * @author Juraj Martinka
@@ -25,6 +27,7 @@ public class Settings extends DomainObject {
 
     @OneToMany
     @JoinColumn(name = "settings_id")
+    @Cascade(value = CascadeType.ALL)
     private List<NotificationItem> notificationItems;
 
 
