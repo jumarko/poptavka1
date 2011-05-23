@@ -19,6 +19,7 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,20 +128,13 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @param client light-weight Client entity
      * @return client's ID if exists, -1 if does not
      */
-    public long verifyClient(ClientDetail client) {
-        List<Client> clients = clientService.getAll();
-
-        for (Client cl : clients) {
-            try {
-                if (cl.getBusinessUser().getEmail().equals(client.getEmail())
-                        && cl.getBusinessUser().getPassword().equals(client.getPassword())) {
-                    return cl.getId();
-                }
-            } catch (NullPointerException ex) {
-                System.out.println("Client id:" + cl.getId() + " contains NULL value, where it shouldn't be");
-            }
-        }
-        return -1;
+    @Override
+    public long verifyClient(ClientDetail clientDetail) {
+        final List<Client> peristedClient = this.clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                .withEmail(clientDetail.getEmail())
+                .build());
+        return peristedClient.isEmpty() ? -1L : peristedClient.get(0).getId();
     }
 
     @Override
