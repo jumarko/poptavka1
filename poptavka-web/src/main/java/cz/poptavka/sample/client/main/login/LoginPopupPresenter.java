@@ -14,7 +14,7 @@ import cz.poptavka.sample.client.main.MainEventBus;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
-@Presenter(view = LoginPopupView.class)
+@Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, MainEventBus> {
 
     public interface LoginPopupInterface extends LazyView {
@@ -57,7 +57,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         view.getCancelButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                historyBack();
+                if (!historyBack()) {
+                    eventBus.atHome();
+                }
                 view.hide();
             }
         });
@@ -87,9 +89,15 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         });
     }
 
-    private static native void historyBack()
+    private static native boolean historyBack()
     /*-{
-        parent.history.back();
+        var length = window.history.length;
+        if (length > 0) {
+            parent.history.back();
+            return true;
+        } else {
+            return false;
+        }
     }-*/;
 
 }
