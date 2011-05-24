@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 /**
  * @author Excalibur
@@ -21,7 +19,6 @@ import org.hibernate.annotations.CascadeType;
 public class Client extends BusinessUserRole {
 
     @OneToMany(mappedBy = "client")
-    @Cascade(value = CascadeType.ALL)
     private List<Demand> demands;
 
     /** Total rating of supplier for all his "processed" demands .*/
