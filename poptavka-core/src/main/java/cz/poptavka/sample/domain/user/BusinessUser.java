@@ -64,6 +64,12 @@ public class BusinessUser extends User {
     @NotAudited
     private List<Invoice> invoices;
 
+    public BusinessUser() {
+    }
+
+    public BusinessUser(String email, String password) {
+        super(email, password);
+    }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 package cz.poptavka.sample.dao.user;
 
 import cz.poptavka.sample.dao.GenericHibernateDao;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
@@ -19,16 +20,20 @@ public abstract class BusinessUserRoleDaoImpl<BUR extends BusinessUserRole> exte
     @Override
     public List<BUR> searchByCriteria(UserSearchCriteria userSearchCritera) {
         // query by example
-        final Criteria personCriteria = getHibernateSession().createCriteria(getPersistentClass())
+        // criteria
+        final Criteria businessUserCriteria = getHibernateSession().createCriteria(getPersistentClass())
                 .createCriteria("businessUser")
-                .createCriteria("businessUserData");
-        personCriteria.add(Example.create(
+                .add(Example.create(
+                        new BusinessUser(userSearchCritera.getEmail(), userSearchCritera.getPassword())));
+
+        final Criteria businessUserDataCriteria = businessUserCriteria.createCriteria("businessUserData");
+        businessUserDataCriteria.add(Example.create(
                 new BusinessUserData.Builder()
                         .personFirstName(userSearchCritera.getName())
                         .personLastName(userSearchCritera.getSurName())
                         .companyName(userSearchCritera.getCompanyName())
                         .build()));
-        return personCriteria.list();
+        return businessUserDataCriteria.list();
     }
 
 

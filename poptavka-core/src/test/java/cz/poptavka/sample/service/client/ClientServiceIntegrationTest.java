@@ -27,6 +27,19 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
 
 
     @Test
+    public void testSearchByEmail() {
+        final List<Client> clients = this.clientService.searchByCriteria(
+                UserSearchCriteria.Builder.userSearchCriteria()
+                        .withEmail("elvira@email.com")
+                        .withPassword(null)
+                        .build());
+        Assert.assertEquals(1, clients.size());
+        Assert.assertEquals("ahoj", clients.get(0).getBusinessUser().getPassword());
+        Assert.assertEquals("Elv\u00edra",
+                clients.get(0).getBusinessUser().getBusinessUserData().getPersonFirstName());
+    }
+
+    @Test
     public void testGetAllClients() {
         final List<Client> allClients = clientService.getAll();
         for (Client client : allClients) {
