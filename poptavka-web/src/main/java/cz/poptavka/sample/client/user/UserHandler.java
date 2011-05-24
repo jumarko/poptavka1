@@ -8,8 +8,10 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import java.util.List;
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
@@ -23,6 +25,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
     public void onGetClientsDemands(long id) {
         demandService.getClientDemands(id, new AsyncCallback<ArrayList<DemandDetail>>() {
+
             @Override
             public void onSuccess(ArrayList<DemandDetail> list) {
                 eventBus.setClientDemands(list);
@@ -37,6 +40,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
     public void onRequestOffers(ArrayList<Long> idList) {
         demandService.getDemandOffers(idList, new AsyncCallback<ArrayList<ArrayList<OfferDetail>>>() {
+
             @Override
             public void onFailure(Throwable arg0) {
             }
@@ -48,4 +52,18 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
+    public void onGetAllDemands() {
+        demandService.getAllDemands(new AsyncCallback<List<Demand>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO - ivlcek
+            }
+
+            @Override
+            public void onSuccess(List<Demand> result) {
+                eventBus.setAllDemands(result);
+            }
+        });
+    }
 }

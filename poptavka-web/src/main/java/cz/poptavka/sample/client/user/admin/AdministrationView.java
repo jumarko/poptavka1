@@ -13,9 +13,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +36,13 @@ public class AdministrationView extends Composite implements
 
     private static AdministrationViewUiBinder uiBinder =
             GWT.create(AdministrationViewUiBinder.class);
+
+    /**
+     * @return the dataProvider
+     */
+    public ListDataProvider<DemandDetail> getDataProvider() {
+        return dataProvider;
+    }
 
     interface AdministrationViewUiBinder extends UiBinder<Widget, AdministrationView> {
     }
@@ -81,6 +93,11 @@ public class AdministrationView extends Composite implements
      */
     private List<AbstractEditableCell<?, ?>> editableCells;
 
+    /**
+     * Data provider that will cell table with data.
+     */
+    private ListDataProvider<DemandDetail> dataProvider;
+
     @Override
     public Widget getWidgetView() {
         return this;
@@ -104,29 +121,46 @@ public class AdministrationView extends Composite implements
     private void initCellTable() {
         // init the table.
         cellTable.setWidth("100%");
+        cellTable.setPageSize(6);
+        cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
         editableCells = new ArrayList<AbstractEditableCell<?, ?>>();
 
         // TextCell.
-        addColumn(new TextCell(), "Text", new GetValue<String>() {
+        addColumn(new TextCell(), "Title", new GetValue<String>() {
 
             public String getValue(DemandDetail contact) {
                 return contact.getTitle();
             }
         }, null);
 
+        // Add a selection model to handle user selection.
+        final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
+        cellTable.setSelectionModel(selectionModel);
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                DemandDetail selected = selectionModel.getSelectedObject();
+                if (selected != null) {
+                    Window.alert("You selected: " + selected.getTitle());
+                }
+            }
+        });
+
+
         // Create a data provider.
-        ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
+        dataProvider = new ListDataProvider<DemandDetail>();
 
         // Connect the table to the data provider.
-        dataProvider.addDataDisplay(cellTable);
+        getDataProvider().addDataDisplay(cellTable);
 
         // Add the data to the data provider, which automatically pushes it to
         // the
         // widget.
-        List<DemandDetail> list = dataProvider.getList();
-        for (DemandDetail demands : demandsinfo) {
-            list.add(demands);
-        }
+//        List<DemandDetail> list = getDataProvider().getList();
+//        for (DemandDetail demands : demandsinfo) {
+//            list.add(demands);
+//        }
 
     }
 
@@ -164,4 +198,15 @@ public class AdministrationView extends Composite implements
         cellTable.addColumn(column, headerText);
         return column;
     }
+
+    /**
+     * The key provider that provides the unique ID of a DemandDetail.
+     */
+    private static final ProvidesKey<DemandDetail> KEY_PROVIDER = new ProvidesKey<DemandDetail>() {
+
+        @Override
+        public Object getKey(DemandDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
 }

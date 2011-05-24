@@ -133,6 +133,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public long verifyClient(ClientDetail clientDetail) {
         final List<Client> peristedClient = this.clientService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
+                .withEmail(clientDetail.getEmail())
+                .withPassword(clientDetail.getPassword())
                 .build());
         return peristedClient.isEmpty() ? -1L : peristedClient.get(0).getId();
     }

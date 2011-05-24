@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.poptavka.sample.server.service.demand;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
@@ -30,9 +29,7 @@ import java.util.logging.Logger;
  */
 public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements DemandRPCService {
 
-
-    private static final Logger LOGGER = Logger
-            .getLogger(DemandRPCServiceImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DemandRPCServiceImpl.class.getName());
 
     /**
      * generated serialVersonUID.
@@ -40,6 +37,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private static final long serialVersionUID = -4661806018739964100L;
 
     private DemandService demandService;
+
     private GeneralService generalService;
 
     public DemandService getDemandService() {
@@ -50,7 +48,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
-
 
     @Autowired
     public void setDemandService(DemandService demandService) {

@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.user;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -18,6 +19,7 @@ import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.problems.Problem;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -122,6 +124,13 @@ public interface UserEventBus extends EventBus {
     /** handler method area. **/
     @Event(handlers = UserHandler.class)
     void getClientsDemands(long id);
+
+    /** TODO - ivlcek this could be replaced to new EventBus for Admin **/
+    @Event(handlers = UserHandler.class)
+    void getAllDemands();
+
+    @Event(handlers = AdministrationPresenter.class)
+    void setAllDemands(List<Demand> demands);
 
     @Event(handlers = UserHandler.class)
     void requestOffers(ArrayList<Long> idList);
