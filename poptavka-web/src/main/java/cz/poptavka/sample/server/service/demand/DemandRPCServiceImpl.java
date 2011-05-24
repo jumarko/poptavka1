@@ -130,7 +130,17 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     public ArrayList<DemandDetail> getClientDemands(long id) {
         Client client = this.generalService.find(Client.class, id);
-        return toArrayList(client.getDemands());
+        ArrayList<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
+        for (Demand demand : client.getDemands()) {
+            DemandDetail d = new DemandDetail();
+            d.setClientId(demand.getId());
+            d.setDescription(demand.getDescription());
+            d.setTitle(demand.getTitle());
+            d.setPrice(demand.getPrice());
+            demandDetails.add(d);
+            // TODO - doplnit ostatne fieldy
+        }
+        return demandDetails;
     }
 
     @Override
