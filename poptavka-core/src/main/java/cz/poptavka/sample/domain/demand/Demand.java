@@ -14,6 +14,7 @@ import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -52,6 +53,8 @@ public class Demand extends DomainObject {
 
     @Column(length = 100, nullable = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
+    // title is most important - boost twice as much as other fields
+    @Boost(2)
     private String title;
 
     /**
