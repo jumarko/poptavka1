@@ -117,6 +117,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         notificationItem.setPeriod(Period.INSTANTLY);
         notificationItems.add(notificationItem);
         newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
+        /** TODO ivlcek - email activation. **/
 
         newClient = clientService.create(newClient);
         return newClient.getId();
@@ -132,7 +133,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public long verifyClient(ClientDetail clientDetail) {
         final List<Client> peristedClient = this.clientService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
-                .withEmail(clientDetail.getEmail())
                 .build());
         return peristedClient.isEmpty() ? -1L : peristedClient.get(0).getId();
     }

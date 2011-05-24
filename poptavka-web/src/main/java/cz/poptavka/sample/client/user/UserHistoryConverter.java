@@ -25,11 +25,13 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
         if (historyName.equals("invokeMyDemandsOperator")) {
 //          eventBus.invokeNewDemand();
         }
+        if (historyName.equals("invokeAdministration")) {
+            eventBus.invokeAdministration();
+        }
     }
 
     @Override
     public boolean isCrawlable() {
         return true;
     }
-
 }

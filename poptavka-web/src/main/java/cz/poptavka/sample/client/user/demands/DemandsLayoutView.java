@@ -13,16 +13,18 @@ import com.google.gwt.user.client.ui.Widget;
 public class DemandsLayoutView extends Composite implements DemandsLayoutPresenter.DemandsLayoutInterface {
 
     private static DemandsLayoutViewUiBinder uiBinder = GWT.create(DemandsLayoutViewUiBinder.class);
+
     interface DemandsLayoutViewUiBinder extends UiBinder<Widget, DemandsLayoutView> {
     }
 
-
-    private static final Logger LOGGER = Logger
-            .getLogger(DemandsLayoutView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DemandsLayoutView.class.getName());
 
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
-    @UiField SimplePanel contentPanel;
-    @UiField Hyperlink myDemandsLink, offersLink, newDemandLink, myDemandsOperatorLink;
+    @UiField
+    SimplePanel contentPanel;
+
+    @UiField
+    Hyperlink myDemandsLink, offersLink, newDemandLink, myDemandsOperatorLink, administration;
 
     public DemandsLayoutView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -71,4 +73,7 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
         myDemandsOperatorLink.setTargetHistoryToken(linkString);
     }
 
+    public void setAdministrationToken(String linkString) {
+        administration.setTargetHistoryToken(linkString);
+    }
 }

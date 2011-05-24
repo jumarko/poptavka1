@@ -10,6 +10,7 @@ import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.common.messages.MessagesPresenter;
 import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
+import cz.poptavka.sample.client.user.admin.AdministrationPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
@@ -20,14 +21,13 @@ import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
-
 @Events(startView = UserView.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
     @Event(handlers = {UserPresenter.class, DemandsLayoutPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+    historyConverter = UserHistoryConverter.class)
     String atAccount(UserDetail user);
 
     @Event(handlers = DemandsLayoutPresenter.class)
@@ -55,7 +55,6 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = UserPresenter.class)
     void setTabWidget(Widget tabBody);
 
-
     /** DEVEL **/
     /** **/
     @Event(handlers = DemandsLayoutPresenter.class)
@@ -66,32 +65,39 @@ public interface UserEventBus extends EventBus {
 
     @Event(handlers = OffersPresenter.class)
     void responseOffers(ArrayList<ArrayList<OfferDetail>> offers);
-    /** DEVEL **/
 
-    /** DEMAND tab methods **/
+    /** DEVEL **/
+    /** DEMAND tab methods. **/
     @Event(handlers = MyDemandsPresenter.class,
-            activate = MyDemandsPresenter.class,
-            deactivate = {OffersPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+    activate = MyDemandsPresenter.class,
+    deactivate = {OffersPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
+    historyConverter = UserHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = OffersPresenter.class,
-            activate = OffersPresenter.class,
-            deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+    activate = OffersPresenter.class,
+    deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
+    historyConverter = UserHistoryConverter.class)
     String invokeOffers();
 
     @Event(handlers = NewDemandPresenter.class,
-            activate = NewDemandPresenter.class,
-            deactivate = {OffersPresenter.class, MyDemandsPresenter.class, MyDemandsOperatorPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+    activate = NewDemandPresenter.class,
+    deactivate = {OffersPresenter.class, MyDemandsPresenter.class, MyDemandsOperatorPresenter.class },
+    historyConverter = UserHistoryConverter.class)
     String invokeNewDemand();
 
     @Event(handlers = MyDemandsOperatorPresenter.class,
-            activate = MyDemandsOperatorPresenter.class,
-            deactivate = {OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+    activate = MyDemandsOperatorPresenter.class,
+    deactivate = {OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class },
+    historyConverter = UserHistoryConverter.class)
     String invokeMyDemandsOperator();
+
+    @Event(handlers = AdministrationPresenter.class,
+    activate = AdministrationPresenter.class,
+    deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
+            NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
+    historyConverter = UserHistoryConverter.class)
+    String invokeAdministration();
 
     //for operator only
     @Event
