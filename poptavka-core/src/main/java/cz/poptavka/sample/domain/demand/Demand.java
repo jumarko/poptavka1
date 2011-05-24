@@ -5,20 +5,9 @@
 
 package cz.poptavka.sample.domain.demand;
 
-import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.domain.offer.Offer;
-import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.util.orm.Constants;
-import cz.poptavka.sample.util.strings.ToStringUtils;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.search.annotations.Boost;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,9 +23,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
+
+import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.offer.Offer;
+import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 
 /**
  * The core domain class which represents demand entered by client.
@@ -100,6 +104,7 @@ public class Demand extends DomainObject {
     private DemandType type;
 
     @ManyToOne
+    @Cascade(CascadeType.ALL)
     private Client client;
 
     @ManyToMany

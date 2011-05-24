@@ -24,7 +24,8 @@ import java.util.logging.Logger;
 @Presenter(view = DemandsLayoutView.class)
 public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
 
-    private static final long TEST_CLIENT_ID = 1L;
+    //User: Test @ Test
+    private static final long TEST_CLIENT_ID = 81;
 
     //will be assigned during login process
     //devel client with ID = 17
@@ -56,7 +57,7 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
-        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+        view.setNewDemandToken(getTokenGenerator().invokeNewDemand(clientId));
         view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
     }

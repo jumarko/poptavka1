@@ -15,6 +15,7 @@ public class DemandDetail implements Serializable {
     private long id;
     private String title;
     private String description;
+    // if price = -1, then it was misplaced
     private BigDecimal price;
     private Date endDate;
     private Date expireDate;

@@ -44,7 +44,6 @@ public class FormLoginView extends Composite implements FormLoginPresenter.FormL
 
     @Override
     public HasClickHandlers getRegisterBtn() {
-        // TODO Auto-generated method stub
         return registerBtn;
     }
 

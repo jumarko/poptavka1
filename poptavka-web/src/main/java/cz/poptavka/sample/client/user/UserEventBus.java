@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.user;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -84,7 +85,7 @@ public interface UserEventBus extends EventBus {
     activate = NewDemandPresenter.class,
     deactivate = {OffersPresenter.class, MyDemandsPresenter.class, MyDemandsOperatorPresenter.class },
     historyConverter = UserHistoryConverter.class)
-    String invokeNewDemand();
+    String invokeNewDemand(Long clientId);
 
     @Event(handlers = MyDemandsOperatorPresenter.class,
     activate = MyDemandsOperatorPresenter.class,
@@ -130,4 +131,23 @@ public interface UserEventBus extends EventBus {
 
     @Event(handlers = MyDemandsPresenter.class)
     void getDemandDetail(String name);
+
+    /** Calls to MainEventBus **/
+    @Event(forwardToParent = true)
+    void initDemandBasicForm(SimplePanel holderPanel);
+
+    @Event(forwardToParent = true)
+    void initCategoryWidget(SimplePanel holderPanel);
+
+    @Event(forwardToParent = true)
+    void initLocalityWidget(SimplePanel holderPanel);
+
+    @Event(forwardToParent = true)
+    void initDemandAdvForm(SimplePanel holderPanel);
+
+    @Event(forwardToParent = true)
+    void loadingShow(String progressGettingDemandData);
+
+    @Event(forwardToParent = true)
+    void createDemand(DemandDetail demand, Long id);
 }

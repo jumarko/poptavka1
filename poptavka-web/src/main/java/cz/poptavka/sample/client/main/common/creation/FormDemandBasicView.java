@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.main.common.creation;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -83,7 +84,13 @@ public class FormDemandBasicView extends Composite
         LOGGER.info("Filling map with basic values");
         map.put("title", titleBox.getText());
         map.put("description", descriptionBox.getValue());
-        map.put("price", priceBox.getValue());
+        long price = 0;
+        try {
+            priceBox.getValueOrThrow();
+        } catch (ParseException e) {
+            price = -1;
+        }
+        map.put("price", price);
         map.put("endDate", finishDateBox.getValue());
         map.put("expireDate", expireDateBox.getValue());
 
