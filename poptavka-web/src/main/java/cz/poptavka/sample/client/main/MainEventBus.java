@@ -44,15 +44,15 @@ public interface MainEventBus extends EventBus {
     void start();
 
     /** Login popup display **/
-    @Event(handlers = LoginPopupPresenter.class, historyConverter = MainHistoryConverter.class)
-    String login();
+    @Event(handlers = LoginPopupPresenter.class)
+    void login();
 
     /** Init home module (unlogged user). */
     @Event(modulesToLoad = HomeModule.class)
     void atHome();
 
     /** Init user module (logged user). */
-    @Event(modulesToLoad = UserModule.class)
+    @Event(modulesToLoad = UserModule.class, handlers = MainPresenter.class)
     void atAccount(UserDetail user);
 
 //

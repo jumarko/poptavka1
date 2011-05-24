@@ -1,13 +1,17 @@
 package cz.poptavka.sample.client.main.login;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -20,6 +24,10 @@ import cz.poptavka.sample.client.resources.StyleResource;
 
 public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
 
+
+    private static final Logger LOGGER = Logger.getLogger(LoginPopupView.class
+            .getName());
+
     private static LoginPopupUiBinder uiBinder = GWT.create(LoginPopupUiBinder.class);
     interface LoginPopupUiBinder extends UiBinder<Widget, LoginPopupView> {
     }
@@ -27,6 +35,7 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
     @UiField TextBox mailBox;
     @UiField PasswordTextBox passBox;
     @UiField Button loginBtn, cancelBtn;
+    @UiField CheckBox rememberCheck;
 
     SimpleIconLabel statusLabel = null;
 
@@ -37,6 +46,19 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
         this.setGlassEnabled(true);
         center();
         mailBox.setFocus(true);
+        initRemeberedLogin();
+    }
+
+    private void initRemeberedLogin() {
+        LOGGER.fine("Getting cookies");
+        String email = Cookies.getCookie("pop-user");
+        String pass = Cookies.getCookie("pop-password");
+        if ((email != null) && (pass != null)) {
+            LOGGER.fine("Assigning cookie");
+            mailBox.setText(email);
+            passBox.setText(pass);
+            rememberCheck.setValue(true);
+        }
     }
 
     @Override
@@ -103,5 +125,20 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
             Node node = list.getItem(i);
             parent.removeChild(node);
         }
+    }
+
+    @Override
+    public TextBox getPassBox() {
+        return passBox;
+    }
+
+    @Override
+    public TextBox getEmailBox() {
+        return mailBox;
+    }
+
+    @Override
+    public boolean getRememberMe() {
+        return rememberCheck.getValue();
     }
 }

@@ -25,6 +25,7 @@ import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = MainView.class)
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
@@ -59,9 +60,15 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public void bind() {
         view.getLoginLink().addClickHandler(new ClickHandler() {
             @Override
-            public void onClick(ClickEvent arg0) {
-                LoginPopupPresenter presenter = eventBus.addHandler(LoginPopupPresenter.class);
-                presenter.onLogin();
+            public void onClick(ClickEvent event) {
+                if (loggedIn) {
+                    loggedIn = false;
+                    view.getLoginLink().setText(MSGS.logIn());
+                    eventBus.atHome();
+                } else {
+                    LoginPopupPresenter presenter = eventBus.addHandler(LoginPopupPresenter.class);
+                    presenter.onLogin();
+                }
             }
         });
     }
@@ -106,6 +113,17 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     public void onSetUserLayout() {
         LOGGER.fine("Toggle layout");
         view.toggleMainLayout(true);
+    }
+
+
+    public void onAtAccount(UserDetail user) {
+        this.loggedIn = true;
+        view.getLoginLink().setText(MSGS.logOut());
+    }
+    // TODO do it by cookies?
+    public void onAtHome() {
+        this.loggedIn = false;
+        view.getLoginLink().setText(MSGS.logIn());
     }
 
     public void onLoadingShow(String loadingMessage) {

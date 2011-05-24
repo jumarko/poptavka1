@@ -4,14 +4,21 @@
     <g:HTMLPanel>
         <div style="padding: 5px 20px 0px 20px;">
             <p>
-                <ui:msg key="email">E-mail</ui:msg><br />
-                <g:TextBox ui:field="mailBox"/>
+                <ui:msg key="email">E-mail</ui:msg>
+                <br />
+                <g:TextBox ui:field="mailBox" />
+                <br />
+                <ui:msg key="pass">Password</ui:msg>
+                <br />
+                <g:PasswordTextBox ui:field="passBox" />
+                <br />
+                <span style="font-size: 10px">
+                    <g:CheckBox ui:field="rememberCheck">
+                        <ui:msg key="rememberMe">Remember Me</ui:msg>
+                    </g:CheckBox>
+                </span>
             </p>
-            <p>
-                <ui:msg key="pass">Password</ui:msg><br />
-                <g:PasswordTextBox ui:field="passBox"/>
-            </p>
-            <div id="loginStatus" style="height: 32px;">&nbsp;</div>
+            <div id="loginStatus" style="height: 24px;">&nbsp;</div>
             <p style="text-align: center;">
                 <g:Button ui:field="loginBtn">
                     <ui:msg key="login">Login</ui:msg>

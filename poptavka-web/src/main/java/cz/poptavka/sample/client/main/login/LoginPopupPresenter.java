@@ -1,10 +1,18 @@
 package cz.poptavka.sample.client.main.login;
 
+import java.util.Date;
+import java.util.logging.Logger;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusWidget;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -16,6 +24,9 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, MainEventBus> {
+
+    private static final Logger LOGGER = Logger.getLogger(LoginPopupPresenter.class
+        .getName());
 
     public interface LoginPopupInterface extends LazyView {
 
@@ -39,21 +50,30 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         void setLoginError();
 
+        TextBox getPassBox();
+
+        TextBox getEmailBox();
+
+        boolean getRememberMe();
+
     }
 
     @Inject
     private UserRPCServiceAsync userService;
 
     public void bindView() {
+
+        KeyDownHandler enterKeyHandler = getHandler();
+
         view.getLoginButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                boolean isValid = view.isValid();
-                if (isValid) {
-                    registerUser(view.getLogin(), view.getPassword());
-                }
+                startLoginIn();
             }
         });
+        view.getLoginButton().addKeyDownHandler(enterKeyHandler);
+        view.getEmailBox().addKeyDownHandler(enterKeyHandler);
+        view.getPassBox().addKeyDownHandler(enterKeyHandler);
         view.getCancelButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
@@ -77,14 +97,45 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             @Override
             public void onSuccess(UserDetail user) {
-
                 if (user != null) {
+                    view.hide();
                     eventBus.atAccount(user);
                 } else {
                     view.setLoginError();
                 }
             }
         });
+    }
+
+    private void startLoginIn() {
+        boolean isValid = view.isValid();
+        if (isValid) {
+            registerUser(view.getLogin(), view.getPassword());
+        }
+    }
+
+    private KeyDownHandler getHandler() {
+        KeyDownHandler handler = new KeyDownHandler() {
+
+            @Override
+            public void onKeyDown(KeyDownEvent event) {
+                if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+                    if (view.getRememberMe()) {
+                        setLoginCookies();
+                    }
+                    startLoginIn();
+                }
+            }
+        };
+        return handler;
+    }
+
+    private void setLoginCookies() {
+        LOGGER.fine("Setting cookie");
+        int cookieTimeout = 1000 * 60 * 60 * 24;
+        Date expires = new Date((new Date()).getTime() + cookieTimeout);
+        Cookies.setCookie("pop-user", view.getLogin(), expires);
+        Cookies.setCookie("pop-password", view.getPassword(), expires);
     }
 
 }
