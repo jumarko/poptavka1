@@ -57,9 +57,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         view.getCancelButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                if (!historyBack()) {
-                    eventBus.atHome();
-                }
                 view.hide();
             }
         });
@@ -80,6 +77,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
             @Override
             public void onSuccess(UserDetail user) {
+
                 if (user != null) {
                     eventBus.atAccount(user);
                 } else {
@@ -88,16 +86,5 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             }
         });
     }
-
-    private static native boolean historyBack()
-    /*-{
-        var length = window.history.length;
-        if (length > 0) {
-            parent.history.back();
-            return true;
-        } else {
-            return false;
-        }
-    }-*/;
 
 }

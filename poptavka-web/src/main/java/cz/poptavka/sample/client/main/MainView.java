@@ -11,11 +11,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -40,7 +40,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     @UiField HTMLPanel footerHolder;
 
     /** login area **/
-    @UiField Hyperlink loginButton;
+    @UiField Anchor loginButton;
 
     @UiField HTML footController;
 
@@ -104,8 +104,8 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
     }
 
     @Override
-    public void setLoginToken(String loginToken) {
-        loginButton.setTargetHistoryToken(loginToken);
+    public Anchor getLoginLink() {
+        return loginButton;
     }
 
 

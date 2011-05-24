@@ -17,9 +17,9 @@
 <!-- 					new type -->
                     <div style="position: absolute; right: 0px; top: 0px; z-index: 150;">
                         <div>
-                            <g:Hyperlink ui:field="loginButton">
+                            <g:Anchor ui:field="loginButton">
                                 <ui:msg key="logIn">Log In</ui:msg>
-                            </g:Hyperlink>
+                            </g:Anchor>
                         </div>
                         <div id="loginAnchor" style="position: absolute; width: 150px; right: 0px; z-index: 151;">
                             SOME TEXT <br /><br />

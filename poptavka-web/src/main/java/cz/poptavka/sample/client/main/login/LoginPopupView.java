@@ -33,13 +33,9 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
     @Override
     public void createView() {
         setWidget(uiBinder.createAndBindUi(this));
-        Element elem = (Element) Document.get().getElementById("loginStatus");
-        clearStatusLabel(elem);
-        mailBox.setText("");
-        passBox.setText("");
+        this.setModal(true);
+        this.setGlassEnabled(true);
         center();
-        setModal(true);
-        setGlassEnabled(true);
         mailBox.setFocus(true);
     }
 
@@ -69,7 +65,7 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
 
     @Override
     public String getPassword() {
-        return mailBox.getText();
+        return passBox.getText();
     }
 
     @Override

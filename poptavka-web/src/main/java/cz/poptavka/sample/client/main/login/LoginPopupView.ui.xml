@@ -11,7 +11,7 @@
                 <ui:msg key="pass">Password</ui:msg><br />
                 <g:PasswordTextBox ui:field="passBox"/>
             </p>
-            <div id="loginStatus">&nbsp;</div>
+            <div id="loginStatus" style="height: 32px;">&nbsp;</div>
             <p style="text-align: center;">
                 <g:Button ui:field="loginBtn">
                     <ui:msg key="login">Login</ui:msg>

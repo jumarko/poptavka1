@@ -4,8 +4,11 @@ package cz.poptavka.sample.client.main;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -20,6 +23,7 @@ import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
+import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 @Presenter(view = MainView.class)
@@ -37,7 +41,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
         HTMLPanel getHeaderHolder();
 
-        void setLoginToken(String loginToken);
+        Anchor getLoginLink();
 
     }
 
@@ -53,7 +57,13 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 
     @Override
     public void bind() {
-        view.setLoginToken(getTokenGenerator().login());
+        view.getLoginLink().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                LoginPopupPresenter presenter = eventBus.addHandler(LoginPopupPresenter.class);
+                presenter.onLogin();
+            }
+        });
     }
 
     /**
