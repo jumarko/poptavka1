@@ -8,10 +8,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.main.common.RichTextToolbarWidget;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -44,7 +44,7 @@ public class SupplierInfoView extends Composite
     @UiField StatusIconLabel mailStatus;
     @UiField StatusIconLabel pwdStatus;
     @UiField StatusIconLabel pwdCheckStatus;
-    @UiField RichTextToolbarWidget richText;
+    @UiField TextArea richText;
     private boolean mailFlag = false;
     private boolean passFlag = false;
     private boolean passLength = false;

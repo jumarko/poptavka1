@@ -24,7 +24,7 @@
                     <table>
                         <tr>
                             <td>
-                                <ui:msg key="demandTitle">Title</ui:msg>
+                                <ui:msg key="title">Title</ui:msg>
                             </td>
                             <td>
                                 <g:TextBox ui:field="titleBox" />

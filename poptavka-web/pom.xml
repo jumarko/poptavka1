@@ -205,7 +205,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>gwt-maven-plugin</artifactId>
-                        <version>2.1.0-1</version>
+                        <version>2.2.0</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -221,7 +221,7 @@
                                 <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
                             </i18nConstantsBundles>
 
-                            <extraJvmArgs>-noverify -javaagent:${JREBEL_HOME}/jrebel.jar -Xmx2048m -Xms512m -XX:MaxPermSize=1024m -XX:+HeapDumpOnOutOfMemoryError</extraJvmArgs>
+                            <extraJvmArgs>-noverify -javaagent:${REBEL_HOME}/jrebel.jar -Xmx2048m -Xms512m -XX:MaxPermSize=1024m -XX:+HeapDumpOnOutOfMemoryError</extraJvmArgs>
                             <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
                         </configuration>
                     </plugin>

@@ -141,7 +141,6 @@ public interface HomeEventBus extends EventBus {
 
     /** Common method calls **/
 
-
     /** DO NOT EDIT **/
 
     /** Method for setting public UI layout. */

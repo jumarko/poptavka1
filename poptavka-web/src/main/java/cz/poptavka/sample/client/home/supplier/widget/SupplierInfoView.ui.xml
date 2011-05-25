@@ -203,7 +203,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <cm:RichTextToolbarWidget ui:field="richText" />
+                        <g:TextArea ui:field="richText" width="100%"/>
                     </td>
                 </tr>
             </table>

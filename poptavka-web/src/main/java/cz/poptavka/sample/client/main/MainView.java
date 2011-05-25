@@ -28,8 +28,7 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
 
     private static final Logger LOGGER = Logger.getLogger(MainView.class.getName());
 
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     private boolean compactDisplay = false;
 

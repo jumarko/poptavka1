@@ -57,4 +57,13 @@ public interface LocalizableMessages extends Messages {
     String wrongLoginDescription();
     String wrongLoginMessage();
     String close();
+
+    //common
+    String title();
+    String description();
+    String duration();
+
+    String month();
+    String fewMonths();
+    String months();
 }

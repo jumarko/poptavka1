@@ -9,6 +9,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -93,6 +94,7 @@ public class FormUserRegistrationPresenter extends
             @Override
             public void onValueChange(ValueChangeEvent<String> value) {
                 /** UI method **/
+                Window.alert("Mail check");
                 initVisualMailCheck(value.getValue());
             }
         });

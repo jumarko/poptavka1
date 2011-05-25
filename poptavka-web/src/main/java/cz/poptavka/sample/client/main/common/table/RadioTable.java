@@ -19,6 +19,7 @@ public class RadioTable extends HeaderTable {
 
     private int defaultChecked = -1;
     private int selectedRow = -1;
+    private boolean popupEnabled = false;
 
     public RadioTable(ArrayList<String> titles, boolean clickable, int defaultChecked) {
         super(titles, clickable);
@@ -31,8 +32,8 @@ public class RadioTable extends HeaderTable {
     public void getClickedRow(ClickEvent event) {
         Cell clickedCell = getCellForEvent(event);
         if (clickedCell != null) {
-            int clickedRow = clickedCell.getRowIndex();
-            Element body = (Element) getBodyElement().getChildNodes().getItem(clickedRow).getChild(COLUMN_RADIO);
+            selectedRow = clickedCell.getRowIndex();
+            Element body = (Element) getBodyElement().getChildNodes().getItem(selectedRow).getChild(COLUMN_RADIO);
             Element radio = (Element) body.getFirstChildElement();
             radio.setPropertyBoolean("checked", true);
         }
@@ -46,10 +47,12 @@ public class RadioTable extends HeaderTable {
         }
     }
 
-    private void setRow(ArrayList<String> item, int index) {
+    public void setRow(ArrayList<String> item, int index) {
         int rowIndex = getRowCount();
         LOGGER.fine("Insert row #" + rowIndex);
-        for (int i = 0; i < item.size(); i++) {
+        int columnsToFill = item.size();
+
+        for (int i = 0; i < columnsToFill; i++) {
             if (i == COLUMN_RADIO) {
                 LOGGER.fine("Creating radioButton");
                 Element radio = DOM.createInputRadio("selection");
@@ -71,6 +74,14 @@ public class RadioTable extends HeaderTable {
     public int getSelectedValue() {
         String content = getHTML(selectedRow, COLUMN_ID);
         return Integer.parseInt(content);
+    }
+
+    public void setPopupEnabled(boolean enabled) {
+        this.popupEnabled = enabled;
+    }
+
+    public boolean getPopupEnabled() {
+        return popupEnabled;
     }
 
 }

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.home.supplier;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -9,20 +10,28 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.HomeEventBus;
+import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
-import cz.poptavka.sample.client.home.supplier.widget.SupplierServiceWidget;
+import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import cz.poptavka.sample.client.main.common.service.ServiceWidget;
+import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
+import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 @Presenter(view = SupplierCreationView.class)
@@ -55,7 +64,11 @@ public class SupplierCreationPresenter
         StatusIconLabel getStatusLabel(int order);
 
         void showConditions();
+
+        boolean isValid();
     }
+
+    private SupplierInfoPresenter presenter = null;
 
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
@@ -99,8 +112,6 @@ public class SupplierCreationPresenter
     public void onAtRegisterSupplier() {
         LOGGER.info("Initializing Supplier Registration Widget ... ");
 
-        view.getMainPanel().showWidget(0);
-
         eventBus.setBodyWidget(view.getWidgetView());
         //init parts
         LOGGER.info(" -> Supplier Info Form");
@@ -109,19 +120,22 @@ public class SupplierCreationPresenter
         eventBus.initCategoryWidget(view.getCategoryHolder());
         LOGGER.info(" -> Locality Widget");
         eventBus.initLocalityWidget(view.getLocalityHolder());
-        LOGGER.info(" -> Service Form");
-        view.getServiceHolder().add(new SupplierServiceWidget());
+        LOGGER.info(" -> init Service Form supplierService");
+        initServices();
+
+
     }
 
     private void registerSupplier() {
         SupplierInfoInterface info = (SupplierInfoInterface) view.getSupplierInfoHolder().getWidget();
         LocalitySelectorInterface locs = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
         CategorySelectorInterface cats = (CategorySelectorInterface) view.getCategoryHolder().getWidget();
-        SupplierServiceWidget service = (SupplierServiceWidget) view.getServiceHolder().getWidget();
+        ServiceWidget service = (ServiceWidget) view.getServiceHolder().getWidget();
 
         SupplierDetail newSupplier = info.createSupplier();
         newSupplier.setLocalities(locs.getSelectedLocalityCodes());
         newSupplier.setCategories(cats.getSelectedCategoryCodes());
+        newSupplier.setService(service.getSelectedService());
 
         eventBus.registerSupplier(newSupplier);
         //signal event
@@ -134,31 +148,55 @@ public class SupplierCreationPresenter
     private static final int SERVICE = 4;
 
     private boolean canContinue(int step) {
-//        if (step == INFO) {
-//            FormDemandBasicInterface widget =
-//                (FormDemandBasicInterface) view.getSupplierInfoHolder().getWidget();
-//            return widget.isValid();
-//        }
-//        if (step == CATEGORY) {
-//            CategorySelectorInterface widget =
-//                (CategorySelectorInterface) view.getCategoryHolder().getWidget();
-//            return widget.isValid();
-//        }
-//        if (step == LOCALITY) {
-//            LocalitySelectorInterface widget =
-//                (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
-//            return widget.isValid();
-//        }
-//        if (step == SERVICE) {
-//            FormDemandAdvViewInterface widget =
-//                (FormDemandAdvViewInterface) view.getServiceHolder().getWidget();
-//            return widget.isValid();
-//        }
-//        //can't reach
-//        return false;
-
-        //DEVEL
-        return true;
-
+        if (step == INFO) {
+            ProvidesValidate widget =
+                (ProvidesValidate) view.getSupplierInfoHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == CATEGORY) {
+            ProvidesValidate widget =
+                (ProvidesValidate) view.getCategoryHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == LOCALITY) {
+            ProvidesValidate widget =
+                (ProvidesValidate) view.getLocalityHolder().getWidget();
+            return widget.isValid();
+        }
+        if (step == SERVICE) {
+            return view.isValid();
+        }
+        //can't reach
+        return false;
     }
+
+    @Inject
+    private SupplierRPCServiceAsync supplierService = null;
+
+    public void setService(SupplierRPCServiceAsync service) {
+        this.supplierService = service;
+    }
+
+    private void initServices() {
+        supplierService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
+            @Override
+            public void onFailure(Throwable arg0) {
+                // TODO create some good explanation with contact formular
+                SimpleIconLabel errorMsg =
+                    new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
+                            + "supplierService table initialization");
+                errorMsg.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
+                view.getServiceHolder().setWidget(errorMsg);
+            }
+
+            @Override
+            public void onSuccess(ArrayList<ServiceDetail> data) {
+                LOGGER.info(" -> Service Form init & fill data");
+                ServiceWidget serviceWidget = new ServiceWidget();
+                view.getServiceHolder().setWidget(serviceWidget);
+                serviceWidget.setData(data);
+            }
+        });
+    }
+
 }

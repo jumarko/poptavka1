@@ -11,12 +11,17 @@ import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.product.Service;
+import cz.poptavka.sample.domain.product.ServiceType;
+import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.SupplierService;
+import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
@@ -32,6 +37,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     private LocalityService localityService;
     private CategoryService categoryService;
+    private GeneralService generalService;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -46,6 +52,11 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setGeneralService(GeneralService generalService) {
+        this.generalService = generalService;
     }
 
     @Override
@@ -91,16 +102,12 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.setCategories(categories);
         /** Service selection **/
         //implement
-//        Service service = new Service();
-//        service.setId(supplier.getService().getId());
-//        service.setTitle(supplier.getService().getTitle());
-//        service.setDescription(supplier.getService().getDescription());
-//        service.setPrice(supplier.getService().getPrice());
-//        UserService userService = new UserService();
-//        userService.setService(service);
-//        List<UserService> us = new ArrayList<UserService>();
-//        us.add(userService);
-//        newSupplier.getBusinessUser().setUserServices(us);
+        Service service = generalService.find(Service.class, Long.parseLong(supplier.getService() + ""));
+        UserService userService = new UserService();
+        userService.setService(service);
+        List<UserService> us = new ArrayList<UserService>();
+        us.add(userService);
+        newSupplier.getBusinessUser().setUserServices(us);
         /** registration process **/
         newSupplier = supplierService.create(newSupplier);
         //del
@@ -121,6 +128,38 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         loc.setName(searchString);
         List<Category> results = categoryService.findByExample(loc);
         return (results.size() != 0) ? results.get(0) : null;
+    }
+
+    public ArrayList<ServiceDetail> getSupplierServices() {
+        List<Service> services = this.generalService.findAll(Service.class);
+        if (services != null) {
+            System.out.println("Services count: " + services.size());
+        } else {
+            System.out.println("NNULLLLLLLL");
+        }
+        return convertToServiceDetails(services);
+    }
+
+    private ArrayList<ServiceDetail> convertToServiceDetails(List<Service> services) {
+        ArrayList<ServiceDetail> details = new ArrayList<ServiceDetail>();
+        for (Service sv : services) {
+            if (sv.isValid() && sv.getServiceType().equals(ServiceType.SUPPLIER)) {
+                ServiceDetail detail = new ServiceDetail();
+                detail.setId(sv.getId());
+                detail.setTitle(sv.getTitle());
+                detail.setPrice(sv.getPrice());
+                detail.setPrepaidMonths(sv.getPrepaidMonths().intValue());
+                detail.setDescription(sv.getDescription());
+                details.add(detail);
+                if (detail == null) {
+                    System.out.println("ServiceDetail inserted NULL");
+                }
+            }
+        }
+        if (details == null) {
+            System.out.println("ServiceDetail RPC returns NULL");
+        }
+        return details;
     }
 
 }

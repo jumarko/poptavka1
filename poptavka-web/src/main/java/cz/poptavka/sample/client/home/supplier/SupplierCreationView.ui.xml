@@ -81,6 +81,7 @@
                     <g:center>
                         <g:HTMLPanel>
                             <g:SimplePanel ui:field="serviceHolder" />
+                            <g:CheckBox ui:field="agreedCheck" />
                             <ui:msg key="agreement">Agreement</ui:msg>
                             <g:Anchor ui:field="conditionLink">
                                 <ui:msg key="conditions">Conditions</ui:msg>

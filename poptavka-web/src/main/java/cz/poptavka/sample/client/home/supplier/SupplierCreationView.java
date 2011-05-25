@@ -16,6 +16,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -25,9 +26,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
+import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 
-public class SupplierCreationView extends OverflowComposite implements SupplierCreationPresenter.CreationViewInterface {
+public class SupplierCreationView extends OverflowComposite
+    implements SupplierCreationPresenter.CreationViewInterface, ProvidesValidate  {
 
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
     interface CreationViewUiBinder extends UiBinder<Widget, SupplierCreationView> {    }
@@ -48,6 +51,7 @@ public class SupplierCreationView extends OverflowComposite implements SupplierC
     @UiField SimplePanel localityHolder;
     //step4
     @UiField SimplePanel serviceHolder;
+    @UiField CheckBox agreedCheck;
     @UiField Button registerBtn;
     @UiField Anchor conditionLink;
 
@@ -145,6 +149,11 @@ public class SupplierCreationView extends OverflowComposite implements SupplierC
         panel.setPopupPosition(x, y);
 
         panel.show();
+    }
+
+    @Override
+    public boolean isValid() {
+        return agreedCheck.getValue();
     }
 
 }
