@@ -58,7 +58,7 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
             eventBus.invokeNewDemand(Long.valueOf(param));
         }
         if (historyName.equals("invokeMyDemandsOperator")) {
-//          eventBus.invokeNewDemand();
+            eventBus.invokeMyDemandsOperator();
         }
         if (historyName.equals("invokeAdministration")) {
             eventBus.invokeAdministration();

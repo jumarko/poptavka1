@@ -1,13 +1,50 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:w="urn:import:com.google.gwt.user.cellview.client">
 	<ui:style>
 		.important {
 			font-weight: bold;
 		}
 	</ui:style>
-	<g:HTMLPanel>
-		Hello,
-		<g:Button styleName="{style.important}" ui:field="button" />
-	</g:HTMLPanel>
-</ui:UiBinder> 
+
+	<ui:with field='res'
+		type='cz.poptavka.sample.client.resources.StyleResource' />
+
+	<g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+		<g:west size="650">
+			<g:FlowPanel>
+				<g:HorizontalPanel>
+					<g:HTML>
+						<ui:msg key="myDemandsOperator">My Demands - operator</ui:msg>
+					</g:HTML>
+					<g:Button ui:field='refreshBtn' enabled="false">
+						<ui:msg key="refresh">Refresh</ui:msg>
+					</g:Button>
+					<g:Button ui:field='answerBtn' enabled="false">
+						<ui:msg key="answer">Answer</ui:msg>
+					</g:Button>
+					<g:Button ui:field='editBtn' enabled="false">
+						<ui:msg key="edit">Edit</ui:msg>
+					</g:Button>
+					<g:Button ui:field='closeBtn' enabled="false">
+						<ui:msg key="close">Close</ui:msg>
+					</g:Button>
+					<g:Button ui:field='cancelBtn' enabled="false">
+						<ui:msg key="cancel">Cancel</ui:msg>
+					</g:Button>
+					<g:Button ui:field='activateBtn' enabled="false">
+						<ui:msg key="activate">Activate</ui:msg>
+					</g:Button>
+					<g:Button ui:field='rejectBtn' enabled="false">
+						<ui:msg key="reject">Reject</ui:msg>
+					</g:Button>
+				</g:HorizontalPanel>
+				<w:CellTable ui:field="table"></w:CellTable>
+			</g:FlowPanel>
+		</g:west>
+		<g:center>
+			<g:SimplePanel ui:field="myDemandOperatorDetail"></g:SimplePanel>
+		</g:center>
+	</g:SplitLayoutPanel>
+</ui:UiBinder>
