@@ -19,9 +19,8 @@ import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.user.problems.MyProblemsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
@@ -107,14 +106,14 @@ public interface HomeEventBus extends EventBus {
     void initRegistrationForm(SimplePanel holderWidget);
     //logic flow order representing registering client and then creating his demand
     @Event(handlers = HomeHandler.class)
-    void registerNewClient(ClientDetail newClient);
+    void registerNewClient(UserDetail newClient);
 
     @Event(handlers = DemandCreationPresenter.class)
-    void prepareNewDemandForNewClient(Long clientId);
+    void prepareNewDemandForNewClient(UserDetail client);
 
     //alternative way of loging - verifying
     @Event(handlers = HomeHandler.class)
-    void verifyExistingClient(ClientDetail client);
+    void verifyExistingClient(UserDetail client);
     //error output
     @Event(handlers = DemandCreationPresenter.class)
     void loginError();
@@ -137,7 +136,7 @@ public interface HomeEventBus extends EventBus {
 
     /** Supplier registration **/
     @Event(handlers = HomeHandler.class)
-    void registerSupplier(SupplierDetail newSupplier);
+    void registerSupplier(UserDetail newSupplier);
 
     /** Common method calls **/
 

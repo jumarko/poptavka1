@@ -17,7 +17,7 @@ import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
-import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 public class FormUserRegistrationView extends Composite
     implements FormUserRegistrationPresenter.FormRegistrationInterface, ProvidesValidate {
@@ -111,8 +111,8 @@ public class FormUserRegistrationView extends Composite
     }
 
     @Override
-    public ClientDetail getNewClient() {
-        ClientDetail client = new ClientDetail(mailBox.getText(), passBox.getText());
+    public UserDetail getNewClient() {
+        UserDetail client = new UserDetail(mailBox.getText(), passBox.getText());
 
         client.setCompanyName(companyNameBox.getText());
         client.setIdentifiacationNumber(companyIdBox.getText());

@@ -7,6 +7,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
@@ -26,8 +27,15 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         Widget getWidgetView();
     }
 
+    private DemandsLayoutPresenter demandsLayoutPresenter = null;
+
     public void onAtAccount(UserDetail user) {
         eventBus.setUserLayout();
+        if (demandsLayoutPresenter != null) {
+            eventBus.removeHandler(demandsLayoutPresenter);
+        }
+        demandsLayoutPresenter = eventBus.addHandler(DemandsLayoutPresenter.class);
+        demandsLayoutPresenter.onAtAccount(new UserDetail());
         eventBus.setBodyHolderWidget(view.getWidgetView());
 //        eventBus.invokeMyDemands();
     }

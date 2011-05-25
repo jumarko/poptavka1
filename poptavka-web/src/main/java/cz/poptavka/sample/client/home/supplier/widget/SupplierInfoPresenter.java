@@ -17,7 +17,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.MainEventBus;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = SupplierInfoView.class, multiple = true)
 public class SupplierInfoPresenter extends
@@ -41,9 +41,9 @@ public class SupplierInfoPresenter extends
 
         StatusIconLabel getPwdConfirmStatus();
 
-        SupplierDetail getBaseSupplier();
+        UserDetail getBaseSupplier();
 
-        SupplierDetail createSupplier();
+        UserDetail createSupplier();
 
         void setMailFlag(boolean flag);
 

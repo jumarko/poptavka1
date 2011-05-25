@@ -22,7 +22,7 @@ import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
@@ -62,7 +62,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     //TODO add description support
     //TODO setService
-    public long createNewSupplier(SupplierDetail supplier) {
+    public long createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
             .companyName(supplier.getCompanyName())
@@ -90,23 +90,27 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setAddresses(addresses);
         /** localities **/
         List<Locality> locs = new ArrayList<Locality>();
-        for (String loc : supplier.getLocalities()) {
+        for (String loc : supplier.getSupplier().getLocalities()) {
             locs.add(getLocalityByExample(loc));
         }
         newSupplier.setLocalities(locs);
         /** categories **/
         List<Category> categories = new ArrayList<Category>();
-        for (String cat : supplier.getCategories()) {
+        for (String cat : supplier.getSupplier().getCategories()) {
             categories.add(getCategoryByExample(cat));
         }
         newSupplier.setCategories(categories);
         /** Service selection **/
-        //implement
-        Service service = generalService.find(Service.class, Long.parseLong(supplier.getService() + ""));
-        UserService userService = new UserService();
-        userService.setService(service);
         List<UserService> us = new ArrayList<UserService>();
-        us.add(userService);
+
+        ArrayList<Integer> userServicesId = supplier.getSupplier().getServices();
+        for (Integer serviceId : userServicesId) {
+            Service service = generalService.find(Service.class, Long.parseLong(serviceId + ""));
+            UserService userService = new UserService();
+            userService.setService(service);
+            us.add(userService);
+        }
+
         newSupplier.getBusinessUser().setUserServices(us);
         /** registration process **/
         newSupplier = supplierService.create(newSupplier);

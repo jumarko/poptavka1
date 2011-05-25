@@ -13,8 +13,7 @@ import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
-import cz.poptavka.sample.shared.domain.ClientDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
  * Handler for RPC calls for localities & categories
@@ -24,7 +23,6 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
  */
 @EventHandler
 public class HomeHandler extends BaseEventHandler<HomeEventBus> {
-
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
@@ -65,19 +63,19 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
      *
      * @param client existing user detail
      */
-    public void onVerifyExistingClient(ClientDetail client) {
+    public void onVerifyExistingClient(UserDetail client) {
         LOGGER.fine("verify start");
-        clientService.verifyClient(client, new AsyncCallback<Long>() {
+        clientService.verifyClient(client, new AsyncCallback<UserDetail>() {
             @Override
             public void onFailure(Throwable arg0) {
                 // TODO Auto-generated method stub
 
             }
             @Override
-            public void onSuccess(Long clientId) {
+            public void onSuccess(UserDetail client) {
                 LOGGER.fine("verify result");
-                if (clientId != -1) {
-                    eventBus.prepareNewDemandForNewClient(clientId);
+                if (client.getId() != -1) {
+                    eventBus.prepareNewDemandForNewClient(client);
                 } else {
                     eventBus.loadingHide();
                     eventBus.loginError();
@@ -91,22 +89,22 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
      *
      * @param client newly created client
      */
-    public void onRegisterNewClient(ClientDetail client) {
-        clientService.createNewClient(client, new AsyncCallback<Long>() {
+    public void onRegisterNewClient(UserDetail client) {
+        clientService.createNewClient(client, new AsyncCallback<UserDetail>() {
             @Override
             public void onFailure(Throwable arg0) {
                 // TODO Auto-generated method stub
             }
             @Override
-            public void onSuccess(Long clientId) {
-                if (clientId != -1) {
-                    eventBus.prepareNewDemandForNewClient(clientId);
+            public void onSuccess(UserDetail client) {
+                if (client.getId() != -1) {
+                    eventBus.prepareNewDemandForNewClient(client);
                 }
             }
         });
     }
 
-    public void onRegisterSupplier(SupplierDetail newSupplier) {
+    public void onRegisterSupplier(UserDetail newSupplier) {
         supplierService.createNewSupplier(newSupplier, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable arg0) {
@@ -116,6 +114,7 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
 
             @Override
             public void onSuccess(Long supplierId) {
+                // TODO forward to user/atAccount
                 eventBus.loadingHide();
                 Window.alert("New Supplier registered with id: " + supplierId);
             }

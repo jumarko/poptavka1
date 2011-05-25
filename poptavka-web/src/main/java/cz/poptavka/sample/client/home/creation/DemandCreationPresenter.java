@@ -28,8 +28,8 @@ import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter.F
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = DemandCreationView.class)
 public class DemandCreationPresenter
@@ -108,7 +108,7 @@ public class DemandCreationPresenter
 
     private void registerNewCient() {
         FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
-        ClientDetail newClient = registerWidget.getNewClient();
+        UserDetail newClient = registerWidget.getNewClient();
         eventBus.registerNewClient(newClient);
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
@@ -119,7 +119,7 @@ public class DemandCreationPresenter
      *
      * @param id id of newly created client/id of logged user
      */
-    public void onPrepareNewDemandForNewClient(Long id) {
+    public void onPrepareNewDemandForNewClient(UserDetail client) {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
         FormDemandBasicInterface basicValues =
@@ -137,7 +137,7 @@ public class DemandCreationPresenter
         demand.setLocalities(localityValues.getSelectedLocalityCodes());
         demand.setAdvInfo(advValues.getValues());
 
-        eventBus.createDemand(demand, id);
+        eventBus.createDemand(demand, client.getId());
         eventBus.loadingShow(MSGS.progressCreatingDemand());
     }
 

@@ -32,7 +32,7 @@ import cz.poptavka.sample.client.main.common.service.ServiceWidget;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
@@ -132,10 +132,10 @@ public class SupplierCreationPresenter
         CategorySelectorInterface cats = (CategorySelectorInterface) view.getCategoryHolder().getWidget();
         ServiceWidget service = (ServiceWidget) view.getServiceHolder().getWidget();
 
-        SupplierDetail newSupplier = info.createSupplier();
-        newSupplier.setLocalities(locs.getSelectedLocalityCodes());
-        newSupplier.setCategories(cats.getSelectedCategoryCodes());
-        newSupplier.setService(service.getSelectedService());
+        UserDetail newSupplier = info.createSupplier();
+        newSupplier.getSupplier().setLocalities(locs.getSelectedLocalityCodes());
+        newSupplier.getSupplier().setCategories(cats.getSelectedCategoryCodes());
+        newSupplier.getSupplier().addService(service.getSelectedService());
 
         eventBus.registerSupplier(newSupplier);
         //signal event

@@ -84,7 +84,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         view.show();
     }
 
-    private void registerUser(String login, String password) {
+    private void signUserIn(String login, String password) {
         view.setLoadingStatus();
         //if there was previous rememberMe or new remember settings
         if (!view.getRememberMe()) {
@@ -115,7 +115,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private void startLoginIn() {
         boolean isValid = view.isValid();
         if (isValid) {
-            registerUser(view.getLogin(), view.getPassword());
+            signUserIn(view.getLogin(), view.getPassword());
         }
     }
 

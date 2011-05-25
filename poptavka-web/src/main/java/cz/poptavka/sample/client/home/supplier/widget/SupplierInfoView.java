@@ -17,6 +17,7 @@ import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 public class SupplierInfoView extends Composite
     implements SupplierInfoPresenter.SupplierInfoInterface, ProvidesValidate {
@@ -91,8 +92,8 @@ public class SupplierInfoView extends Composite
     }
 
     @Override
-    public SupplierDetail getBaseSupplier() {
-        SupplierDetail supplier = new SupplierDetail(mailBox.getText(), passBox.getText());
+    public UserDetail getBaseSupplier() {
+        UserDetail supplier = new UserDetail(mailBox.getText(), passBox.getText());
 
         supplier.setCompanyName(companyNameBox.getText());
         supplier.setIdentifiacationNumber(companyIdBox.getText());
@@ -144,22 +145,24 @@ public class SupplierInfoView extends Composite
     }
 
     @Override
-    public SupplierDetail createSupplier() {
-        SupplierDetail sup = new SupplierDetail(mailBox.getText(), passBox.getText());
+    public UserDetail createSupplier() {
+        UserDetail user = new UserDetail(mailBox.getText(), passBox.getText());
 
-        sup.setCompanyName(companyNameBox.getText());
-        sup.setIdentifiacationNumber(companyIdBox.getText());
-        sup.setTaxId(companyTaxBox.getText());
-        sup.setDescription(richText.getValue());
-        sup.setFirstName(nameBox.getText());
-        sup.setLastName(surnameBox.getText());
+        user.setCompanyName(companyNameBox.getText());
+        user.setIdentifiacationNumber(companyIdBox.getText());
+        user.setTaxId(companyTaxBox.getText());
+        SupplierDetail supplier = new SupplierDetail();
+        supplier.setDescription(richText.getValue());
+        user.setSupplier(supplier);
+        user.setFirstName(nameBox.getText());
+        user.setLastName(surnameBox.getText());
         AddressDetail address = new AddressDetail();
         address.setCityName(cityBox.getText());
         address.setStreet(streetBox.getText());
         address.setZipCode(zipBox.getText());
-        sup.setAddress(address);
+        user.setAddress(address);
 
-        return sup;
+        return user;
     }
 
     @Override

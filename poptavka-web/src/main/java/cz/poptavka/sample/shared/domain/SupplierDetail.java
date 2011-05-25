@@ -1,9 +1,10 @@
 package cz.poptavka.sample.shared.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class SupplierDetail extends ClientDetail {
+public class SupplierDetail implements Serializable {
 
     /**
      * Generated serialVersionUID.
@@ -15,14 +16,9 @@ public class SupplierDetail extends ClientDetail {
     private String description;
     private ArrayList<String> localities;
     private ArrayList<String> categories;
-    private int serviceId;
+    private ArrayList<Integer> services;
 
     public SupplierDetail() {
-        super();
-    }
-
-    public SupplierDetail(String mail, String password) {
-        super(mail, password);
     }
 
     public int getOverallRating() {
@@ -64,12 +60,16 @@ public class SupplierDetail extends ClientDetail {
         this.description = description;
     }
 
-    public int getService() {
-        return serviceId;
+    public ArrayList<Integer> getServices() {
+        return services;
     }
 
-    public void setService(int service) {
-        this.serviceId = service;
+    public void setServices(ArrayList<Integer> serviceList) {
+        this.services = serviceList;
+    }
+
+    public void addService(int selectedService) {
+        services.add(Integer.valueOf(selectedService));
     }
 
 

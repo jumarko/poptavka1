@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 
 @RemoteServiceRelativePath("service/cs")
 public interface ClientRPCService extends RemoteService {
-    ArrayList<ClientDetail> getAllClients();
+    ArrayList<UserDetail> getAllClients();
 
-    long createNewClient(ClientDetail clientDetail);
+    UserDetail createNewClient(UserDetail clientDetail);
 
-    long verifyClient(ClientDetail client);
+    UserDetail verifyClient(UserDetail client);
 
     boolean checkFreeEmail(String email);
 

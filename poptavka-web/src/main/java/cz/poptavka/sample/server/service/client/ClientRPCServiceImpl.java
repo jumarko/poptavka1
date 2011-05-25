@@ -1,6 +1,14 @@
 package cz.poptavka.sample.server.service.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.googlecode.genericdao.search.Search;
+
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -20,13 +28,7 @@ import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
-import cz.poptavka.sample.shared.domain.ClientDetail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -40,7 +42,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private LocalityService localityService;
     private CategoryService categoryService;
 
-    public ArrayList<ClientDetail> getAllClients() {
+    public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
         return null;
     }
@@ -70,7 +72,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      *
      * TODO: website assignation in backend
      */
-    public long createNewClient(ClientDetail clientDetail) {
+    public UserDetail createNewClient(UserDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
         final BusinessUserData businessUserData = new BusinessUserData.Builder().
@@ -120,7 +122,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         /** TODO ivlcek - email activation. **/
 
         newClient = clientService.create(newClient);
-        return newClient.getId();
+        return this.toClientDetail(newClient);
     }
 
     /**
@@ -130,13 +132,13 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @return client's ID if exists, -1 if does not
      */
     @Override
-    public long verifyClient(ClientDetail clientDetail) {
+    public UserDetail verifyClient(UserDetail clientDetail) {
         final List<Client> peristedClient = this.clientService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
                 .withEmail(clientDetail.getEmail())
                 .withPassword(clientDetail.getPassword())
                 .build());
-        return peristedClient.isEmpty() ? -1L : peristedClient.get(0).getId();
+        return peristedClient.isEmpty() ? new UserDetail() : this.toClientDetail(peristedClient.get(0));
     }
 
     @Override
@@ -149,6 +151,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return userByEmail == null;
     }
 
+    // TODO rework to SearchByCriteria
     private Locality getLocalityByExample(String searchString) {
         Locality loc = new Locality();
         loc.setName(searchString);
@@ -156,6 +159,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return (results.size() != 0) ? results.get(0) : null;
     }
 
+ // TODO rework to SearchByCriteria
     private Category getCategoryByExample(String searchString) {
         Category loc = new Category();
         loc.setName(searchString);

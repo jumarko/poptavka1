@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.user;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -32,8 +33,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
+            public void onFailure(Throwable exc) {
+                Window.alert(exc.getMessage());
             }
         });
     }

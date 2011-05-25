@@ -29,8 +29,8 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
-    @Event(handlers = {UserPresenter.class, DemandsLayoutPresenter.class },
-    historyConverter = UserHistoryConverter.class)
+    @Event(handlers = {UserPresenter.class },
+            historyConverter = UserHistoryConverter.class)
     String atAccount(UserDetail user);
 
     @Event(handlers = DemandsLayoutPresenter.class)
@@ -39,16 +39,6 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = DemandsLayoutPresenter.class)
     void showDemandDetail(long demandId);
 
-    @Event(forwardToParent = true)
-    void setUserLayout();
-
-    /**
-     * Display User View - parent Widget for client-logged user section.
-     *
-     * @param body
-     */
-    @Event(forwardToParent = true)
-    void setBodyHolderWidget(Widget body);
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
@@ -72,34 +62,34 @@ public interface UserEventBus extends EventBus {
     /** DEVEL **/
     /** DEMAND tab methods. **/
     @Event(handlers = MyDemandsPresenter.class,
-    activate = MyDemandsPresenter.class,
-    deactivate = {OffersPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
-    historyConverter = UserHistoryConverter.class)
+            activate = MyDemandsPresenter.class,
+            deactivate = {OffersPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
+            historyConverter = UserHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = OffersPresenter.class,
-    activate = OffersPresenter.class,
-    deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
-    historyConverter = UserHistoryConverter.class)
+            activate = OffersPresenter.class,
+            deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
+            historyConverter = UserHistoryConverter.class)
     String invokeOffers();
 
     @Event(handlers = NewDemandPresenter.class,
-    activate = NewDemandPresenter.class,
-    deactivate = {OffersPresenter.class, MyDemandsPresenter.class, MyDemandsOperatorPresenter.class },
-    historyConverter = UserHistoryConverter.class)
+            activate = NewDemandPresenter.class,
+            deactivate = {OffersPresenter.class, MyDemandsPresenter.class, MyDemandsOperatorPresenter.class },
+            historyConverter = UserHistoryConverter.class)
     String invokeNewDemand(Long clientId);
 
     @Event(handlers = MyDemandsOperatorPresenter.class,
-    activate = MyDemandsOperatorPresenter.class,
-    deactivate = {OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class },
-    historyConverter = UserHistoryConverter.class)
+            activate = MyDemandsOperatorPresenter.class,
+            deactivate = {OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class },
+            historyConverter = UserHistoryConverter.class)
     String invokeMyDemandsOperator();
 
     @Event(handlers = AdministrationPresenter.class,
-    activate = AdministrationPresenter.class,
-    deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
+            activate = AdministrationPresenter.class,
+            deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
             NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
-    historyConverter = UserHistoryConverter.class)
+            historyConverter = UserHistoryConverter.class)
     String invokeAdministration();
 
     //for operator only
@@ -109,6 +99,7 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = DemandsLayoutPresenter.class)
     void displayContent(Widget contentWidget);
 
+    /** Messages secition **/
     @Event(handlers = MessagesPresenter.class)
     void reply();
 
@@ -141,6 +132,15 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = MyDemandsPresenter.class)
     void getDemandDetail(String name);
 
+    /** Call to UserPresenter **/
+    /**
+     * Display User View - parent Widget for client-logged user section.
+     * @param body
+     */
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(Widget body);
+
+
     /** Calls to MainEventBus **/
     @Event(forwardToParent = true)
     void initDemandBasicForm(SimplePanel holderPanel);
@@ -159,4 +159,7 @@ public interface UserEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void createDemand(DemandDetail demand, Long id);
+
+    @Event(forwardToParent = true)
+    void setUserLayout();
 }

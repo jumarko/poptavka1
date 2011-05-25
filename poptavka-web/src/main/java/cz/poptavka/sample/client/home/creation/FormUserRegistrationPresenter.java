@@ -22,7 +22,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
-import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = FormUserRegistrationView.class)
 public class FormUserRegistrationPresenter extends
@@ -54,7 +54,7 @@ public class FormUserRegistrationPresenter extends
 
         void toggleCompanyButtons(boolean toggle);
 
-        ClientDetail getNewClient();
+        UserDetail getNewClient();
 
         void setMailFlag(boolean flag);
 

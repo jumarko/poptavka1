@@ -4,25 +4,25 @@
  */
 package cz.poptavka.sample.server.service.demand;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * @author Excalibur
@@ -54,32 +54,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.demandService = demandService;
     }
 
-    private ArrayList<DemandDetail> toArrayList(List<Demand> list) {
-        ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
-        for (Demand demand : list) {
-            DemandDetail detail = new DemandDetail();
-            detail.setId(demand.getId());
-            detail.setTitle(demand.getTitle());
-            detail.setDescription(demand.getDescription());
-            detail.setPrice(demand.getPrice());
-            detail.setEndDate(demand.getEndDate());
-            detail.setExpireDate(demand.getValidTo());
-            detail.setMaxOffers(10);
-            detail.setMinRating(10);
-            ArrayList<String> catList = new ArrayList<String>();
-            for (Category cat : demand.getCategories()) {
-                catList.add(cat.getName());
-            }
-            detail.setCategories(catList);
-            ArrayList<String> locList = new ArrayList<String>();
-            for (Locality loc : demand.getLocalities()) {
-                locList.add(loc.getName());
-            }
-            detail.setLocalities(locList);
-            details.add(detail);
-        }
-        return details;
-    }
 
     @Override
     public String createNewDemand(DemandDetail detail, Long cliendId) {
@@ -130,17 +104,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     public ArrayList<DemandDetail> getClientDemands(long id) {
         Client client = this.generalService.find(Client.class, id);
-        ArrayList<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
-        for (Demand demand : client.getDemands()) {
-            DemandDetail d = new DemandDetail();
-            d.setClientId(demand.getId());
-            d.setDescription(demand.getDescription());
-            d.setTitle(demand.getTitle());
-            d.setPrice(demand.getPrice());
-            demandDetails.add(d);
-            // TODO - doplnit ostatne fieldy
-        }
-        return demandDetails;
+        return this.toDemandDetailList(client.getDemands());
     }
 
     @Override
@@ -148,31 +112,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         ArrayList<ArrayList<OfferDetail>> offerList = new ArrayList<ArrayList<OfferDetail>>();
         for (Long id : idList) {
             Demand demand = demandService.getById(id);
-            offerList.add(toOfferDetailList(demand.getOffers()));
+            offerList.add(this.toOfferDetailList(demand.getOffers()));
         }
         return offerList;
     }
 
-    private ArrayList<OfferDetail> toOfferDetailList(List<Offer> offerList) {
-        ArrayList<OfferDetail> details = new ArrayList<OfferDetail>();
-        for (Offer offer : offerList) {
-            OfferDetail detail = new OfferDetail();
-            detail.setDemandId(offer.getDemand().getId());
-            detail.setFinishDate(offer.getFinishDate());
-            detail.setPrice(offer.getPrice());
-            detail.setSupplierId(offer.getSupplier().getId());
-//            if (offer.getSupplier().getPerson() != null) {
-//                detail.setSupplierName(offer.getSupplier().getPerson().getFirstName()
-//                        + " " + offer.getSupplier().getPerson().getLastName());
-//            }
-            if (offer.getSupplier().getBusinessUser().getBusinessUserData() != null) {
-                detail.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
-            } else {
-                detail.setSupplierName("unknown");
-            }
-
-            details.add(detail);
-        }
-        return details;
-    }
 }

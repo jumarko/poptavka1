@@ -21,14 +21,14 @@ import java.util.logging.Logger;
  *
  */
 
-@Presenter(view = DemandsLayoutView.class)
+@Presenter(view = DemandsLayoutView.class, multiple = true)
 public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
 
-    //User: Test @ Test
-    private static final long TEST_CLIENT_ID = 81;
+    //DEVEL
+    //Client: Beho@poptavka.cz | mojeheslo
+    private static final long TEST_CLIENT_ID = 75;
 
     //will be assigned during login process
-    //devel client with ID = 17
     private long clientId = TEST_CLIENT_ID;
     private ArrayList<DemandDetail> clientsDemands = null;
     private ArrayList<ArrayList<OfferDetail>> client = new ArrayList<ArrayList<OfferDetail>>();
@@ -65,6 +65,7 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
     public void onAtAccount(UserDetail user) {
         eventBus.setTabWidget(view.getWidgetView());
         if (clientsDemands == null) {
+            LOGGER.fine("RPC call - get client's (ID:" + clientId + ") demands");
             eventBus.getClientsDemands(clientId);
         }
     }

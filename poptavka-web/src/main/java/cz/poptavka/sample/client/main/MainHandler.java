@@ -28,28 +28,16 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
 @EventHandler
 public class MainHandler extends BaseEventHandler<MainEventBus> {
 
+    @Inject
     private LocalityRPCServiceAsync localityService = null;
+    @Inject
     private CategoryRPCServiceAsync categoryService = null;
+    @Inject
     private DemandRPCServiceAsync demandService = null;
     @Inject
     private ClientRPCServiceAsync clientService = null;
 
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
-
-    @Inject
-    public void setLocalityService(LocalityRPCServiceAsync service) {
-        localityService = service;
-    }
-
-    @Inject
-    public void setCategoryService(CategoryRPCServiceAsync service) {
-        categoryService = service;
-    }
-
-    @Inject
-    void setDemandService(DemandRPCServiceAsync service) {
-        demandService = service;
-    }
 
     public void onGetRootLocalities() {
         localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
@@ -140,7 +128,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
             public void onSuccess(String result) {
                 //signal event
                 eventBus.loadingHide();
-                Window.alert(result);
+                // TODO forward to user/atAccount
             }
         });
         LOGGER.info("submitting new demand");
