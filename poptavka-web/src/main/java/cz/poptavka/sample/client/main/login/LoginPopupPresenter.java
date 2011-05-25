@@ -62,15 +62,13 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private UserRPCServiceAsync userService;
 
     public void bindView() {
-
-        KeyDownHandler enterKeyHandler = getHandler();
-
         view.getLoginButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 startLoginIn();
             }
         });
+        KeyDownHandler enterKeyHandler = getHandler();
         view.getLoginButton().addKeyDownHandler(enterKeyHandler);
         view.getEmailBox().addKeyDownHandler(enterKeyHandler);
         view.getPassBox().addKeyDownHandler(enterKeyHandler);
@@ -88,6 +86,13 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
     private void registerUser(String login, String password) {
         view.setLoadingStatus();
+        //if there was previous rememberMe or new remember settings
+        if (!view.getRememberMe()) {
+            Cookies.removeCookie("pop-user");
+            Cookies.removeCookie("pop-password");
+        } else {
+            setLoginCookies();
+        }
         userService.loginUser(new UserDetail(login, password), new AsyncCallback<UserDetail>() {
 
             @Override
