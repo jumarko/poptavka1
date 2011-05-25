@@ -9,6 +9,14 @@ import cz.poptavka.sample.service.GenericService;
 import java.util.List;
 
 /**
+ * Basic Service for localities.
+ * Should provide only read methods because localities storing is complex problem that must be handled
+ * by stored procedure (filling of attributes level, leftBound and rightBound).
+ * <p>
+ *     If any method "non-read" method is called then TreeItemModificationException should be thrown.
+ *
+ * @see cz.poptavka.sample.domain.common.TreeItem
+ *
  * @author Juraj Martinka
  *         Date: 5.2.11
  */

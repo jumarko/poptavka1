@@ -4,6 +4,7 @@ import com.googlecode.ehcache.annotations.Cacheable;
 import cz.poptavka.sample.dao.demand.CategoryDao;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.exception.TreeItemModificationException;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,5 +48,26 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
         return getDao().getCategory(code);
     }
 
+    //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------
 
+
+    @Override
+    public Category create(Category entity) {
+        throw new TreeItemModificationException();
+    }
+
+    @Override
+    public Category update(Category entity) {
+        throw new TreeItemModificationException();
+    }
+
+    @Override
+    public void remove(Category entity) {
+        throw new TreeItemModificationException();
+    }
+
+    @Override
+    public void removeById(long id) {
+        throw new TreeItemModificationException();
+    }
 }

@@ -5,6 +5,7 @@ import cz.poptavka.sample.dao.address.LocalityDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
+import cz.poptavka.sample.exception.TreeItemModificationException;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,5 +45,29 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 //    @Cacheable(cacheName = "cache5h")
     public List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria) {
         return getDao().getLocalities(localityType, resultCriteria);
+    }
+
+
+    //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------
+
+
+    @Override
+    public Locality create(Locality entity) {
+        throw new TreeItemModificationException();
+    }
+
+    @Override
+    public Locality update(Locality entity) {
+        throw new TreeItemModificationException();
+    }
+
+    @Override
+    public void remove(Locality entity) {
+        throw new TreeItemModificationException();
+    }
+
+    @Override
+    public void removeById(long id) {
+        throw new TreeItemModificationException();
     }
 }
