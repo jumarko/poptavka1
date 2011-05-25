@@ -105,7 +105,7 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
     }
 
     public void onRegisterSupplier(UserDetail newSupplier) {
-        supplierService.createNewSupplier(newSupplier, new AsyncCallback<Long>() {
+        supplierService.createNewSupplier(newSupplier, new AsyncCallback<UserDetail>() {
             @Override
             public void onFailure(Throwable arg0) {
                 eventBus.loadingHide();
@@ -113,10 +113,9 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
             }
 
             @Override
-            public void onSuccess(Long supplierId) {
+            public void onSuccess(UserDetail supplier) {
                 // TODO forward to user/atAccount
                 eventBus.loadingHide();
-                Window.alert("New Supplier registered with id: " + supplierId);
             }
         });
     }

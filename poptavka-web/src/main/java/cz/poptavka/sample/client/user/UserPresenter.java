@@ -30,14 +30,17 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     private DemandsLayoutPresenter demandsLayoutPresenter = null;
 
     public void onAtAccount(UserDetail user) {
-        eventBus.setUserLayout();
         if (demandsLayoutPresenter != null) {
             eventBus.removeHandler(demandsLayoutPresenter);
         }
+//        if (user.isVerified()) {
+        eventBus.setUserLayout();
         demandsLayoutPresenter = eventBus.addHandler(DemandsLayoutPresenter.class);
-        demandsLayoutPresenter.onAtAccount(new UserDetail());
+        demandsLayoutPresenter.onAtAccount(user);
         eventBus.setBodyHolderWidget(view.getWidgetView());
-//        eventBus.invokeMyDemands();
+//        } else {
+//            Window.alert("Activate your account first to use the app");
+//        }
     }
 
     public void onSetTabWidget(Widget tabBody) {

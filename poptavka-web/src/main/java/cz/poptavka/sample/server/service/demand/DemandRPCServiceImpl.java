@@ -67,7 +67,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getExpireDate());
+
         demand.setClient(this.generalService.find(Client.class, cliendId));
+        System.out.println("RPCImpl Client: " + (demand.getClient() == null));
         demandService.create(demand);
         return "Done";
     }

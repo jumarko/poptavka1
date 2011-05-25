@@ -9,7 +9,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 
 public interface SupplierRPCServiceAsync {
 
-    void createNewSupplier(UserDetail supplier, AsyncCallback<Long> callback);
+    void createNewSupplier(UserDetail supplier, AsyncCallback<UserDetail> callback);
 
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 

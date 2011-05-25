@@ -26,10 +26,12 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
                 new Search(User.class).addFilterEqual("email", userDetail.getEmail())
                     .addFilterEqual("password", userDetail.getPassword()));
         if (user == null) {
+            System.out.println("NULL branch");
             return null;
         }
-        userDetail.setEmail(user.getEmail());
-        userDetail.setPassword(user.getPassword());
+        userDetail.setId(user.getId());
+        System.out.println("USER branch");
+
         return userDetail;
     }
 }

@@ -29,6 +29,8 @@ public class UserDetail implements Serializable {
     private AddressDetail address;
     private ArrayList<String> demandsId;
 
+    private boolean verified = false;
+
     public UserDetail() {
     }
 
@@ -151,6 +153,14 @@ public class UserDetail implements Serializable {
 
     public void addRole(Role role) {
         roleList.add(role);
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
 }

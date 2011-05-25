@@ -121,7 +121,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         demandService.createNewDemand(detail, clientId, new AsyncCallback<String>() {
             @Override
             public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
+                eventBus.loadingHide();
+                Window.alert(arg0.getMessage());
             }
 
             @Override

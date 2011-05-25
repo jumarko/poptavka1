@@ -2,16 +2,24 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:demands="urn:import:cz.poptavka.sample.client.user.demands">
 
-    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
 
-    <g:TabLayoutPanel ui:field='tabLayoutPanel'  barUnit="EM" barHeight="3">
+    <g:TabLayoutPanel ui:field='tabLayoutPanel' barUnit="EM"
+        barHeight="3">
         <g:tab>
-            <g:header><ui:msg key='demands'>Demands</ui:msg></g:header>
-            <g:SimplePanel ui:field="tabPanel" />
+            <g:header>
+                <ui:msg key='demands'>Demands</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="tabPanel">
+                <g:HTML>TEST</g:HTML>
+            </g:SimplePanel>
         </g:tab>
         <g:tab>
             <g:header>
-                <em><ui:msg key='messages'>Messages</ui:msg></em>
+                <em>
+                    <ui:msg key='messages'>Messages</ui:msg>
+                </em>
             </g:header>
             <g:HTML>
                 <h1>Messages Tab</h1>
@@ -35,11 +43,11 @@
         </g:tab>
         <g:tab>
             <g:customHeader>
-                    <g:FlowPanel>
-                        <g:TextBox>Search</g:TextBox>
-                        <g:ListBox></g:ListBox>
-                        <g:Button>Search</g:Button>
-                    </g:FlowPanel>
+                <g:FlowPanel>
+                    <g:TextBox>Search</g:TextBox>
+                    <g:ListBox></g:ListBox>
+                    <g:Button>Search</g:Button>
+                </g:FlowPanel>
             </g:customHeader>
             <g:HTML>Custom header test</g:HTML>
         </g:tab>

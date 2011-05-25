@@ -1,18 +1,53 @@
 package cz.poptavka.sample.client.user;
 
+import java.util.logging.Logger;
+
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.shared.domain.UserDetail;
 
-@History(type = HistoryConverterType.NONE)
-public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
+@History(type = HistoryConverterType.DEFAULT)
+public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
+
+    private UserDetail user;
+
+
+    private static final Logger LOGGER = Logger
+            .getLogger(UserHistoryConverter.class.getName());
+
+    public String onAtAccount(UserDetail user) {
+        return "";
+    }
+
+    // TODO is this the best aproach?
+
+    public String onInvokeNewDemand(Long id) {
+        return id + "";
+    }
+
+    public String onInvokeMyDemands() {
+        return "";
+    }
+
+    public String onInvokeOffers() {
+        return "";
+    }
+
+    public String onInvokeMyDemandsOperator() {
+        return "";
+    }
+
+    public String onInvokeAdministration() {
+        return "";
+    }
 
     @Override
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
-        eventBus.atAccount(new UserDetail());
+        LOGGER.fine("Name: " + historyName + "\nParam: " + param);
+        eventBus.atAccount(user);
         if (historyName.equals("invokeMyDemands")) {
             eventBus.invokeMyDemands();
         }
@@ -20,7 +55,7 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
             eventBus.invokeOffers();
         }
         if (historyName.equals("invokeNewDemand")) {
-            eventBus.invokeNewDemand(new Long(81));
+            eventBus.invokeNewDemand(Long.valueOf(param));
         }
         if (historyName.equals("invokeMyDemandsOperator")) {
 //          eventBus.invokeNewDemand();
@@ -34,4 +69,5 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus> {
     public boolean isCrawlable() {
         return true;
     }
+
 }

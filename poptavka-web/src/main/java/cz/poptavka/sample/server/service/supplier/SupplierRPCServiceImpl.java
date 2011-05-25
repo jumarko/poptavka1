@@ -12,7 +12,6 @@ import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
-import cz.poptavka.sample.domain.product.ServiceType;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Supplier;
@@ -62,7 +61,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     //TODO add description support
     //TODO setService
-    public long createNewSupplier(UserDetail supplier) {
+    public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
             .companyName(supplier.getCompanyName())
@@ -116,7 +115,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier = supplierService.create(newSupplier);
         //del
         System.out.println("New Supplier id : " + newSupplier.getId());
-        return newSupplier.getId();
+        return this.toSupplierDetail(newSupplier);
     }
 
 
@@ -142,28 +141,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
             System.out.println("NNULLLLLLLL");
         }
         return convertToServiceDetails(services);
-    }
-
-    private ArrayList<ServiceDetail> convertToServiceDetails(List<Service> services) {
-        ArrayList<ServiceDetail> details = new ArrayList<ServiceDetail>();
-        for (Service sv : services) {
-            if (sv.isValid() && sv.getServiceType().equals(ServiceType.SUPPLIER)) {
-                ServiceDetail detail = new ServiceDetail();
-                detail.setId(sv.getId());
-                detail.setTitle(sv.getTitle());
-                detail.setPrice(sv.getPrice());
-                detail.setPrepaidMonths(sv.getPrepaidMonths().intValue());
-                detail.setDescription(sv.getDescription());
-                details.add(detail);
-                if (detail == null) {
-                    System.out.println("ServiceDetail inserted NULL");
-                }
-            }
-        }
-        if (details == null) {
-            System.out.println("ServiceDetail RPC returns NULL");
-        }
-        return details;
     }
 
 }

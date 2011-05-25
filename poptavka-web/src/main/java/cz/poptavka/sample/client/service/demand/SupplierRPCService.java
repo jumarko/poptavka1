@@ -11,7 +11,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 @RemoteServiceRelativePath("service/supplier")
 public interface SupplierRPCService extends RemoteService {
 
-    long createNewSupplier(UserDetail supplier);
+    UserDetail createNewSupplier(UserDetail supplier);
 
     ArrayList<ServiceDetail> getSupplierServices();
 }

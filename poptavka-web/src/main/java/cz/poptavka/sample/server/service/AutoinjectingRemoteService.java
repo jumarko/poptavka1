@@ -16,9 +16,16 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.offer.Offer;
+import cz.poptavka.sample.domain.product.Service;
+import cz.poptavka.sample.domain.product.ServiceType;
+import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.ServiceDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 
@@ -97,6 +104,7 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         clientDetail.setCompanyName(client.getBusinessUser().getBusinessUserData().getCompanyName());
         clientDetail.setTaxId(client.getBusinessUser().getBusinessUserData().getTaxId());
         clientDetail.setIdentifiacationNumber(client.getBusinessUser().getBusinessUserData().getIdentificationNumber());
+        clientDetail.setVerified(client.getVerification().equals(Verification.VERIFIED));
         /** TODO address - not in the mood now **/
         /** TODO website **/
 
@@ -109,4 +117,69 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         clientDetail.setDemandsId(demandIds);
         return clientDetail;
     }
+
+    protected UserDetail toSupplierDetail(Supplier supplier) {
+        UserDetail detail =
+            new UserDetail(supplier.getBusinessUser().getEmail(), supplier.getBusinessUser().getPassword());
+        /** personal & company **/
+        detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
+        detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
+        detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
+        detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
+        detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
+        detail.setIdentifiacationNumber(supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber());
+        detail.setVerified(supplier.getVerification().equals(Verification.VERIFIED));
+        /** TODO address - not in the mood now **/
+        /** TODO website **/
+
+        /** demands - clientSide of Supplier**/
+        ArrayList<String> demandIds = new ArrayList<String>();
+        detail.setDemandsId(demandIds);
+
+        /** supplier specific stuff **/
+        SupplierDetail supplierDetail = new SupplierDetail();
+        supplierDetail.setSupplierId(supplier.getId());
+        // TODO needs to be done on backend
+//        supplierDetail.setDescription( ??? );
+        List<UserService> services = supplier.getBusinessUser().getUserServices();
+        for (UserService us : services) {
+            supplierDetail.addService(us.getId().intValue());
+        }
+        //categories
+        ArrayList<String> categories = new ArrayList<String>();
+        List<Category> cats = supplier.getCategories();
+        for (Category cat : cats) {
+            categories.add(cat.getId() + "");
+        }
+
+        ArrayList<String> localities = new ArrayList<String>();
+        List<Category> locs = supplier.getCategories();
+        for (Category loc : locs) {
+            categories.add(loc.getId() + "");
+        }
+        supplierDetail.setCategories(categories);
+        supplierDetail.setLocalities(localities);
+
+        detail.setSupplier(supplierDetail);
+
+        return detail;
+    }
+
+    protected ArrayList<ServiceDetail> convertToServiceDetails(List<Service> services) {
+        ArrayList<ServiceDetail> details = new ArrayList<ServiceDetail>();
+        for (Service sv : services) {
+            if (sv.isValid() && sv.getServiceType().equals(ServiceType.SUPPLIER)) {
+                ServiceDetail detail = new ServiceDetail();
+                detail.setId(sv.getId());
+                detail.setTitle(sv.getTitle());
+                detail.setPrice(sv.getPrice());
+                detail.setPrepaidMonths(sv.getPrepaidMonths().intValue());
+                detail.setDescription(sv.getDescription());
+                details.add(detail);
+            }
+        }
+        return details;
+    }
+
+
 }
