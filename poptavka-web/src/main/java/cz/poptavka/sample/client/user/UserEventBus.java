@@ -33,7 +33,7 @@ public interface UserEventBus extends EventBus {
             historyConverter = UserHistoryConverter.class)
     String atAccount(UserDetail user);
 
-    @Event(handlers = DemandsLayoutPresenter.class)
+    @Event(handlers = {DemandsLayoutPresenter.class, MyDemandsPresenter.class })
     void setClientDemands(ArrayList<DemandDetail> demands);
 
     @Event(handlers = DemandsLayoutPresenter.class)

@@ -1,7 +1,8 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,6 +11,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
@@ -37,11 +39,11 @@ public class MyDemandsPresenter extends
         ListDataProvider<DemandDetail> getDataProvider();
     }
 
-    private ArrayList<DemandDetail> demandList = new ArrayList<DemandDetail>();
 
     public void onInvokeMyDemands() {
-
+        GWT.log("display DEMANDS WIDGET");
         eventBus.displayContent(view.getWidgetView());
+        GWT.log("Demands are on the way - getDemands!");
         eventBus.getClientsDemands(1);
     }
 
@@ -60,20 +62,16 @@ public class MyDemandsPresenter extends
     }
 
     public void onResponseDemands(ArrayList<DemandDetail> demands) {
-        demandList = new ArrayList<DemandDetail>(demands);
-        List<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
-        for (DemandDetail demand : demandList) {
-            DemandDetail d = new DemandDetail();
-            d.setClientId(demand.getId());
-            d.setDescription(demand.getDescription());
-            d.setTitle(demand.getTitle());
-            d.setPrice(demand.getPrice());
-            demandDetails.add(d);
-        }
+        GWT.log("Demands are on the way.    demands.size = " + demands.size());
+
         // Add the data to the data provider, which automatically pushes it to
         // the widget.
-        view.getDataProvider().getList().addAll(demandDetails);
+        view.getDataProvider().getList().addAll(demands);
         refreshDisplays();
+    }
+
+    public void onSetClientDemands(ArrayList<DemandDetail> demands) {
+        eventBus.responseDemands(demands);
     }
 
     /**

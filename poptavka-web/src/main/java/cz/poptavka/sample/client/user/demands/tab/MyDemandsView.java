@@ -1,8 +1,6 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
 import java.util.Date;
-import java.util.logging.Logger;
-
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
@@ -20,8 +18,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
-
-import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
 public class MyDemandsView extends Composite implements
@@ -32,9 +28,6 @@ public class MyDemandsView extends Composite implements
 
     interface MyDemandsViewUiBinder extends UiBinder<Widget, MyDemandsView> {
     }
-
-    private static final Logger LOGGER = Logger
-            .getLogger(DemandsLayoutPresenter.class.getName());
 
     private Button answerBtn;
     private Button editBtn;
@@ -50,7 +43,7 @@ public class MyDemandsView extends Composite implements
     /**
      * Data provider that will cell table with data.
      */
-    private ListDataProvider<DemandDetail> dataProvider;
+    private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
 
     final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
 
@@ -70,8 +63,9 @@ public class MyDemandsView extends Composite implements
 
     private void initCellTable(
             final SingleSelectionModel<DemandDetail> selectionModel) {
-        table = new CellTable<DemandDetail>(5);
+        table = new CellTable<DemandDetail>(15);
         table.setSelectionModel(selectionModel);
+        dataProvider.addDataDisplay(table);
         // // Checkbox column. This table will uses a checkbox column for
         // // selection.
         // // Alternatively, you can call cellTable.setSelectionEnabled(true) to

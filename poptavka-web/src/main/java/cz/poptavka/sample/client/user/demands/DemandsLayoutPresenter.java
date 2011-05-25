@@ -15,23 +15,26 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
  *
- * Just for user, not operator functionality implemented. Serves as holder for demands related stuff.
- * Contains list of all demands for faster working with demands.
+ * Just for user, not operator functionality implemented. Serves as holder for
+ * demands related stuff. Contains list of all demands for faster working with
+ * demands.
  *
  * @author Beho
  *
  */
 
 @Presenter(view = DemandsLayoutView.class, multiple = true)
-public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
+public class DemandsLayoutPresenter
+        extends
+        BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
 
-    //DEVEL
-    //Client: Beho@poptavka.cz | mojeheslo
+    // DEVEL
+    // Client: Beho@poptavka.cz | mojeheslo
     private static final long TEST_CLIENT_ID = 75;
 
     private UserDetail user;
 
-    //will be assigned during login process
+    // will be assigned during login process
     private long clientId = TEST_CLIENT_ID;
     private ArrayList<DemandDetail> clientsDemands = null;
     private ArrayList<ArrayList<OfferDetail>> client = new ArrayList<ArrayList<OfferDetail>>();
@@ -61,7 +64,8 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand(clientId));
-        view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
+        view.setMyDemandsOperatorToken(getTokenGenerator()
+                .invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
     }
 
@@ -87,7 +91,7 @@ public class DemandsLayoutPresenter extends BasePresenter<DemandsLayoutPresenter
 
     public void onRequestDemands() {
         if (clientsDemands == null) {
-            sendDemandsFlag  = true;
+            sendDemandsFlag = true;
         } else {
             eventBus.responseDemands(clientsDemands);
         }
