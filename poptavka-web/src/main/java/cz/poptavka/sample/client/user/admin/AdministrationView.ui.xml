@@ -14,25 +14,52 @@
       margin-bottom: 4px;
     }
     </ui:style>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:west size="450">
+            <g:ScrollPanel>
 
-    <g:HTMLPanel>
-        <table cellspacing='0' cellpadding='0' style='width:100%;'>
-            <tr>
-                <td
-          valign='top'>
-                    <c:CellTable
-            addStyleNames='{style.cellTable}'
-            pageSize='15'
-            ui:field='cellTable' />
-                </td>
-            </tr>
-<!--            <tr>
-                <td
-          align='center'>
-                    <c:SimplePager
-            ui:field='pager' />
-                </td>
-            </tr>-->
-        </table>
-    </g:HTMLPanel>
+<!--            <g:FlowPanel>-->
+<!--                <g:HorizontalPanel>
+                    <g:HTML>
+                        <ui:msg key="offers">Offers</ui:msg>
+                    </g:HTML>
+                    <g:Button ui:field='answerBtn' enabled="false">
+                        <ui:msg key="answer">Answer</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='refuseBtn' enabled="false">
+                        <ui:msg key="refuse">Refuse</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='acceptBtn' enabled="false">
+                        <ui:msg key="accept">Accept</ui:msg>
+                    </g:Button>
+                </g:HorizontalPanel>-->
+
+                <g:HTMLPanel>
+                    <table cellspacing='0' cellpadding='0'>
+                        <tr>
+                            <td valign='top'>
+                                <g:ScrollPanel>
+                                    <c:CellTable addStyleNames='{style.cellTable}' pageSize='15' ui:field='cellTable' />
+                                </g:ScrollPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align='center'>
+                                <c:SimplePager ui:field='pager' />
+                            </td>
+                        </tr>
+                    </table>
+                </g:HTMLPanel>
+
+<!--            </g:FlowPanel>-->
+            </g:ScrollPanel>
+        </g:west>
+        <g:center>
+            <g:HTML>
+                <h1>Click on Demand</h1>
+            </g:HTML>
+        </g:center>
+    </g:SplitLayoutPanel>
 </ui:UiBinder>
+
+

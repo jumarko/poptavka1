@@ -37,6 +37,7 @@
             </g:HTMLPanel>
         </g:west>
         <g:center>
+            <g:ScrollPanel>
             <g:SimplePanel ui:field="contentPanel">
                 <g:HTML>
                     <center>
@@ -55,6 +56,7 @@
                     </ul>
                 </g:HTML>
             </g:SimplePanel>
+            </g:ScrollPanel>
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>

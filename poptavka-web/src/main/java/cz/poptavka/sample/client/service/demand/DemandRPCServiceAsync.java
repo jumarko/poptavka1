@@ -15,7 +15,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 
 public interface DemandRPCServiceAsync {
 
-    void getAllDemands(AsyncCallback<List<Demand>> callback);
+    void getAllDemands(AsyncCallback<List<DemandDetail>> callback);
 
     void createNewDemand(DemandDetail newDemand, Long clientId,
             AsyncCallback<String> callback);
@@ -33,5 +33,7 @@ public interface DemandRPCServiceAsync {
     void getClientDemands(long id, AsyncCallback<ArrayList<DemandDetail>> callback);
 
     void getDemandOffers(ArrayList<Long> idList, AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
+
+    void updateDemand(DemandDetail demand, AsyncCallback<DemandDetail> asyncCallback);
 
 }

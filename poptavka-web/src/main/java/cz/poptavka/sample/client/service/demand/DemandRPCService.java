@@ -22,7 +22,9 @@ import java.util.Set;
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {
 
-    List<Demand> getAllDemands();
+    List<DemandDetail> getAllDemands();
+
+    DemandDetail updateDemand(DemandDetail newDemand);
 
     String  createNewDemand(DemandDetail newDemand, Long clientId);
 

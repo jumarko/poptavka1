@@ -28,16 +28,12 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
  * @author Excalibur
  */
 public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements DemandRPCService {
-
     private static final Logger LOGGER = Logger.getLogger(DemandRPCServiceImpl.class.getName());
-
     /**
      * generated serialVersonUID.
      */
     private static final long serialVersionUID = -4661806018739964100L;
-
     private DemandService demandService;
-
     private GeneralService generalService;
 
     public DemandService getDemandService() {
@@ -53,7 +49,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
     }
-
 
     @Override
     public String createNewDemand(DemandDetail detail, Long cliendId) {
@@ -75,8 +70,22 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public List<Demand> getAllDemands() {
-        return demandService.getAll();
+    public DemandDetail updateDemand(DemandDetail newDemand) {
+        // TODO ivlcek - update entity by sa mal robit jednoduchsie ako toto?
+        Demand demand = demandService.getById(newDemand.getId());
+        // TODO ivlcek - vytvor metody, ktora nastetuje Demand objekt z DemandDetail
+        demand.setTitle(newDemand.getTitle());
+        demandService.update(demand);
+        return newDemand;
+    }
+
+    @Override
+    public List<DemandDetail> getAllDemands() {
+        List<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
+        for (Demand demand : demandService.getAll()) {
+            demandDetails.add(DemandDetail.createDemandDetail(demand));
+        }
+        return demandDetails;
     }
 
     @Override
@@ -118,5 +127,4 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         return offerList;
     }
-
 }

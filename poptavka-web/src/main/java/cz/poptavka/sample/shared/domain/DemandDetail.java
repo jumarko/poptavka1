@@ -1,5 +1,6 @@
 package cz.poptavka.sample.shared.domain;
 
+import cz.poptavka.sample.domain.demand.Demand;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class DemandDetail implements Serializable {
-
     /**
      * Generated serialVersionUID.
      */
@@ -28,6 +28,27 @@ public class DemandDetail implements Serializable {
 
     /** for serialization. **/
     public DemandDetail() {
+    }
+
+    public static DemandDetail createDemandDetail(Demand demand) {
+        DemandDetail d = new DemandDetail();
+        d.setId(demand.getId());
+        // TODO ivlcek - set categories
+        d.setCategories(null);
+        // TODO ivlcek - ako spoznam ci sa mi dotialhol aj Client k tejto poptabke?
+        d.setClientId(demand.getClient().getId());
+        d.setDemandType(demand.getType().getCode());
+        // TODO ivlcek - zatial neposielam demand descritpion, ktory je velmi velky
+        d.setDescription(null);
+        d.setTitle(demand.getTitle());
+        d.setEndDate(demand.getEndDate());
+        d.setExpireDate(demand.getValidTo());
+        // TODO ivlcek - set localities
+        d.setLocalities(null);
+        d.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
+        d.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
+        d.setPrice(demand.getPrice());
+        return d;
     }
 
     public void setBasicInfo(HashMap<String, Object> map) {
@@ -57,60 +78,79 @@ public class DemandDetail implements Serializable {
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public BigDecimal getPrice() {
         return price;
     }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
     public Date getEndDate() {
         return endDate;
     }
+
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
     public Date getExpireDate() {
         return expireDate;
     }
+
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
     }
+
     public ArrayList<String> getLocalities() {
         return localities;
     }
+
     public void setLocalities(ArrayList<String> localities) {
         this.localities = localities;
     }
+
     public ArrayList<String> getCategories() {
         return categories;
     }
+
     public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
     }
+
     public long getClientId() {
         return clientId;
     }
+
     public void setClientId(long clientId) {
         this.clientId = clientId;
     }
+
     public int getMaxOffers() {
         return maxOffers;
     }
+
     public void setMaxOffers(int maxOffers) {
         this.maxOffers = maxOffers;
     }
+
     public int getMinRating() {
         return minRating;
     }
+
     public void setMinRating(int minRating) {
         this.minRating = minRating;
     }
@@ -123,4 +163,21 @@ public class DemandDetail implements Serializable {
         this.demandType = demandType;
     }
 
+    @Override
+    public String toString() {
+        return "DemandDetail{"
+                + "id="
+                + id + ", title="
+                + title + ", description="
+                + description + ", price="
+                + price + ", endDate="
+                + endDate + ", expireDate="
+                + expireDate + ", localities="
+                + localities + ", categories="
+                + categories + ", clientId="
+                + clientId + ", maxOffers="
+                + maxOffers + ", minRating="
+                + minRating + ", demandType="
+                + demandType + '}';
+    }
 }

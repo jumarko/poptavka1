@@ -19,7 +19,6 @@ import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.problems.Problem;
-import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -120,8 +119,14 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = UserHandler.class)
     void getAllDemands();
 
+    @Event(handlers = UserHandler.class)
+    void updateDemand(DemandDetail demand);
+
     @Event(handlers = AdministrationPresenter.class)
-    void setAllDemands(List<Demand> demands);
+    void refreshUpdatedDemand(DemandDetail demand);
+
+    @Event(handlers = AdministrationPresenter.class)
+    void setAllDemands(List<DemandDetail> demands);
 
     @Event(handlers = UserHandler.class)
     void requestOffers(ArrayList<Long> idList);
