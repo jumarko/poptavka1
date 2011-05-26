@@ -36,6 +36,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         void setLoginError();
 
+        LoginPopupPresenter getPresenter();
+
     }
 
     @Inject
@@ -63,6 +65,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         setSessionID(sessionId);
                         view.hidePopup();
                         eventBus.atAccount();
+                        LOGGER.fine("BEFORE");
+                        eventBus.removeHandler(view.getPresenter());
+                        LOGGER.fine("AFTER");
                     } else {
                         view.setLoginError();
                     }

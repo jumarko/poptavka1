@@ -55,6 +55,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     private SupplierServicePresenter supplierService = null;
     private SupplierInfoPresenter supplierInfo = null;
 
+    private LoginPopupPresenter login;
+
     @Override
     public void bind() {
         view.getLoginLink().addClickHandler(new ClickHandler() {
@@ -65,8 +67,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
                     view.getLoginLink().setText(MSGS.logIn());
                     eventBus.atHome();
                 } else {
-                    LoginPopupPresenter presenter = eventBus.addHandler(LoginPopupPresenter.class);
-                    presenter.onLogin();
+                    onInitLoginWindow();
                 }
             }
         });
@@ -197,6 +198,11 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         }
         supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
         supplierInfo.onInitSupplierForm(supplierInfoHolder);
+    }
+
+    public void onInitLoginWindow() {
+        login = eventBus.addHandler(LoginPopupPresenter.class);
+        login.onLogin();
     }
 
 }

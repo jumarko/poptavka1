@@ -123,6 +123,7 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = AdministrationPresenter.class)
     void refreshUpdatedDemand(DemandDetail demand);
 
+    @Event(handlers = AdministrationPresenter.class)
     void setAllDemands(List<DemandDetail> demands);
 
     @Event(handlers = UserHandler.class)

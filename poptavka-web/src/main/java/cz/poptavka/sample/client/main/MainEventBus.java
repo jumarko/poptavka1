@@ -145,4 +145,7 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void setUserLayout();
 
+    @Event(handlers = MainPresenter.class)
+    void initLoginWindow();
+
 }
