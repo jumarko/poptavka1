@@ -1,55 +1,65 @@
 package cz.poptavka.sample.client.user;
 
-import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
+import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import java.util.List;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
 
-    private DemandRPCServiceAsync demandService = null;
-
     @Inject
-    void setDemandService(DemandRPCServiceAsync service) {
-        demandService = service;
-    }
+    private DemandRPCServiceAsync demandService = null;
+    @Inject
+    private UserRPCServiceAsync userService = null;
+
+
+    private static final LocalizableMessages MSGS = GWT
+            .create(LocalizableMessages.class);
 
     public void onGetClientsDemands(long id) {
-        demandService.getClientDemands(id, new AsyncCallback<ArrayList<DemandDetail>>() {
+        demandService.getClientDemands(id,
+                new AsyncCallback<ArrayList<DemandDetail>>() {
 
-            @Override
-            public void onSuccess(ArrayList<DemandDetail> list) {
-                eventBus.setClientDemands(list);
-            }
+                    @Override
+                    public void onSuccess(ArrayList<DemandDetail> list) {
+                        eventBus.setClientDemands(list);
+                    }
 
-            @Override
-            public void onFailure(Throwable exc) {
-                Window.alert(exc.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable exc) {
+                        Window.alert(exc.getMessage());
+                    }
+                });
     }
 
     public void onRequestOffers(ArrayList<Long> idList) {
-        demandService.getDemandOffers(idList, new AsyncCallback<ArrayList<ArrayList<OfferDetail>>>() {
+        demandService.getDemandOffers(idList,
+                new AsyncCallback<ArrayList<ArrayList<OfferDetail>>>() {
 
-            @Override
-            public void onFailure(Throwable arg0) {
-            }
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                    }
 
-            @Override
-            public void onSuccess(ArrayList<ArrayList<OfferDetail>> result) {
-                eventBus.responseOffers(result);
-            }
-        });
+                    @Override
+                    public void onSuccess(
+                            ArrayList<ArrayList<OfferDetail>> result) {
+                        eventBus.responseOffers(result);
+                    }
+                });
     }
 
     public void onGetAllDemands() {
@@ -77,6 +87,33 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onSuccess(DemandDetail result) {
                 eventBus.refreshUpdatedDemand(result);
+            }
+        });
+    }
+
+    /**
+     * Get User according to stored sessionID from DB
+     */
+    public void onGetUser() {
+        // get sessionId cookie
+        String sessionID = Cookies.getCookie("sid");
+        if (sessionID == null) {
+            Window.alert("sessionID is null and it shouldn't be");
+            return;
+        }
+        userService.getSignedUser(sessionID, new AsyncCallback<UserDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                eventBus.loadingHide();
+                Window.alert("Error during getting logged User detail\n"
+                        + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(UserDetail result) {
+                eventBus.loadingShow(MSGS.progressCreatingUserInterface());
+                eventBus.setUser(result);
             }
         });
 

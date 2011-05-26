@@ -19,6 +19,7 @@ import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.product.Service;
 import cz.poptavka.sample.domain.product.ServiceType;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
@@ -27,6 +28,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 
 /**
@@ -42,7 +44,6 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
                 this.getServletContext());
         AutowireCapableBeanFactory beanFactory = ctx.getAutowireCapableBeanFactory();
         beanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
-
     }
 
 
@@ -96,7 +97,8 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
     protected UserDetail toClientDetail(Client client) {
         UserDetail clientDetail =
             new UserDetail(client.getBusinessUser().getEmail(), client.getBusinessUser().getPassword());
-        clientDetail.setId(client.getId());
+        clientDetail.setId(client.getBusinessUser().getId());
+        clientDetail.setClientId(client.getId());
         /** personal & company **/
         clientDetail.setFirstName(client.getBusinessUser().getBusinessUserData().getPersonFirstName());
         clientDetail.setLastName(client.getBusinessUser().getBusinessUserData().getPersonLastName());
@@ -118,10 +120,12 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         return clientDetail;
     }
 
+    // TODO delete if obsolete
     protected UserDetail toSupplierDetail(Supplier supplier) {
         UserDetail detail =
             new UserDetail(supplier.getBusinessUser().getEmail(), supplier.getBusinessUser().getPassword());
         /** personal & company **/
+        detail.setId(supplier.getBusinessUser().getId());
         detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
         detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
         detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
@@ -129,6 +133,16 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
         detail.setIdentifiacationNumber(supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber());
         detail.setVerified(supplier.getVerification().equals(Verification.VERIFIED));
+        /** roles **/
+        List<BusinessUserRole> roles = supplier.getBusinessUser().getBusinessUserRoles();
+        for (BusinessUserRole role : roles) {
+            if (role instanceof Client) {
+                detail.setClientId(((Client) role).getId());
+                detail.addRole(Role.CLIENT);
+            }
+        }
+        detail.addRole(Role.SUPPLIER);
+
         /** TODO address - not in the mood now **/
         /** TODO website **/
 

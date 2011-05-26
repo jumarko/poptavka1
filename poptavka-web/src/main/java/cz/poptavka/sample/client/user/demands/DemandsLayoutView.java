@@ -10,7 +10,12 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class DemandsLayoutView extends Composite implements DemandsLayoutPresenter.DemandsLayoutInterface {
+import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.client.user.StyleInterface;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
+
+public class DemandsLayoutView extends Composite
+    implements DemandsLayoutPresenter.DemandsLayoutInterface, StyleInterface {
 
     private static DemandsLayoutViewUiBinder uiBinder = GWT.create(DemandsLayoutViewUiBinder.class);
 
@@ -27,25 +32,9 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
     Hyperlink myDemandsLink, offersLink, newDemandLink, myDemandsOperatorLink, administration;
 
     public DemandsLayoutView() {
+        StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
-//
-//    @Override
-//    public HasClickHandlers getMyDemandsBtn() {
-//        return myDemandsBtn;
-//    }
-//
-//    @Override
-//    public HasClickHandlers getOffersBtn() {
-//        // TODO Auto-generated method stub
-//        return offersBtn;
-//    }
-//
-//    @Override
-//    public HasClickHandlers getCreateDemandBtn() {
-//        // TODO Auto-generated method stub
-//        return createDemandBtn;
-//    }
 
     @Override
     public Widget getWidgetView() {
@@ -77,8 +66,18 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
         administration.setTargetHistoryToken(linkString);
     }
 
-    @Override
-    public String getSuperMethod() {
-        return  "Super Method String";
+    /** toggle visible actions/buttons for current user decided by his role. **/
+    public void setRoleInterface(Role role) {
+        LOGGER.fine("Set User style for role " + role.toString());
+        switch (role) {
+            case SUPPLIER:
+                    //cascade, include client below, because supplier is always client too
+            case CLIENT:
+//                administration.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
+//                myDemandsOperatorLink.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
+                break;
+            default:
+                break;
+        }
     }
 }

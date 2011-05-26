@@ -3,7 +3,6 @@ package cz.poptavka.sample.client.user;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -16,18 +15,8 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     private static UserViewUiBinder uiBinder = GWT.create(UserViewUiBinder.class);
     interface UserViewUiBinder extends UiBinder<Widget, UserView> { }
 
-//    @UiField
-//    DecoratedTabBar tabBar;
-    @UiField
-    TabLayoutPanel tabLayoutPanel;
-    @UiField
-    SimplePanel tabPanel;
-    //tabs
-    Anchor demandsTab = new Anchor("Poptavky");
-    Anchor messagesTab = new Anchor("Spravy");
-    Anchor settingsTab = new Anchor("Nastavenia");
-    Anchor contactsTab = new Anchor("Kontakty");
-    Anchor categoriesTab = new Anchor("Kategorie");
+    @UiField TabLayoutPanel tabLayoutPanel;
+    @UiField SimplePanel tabPanel;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -44,6 +33,11 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
 
     public Widget getWidgetView() {
         return this;
+    }
+
+    @Override
+    public TabLayoutPanel getLayoutPanel() {
+        return tabLayoutPanel;
     }
 
 }

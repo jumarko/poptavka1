@@ -115,7 +115,6 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         view.toggleMainLayout(true);
     }
 
-
     public void onAtAccount() {
         this.loggedIn = true;
         view.getLoginLink().setText(MSGS.logOut());

@@ -68,7 +68,7 @@ public class LoginPopupView extends PopupPanel
 
         // Sinking close event
         DOM.sinkEvents(close, Event.ONCLICK);
-        DOM.setEventListener(close, new CloseListener(this));
+        DOM.setEventListener(close, new CloseListener());
 
         // Injecting the jsni method for handling the form submit
         injectLoginFunction(presenter);
@@ -168,15 +168,9 @@ public class LoginPopupView extends PopupPanel
      */
     private class CloseListener implements EventListener {
 
-        private LoginPopupView popup;
-
-        public CloseListener(LoginPopupView popup) {
-            this.popup = popup;
-        }
-
         @Override
         public void onBrowserEvent(Event event) {
-            popup.hidePopup();
+            presenter.hideView();
         }
     }
 }

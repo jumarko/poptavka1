@@ -7,20 +7,20 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
+ * For every user - default tab
  *
- * Just for user, not operator functionality implemented. Serves as holder for
- * demands related stuff. Contains list of all demands for faster working with
+ * Consists of left menu only and holder for demands related
+ * stuff. Contains list of all demands for faster working with
  * demands.
  *
  * @author Beho
- *
  */
 
 @Presenter(view = DemandsLayoutView.class, multiple = true)
@@ -28,14 +28,8 @@ public class DemandsLayoutPresenter
         extends
         BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
 
-    // DEVEL
-    // Client: Beho@poptavka.cz | mojeheslo
-    private static final long TEST_CLIENT_ID = 75;
-
-    private UserDetail user;
-
-    // will be assigned during login process
-    private long clientId = TEST_CLIENT_ID;
+    private long clientId;
+    private Long supplierId;
     private ArrayList<DemandDetail> clientsDemands = null;
     private ArrayList<ArrayList<OfferDetail>> client = new ArrayList<ArrayList<OfferDetail>>();
     private boolean sendDemandsFlag = false;
@@ -58,25 +52,20 @@ public class DemandsLayoutPresenter
         void setMyDemandsOperatorToken(String linkString);
 
         void setAdministrationToken(String linkString);
-
-        String getSuperMethod();
     }
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
-//        view.setOffersToken(getTokenGenerator().invokeOffers());
+        view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand(clientId));
-        view.setMyDemandsOperatorToken(getTokenGenerator()
-                .invokeMyDemandsOperator());
+        view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
     }
 
-    public void onAtAccount() {
+    public void init() {
         eventBus.setTabWidget(view.getWidgetView());
-        if (clientsDemands == null) {
-            LOGGER.fine("RPC call - get client's (ID:" + clientId + ") demands");
-            eventBus.getClientsDemands(clientId);
-        }
+        eventBus.getClientsDemands(clientId);
+        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
     public void onSetClientDemands(ArrayList<DemandDetail> demands) {
@@ -113,6 +102,14 @@ public class DemandsLayoutPresenter
                 return;
             }
         }
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 
 }

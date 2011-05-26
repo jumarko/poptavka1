@@ -53,6 +53,7 @@ public interface MainEventBus extends EventBus {
     /** init method for Authentificated User. */
     //should be only for UserPresenter
     // TODO MainPage login button text, should be handled by children modules
+    // TODO check - maybe this should be the UserModule load method
     @Event(modulesToLoad = UserModule.class, handlers = MainPresenter.class)
     void atAccount();
 

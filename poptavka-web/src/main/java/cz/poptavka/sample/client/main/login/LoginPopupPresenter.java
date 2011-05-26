@@ -63,17 +63,19 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 public void onSuccess(String sessionId) {
                     if (sessionId != null) {
                         setSessionID(sessionId);
-                        view.hidePopup();
                         eventBus.atAccount();
-                        LOGGER.fine("BEFORE");
-                        eventBus.removeHandler(view.getPresenter());
-                        LOGGER.fine("AFTER");
+                        hideView();
                     } else {
                         view.setLoginError();
                     }
                 }
             });
         }
+    }
+
+    public void hideView() {
+        eventBus.removeHandler(view.getPresenter());
+        view.hidePopup();
     }
 
     /** Sets session ID **/

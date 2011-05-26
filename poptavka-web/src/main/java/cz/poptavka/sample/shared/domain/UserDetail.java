@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class UserDetail implements Serializable {
 
     public enum Role {
-        CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIn
+        CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
     }
 
     /** Instances of roles. **/
@@ -17,6 +17,8 @@ public class UserDetail implements Serializable {
     private ArrayList<Role> roleList = new ArrayList<Role>();
 
     private Long id;
+    private Long clientId = -1L;
+    private Long supplierId = -1L;
     private String email;
     private String password;
     private String firstName;
@@ -30,8 +32,6 @@ public class UserDetail implements Serializable {
     private ArrayList<String> demandsId;
 
     private boolean verified = false;
-
-    private String sessionID;
 
     public UserDetail() {
     }
@@ -47,6 +47,22 @@ public class UserDetail implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getFirstName() {
@@ -157,20 +173,16 @@ public class UserDetail implements Serializable {
         roleList.add(role);
     }
 
+    public void removeRole(Role role) {
+        roleList.remove(role);
+    }
+
     public boolean isVerified() {
         return verified;
     }
 
     public void setVerified(boolean verified) {
         this.verified = verified;
-    }
-
-    public String getSessionID() {
-        return sessionID;
-    }
-
-    public void setSessionID(String sid) {
-        this.sessionID = sid;
     }
 
 }

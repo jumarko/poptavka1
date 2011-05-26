@@ -21,6 +21,7 @@ import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Events(startView = UserView.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -29,6 +30,13 @@ public interface UserEventBus extends EventBus {
     /** init method. **/
     @Event(handlers = {UserPresenter.class }, historyConverter = UserHistoryConverter.class)
     String atAccount();
+
+    /** getter for UserDetail **/
+    @Event(handlers = UserHandler.class)
+    void getUser();
+
+    @Event(handlers = UserPresenter.class)
+    void setUser(UserDetail user);
 
     @Event(handlers = {DemandsLayoutPresenter.class, MyDemandsPresenter.class })
     void setClientDemands(ArrayList<DemandDetail> demands);
@@ -168,4 +176,11 @@ public interface UserEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void setUserLayout();
+
+    @Event(forwardToParent = true)
+    void loadingHide();
+
+    @Event(handlers = UserPresenter.class)
+    void setUserInteface(StyleInterface widgetView);
+
 }

@@ -73,4 +73,6 @@ public interface LocalizableMessages extends Messages {
     String pass();
     String email();
     String loading();
+    String progressGetUserDetail();
+    String progressCreatingUserInterface();
 }
