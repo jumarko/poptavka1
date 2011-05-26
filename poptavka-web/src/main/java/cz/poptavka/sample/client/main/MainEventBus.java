@@ -24,7 +24,6 @@ import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Events(startView = MainView.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -51,15 +50,11 @@ public interface MainEventBus extends EventBus {
     @Event(modulesToLoad = HomeModule.class)
     void atHome();
 
-    /** Init user module (logged user). */
+    /** init method for Authentificated User. */
+    //should be only for UserPresenter
+    // TODO MainPage login button text, should be handled by children modules
     @Event(modulesToLoad = UserModule.class, handlers = MainPresenter.class)
-    void atAccount(UserDetail user);
-
-//
-//    NEEDED ?
-
-//    @Event(modulesToLoad = UserModule.class)
-//    void setTabWidget(Widget widget);
+    void atAccount();
 
     @Event(modulesToLoad = HomeModule.class)
     void atCreateDemand();
@@ -149,7 +144,5 @@ public interface MainEventBus extends EventBus {
 
     @Event(handlers = MainPresenter.class)
     void setUserLayout();
-
-
 
 }

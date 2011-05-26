@@ -31,6 +31,8 @@ public class UserDetail implements Serializable {
 
     private boolean verified = false;
 
+    private String sessionID;
+
     public UserDetail() {
     }
 
@@ -161,6 +163,14 @@ public class UserDetail implements Serializable {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sid) {
+        this.sessionID = sid;
     }
 
 }

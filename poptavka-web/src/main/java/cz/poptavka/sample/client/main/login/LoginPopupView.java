@@ -1,77 +1,119 @@
 package cz.poptavka.sample.client.main.login;
 
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.ButtonElement;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Cookies;
+import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FocusWidget;
-import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.view.ReverseViewInterface;
 
 import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter.LoginPopupInterface;
 import cz.poptavka.sample.client.resources.StyleResource;
 
-public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
+//public class LoginPopupView extends PopupPanel implements LoginPopupInterface {
+public class LoginPopupView extends PopupPanel
+    implements ReverseViewInterface<LoginPopupPresenter>, LoginPopupInterface {
 
+    private static final String LOGIN_DIV = "loginDiv";
+    private static final String FORM_ID = "loginForm";
+    private static final String BUTTON_SUBMIT_ID = "loginSubmit";
+    private static final String BUTTON_CLOSEB_ID = "loginClose";
+    private static final String LABEL_MAIL_ID = "loginMailLabel";
+    private static final String LOGIN_ID = "loginMail";
+    private static final String LABEL_PASSWORD_ID = "loginPasswordLabel";
+    private static final String PASSWORD_ID = "loginPassword";
+    private static final String STATUS_ID = "loginStatus";
 
-    private static final Logger LOGGER = Logger.getLogger(LoginPopupView.class
-            .getName());
+    private static final LocalizableMessages MSGS = GWT
+            .create(LocalizableMessages.class);
 
-    private static LoginPopupUiBinder uiBinder = GWT.create(LoginPopupUiBinder.class);
-    interface LoginPopupUiBinder extends UiBinder<Widget, LoginPopupView> {
-    }
-
-    @UiField TextBox mailBox;
-    @UiField PasswordTextBox passBox;
-    @UiField Button loginBtn, cancelBtn;
-    @UiField CheckBox rememberCheck;
-
-    SimpleIconLabel statusLabel = null;
+    private SimpleIconLabel statusLabel = null;
+    private FormPanel form;
+    private LoginPopupPresenter presenter;
 
     @Override
     public void createView() {
-        setWidget(uiBinder.createAndBindUi(this));
+        FlowPanel panel = new FlowPanel();
+        initRealLoginForm(panel);
+        setWidget(panel);
         this.setModal(true);
         this.setGlassEnabled(true);
-        center();
-        mailBox.setFocus(true);
-        initRemeberedLogin();
+        this.center();
+        this.show();
     }
 
-    private void initRemeberedLogin() {
-        LOGGER.fine("Getting cookies");
-        String email = Cookies.getCookie("pop-user");
-        String pass = Cookies.getCookie("pop-password");
-        if ((email != null) && (pass != null)) {
-            LOGGER.fine("Assigning cookie");
-            mailBox.setText(email);
-            passBox.setText(pass);
-            rememberCheck.setValue(true);
+    /** binding real form to create login popup **/
+    private void initRealLoginForm(FlowPanel panel) {
+        // Get a handle to the form and set its action to our jsni method
+        FormPanel form = FormPanel.wrap(Document.get().getElementById(FORM_ID), false);
+        this.form = form;
+        form.setAction("javascript:__gwt_login()");
+
+        ButtonElement submit = (ButtonElement) Document.get().getElementById(BUTTON_SUBMIT_ID);
+        Element close = (Element) Document.get().getElementById(BUTTON_CLOSEB_ID);
+
+        // Localization strings
+        Document.get().getElementById(LABEL_MAIL_ID).setInnerText(MSGS.email());
+        Document.get().getElementById(LABEL_PASSWORD_ID).setInnerText(MSGS.pass());
+        submit.setInnerText(MSGS.submit());
+        close.setInnerText(MSGS.close());
+
+        // Sinking close event
+        DOM.sinkEvents(close, Event.ONCLICK);
+        DOM.setEventListener(close, new CloseListener(this));
+
+        // Injecting the jsni method for handling the form submit
+        injectLoginFunction(presenter);
+        // Add the form to the panel
+        panel.add(form);
+    }
+
+    // This is our JSNI method that will be called on form submit
+    private native void injectLoginFunction(LoginPopupPresenter popupPresenter)
+    /*-{
+        $wnd.__gwt_login = function(){
+        popupPresenter.@cz.poptavka.sample.client.main.login.LoginPopupPresenter::doLogin()();
         }
+    }-*/;
+
+    /** Called to hide popup. **/
+    public void hidePopup() {
+        Element loginDiv = (Element) Document.get().getElementById(LOGIN_DIV);
+        Element statusDiv = (Element) Document.get().getElementById(STATUS_ID);
+
+        // Append form back to page
+        DOM.appendChild(loginDiv, form.getElement());
+        //clear
+        clearStatusLabel(statusDiv);
+
+        this.hide();
+    }
+
+    /** Getters values from HTML form. */
+    @Override
+    public String getPassword() {
+        return ((InputElement) Document.get().getElementById(PASSWORD_ID)).getValue();
     }
 
     @Override
-    public Button getLoginButton() {
-        return loginBtn;
+    public String getLogin() {
+        return ((InputElement) Document.get().getElementById(LOGIN_ID)).getValue();
     }
 
     @Override
     public boolean isValid() {
-        if ((mailBox.getText().length() == 0) || (passBox.getText().length() == 0)) {
-            Element elem = (Element) Document.get().getElementById("loginStatus");
+        if ((getLogin().length() == 0) || (getPassword().length() == 0)) {
+            Element elem = (Element) Document.get().getElementById(STATUS_ID);
             clearStatusLabel(elem);
-            statusLabel = new SimpleIconLabel("Bad input", true);
+            statusLabel = new SimpleIconLabel(MSGS.wrongLoginMessage(), true);
             statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
             elem.appendChild(statusLabel.getElement());
             return false;
@@ -81,20 +123,10 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
     }
 
     @Override
-    public String getLogin() {
-        return mailBox.getText();
-    }
-
-    @Override
-    public String getPassword() {
-        return passBox.getText();
-    }
-
-    @Override
     public void setLoadingStatus() {
-        Element elem = (Element) Document.get().getElementById("loginStatus");
+        Element elem = (Element) Document.get().getElementById(STATUS_ID);
         clearStatusLabel(elem);
-        statusLabel = new SimpleIconLabel("Loading", true);
+        statusLabel = new SimpleIconLabel(MSGS.loading(), true);
         statusLabel.setImageResource(StyleResource.INSTANCE.images().loadIcon24());
         elem.appendChild(statusLabel.getElement());
     }
@@ -103,11 +135,6 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
     public void setUnknownError() {
         // TODO Auto-generated method stub
 
-    }
-
-    @Override
-    public FocusWidget getCancelButton() {
-        return cancelBtn;
     }
 
     @Override
@@ -120,25 +147,36 @@ public class LoginPopupView extends PopupPanel implements  LoginPopupInterface {
     }
 
     private void clearStatusLabel(Element parent) {
-        NodeList<Node> list = parent.getChildNodes();
-        for (int i = 0; i < list.getLength(); i++) {
-            Node node = list.getItem(i);
-            parent.removeChild(node);
+        if (parent.getChildCount() != 0) {
+            // remove the only child
+            parent.removeChild(parent.getFirstChild());
         }
     }
 
     @Override
-    public TextBox getPassBox() {
-        return passBox;
+    public void setPresenter(LoginPopupPresenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
-    public TextBox getEmailBox() {
-        return mailBox;
+    public LoginPopupPresenter getPresenter() {
+        return presenter;
     }
 
-    @Override
-    public boolean getRememberMe() {
-        return rememberCheck.getValue();
+    /**
+     * private class to handle close button click
+     */
+    private class CloseListener implements EventListener {
+
+        private LoginPopupView popup;
+
+        public CloseListener(LoginPopupView popup) {
+            this.popup = popup;
+        }
+
+        @Override
+        public void onBrowserEvent(Event event) {
+            popup.hidePopup();
+        }
     }
 }

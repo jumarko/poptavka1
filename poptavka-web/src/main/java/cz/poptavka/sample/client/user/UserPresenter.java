@@ -8,7 +8,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
-import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
  * Main presenter for User account.
@@ -29,14 +28,14 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     private DemandsLayoutPresenter demandsLayoutPresenter = null;
 
-    public void onAtAccount(UserDetail user) {
+    public void onAtAccount() {
         if (demandsLayoutPresenter != null) {
             eventBus.removeHandler(demandsLayoutPresenter);
         }
 //        if (user.isVerified()) {
         eventBus.setUserLayout();
         demandsLayoutPresenter = eventBus.addHandler(DemandsLayoutPresenter.class);
-        demandsLayoutPresenter.onAtAccount(user);
+        demandsLayoutPresenter.onAtAccount();
         eventBus.setBodyHolderWidget(view.getWidgetView());
 //        } else {
 //            Window.alert("Activate your account first to use the app");

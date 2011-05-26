@@ -8,6 +8,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 @RemoteServiceRelativePath("service/user")
 public interface UserRPCService extends RemoteService {
 
-    UserDetail loginUser(UserDetail user);
+    String loginUser(UserDetail user);
 
+    UserDetail getSignedUser(String sessionId);
 }

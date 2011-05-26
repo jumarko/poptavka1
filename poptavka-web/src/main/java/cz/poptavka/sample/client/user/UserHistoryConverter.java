@@ -17,7 +17,7 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
     private static final Logger LOGGER = Logger
             .getLogger(UserHistoryConverter.class.getName());
 
-    public String onAtAccount(UserDetail user) {
+    public String onAtAccount() {
         return "";
     }
 
@@ -47,12 +47,12 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
         LOGGER.fine("Name: " + historyName + "\nParam: " + param);
-        eventBus.atAccount(user);
+        eventBus.atAccount();
         if (historyName.equals("invokeMyDemands")) {
             eventBus.invokeMyDemands();
         }
         if (historyName.equals("invokeOffers")) {
-            eventBus.invokeOffers();
+//            eventBus.invokeOffers();
         }
         if (historyName.equals("invokeNewDemand")) {
             eventBus.invokeNewDemand(Long.valueOf(param));

@@ -1,5 +1,7 @@
 package com.google.gwt.i18n.client;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 
 public interface LocalizableMessages extends Messages {
 
@@ -66,4 +68,9 @@ public interface LocalizableMessages extends Messages {
     String month();
     String fewMonths();
     String months();
+    String submit();
+    SafeHtml rememberMe();
+    String pass();
+    String email();
+    String loading();
 }

@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
 
     <g:HTMLPanel ui:field="container">
         <!-- menu -->
@@ -31,6 +32,14 @@
             </ul>
         </div>
         <!-- menu END -->
-        <g:SimplePanel ui:field="contentHolder"/>
+
+
+        <g:HTMLPanel>
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="contentHolder" />
+
+            </g:ScrollPanel>
+        </g:HTMLPanel>
     </g:HTMLPanel>
+
 </ui:UiBinder>

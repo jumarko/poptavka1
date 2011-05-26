@@ -58,19 +58,20 @@ public class DemandsLayoutPresenter
         void setMyDemandsOperatorToken(String linkString);
 
         void setAdministrationToken(String linkString);
+
+        String getSuperMethod();
     }
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
-        view.setOffersToken(getTokenGenerator().invokeOffers());
+//        view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand(clientId));
         view.setMyDemandsOperatorToken(getTokenGenerator()
                 .invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
     }
 
-    public void onAtAccount(UserDetail user) {
-        this.user = user;
+    public void onAtAccount() {
         eventBus.setTabWidget(view.getWidgetView());
         if (clientsDemands == null) {
             LOGGER.fine("RPC call - get client's (ID:" + clientId + ") demands");

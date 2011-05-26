@@ -25,7 +25,6 @@ import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = MainView.class)
 public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface, MainEventBus> {
@@ -116,7 +115,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
 
-    public void onAtAccount(UserDetail user) {
+    public void onAtAccount() {
         this.loggedIn = true;
         view.getLoginLink().setText(MSGS.logOut());
     }

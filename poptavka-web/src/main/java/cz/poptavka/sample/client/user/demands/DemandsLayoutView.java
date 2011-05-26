@@ -76,4 +76,9 @@ public class DemandsLayoutView extends Composite implements DemandsLayoutPresent
     public void setAdministrationToken(String linkString) {
         administration.setTargetHistoryToken(linkString);
     }
+
+    @Override
+    public String getSuperMethod() {
+        return  "Super Method String";
+    }
 }

@@ -20,7 +20,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Override
-    public UserDetail loginUser(UserDetail userDetail) {
+    public String loginUser(UserDetail userDetail) {
 
         final User user = (User) generalService.searchUnique(
                 new Search(User.class).addFilterEqual("email", userDetail.getEmail())
@@ -32,6 +32,13 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         userDetail.setId(user.getId());
         System.out.println("USER branch");
 
-        return userDetail;
+        return "id=" + userDetail.getId();
+    }
+
+    @Override
+    public UserDetail getSignedUser(String sessionId) {
+        // TODO make real implementation of getting user according to sessionID
+        // now it's just fake string, that needs to be parsed
+        return null;
     }
 }

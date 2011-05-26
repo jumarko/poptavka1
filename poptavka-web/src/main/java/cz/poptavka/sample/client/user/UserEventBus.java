@@ -21,16 +21,14 @@ import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Events(startView = UserView.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBus {
 
     /** init method. **/
-    @Event(handlers = {UserPresenter.class },
-            historyConverter = UserHistoryConverter.class)
-    String atAccount(UserDetail user);
+    @Event(handlers = {UserPresenter.class }, historyConverter = UserHistoryConverter.class)
+    String atAccount();
 
     @Event(handlers = {DemandsLayoutPresenter.class, MyDemandsPresenter.class })
     void setClientDemands(ArrayList<DemandDetail> demands);
@@ -125,7 +123,6 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = AdministrationPresenter.class)
     void refreshUpdatedDemand(DemandDetail demand);
 
-    @Event(handlers = AdministrationPresenter.class)
     void setAllDemands(List<DemandDetail> demands);
 
     @Event(handlers = UserHandler.class)
