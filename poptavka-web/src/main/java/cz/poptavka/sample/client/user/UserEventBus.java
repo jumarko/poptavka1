@@ -36,6 +36,9 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = DemandsLayoutPresenter.class)
     void showDemandDetail(long demandId);
 
+    @Event(handlers = {DemandsLayoutPresenter.class, MyDemandsOperatorPresenter.class })
+    void setOperatorDemands(ArrayList<DemandDetail> demands);
+
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
@@ -50,7 +53,7 @@ public interface UserEventBus extends EventBus {
     @Event(handlers = DemandsLayoutPresenter.class)
     void requestDemands();
 
-    @Event(handlers = {MyDemandsPresenter.class, OffersPresenter.class })
+    @Event(handlers = {MyDemandsPresenter.class, OffersPresenter.class, MyDemandsOperatorPresenter.class })
     void responseDemands(ArrayList<DemandDetail> demands);
 
     @Event(handlers = OffersPresenter.class)

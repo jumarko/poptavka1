@@ -86,6 +86,13 @@ public class DemandsLayoutPresenter
         }
     }
 
+    public void onSetOperatorDemands(ArrayList<DemandDetail> demands) {
+        clientsDemands = demands;
+        if (sendDemandsFlag) {
+            eventBus.responseDemands(demands);
+        }
+    }
+
     public void onDisplayContent(Widget contentWidget) {
         view.setContent(contentWidget);
     }

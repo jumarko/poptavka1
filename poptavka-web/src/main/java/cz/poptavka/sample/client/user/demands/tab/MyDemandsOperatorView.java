@@ -1,9 +1,6 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.DateCell;
@@ -15,7 +12,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -54,8 +50,10 @@ public class MyDemandsOperatorView extends Composite
     @UiField
     SimplePanel myDemandOperatorDetail;
 
-    // The list of data to display.
-    private static List<DemandDetail> demandsinfo = generateDemandDetail();
+    /**
+     * Data provider that will cell table with data.
+     */
+    private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
 
     final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
 
@@ -121,11 +119,19 @@ public class MyDemandsOperatorView extends Composite
         return rejectBtn;
     }
 
+    /**
+     * @return the dataProvider
+     */
+    public ListDataProvider<DemandDetail> getDataProvider() {
+        return dataProvider;
+    }
+
 
     private void initCellTable(
             final SingleSelectionModel<DemandDetail> selectionModel) {
-
+        table = new CellTable<DemandDetail>(15);
         table.setSelectionModel(selectionModel);
+        dataProvider.addDataDisplay(table);
         // // Checkbox column. This table will uses a checkbox column for
         // // selection.
         // // Alternatively, you can call cellTable.setSelectionEnabled(true) to
@@ -167,54 +173,6 @@ public class MyDemandsOperatorView extends Composite
             }
         });
 
-        // // Add the columns.
-        // table.addColumn(nameColumn, "Name");
-        // // TODO jaro pouzili sme addColumn metodu
-        // // table.addColumn(dateColumn, "Date");
-        // table.addColumn(priceColumn, "Price");
-
-        // Create a data provider.
-        ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
-
-        // Connect the table to the data provider.
-        dataProvider.addDataDisplay(table);
-
-        // Add the data to the data provider, which automatically pushes it to
-        // the
-        // widget.
-        List<DemandDetail> list = dataProvider.getList();
-        for (DemandDetail demands : demandsinfo) {
-            list.add(demands);
-        }
-
-        table.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-
-    }
-
-    private static List<DemandDetail> generateDemandDetail() {
-        DemandDetail detail1 = new DemandDetail();
-        detail1.setId(1);
-        detail1.setTitle("blala1 blala1 blala1 blala1 blala1 blala1");
-        Date date1 = new Date(2010, 10, 2);
-        detail1.setEndDate(date1);
-        detail1.setPrice(new BigDecimal(2000));
-        DemandDetail detail2 = new DemandDetail();
-        detail2.setId(2);
-        detail2.setTitle("blala2");
-        Date date2 = new Date(2010, 10, 12);
-        detail2.setEndDate(date2);
-        detail2.setPrice(new BigDecimal(21000));
-        DemandDetail detail3 = new DemandDetail();
-        detail3.setId(3);
-        detail3.setTitle("blala3");
-        Date date3 = new Date(2010, 10, 22);
-        detail3.setEndDate(date3);
-        detail3.setPrice(new BigDecimal(1500));
-        demandsinfo = new ArrayList<DemandDetail>();
-        demandsinfo.add(detail1);
-        demandsinfo.add(detail2);
-        demandsinfo.add(detail3);
-        return demandsinfo;
     }
 
     /**
