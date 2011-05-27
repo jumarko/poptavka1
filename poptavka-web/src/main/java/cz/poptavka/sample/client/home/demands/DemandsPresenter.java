@@ -77,7 +77,6 @@ public class DemandsPresenter extends
 
     /**
      * Fills category listBox with given list of localities.
-     * @param box - listBox to be filled
      * @param list - data (categories)
      */
     public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
@@ -101,7 +100,6 @@ public class DemandsPresenter extends
 
     /**
      * Fills locality listBox with given list of localities.
-     * @param box - listBox to be filled
      * @param list - data (localities)
      */
     public void onSetLocalityData(final ArrayList<LocalityDetail> list) {

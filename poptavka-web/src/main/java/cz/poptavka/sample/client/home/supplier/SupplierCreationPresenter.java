@@ -106,8 +106,6 @@ public class SupplierCreationPresenter
     /**
      * Init method call.
      * TODO decide WHEN other parts should be built.
-     *
-     * @param homeSection
      */
     public void onAtRegisterSupplier() {
         LOGGER.info("Initializing Supplier Registration Widget ... ");

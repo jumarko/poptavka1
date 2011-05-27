@@ -91,9 +91,6 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
     // ***************************************************************************
     /**
      * Get category by its code.
-     *
-     * @param code
-     *            - String representing code
      */
 //    public void onGetCategory(long id) {
 //        LOGGER.info("FilterByCategory: " + id);
@@ -140,8 +137,6 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
     // ***************************************************************************
     /**
      * Get all demand from database.
-     *
-     * @param result
      */
     public void onGetDemands() {
         ResultCriteria resultCriteria = new ResultCriteria.Builder().build();

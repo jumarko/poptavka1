@@ -47,7 +47,7 @@ public abstract class HeaderTable extends FlexTable {
      * Can create clickable or no-clickable header.
      *
      * @param titles - list of table caption
-     * @param boolean - to set clickability of header
+     * @param clickable - to set clickability of header
      */
     public HeaderTable(ArrayList<String> titles, boolean clickable) {
         super();
@@ -62,7 +62,8 @@ public abstract class HeaderTable extends FlexTable {
      * Can create clickable or no-clickable header.
      *
      * @param titles - list of table caption
-     * @param boolean - to set clickability of header
+     * @param clickable - to set clickability of header
+     * @param className
      */
     public HeaderTable(ArrayList<String> titles, boolean clickable, String className) {
         this(titles, clickable);

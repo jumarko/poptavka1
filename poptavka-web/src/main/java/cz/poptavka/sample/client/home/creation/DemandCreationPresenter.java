@@ -85,8 +85,6 @@ public class DemandCreationPresenter
 
     /**
      * Init method call. TODO decide when other parts should be built.
-     *
-     * @param homeSection
      */
     public void onAtCreateDemand() {
         LOGGER.info("  INIT DemandCreation Widget");
@@ -119,7 +117,7 @@ public class DemandCreationPresenter
     /**
      * Called from HomeHandler after successful login/registration.
      *
-     * @param id id of newly created client/id of logged user
+     * @param client detail of newly created client
      */
     public void onPrepareNewDemandForNewClient(UserDetail client) {
         eventBus.loadingShow(MSGS.progressGettingDemandData());

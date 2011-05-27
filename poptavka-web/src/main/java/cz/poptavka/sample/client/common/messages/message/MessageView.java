@@ -123,7 +123,7 @@ public class MessageView extends Composite
 
     /**
      * Displays message body. Just GUI. Not working if through eventBus and presenter.
-     * @param event
+     * @param click
      */
     @UiHandler("panelHeader")
     public void onClickHeaderPanel(ClickEvent click) {

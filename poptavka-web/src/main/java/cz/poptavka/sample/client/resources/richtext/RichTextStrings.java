@@ -3,7 +3,7 @@ package cz.poptavka.sample.client.resources.richtext;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * This {@link RichTextConstants} interface is used to make the toolbar's strings
+ * This interface is used to make the toolbar's strings
  * internationalizable.
  */
 
