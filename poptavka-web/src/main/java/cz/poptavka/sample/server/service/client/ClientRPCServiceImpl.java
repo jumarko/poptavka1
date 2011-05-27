@@ -107,7 +107,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
         newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
         newClient.setVerification(Verification.UNVERIFIED);
-
+//        newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
         System.out.println("Verification " + newClient.getVerification().toString());
         /** TODO ivlcek - email activation. **/
 
