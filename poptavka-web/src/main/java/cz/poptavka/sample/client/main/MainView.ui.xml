@@ -22,7 +22,7 @@
                             </g:Anchor>
                         </div>
                         <div id="loginAnchor" style="position: absolute; width: 150px; right: 0px; z-index: 151;">
-                            SOME TEXT <br /><br />
+                            SOME TEXT X<br /><br />
                             SOME TEXT
                         </div>
                     </div>

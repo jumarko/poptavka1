@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -77,7 +76,7 @@ public class DemandsLayoutPresenter
             }
         }
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            Window.alert("Implement supplier specific DemandLayout init\n\nLocation:DemandsLayoutPresenter.init()");
+            //do supplier specific stuff
         }
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }

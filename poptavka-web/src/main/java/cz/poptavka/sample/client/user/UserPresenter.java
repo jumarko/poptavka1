@@ -140,6 +140,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             sb.append("<b><i>SUPPLIER</i></b>" + br);
+            sb.append("SupplierID: " + user.getSupplierId() + br);
             sb.append("Potentional Demands: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }

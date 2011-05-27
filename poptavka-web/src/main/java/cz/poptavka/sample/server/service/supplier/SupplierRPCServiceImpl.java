@@ -20,10 +20,12 @@ import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
+import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -38,6 +40,12 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private LocalityService localityService;
     private CategoryService categoryService;
     private GeneralService generalService;
+    private ClientService clientService;
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -78,7 +86,9 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setPassword(supplier.getPassword());
         /** address **/
         Address address = null;
-        Locality cityLoc = getLocalityByExample(supplier.getAddress().getCityName());
+        Locality search = new Locality();
+        search.setName(supplier.getAddress().getCityName());
+        Locality cityLoc = localityService.findByExample(search).get(0);
         if (cityLoc != null) {
             address = new Address();
             address.setCity(cityLoc);
@@ -135,34 +145,41 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         notificationItemClient.setNotification(this.generalService.find(Notification.class, 10L));
         notificationItemClient.setEnabled(true);
         notificationItemClient.setPeriod(Period.INSTANTLY);
-        notificationItems.add(notificationItem);
+        notificationItems.add(notificationItemClient);
         newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
 
         /** assign business role to the new supplier. **/
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
         /** registration process **/
+        newSupplier.setVerification(Verification.UNVERIFIED);
+
         Supplier supplierFromDB = supplierService.create(newSupplier);
 
         /** Brand new supplier has automatically the role of a client as well. **/
         Client client = new Client();
         client.setBusinessUser(supplierFromDB.getBusinessUser());
         client.getBusinessUser().getBusinessUserRoles().add(client);
+        client.setVerification(Verification.UNVERIFIED);
+
+        if (clientService == null) {
+            System.out.println("service is null");
+        }
+
+        clientService.create(client);
 
         return this.toUserDetail(supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
     private Locality getLocalityByExample(String searchString) {
         Locality loc = new Locality();
-        loc.setName(searchString);
-        List<Locality> results = localityService.findByExample(loc);
-        return (!results.isEmpty()) ? results.get(0) : null;
+        loc.setCode(searchString);
+        Locality resultLoc = localityService.findByExample(loc).get(0);
+        return resultLoc;
     }
 
     private Category getCategoryByExample(String searchString) {
-        Category loc = new Category();
-        loc.setName(searchString);
-        List<Category> results = categoryService.findByExample(loc);
-        return (!results.isEmpty()) ? results.get(0) : null;
+        Category resultsCat = categoryService.getById(Long.parseLong(searchString));
+        return resultsCat;
     }
 
     @Override

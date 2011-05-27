@@ -25,6 +25,7 @@ public class RadioTable extends HeaderTable {
         super(titles, clickable);
         this.constantsCount = 2;
         this.defaultChecked = defaultChecked;
+        this.selectedRow = defaultChecked;
         addSpecialColumn(COLUMN_RADIO, "");
     }
 

@@ -112,13 +112,6 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
                 detail.setClientId(clientRole.getId());
                 detail.addRole(Role.CLIENT);
 
-                //set his demands ID list
-                List<Demand> demands = clientRole.getDemands();
-                ArrayList<String> demandIds = new ArrayList<String>();
-                for (Demand d : demands) {
-                    demandIds.add(d.getId().toString());
-                }
-
                 detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
             }
             if (role instanceof Supplier) {
@@ -154,6 +147,9 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
                 detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
             }
         }
+        // TODO fix this user ID
+        System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
+        detail.setId(userRoles.get(0).getBusinessUser().getId());
         return detail;
     }
 
