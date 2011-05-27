@@ -22,6 +22,7 @@ import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -120,6 +121,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         notificationItems.add(notificationItem);
         newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
         /** TODO ivlcek - email activation. **/
+        newClient.setVerification(Verification.UNVERIFIED);
 
         newClient = clientService.create(newClient);
         return this.toUserDetail(newClient.getBusinessUser().getBusinessUserRoles());
