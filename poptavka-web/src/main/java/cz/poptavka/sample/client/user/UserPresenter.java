@@ -118,6 +118,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         this.eventMarkedToFire  = historyName;
     }
 
+    public void onClearUserOnUnload() {
+        this.user = null;
+    }
+
  // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         PopupPanel userInfoPanel = new PopupPanel(true);

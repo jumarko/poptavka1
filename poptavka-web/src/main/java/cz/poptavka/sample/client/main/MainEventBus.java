@@ -153,4 +153,7 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void initLoginWindow();
 
+    @Event(modulesToLoad = UserModule.class, passive = true)
+    void clearUserOnUnload();
+
 }

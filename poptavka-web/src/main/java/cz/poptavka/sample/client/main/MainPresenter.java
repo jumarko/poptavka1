@@ -65,8 +65,6 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
             @Override
             public void onClick(ClickEvent event) {
                 if (loggedIn) {
-                    loggedIn = false;
-                    view.getLoginLink().setText(MSGS.logIn());
                     eventBus.atHome();
                     Cookies.setCookie("user-presenter", "unloaded");
                 } else {
@@ -115,13 +113,19 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     public void onSetPublicLayout() {
-        LOGGER.fine("Toggle layout");
+        LOGGER.fine("Toggle layout -> PUBLIC");
+        eventBus.clearUserOnUnload();
         view.toggleMainLayout(false);
+        view.getLoginLink().setText(MSGS.logIn());
+        this.loggedIn = false;
+
     }
 
     public void onSetUserLayout() {
-        LOGGER.fine("Toggle layout");
+        LOGGER.fine("Toggle layout -> USER");
         view.toggleMainLayout(true);
+        view.getLoginLink().setText(MSGS.logOut());
+        this.loggedIn = true;
     }
 
     public void onAtAccount() {

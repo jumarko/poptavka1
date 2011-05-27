@@ -72,6 +72,19 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
         }
     }
 
+    @Override
+    public HTMLPanel getHeaderHolder() {
+        return headerHolder;
+    }
+
+    @Override
+    public Anchor getLoginLink() {
+        return loginButton;
+    }
+
+    /** Footer part related methods. **/
+    private static final int FOOT_HEIGHT = 50;
+
     private void initFooterToggle() {
         footController.addClickHandler(new ClickHandler() {
             @Override
@@ -80,8 +93,6 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
             }
         });
     }
-
-    private static final int FOOT_HEIGHT = 50;
 
     private void toggleFooter() {
         Style footerParentStyle = footerHolder.getElement().getParentElement().getStyle();
@@ -96,16 +107,5 @@ public class MainView extends Composite implements MainPresenter.MainViewInterfa
             footController.setText(MSGS.footerDisplay());
         }
     }
-
-    @Override
-    public HTMLPanel getHeaderHolder() {
-        return headerHolder;
-    }
-
-    @Override
-    public Anchor getLoginLink() {
-        return loginButton;
-    }
-
 
 }

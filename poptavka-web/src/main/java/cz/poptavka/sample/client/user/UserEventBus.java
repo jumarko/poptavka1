@@ -217,6 +217,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void setUserInteface(StyleInterface widgetView);
 
+    @Event(handlers = UserPresenter.class)
+    void clearUserOnUnload();
+
     /** hacky later fire event
      * Needed when refreshing in User Section - refresh not neededi in prod **/
     @Event(handlers = UserPresenter.class)

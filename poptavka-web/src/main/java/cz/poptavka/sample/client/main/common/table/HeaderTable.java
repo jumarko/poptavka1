@@ -74,7 +74,6 @@ public abstract class HeaderTable extends FlexTable {
     /** init table header, according to clickable it will be clickable or not. **/
     private void initTableHead(ArrayList<String> titles) {
         Element thead = DOM.createTHead();
-        thead.setAttribute("style", "position: fixed");
         DOM.insertChild(this.getElement(), thead, 0);
         Element tr = DOM.createTR();
 
