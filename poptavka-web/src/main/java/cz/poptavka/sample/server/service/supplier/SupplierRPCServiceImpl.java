@@ -10,10 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.settings.Notification;
+import cz.poptavka.sample.domain.settings.NotificationItem;
+import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessUserData;
+import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
@@ -24,16 +29,12 @@ import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
-
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = 6985305269091931821L;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierRPCServiceImpl.class);
-
     private SupplierService supplierService;
-
     private LocalityService localityService;
     private CategoryService categoryService;
     private GeneralService generalService;
@@ -64,14 +65,14 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
-            .companyName(supplier.getCompanyName())
-            .taxId(supplier.getTaxId())
-            .identificationNumber(supplier.getIdentifiacationNumber())
-            .phone(supplier.getPhone())
-            .personFirstName(supplier.getFirstName())
-            .personLastName(supplier.getLastName())
-//            .description(supplier.getDescription());
-            .build();
+                .companyName(supplier.getCompanyName())
+                .taxId(supplier.getTaxId())
+                .identificationNumber(supplier.getIdentifiacationNumber())
+                .phone(supplier.getPhone())
+                .personFirstName(supplier.getFirstName())
+                .personLastName(supplier.getLastName())
+                //.description(supplier.getDescription());
+                .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
         newSupplier.getBusinessUser().setPassword(supplier.getPassword());
@@ -107,32 +108,64 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
             Service service = generalService.find(Service.class, Long.valueOf(serviceId));
             UserService userService = new UserService();
             userService.setService(service);
+            userService.setStatus(Status.INACTIVE);
+            userService.setUser(newSupplier.getBusinessUser());
             us.add(userService);
         }
+        /** Set service for new client as well **/
+        UserService userServiceClient = new UserService();
+        userServiceClient.setUser(newSupplier.getBusinessUser());
+        userServiceClient.setStatus(Status.INACTIVE);
+        userServiceClient.setService(this.generalService.find(Service.class, 4L));
+        us.add(userServiceClient);
 
         newSupplier.getBusinessUser().setUserServices(us);
+
+        /** Notifications for new Supplier role. **/
+        List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
+        NotificationItem notificationItem = new NotificationItem();
+        // TODO ivlcek - create constant for Notifications in DB
+        notificationItem.setNotification(this.generalService.find(Notification.class, 6L));
+        notificationItem.setEnabled(true);
+        notificationItem.setPeriod(Period.INSTANTLY);
+        notificationItems.add(notificationItem);
+        /** This is notification for Client role that is automatically created herein. **/
+        NotificationItem notificationItemClient = new NotificationItem();
+        // TODO ivlcek - create constant for Notifications in DB
+        notificationItemClient.setNotification(this.generalService.find(Notification.class, 10L));
+        notificationItemClient.setEnabled(true);
+        notificationItemClient.setPeriod(Period.INSTANTLY);
+        notificationItems.add(notificationItem);
+        newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
+
+        /** assign business role to the new supplier. **/
+        newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
         /** registration process **/
         Supplier supplierFromDB = supplierService.create(newSupplier);
-        //del
-        System.out.println("New Supplier id : " + newSupplier.getId());
+
+        /** Brand new supplier has automatically the role of a client as well. **/
+        Client client = new Client();
+        client.setBusinessUser(supplierFromDB.getBusinessUser());
+        client.getBusinessUser().getBusinessUserRoles().add(client);
+
         return this.toUserDetail(supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
-
 
     private Locality getLocalityByExample(String searchString) {
         Locality loc = new Locality();
         loc.setName(searchString);
         List<Locality> results = localityService.findByExample(loc);
-        return (results.size() != 0) ? results.get(0) : null;
+        return (!results.isEmpty()) ? results.get(0) : null;
     }
 
     private Category getCategoryByExample(String searchString) {
         Category loc = new Category();
         loc.setName(searchString);
         List<Category> results = categoryService.findByExample(loc);
-        return (results.size() != 0) ? results.get(0) : null;
+        return (!results.isEmpty()) ? results.get(0) : null;
     }
 
+    @Override
     public ArrayList<ServiceDetail> getSupplierServices() {
         List<Service> services = this.generalService.findAll(Service.class);
         if (services != null) {
@@ -142,5 +175,4 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         }
         return convertToServiceDetails(services);
     }
-
 }
