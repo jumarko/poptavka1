@@ -35,9 +35,9 @@ public interface DemandsEventBus extends EventBus {
     @Event(forwardToParent = true)
     void setBodyWidget(Widget content);
 
-    //Category
-    @Event(handlers = DemandsHandler.class)
-    void getCategory(long id);
+//    //Category
+//    @Event(handlers = DemandsHandler.class)
+//    void getCategory(long id);
 
     @Event(handlers = DemandsHandler.class)
     void getCategories();

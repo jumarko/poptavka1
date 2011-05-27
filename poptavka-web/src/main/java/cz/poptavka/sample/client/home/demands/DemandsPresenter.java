@@ -44,8 +44,8 @@ public class DemandsPresenter extends
             @Override
             public void onChange(ChangeEvent arg0) {
                 LOGGER.info("OnCategoryListChange");
-                eventBus.getCategory(Long.parseLong(view.getCategoryList().getValue(
-                        view.getCategoryList().getSelectedIndex())));
+//                eventBus.getCategory(Long.parseLong(view.getCategoryList().getValue(
+//                        view.getCategoryList().getSelectedIndex())));
             }
         });
         view.getLocalityList().addChangeHandler(new ChangeHandler() {

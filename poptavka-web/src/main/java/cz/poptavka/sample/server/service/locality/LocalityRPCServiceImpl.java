@@ -32,6 +32,9 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         return createLocalityDetails(localities);
     }
 
+    /**
+     * Get children of locality specified by LOCALITY_CODE.
+     */
     @Override
     public ArrayList<LocalityDetail> getLocalities(String locCode) {
         LOGGER.info("Getting children localities ");
@@ -40,12 +43,6 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
             return createLocalityDetails(locality.getChildren());
         }
         return new ArrayList<LocalityDetail>();
-    }
-
-    //TODO fix to correct working
-    public Locality getLocality(String code) {
-        //Brno test only
-        return localityService.getById(80);
     }
 
     /** converts domain entities to front-end classes. **/

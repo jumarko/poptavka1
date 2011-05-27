@@ -107,11 +107,13 @@ public class DemandCreationPresenter
     }
 
     private void registerNewCient() {
+        //signal event
+        eventBus.loadingShow(MSGS.progressRegisterClient());
+        // ClientDetail instance
         FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
         UserDetail newClient = registerWidget.getNewClient();
         eventBus.registerNewClient(newClient);
-        //signal event
-        eventBus.loadingShow(MSGS.progressRegisterClient());
+
     }
 
     /**
@@ -137,8 +139,9 @@ public class DemandCreationPresenter
         demand.setLocalities(localityValues.getSelectedLocalityCodes());
         demand.setAdvInfo(advValues.getValues());
 
-        eventBus.createDemand(demand, client.getId());
+        eventBus.createDemand(demand, client.getClientId());
         eventBus.loadingShow(MSGS.progressCreatingDemand());
+
     }
 
     /** Done automatically in step five, when option: register new client is selected. **/

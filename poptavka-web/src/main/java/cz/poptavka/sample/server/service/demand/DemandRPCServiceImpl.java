@@ -7,7 +7,6 @@ package cz.poptavka.sample.server.service.demand;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,8 +18,8 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
-import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
+import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 
@@ -28,26 +27,26 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
  * @author Excalibur
  */
 public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements DemandRPCService {
-    private static final Logger LOGGER = Logger.getLogger(DemandRPCServiceImpl.class.getName());
+
     /**
      * generated serialVersonUID.
      */
     private static final long serialVersionUID = -4661806018739964100L;
     private DemandService demandService;
-    private GeneralService generalService;
+    private ClientService clientService;
 
     public DemandService getDemandService() {
         return demandService;
     }
 
     @Autowired
-    public void setGeneralService(GeneralService generalService) {
-        this.generalService = generalService;
+    public void setDemandService(DemandService demandService) {
+        this.demandService = demandService;
     }
 
     @Autowired
-    public void setDemandService(DemandService demandService) {
-        this.demandService = demandService;
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @Override
@@ -63,10 +62,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getExpireDate());
 
-        demand.setClient(this.generalService.find(Client.class, cliendId));
-        System.out.println("RPCImpl Client: " + (demand.getClient() == null));
+        demand.setClient(clientService.getById(cliendId));
         Demand newDemand = demandService.create(demand);
-        return toDemandDetail(newDemand);
+        return DemandDetail.createDemandDetail(newDemand);
     }
 
     /**
@@ -80,7 +78,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         // TODO ivlcek - update entity by sa mal robit jednoduchsie ako toto?
         Demand demand = demandService.getById(demandDetail.getId());
 //        demand.setCategories(null);
-        demand.setClient(generalService.find(Client.class, demandDetail.getClientId()));
+        demand.setClient(clientService.getById(demandDetail.getClientId()));
 //        demand.setDescription(null);
         demand.setEndDate(demandDetail.getEndDate());
 //        demand.setExcludedSuppliers(null);
@@ -133,7 +131,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     public ArrayList<DemandDetail> getClientDemands(long id) {
-        Client client = this.generalService.find(Client.class, id);
+        Client client = clientService.getById(id);
         return this.toDemandDetailList(client.getDemands());
     }
 

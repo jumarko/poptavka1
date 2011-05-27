@@ -1,23 +1,20 @@
 package cz.poptavka.sample.server.service.category;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cz.poptavka.sample.client.service.demand.CategoryRPCService;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
 
-    /**
-     * Generated serialVersionUID.
-     */
-    private static final long serialVersionUID = -5635188205093095585L;
     private CategoryService categoryService;
     private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 
@@ -27,18 +24,18 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public Category getCategory(String code) {
-        return categoryService.getCategory(code);
+    public CategoryDetail getCategory(long id) {
+        return createCategoryDetail(categoryService.getById(id));
     }
 
-    @Override
-    public Category getCategory(long id) {
-        return categoryService.getById(id);
-    }
+//    @Override
+//    public CategoryDetail getCategory(String code) {
+//        return createCategoryDetail(categoryService.getCategory(code));
+//    }
 
     @Override
-    public List<Category> getAllRootCategories() {
-        return categoryService.getRootCategories();
+    public ArrayList<CategoryDetail> getAllRootCategories() {
+        return createCategoryDetailList(categoryService.getRootCategories());
     }
 
     @Override
@@ -68,17 +65,23 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         final ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
 
         for (Category cat : categories) {
-            CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(), 0, 0);
-//            CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
-//                  cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());
-            if (cat.getChildren().size() != 0) {
-                detail.setParent(true);
-            } else {
-                detail.setParent(false);
-            }
-            categoryDetails.add(detail);
+            categoryDetails.add(createCategoryDetail(cat));
         }
 
         return categoryDetails;
     }
+
+    private CategoryDetail createCategoryDetail(Category category) {
+        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, 0);
+        // TODO uncomment, when implemented
+//        CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
+//              cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());
+        if (category.getChildren().size() != 0) {
+            detail.setParent(true);
+        } else {
+            detail.setParent(false);
+        }
+        return detail;
+    }
+
 }

@@ -13,7 +13,6 @@ import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.Status;
-import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.settings.Notification;
@@ -25,8 +24,6 @@ import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
-import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -40,8 +37,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
     private GeneralService generalService;
     private ClientService clientService;
-    private LocalityService localityService;
-    private CategoryService categoryService;
 
     public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
@@ -51,16 +46,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
-    }
-
-    @Autowired
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
     }
 
     @Autowired
@@ -87,7 +72,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 taxId(clientDetail.getTaxId()).build();
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
         /** Address. **/
-        Locality city = getLocalityByExample(clientDetail.getAddress().getCityName());
+        Locality city = this.getLocality(clientDetail.getAddress().getCityName());
         Address address = new Address();
         address.setCity(city);
         address.setStreet(clientDetail.getAddress().getStreet());
@@ -120,19 +105,16 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         notificationItem.setPeriod(Period.INSTANTLY);
         notificationItems.add(notificationItem);
         newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
-        /** TODO ivlcek - email activation. **/
+        newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
         newClient.setVerification(Verification.UNVERIFIED);
+
+        System.out.println("Verification " + newClient.getVerification().toString());
+        /** TODO ivlcek - email activation. **/
 
         newClient = clientService.create(newClient);
         return this.toUserDetail(newClient.getBusinessUser().getBusinessUserRoles());
     }
 
-    /**
-     * Verifies if client exists in db.
-     *
-     * @param client light-weight Client entity
-     * @return client's ID if exists, -1 if does not
-     */
     @Override
     public UserDetail verifyClient(UserDetail clientDetail) {
         final List<Client> peristedClient = this.clientService.searchByCriteria(
@@ -158,19 +140,4 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return userByEmail == null;
     }
 
-    // TODO rework to SearchByCriteria
-    private Locality getLocalityByExample(String searchString) {
-        Locality loc = new Locality();
-        loc.setName(searchString);
-        List<Locality> results = localityService.findByExample(loc);
-        return (results.size() != 0) ? results.get(0) : null;
-    }
-
- // TODO rework to SearchByCriteria
-    private Category getCategoryByExample(String searchString) {
-        Category loc = new Category();
-        loc.setName(searchString);
-        List<Category> results = categoryService.findByExample(loc);
-        return (results.size() != 0) ? results.get(0) : null;
-    }
 }

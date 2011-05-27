@@ -16,6 +16,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +38,7 @@ import java.util.List;
 public class BusinessUser extends User {
 
     @OneToMany(mappedBy = "businessUser")
-    private List<BusinessUserRole> businessUserRoles;
+    private List<BusinessUserRole> businessUserRoles = new ArrayList<BusinessUserRole>();
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = Constants.ENUM_FIELD_LENGTH)

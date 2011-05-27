@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 
 import net.sf.gilead.gwt.PersistentRemoteService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -23,6 +24,8 @@ import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
+import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
@@ -37,6 +40,21 @@ import cz.poptavka.sample.shared.domain.UserDetail.Role;
  */
 public abstract class AutoinjectingRemoteService extends PersistentRemoteService  {
 
+    private static final long serialVersionUID = 237077627422062352L;
+
+    private CategoryService categoryService;
+    private LocalityService localityService;
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setLocalityService(LocalityService localityService) {
+        this.localityService = localityService;
+    }
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -50,34 +68,10 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
     protected ArrayList<DemandDetail> toDemandDetailList(List<Demand> list) {
         ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
         for (Demand demand : list) {
-            details.add(toDemandDetail(demand));
+            details.add(DemandDetail.createDemandDetail(demand));
         }
         return details;
     }
-
-    protected DemandDetail toDemandDetail(Demand demand) {
-        DemandDetail detail = new DemandDetail();
-        detail.setId(demand.getId());
-        detail.setTitle(demand.getTitle());
-        detail.setDescription(demand.getDescription());
-        detail.setPrice(demand.getPrice());
-        detail.setEndDate(demand.getEndDate());
-        detail.setExpireDate(demand.getValidTo());
-        detail.setMaxOffers(demand.getMaxSuppliers());
-        detail.setMinRating(demand.getMinRating());
-        ArrayList<String> catList = new ArrayList<String>();
-        for (Category cat : demand.getCategories()) {
-            catList.add(cat.getName());
-        }
-        detail.setCategories(catList);
-        ArrayList<String> locList = new ArrayList<String>();
-        for (Locality loc : demand.getLocalities()) {
-            locList.add(loc.getName());
-        }
-        detail.setLocalities(locList);
-        return detail;
-    }
-
 
     protected ArrayList<OfferDetail> toOfferDetailList(List<Offer> offerList) {
         ArrayList<OfferDetail> details = new ArrayList<OfferDetail>();
@@ -112,7 +106,8 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
                 detail.setClientId(clientRole.getId());
                 detail.addRole(Role.CLIENT);
 
-                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
+//                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
+                System.out.println(clientRole.getVerification() + " XXXX");
             }
             if (role instanceof Supplier) {
                 Supplier supplierRole = (Supplier) role;
@@ -169,5 +164,12 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         return details;
     }
 
+    public Category getCategory(String id) {
+        return categoryService.getById(Long.parseLong(id));
+    }
+
+    public Locality getLocality(String code) {
+        return localityService.getLocality(code);
+    }
 
 }

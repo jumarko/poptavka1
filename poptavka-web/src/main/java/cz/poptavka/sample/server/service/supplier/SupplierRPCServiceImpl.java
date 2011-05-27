@@ -3,9 +3,9 @@ package cz.poptavka.sample.server.service.supplier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.googlecode.genericdao.search.Search;
 
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
@@ -23,8 +23,6 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
-import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
@@ -35,10 +33,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = 6985305269091931821L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SupplierRPCServiceImpl.class);
     private SupplierService supplierService;
-    private LocalityService localityService;
-    private CategoryService categoryService;
     private GeneralService generalService;
     private ClientService clientService;
 
@@ -50,16 +45,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
-    }
-
-    @Autowired
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
     }
 
     @Autowired
@@ -86,9 +71,11 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setPassword(supplier.getPassword());
         /** address **/
         Address address = null;
-        Locality search = new Locality();
-        search.setName(supplier.getAddress().getCityName());
-        Locality cityLoc = localityService.findByExample(search).get(0);
+
+        //get locality according to City Name
+        Locality cityLoc = (Locality) generalService.searchUnique(new Search(Locality.class)
+            .addFilterEqual("name", supplier.getAddress().getCityName()));
+
         if (cityLoc != null) {
             address = new Address();
             address.setCity(cityLoc);
@@ -100,14 +87,14 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setAddresses(addresses);
         /** localities **/
         List<Locality> locs = new ArrayList<Locality>();
-        for (String loc : supplier.getSupplier().getLocalities()) {
-            locs.add(getLocalityByExample(loc));
+        for (String localityCode : supplier.getSupplier().getLocalities()) {
+            locs.add(this.getLocality(localityCode));
         }
         newSupplier.setLocalities(locs);
         /** categories **/
         List<Category> categories = new ArrayList<Category>();
-        for (String cat : supplier.getSupplier().getCategories()) {
-            categories.add(getCategoryByExample(cat));
+        for (String categoryId : supplier.getSupplier().getCategories()) {
+            categories.add(this.getCategory(categoryId));
         }
         newSupplier.setCategories(categories);
         /** Service selection **/
@@ -168,18 +155,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         clientService.create(client);
 
         return this.toUserDetail(supplierFromDB.getBusinessUser().getBusinessUserRoles());
-    }
-
-    private Locality getLocalityByExample(String searchString) {
-        Locality loc = new Locality();
-        loc.setCode(searchString);
-        Locality resultLoc = localityService.findByExample(loc).get(0);
-        return resultLoc;
-    }
-
-    private Category getCategoryByExample(String searchString) {
-        Category resultsCat = categoryService.getById(Long.parseLong(searchString));
-        return resultsCat;
     }
 
     @Override

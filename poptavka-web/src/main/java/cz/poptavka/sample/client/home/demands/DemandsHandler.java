@@ -14,9 +14,9 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -95,26 +95,26 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
      * @param code
      *            - String representing code
      */
-    public void onGetCategory(long id) {
-        LOGGER.info("FilterByCategory: " + id);
-        categoryService.getCategory(id, new AsyncCallback<Category>() {
-
-            @Override
-            public void onSuccess(Category result) {
-                LOGGER.info("category found: " + result);
-                if (result != null) {
-                    Category[] categories = {result};
-                    eventBus.getDemandsByCategories(categories);
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable caught) {
-                LOGGER.info("onFailureFilterbyCategory");
-
-            }
-        });
-    }
+//    public void onGetCategory(long id) {
+//        LOGGER.info("FilterByCategory: " + id);
+//        categoryService.getCategory(id, new AsyncCallback<CategoryDetail>() {
+//
+//            @Override
+//            public void onSuccess(CategoryDetail result) {
+//                LOGGER.info("category found: " + result);
+//                if (result != null) {
+//                    Category[] categories = {result};
+//                    eventBus.getDemandsByCategories(categories);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                LOGGER.info("onFailureFilterbyCategory");
+//
+//            }
+//        });
+//    }
 
     /**
      * Get all categories. Used for display in listBox categories.

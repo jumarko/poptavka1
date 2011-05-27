@@ -1,11 +1,14 @@
 package cz.poptavka.sample.shared.domain;
 
-import cz.poptavka.sample.domain.demand.Demand;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.demand.Demand;
 
 public class DemandDetail implements Serializable {
     /**
@@ -37,33 +40,41 @@ public class DemandDetail implements Serializable {
      * @return DemandDetail
      */
     public static DemandDetail createDemandDetail(Demand demand) {
-        DemandDetail d = new DemandDetail();
-        d.setId(demand.getId());
-        // TODO ivlcek - set categories
-        d.setCategories(null);
-        // TODO ivlcek - ako spoznam ci sa mi dotialhol aj Client k tejto poptabke?
-        d.setClientId(demand.getClient().getId());
-        // TODO ivlcek - zatial neposielam demand descritpion, ktory je velmi velky
-        d.setDescription(null);
-        d.setTitle(demand.getTitle());
-        d.setEndDate(demand.getEndDate());
-        d.setExpireDate(demand.getValidTo());
-        // TODO ivlcek - set localities
-        d.setLocalities(null);
-        d.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
-        d.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
-        d.setPrice(demand.getPrice());
+
+        DemandDetail detail = new DemandDetail();
+        detail.setId(demand.getId());
+        detail.setTitle(demand.getTitle());
+        detail.setDescription(demand.getDescription());
+        detail.setPrice(demand.getPrice());
+        detail.setEndDate(demand.getEndDate());
+        detail.setExpireDate(demand.getValidTo());
+        detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
+        detail.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
+        //categories
+        ArrayList<String> catList = new ArrayList<String>();
+        for (Category cat : demand.getCategories()) {
+            catList.add(cat.getName());
+        }
+        detail.setCategories(catList);
+        //localities
+        ArrayList<String> locList = new ArrayList<String>();
+        for (Locality loc : demand.getLocalities()) {
+            locList.add(loc.getName());
+        }
+        detail.setLocalities(locList);
         // TODO ivlcek - status nesmie byt v DB ako null
-        d.setDemandStatus(demand.getStatus().getValue());
-        d.setDemandType(demand.getType().getType().getValue());
-        return d;
+        detail.setDemandStatus(demand.getStatus().getValue());
+        detail.setDemandType(demand.getType().getType().getValue());
+        // TODO ivlcek - ako spoznam ci sa mi dotialhol aj Client k tejto poptabke?
+        detail.setClientId(demand.getClient().getId());
+
+        return detail;
     }
 
     public void setBasicInfo(HashMap<String, Object> map) {
         this.title = (String) map.get("title");
         this.description = (String) map.get("description");
-        Long priceVal = (Long) map.get("price");
-        this.price = BigDecimal.valueOf(priceVal == null ? null : priceVal);
+        this.price = BigDecimal.valueOf((Long) map.get("price"));
         this.endDate = (Date) map.get("endDate");
         this.expireDate = (Date) map.get("expireDate");
     }
