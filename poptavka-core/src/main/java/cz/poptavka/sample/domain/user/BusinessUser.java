@@ -5,6 +5,7 @@ import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
+import java.util.ArrayList;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
@@ -16,8 +17,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,32 +35,24 @@ import java.util.List;
 @Entity
 @Audited
 public class BusinessUser extends User {
-
     @OneToMany(mappedBy = "businessUser")
     private List<BusinessUserRole> businessUserRoles = new ArrayList<BusinessUserRole>();
-
     @Enumerated(value = EnumType.STRING)
     @Column(length = Constants.ENUM_FIELD_LENGTH)
     private BusinessType businessType;
-
     /** Business user data about company and contact person. */
     @OneToOne
     @Cascade(value = CascadeType.ALL)
     private BusinessUserData businessUserData;
-
-
     /** All user's addresses. */
     @NotAudited
     @OneToMany
     @Cascade(value = CascadeType.ALL)
     private List<Address> addresses;
-
     @NotAudited
     @OneToMany(mappedBy = "user")
     @Cascade(value = CascadeType.ALL)
     private List<UserService> userServices;
-
-
     @OneToMany
     @NotAudited
     private List<Invoice> invoices;
@@ -74,7 +65,6 @@ public class BusinessUser extends User {
     }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
-
     public List<BusinessUserRole> getBusinessUserRoles() {
         return businessUserRoles;
     }
@@ -124,7 +114,6 @@ public class BusinessUser extends User {
     }
 
     //-------------------------- End of GETTERS AND SETTERS ------------------------------------------------------------
-
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("BusinessUser");

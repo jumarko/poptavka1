@@ -27,6 +27,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  *
@@ -82,6 +84,7 @@ public class Message extends DomainObject {
     private Date sent;
 
     @OneToMany(mappedBy = "message")
+    @Cascade(value = CascadeType.ALL)
     private List<MessageUserRole> roles;
 
     /* a demand to which this message pertains */

@@ -93,6 +93,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     private void createBusinessUserIfNotExist(BUR businessUserRole) {
         if (isNewBusinessUser(businessUserRole)) {
+            businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
             final BusinessUser savedBusinessUserEntity = generalService.save(businessUserRole.getBusinessUser());
             businessUserRole.setBusinessUser(savedBusinessUserEntity);
         }
