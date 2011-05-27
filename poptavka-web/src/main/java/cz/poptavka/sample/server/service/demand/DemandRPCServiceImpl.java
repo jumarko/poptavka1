@@ -51,7 +51,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public String createNewDemand(DemandDetail detail, Long cliendId) {
+    public DemandDetail createNewDemand(DemandDetail detail, Long cliendId) {
         final Demand demand = new Demand();
         demand.setTitle(detail.getTitle());
         demand.setDescription(detail.getDescription());
@@ -65,8 +65,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
         demand.setClient(this.generalService.find(Client.class, cliendId));
         System.out.println("RPCImpl Client: " + (demand.getClient() == null));
-        demandService.create(demand);
-        return "Done";
+        Demand newDemand = demandService.create(demand);
+        return toDemandDetail(newDemand);
     }
 
     /**

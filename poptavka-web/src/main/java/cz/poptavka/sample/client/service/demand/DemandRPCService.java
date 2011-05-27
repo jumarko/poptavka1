@@ -26,7 +26,7 @@ public interface DemandRPCService extends RemoteService {
 
     DemandDetail updateDemand(DemandDetail newDemand);
 
-    String  createNewDemand(DemandDetail newDemand, Long clientId);
+    DemandDetail  createNewDemand(DemandDetail newDemand, Long clientId);
 
     Set<Demand> getDemands(Locality[] localities);
     Set<Demand> getDemands(Category[] categories);

@@ -14,6 +14,7 @@ import cz.poptavka.sample.client.common.messages.MessagesPresenter;
 import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
 import cz.poptavka.sample.client.user.admin.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.AdministrationPresenter;
+import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
@@ -47,6 +48,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DemandsLayoutPresenter.class)
     void setClientDemands(ArrayList<DemandDetail> demands);
 
+    @Event(handlers = DemandsLayoutPresenter.class)
+    void addNewDemand(DemandDetail result);
+
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
      *
@@ -56,15 +60,12 @@ public interface UserEventBus extends EventBusWithLookup {
     void setTabWidget(Widget tabBody);
 
     /** DEVEL **/
-
     @Event(handlers = OffersPresenter.class)
     void responseOffers(ArrayList<ArrayList<OfferDetail>> offers);
 
     //for operator only
     @Event
     void invokeProblems();
-
-
 
     /** Messages secition **/
     @Event(handlers = MessagesPresenter.class)
@@ -152,35 +153,35 @@ public interface UserEventBus extends EventBusWithLookup {
             activate = MyDemandsPresenter.class,
             deactivate = {OffersPresenter.class, NewDemandPresenter.class,
                 MyDemandsOperatorPresenter.class, AdministrationPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+            historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = OffersPresenter.class,
             activate = OffersPresenter.class,
             deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class,
                 MyDemandsOperatorPresenter.class, AdministrationPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+            historyConverter = DemandsHistoryConverter.class, name = "lambada")
     String invokeOffers();
 
     @Event(handlers = NewDemandPresenter.class,
             activate = NewDemandPresenter.class,
             deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
                 MyDemandsOperatorPresenter.class, AdministrationPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+            historyConverter = DemandsHistoryConverter.class)
     String invokeNewDemand();
 
     @Event(handlers = MyDemandsOperatorPresenter.class,
             activate = MyDemandsOperatorPresenter.class,
             deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
                 NewDemandPresenter.class, AdministrationPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+            historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemandsOperator();
 
     @Event(handlers = AdministrationPresenter.class,
             activate = AdministrationPresenter.class,
             deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
                 NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
-            historyConverter = UserHistoryConverter.class)
+            historyConverter = DemandsHistoryConverter.class)
     String invokeAdministration();
     /** Navigation Events section END **/
 
@@ -216,6 +217,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void setUserInteface(StyleInterface widgetView);
 
-
+    /** hacky later fire event
+     * Needed when refreshing in User Section - refresh not neededi in prod **/
+    @Event(handlers = UserPresenter.class)
+    void fireMarkedEvent();
 
 }

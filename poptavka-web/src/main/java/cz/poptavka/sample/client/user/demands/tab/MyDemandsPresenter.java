@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -60,12 +59,10 @@ public class MyDemandsPresenter extends
         // }
         // }
         // });
-
     }
 
     public void onResponseClientDemands(ArrayList<DemandDetail> demands) {
         GWT.log("Demands are on the way.    demands.size = " + demands.size());
-        Window.alert("LALA");
 
         // Add the data to the data provider, which automatically pushes it to
         // the widget.

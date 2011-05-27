@@ -50,28 +50,32 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
     protected ArrayList<DemandDetail> toDemandDetailList(List<Demand> list) {
         ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
         for (Demand demand : list) {
-            DemandDetail detail = new DemandDetail();
-            detail.setId(demand.getId());
-            detail.setTitle(demand.getTitle());
-            detail.setDescription(demand.getDescription());
-            detail.setPrice(demand.getPrice());
-            detail.setEndDate(demand.getEndDate());
-            detail.setExpireDate(demand.getValidTo());
-            detail.setMaxOffers(demand.getMaxSuppliers());
-            detail.setMinRating(demand.getMinRating());
-            ArrayList<String> catList = new ArrayList<String>();
-            for (Category cat : demand.getCategories()) {
-                catList.add(cat.getName());
-            }
-            detail.setCategories(catList);
-            ArrayList<String> locList = new ArrayList<String>();
-            for (Locality loc : demand.getLocalities()) {
-                locList.add(loc.getName());
-            }
-            detail.setLocalities(locList);
-            details.add(detail);
+            details.add(toDemandDetail(demand));
         }
         return details;
+    }
+
+    protected DemandDetail toDemandDetail(Demand demand) {
+        DemandDetail detail = new DemandDetail();
+        detail.setId(demand.getId());
+        detail.setTitle(demand.getTitle());
+        detail.setDescription(demand.getDescription());
+        detail.setPrice(demand.getPrice());
+        detail.setEndDate(demand.getEndDate());
+        detail.setExpireDate(demand.getValidTo());
+        detail.setMaxOffers(demand.getMaxSuppliers());
+        detail.setMinRating(demand.getMinRating());
+        ArrayList<String> catList = new ArrayList<String>();
+        for (Category cat : demand.getCategories()) {
+            catList.add(cat.getName());
+        }
+        detail.setCategories(catList);
+        ArrayList<String> locList = new ArrayList<String>();
+        for (Locality loc : demand.getLocalities()) {
+            locList.add(loc.getName());
+        }
+        detail.setLocalities(locList);
+        return detail;
     }
 
 

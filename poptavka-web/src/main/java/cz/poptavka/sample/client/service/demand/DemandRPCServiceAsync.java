@@ -18,7 +18,7 @@ public interface DemandRPCServiceAsync {
     void getAllDemands(AsyncCallback<List<DemandDetail>> callback);
 
     void createNewDemand(DemandDetail newDemand, Long clientId,
-            AsyncCallback<String> callback);
+            AsyncCallback<DemandDetail> callback);
 
     void getDemands(Category[] categories, AsyncCallback<Set<Demand>> callback);
 

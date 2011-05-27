@@ -7,7 +7,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -66,9 +68,16 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
                     loggedIn = false;
                     view.getLoginLink().setText(MSGS.logIn());
                     eventBus.atHome();
+                    Cookies.setCookie("user-presenter", "unloaded");
                 } else {
                     onInitLoginWindow();
                 }
+            }
+        });
+        Window.addWindowClosingHandler(new Window.ClosingHandler() {
+            @Override
+            public void onWindowClosing(ClosingEvent event) {
+                Cookies.setCookie("user-presenter", "unloaded");
             }
         });
     }
@@ -98,11 +107,11 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     public void onBeforeLoad() {
-        eventBus.loadingShow("Loading");
+        onLoadingShow(MSGS.loading());
     }
 
     public void onAfterLoad() {
-        eventBus.loadingHide();
+        onLoadingHide();
     }
 
     public void onSetPublicLayout() {
@@ -135,8 +144,10 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     public void onLoadingHide() {
-        popup.hide();
-        popup = null;
+        if (popup != null) {
+            popup.hide();
+            popup = null;
+        }
     }
 
     private static final int OFFSET_X = 60;

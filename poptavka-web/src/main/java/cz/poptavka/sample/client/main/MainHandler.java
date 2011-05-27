@@ -118,7 +118,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
      * @param clientId client id
      */
     public void onCreateDemand(DemandDetail detail, Long clientId) {
-        demandService.createNewDemand(detail, clientId, new AsyncCallback<String>() {
+        demandService.createNewDemand(detail, clientId, new AsyncCallback<DemandDetail>() {
             @Override
             public void onFailure(Throwable arg0) {
                 eventBus.loadingHide();
@@ -126,10 +126,11 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
             }
 
             @Override
-            public void onSuccess(String result) {
+            public void onSuccess(DemandDetail result) {
                 //signal event
                 eventBus.loadingHide();
                 // TODO forward to user/atAccount
+                eventBus.addNewDemand(result);
             }
         });
         LOGGER.info("submitting new demand");

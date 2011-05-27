@@ -72,18 +72,25 @@ public class DemandsLayoutPresenter
         // hiding window for this is after succesfull Userhandler call
         eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
         if (user.getRoleList().contains(Role.CLIENT)) {
-            eventBus.getClientsDemands(user.getClientId());
+            if (clientsDemands == null) {
+                eventBus.getClientsDemands(user.getClientId());
+            }
         }
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             Window.alert("Implement supplier specific DemandLayout init\n\nLocation:DemandsLayoutPresenter.init()");
         }
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
-        eventBus.setTabWidget(view.getWidgetView());
     }
 
     public void onSetClientDemands(ArrayList<DemandDetail> demands) {
         this.clientsDemands = demands;
+        eventBus.setTabWidget(view.getWidgetView());
+        eventBus.fireMarkedEvent();
+    }
 
+    public void onAddNewDemand(DemandDetail newDemand) {
+        clientsDemands.add(newDemand);
+        onRequestClientDemands();
     }
 
     public void onDisplayContent(Widget contentWidget) {

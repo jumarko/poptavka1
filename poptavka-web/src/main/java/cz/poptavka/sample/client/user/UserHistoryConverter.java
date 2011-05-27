@@ -15,9 +15,9 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
     @Override
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
-        LOGGER.fine("Name: " + historyName + "\nParam: " + param);
-        eventBus.getUser();
-        eventBus.markEventToLoad(historyName);
+        LOGGER.fine(" +++++++++ Name: " + historyName + "\nParam: " + param);
+        eventBus.atAccount();
+//        eventBus.markEventToLoad(historyName);
 //        if (historyName.equals("invokeMyDemands")) {
 //            eventBus.invokeMyDemands();
 //        }
