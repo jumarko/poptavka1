@@ -104,7 +104,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
         ArrayList<Integer> userServicesId = supplier.getSupplier().getServices();
         for (Integer serviceId : userServicesId) {
-            Service service = generalService.find(Service.class, Long.parseLong(serviceId + ""));
+            Service service = generalService.find(Service.class, Long.valueOf(serviceId));
             UserService userService = new UserService();
             userService.setService(service);
             us.add(userService);
@@ -112,10 +112,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
         newSupplier.getBusinessUser().setUserServices(us);
         /** registration process **/
-        newSupplier = supplierService.create(newSupplier);
+        Supplier supplierFromDB = supplierService.create(newSupplier);
         //del
         System.out.println("New Supplier id : " + newSupplier.getId());
-        return this.toSupplierDetail(newSupplier);
+        return this.toUserDetail(supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
 

@@ -122,7 +122,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         /** TODO ivlcek - email activation. **/
 
         newClient = clientService.create(newClient);
-        return this.toClientDetail(newClient);
+        return this.toUserDetail(newClient.getBusinessUser().getBusinessUserRoles());
     }
 
     /**
@@ -138,7 +138,12 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 .withEmail(clientDetail.getEmail())
                 .withPassword(clientDetail.getPassword())
                 .build());
-        return peristedClient.isEmpty() ? new UserDetail() : this.toClientDetail(peristedClient.get(0));
+        if (peristedClient.isEmpty()) {
+            return new UserDetail();
+        } else {
+            Client user = peristedClient.get(0);
+            return toUserDetail(user.getBusinessUser().getBusinessUserRoles());
+        }
     }
 
     @Override

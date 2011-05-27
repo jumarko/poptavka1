@@ -98,88 +98,62 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         return details;
     }
 
-    protected UserDetail toClientDetail(Client client) {
-        UserDetail clientDetail =
-            new UserDetail(client.getBusinessUser().getEmail(), client.getBusinessUser().getPassword());
-        clientDetail.setId(client.getBusinessUser().getId());
-        clientDetail.setClientId(client.getId());
-        /** personal & company **/
-        clientDetail.setFirstName(client.getBusinessUser().getBusinessUserData().getPersonFirstName());
-        clientDetail.setLastName(client.getBusinessUser().getBusinessUserData().getPersonLastName());
-        clientDetail.setPhone(client.getBusinessUser().getBusinessUserData().getPhone());
-        clientDetail.setCompanyName(client.getBusinessUser().getBusinessUserData().getCompanyName());
-        clientDetail.setTaxId(client.getBusinessUser().getBusinessUserData().getTaxId());
-        clientDetail.setIdentifiacationNumber(client.getBusinessUser().getBusinessUserData().getIdentificationNumber());
-        clientDetail.setVerified(client.getVerification().equals(Verification.VERIFIED));
-        /** TODO address - not in the mood now **/
-        /** TODO website **/
-
-        /** demands **/
-        List<Demand> demands = client.getDemands();
-        ArrayList<String> demandIds = new ArrayList<String>();
-        for (Demand d : demands) {
-            demandIds.add(d.getId().toString());
+    protected UserDetail toUserDetail(List<BusinessUserRole> userRoles) {
+        if (userRoles == null) {
+            throw new NullPointerException("These roles are not defined");
         }
-        clientDetail.setDemandsId(demandIds);
-        return clientDetail;
-    }
 
-    // TODO delete if obsolete
-    protected UserDetail toSupplierDetail(Supplier supplier) {
-        UserDetail detail =
-            new UserDetail(supplier.getBusinessUser().getEmail(), supplier.getBusinessUser().getPassword());
-        /** personal & company **/
-        detail.setId(supplier.getBusinessUser().getId());
-        detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
-        detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
-        detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
-        detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
-        detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
-        detail.setIdentifiacationNumber(supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber());
-        detail.setVerified(supplier.getVerification().equals(Verification.VERIFIED));
-        /** roles **/
-        List<BusinessUserRole> roles = supplier.getBusinessUser().getBusinessUserRoles();
-        for (BusinessUserRole role : roles) {
+        UserDetail detail = new UserDetail();
+
+        // Set UserDetail according to his roles
+        for (BusinessUserRole role : userRoles) {
             if (role instanceof Client) {
-                detail.setClientId(((Client) role).getId());
+                Client clientRole = (Client) role;
+                detail.setClientId(clientRole.getId());
                 detail.addRole(Role.CLIENT);
+
+                //set his demands ID list
+                List<Demand> demands = clientRole.getDemands();
+                ArrayList<String> demandIds = new ArrayList<String>();
+                for (Demand d : demands) {
+                    demandIds.add(d.getId().toString());
+                }
+
+                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
+            }
+            if (role instanceof Supplier) {
+                Supplier supplierRole = (Supplier) role;
+                detail.setSupplierId(supplierRole.getId());
+                detail.addRole(Role.SUPPLIER);
+                SupplierDetail supplierDetail = new SupplierDetail();
+
+                // supplierServices
+                List<UserService> services = supplierRole.getBusinessUser().getUserServices();
+                for (UserService us : services) {
+                    supplierDetail.addService(us.getId().intValue());
+                }
+
+                // categories
+                ArrayList<String> categories = new ArrayList<String>();
+                List<Category> cats = supplierRole.getCategories();
+                for (Category cat : cats) {
+                    categories.add(cat.getId() + "");
+                }
+                supplierDetail.setCategories(categories);
+
+                // localities
+                ArrayList<String> localities = new ArrayList<String>();
+                List<Category> locs = supplierRole.getCategories();
+                for (Category loc : locs) {
+                    localities.add(loc.getId() + "");
+                }
+                supplierDetail.setLocalities(localities);
+
+                detail.setSupplier(supplierDetail);
+
+                detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
             }
         }
-        detail.addRole(Role.SUPPLIER);
-
-        /** TODO address - not in the mood now **/
-        /** TODO website **/
-
-        /** demands - clientSide of Supplier**/
-        ArrayList<String> demandIds = new ArrayList<String>();
-        detail.setDemandsId(demandIds);
-
-        /** supplier specific stuff **/
-        SupplierDetail supplierDetail = new SupplierDetail();
-        supplierDetail.setSupplierId(supplier.getId());
-        // TODO needs to be done on backend
-//        supplierDetail.setDescription( ??? );
-        List<UserService> services = supplier.getBusinessUser().getUserServices();
-        for (UserService us : services) {
-            supplierDetail.addService(us.getId().intValue());
-        }
-        //categories
-        ArrayList<String> categories = new ArrayList<String>();
-        List<Category> cats = supplier.getCategories();
-        for (Category cat : cats) {
-            categories.add(cat.getId() + "");
-        }
-
-        ArrayList<String> localities = new ArrayList<String>();
-        List<Category> locs = supplier.getCategories();
-        for (Category loc : locs) {
-            categories.add(loc.getId() + "");
-        }
-        supplierDetail.setCategories(categories);
-        supplierDetail.setLocalities(localities);
-
-        detail.setSupplier(supplierDetail);
-
         return detail;
     }
 
