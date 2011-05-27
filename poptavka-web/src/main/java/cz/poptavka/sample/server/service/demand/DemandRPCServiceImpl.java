@@ -59,7 +59,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setPrice(detail.getPrice());
         demand.setMaxSuppliers(detail.getMaxOffers());
         demand.setMinRating(detail.getMinRating());
-        demand.setStatus(DemandStatus.NEW);
+        demand.setStatus(DemandStatus.TEMPORARY);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getExpireDate());
 
@@ -69,14 +69,33 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return "Done";
     }
 
+    /**
+     * Method updates demand object in database.
+     *
+     * @param demandDetail - updated demandDetail from front end
+     * @return DemandDetail
+     */
     @Override
-    public DemandDetail updateDemand(DemandDetail newDemand) {
+    public DemandDetail updateDemand(DemandDetail demandDetail) {
         // TODO ivlcek - update entity by sa mal robit jednoduchsie ako toto?
-        Demand demand = demandService.getById(newDemand.getId());
-        // TODO ivlcek - vytvor metody, ktora nastetuje Demand objekt z DemandDetail
-        demand.setTitle(newDemand.getTitle());
+        Demand demand = demandService.getById(demandDetail.getId());
+//        demand.setCategories(null);
+        demand.setClient(generalService.find(Client.class, demandDetail.getClientId()));
+//        demand.setDescription(null);
+        demand.setEndDate(demandDetail.getEndDate());
+//        demand.setExcludedSuppliers(null);
+//        demand.setLocalities(null);
+        demand.setMaxSuppliers(Integer.valueOf(demandDetail.getMaxOffers()));
+        demand.setMinRating(Integer.valueOf(demandDetail.getMinRating()));
+//        demand.setOffers(null);
+//        demand.setOrigin(null);
+        demand.setPrice(demandDetail.getPrice());
+//        demand.setStatus(null);
+        demand.setTitle(demandDetail.getTitle());
+        demand.setType(this.demandService.getDemandType(demandDetail.getDemandType()));
+        demand.setValidTo(demandDetail.getExpireDate());
         demandService.update(demand);
-        return newDemand;
+        return demandDetail;
     }
 
     @Override

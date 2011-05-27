@@ -25,11 +25,17 @@ public class DemandDetail implements Serializable {
     private int maxOffers;
     private int minRating;
     private String demandType;
+    private String demandStatus;
 
     /** for serialization. **/
     public DemandDetail() {
     }
 
+    /**
+     * Method created DemandDetail from provided Demand domain object.
+     * @param demand
+     * @return DemandDetail
+     */
     public static DemandDetail createDemandDetail(Demand demand) {
         DemandDetail d = new DemandDetail();
         d.setId(demand.getId());
@@ -37,7 +43,6 @@ public class DemandDetail implements Serializable {
         d.setCategories(null);
         // TODO ivlcek - ako spoznam ci sa mi dotialhol aj Client k tejto poptabke?
         d.setClientId(demand.getClient().getId());
-        d.setDemandType(demand.getType().getCode());
         // TODO ivlcek - zatial neposielam demand descritpion, ktory je velmi velky
         d.setDescription(null);
         d.setTitle(demand.getTitle());
@@ -48,6 +53,9 @@ public class DemandDetail implements Serializable {
         d.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
         d.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
         d.setPrice(demand.getPrice());
+        // TODO ivlcek - status nesmie byt v DB ako null
+        d.setDemandStatus(demand.getStatus().getValue());
+        d.setDemandType(demand.getType().getType().getValue());
         return d;
     }
 
@@ -178,6 +186,15 @@ public class DemandDetail implements Serializable {
                 + clientId + ", maxOffers="
                 + maxOffers + ", minRating="
                 + minRating + ", demandType="
-                + demandType + '}';
+                + demandType + ", demandStauts="
+                + demandStatus + '}';
+    }
+
+    public String getDemandStatus() {
+        return demandStatus;
+    }
+
+    public void setDemandStatus(String demandStatus) {
+        this.demandStatus = demandStatus;
     }
 }

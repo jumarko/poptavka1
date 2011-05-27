@@ -12,6 +12,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 
 import cz.poptavka.sample.client.common.messages.MessagesPresenter;
 import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
+import cz.poptavka.sample.client.user.admin.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.AdministrationPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsOperatorPresenter;
@@ -123,6 +124,12 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdministrationPresenter.class)
     void setAllDemands(List<DemandDetail> demands);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void showAdminDemandDetail(DemandDetail selectedObject);
+
+    @Event(handlers = AdministrationPresenter.class)
+    void responseAdminDemandDetail(Widget widget);
 
     @Event(handlers = UserHandler.class)
     void requestOffers(ArrayList<Long> idList);

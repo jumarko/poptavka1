@@ -7,15 +7,15 @@ package cz.poptavka.sample.client.user.admin;
 import com.google.gwt.cell.client.AbstractEditableCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -26,6 +26,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
@@ -33,7 +34,11 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.DemandStatusDetail;
+import cz.poptavka.sample.shared.domain.DemandTypeDetail;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +46,7 @@ import java.util.List;
  * @author ivan.vlcek
  */
 public class AdministrationView extends Composite implements
-        AdministrationPresenter.AdministrationInterface, HasValueChangeHandlers<String> {
+        AdministrationPresenter.AdministrationInterface {
     private static AdministrationViewUiBinder uiBinder =
             GWT.create(AdministrationViewUiBinder.class);
 
@@ -55,10 +60,92 @@ public class AdministrationView extends Composite implements
         return dataProvider;
     }
 
+    /**
+     * @return the demandTitleColumn
+     */
     @Override
-    public HandlerRegistration addValueChangeHandler(
-            ValueChangeHandler<String> handler) {
-        return addHandler(handler, ValueChangeEvent.getType());
+    public Column<DemandDetail, String> getDemandTitleColumn() {
+        return demandTitleColumn;
+    }
+
+    /**
+     * @return the clientIdColumn
+     */
+    @Override
+    public Column<DemandDetail, String> getClientIdColumn() {
+        return clientIdColumn;
+    }
+
+    /**
+     * @return the demandTypeColumn
+     */
+    @Override
+    public Column<DemandDetail, String> getDemandTypeColumn() {
+        return demandTypeColumn;
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    @Override
+    public CellTable<DemandDetail> getCellTable() {
+        return cellTable;
+    }
+
+    /**
+     * @return the demandTypes
+     */
+    @Override
+    public DemandTypeDetail[] getDemandTypes() {
+        return demandTypes;
+    }
+
+    /**
+     * @return the demandStatuses
+     */
+    @Override
+    public DemandStatusDetail[] getDemandStatuses() {
+        return demandStatuses;
+    }
+
+    /**
+     * @return the demandStatusColumn
+     */
+    @Override
+    public Column<DemandDetail, String> getDemandStatusColumn() {
+        return demandStatusColumn;
+    }
+
+    /**
+     * @return the demandExpirationColumn
+     */
+    @Override
+    public Column<DemandDetail, Date> getDemandExpirationColumn() {
+        return demandExpirationColumn;
+    }
+
+    /**
+     * @return the demandEndColumn
+     */
+    @Override
+    public Column<DemandDetail, Date> getDemandEndColumn() {
+        return demandEndColumn;
+    }
+
+    /**
+     * @return the selectionModel
+     */
+    public SingleSelectionModel<DemandDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    /**
+     * @return the adminDemandDetail
+     */
+    public SimplePanel getAdminDemandDetail() {
+        return adminDemandDetail;
     }
 
     interface AdministrationViewUiBinder extends UiBinder<Widget, AdministrationView> {
@@ -78,30 +165,31 @@ public class AdministrationView extends Composite implements
      */
     private List<AbstractEditableCell<?, ?>> editableCells;
     /**
+     * Detail of selected Demand.
+     */
+    @UiField
+    SimplePanel adminDemandDetail;
+    /**
      * Data provider that will cell table with data.
      */
     private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public CellTable<DemandDetail> getCellTable() {
-        return cellTable;
-    }
-
+    private SingleSelectionModel<DemandDetail> selectionModel;
     /** Editable Columns in CellTable. **/
     private Column<DemandDetail, String> demandTitleColumn;
     private Column<DemandDetail, String> clientIdColumn;
+    private Column<DemandDetail, String> demandTypeColumn;
+    private Column<DemandDetail, String> demandStatusColumn;
+    private Column<DemandDetail, Date> demandExpirationColumn;
+    private Column<DemandDetail, Date> demandEndColumn;
+    private final DemandTypeDetail[] demandTypes = DemandTypeDetail.values();
+    private final DemandStatusDetail[] demandStatuses = DemandStatusDetail.values();
 
     @Override
     public void sortTitle() {
         // TODO ivlcek - sort data according to latest Date
         // We know that the data is sorted alphabetically by default.
 //        ColumnSortInfo columnSortInfo = new ColumnSortInfo(title, true);
-        cellTable.getColumnSortList().push(demandTitleColumn);
+        cellTable.getColumnSortList().push(getDemandTitleColumn());
     }
 
 //    @Override
@@ -144,14 +232,12 @@ public class AdministrationView extends Composite implements
         // Add a selection model to handle user selection.
 //        final MultiSelectionModel<DemandDetail> selectionModel = new MultiSelectionModel<DemandDetail>(KEY_PROVIDER);
         // Add a single selection model to handle user selection.
-        final SingleSelectionModel<DemandDetail> selectionModel =
-                new SingleSelectionModel<DemandDetail>(KEY_PROVIDER);
-//        cellTable.setSelectionModel(selectionModel); - This worked without KEY_PROVIDER
-        cellTable.setSelectionModel(selectionModel,
+        selectionModel = new SingleSelectionModel<DemandDetail>(KEY_PROVIDER);
+        cellTable.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<DemandDetail>createCheckboxManager());
 
         // Initialize the columns.
-        initTableColumns(selectionModel, sortHandler);
+        initTableColumns(getSelectionModel(), sortHandler);
     }
 
     /**
@@ -199,23 +285,51 @@ public class AdministrationView extends Composite implements
                 return String.valueOf(object.getClientId());
             }
         };
-        clientIdColumn.setSortable(true);
-        sortHandler.setComparator(clientIdColumn, new Comparator<DemandDetail>() {
+        getClientIdColumn().setSortable(true);
+        sortHandler.setComparator(getClientIdColumn(), new Comparator<DemandDetail>() {
             @Override
             public int compare(DemandDetail o1, DemandDetail o2) {
                 return Long.valueOf(o1.getClientId()).compareTo(Long.valueOf(o2.getClientId()));
             }
         });
-        clientIdColumn.setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
+        cellTable.addColumn(getClientIdColumn(), "CID");
+        cellTable.setColumnWidth(getClientIdColumn(), 50, Unit.PX);
+
+        // DemandType.
+        List<String> demandTypeNames = new ArrayList<String>();
+        for (DemandTypeDetail demandTypeDetail : demandTypes) {
+            // TODO ivlcek - add Localizable name of DemandTypeDetail enum
+            demandTypeNames.add(demandTypeDetail.name());
+        }
+        SelectionCell demandTypeCell = new SelectionCell(demandTypeNames);
+        demandTypeColumn = new Column<DemandDetail, String>(
+                demandTypeCell) {
             @Override
-            public void update(int index, DemandDetail object, String value) {
-                // Called when the user changes the value.
-                object.setClientId(Long.valueOf(value));
-                dataProvider.refresh();
+            public String getValue(DemandDetail object) {
+                // TODO ivlcek - localize message
+                return object.getDemandType();
             }
-        });
-        cellTable.addColumn(clientIdColumn, "CID");
-        cellTable.setColumnWidth(clientIdColumn, 50, Unit.PX);
+        };
+        cellTable.addColumn(demandTypeColumn, "Type");
+        cellTable.setColumnWidth(demandTypeColumn, 130, Unit.PX);
+
+        // DemandStatus.
+        List<String> demandStatusNames = new ArrayList<String>();
+        for (DemandStatusDetail demandStatusDetail : demandStatuses) {
+            // TODO ivlcek - add Localizable name of DemandTypeDetail enum
+            demandStatusNames.add(demandStatusDetail.getValue());
+        }
+        SelectionCell demandStatusCell = new SelectionCell(demandStatusNames);
+        demandStatusColumn = new Column<DemandDetail, String>(
+                demandStatusCell) {
+            @Override
+            public String getValue(DemandDetail object) {
+                // TODO ivlcek - localize message
+                return object.getDemandStatus();
+            }
+        };
+        cellTable.addColumn(demandStatusColumn, "Status");
+        cellTable.setColumnWidth(demandStatusColumn, 160, Unit.PX);
 
         // Demand title.
 //        Column<DemandDetail, String> title = new Column<DemandDetail, String>(
@@ -226,8 +340,8 @@ public class AdministrationView extends Composite implements
                 return object.getTitle();
             }
         };
-        demandTitleColumn.setSortable(true);
-        sortHandler.setComparator(demandTitleColumn, new Comparator<DemandDetail>() {
+        getDemandTitleColumn().setSortable(true);
+        sortHandler.setComparator(getDemandTitleColumn(), new Comparator<DemandDetail>() {
             @Override
             public int compare(DemandDetail o1, DemandDetail o2) {
                 if (o1 == o2) {
@@ -242,111 +356,28 @@ public class AdministrationView extends Composite implements
             }
         });
         // TODO ivlcek - load columnn name from resources
-        cellTable.addColumn(demandTitleColumn, "Title");
-        demandTitleColumn.setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
-            @Override
-            public void update(int index, DemandDetail object, String value) {
-                // Called when the user changes the value.
-                object.setTitle(value);
-                dataProvider.refresh();
-            }
-        });
+        cellTable.addColumn(getDemandTitleColumn(), "Title");
 
-//        cellTable.setColumnWidth(title, 20, Unit.PCT);
+        // Demand expiration date.
+        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
+        demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration",
+                new GetValue<Date>() {
+                    @Override
+                    public Date getValue(DemandDetail demandDetail) {
+                        return demandDetail.getExpireDate();
+                    }
+                }, null);
 
-
-//
-//        // EditTextCell.
-//        addColumn(new EditTextCell(new SafeHtmlRenderer<String>() {
-//
-//            @Override
-//            public SafeHtml render(String object) {
-//                // If the value comes from the user, we escape it to avoid XSS attacks.
-//                SafeHtml safeValue = SafeHtmlUtils.fromString(object);
-//                return safeValue;
-//            }
-//
-//            @Override
-//            public void render(String object, SafeHtmlBuilder builder) {
-//                // Always do a null check on the value. Cell widgets can pass null to cells
-//                // if the underlying data contains a null, or if the data arrives out of order.
-//                if (object == null) {
-//                    return;
-//                }
-//
-//                // If the value comes from the user, we escape it to avoid XSS attacks.
-//                SafeHtml safeValue = SafeHtmlUtils.fromString(object);
-//
-//                // Append some HTML that sets the text color.
-//                builder.appendHtmlConstant("<div style=\"color:" + safeValue.asString()
-//                        + "\">");
-//                builder.append(safeValue);
-//                builder.appendHtmlConstant("</div>");
-//
-//            }
-//        }), "EditText", new GetValue<String>() {
-//
-//            @Override
-//            public String getValue(DemandDetail demandDetail) {
-////                dataProvider.refresh();
-//                return demandDetail.getTitle();
-//            }
-//        }, new FieldUpdater<DemandDetail, String>() {
-//
-//            @Override
-//            public void update(int index, DemandDetail demandDetail, String value) {
-////                dataProvider.refresh();
-//                pendingChanges.add(new DemandTitleChange(demandDetail, value));
-//            }
-//        });
+        // Demand end date.
+        demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End",
+                new GetValue<Date>() {
+                    @Override
+                    public Date getValue(DemandDetail demandDetail) {
+                        return demandDetail.getEndDate();
+                    }
+                }, null);
     }
 
-//
-//    /**
-//     * Updates the first name.
-//     */
-//    private static class DemandTitleChange extends PendingChange<String> {
-//
-//        public DemandTitleChange(DemandDetail demandDetail, String value) {
-//            super(demandDetail, value);
-//        }
-//
-//        @Override
-//        protected void doCommit(DemandDetail demandDetail, String value) {
-//            demandDetail.setTitle(value);
-//        }
-//    }
-//    /**
-//     * The list of pending changes.
-//     */
-//    private List<PendingChange<?>> pendingChanges = new ArrayList<
-//      PendingChange<?>>();
-//
-//    /**
-//     * A pending change to a {@link ContactInfo}. Changes aren't committed
-//     * immediately to illustrate that cells can remember their pending changes.
-//     *
-//     * @param <T> the data type being changed
-//     */
-//    private abstract static class PendingChange<T> {
-//
-//        private final DemandDetail demandDetail;
-//
-//        private final T value;
-//
-//        public PendingChange(DemandDetail demandDetail, T value) {
-//            this.demandDetail = demandDetail;
-//            this.value = value;
-//        }
-//
-//        /**
-//         * Update the appropriate field in the {@link ContactInfo}.
-//         *
-//         * @param contact the contact to update
-//         * @param value the new value
-//         */
-//        protected abstract void doCommit(DemandDetail demandDetail, T value);
-//    }
     /**
      * Get a cell value from a record.
      *
@@ -373,9 +404,9 @@ public class AdministrationView extends Composite implements
             }
         };
         column.setFieldUpdater(fieldUpdater);
-        if (cell instanceof AbstractEditableCell<?, ?>) {
-            editableCells.add((AbstractEditableCell<?, ?>) cell);
-        }
+//        if (cell instanceof AbstractEditableCell<?, ?>) {
+//            editableCells.add((AbstractEditableCell<?, ?>) cell);
+//        }
         cellTable.addColumn(column, headerText);
         return column;
     }
