@@ -30,17 +30,19 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     private static final LocalizableMessages MSGS = GWT
             .create(LocalizableMessages.class);
 
-    public void onGetClientsDemands(long id) {
+    public void onGetClientsDemands(Long id) {
         demandService.getClientDemands(id,
                 new AsyncCallback<ArrayList<DemandDetail>>() {
 
                     @Override
                     public void onSuccess(ArrayList<DemandDetail> list) {
                         eventBus.setClientDemands(list);
+                        eventBus.loadingHide();
                     }
 
                     @Override
                     public void onFailure(Throwable exc) {
+                        eventBus.loadingHide();
                         Window.alert(exc.getMessage());
                     }
                 });

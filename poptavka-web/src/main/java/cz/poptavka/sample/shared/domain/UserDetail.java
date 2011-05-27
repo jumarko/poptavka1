@@ -29,7 +29,7 @@ public class UserDetail implements Serializable {
     private String taxId = null;
     private String website;
     private AddressDetail address;
-    private ArrayList<String> demandsId;
+    private ArrayList<String> demandsId = new ArrayList<String>();
 
     private boolean verified = false;
 

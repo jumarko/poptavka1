@@ -75,4 +75,5 @@ public interface LocalizableMessages extends Messages {
     String loading();
     String progressGetUserDetail();
     String progressCreatingUserInterface();
+    String progressDemandsLayoutInit();
 }

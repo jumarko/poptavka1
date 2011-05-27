@@ -48,6 +48,7 @@ public class LoginPopupView extends PopupPanel
         this.setGlassEnabled(true);
         this.center();
         this.show();
+        Document.get().getElementById(LOGIN_ID).focus();
     }
 
     /** binding real form to create login popup **/
@@ -59,6 +60,11 @@ public class LoginPopupView extends PopupPanel
 
         ButtonElement submit = (ButtonElement) Document.get().getElementById(BUTTON_SUBMIT_ID);
         Element close = (Element) Document.get().getElementById(BUTTON_CLOSEB_ID);
+
+        Document.get().getElementById(LOGIN_ID).setTabIndex(1);
+        Document.get().getElementById(PASSWORD_ID).setTabIndex(2);
+        Document.get().getElementById(BUTTON_SUBMIT_ID).setTabIndex(3);
+        Document.get().getElementById(BUTTON_CLOSEB_ID).setTabIndex(4);
 
         // Localization strings
         Document.get().getElementById(LABEL_MAIL_ID).setInnerText(MSGS.email());
@@ -133,15 +139,19 @@ public class LoginPopupView extends PopupPanel
 
     @Override
     public void setUnknownError() {
-        // TODO Auto-generated method stub
-
+        Element elem = (Element) Document.get().getElementById("loginStatus");
+        clearStatusLabel(elem);
+        statusLabel = new SimpleIconLabel("Wrong name", true);
+        statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
+        elem.appendChild(statusLabel.getElement());
     }
 
     @Override
     public void setLoginError() {
         Element elem = (Element) Document.get().getElementById("loginStatus");
         clearStatusLabel(elem);
-        statusLabel = new SimpleIconLabel("Wrong name", true);
+        statusLabel = new SimpleIconLabel(MSGS.wrongLoginMessage(), true);
+
         statusLabel.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
         elem.appendChild(statusLabel.getElement());
     }

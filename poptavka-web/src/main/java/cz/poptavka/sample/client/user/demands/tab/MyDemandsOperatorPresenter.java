@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -38,7 +39,7 @@ public class MyDemandsOperatorPresenter extends
 
         CellTable<DemandDetail> getCellTable();
 
-        void setMyDemandOperatorDetail(String name);
+        SimplePanel getDetailSection();
 
         SingleSelectionModel<DemandDetail> getSelectionModel();
 
@@ -56,12 +57,8 @@ public class MyDemandsOperatorPresenter extends
         view.getDataProvider().refresh();
     }
 
-    public void onGetDemandDetail(String name) {
-        view.setMyDemandOperatorDetail(name);
-    }
-
-    public void onSetOperatorDemands(ArrayList<DemandDetail> demands) {
-        eventBus.responseDemands(demands);
+    public void onResponseDemandDetail(Widget widget) {
+        view.getDetailSection().setWidget(widget);
     }
 
     public void onResponseDemands(ArrayList<DemandDetail> demands) {

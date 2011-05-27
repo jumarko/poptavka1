@@ -55,11 +55,10 @@ public class OffersPresenter extends
     /** Init method. **/
     public void onInvokeOffers() {
         eventBus.displayContent(view.getWidgetView());
-        eventBus.requestDemands();
-
+        eventBus.requestClientDemands();
     }
 
-    public void onResponseDemands(ArrayList<DemandDetail> demands) {
+    public void onResponseClientDemands(ArrayList<DemandDetail> demands) {
         if (demands != null) {
             view.getTable().setData(demands);
             eventBus.requestOffers(getDemandIds(demands));
@@ -97,13 +96,13 @@ public class OffersPresenter extends
             view.getAnswerBtn().setEnabled(false);
             view.getRefuseBtn().setEnabled(false);
             //demandDetail call
-            eventBus.showDemandDetail(map.get(OffersFlexTable.RESULT_ID));
+            eventBus.requestDemandDetail(map.get(OffersFlexTable.RESULT_ID));
         }
 //        offer message
 //        toggle - to disable buttons
     }
 
-    public void onSetDetailSection(Widget widget) {
+    public void onResponseDemandDetail(Widget widget) {
         view.getDetailSection().setWidget(widget);
     }
 }

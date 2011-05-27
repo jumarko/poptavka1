@@ -46,8 +46,6 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
         Widget getWidgetView();
     }
 
-    private Long clientId;
-
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
             @Override
@@ -69,7 +67,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(ADVANCED)) {
-                    prepareNewDemandForNewClient(clientId);
+                    eventBus.requestClientId();
                 }
             }
         });
@@ -79,9 +77,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
      * Init method call.
      * TODO decide when other parts should be built.
      */
-    public void onInvokeNewDemand(Long clientId) {
-        this.clientId = clientId;
-
+    public void onInvokeNewDemand() {
         LOGGER.fine("DemandCreation Widget");
 
         view.getMainPanel().showWidget(0);
@@ -99,28 +95,19 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
         });
     }
 
-    /**
-     * Called from HomeHandler after successful login/registration.
-     *
-     * @param id id of newly created client/id of logged user
-     */
-    public void prepareNewDemandForNewClient(Long id) {
+    public void onResponseClientId(Long id) {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
-        FormDemandBasicInterface basicValues =
-            (FormDemandBasicInterface) view.getHolderPanel(BASIC).getWidget();
-        CategorySelectorInterface categoryValues =
-            (CategorySelectorInterface) view.getHolderPanel(CATEGORY).getWidget();
-        LocalitySelectorInterface localityValues =
-            (LocalitySelectorInterface) view.getHolderPanel(LOCALITY).getWidget();
-        FormDemandAdvViewInterface advValues =
-            (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
-
         DemandDetail demand = new DemandDetail();
-        demand.setBasicInfo(basicValues.getValues());
-        demand.setCategories(categoryValues.getSelectedCategoryCodes());
-        demand.setLocalities(localityValues.getSelectedLocalityCodes());
-        demand.setAdvInfo(advValues.getValues());
+
+        demand.setBasicInfo(((FormDemandBasicInterface)
+                view.getHolderPanel(BASIC).getWidget()).getValues());
+        demand.setCategories(((CategorySelectorInterface)
+                view.getHolderPanel(CATEGORY).getWidget()).getSelectedCategoryCodes());
+        demand.setLocalities(((LocalitySelectorInterface)
+                view.getHolderPanel(LOCALITY).getWidget()).getSelectedLocalityCodes());
+        demand.setAdvInfo(((FormDemandAdvViewInterface)
+                view.getHolderPanel(ADVANCED).getWidget()).getValues());
 
         eventBus.createDemand(demand, id);
         eventBus.loadingShow(MSGS.progressCreatingDemand());
@@ -133,7 +120,6 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
 
     private boolean canContinue(int step) {
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
-        LOGGER.fine(widget.getClass().getName());
         return widget.isValid();
     }
 }

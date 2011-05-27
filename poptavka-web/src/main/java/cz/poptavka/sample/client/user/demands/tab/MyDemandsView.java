@@ -208,4 +208,9 @@ public class MyDemandsView extends Composite implements
         C getValue(DemandDetail contact);
     }
 
+    @Override
+    public SimplePanel getDetailSection() {
+        return myDemandDetail;
+    }
+
 }

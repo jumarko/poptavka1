@@ -3,6 +3,9 @@ package cz.poptavka.sample.client.user.demands;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -12,6 +15,8 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 /**
  * For every user - default tab
@@ -28,8 +33,9 @@ public class DemandsLayoutPresenter
         extends
         BasePresenter<DemandsLayoutPresenter.DemandsLayoutInterface, UserEventBus> {
 
-    private long clientId;
-    private Long supplierId;
+    private static final LocalizableMessages MSGS = GWT
+            .create(LocalizableMessages.class);
+
     private ArrayList<DemandDetail> clientsDemands = null;
     private ArrayList<ArrayList<OfferDetail>> client = new ArrayList<ArrayList<OfferDetail>>();
     private boolean sendDemandsFlag = false;
@@ -57,59 +63,44 @@ public class DemandsLayoutPresenter
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
-        view.setNewDemandToken(getTokenGenerator().invokeNewDemand(clientId));
+        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
         view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
     }
 
-    public void init() {
-        eventBus.setTabWidget(view.getWidgetView());
-        eventBus.getClientsDemands(clientId);
+    public void init(UserDetail user) {
+        // hiding window for this is after succesfull Userhandler call
+        eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
+        if (user.getRoleList().contains(Role.CLIENT)) {
+            eventBus.getClientsDemands(user.getClientId());
+        }
+        if (user.getRoleList().contains(Role.SUPPLIER)) {
+            Window.alert("Implement supplier specific DemandLayout init\n\nLocation:DemandsLayoutPresenter.init()");
+        }
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
+        eventBus.setTabWidget(view.getWidgetView());
     }
 
     public void onSetClientDemands(ArrayList<DemandDetail> demands) {
-        clientsDemands = demands;
-        if (sendDemandsFlag) {
-            eventBus.responseDemands(demands);
-        }
-    }
+        this.clientsDemands = demands;
 
-    public void onSetOperatorDemands(ArrayList<DemandDetail> demands) {
-        clientsDemands = demands;
-        if (sendDemandsFlag) {
-            eventBus.responseDemands(demands);
-        }
     }
 
     public void onDisplayContent(Widget contentWidget) {
         view.setContent(contentWidget);
     }
 
-    public void onRequestDemands() {
-        if (clientsDemands == null) {
-            sendDemandsFlag = true;
-        } else {
-            eventBus.responseDemands(clientsDemands);
-        }
-
+    public void onRequestClientDemands() {
+        eventBus.responseClientDemands(clientsDemands);
     }
 
-    public void onShowDemandDetail(long demandId) {
+    public void onRequestDemandDetail(long demandId) {
         for (DemandDetail demand : clientsDemands) {
             if (demand.getId() == demandId) {
-                eventBus.setDetailSection(new DemandDetailView(demand));
+                eventBus.responseDemandDetail(new DemandDetailView(demand));
                 return;
             }
         }
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
     }
 
 }

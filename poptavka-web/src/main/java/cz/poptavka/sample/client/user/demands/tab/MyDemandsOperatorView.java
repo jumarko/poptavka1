@@ -14,7 +14,6 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -30,10 +29,6 @@ public class MyDemandsOperatorView extends Composite
 
     interface MyDemandsOperatorUiBinder extends
             UiBinder<Widget, MyDemandsOperatorView> {
-    }
-
-    public MyDemandsOperatorView() {
-        initWidget(uiBinder.createAndBindUi(this));
     }
 
     private Button answerBtn;
@@ -68,12 +63,6 @@ public class MyDemandsOperatorView extends Composite
 
     public CellTable<DemandDetail> getCellTable() {
         return table;
-    }
-
-    public void setMyDemandOperatorDetail(String name) {
-        Label header = new Label(name);
-
-        myDemandOperatorDetail.setWidget(header);
     }
 
     public SingleSelectionModel<DemandDetail> getSelectionModel() {
@@ -207,6 +196,11 @@ public class MyDemandsOperatorView extends Composite
         };
         table.addColumn(column, headerText);
         return column;
+    }
+
+    @Override
+    public SimplePanel getDetailSection() {
+        return myDemandOperatorDetail;
     }
 
 }
