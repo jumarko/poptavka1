@@ -106,8 +106,7 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
                 detail.setClientId(clientRole.getId());
                 detail.addRole(Role.CLIENT);
 
-//                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
-                System.out.println(clientRole.getVerification() + " XXXX");
+                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
             }
             if (role instanceof Supplier) {
                 Supplier supplierRole = (Supplier) role;
