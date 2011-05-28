@@ -370,9 +370,11 @@ public class DomainObjectTest {
         final Column columnAnnotation = field.getAnnotation(Column.class);
         if (columnAnnotation == null) {
             classFieldsViolations.put(field, "Field has no @Column annotation for length restriction.");
-        } else if (columnAnnotation.length() != Constants.ENUM_FIELD_LENGTH) {
+        } else if (!(columnAnnotation.length() == Constants.ENUM_FIELD_LENGTH
+                || columnAnnotation.length() == Constants.ENUM_SHORTINT_FIELD_LENGTH)) {
             classFieldsViolations.put(field, "Field has @Column annotation but does not have correct "
                     + "length restriction. Expected length=" + Constants.ENUM_FIELD_LENGTH
+                    + " or length=" + Constants.ENUM_SHORTINT_FIELD_LENGTH + " for short ORDINAL enums"
                     + ", but found length=" + columnAnnotation.length());
         }
     }
@@ -381,8 +383,9 @@ public class DomainObjectTest {
         final Enumerated enumeratedAnnotation = field.getAnnotation(Enumerated.class);
         if (enumeratedAnnotation == null) {
             classFieldsViolations.put(field, "Does not have @Enumerated annotation");
-        } else if (enumeratedAnnotation.value() != EnumType.STRING) {
-            classFieldsViolations.put(field, "Does not have EnumType.STRING specified");
+        } else if (!(enumeratedAnnotation.value() == EnumType.STRING
+                || enumeratedAnnotation.value() == EnumType.ORDINAL)) {
+            classFieldsViolations.put(field, "Does not have EnumType.STRING or EnumType.ORDINAL specified");
         }
     }
 }
