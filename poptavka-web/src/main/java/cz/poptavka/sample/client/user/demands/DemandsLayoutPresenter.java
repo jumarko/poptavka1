@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -54,17 +58,36 @@ public class DemandsLayoutPresenter
 
         void setNewDemandToken(String link);
 
+        void setPotentialDemandsToken(String link);
+
         void setMyDemandsOperatorToken(String linkString);
 
         void setAdministrationToken(String linkString);
+
+        Button getPotentDevelButton();
     }
+
+    // TODO clean up after development
+    private PotentialDemandsPresenter develPresenter = null;
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+        view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
         view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
+        view.getPotentDevelButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (develPresenter != null) {
+                    eventBus.removeHandler(develPresenter);
+                }
+                develPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
+                develPresenter.onInvokePotentialDemands();
+            }
+        });
     }
 
     public void init(UserDetail user) {

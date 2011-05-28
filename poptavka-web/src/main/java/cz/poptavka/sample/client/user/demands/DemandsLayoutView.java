@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -29,7 +30,10 @@ public class DemandsLayoutView extends Composite
     SimplePanel contentPanel;
 
     @UiField
-    Hyperlink myDemandsLink, offersLink, newDemandLink, myDemandsOperatorLink, administration;
+    Hyperlink myDemandsLink, offersLink, newDemandLink, potentialDemandsLink, myDemandsOperatorLink, administration;
+
+    // TODO Beho - delete when potential demands are done
+    @UiField Button potentDevelBtn;
 
     public DemandsLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -79,5 +83,16 @@ public class DemandsLayoutView extends Composite
             default:
                 break;
         }
+    }
+
+    @Override
+    public void setPotentialDemandsToken(String link) {
+        potentialDemandsLink.setTargetHistoryToken(link);
+    }
+
+    // TODO Beho - clean up after devel
+    @Override
+    public Button getPotentDevelButton() {
+        return potentDevelBtn;
     }
 }

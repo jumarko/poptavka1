@@ -61,7 +61,7 @@ public class MyDemandsOperatorPresenter extends
         view.getDetailSection().setWidget(widget);
     }
 
-    public void onResponseDemands(ArrayList<DemandDetail> demands) {
+    public void onResponseClientDemands(ArrayList<DemandDetail> demands) {
         GWT.log("Demands are on the way.    demands.size = " + demands.size());
 
         // Add the data to the data provider, which automatically pushes it to

@@ -1,9 +1,13 @@
 package cz.poptavka.sample.client.main.login;
 
+import java.util.HashMap;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.ButtonElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -11,16 +15,52 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.mvp4g.client.view.ReverseViewInterface;
 
 import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter.LoginPopupInterface;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 //public class LoginPopupView extends PopupPanel implements LoginPopupInterface {
 public class LoginPopupView extends PopupPanel
     implements ReverseViewInterface<LoginPopupPresenter>, LoginPopupInterface {
+
+    /************** DEVEL ONLY *********/
+    private static HashMap<Role, PrivateUser> privateUsers = new HashMap<Role, PrivateUser>();
+
+    class PrivateUser {
+
+        private String name;
+        private String pass;
+
+        public PrivateUser(Role role) {
+            if (role == Role.CLIENT) {
+                name = "beho@poptavka.cz";
+                pass = "mojeheslo";
+            }
+            if (role == Role.SUPPLIER) {
+                name = "sup@pplier.cz";
+                pass = "aaaaaa";
+            }
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getPass() {
+            return pass;
+        }
+    }
+
+    {
+        privateUsers.put(Role.CLIENT, new PrivateUser(Role.CLIENT));
+        privateUsers.put(Role.SUPPLIER, new LoginPopupView.PrivateUser(Role.SUPPLIER));
+    }
+    /************** DEVEL ONLY *********/
 
     private static final String LOGIN_DIV = "loginDiv";
     private static final String FORM_ID = "loginForm";
@@ -42,6 +82,7 @@ public class LoginPopupView extends PopupPanel
     @Override
     public void createView() {
         FlowPanel panel = new FlowPanel();
+        initFastLoginForDevel(panel);
         initRealLoginForm(panel);
         setWidget(panel);
         this.setModal(true);
@@ -49,6 +90,33 @@ public class LoginPopupView extends PopupPanel
         this.center();
         this.show();
         Document.get().getElementById(LOGIN_ID).focus();
+    }
+
+    // TODO delete
+    private void initFastLoginForDevel(FlowPanel panel) {
+        final ListBox list = new ListBox();
+        list.setWidth("100%");
+        list.setVisibleItemCount(privateUsers.size());
+        list.insertItem("CLIENT", "CLIENT", 0);
+        list.insertItem("SUPPLIER", "SUPPLIER", 1);
+        list.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                String roleString = list.getValue(list.getSelectedIndex());
+                Role role = Role.values()[Role.valueOf(roleString).ordinal()];
+                setLogin(role);
+            }
+
+
+        });
+        panel.add(list);
+    }
+
+    private void setLogin(Role role) {
+
+        ((InputElement) Document.get().getElementById(LOGIN_ID)).setValue(privateUsers.get(role).getName());
+        ((InputElement) Document.get().getElementById(PASSWORD_ID)).setValue(privateUsers.get(role).getPass());
+
     }
 
     /** binding real form to create login popup **/

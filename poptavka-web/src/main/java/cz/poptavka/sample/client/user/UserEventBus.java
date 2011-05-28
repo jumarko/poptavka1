@@ -20,6 +20,7 @@ import cz.poptavka.sample.client.user.demands.tab.MyDemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -94,7 +95,10 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DemandsLayoutPresenter.class)
     void requestClientDemands();
 
-    @Event(handlers = MyDemandsPresenter.class)
+    @Event(handlers = {MyDemandsPresenter.class,
+            MyDemandsOperatorPresenter.class,
+            // TODO Beho - just while development
+            PotentialDemandsPresenter.class }, passive = true)
     void responseClientDemands(ArrayList<DemandDetail> demands);
 
     /** common method for displaying Demand Detail in the window. **/
@@ -152,35 +156,48 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MyDemandsPresenter.class,
             activate = MyDemandsPresenter.class,
             deactivate = {OffersPresenter.class, NewDemandPresenter.class,
-                MyDemandsOperatorPresenter.class, AdministrationPresenter.class },
+                PotentialDemandsPresenter.class, MyDemandsOperatorPresenter.class,
+                AdministrationPresenter.class },
             historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = OffersPresenter.class,
             activate = OffersPresenter.class,
             deactivate = {MyDemandsPresenter.class, NewDemandPresenter.class,
-                MyDemandsOperatorPresenter.class, AdministrationPresenter.class },
+                PotentialDemandsPresenter.class, MyDemandsOperatorPresenter.class,
+                AdministrationPresenter.class },
             historyConverter = DemandsHistoryConverter.class, name = "lambada")
     String invokeOffers();
 
     @Event(handlers = NewDemandPresenter.class,
             activate = NewDemandPresenter.class,
             deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
-                MyDemandsOperatorPresenter.class, AdministrationPresenter.class },
+                PotentialDemandsPresenter.class, MyDemandsOperatorPresenter.class,
+                AdministrationPresenter.class },
             historyConverter = DemandsHistoryConverter.class)
     String invokeNewDemand();
+
+    @Event(handlers = PotentialDemandsPresenter.class,
+            activate = PotentialDemandsPresenter.class,
+            deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
+                NewDemandPresenter.class, MyDemandsOperatorPresenter.class,
+                AdministrationPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
+    String invokePotentialDemands();
 
     @Event(handlers = MyDemandsOperatorPresenter.class,
             activate = MyDemandsOperatorPresenter.class,
             deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
-                NewDemandPresenter.class, AdministrationPresenter.class },
+                PotentialDemandsPresenter.class, NewDemandPresenter.class,
+                AdministrationPresenter.class },
             historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemandsOperator();
 
     @Event(handlers = AdministrationPresenter.class,
             activate = AdministrationPresenter.class,
             deactivate = {OffersPresenter.class, MyDemandsPresenter.class,
-                NewDemandPresenter.class, MyDemandsOperatorPresenter.class },
+                PotentialDemandsPresenter.class, NewDemandPresenter.class,
+                MyDemandsOperatorPresenter.class },
             historyConverter = DemandsHistoryConverter.class)
     String invokeAdministration();
     /** Navigation Events section END **/
@@ -224,5 +241,6 @@ public interface UserEventBus extends EventBusWithLookup {
      * Needed when refreshing in User Section - refresh not neededi in prod **/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
+
 
 }

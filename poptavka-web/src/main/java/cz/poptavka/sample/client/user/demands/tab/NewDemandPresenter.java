@@ -78,7 +78,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
      * TODO decide when other parts should be built.
      */
     public void onInvokeNewDemand() {
-        LOGGER.fine("DemandCreation Widget");
+        LOGGER.fine("** DemandCreation Widget");
 
         view.getMainPanel().showWidget(0);
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));

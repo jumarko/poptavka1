@@ -37,7 +37,7 @@ public class DemandView extends Composite implements
 
     @UiField TextArea textArea;
 
-//    @UiField CellList<Object> cellList;
+//    @UiField CellList<Object> cellTable;
 
     public DemandView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));

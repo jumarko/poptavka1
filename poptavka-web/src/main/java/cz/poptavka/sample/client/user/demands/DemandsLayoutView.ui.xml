@@ -24,6 +24,14 @@
                         </g:Hyperlink>
                     </li>
                     <li>
+                        <g:Hyperlink ui:field="potentialDemandsLink">
+                            <ui:msg key="potentialDemands">Potential Demands</ui:msg>
+                        </g:Hyperlink>
+                        <g:Button ui:field="potentDevelBtn">R</g:Button>
+                        <hr />
+                    </li>
+
+                    <li>
                         <g:Hyperlink ui:field="myDemandsOperatorLink">
                             <ui:msg key="myDemandsOperatorLink">My Demands - operator</ui:msg>
                         </g:Hyperlink>
