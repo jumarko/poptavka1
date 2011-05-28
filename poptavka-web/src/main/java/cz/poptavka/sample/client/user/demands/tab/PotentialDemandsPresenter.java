@@ -1,12 +1,17 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -27,9 +32,18 @@ public class PotentialDemandsPresenter extends
     public interface IPotentialDemands extends LazyView {
         Widget getWidgetView();
 
-        ListDataProvider<DemandDetail> getProvider();
+        Button getReplyButton();
+        Button getDeleteButton();
+        Button getActionButton();
+        Button getRefreshButton();
 
-        SingleSelectionModel<DemandDetail> getSelectionModel();
+        ListDataProvider<DemandDetail> getDataProvider();
+
+        MultiSelectionModel<DemandDetail> getSelectionModel();
+
+        Set<DemandDetail> getSelectedSet();
+
+        SimplePanel getDetailSection();
     }
 
     public void bindView() {
@@ -37,6 +51,16 @@ public class PotentialDemandsPresenter extends
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                // TODO
+                GWT.log("SIZE of result set: " + view.getSelectedSet().size());
+                if (view.getSelectedSet().size() != 1) {
+                    // do not show any demand detail
+                    GWT.log("NOT ONE");
+                    return;
+                }
+                GWT.log("ONE");
+                Iterator<DemandDetail> iter = view.getSelectedSet().iterator();
+                eventBus.requestDemandDetail(iter.next().getId());
 //                Window.alert(view.getSelectionModel().getSelectedObject().getTitle());
             }
         });
@@ -44,16 +68,25 @@ public class PotentialDemandsPresenter extends
 
     public void onInvokePotentialDemands() {
         // TODO call real method to get potential demands
+        eventBus.displayContent(view.getWidgetView());
         eventBus.requestClientDemands();
     }
 
     public void onResponseClientDemands(ArrayList<DemandDetail> data) {
         GWT.log(" ** ** ** PotentialDemands Init ** ** ** ");
         // TODO fill the view
-        view.getProvider().setList(data);
-
+        List<DemandDetail> list = view.getDataProvider().getList();
+        list.clear();
+        for (DemandDetail d : data) {
+            list.add(d);
+        }
+        view.getDataProvider().refresh();
         // widget display
-        eventBus.displayContent(view.getWidgetView());
+
+    }
+
+    public void onResponseDemandDetail(Widget widget) {
+        view.getDetailSection().setWidget(widget);
     }
 
 }

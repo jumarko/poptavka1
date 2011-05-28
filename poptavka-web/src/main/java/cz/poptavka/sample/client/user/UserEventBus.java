@@ -106,7 +106,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void requestDemandDetail(long demandId);
 
     @Event(handlers = {MyDemandsPresenter.class, OffersPresenter.class,
-            MyDemandsOperatorPresenter.class }, passive = true)
+            MyDemandsOperatorPresenter.class, PotentialDemandsPresenter.class }, passive = true)
     void responseDemandDetail(Widget widget);
 
     /** get supplier Id. **/

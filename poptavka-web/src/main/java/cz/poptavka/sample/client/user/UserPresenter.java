@@ -119,7 +119,9 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
 
     public void onClearUserOnUnload() {
-        this.user = null;
+        if (user != null) {
+            this.user = null;
+        }
     }
 
  // TODO delete for production
