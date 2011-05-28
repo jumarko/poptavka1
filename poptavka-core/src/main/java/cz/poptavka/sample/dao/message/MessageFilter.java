@@ -1,10 +1,11 @@
 package cz.poptavka.sample.dao.message;
 
 import cz.poptavka.sample.domain.common.ResultCriteria;
+import cz.poptavka.sample.domain.message.MessageType;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 
 /**
- * Class represents a filter that can be used for applygin various restrictions on messages returned
+ * Class represents a filter that can be used for applying various restrictions on messages returned
  * from service methods.
  *
  * @see cz.poptavka.sample.service.message.MessageService
@@ -16,6 +17,7 @@ public final class MessageFilter {
     public static final MessageFilter EMPTY_FILTER = new MessageFilter();
 
     private MessageUserRoleType messageUserRoleType;
+    private MessageType messageType;
 
     private ResultCriteria resultCriteria;
 
@@ -28,6 +30,10 @@ public final class MessageFilter {
 
     public MessageUserRoleType getMessageUserRoleType() {
         return messageUserRoleType;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
     }
 
     public ResultCriteria getResultCriteria() {
@@ -44,6 +50,11 @@ public final class MessageFilter {
 
         public MessageFilterBuilder withMessageUserRoleType(MessageUserRoleType messageUserRoleType) {
             messageFilter.messageUserRoleType = messageUserRoleType;
+            return this;
+        }
+
+        public MessageFilterBuilder withMessageType(MessageType messageType) {
+            messageFilter.messageType = messageType;
             return this;
         }
 
