@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.main.common.locality;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -48,7 +47,9 @@ public class LocalitySelectorPresenter
         ArrayList<String> getSelectedLocalityCodes();
     }
 
-    private static final Logger LOGGER = Logger.getLogger("LocalitySelectorPresenter");
+    // for preventing users from double clicking list item, what would result in multiple instances of
+    // same list
+    private boolean preventMultipleCalls = false;
 
     public void bindView() {
         view.getRegionList().addClickHandler(new ClickHandler() {
@@ -57,6 +58,11 @@ public class LocalitySelectorPresenter
                 if (event.isControlKeyDown()) {
                     view.addToSelectedList(LocalityDetail.REGION);
                 } else {
+                    if (preventMultipleCalls) {
+                        return;
+                    }
+                    // TODO cursor change would be nice;
+                    preventMultipleCalls = true;
                     view.toggleLoader();
                     view.getDistrictList().setVisible(false);
                     view.getCityList().setVisible(false);
@@ -70,6 +76,11 @@ public class LocalitySelectorPresenter
                 if (event.isControlKeyDown()) {
                     view.addToSelectedList(LocalityDetail.DISTRICT);
                 } else {
+                    if (preventMultipleCalls) {
+                        return;
+                    }
+                    // TODO cursor change would be nice;
+                    preventMultipleCalls = true;
                     view.toggleLoader();
                     view.getCityList().setVisible(false);
                     eventBus.getChildLocalities(LocalityDetail.CITY, view.getSelectedItem(LocalityDetail.DISTRICT));
@@ -91,7 +102,6 @@ public class LocalitySelectorPresenter
     }
 
     public void initLocalityWidget(SimplePanel embedWidget) {
-        LOGGER.info("Initializing widget view, RPC call... ");
         eventBus.getRootLocalities();
         embedWidget.setWidget(view.getWidgetView());
     }
@@ -116,20 +126,19 @@ public class LocalitySelectorPresenter
 
     private void setData(final ListBox box, final ArrayList<LocalityDetail> list) {
         box.clear();
-        box.setVisible(true);
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                LOGGER.info("Filling Locality list...");
                 if (list.size() == 0) {
-                    LOGGER.info("NO CONTAINING LOCALITIES");
                 }
                 for (int i = 0; i < list.size(); i++) {
                     box.addItem(list.get(i).getName(), list.get(i).getCode());
                 }
             }
-
         });
+        box.setVisible(true);
+        // now he can select list again
+        preventMultipleCalls = false;
     }
 
 }

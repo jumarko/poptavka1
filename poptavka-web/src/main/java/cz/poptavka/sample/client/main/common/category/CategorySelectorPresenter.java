@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.main.common.category;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -47,8 +46,9 @@ public class CategorySelectorPresenter
 
         void showLoader(int index);
     }
-
-    private static final Logger LOGGER = Logger.getLogger("CategorySelectorPresenter");
+    // for preventing users from double clicking list item, what would result in multiple instances of
+    // same list
+    private boolean preventMultipleCalls = false;
 
     public void bindView() {
         view.getSelectedList().addClickHandler(new ClickHandler() {
@@ -60,7 +60,6 @@ public class CategorySelectorPresenter
     }
 
     public void initCategoryWidget(SimplePanel embedWidget) {
-        LOGGER.info("init Category Widget ... ");
         view.getListHolder().resizeColumns(0);
         eventBus.getChildListCategories(0, "ALL_CATEGORIES");
         embedWidget.setWidget(view.getWidgetView());
@@ -78,16 +77,12 @@ public class CategorySelectorPresenter
     }
 
     private void setAndDisplayData(final ListBox box, final ArrayList<CategoryDetail> list) {
-        /** DEVEL PART **/
         int columCount = view.getListHolder().getColumnCount();
 
-        /** END **/
-        box.setVisible(true);
-        LOGGER.info("Filling list...");
         for (int i = 0; i < list.size(); i++) {
             box.addItem(list.get(i).getParentName(), String.valueOf(list.get(i).getId()));
         }
-        LOGGER.info("List filled");
+
 
         //check if possible to display, if needed resize table
         int positionToInsert = view.getFreeListIndex();
@@ -96,24 +91,28 @@ public class CategorySelectorPresenter
         }
         view.getListHolder().setWidget(0, positionToInsert, box);
         view.getScrollPanel().scrollToRight();
+
+        preventMultipleCalls = false;
+        box.setVisible(true);
     }
 
     private void addCategoryChangeHandler(final ListBox box, final int index) {
         box.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                if (preventMultipleCalls) { return; }
                 String text = box.getItemText(box.getSelectedIndex());
                 String value = box.getValue(box.getSelectedIndex());
                 boolean notLeaf = text.contains(" >");
                 if (event.isControlKeyDown() && notLeaf) {
                     view.addToSelectedList(text.substring(0, text.indexOf(" >")), value);
                 } else {
-                    if (text.contains(" >")) {
+                    if (!text.contains(" >")) {
+                        view.addToSelectedList(text, value);
+                    } else {
+                        preventMultipleCalls = true;
                         view.clearChildrenLists(index);
                         postRequest(index + 1, box.getValue(box.getSelectedIndex()));
-                        LOGGER.fine("Next table is at index " + index + 1);
-                    } else {
-                        view.addToSelectedList(text, value);
                     }
                 }
             }
