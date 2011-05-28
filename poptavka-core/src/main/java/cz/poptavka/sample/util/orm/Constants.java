@@ -8,6 +8,7 @@ package cz.poptavka.sample.util.orm;
  */
 public final class Constants {
     public static final int ENUM_FIELD_LENGTH = 64;
+    public static final int ENUM_SHORTINT_FIELD_LENGTH = 2;
 
     private Constants() {
         // utility class - DO NOT INSTANTIATE!

@@ -1,7 +1,7 @@
 package cz.poptavka.sample.dao.message;
 
 import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.message.MessageType;
+import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 
 /**
@@ -17,7 +17,7 @@ public final class MessageFilter {
     public static final MessageFilter EMPTY_FILTER = new MessageFilter();
 
     private MessageUserRoleType messageUserRoleType;
-    private MessageType messageType;
+    private MessageContext messageContext;
 
     private ResultCriteria resultCriteria;
 
@@ -32,8 +32,8 @@ public final class MessageFilter {
         return messageUserRoleType;
     }
 
-    public MessageType getMessageType() {
-        return messageType;
+    public MessageContext getMessageContext() {
+        return messageContext;
     }
 
     public ResultCriteria getResultCriteria() {
@@ -53,8 +53,8 @@ public final class MessageFilter {
             return this;
         }
 
-        public MessageFilterBuilder withMessageType(MessageType messageType) {
-            messageFilter.messageType = messageType;
+        public MessageFilterBuilder withMessageContext(MessageContext messageContext) {
+            messageFilter.messageContext = messageContext;
             return this;
         }
 

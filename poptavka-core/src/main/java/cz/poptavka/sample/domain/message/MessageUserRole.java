@@ -37,6 +37,10 @@ public class MessageUserRole extends DomainObject {
     @Column(length = Constants.ENUM_FIELD_LENGTH)
     private MessageUserRoleType type;
 
+    @Enumerated(value = EnumType.ORDINAL)
+    @Column(length = Constants.ENUM_SHORTINT_FIELD_LENGTH)
+    private MessageContext messageContext;
+
     public Message getMessage() {
         return message;
     }
@@ -59,6 +63,14 @@ public class MessageUserRole extends DomainObject {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public MessageContext getMessageContext() {
+        return messageContext;
+    }
+
+    public void setMessageContext(MessageContext messageContext) {
+        this.messageContext = messageContext;
     }
 
     @Override
