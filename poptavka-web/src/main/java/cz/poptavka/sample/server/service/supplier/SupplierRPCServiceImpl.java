@@ -154,7 +154,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
         clientService.create(client);
 
-        return this.toUserDetail(supplierFromDB.getBusinessUser().getBusinessUserRoles());
+        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
+                supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
     @Override

@@ -52,6 +52,9 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
     @UiField Button replyBtn, deleteBtn, moreActionsBtn, refreshBtn;
     @UiField SimplePanel detailSection;
 
+    // TODO remove then
+    @UiField SimplePanel develPanel;
+
 //    @UiField ToggleButton moreActionsBtn;
 
     private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
@@ -75,15 +78,11 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
     }
 
     private void initCellWidget() {
-
         // Init table
         cellTable = new CellTable<DemandDetail>(KEY_PROVIDER);
 //        cellTable.setPageSize(5);
         cellTable.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
         cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-
-        // dataProvider
-        dataProvider.addDataDisplay(cellTable);
 
         ListHandler<DemandDetail> sorHandler = new ListHandler<DemandDetail>(
                 dataProvider.getList());
@@ -98,7 +97,14 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
         cellTable.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<DemandDetail>createCheckboxManager());
 
+
+//        cellTable.setSelectionModel(selectionModel,
+//                DefaultSelectionEventManager.<DemandDetail>createCheckboxManager());
+
         initTableColumns(selectionModel, sorHandler);
+
+     // dataProvider
+        dataProvider.addDataDisplay(cellTable);
     }
 
     private void initTableColumns(final SelectionModel<DemandDetail> selectionModel,
@@ -110,6 +116,7 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
             public Boolean getValue(DemandDetail object) {
                 return selectionModel.isSelected(object);
             }
+
         };
 
         // Demand Title Column
@@ -176,6 +183,7 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
         cellTable.addColumn(priceColumn, MSGS.price());
         cellTable.addColumn(endDateColumn, MSGS.endDate());
         cellTable.addColumn(expireDateColumn, MSGS.expireDate());
+
     }
 
     @Override

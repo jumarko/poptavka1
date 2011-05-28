@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -17,6 +20,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widgets.MessageWriteWidget;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
 /**
@@ -68,7 +72,6 @@ public class PotentialDemandsPresenter extends
 
     public void onInvokePotentialDemands() {
         // TODO call real method to get potential demands
-        eventBus.displayContent(view.getWidgetView());
         eventBus.requestClientDemands();
     }
 
@@ -82,11 +85,25 @@ public class PotentialDemandsPresenter extends
         }
         view.getDataProvider().refresh();
         // widget display
+        eventBus.displayContent(view.getWidgetView());
 
     }
 
     public void onResponseDemandDetail(Widget widget) {
-        view.getDetailSection().setWidget(widget);
+        FlowPanel panel = new FlowPanel();
+        MessageWriteWidget responser = new MessageWriteWidget();
+        panel.add(widget);
+        panel.add(responser);
+        view.getDetailSection().setWidget(panel);
+
+        responser.getReplyButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+//                eventBus.sendMessage(responser.getContent());
+            }
+        });
     }
+
 
 }

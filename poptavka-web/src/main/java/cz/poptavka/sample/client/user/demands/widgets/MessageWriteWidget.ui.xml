@@ -1,0 +1,74 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:style field='uiBinderStyle'
+        type="cz.poptavka.sample.client.user.demands.widgets.MessageWriteWidget.SelectionStyle">
+        .panel {
+            position: absolute;
+            bottom: 0px;
+            width: 100%;
+        }
+
+        .header-area {
+            border-bottom: solid 1px rgb(211, 211, 211);
+            background-color: rgb(237, 237, 237);
+            text-align: center;
+            padding: 5px;
+        }
+
+        div.header-area:hover {
+            border-bottom: solid 1px rgb(153, 153, 153);
+            background-color: rgb(218, 218, 218);
+        }
+
+        .header-area-clicked {
+            background-color: rgb(218, 218, 218);
+            border-bottom: solid 1px rgb(153, 153, 153);
+            text-align: center;
+            padding: 5px;
+        }
+
+        div.header-area-clicked:hover {
+            border-bottom: solid 1px rgb(211, 211, 211);
+            background-color: rgb(237, 237, 237);
+            text-align: center;
+            padding: 5px;
+        }
+
+        .content {
+            display: none;
+            padding: 1em;
+            background-color: rgb(218, 218, 218);
+        }
+    </ui:style>
+
+    <g:HTMLPanel>
+        <div class="{uiBinderStyle.panel}">
+            <div class="{uiBinderStyle.header-area}">
+                <g:Button ui:field="toggleBtn" height="22px" width="100%" >
+                    <ui:msg key="reply">Reply</ui:msg>
+                </g:Button>
+            </div>
+            <div id="replyWidget" class="{uiBinderStyle.content}">
+                <g:TextArea width="200px" height="150px"></g:TextArea>
+                <g:DisclosurePanel>
+                    <g:header>Advanced Options</g:header>
+                    <g:HTMLPanel>
+                        <table>
+                            <tr>
+                                <td><ui:msg key="price">Price</ui:msg></td>
+                                <td><g:LongBox ui:field="priceBox" /></td>
+                            </tr>
+                            <tr>
+                                <td><ui:msg key="endDate">End Date</ui:msg></td>
+                                <td><p1:DateBox ui:field="dateBox" /></td>
+                            </tr>
+                        </table>
+                    </g:HTMLPanel>
+                </g:DisclosurePanel>
+                <g:Button ui:field="replyBtn">Send</g:Button>
+            </div>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

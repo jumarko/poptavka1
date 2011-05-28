@@ -92,12 +92,13 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         return details;
     }
 
-    protected UserDetail toUserDetail(List<BusinessUserRole> userRoles) {
+    protected UserDetail toUserDetail(Long userId, List<BusinessUserRole> userRoles) {
         if (userRoles == null) {
             throw new NullPointerException("These roles are not defined");
         }
 
         UserDetail detail = new UserDetail();
+        detail.setId(userId);
 
         // Set UserDetail according to his roles
         for (BusinessUserRole role : userRoles) {
@@ -143,7 +144,6 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         }
         // TODO fix this user ID
         System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
-        detail.setId(userRoles.get(0).getBusinessUser().getId());
         return detail;
     }
 
