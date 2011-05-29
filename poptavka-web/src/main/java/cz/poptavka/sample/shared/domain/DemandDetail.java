@@ -62,10 +62,8 @@ public class DemandDetail implements Serializable {
             locList.add(loc.getName());
         }
         detail.setLocalities(locList);
-        // TODO ivlcek - status nesmie byt v DB ako null
         detail.setDemandStatus(demand.getStatus().getValue());
         detail.setDemandType(demand.getType().getType().getValue());
-        // TODO ivlcek - ako spoznam ci sa mi dotialhol aj Client k tejto poptabke?
         detail.setClientId(demand.getClient().getId());
 
         return detail;

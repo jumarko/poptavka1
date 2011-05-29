@@ -38,4 +38,6 @@ public interface DemandRPCServiceAsync {
     void updateDemand(DemandDetail demand, AsyncCallback<DemandDetail> asyncCallback);
 
     void getPotentialDemandsForSupplier(long businessUserId, AsyncCallback<ArrayList<PotentialDemandDetail>> callback);
+
+    void getDemand(long demandId, AsyncCallback<DemandDetail> asyncCallback);
 }

@@ -43,4 +43,6 @@ public interface DemandRPCService extends RemoteService {
     ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
 
     ArrayList<PotentialDemandDetail> getPotentialDemandsForSupplier(long businessUserId);
+
+    DemandDetail getDemand(long demandId);
 }

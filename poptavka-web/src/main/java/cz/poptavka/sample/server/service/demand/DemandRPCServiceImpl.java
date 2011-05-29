@@ -331,4 +331,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         return potentialDemandDetails;
     }
+
+    @Override
+    public DemandDetail getDemand(long demandId) {
+        return DemandDetail.createDemandDetail(this.demandService.getById(demandId));
+    }
 }
