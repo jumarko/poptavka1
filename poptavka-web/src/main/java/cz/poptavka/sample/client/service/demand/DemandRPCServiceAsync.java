@@ -12,6 +12,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.PotentialDemandDetail;
 
 public interface DemandRPCServiceAsync {
 
@@ -36,4 +37,5 @@ public interface DemandRPCServiceAsync {
 
     void updateDemand(DemandDetail demand, AsyncCallback<DemandDetail> asyncCallback);
 
+    void getPotentialDemandsForSupplier(long businessUserId, AsyncCallback<ArrayList<PotentialDemandDetail>> callback);
 }

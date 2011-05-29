@@ -1,4 +1,3 @@
-
 /**
  *
  * @author Excalibur
@@ -14,6 +13,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.PotentialDemandDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +26,21 @@ public interface DemandRPCService extends RemoteService {
 
     DemandDetail updateDemand(DemandDetail newDemand);
 
-    DemandDetail  createNewDemand(DemandDetail newDemand, Long clientId);
+    DemandDetail createNewDemand(DemandDetail newDemand, Long clientId);
 
     Set<Demand> getDemands(Locality[] localities);
+
     Set<Demand> getDemands(Category[] categories);
 
     List<Demand> getDemands(ResultCriteria resultCriteria);
+
     Set<Demand> getDemands(ResultCriteria resultCriteria, Locality[] localities);
+
     Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories);
 
     ArrayList<DemandDetail> getClientDemands(long id);
+
     ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
 
+    ArrayList<PotentialDemandDetail> getPotentialDemandsForSupplier(long businessUserId);
 }
