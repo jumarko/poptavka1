@@ -18,39 +18,66 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.DemandStatusDetail;
+import cz.poptavka.sample.shared.domain.DemandTypeDetail;
 
 /**
  *
- * @author ivan.vlcek
+ * @author ivan.vlcek, jarko
  */
 public class AdminDemandInfoView extends Composite implements
         AdminDemandInfoPresenter.AdminDemandInfoInterface {
-    private static AdminDemandInfoViewUiBinder uiBinder =
-            GWT.create(AdminDemandInfoViewUiBinder.class);
+    private static AdminDemandInfoViewUiBinder uiBinder = GWT
+            .create(AdminDemandInfoViewUiBinder.class);
 
-    interface AdminDemandInfoViewUiBinder extends UiBinder<Widget, AdminDemandInfoView> {
+    interface AdminDemandInfoViewUiBinder extends
+            UiBinder<Widget, AdminDemandInfoView> {
     }
+
+    // demand detail input fields
     @UiField
-    TextArea addressBox;
+    TextArea titleBox;
     @UiField
-    DateBox birthdayBox;
+    TextArea descriptionBox;
     @UiField
-    ListBox categoryBox;
+    TextBox priceBox;
+    @UiField
+    DateBox endDateBox;
+    @UiField
+    DateBox expirationBox;
+    @UiField
+    TextBox clientID;
+    @UiField
+    TextBox maxOffers;
+    @UiField
+    TextBox minRating;
+    @UiField
+    ListBox demandType;
+    @UiField
+    ListBox demandStatus;
+
+    // demand detail button fields
+    @UiField
+    Button categoryButton;
+    @UiField
+    Button localityButton;
     @UiField
     Button createButton;
     @UiField
-    TextBox firstNameBox;
-    @UiField
-    TextBox lastNameBox;
-    @UiField
     Button updateButton;
-    private DemandDetail contactInfo;
+
+    private DemandDetail demandInfo;
 
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    @Override
+    public Button getUpdateBtn() {
+        return updateButton;
     }
 
     @Override
@@ -60,75 +87,107 @@ public class AdminDemandInfoView extends Composite implements
     }
 
     private void initDemandInfoForm() {
-//        initWidget(uiBinder.createAndBindUi(this));
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(
-                PredefinedFormat.DATE_LONG);
-        birthdayBox.setFormat(new DateBox.DefaultFormat(dateFormat));
-
-        // Add the categories to the category box.
-        final DemandStatusDetail[] categories = DemandStatusDetail.values();
-        for (DemandStatusDetail category : categories) {
-            categoryBox.addItem(category.getValue());
-        }
+        // initWidget(uiBinder.createAndBindUi(this));
+        DateTimeFormat dateFormat = DateTimeFormat
+                .getFormat(PredefinedFormat.DATE_LONG);
+        expirationBox.setFormat(new DateBox.DefaultFormat(dateFormat));
+        endDateBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 
         // Initialize the contact to null.
-        setContact(null);
+        setDemandDetail(null);
 
         // Handle events.
         updateButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (contactInfo == null) {
+                if (demandInfo == null) {
                     return;
                 }
+                boolean t = priceBox.getText() == null;
+                if (t) {
+                    GWT.log("d" + t + "max offer");
+                }
+                GWT.log("d" + t + "max offer");
+                GWT.log("d" + priceBox.getText().equals("") + "price ");
 
                 // Update the contact.
-                contactInfo.setTitle(firstNameBox.getText());
-                contactInfo.setDescription(lastNameBox.getText());
-                contactInfo.setClientId(Long.valueOf(addressBox.getText()));
-                contactInfo.setExpireDate(birthdayBox.getValue());
-                int categoryIndex = categoryBox.getSelectedIndex();
-                contactInfo.setDemandStatus(categories[categoryIndex].getValue());
+                demandInfo.setTitle(titleBox.getText());
+                demandInfo.setDescription(descriptionBox.getText());
+                demandInfo.setPrice(priceBox.getText());
+                demandInfo.setEndDate(endDateBox.getValue());
+                demandInfo.setExpireDate(expirationBox.getValue());
+                demandInfo.setClientId(Long.valueOf(clientID.getText()));
+                demandInfo.setMaxOffers(Integer.valueOf(maxOffers.getValue()));
+                demandInfo.setMinRating(Integer.valueOf(minRating.getValue()));
+                // demandInfo.setDemandType(demandType.getValue());
 
                 // Update the views.
                 // TODO this must be called within Presenter
-//                ContactDatabase.get().refreshDisplays();
+                // ContactDatabase.get().refreshDisplays();
             }
         });
         createButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                int categoryIndex = categoryBox.getSelectedIndex();
-                DemandStatusDetail category = categories[categoryIndex];
-                contactInfo = new DemandDetail();
-                contactInfo.setDemandStatus(category.getValue());
-                contactInfo.setTitle(firstNameBox.getText());
-                contactInfo.setDescription(lastNameBox.getText());
-                contactInfo.setClientId(Long.valueOf(addressBox.getText()));
-                contactInfo.setExpireDate(birthdayBox.getValue());
+                demandInfo = new DemandDetail();
+                demandInfo.setTitle(titleBox.getText());
+                demandInfo.setDescription(descriptionBox.getText());
+                demandInfo.setClientId(Long.valueOf(clientID.getText()));
+                demandInfo.setExpireDate(expirationBox.getValue());
                 // enter new Demand into DB if it is good feature for Admin
-//                ContactDatabase.get().addContact(contactInfo);
-                setContact(contactInfo);
+                // ContactDatabase.get().addContact(demandInfo);
+                setDemandDetail(demandInfo);
             }
         });
     }
 
-    public void setContact(DemandDetail contact) {
-        this.contactInfo = contact;
+    public void setDemandDetail(DemandDetail contact) {
+        this.demandInfo = contact;
         updateButton.setEnabled(contact != null);
         if (contact != null) {
-            firstNameBox.setText(contact.getTitle());
-            lastNameBox.setText(contact.getDescription());
-            addressBox.setText(String.valueOf(contact.getClientId()));
-            birthdayBox.setValue(contact.getExpireDate());
-            String category = contact.getDemandStatus();
-            DemandStatusDetail[] categories = DemandStatusDetail.values();
-            for (int i = 0; i < categories.length; i++) {
-                if (category == null ? categories[i].getValue() == null : category.equals(categories[i].getValue())) {
-                    categoryBox.setSelectedIndex(i);
+            titleBox.setText(contact.getTitle());
+            descriptionBox.setText(contact.getDescription());
+            priceBox.setText(contact.getPriceString());
+            endDateBox.setValue(contact.getEndDate());
+            expirationBox.setValue(contact.getExpireDate());
+            clientID.setText(String.valueOf(contact.getClientId()));
+            maxOffers.setText(String.valueOf(contact.getMaxOffers()));
+            minRating.setText(String.valueOf(contact.getMinRating()));
+
+            // demand type settings
+            // Add the types to the status box.
+            final DemandTypeDetail[] types = DemandTypeDetail.values();
+            for (DemandTypeDetail type : types) {
+                demandType.addItem(type.getValue());
+            }
+
+            String type = contact.getDemandStatus();
+            for (int i = 0; i < types.length; i++) {
+                if (type == null ? types[i].getValue() == null : type
+                        .equals(types[i].getValue())) {
+                    demandType.setSelectedIndex(i);
                     break;
                 }
             }
+
+            // demand status settings
+            // Add the statuses to the status box.
+            final DemandStatusDetail[] statuses = DemandStatusDetail.values();
+            for (DemandStatusDetail status : statuses) {
+                demandStatus.addItem(status.getValue());
+            }
+
+            String status = contact.getDemandStatus();
+            for (int i = 0; i < statuses.length; i++) {
+                if (status == null ? statuses[i].getValue() == null : status
+                        .equals(statuses[i].getValue())) {
+                    demandStatus.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            demandInfo.setLocalities(contact.getLocalities());
+            demandInfo.setCategories(contact.getCategories());
         }
     }
 }

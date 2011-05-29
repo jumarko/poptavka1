@@ -61,14 +61,6 @@ public class AdministrationView extends Composite implements
     }
 
     /**
-     * @return the demandTitleColumn
-     */
-    @Override
-    public Column<DemandDetail, String> getDemandTitleColumn() {
-        return demandTitleColumn;
-    }
-
-    /**
      * @return the clientIdColumn
      */
     @Override
@@ -175,7 +167,6 @@ public class AdministrationView extends Composite implements
     private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
     private SingleSelectionModel<DemandDetail> selectionModel;
     /** Editable Columns in CellTable. **/
-    private Column<DemandDetail, String> demandTitleColumn;
     private Column<DemandDetail, String> clientIdColumn;
     private Column<DemandDetail, String> demandTypeColumn;
     private Column<DemandDetail, String> demandStatusColumn;
@@ -184,18 +175,6 @@ public class AdministrationView extends Composite implements
     private final DemandTypeDetail[] demandTypes = DemandTypeDetail.values();
     private final DemandStatusDetail[] demandStatuses = DemandStatusDetail.values();
 
-    @Override
-    public void sortTitle() {
-        // TODO ivlcek - sort data according to latest Date
-        // We know that the data is sorted alphabetically by default.
-//        ColumnSortInfo columnSortInfo = new ColumnSortInfo(title, true);
-        cellTable.getColumnSortList().push(getDemandTitleColumn());
-    }
-
-//    @Override
-//    public SimplePager getPager() {
-//        return pager;
-//    }
     @Override
     public void createView() {
         initCellTable();
@@ -299,7 +278,7 @@ public class AdministrationView extends Composite implements
         List<String> demandTypeNames = new ArrayList<String>();
         for (DemandTypeDetail demandTypeDetail : demandTypes) {
             // TODO ivlcek - add Localizable name of DemandTypeDetail enum
-            demandTypeNames.add(demandTypeDetail.name());
+            demandTypeNames.add(demandTypeDetail.getValue());
         }
         SelectionCell demandTypeCell = new SelectionCell(demandTypeNames);
         demandTypeColumn = new Column<DemandDetail, String>(
@@ -330,33 +309,6 @@ public class AdministrationView extends Composite implements
         };
         cellTable.addColumn(demandStatusColumn, "Status");
         cellTable.setColumnWidth(demandStatusColumn, 160, Unit.PX);
-
-        // Demand title.
-//        Column<DemandDetail, String> title = new Column<DemandDetail, String>(
-        demandTitleColumn = new Column<DemandDetail, String>(
-                new EditTextCell()) {
-            @Override
-            public String getValue(DemandDetail object) {
-                return object.getTitle();
-            }
-        };
-        getDemandTitleColumn().setSortable(true);
-        sortHandler.setComparator(getDemandTitleColumn(), new Comparator<DemandDetail>() {
-            @Override
-            public int compare(DemandDetail o1, DemandDetail o2) {
-                if (o1 == o2) {
-                    return 0;
-                }
-
-                // Compare the name columns.
-                if (o1 != null) {
-                    return (o2 != null) ? o1.getTitle().compareTo(o2.getTitle()) : 1;
-                }
-                return -1;
-            }
-        });
-        // TODO ivlcek - load columnn name from resources
-        cellTable.addColumn(getDemandTitleColumn(), "Title");
 
         // Demand expiration date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);

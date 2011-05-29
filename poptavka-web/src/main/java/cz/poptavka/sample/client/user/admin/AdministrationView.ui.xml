@@ -17,7 +17,7 @@
     }
     </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:west size="800">
+        <g:west size="650">
             <g:ScrollPanel>
 
 <!--            <g:FlowPanel>-->

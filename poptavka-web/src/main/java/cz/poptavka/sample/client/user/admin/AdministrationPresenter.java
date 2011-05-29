@@ -52,8 +52,6 @@ public class AdministrationPresenter
 
         ListDataProvider<DemandDetail> getDataProvider();
 
-        Column<DemandDetail, String> getDemandTitleColumn();
-
         Column<DemandDetail, String> getClientIdColumn();
 
         Column<DemandDetail, String> getDemandTypeColumn();
@@ -71,8 +69,6 @@ public class AdministrationPresenter
         SingleSelectionModel<DemandDetail> getSelectionModel();
 
         SimplePanel getAdminDemandDetail();
-
-        void sortTitle();
     }
 
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
@@ -94,7 +90,6 @@ public class AdministrationPresenter
             list.add(d);
         }
 
-        view.sortTitle();
         // TODO ivlcek - try to remove refreshDispalys
         refreshDisplays();
     }
@@ -116,19 +111,6 @@ public class AdministrationPresenter
 
     @Override
     public void bindView() {
-        view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
-            @Override
-            public void update(int index, DemandDetail object, String value) {
-                // Called when the user changes the value.
-                // Push the changes into the DemandDetail. At this point, you could send an
-                // asynchronous request to the server to update the database.
-                object.setTitle(value);
-                eventBus.updateDemand(object);
-                // Redraw the table with the new data.
-//                table.redraw();
-                refreshDisplays();
-            }
-        });
         view.getClientIdColumn().setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
             @Override
             public void update(int index, DemandDetail object, String value) {

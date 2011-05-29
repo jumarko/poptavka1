@@ -19,24 +19,32 @@ import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.resources.StyleResource;
 
-public class NewDemandView extends OverflowComposite implements NewDemandPresenter.NewDemandInterface {
+public class NewDemandView extends OverflowComposite implements
+        NewDemandPresenter.NewDemandInterface {
 
-    private static NewDemandViewUiBinder uiBinder = GWT.create(NewDemandViewUiBinder.class);
+    private static NewDemandViewUiBinder uiBinder = GWT
+            .create(NewDemandViewUiBinder.class);
+
     interface NewDemandViewUiBinder extends UiBinder<Widget, NewDemandView> {
     }
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT
+            .create(LocalizableMessages.class);
 
     private List<StatusIconLabel> statusLabels = new ArrayList<StatusIconLabel>();
 
     private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
 
-    @UiField StackLayoutPanel mainPanel;
+    @UiField
+    StackLayoutPanel mainPanel;
 
-    @UiField SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder;
-    @UiField StatusIconLabel basicStatus, categoryStatus, localityStatus, advStatus;
+    @UiField
+    SimplePanel basicInfoHolder, categoryHolder, localityHolder, advInfoHolder;
+    @UiField
+    StatusIconLabel basicStatus, categoryStatus, localityStatus, advStatus;
 
-    @UiField Button createBtn;
+    @UiField
+    Button createBtn;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -46,7 +54,7 @@ public class NewDemandView extends OverflowComposite implements NewDemandPresent
         statusLabels = Arrays.asList(array);
 
         SimplePanel[] panels = {basicInfoHolder, categoryHolder, localityHolder, advInfoHolder};
-        holderPanels  = Arrays.asList(panels);
+        holderPanels = Arrays.asList(panels);
 
         /** style implementation and overflow tweaks **/
         StyleResource.INSTANCE.common().ensureInjected();

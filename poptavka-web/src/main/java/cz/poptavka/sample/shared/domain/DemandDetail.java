@@ -112,6 +112,21 @@ public class DemandDetail implements Serializable {
         return price;
     }
 
+    public String getPriceString() {
+        if (price == null) {
+            return "";
+        }
+        return price.toString();
+    }
+
+    public void setPrice(String price) {
+        if (price.equals("")) {
+            this.price = null;
+        } else {
+            this.price = BigDecimal.valueOf(Long.valueOf(price));
+        }
+    }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }

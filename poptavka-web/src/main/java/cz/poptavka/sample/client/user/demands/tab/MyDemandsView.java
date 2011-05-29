@@ -11,12 +11,16 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
@@ -40,6 +44,19 @@ public class MyDemandsView extends Composite implements
     @UiField
     SimplePanel myDemandDetail;
 
+    @UiField
+    Label detailHeader;
+
+    @UiField
+    SimplePanel detailContent;
+
+    /**
+     * The pager used to change the range of data. It must be created before
+     * uiBinder.createAndBindUi(this)
+     */
+    @UiField(provided = true)
+    SimplePager pager;
+
     /**
      * Data provider that will cell table with data.
      */
@@ -59,30 +76,44 @@ public class MyDemandsView extends Composite implements
         initCellTable(selectionModel);
 
         initWidget(uiBinder.createAndBindUi(this));
+
+        // setDemandDetail();
+        detailHeader.setText("My Demand Header");
+        detailContent.add(new Label(
+                "The internet is for porn!<br /><br />The internet "
+                        + "is for porn!<br /><br />The internet is for porn!"));
     }
 
     private void initCellTable(
             final SingleSelectionModel<DemandDetail> selectionModel) {
-        table = new CellTable<DemandDetail>(15);
+        table = new CellTable<DemandDetail>(2);
         table.setSelectionModel(selectionModel);
         dataProvider.addDataDisplay(table);
-        // // Checkbox column. This table will uses a checkbox column for
-        // // selection.
-        // // Alternatively, you can call cellTable.setSelectionEnabled(true) to
-        // // enable
-        // // mouse selection.
-        // Column<DemandDetail, Boolean> checkColumn = new Column<DemandDetail,
-        // Boolean>(
-        // new CheckboxCell(true, false)) {
-        // @Override
-        // public Boolean getValue(DemandDetail object) {
-        // // Get the value from the selection model.
-        // return selectionModel.isSelected(object);
-        // }
-        // };
-        // table.addColumn(checkColumn,
-        // SafeHtmlUtils.fromSafeConstant("<br/>"));
-        table.setWidth("100%");
+        table.setWidth("100%", true);
+
+        // TODO ivlcek - make it working without keyprovider
+        // Attach a column sort handler to the ListDataProvider to sort the
+        // list.
+        ListHandler<DemandDetail> sortHandler = new ListHandler<DemandDetail>(
+                dataProvider.getList());
+        table.addColumnSortHandler(sortHandler);
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT
+                .create(SimplePager.Resources.class);
+        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
+                true);
+        pager.setDisplay(table);
+
+        initTableColumns(getSelectionModel(), sortHandler);
+    }
+
+    /**
+     * Add the columns to the table.
+     */
+    private void initTableColumns(
+            final SelectionModel<DemandDetail> selectionModel,
+            ListHandler<DemandDetail> sortHandler) {
 
         // Create name column.
         addColumn(new TextCell(), "Title", new GetValue<String>() {
@@ -103,10 +134,9 @@ public class MyDemandsView extends Composite implements
         // Create name column.
         addColumn(new TextCell(), "Price", new GetValue<String>() {
             public String getValue(DemandDetail demandDetail) {
-                return demandDetail.getPrice().toString() + " Kč";
+                return demandDetail.getPrice().toString() + " czk";
             }
         });
-
     }
 
     public CellTable<DemandDetail> getCellTable() {
@@ -147,32 +177,6 @@ public class MyDemandsView extends Composite implements
     public Button getCancelBtn() {
         return cancelBtn;
     }
-
-    // private static List<DemandDetail> generateDemandDetail() {
-    // DemandDetail detail1 = new DemandDetail();
-    // detail1.setId(1);
-    // detail1.setTitle("blala1 blala1 blala1 blala1 blala1 blala1");
-    // Date date1 = new Date(2010, 10, 2);
-    // detail1.setEndDate(date1);
-    // detail1.setPrice(new BigDecimal(2000));
-    // DemandDetail detail2 = new DemandDetail();
-    // detail2.setId(2);
-    // detail2.setTitle("blala2");
-    // Date date2 = new Date(2010, 10, 12);
-    // detail2.setEndDate(date2);
-    // detail2.setPrice(new BigDecimal(21000));
-    // DemandDetail detail3 = new DemandDetail();
-    // detail3.setId(3);
-    // detail3.setTitle("blala3");
-    // Date date3 = new Date(2010, 10, 22);
-    // detail3.setEndDate(date3);
-    // detail3.setPrice(new BigDecimal(1500));
-    // demandsinfo = new ArrayList<DemandDetail>();
-    // demandsinfo.add(detail1);
-    // demandsinfo.add(detail2);
-    // demandsinfo.add(detail3);
-    // return demandsinfo;
-    // }
 
     /**
      * Add a column with a header.
