@@ -31,21 +31,17 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         extends GenericServiceImpl<BUR, BURDao>
         implements BusinessUserRoleService<BUR, BURDao> {
 
-
     private GeneralService generalService;
-
 
     public BusinessUserRoleServiceImpl(GeneralService generalService) {
         this.generalService = generalService;
     }
-
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<BUR> searchByCriteria(UserSearchCriteria userSarchCritera) {
         return getDao().searchByCriteria(userSarchCritera);
     }
-
 
     /**
      * Create s new instance of this business user role - concrete instance type is as specified by generic type
@@ -67,7 +63,6 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return super.create(businessUserRole);
     }
 
-
     /**
      * Checks whether given <code>businessUser</code> has role specified by <code>userRoleClass</code>.
      *
@@ -76,12 +71,13 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
      * @return true  if given user has specified role, false otherwise.
      */
     public static boolean isUserAtRole(BusinessUser businessUser,
-                                       final Class<? extends BusinessUserRole> userRoleClass) {
+            final Class<? extends BusinessUserRole> userRoleClass) {
         if (businessUser == null) {
             return false;
         }
         List<BusinessUserRole> businessUserRoles = businessUser.getBusinessUserRoles();
         return CollectionUtils.exists(businessUserRoles, new Predicate() {
+
             @Override
             public boolean evaluate(Object object) {
                 return object.getClass().equals(userRoleClass);
@@ -89,11 +85,9 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         });
     }
 
-
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     private void createBusinessUserIfNotExist(BUR businessUserRole) {
         if (isNewBusinessUser(businessUserRole)) {
-            businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
             final BusinessUser savedBusinessUserEntity = generalService.save(businessUserRole.getBusinessUser());
             businessUserRole.setBusinessUser(savedBusinessUserEntity);
         }
@@ -102,6 +96,4 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     private boolean isNewBusinessUser(BUR businessUserRole) {
         return businessUserRole.getBusinessUser().getId() == null;
     }
-
-
 }
