@@ -12,11 +12,16 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.DemandDetail;
@@ -39,11 +44,24 @@ public class MyDemandsOperatorView extends Composite
     private Button activateBtn;
     private Button rejectBtn;
 
-    @UiField
+    @UiField(provided = true)
     CellTable<DemandDetail> table;
 
     @UiField
     SimplePanel myDemandOperatorDetail;
+
+    @UiField
+    Label detailHeader;
+
+    @UiField
+    SimplePanel detailContent;
+
+    /**
+     * The pager used to change the range of data. It must be created before
+     * uiBinder.createAndBindUi(this)
+     */
+    @UiField(provided = true)
+    SimplePager pager;
 
     /**
      * Data provider that will cell table with data.
@@ -55,9 +73,15 @@ public class MyDemandsOperatorView extends Composite
 
     @Override
     public void createView() {
+        initCellTable(selectionModel);
         initWidget(uiBinder.createAndBindUi(this));
 
-        initCellTable(selectionModel);
+        detailHeader.setText("My Demand Header");
+        detailContent.add(new Label(
+                "The internet is for porn!<br /><br />The internet "
+                        + "is for porn!<br /><br />The internet is for porn!"));
+
+
 
     }
 
@@ -118,26 +142,35 @@ public class MyDemandsOperatorView extends Composite
 
     private void initCellTable(
             final SingleSelectionModel<DemandDetail> selectionModel) {
-        table = new CellTable<DemandDetail>(15);
+        table = new CellTable<DemandDetail>(2);
         table.setSelectionModel(selectionModel);
         dataProvider.addDataDisplay(table);
-        // // Checkbox column. This table will uses a checkbox column for
-        // // selection.
-        // // Alternatively, you can call cellTable.setSelectionEnabled(true) to
-        // // enable
-        // // mouse selection.
-        // Column<DemandDetail, Boolean> checkColumn = new Column<DemandDetail,
-        // Boolean>(
-        // new CheckboxCell(true, false)) {
-        // @Override
-        // public Boolean getValue(DemandDetail object) {
-        // // Get the value from the selection model.
-        // return selectionModel.isSelected(object);
-        // }
-        // };
-        // table.addColumn(checkColumn,
-        // SafeHtmlUtils.fromSafeConstant("<br/>"));
-        table.setWidth("100%");
+        table.setWidth("100%", true);
+
+        // TODO ivlcek - make it working without keyprovider
+        // Attach a column sort handler to the ListDataProvider to sort the
+        // list.
+        ListHandler<DemandDetail> sortHandler = new ListHandler<DemandDetail>(
+                dataProvider.getList());
+        table.addColumnSortHandler(sortHandler);
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT
+                .create(SimplePager.Resources.class);
+        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
+                true);
+        pager.setDisplay(table);
+
+        initTableColumns(getSelectionModel(), sortHandler);
+
+    }
+
+    /**
+     * Add the columns to the table.
+     */
+    private void initTableColumns(
+            final SelectionModel<DemandDetail> selectionModel,
+            ListHandler<DemandDetail> sortHandler) {
 
         // Create name column.
         addColumn(new TextCell(), "Title", new GetValue<String>() {
@@ -158,10 +191,9 @@ public class MyDemandsOperatorView extends Composite
         // Create name column.
         addColumn(new TextCell(), "Price", new GetValue<String>() {
             public String getValue(DemandDetail demandDetail) {
-                return demandDetail.getPrice().toString() + " CZK";
+                return demandDetail.getPrice().toString() + " czk";
             }
         });
-
     }
 
     /**

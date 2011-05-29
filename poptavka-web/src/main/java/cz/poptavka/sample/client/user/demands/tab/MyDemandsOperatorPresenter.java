@@ -66,6 +66,7 @@ public class MyDemandsOperatorPresenter extends
 
         // Add the data to the data provider, which automatically pushes it to
         // the widget.
+        view.getDataProvider().getList().clear();
         view.getDataProvider().getList().addAll(demands);
         refreshDisplays();
     }
