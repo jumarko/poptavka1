@@ -60,14 +60,14 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(3, demandTypes.size());
         checkDemandTypeExists("normal", demandTypes);
         checkDemandTypeExists("attractive", demandTypes);
-        checkDemandTypeExists("all", demandTypes);
+//        checkDemandTypeExists("all", demandTypes);
     }
 
     @Test
     public void testGetDemandType() {
         checkGetDemandTypeByCode("normal");
         checkGetDemandTypeByCode("attractive");
-        checkGetDemandTypeByCode("all");
+//        checkGetDemandTypeByCode("all");
     }
 
     @Test

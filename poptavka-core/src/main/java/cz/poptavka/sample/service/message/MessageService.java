@@ -3,6 +3,7 @@ package cz.poptavka.sample.service.message;
 import cz.poptavka.sample.dao.message.MessageDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.service.GenericService;
 
@@ -13,6 +14,7 @@ import java.util.List;
  *         Date: 3.5.11
  */
 public interface MessageService extends GenericService<Message, MessageDao> {
+
     /**
      * Load all message threads' roots for specified <code>user</code>.
      * No default ordering is applied! (if <code>resultCriteria</code> is null or ordering is not specified by it).
@@ -36,4 +38,13 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      */
     List<Message> getAllMessages(User user, MessageFilter messageFilter);
 
+    /**
+     * Returns a userMessage of given message. UserMessage stores attributes like
+     * isRead, isStared
+     *
+     * @param message
+     * @param messageFilter
+     * @return
+     */
+    List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter);
 }

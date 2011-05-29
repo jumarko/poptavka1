@@ -36,6 +36,8 @@
 
     <bean id="messageDao" class="cz.poptavka.sample.dao.message.MessageDaoImpl" />
 
+    <bean id="userMessageDao" class="cz.poptavka.sample.dao.usermessage.UserMessageDaoImpl" />
+
 
     <!-- Service -->
     <bean id="generalService" class="cz.poptavka.sample.service.GeneralServiceImpl">
@@ -90,6 +92,10 @@
 
     <bean id="messageService" class="cz.poptavka.sample.service.message.MessageServiceImpl">
         <constructor-arg ref="messageDao" />
+    </bean>
+
+    <bean id="userMessageService" class="cz.poptavka.sample.service.usermessage.UserMessageServiceImpl">
+        <constructor-arg ref="userMessageDao" />
     </bean>
 
     <bean id="processCrawledDemandsService" class="cz.poptavka.sample.service.demand.ProcessCrawledDemandsServiceImpl">

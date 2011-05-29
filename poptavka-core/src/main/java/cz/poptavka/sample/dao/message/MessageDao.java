@@ -2,6 +2,7 @@ package cz.poptavka.sample.dao.message;
 
 import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 
 import java.util.List;
@@ -36,5 +37,15 @@ public interface MessageDao extends GenericDao<Message> {
      * @return
      */
     List<Message> getAllMessages(User user, MessageFilter messageFilter);
+
+    /**
+     * Returns a userMessage of given message. UserMessage stores attributes like
+     * isRead, isStared
+     *
+     * @param message
+     * @param messageFilter
+     * @return
+     */
+    List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter);
 
 }

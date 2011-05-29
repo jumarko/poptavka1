@@ -3,6 +3,7 @@ package cz.poptavka.sample.dao.message;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageUserRole;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
@@ -37,8 +38,14 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
 
-    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
+    @Override
+    public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
+        final Criteria userMessageCriteria = buildUserMessageCriteria(messages, messageFilter);
+        // TODO ivlcek - remove this method. It will be in a separate
+        return buildResultCriteria(userMessageCriteria, messageFilter.getResultCriteria()).list();
+    }
 
+    //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Build criterion which can be used for getting all messages of given user restricted by
      * <code>messageFilter</code>.
@@ -60,5 +67,20 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
             }
         }
         return userMessagesCriteria;
+    }
+
+    /**
+     * Build criterion which can be used for getting a userMessage of given message.
+     *
+     * @param message
+     * @param messageFilter
+     * @return
+     */
+    private Criteria buildUserMessageCriteria(List<Message> messages, MessageFilter messageFilter) {
+        final Criteria userMessageCriteria = getHibernateSession().createCriteria(UserMessage.class);
+//        userMessageCriteria.add(Restrictions.eq("message", messages));
+        userMessageCriteria.add(Restrictions.in("message", messages));
+        userMessageCriteria.setProjection(Projections.property("message"));
+        return userMessageCriteria;
     }
 }
