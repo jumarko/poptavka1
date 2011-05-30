@@ -12,12 +12,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -48,13 +47,7 @@ public class MyDemandsOperatorView extends Composite
     CellTable<DemandDetail> table;
 
     @UiField
-    SimplePanel myDemandOperatorDetail;
-
-    @UiField
-    Label detailHeader;
-
-    @UiField
-    SimplePanel detailContent;
+    SimplePanel detailSection;
 
     /**
      * The pager used to change the range of data. It must be created before
@@ -75,14 +68,6 @@ public class MyDemandsOperatorView extends Composite
     public void createView() {
         initCellTable(selectionModel);
         initWidget(uiBinder.createAndBindUi(this));
-
-        detailHeader.setText("My Demand Header");
-        detailContent.add(new Label(
-                "The internet is for porn!<br /><br />The internet "
-                        + "is for porn!<br /><br />The internet is for porn!"));
-
-
-
     }
 
     public CellTable<DemandDetail> getCellTable() {
@@ -141,9 +126,9 @@ public class MyDemandsOperatorView extends Composite
 
 
     private void initCellTable(
-            final SingleSelectionModel<DemandDetail> selectionModel) {
+            final SingleSelectionModel<DemandDetail> tableSelectionModel) {
         table = new CellTable<DemandDetail>(2);
-        table.setSelectionModel(selectionModel);
+        table.setSelectionModel(tableSelectionModel);
         dataProvider.addDataDisplay(table);
         table.setWidth("100%", true);
 
@@ -169,7 +154,7 @@ public class MyDemandsOperatorView extends Composite
      * Add the columns to the table.
      */
     private void initTableColumns(
-            final SelectionModel<DemandDetail> selectionModel,
+            final SelectionModel<DemandDetail> tableSelectionModel,
             ListHandler<DemandDetail> sortHandler) {
 
         // Create name column.
@@ -232,7 +217,7 @@ public class MyDemandsOperatorView extends Composite
 
     @Override
     public SimplePanel getDetailSection() {
-        return myDemandOperatorDetail;
+        return detailSection;
     }
 
 }

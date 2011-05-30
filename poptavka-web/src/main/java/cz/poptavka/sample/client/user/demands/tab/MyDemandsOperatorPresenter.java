@@ -14,7 +14,9 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 @Presenter(view = MyDemandsOperatorView.class)
 public class MyDemandsOperatorPresenter extends
@@ -46,8 +48,18 @@ public class MyDemandsOperatorPresenter extends
         ListDataProvider<DemandDetail> getDataProvider();
     }
 
+    private DetailWrapperPresenter detailPresenter = null;
+
     public void onInvokeMyDemandsOperator() {
         eventBus.displayContent(view.getWidgetView());
+
+     // Init DetailWrapper for this view
+        if (detailPresenter  == null) {
+            detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
+            detailPresenter.setType(DetailType.OPERATOR);
+            detailPresenter.initDetailWrapper(view.getDetailSection());
+        }
+
     }
 
     /**

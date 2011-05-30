@@ -5,6 +5,8 @@
 package cz.poptavka.sample.server.service.demand;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,8 +20,8 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.message.Message;
-import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageContext;
+import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
@@ -28,18 +30,16 @@ import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
-import cz.poptavka.sample.service.demand.DemandService;
-import cz.poptavka.sample.service.message.MessageService;
-import cz.poptavka.sample.service.user.SupplierService;
-import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
-import cz.poptavka.sample.service.usermessage.UserMessageService;
+import cz.poptavka.sample.service.demand.DemandService;
+import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
-import cz.poptavka.sample.shared.domain.PotentialDemandDetail;
-import java.util.Date;
-import java.util.HashSet;
+import cz.poptavka.sample.service.user.SupplierService;
+import cz.poptavka.sample.service.usermessage.UserMessageService;
+import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 
 /**
  * @author Excalibur
@@ -333,7 +333,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public DemandDetail getDemand(long demandId) {
+    public DemandDetail getDemand(Long demandId) {
         return DemandDetail.createDemandDetail(this.demandService.getById(demandId));
     }
+
 }

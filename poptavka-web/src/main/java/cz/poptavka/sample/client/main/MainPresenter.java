@@ -147,6 +147,15 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         }
     }
 
+    public void onLoadingShowWithAnchor(String loadingMessage, Widget anchor) {
+        if (!(popup == null)) {
+            LoadingPopup popupContent = (LoadingPopup) popup.getWidget();
+            popupContent.setMessage(loadingMessage);
+        } else {
+            createLoadingPopup(loadingMessage, anchor);
+        }
+    }
+
     public void onLoadingHide() {
         if (popup != null) {
             popup.hide();
@@ -162,6 +171,20 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
         popup.setWidget(new LoadingPopup(loadingMessage));
         popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X, (Window.getClientHeight() / 2) - OFFSET_Y);
+        popup.show();
+    }
+
+    private void createLoadingPopup(String loadingMessage, Widget anchor) {
+        popup = new PopupPanel(false, false);
+        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
+        popup.setWidget(new LoadingPopup(loadingMessage));
+//        popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X, (Window.getClientHeight() / 2) - OFFSET_Y);
+        int top = anchor.getAbsoluteTop() + (anchor.getOffsetHeight() / 2);
+        int left = anchor.getAbsoluteLeft() + (anchor.getOffsetWidth() / 2) - OFFSET_X;
+//        popup.showRelativeTo(anchor);
+        GWT.log("L: " + left + " T: " + top);
+        popup.setPopupPosition(left, top);
+
         popup.show();
     }
 

@@ -2,12 +2,15 @@ package cz.poptavka.sample.client.home;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
+import cz.poptavka.sample.client.user.messages.UserMessageView;
+import cz.poptavka.sample.shared.domain.FakeMessage;
 
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
@@ -46,6 +49,16 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         LOGGER.info("INIT Home Widget");
         onDisplayMenu();
         // TODO initial homepage widget compilation
+
+        FlowPanel p = new FlowPanel();
+        p.add(new UserMessageView(new FakeMessage(), true));
+
+        p.add(new UserMessageView(new FakeMessage()));
+
+        p.add(new UserMessageView(new FakeMessage()));
+
+        p.add(new UserMessageView(new FakeMessage(), false));
+        view.setBody(p);
     }
 
     public void onDisplayMenu() {

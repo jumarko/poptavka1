@@ -137,8 +137,23 @@ public interface MainEventBus extends EventBus {
      * Every Child Module HAVE TO implement this method calls.
      * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
      */
+
+    /**
+     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
+     * @param progressGettingDemandDataring message to be displayed during loading
+     */
     @Event(handlers = MainPresenter.class)
     void loadingShow(String loadingMessage);
+
+    /**
+     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
+     * Just for user section, you can show partial loading
+     *
+     * @param progressGettingDemandDataring message to be displayed during loading
+     * @param anchor anchoring widget
+     */
+    @Event(handlers = MainPresenter.class)
+    void loadingShowWithAnchor(String progressGettingDemandDataring, Widget anchor);
 
     @Event(handlers = MainPresenter.class)
     void loadingHide();

@@ -33,9 +33,11 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
+
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.DemandStatusDetail;
 import cz.poptavka.sample.shared.domain.DemandTypeDetail;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;

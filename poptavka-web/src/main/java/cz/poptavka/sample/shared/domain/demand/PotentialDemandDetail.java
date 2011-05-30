@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.demand;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,6 +18,7 @@ public class PotentialDemandDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -2609824637843192491L;
+
     private long demandId;
     private long messageId;
     private long userMessageId;
@@ -219,8 +220,5 @@ public class PotentialDemandDetail implements Serializable {
     public void setDemandStatus(String demandStatus) {
         this.demandStatus = demandStatus;
     }
-
-
-
 
 }

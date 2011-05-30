@@ -50,6 +50,9 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
     @UiField(provided = true) CellTable<DemandDetail> cellTable;
     @UiField(provided = true) SimplePager pager;
     @UiField Button replyBtn, deleteBtn, moreActionsBtn, refreshBtn;
+
+    // TODO decide what panel to use
+//    @UiField DetailWrapperView detailSection;
     @UiField SimplePanel detailSection;
 
     // TODO remove then
@@ -232,6 +235,15 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
     public Set<DemandDetail> getSelectedSet() {
         return selectionModel.getSelectedSet();
     }
+
+
+
+    // TODO cleanup after setting good solution
+
+//    @Override
+//    public DetailWrapperView getDetailSection() {
+//        return detailSection;
+//    }
 
     @Override
     public SimplePanel getDetailSection() {

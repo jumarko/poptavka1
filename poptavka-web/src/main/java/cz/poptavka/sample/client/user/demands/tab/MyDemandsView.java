@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
+
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
 public class MyDemandsView extends Composite implements

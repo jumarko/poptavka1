@@ -15,7 +15,6 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.widgets.DemandDetailView;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -82,6 +81,7 @@ public class DemandsLayoutPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (develPresenter != null) {
+                    develPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(develPresenter);
                 }
                 develPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
@@ -123,13 +123,14 @@ public class DemandsLayoutPresenter
         eventBus.responseClientDemands(clientsDemands);
     }
 
-    public void onRequestDemandDetail(long demandId) {
-        for (DemandDetail demand : clientsDemands) {
-            if (demand.getId() == demandId) {
-                eventBus.responseDemandDetail(new DemandDetailView(demand));
-                return;
-            }
-        }
-    }
+    // TODO delete
+//    public void onRequestDemandDetail(long demandId) {
+//        for (DemandDetail demand : clientsDemands) {
+//            if (demand.getId() == demandId) {
+//                eventBus.responseDemandDetail(demand);
+//                return;
+//            }
+//        }
+//    }
 
 }

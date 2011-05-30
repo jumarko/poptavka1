@@ -8,13 +8,16 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 @Presenter(view = MyDemandsView.class)
 public class MyDemandsPresenter extends
@@ -40,25 +43,32 @@ public class MyDemandsPresenter extends
         ListDataProvider<DemandDetail> getDataProvider();
     }
 
+    private DetailWrapperPresenter detailPresenter = null;
 
     public void onInvokeMyDemands() {
         GWT.log("display DEMANDS WIDGET");
+        // Init DetailWrapper for this view
+        if (detailPresenter == null) {
+            detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
+            detailPresenter.setType(DetailType.EDITABLE);
+            detailPresenter.initDetailWrapper(view.getDetailSection());
+        }
         eventBus.displayContent(view.getWidgetView());
         GWT.log("Demands are on the way - getDemands!");
         eventBus.requestClientDemands();
     }
 
     public void bindView() {
-        // view.getCellTable().getSelectionModel()
-        // .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-        // public void onSelectionChange(SelectionChangeEvent event) {
-        // DemandDetail selected = view.getSelectionModel()
-        // .getSelectedObject();
-        // if (selected != null) {
-        // eventBus.getDemandDetail(selected.getTitle());
-        // }
-        // }
-        // });
+        view.getCellTable().getSelectionModel()
+                .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+                    public void onSelectionChange(SelectionChangeEvent event) {
+                        DemandDetail selected = view.getSelectionModel()
+                                .getSelectedObject();
+                        if (selected != null) {
+                            eventBus.getDemandDetail(selected.getId(), DetailType.EDITABLE);
+                        }
+                    }
+                });
     }
 
     public void onResponseClientDemands(ArrayList<DemandDetail> demands) {

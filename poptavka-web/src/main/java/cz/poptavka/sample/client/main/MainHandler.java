@@ -40,99 +40,114 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     public void onGetRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
-            @Override
-            public void onSuccess(ArrayList<LocalityDetail> list) {
-                eventBus.setLocalityData(LocalityDetail.REGION, list);
-            }
-            @Override
-            public void onFailure(Throwable arg0) {
-                // TODO empty
-            }
-        });
+        localityService.getLocalities(LocalityType.REGION,
+                new AsyncCallback<ArrayList<LocalityDetail>>() {
+                    @Override
+                    public void onSuccess(ArrayList<LocalityDetail> list) {
+                        eventBus.setLocalityData(LocalityDetail.REGION, list);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        // TODO empty
+                    }
+                });
     }
 
     public void onGetChildLocalities(final int localityType, String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                // TODO empty
-            }
-            @Override
-            public void onSuccess(ArrayList<LocalityDetail> list) {
-                eventBus.setLocalityData(localityType, list);
-            }
-        });
+        localityService.getLocalities(locCode,
+                new AsyncCallback<ArrayList<LocalityDetail>>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        // TODO empty
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<LocalityDetail> list) {
+                        eventBus.setLocalityData(localityType, list);
+                    }
+                });
     }
 
     public void onGetRootCategories() {
-        categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                // empty
-            }
-            @Override
-            public void onSuccess(ArrayList<CategoryDetail> list) {
-//                eventBus.setCategoryDisplayData(CategoryType.ROOT, list);
-                Window.alert("fix this method return value"
-                        + "onGetRootCategories() - MainHandler.class");
-            }
-        });
+        categoryService
+                .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        // empty
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<CategoryDetail> list) {
+                        // eventBus.setCategoryDisplayData(CategoryType.ROOT,
+                        // list);
+                        Window.alert("fix this method return value"
+                                + "onGetRootCategories() - MainHandler.class");
+                    }
+                });
     }
 
-
-    public void onGetChildListCategories(final int newListPosition, String categoryId) {
+    public void onGetChildListCategories(final int newListPosition,
+            String categoryId) {
         LOGGER.info("starting category service call");
         if (categoryId.equals("ALL_CATEGORIES")) {
             LOGGER.info(" --> root categories");
-            categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
-                @Override
-                public void onFailure(Throwable arg0) {
-                    // TODO Auto-generated method stub
-                }
-                @Override
-                public void onSuccess(ArrayList<CategoryDetail> list) {
-                    eventBus.setCategoryListData(newListPosition, list);
-                }
-            });
+            categoryService
+                    .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
+                        @Override
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+                        }
+
+                        @Override
+                        public void onSuccess(ArrayList<CategoryDetail> list) {
+                            eventBus.setCategoryListData(newListPosition, list);
+                        }
+                    });
         } else {
             LOGGER.info(" --> child categories");
-            categoryService.getCategoryChildren(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
-                @Override
-                public void onSuccess(ArrayList<CategoryDetail> list) {
-                    eventBus.setCategoryListData(newListPosition, list);
-                }
-                @Override
-                public void onFailure(Throwable arg0) {
-                    // TODO Auto-generated method stub
+            categoryService.getCategoryChildren(categoryId,
+                    new AsyncCallback<ArrayList<CategoryDetail>>() {
+                        @Override
+                        public void onSuccess(ArrayList<CategoryDetail> list) {
+                            eventBus.setCategoryListData(newListPosition, list);
+                        }
 
-                }
-            });
+                        @Override
+                        public void onFailure(Throwable arg0) {
+                            // TODO Auto-generated method stub
+
+                        }
+                    });
         }
         LOGGER.info("ending category service call");
     }
+
     /**
      * Creates new demand.
      *
-     * @param detail front-end entity of demand
-     * @param clientId client id
+     * @param detail
+     *            front-end entity of demand
+     * @param clientId
+     *            client id
      */
     public void onCreateDemand(DemandDetail detail, Long clientId) {
-        demandService.createNewDemand(detail, clientId, new AsyncCallback<DemandDetail>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-                eventBus.loadingHide();
-                Window.alert(arg0.getMessage());
-            }
+        demandService.createNewDemand(detail, clientId,
+                new AsyncCallback<DemandDetail>() {
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        eventBus.loadingHide();
+                        Window.alert(arg0.getMessage());
+                    }
 
-            @Override
-            public void onSuccess(DemandDetail result) {
-                //signal event
-                eventBus.loadingHide();
-                // TODO forward to user/atAccount
-                eventBus.addNewDemand(result);
-            }
-        });
+                    @Override
+                    public void onSuccess(DemandDetail result) {
+                        // signal event
+                        eventBus.loadingHide();
+                        // TODO forward to user/atAccount
+                        eventBus.addNewDemand(result);
+                    }
+                });
         LOGGER.info("submitting new demand");
     }
 
@@ -146,7 +161,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);
                 eventBus.checkFreeEmailResponse(result);
-//                eventBus.checkFreeEmailResponse();
+                // eventBus.checkFreeEmailResponse();
             }
         });
     }

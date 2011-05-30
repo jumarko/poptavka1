@@ -17,6 +17,7 @@ import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
@@ -94,7 +95,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     }
 
     /**
-     * Get User according to stored sessionID from DB
+     * Get User according to stored sessionID from DB after login
      */
     public void onGetUser() {
         // get sessionId cookie
@@ -116,6 +117,25 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             public void onSuccess(UserDetail result) {
                 eventBus.loadingShow(MSGS.progressCreatingUserInterface());
                 eventBus.setUser(result);
+            }
+        });
+    }
+
+    /**
+     * Get Detail according to demand id.
+     */
+    public void onGetDemandDetail(Long demandId, final DetailType typeOfDetail) {
+        GWT.log("REACH RPC");
+        demandService.getDemand(demandId, new AsyncCallback<DemandDetail>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO
+                Window.alert(caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(DemandDetail result) {
+                eventBus.setDemandDetail(result, typeOfDetail);
             }
         });
 

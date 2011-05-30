@@ -20,8 +20,10 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.demands.widgets.MessageWriteWidget;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 /**
  * Presenter for handling view actions.
@@ -47,15 +49,21 @@ public class PotentialDemandsPresenter extends
 
         Set<DemandDetail> getSelectedSet();
 
+        // TODO clean up detail section
+
+//        DetailWrapperView getDetailSection();
+
         SimplePanel getDetailSection();
     }
+
+    private DetailWrapperPresenter detailPresenter = null;
 
     public void bindView() {
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                // TODO
+                // TODO fix multiSelection
                 GWT.log("SIZE of result set: " + view.getSelectedSet().size());
                 if (view.getSelectedSet().size() != 1) {
                     // do not show any demand detail
@@ -64,8 +72,10 @@ public class PotentialDemandsPresenter extends
                 }
                 GWT.log("ONE");
                 Iterator<DemandDetail> iter = view.getSelectedSet().iterator();
-                eventBus.requestDemandDetail(iter.next().getId());
-//                Window.alert(view.getSelectionModel().getSelectedObject().getTitle());
+//                if (iter.hasNext()) {
+                long item = iter.next().getId();
+//                }
+                eventBus.getDemandDetail(item, DetailType.POTENTIAL);
             }
         });
     }
@@ -76,17 +86,23 @@ public class PotentialDemandsPresenter extends
     }
 
     public void onResponseClientDemands(ArrayList<DemandDetail> data) {
-        GWT.log(" ** ** ** PotentialDemands Init ** ** ** ");
-        // TODO fill the view
+
         List<DemandDetail> list = view.getDataProvider().getList();
         list.clear();
         for (DemandDetail d : data) {
             list.add(d);
         }
         view.getDataProvider().refresh();
+
+        // Init DetailWrapper for this view
+        if (detailPresenter == null) {
+            detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
+            detailPresenter.setType(DetailType.POTENTIAL);
+            detailPresenter.initDetailWrapper(view.getDetailSection());
+        }
+
         // widget display
         eventBus.displayContent(view.getWidgetView());
-
     }
 
     public void onResponseDemandDetail(Widget widget) {
@@ -94,6 +110,9 @@ public class PotentialDemandsPresenter extends
         MessageWriteWidget responser = new MessageWriteWidget();
         panel.add(widget);
         panel.add(responser);
+        // TODO clean up setting detail panel
+//        view.getDetailSection().setDetail(panel);
+
         view.getDetailSection().setWidget(panel);
 
         responser.getReplyButton().addClickHandler(new ClickHandler() {
@@ -103,6 +122,11 @@ public class PotentialDemandsPresenter extends
 //                eventBus.sendMessage(responser.getContent());
             }
         });
+    }
+
+    public void cleanDetailWrapperPresenterForDevelopment() {
+        GWT.log("WRAPPER REMOVED");
+        eventBus.removeHandler(detailPresenter);
     }
 
 

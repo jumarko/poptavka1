@@ -23,6 +23,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.DemandStatusDetail;
 import cz.poptavka.sample.shared.domain.DemandTypeDetail;
+
 import java.util.Date;
 import java.util.List;
 

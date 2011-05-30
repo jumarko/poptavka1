@@ -6,13 +6,13 @@ import java.util.Set;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.PotentialDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 
 public interface DemandRPCServiceAsync {
 
@@ -39,5 +39,5 @@ public interface DemandRPCServiceAsync {
 
     void getPotentialDemandsForSupplier(long businessUserId, AsyncCallback<ArrayList<PotentialDemandDetail>> callback);
 
-    void getDemand(long demandId, AsyncCallback<DemandDetail> asyncCallback);
+    void getDemand(Long demandId, AsyncCallback<DemandDetail> callback);
 }

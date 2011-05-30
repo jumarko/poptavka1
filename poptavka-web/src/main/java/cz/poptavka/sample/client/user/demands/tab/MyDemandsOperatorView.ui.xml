@@ -1,99 +1,91 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:w="urn:import:com.google.gwt.user.cellview.client">
-	<ui:style>
-		.important {
-			font-weight: bold;
-		}
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:w="urn:import:com.google.gwt.user.cellview.client">
+    <ui:style>
+        .important {
+            font-weight: bold;
+        }
 
-		.cellTable {
-			border-bottom: 1px solid #ccc;
-			text-align: left;
-			margin-bottom: 4px;
-		}
+        .cellTable {
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+            margin-bottom: 4px;
+        }
 
-		.header {
-			background: #aaaaff;
-			color: #000000;
-			padding: 3px;
-			font-size: 14px;
-		}
+        .header {
+            background: #aaaaff;
+            color: #000000;
+            padding: 3px;
+            font-size: 14px;
+        }
 
-		.detailPanel {
-			background: #d6f6d0;
-			padding: 10px;
-			margin: 10px;
-			border: 1px solid #32d512;
-			-moz-border-radius: 3px;
-		}
-	</ui:style>
+        .detailPanel {
+            background: #d6f6d0;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #32d512;
+            -moz-border-radius: 3px;
+        }
+    </ui:style>
 
-	<ui:with field='res'
-		type='cz.poptavka.sample.client.resources.StyleResource' />
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
 
-	<g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-		<g:west size="650">
-			<g:FlowPanel>
-				<g:HorizontalPanel>
-					<g:HTML>
-						<ui:msg key="myDemandsOperator">My Demands - operator</ui:msg>
-					</g:HTML>
-					<g:Button ui:field='refreshBtn' enabled="false">
-						<ui:msg key="refresh">Refresh</ui:msg>
-					</g:Button>
-					<g:Button ui:field='answerBtn' enabled="false">
-						<ui:msg key="answer">Answer</ui:msg>
-					</g:Button>
-					<g:Button ui:field='editBtn' enabled="false">
-						<ui:msg key="edit">Edit</ui:msg>
-					</g:Button>
-					<g:Button ui:field='closeBtn' enabled="false">
-						<ui:msg key="close">Close</ui:msg>
-					</g:Button>
-					<g:Button ui:field='cancelBtn' enabled="false">
-						<ui:msg key="cancel">Cancel</ui:msg>
-					</g:Button>
-					<g:Button ui:field='activateBtn' enabled="false">
-						<ui:msg key="activate">Activate</ui:msg>
-					</g:Button>
-					<g:Button ui:field='rejectBtn' enabled="false">
-						<ui:msg key="reject">Reject</ui:msg>
-					</g:Button>
-				</g:HorizontalPanel>
-				<g:ScrollPanel>
-					<g:DecoratorPanel>
-						<g:HTMLPanel>
-							<table cellspacing='0' cellpadding='0'>
-								<tr>
-									<td valign='top'>
-										<g:ScrollPanel>
-											<w:CellTable addStyleNames='{style.cellTable}'
-												pageSize='10' ui:field='table' />
-										</g:ScrollPanel>
-									</td>
-								</tr>
-								<tr>
-									<td align='center'>
-										<w:SimplePager ui:field='pager' />
-									</td>
-								</tr>
-							</table>
-						</g:HTMLPanel>
-					</g:DecoratorPanel>
-				</g:ScrollPanel>
-			</g:FlowPanel>
-		</g:west>
-		<g:center>
-			<g:SimplePanel ui:field="myDemandOperatorDetail">
-				<g:HTMLPanel>
-					<g:Label addStyleNames='{style.header}' ui:field="detailHeader">My Demand
-						Detail</g:Label>
-					<g:SimplePanel addStyleNames='{style.detailPanel}'
-						ui:field="detailContent">
-					</g:SimplePanel>
-				</g:HTMLPanel>
-			</g:SimplePanel>
-		</g:center>
-	</g:SplitLayoutPanel>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:west size="650">
+            <g:FlowPanel>
+                <g:HorizontalPanel>
+                    <g:HTML>
+                        <ui:msg key="myDemandsOperator">My Demands - operator</ui:msg>
+                    </g:HTML>
+                    <g:Button ui:field='refreshBtn' enabled="false">
+                        <ui:msg key="refresh">Refresh</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='answerBtn' enabled="false">
+                        <ui:msg key="answer">Answer</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='editBtn' enabled="false">
+                        <ui:msg key="edit">Edit</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='closeBtn' enabled="false">
+                        <ui:msg key="close">Close</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='cancelBtn' enabled="false">
+                        <ui:msg key="cancel">Cancel</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='activateBtn' enabled="false">
+                        <ui:msg key="activate">Activate</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field='rejectBtn' enabled="false">
+                        <ui:msg key="reject">Reject</ui:msg>
+                    </g:Button>
+                </g:HorizontalPanel>
+                <g:ScrollPanel>
+                    <g:DecoratorPanel>
+                        <g:HTMLPanel>
+                            <table cellspacing='0' cellpadding='0'>
+                                <tr>
+                                    <td valign='top'>
+                                        <g:ScrollPanel>
+                                            <w:CellTable addStyleNames='{style.cellTable}'
+                                                pageSize='10' ui:field='table' />
+                                        </g:ScrollPanel>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align='center'>
+                                        <w:SimplePager ui:field='pager' />
+                                    </td>
+                                </tr>
+                            </table>
+                        </g:HTMLPanel>
+                    </g:DecoratorPanel>
+                </g:ScrollPanel>
+            </g:FlowPanel>
+        </g:west>
+        <g:center>
+            <g:SimplePanel ui:field="detailSection"/>
+        </g:center>
+    </g:SplitLayoutPanel>
 </ui:UiBinder>

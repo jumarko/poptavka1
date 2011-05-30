@@ -96,7 +96,7 @@ public class OffersPresenter extends
             view.getAnswerBtn().setEnabled(false);
             view.getRefuseBtn().setEnabled(false);
             //demandDetail call
-            eventBus.requestDemandDetail(map.get(OffersFlexTable.RESULT_ID));
+//            eventBus.requestDemandDetail(map.get(OffersFlexTable.RESULT_ID));
         }
 //        offer message
 //        toggle - to disable buttons

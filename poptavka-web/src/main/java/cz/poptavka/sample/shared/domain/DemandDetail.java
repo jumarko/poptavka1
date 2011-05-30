@@ -9,12 +9,15 @@ import java.util.HashMap;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 public class DemandDetail implements Serializable {
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
+
+    private static final DetailType DETAIL_TYPE = DetailType.EDITABLE;
     private long id;
     private String title;
     private String description;

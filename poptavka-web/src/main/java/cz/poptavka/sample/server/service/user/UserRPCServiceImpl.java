@@ -76,6 +76,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         }
         // TODO add other useful attributes like, count of new demands, offers,
         // messages and so on
+        userDetail.setId(roles.get(0).getBusinessUser().getId());
 
         return userDetail;
     }
