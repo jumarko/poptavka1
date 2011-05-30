@@ -3,8 +3,10 @@ package cz.poptavka.sample.dao.message;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageUserRole;
+import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
+import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -37,12 +39,24 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
                 messageFilter.getResultCriteria()).list();
     }
 
-
     @Override
     public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
         final Criteria userMessageCriteria = buildUserMessageCriteria(messages, messageFilter);
         // TODO ivlcek - remove this method. It will be in a separate
         return buildResultCriteria(userMessageCriteria, messageFilter.getResultCriteria()).list();
+    }
+
+    /**
+     * Loads conversation between supplier and  client related to potential demand supplier's queries.
+     *
+     * @param message
+     * @param user
+     * @param messageFilter
+     * @return
+     */
+    @Override
+    public List<Message> getPotentialDemandConversation(Message message, User user, MessageFilter messageFilter) {
+        return buildPotentialDemandConversationCriteria(message, user, MessageFilter.EMPTY_FILTER).list();
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
@@ -81,6 +95,50 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
 //        userMessageCriteria.add(Restrictions.eq("message", messages));
         userMessageCriteria.add(Restrictions.in("message", messages));
         userMessageCriteria.setProjection(Projections.property("message"));
+        return userMessageCriteria;
+    }
+
+    /**
+     * Build criterion which can be used for loading conversation for supplier
+     * regarding potential demand conversation with client.
+     *
+     * @param message
+     * @param user
+     * @param messageFilter
+     * @return
+     */
+    private Criteria buildPotentialDemandConversationCriteria(
+            Message threadRoot, User user, MessageFilter messageFilter) {
+        // TODO ivlcek - refactoring with Juraj. This is real mess!
+        final Criteria userMessageCriteria = getHibernateSession().createCriteria(Message.class);
+        userMessageCriteria.add(Restrictions.eq("threadRoot", threadRoot));
+        // From Client role
+        MessageUserRole roleFromClient = new MessageUserRole();
+        roleFromClient.setUser(threadRoot.getSender());
+        roleFromClient.setType(MessageUserRoleType.SENDER);
+        // To Supplier role
+        MessageUserRole roleToSupplier = new MessageUserRole();
+        roleToSupplier.setUser(user);
+        roleToSupplier.setType(MessageUserRoleType.TO);
+        List<MessageUserRole> rolesFromClientToSupplier = new ArrayList<MessageUserRole>();
+        rolesFromClientToSupplier.add(roleToSupplier);
+        rolesFromClientToSupplier.add(roleFromClient);
+        // From Supplier role
+        MessageUserRole roleFromSupplier = new MessageUserRole();
+        roleFromSupplier.setUser(user);
+        roleFromSupplier.setType(MessageUserRoleType.SENDER);
+        // To Client Role
+        MessageUserRole roleToClient = new MessageUserRole();
+        roleToClient.setUser(threadRoot.getSender());
+        roleToClient.setType(MessageUserRoleType.TO);
+        List<MessageUserRole> rolesFromSupplierToClient = new ArrayList<MessageUserRole>();
+        rolesFromSupplierToClient.add(roleFromSupplier);
+        rolesFromSupplierToClient.add(roleToClient);
+
+        userMessageCriteria.add(Restrictions.or(
+                Restrictions.eq("roles", rolesFromClientToSupplier),
+                Restrictions.eq("roles", rolesFromSupplierToClient)));
+//        userMessageCriteria.setProjection(Projections.property("message"));
         return userMessageCriteria;
     }
 }

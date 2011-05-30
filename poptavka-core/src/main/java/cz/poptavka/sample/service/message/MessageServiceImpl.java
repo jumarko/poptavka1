@@ -33,4 +33,9 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
         return getDao().getUserMessages(messages, messageFilter);
     }
+
+    @Override
+    public List<Message> getPotentialDemandConversation(Message message, User user, MessageFilter messageFilter) {
+        return getDao().getPotentialDemandConversation(message, user, messageFilter);
+    }
 }

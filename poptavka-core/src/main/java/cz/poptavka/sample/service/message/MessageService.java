@@ -47,4 +47,14 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @return
      */
     List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter);
+
+    /**
+     * Loads conversation between supplier and  client related to potential demand supplier's queries.
+     *
+     * @param message
+     * @param user
+     * @param messageFilter
+     * @return
+     */
+    List<Message> getPotentialDemandConversation(Message message, User user, MessageFilter messageFilter);
 }

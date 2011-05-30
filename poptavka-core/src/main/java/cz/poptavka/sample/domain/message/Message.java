@@ -12,6 +12,7 @@ import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +51,7 @@ public class Message extends DomainObject {
 
     /** All direct responses to this message, i.e. all messages for which this message is a parent. */
     @OneToMany(mappedBy = "parent")
-    private List<Message> children;
+    private List<Message> children = new ArrayList<Message>();
 
     /* the first child of this message - the first reply to trhis message */
     @ManyToOne
