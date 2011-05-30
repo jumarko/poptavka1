@@ -94,7 +94,8 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         final Criteria userMessageCriteria = getHibernateSession().createCriteria(UserMessage.class);
 //        userMessageCriteria.add(Restrictions.eq("message", messages));
         userMessageCriteria.add(Restrictions.in("message", messages));
-        userMessageCriteria.setProjection(Projections.property("message"));
+//        userMessageCriteria.add(Restrictions.eq("user", this));
+//        userMessageCriteria.setProjection(Projections.property("message"));
         return userMessageCriteria;
     }
 

@@ -8,6 +8,7 @@ import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import java.util.List;
 
 /**
@@ -24,5 +25,6 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @param messageFilter
      * @return
      */
-    List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter);
+    List<UserMessage> getUserMessages(List<Message> messages,
+            BusinessUser businessUser, MessageFilter messageFilter);
 }

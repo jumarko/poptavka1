@@ -8,6 +8,7 @@ import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -18,11 +19,10 @@ import org.hibernate.criterion.Restrictions;
  */
 public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> implements UserMessageDao {
 
-
     // TODO ivlcek - maybe I will have to replace MessageFilter by UserMessageFiletr
     @Override
-    public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
-        final Criteria userMessageCriteria = buildUserMessageCriteria(messages, messageFilter);
+    public List<UserMessage> getUserMessages(List<Message> messages, BusinessUser user, MessageFilter messageFilter) {
+        final Criteria userMessageCriteria = buildUserMessageCriteria(messages, user, messageFilter);
         // TODO ivlcek - remove this method. It will be in a separate
         return buildResultCriteria(userMessageCriteria, messageFilter.getResultCriteria()).list();
     }
@@ -35,10 +35,12 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
      * @param messageFilter
      * @return
      */
-    private Criteria buildUserMessageCriteria(List<Message> messages, MessageFilter messageFilter) {
+    private Criteria buildUserMessageCriteria(List<Message> messages, BusinessUser user, MessageFilter messageFilter) {
         final Criteria userMessageCriteria = getHibernateSession().createCriteria(UserMessage.class);
 //        userMessageCriteria.add(Restrictions.eq("message", messages));
+        userMessageCriteria.add(Restrictions.eq("user", user));
         userMessageCriteria.add(Restrictions.in("message", messages));
+
 //        userMessageCriteria.setProjection(Projections.property("message"));
         return userMessageCriteria;
     }
