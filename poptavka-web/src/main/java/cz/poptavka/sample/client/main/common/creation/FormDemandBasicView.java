@@ -9,6 +9,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.LongBox;
@@ -83,7 +84,11 @@ public class FormDemandBasicView extends Composite
         LOGGER.info("Filling map with basic values");
         map.put("title", titleBox.getText());
         map.put("description", descriptionBox.getValue());
-        map.put("price", priceBox.getValue());
+        try {
+            map.put("price", (priceBox.getValue() == null ? new Long(-1) : priceBox.getValue()));
+        } catch (Exception ex) {
+            Window.alert("Exception: " + ex.getMessage());
+        }
         map.put("endDate", finishDateBox.getValue());
         map.put("expireDate", expireDateBox.getValue());
 
