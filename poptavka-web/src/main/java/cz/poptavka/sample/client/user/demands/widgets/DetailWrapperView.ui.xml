@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:d="urn:import:cz.poptavka.sample.client.user.messages">
     <ui:style>
         .important {
             font-weight: bold;
@@ -17,6 +18,7 @@
                 </center>
             </g:HTML>
         </g:SimplePanel>
-        <g:SimplePanel ui:field="conversationHolder" />
+        <d:UserConversationPanel ui:field="conversationPanel"/>
+        <g:SimplePanel ui:field="replyHolder"/>
     </g:HTMLPanel>
 </ui:UiBinder>

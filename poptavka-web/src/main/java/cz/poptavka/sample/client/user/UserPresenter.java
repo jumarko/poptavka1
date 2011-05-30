@@ -123,6 +123,14 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             this.user = null;
         }
     }
+    public void onRequestPotentialDemands() {
+        eventBus.getPotentialDemands(user.getId());
+    }
+
+    public void onRequestPotentialDemandConversation(long messageId) {
+        eventBus.getPotentialDemandConversation(messageId, user.getId());
+    }
+
 
  // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {

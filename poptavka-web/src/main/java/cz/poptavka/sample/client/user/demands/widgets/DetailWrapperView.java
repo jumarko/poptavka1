@@ -7,17 +7,22 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.user.messages.UserConversationPanel;
+
 public class DetailWrapperView extends Composite
     implements DetailWrapperPresenter.IDetailWrapper {
 
     private static DetailWrapperViewUiBinder uiBinder = GWT.create(DetailWrapperViewUiBinder.class);
     interface DetailWrapperViewUiBinder extends UiBinder<Widget, DetailWrapperView> {   }
 
-    @UiField SimplePanel detailHolder, conversationHolder;
+    @UiField SimplePanel detailHolder;
+    @UiField UserConversationPanel conversationPanel;
+    @UiField SimplePanel replyHolder;
 
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        GWT.log("DEMAND DETAIL view LOADED");
     }
 
     @Override
@@ -27,15 +32,17 @@ public class DetailWrapperView extends Composite
 
     @Override
     public void setDetail(Widget demandDetailWidget) {
-        // TODO rework whole platform when cleared
-//        conversationHolder.remove(conversationHolder.getWidget());
         detailHolder.setWidget(demandDetailWidget);
     }
 
     @Override
-    public void setConversation(Widget conversationWidget) {
-        detailHolder.remove(conversationHolder.getWidget());
-        conversationHolder.setWidget(conversationWidget);
+    public UserConversationPanel getConversationPanel() {
+        return conversationPanel;
+    }
+
+    @Override
+    public SimplePanel getReplyHolder() {
+        return replyHolder;
     }
 
 }

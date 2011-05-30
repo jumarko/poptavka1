@@ -312,7 +312,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             p.setClientName(demand.getClient().getBusinessUser().getBusinessUserData().getCompanyName());
             if (title.length() <= messageRowLength) {
                 p.setDemandTitle(title);
-                p.setCutDescription(demand.getDescription().substring(0, messageRowLength - title.length()));
+                p.setCutDescription(demand.getDescription());
             } else {
                 p.setDemandTitle(title.substring(0, messageRowLength));
                 p.setCutDescription("");

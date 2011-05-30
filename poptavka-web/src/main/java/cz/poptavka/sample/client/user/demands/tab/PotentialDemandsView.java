@@ -28,40 +28,51 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
-import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 
 /**
- * View representing potential demands for supplier. Supplier can list them, reply to selected,
- * cancel displaying and other magic tricks
+ * View representing potential demands for supplier. Supplier can list them,
+ * reply to selected, cancel displaying and other magic tricks
  *
  * @author Beho
  *
  */
-public class PotentialDemandsView extends Composite implements PotentialDemandsPresenter.IPotentialDemands {
+public class PotentialDemandsView extends Composite implements
+        PotentialDemandsPresenter.IPotentialDemands {
 
-    private static PotentialDemandsViewUiBinder uiBinder = GWT.create(PotentialDemandsViewUiBinder.class);
+    private static PotentialDemandsViewUiBinder uiBinder = GWT
+            .create(PotentialDemandsViewUiBinder.class);
+
+    private static final StyleResource RSCS = GWT.create(StyleResource.class);
 
     private static final LocalizableMessages MSGS = GWT
             .create(LocalizableMessages.class);
 
-    interface PotentialDemandsViewUiBinder extends UiBinder<Widget, PotentialDemandsView> {
+    interface PotentialDemandsViewUiBinder extends
+            UiBinder<Widget, PotentialDemandsView> {
     }
 
-    @UiField(provided = true) CellTable<DemandDetail> cellTable;
-    @UiField(provided = true) SimplePager pager;
-    @UiField Button replyBtn, deleteBtn, moreActionsBtn, refreshBtn;
+    @UiField(provided = true)
+    CellTable<PotentialDemandDetail> cellTable;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField
+    Button replyBtn, deleteBtn, moreActionsBtn, refreshBtn;
 
     // TODO decide what panel to use
-//    @UiField DetailWrapperView detailSection;
-    @UiField SimplePanel detailSection;
+    // @UiField DetailWrapperView detailSection;
+    @UiField
+    SimplePanel detailSection;
 
     // TODO remove then
-    @UiField SimplePanel develPanel;
+    @UiField
+    SimplePanel develPanel;
 
-//    @UiField ToggleButton moreActionsBtn;
+    // @UiField ToggleButton moreActionsBtn;
 
-    private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
-    private MultiSelectionModel<DemandDetail> selectionModel;
+    private ListDataProvider<PotentialDemandDetail> dataProvider = new ListDataProvider<PotentialDemandDetail>();
+    private MultiSelectionModel<PotentialDemandDetail> selectionModel;
 
     @Override
     public void createView() {
@@ -69,123 +80,138 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
         initCellWidget();
         initWidget(uiBinder.createAndBindUi(this));
 
-//        Element newHeadDiv = header.getElement();
-//        GWT.log(newHeadDiv.getNodeName());
-//        Element newTable = DOM.createTable();
-//        GWT.log(newTable.getNodeName());
-//        Element tableHead = (Element) cellTable.getElement().getFirstChildElement();
-//        GWT.log(tableHead.getNodeName());
-//
-//        DOM.appendChild((Element) newHeadDiv, newTable);
-//        DOM.appendChild(newTable, tableHead);
+        // Element newHeadDiv = header.getElement();
+        // GWT.log(newHeadDiv.getNodeName());
+        // Element newTable = DOM.createTable();
+        // GWT.log(newTable.getNodeName());
+        // Element tableHead = (Element)
+        // cellTable.getElement().getFirstChildElement();
+        // GWT.log(tableHead.getNodeName());
+        //
+        // DOM.appendChild((Element) newHeadDiv, newTable);
+        // DOM.appendChild(newTable, tableHead);
     }
 
     private void initCellWidget() {
         // Init table
-        cellTable = new CellTable<DemandDetail>(KEY_PROVIDER);
-//        cellTable.setPageSize(5);
+        cellTable = new CellTable<PotentialDemandDetail>(KEY_PROVIDER);
+        // cellTable.setPageSize(5);
         cellTable.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
-        cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+        cellTable
+                .setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 
-        ListHandler<DemandDetail> sorHandler = new ListHandler<DemandDetail>(
+        ListHandler<PotentialDemandDetail> sorHandler = new ListHandler<PotentialDemandDetail>(
                 dataProvider.getList());
         cellTable.addColumnSortHandler(sorHandler);
 
         // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        SimplePager.Resources pagerResources = GWT
+                .create(SimplePager.Resources.class);
+        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
+                true);
         pager.setDisplay(cellTable);
 
-        selectionModel = new MultiSelectionModel<DemandDetail>(KEY_PROVIDER);
+        selectionModel = new MultiSelectionModel<PotentialDemandDetail>(
+                KEY_PROVIDER);
         cellTable.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager.<DemandDetail>createCheckboxManager());
+                DefaultSelectionEventManager
+                        .<PotentialDemandDetail>createCheckboxManager());
 
-
-//        cellTable.setSelectionModel(selectionModel,
-//                DefaultSelectionEventManager.<DemandDetail>createCheckboxManager());
+        // cellTable.setSelectionModel(selectionModel,
+        // DefaultSelectionEventManager.<PotentialDemandDetail>createCheckboxManager());
 
         initTableColumns(selectionModel, sorHandler);
 
-     // dataProvider
+        // dataProvider
         dataProvider.addDataDisplay(cellTable);
     }
 
-    private void initTableColumns(final SelectionModel<DemandDetail> selectionModel,
-            ListHandler<DemandDetail> sortHandler) {
+    private void initTableColumns(
+            final SelectionModel<PotentialDemandDetail> selectionModel,
+            ListHandler<PotentialDemandDetail> sortHandler) {
         // MultipleSelection Checkbox
-        Column<DemandDetail, Boolean> checkBoxColumn = new Column<DemandDetail,
-            Boolean>(new CheckboxCell(true, false)) {
+        Column<PotentialDemandDetail, Boolean> checkBoxColumn = new Column<PotentialDemandDetail, Boolean>(
+                new CheckboxCell(true, false)) {
             @Override
-            public Boolean getValue(DemandDetail object) {
+            public Boolean getValue(PotentialDemandDetail object) {
                 return selectionModel.isSelected(object);
             }
-
         };
 
         // Demand Title Column
-        Column<DemandDetail, String> titleColumn = (new Column<DemandDetail, String>(new TextCell()) {
+        Column<PotentialDemandDetail, String> titleColumn = (new Column<PotentialDemandDetail, String>(
+                new TextCell()) {
             @Override
-            public String getValue(DemandDetail object) {
-                return object.getTitle();
+            public String getValue(PotentialDemandDetail object) {
+                return object.getDemandTitle();
             }
         });
 
         // Demand Price Column
-        Column<DemandDetail, String> priceColumn = (new Column<DemandDetail, String>(new TextCell()) {
+        Column<PotentialDemandDetail, String> priceColumn = (new Column<PotentialDemandDetail, String>(
+                new TextCell()) {
             @Override
-            public String getValue(DemandDetail object) {
+            public String getValue(PotentialDemandDetail object) {
                 return object.getPrice().toString();
             }
         });
 
-        final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
+        final DateTimeFormat dateFormat = DateTimeFormat
+                .getFormat(PredefinedFormat.DATE_MEDIUM);
 
         // Demand Finish Column
-        Column<DemandDetail, String> endDateColumn = (new Column<DemandDetail, String>(new TextCell()) {
+        Column<PotentialDemandDetail, String> endDateColumn = (new Column<PotentialDemandDetail, String>(
+                new TextCell()) {
             @Override
-            public String getValue(DemandDetail object) {
+            public String getValue(PotentialDemandDetail object) {
                 return dateFormat.format(object.getEndDate());
             }
         });
 
-        // Demand Finish Column
-        Column<DemandDetail, String> expireDateColumn = (new Column<DemandDetail, String>(new TextCell()) {
+        // Demand sent Date column
+        Column<PotentialDemandDetail, String> sentDateColumn = (new Column<PotentialDemandDetail, String>(
+                new TextCell()) {
             @Override
-            public String getValue(DemandDetail object) {
-                return dateFormat.format(object.getExpireDate());
+            public String getValue(PotentialDemandDetail object) {
+                return dateFormat.format(object.getSent());
             }
         });
 
         // sort methods
         titleColumn.setSortable(true);
-        sortHandler.setComparator(titleColumn, new Comparator<DemandDetail>() {
-            @Override
-            public int compare(DemandDetail o1, DemandDetail o2) {
-                if (o1 == o2) {
-                    return 0;
-                }
+        sortHandler.setComparator(titleColumn,
+                new Comparator<PotentialDemandDetail>() {
+                    @Override
+                    public int compare(PotentialDemandDetail o1,
+                            PotentialDemandDetail o2) {
+                        if (o1 == o2) {
+                            return 0;
+                        }
 
-                // Compare the name columns.
-                if (o1 != null) {
-                    return (o2 != null) ? o1.getTitle().compareTo(o2.getTitle()) : 1;
-                }
-                return -1;
-            }
-        });
+                        // Compare the name columns.
+                        if (o1 != null) {
+                            return (o2 != null) ? o1.getDemandTitle()
+                                    .compareTo(o2.getDemandTitle()) : 1;
+                        }
+                        return -1;
+                    }
+                });
         priceColumn.setSortable(true);
-        sortHandler.setComparator(priceColumn, new Comparator<DemandDetail>() {
-            @Override
-            public int compare(DemandDetail o1, DemandDetail o2) {
-                return Long.valueOf(o1.getId()).compareTo(Long.valueOf(o2.getId()));
-            }
-        });
+        sortHandler.setComparator(priceColumn,
+                new Comparator<PotentialDemandDetail>() {
+                    @Override
+                    public int compare(PotentialDemandDetail o1,
+                            PotentialDemandDetail o2) {
+                        return o1.getPrice().compareTo(o2.getPrice());
+                    }
+                });
 
         // add columns into table
         cellTable.addColumn(checkBoxColumn);
         cellTable.addColumn(titleColumn, MSGS.title());
         cellTable.addColumn(priceColumn, MSGS.price());
         cellTable.addColumn(endDateColumn, MSGS.endDate());
-        cellTable.addColumn(expireDateColumn, MSGS.expireDate());
+        cellTable.addColumn(sentDateColumn, MSGS.expireDate());
 
     }
 
@@ -195,19 +221,19 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
     }
 
     @Override
-    public MultiSelectionModel<DemandDetail> getSelectionModel() {
+    public MultiSelectionModel<PotentialDemandDetail> getSelectionModel() {
         return selectionModel;
     }
 
-    private static final ProvidesKey<DemandDetail> KEY_PROVIDER = new ProvidesKey<DemandDetail>() {
+    private static final ProvidesKey<PotentialDemandDetail> KEY_PROVIDER = new ProvidesKey<PotentialDemandDetail>() {
         @Override
-        public Object getKey(DemandDetail item) {
-            return item == null ? null : item.getId();
+        public Object getKey(PotentialDemandDetail item) {
+            return item == null ? null : item.getDemandId();
         }
     };
 
     @Override
-    public ListDataProvider<DemandDetail> getDataProvider() {
+    public ListDataProvider<PotentialDemandDetail> getDataProvider() {
         return dataProvider;
     }
 
@@ -232,18 +258,16 @@ public class PotentialDemandsView extends Composite implements PotentialDemandsP
     }
 
     @Override
-    public Set<DemandDetail> getSelectedSet() {
+    public Set<PotentialDemandDetail> getSelectedSet() {
         return selectionModel.getSelectedSet();
     }
 
-
-
     // TODO cleanup after setting good solution
 
-//    @Override
-//    public DetailWrapperView getDetailSection() {
-//        return detailSection;
-//    }
+    // @Override
+    // public DetailWrapperView getDetailSection() {
+    // return detailSection;
+    // }
 
     @Override
     public SimplePanel getDetailSection() {

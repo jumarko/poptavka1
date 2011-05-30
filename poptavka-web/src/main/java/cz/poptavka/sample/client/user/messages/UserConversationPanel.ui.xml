@@ -4,6 +4,5 @@
     <ui:style>
 
     </ui:style>
-    <g:FlowPanel ui:field="master">
-    </g:FlowPanel>
+    <g:FlowPanel ui:field="messagePanel" />
 </ui:UiBinder>

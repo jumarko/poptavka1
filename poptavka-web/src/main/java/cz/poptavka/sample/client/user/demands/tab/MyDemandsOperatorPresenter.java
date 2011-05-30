@@ -56,8 +56,7 @@ public class MyDemandsOperatorPresenter extends
      // Init DetailWrapper for this view
         if (detailPresenter  == null) {
             detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
-            detailPresenter.setType(DetailType.OPERATOR);
-            detailPresenter.initDetailWrapper(view.getDetailSection());
+            detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.OPERATOR);
         }
 
     }

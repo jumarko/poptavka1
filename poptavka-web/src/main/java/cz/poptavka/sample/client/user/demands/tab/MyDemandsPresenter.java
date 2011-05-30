@@ -45,30 +45,37 @@ public class MyDemandsPresenter extends
 
     private DetailWrapperPresenter detailPresenter = null;
 
+    public void bindView() {
+        view.getCellTable().getSelectionModel()
+                .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+                    public void onSelectionChange(SelectionChangeEvent event) {
+                        DemandDetail selected = view.getSelectionModel().getSelectedObject();
+                        if (selected != null) {
+                            // event calls from the click
+                            eventBus.getDemandDetail(selected.getId(), DetailType.EDITABLE);
+
+                            // TODO delete this and uncomment the one below
+//                            eventBus.getDemandMessages(0, DetailType.EDITABLE);
+                            detailPresenter.setMessageId(0);
+
+//                            eventBus.getDemandMessages(selected.getId(), DetailType.POTENTIAL);
+//                            detailPresenter.setMessageId(selected.getMessageId());
+                        }
+                    }
+                });
+    }
+
     public void onInvokeMyDemands() {
         GWT.log("display DEMANDS WIDGET");
         // Init DetailWrapper for this view
         if (detailPresenter == null) {
             detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
-            detailPresenter.setType(DetailType.EDITABLE);
-            detailPresenter.initDetailWrapper(view.getDetailSection());
+            detailPresenter.initDetailWrapper(view.getDetailSection(),
+                    DetailType.EDITABLE);
         }
         eventBus.displayContent(view.getWidgetView());
         GWT.log("Demands are on the way - getDemands!");
         eventBus.requestClientDemands();
-    }
-
-    public void bindView() {
-        view.getCellTable().getSelectionModel()
-                .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-                    public void onSelectionChange(SelectionChangeEvent event) {
-                        DemandDetail selected = view.getSelectionModel()
-                                .getSelectedObject();
-                        if (selected != null) {
-                            eventBus.getDemandDetail(selected.getId(), DetailType.EDITABLE);
-                        }
-                    }
-                });
     }
 
     public void onResponseClientDemands(ArrayList<DemandDetail> demands) {

@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user;
+package cz.poptavka.sample.client.user.handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,12 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
+import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
+import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
@@ -138,6 +140,26 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
                 eventBus.setDemandDetail(result, typeOfDetail);
             }
         });
-
     }
+
+    /**
+     * Get Supplier's potential demands list
+     */
+    public void onGetPotentialDemands(long businessUserId) {
+        demandService.getPotentialDemandsForSupplier(businessUserId,
+                new AsyncCallback<ArrayList<PotentialDemandDetail>>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Error in UserHandler in method: onGetPotentialDemandsList"
+                                + caught.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(
+                            ArrayList<PotentialDemandDetail> result) {
+                        eventBus.responsePotentialDemands(result);
+                    }
+                });
+    }
+
 }

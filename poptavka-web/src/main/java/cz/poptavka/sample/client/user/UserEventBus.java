@@ -22,11 +22,15 @@ import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.handler.MessageHandler;
+import cz.poptavka.sample.client.user.handler.UserHandler;
 import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
+import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 
 @Events(startView = UserView.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -56,6 +60,16 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = DemandsLayoutPresenter.class)
     void addNewDemand(DemandDetail result);
+
+
+    @Event(handlers = UserPresenter.class)
+    void requestPotentialDemands();
+
+    @Event(handlers = UserHandler.class)
+    void getPotentialDemands(long businessUserId);
+
+    @Event(handlers = PotentialDemandsPresenter.class)
+    void responsePotentialDemands(ArrayList<PotentialDemandDetail> potentialDemandsList);
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
@@ -102,10 +116,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void requestClientDemands();
 
     @Event(handlers = { MyDemandsPresenter.class,
-            MyDemandsOperatorPresenter.class,
-            // TODO Beho - create own RPC call for supplier
-            // this is just while development
-            PotentialDemandsPresenter.class }, passive = true)
+            MyDemandsOperatorPresenter.class }, passive = true)
     void responseClientDemands(ArrayList<DemandDetail> demands);
 
     /**
@@ -119,14 +130,18 @@ public interface UserEventBus extends EventBusWithLookup {
     void setDemandDetail(DemandDetail detail, DetailType typeOfDetail);
 
     /**
-     * method for displaying conversation to selected demand
+     * method for displaying conversation to selected demand.
      **/
-    // TODO
-    // @Event(handlers = UserHandler.class)
-    // void getMessageTree(long demandId);
-    //
-    // @Event(handlers = DetailWrapperPresenter.class)
-    // void setMessageTree(param);
+    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    void setDemandMessages(ArrayList<MessageDetail> param, DetailType typeOfDetail);
+
+    @Event(handlers = UserPresenter.class)
+    void requestPotentialDemandConversation(long messageId);
+    @Event(handlers = MessageHandler.class)
+    void getPotentialDemandConversation(long messageId, long id);
+    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType);
+
 
     // TODO delete
     // @Event(handlers = {MyDemandsPresenter.class, OffersPresenter.class,
@@ -266,5 +281,6 @@ public interface UserEventBus extends EventBusWithLookup {
      **/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
+
 
 }

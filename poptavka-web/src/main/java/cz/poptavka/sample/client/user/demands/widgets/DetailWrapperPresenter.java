@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.user.demands.widgets;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -8,7 +10,10 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
+import cz.poptavka.sample.client.user.messages.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
@@ -20,33 +25,73 @@ public class DetailWrapperPresenter extends
 
         void setDetail(Widget demandDetailWidget);
 
-        void setConversation(Widget conversationWidget);
+        UserConversationPanel getConversationPanel();
+
+        SimplePanel getReplyHolder();
     }
 
     private DetailType type;
 
-    public void initDetailWrapper(SimplePanel detailSection) {
+    private ReplyWindowPresenter replyPresenter = null;
+
+    private long messageId;
+
+    /**
+     * Initialize widget and sets his type.
+     *
+     * @param detailSection holder for widget
+     * @param type type of view, where is this widget loaded
+     */
+    public void initDetailWrapper(SimplePanel detailSection, DetailType type) {
+        GWT.log("DEMAND DETAIL Presenter LOADED");
         detailSection.setWidget(view.getWidgetView());
     }
 
     /**
-     * Sets style to recognize in which widget it is implemented.
+     * Response when user click demand to see the details. DemandDetails widget,
+     * past conversation regarding this demand and reply widget is created.
+     *
+     * @param detail DemandDetail to be displayed
+     * @param typeOfDetail type of what detail section should handle this event
      */
-    public void setType(DetailType type) {
-        this.type = type;
-    }
-
     public void onSetDemandDetail(DemandDetail detail, DetailType typeOfDetail) {
         if (!typeOfDetail.equals(type)) {
-            GWT.log(view.getClass().getName()
-                    + " is not suitable for handling this Demand Detail");
+            //event not for this instance of presenter
             return;
         }
-        eventBus.loadingHide();
 
+        // initialization of parts of view
+
+        //detail part
         // TODO selection if editable or not
         view.setDetail(new DemandDetailView(detail));
 
+        // conversation part
+        view.getConversationPanel();
+
+        // reply part
+        replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
+        replyPresenter.initReplyWindow(view.getReplyHolder(), messageId);
+
+        // GUI visual event
+        eventBus.loadingHide();
+    }
+
+
+    public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType) {
+        if (!wrapperhandlerType.equals(type)) {
+            //event not for this instance of presenter
+            return;
+        }
+        view.getConversationPanel().setMessageList(messageList);
+    }
+
+    public void onSetDemandMessages(ArrayList<MessageDetail> messages, DetailType typeOfDetail) {
+        if (!typeOfDetail.equals(type)) {
+            //event not for this instance of presenter
+            return;
+        }
+        view.getConversationPanel().setMessageList(messages);
     }
 
     /**
@@ -60,7 +105,10 @@ public class DetailWrapperPresenter extends
         }
         Widget anchor = view.getWidgetView();
         eventBus.loadingShowWithAnchor("", anchor);
+    }
 
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
     }
 
 }

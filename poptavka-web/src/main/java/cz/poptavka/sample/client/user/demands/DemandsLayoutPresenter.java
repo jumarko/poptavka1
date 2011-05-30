@@ -99,7 +99,13 @@ public class DemandsLayoutPresenter
             }
         }
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            //do supplier specific stuff
+            // TODO using businessUserId and NOT supplier ID
+            // DEBUGING popup
+            // TODO Maybe do nothing
+//            PopupPanel panel = new PopupPanel(true);
+//            panel.getElement().setInnerHTML("<br/>Getting SupplierDemands<")
+//            panel.center();
+//            eventBus.getPotentialDemands(user.getId());
         }
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
