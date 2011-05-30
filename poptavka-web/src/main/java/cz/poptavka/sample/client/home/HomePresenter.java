@@ -2,14 +2,12 @@ package cz.poptavka.sample.client.home;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
-import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
@@ -49,10 +47,6 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         onDisplayMenu();
         // TODO initial homepage widget compilation
 
-        ReplyWindowPresenter r = eventBus.addHandler(ReplyWindowPresenter.class);
-        SimplePanel a = new SimplePanel();
-        r.initReplyWindow(a, (long) 0);
-        view.setBody(a);
     }
 
     public void onDisplayMenu() {
