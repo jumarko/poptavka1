@@ -5,6 +5,7 @@
 package cz.poptavka.sample.server.service.demand;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +41,6 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
-import java.util.Collection;
 
 /**
  * @author Excalibur

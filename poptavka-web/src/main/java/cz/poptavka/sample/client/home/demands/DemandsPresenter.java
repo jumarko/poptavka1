@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.home.demands;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.Scheduler;
@@ -17,14 +18,13 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+
 import cz.poptavka.sample.client.home.demands.demand.DemandView;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Demand;
-
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import java.util.List;
 
 /**
  *
@@ -162,11 +162,15 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     }
 
     public void onDisplayDemands(Collection<DemandDetail> result) {
+        Object[] array = result.toArray();
+
         List<DemandDetail> list = view.getDataProvider().getList();
-        int i = 0;
-        for (DemandDetail d : result) {
-            list.add(d);
+
+        for (int i = 0; i < array.length; i++) {
+            list.add((DemandDetail) array[i]);
         }
+
+        view.getDataProvider().refresh();
     }
 
     public void onSetDemand(Demand demand) {

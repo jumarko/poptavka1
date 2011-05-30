@@ -161,6 +161,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
                     @Override
                     public void onSuccess(List<DemandDetail> result) {
                         LOGGER.info("Demands found: " + result.size());
+
                         eventBus.displayDemands(result);
                     }
 
