@@ -1,9 +1,8 @@
 package cz.poptavka.sample.client.home.demands;
 
+import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -20,6 +19,7 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 //@SuppressWarnings("deprecation")
@@ -58,7 +58,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
                 LOGGER.info("category found: " + result);
                 if (result != null) {
                     Locality[] localities = {result};
-                    eventBus.getDemandsByLocalities(localities);
+                    eventBus.getDemandsByLocalities(ResultCriteria.EMPTY_CRITERIA, localities);
                 }
             }
 
@@ -94,14 +94,14 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
      */
 //    public void onGetCategory(long id) {
 //        LOGGER.info("FilterByCategory: " + id);
-//        categoryService.getCategory(id, new AsyncCallback<CategoryDetail>() {
+//        categoryService.getCategory(id, new AsyncCallback<Category>() {
 //
 //            @Override
-//            public void onSuccess(CategoryDetail result) {
+//            public void onSuccess(Category result) {
 //                LOGGER.info("category found: " + result);
 //                if (result != null) {
 //                    Category[] categories = {result};
-//                    eventBus.getDemandsByCategories(categories);
+//                    eventBus.getDemandsByCategories(ResultCriteria.EMPTY_CRITERIA,categories);
 //                }
 //            }
 //
@@ -135,18 +135,32 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
     // *** GET DEMANDS
     // ***************************************************************************
+    public void onGetDemand(DemandDetail demandDetail) {
+        LOGGER.info("Getting whole demand by id: " + demandDetail.getId());
+        demandService.getWholeDemand(demandDetail.getId(), new AsyncCallback<Demand>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Failed to retrieve whole demand. We are sorry :(. Try later.");
+            }
+
+            @Override
+            public void onSuccess(Demand result) {
+                eventBus.setDemand(result);
+            }
+        });
+    }
     /**
      * Get all demand from database.
      */
-    public void onGetDemands() {
-        ResultCriteria resultCriteria = new ResultCriteria.Builder().build();
-        eventBus.getResultsCriteria(resultCriteria);
+    public void onGetDemands(ResultCriteria resultCriteria) {
+        LOGGER.info("Get demands: " + resultCriteria.getFirstResult());
         demandService.getDemands(resultCriteria,
-                new AsyncCallback<List<Demand>>() {
+                new AsyncCallback<List<DemandDetail>>() {
 
                     @Override
-                    public void onSuccess(List<Demand> result) {
-                        LOGGER.info("demands found: " + result.size());
+                    public void onSuccess(List<DemandDetail> result) {
+                        LOGGER.info("Demands found: " + result.size());
                         eventBus.displayDemands(result);
                     }
 
@@ -157,15 +171,12 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
                 });
     }
 
-    public void onGetDemandsByCategories(Category[] categories) {
-        LOGGER.info("Display demand by category: " + Arrays.toString(categories));
-        ResultCriteria resultCriteria = new ResultCriteria.Builder().build();
-        eventBus.getResultsCriteria(resultCriteria);
+    public void onGetDemandsByCategories(ResultCriteria resultCriteria, Category[] categories) {
         demandService.getDemands(resultCriteria, categories,
-                new AsyncCallback<Set<Demand>>() {
+                new AsyncCallback<List<DemandDetail>>() {
 
                     @Override
-                    public void onSuccess(Set<Demand> result) {
+                    public void onSuccess(List<DemandDetail> result) {
                         LOGGER.info("onSuccessGetDemandsByCategory");
                         eventBus.displayDemands(result);
                     }
@@ -177,14 +188,12 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
                 });
     }
 
-    public void onGetDemandsByLocalities(Locality[] localities) {
-        ResultCriteria resultCriteria = new ResultCriteria.Builder().build();
-        eventBus.getResultsCriteria(resultCriteria);
+    public void onGetDemandsByLocalities(ResultCriteria resultCriteria, Locality[] localities) {
         demandService.getDemands(resultCriteria, localities,
-                new AsyncCallback<Set<Demand>>() {
+                new AsyncCallback<List<DemandDetail>>() {
 
                     @Override
-                    public void onSuccess(Set<Demand> result) {
+                    public void onSuccess(List<DemandDetail> result) {
                         LOGGER.info("onSuccessGetDemandsByLocality");
                         eventBus.displayDemands(result);
                     }

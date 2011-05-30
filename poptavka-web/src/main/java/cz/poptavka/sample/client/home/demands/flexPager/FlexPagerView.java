@@ -6,7 +6,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -21,7 +20,6 @@ public class FlexPagerView extends Composite implements FlexPagerPresenter.FlexP
 
     interface MyPagerUiBinder extends UiBinder<Widget, FlexPagerView> {
     }
-
     @UiField
     Button begin;
     @UiField
@@ -34,9 +32,6 @@ public class FlexPagerView extends Composite implements FlexPagerPresenter.FlexP
     Button end;
     @UiField
     ListBox pagesize;
-
-    @UiField
-    FlexTable flexTable;
 
     public FlexPagerView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -77,12 +72,12 @@ public class FlexPagerView extends Composite implements FlexPagerPresenter.FlexP
     }
 
     @Override
-    public FlexTable getFlexTable() {
-        return flexTable;
+    public int getPageSize() {
+        return Integer.parseInt(pagesize.getItemText(pagesize.getSelectedIndex()));
     }
 
     @Override
-    public ListBox getPageSize() {
+    public ListBox getPageSizeControl() {
         return pagesize;
     }
 

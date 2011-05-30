@@ -7,7 +7,6 @@ package cz.poptavka.sample.client.service.demand;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -23,21 +22,21 @@ import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {
 
-    List<DemandDetail> getAllDemands();
-
     DemandDetail updateDemand(DemandDetail newDemand);
 
     DemandDetail createNewDemand(DemandDetail newDemand, Long clientId);
 
-    Set<Demand> getDemands(Locality[] localities);
+    List<DemandDetail> getAllDemands();
 
-    Set<Demand> getDemands(Category[] categories);
+    List<DemandDetail> getDemands(ResultCriteria resultCriteria);
 
-    List<Demand> getDemands(ResultCriteria resultCriteria);
+    List<DemandDetail> getDemands(Locality[] localities);
 
-    Set<Demand> getDemands(ResultCriteria resultCriteria, Locality[] localities);
+    List<DemandDetail> getDemands(Category[] categories);
 
-    Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories);
+    List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
+
+    List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories);
 
     ArrayList<DemandDetail> getClientDemands(long id);
 
@@ -53,4 +52,6 @@ public interface DemandRPCService extends RemoteService {
      * @return DemandDetail of selected DemandType
      */
     DemandDetail getDemand(Long demandId);
+
+    Demand getWholeDemand(Long demandId);
 }

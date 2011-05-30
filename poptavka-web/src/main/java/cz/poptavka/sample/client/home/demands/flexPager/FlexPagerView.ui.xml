@@ -8,7 +8,6 @@
   </ui:style>
   <g:HTMLPanel>
     <g:VerticalPanel ui:field="verticalContent">
-      <g:FlexTable ui:field="flexTable" />
       <g:HorizontalPanel>
         <g:Button ui:field="begin">begin</g:Button>
         <g:Button ui:field="less">less</g:Button>

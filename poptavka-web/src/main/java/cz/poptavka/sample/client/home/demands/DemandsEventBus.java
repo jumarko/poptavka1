@@ -3,20 +3,20 @@ package cz.poptavka.sample.client.home.demands;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
-import cz.poptavka.sample.client.home.demands.flexPager.FlexPagerPresenter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+
 /**
  *
  * @author Martin Slavkovsky
@@ -51,13 +51,16 @@ public interface DemandsEventBus extends EventBus {
 
     //Demands
     @Event(handlers = DemandsHandler.class)
-    void getDemands();
+    void getDemands(ResultCriteria resultCriteria);
 
     @Event(handlers = DemandsHandler.class)
-    void getDemandsByCategories(Category[] categories);
+    void getDemand(DemandDetail demandDetail);
 
     @Event(handlers = DemandsHandler.class)
-    void getDemandsByLocalities(Locality[] localities);
+    void getDemandsByCategories(ResultCriteria resultCriteria, Category[] categories);
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemandsByLocalities(ResultCriteria resultCriteria, Locality[] localities);
 
     //Display
     @Event(handlers = DemandsPresenter.class)
@@ -66,37 +69,9 @@ public interface DemandsEventBus extends EventBus {
     @Event(handlers = DemandsPresenter.class)
     void setLocalityData(ArrayList<LocalityDetail> list);
 
-    // **** MY PAGER *********************************************************************
-    @Event(handlers = FlexPagerPresenter.class)
-    void displayDemands(Collection<Demand> result);
+    @Event(handlers = DemandsPresenter.class)
+    void displayDemands(Collection<DemandDetail> result);
 
-    @Event(handlers = FlexPagerPresenter.class)
-    void beginClicked();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void lessClicked();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void endClicked();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void moreClicked();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void clearFlexTable();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void setRows();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void setPagerLabel();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void changePagerSize();
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void setDemand(ClickEvent e);
-
-    @Event(handlers = FlexPagerPresenter.class)
-    void getResultsCriteria(ResultCriteria resultCriteria);
+    @Event(handlers = DemandsPresenter.class)
+    void setDemand(Demand demand);
 }

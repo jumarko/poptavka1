@@ -40,6 +40,7 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
+import java.util.Collection;
 
 /**
  * @author Excalibur
@@ -157,10 +158,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private void sendDemandToSuppliersTest(Demand demand) {
         // TODO Refaktorovat celu metody s Jurajom
         Set<Supplier> suppliers = new HashSet<Supplier>();
-        suppliers.addAll(supplierService.getSuppliers(demand.getCategories()
-                .toArray(new Category[demand.getCategories().size()])));
-        suppliers.addAll(supplierService.getSuppliers(demand.getLocalities()
-                .toArray(new Locality[demand.getLocalities().size()])));
+        suppliers.addAll(supplierService.getSuppliers(demand.getCategories().
+                toArray(new Category[demand.getCategories().size()])));
+        suppliers.addAll(supplierService.getSuppliers(demand.getLocalities().
+                toArray(new Locality[demand.getLocalities().size()])));
 
         // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
         // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
@@ -243,29 +244,30 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return demandDetails;
     }
 
+
     @Override
-    public Set<Demand> getDemands(Locality... localities) {
-        return demandService.getDemands(localities);
+    public List<DemandDetail> getDemands(Locality... localities) {
+        return this.transformToDemandDetail(demandService.getDemands(localities));
     }
 
     @Override
-    public Set<Demand> getDemands(Category... categories) {
-        return demandService.getDemands(categories);
+    public List<DemandDetail> getDemands(Category... categories) {
+        return this.transformToDemandDetail(demandService.getDemands(categories));
     }
 
     @Override
-    public List<Demand> getDemands(ResultCriteria resultCriteria) {
-        return demandService.getAll(resultCriteria);
+    public List<DemandDetail> getDemands(ResultCriteria resultCriteria) {
+        return this.transformToDemandDetail(demandService.getAll(resultCriteria));
     }
 
     @Override
-    public Set<Demand> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
-        return demandService.getDemands(resultCriteria, localities);
+    public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
+        return this.transformToDemandDetail(demandService.getDemands(resultCriteria, localities));
     }
 
     @Override
-    public Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories) {
-        return demandService.getDemands(resultCriteria, categories);
+    public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories) {
+        return this.transformToDemandDetail(demandService.getDemands(resultCriteria, categories));
     }
 
     @Override
@@ -290,11 +292,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
                 businessUser,
-                MessageFilter.MessageFilterBuilder.messageFilter()
-                .withMessageUserRoleType(MessageUserRoleType.TO)
-                .withMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND)
-                .withResultCriteria(ResultCriteria.EMPTY_CRITERIA)
-                .build());
+                MessageFilter.MessageFilterBuilder.messageFilter().
+                withMessageUserRoleType(MessageUserRoleType.TO).
+                withMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND).
+                withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
         // TODO ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
         // parameter pre dalsi dotaz do DB na ziskanie userMessages
         final List<UserMessage> userMessages =
@@ -337,4 +338,16 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return DemandDetail.createDemandDetail(this.demandService.getById(demandId));
     }
 
+    @Override
+    public Demand getWholeDemand(Long demandId) {
+        return this.demandService.getById(demandId);
+    }
+
+    private List<DemandDetail> transformToDemandDetail(Collection<Demand> demands) {
+        List<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
+        for (Demand demand : demands) {
+            demandDetails.add(DemandDetail.createDemandDetail(demand));
+        }
+        return demandDetails;
+    }
 }

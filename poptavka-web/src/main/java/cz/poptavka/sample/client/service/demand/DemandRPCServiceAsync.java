@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.service.demand;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -21,15 +20,15 @@ public interface DemandRPCServiceAsync {
     void createNewDemand(DemandDetail newDemand, Long clientId,
             AsyncCallback<DemandDetail> callback);
 
-    void getDemands(Category[] categories, AsyncCallback<Set<Demand>> callback);
+    void getDemands(Category[] categories, AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemands(Locality[] localities, AsyncCallback<Set<Demand>> callback);
+    void getDemands(Locality[] localities, AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemands(ResultCriteria resultCriteria, AsyncCallback<List<Demand>> callback);
+    void getDemands(ResultCriteria resultCriteria, AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemands(ResultCriteria resultCriteria, Category[] categories, AsyncCallback<Set<Demand>> callback);
+    void getDemands(ResultCriteria resultCriteria, Category[] categories, AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemands(ResultCriteria resultCriteria, Locality[] localities, AsyncCallback<Set<Demand>> callback);
+    void getDemands(ResultCriteria resultCriteria, Locality[] localities, AsyncCallback<List<DemandDetail>> callback);
 
     void getClientDemands(long id, AsyncCallback<ArrayList<DemandDetail>> callback);
 
@@ -40,4 +39,6 @@ public interface DemandRPCServiceAsync {
     void getPotentialDemandsForSupplier(long businessUserId, AsyncCallback<ArrayList<PotentialDemandDetail>> callback);
 
     void getDemand(Long demandId, AsyncCallback<DemandDetail> callback);
+
+    void getWholeDemand(Long demandId, AsyncCallback<Demand> callback);
 }
