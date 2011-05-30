@@ -25,11 +25,11 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         @ClassName("reply-message")
         String replyMessage();
 
-//        @ClassName("reply-message-arrow-border")
-//        String replyMessageArrowBorder();
-//
-//        @ClassName("reply-message-arrow")
-//        String replyMessageArrow();
+        @ClassName("reply-message-arrow-border")
+        String replyMessageArrowBorder();
+
+        @ClassName("reply-message-arrow")
+        String replyMessageArrow();
 
         @ClassName("text-area")
         String textArea();
@@ -72,9 +72,11 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         if (hiddenReplyBody) {
             header.getStyle().setDisplay(Display.NONE);
             header.getNextSiblingElement().getStyle().setDisplay(Display.BLOCK);
+            header.getNextSiblingElement().getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
         } else {
             header.getStyle().setDisplay(Display.BLOCK);
             header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+            header.getNextSiblingElement().getFirstChildElement().getStyle().setDisplay(Display.NONE);
             replyTextArea.setValue("");
         }
         hiddenReplyBody = !hiddenReplyBody;

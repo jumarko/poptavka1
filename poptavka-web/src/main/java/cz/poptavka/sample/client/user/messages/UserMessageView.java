@@ -4,23 +4,18 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.shared.domain.FakeMessage;
+import cz.poptavka.sample.shared.domain.MessageDetail;
 
-public class UserMessageView extends Composite implements HasClickHandlers {
+public class UserMessageView extends Composite {
 
     private static final int DESCRIPTION_TD = 3;
 
@@ -30,7 +25,6 @@ public class UserMessageView extends Composite implements HasClickHandlers {
     interface UserMessageViewUiBinder extends
             UiBinder<Widget, UserMessageView> {
     }
-
 
     public interface MessageStyle extends CssResource {
         @ClassName("message")
@@ -63,10 +57,9 @@ public class UserMessageView extends Composite implements HasClickHandlers {
     @UiField Element headerTable;
     @UiField Element messagePreview;
 
-    @UiField Anchor replyButton;
+//    @UiField Anchor replyButton;
 
     private boolean collapsed = false;
-
 
     /**
      * Constructs object of user message with custom parameter
@@ -74,23 +67,26 @@ public class UserMessageView extends Composite implements HasClickHandlers {
      * @param message message to fill the view
      * @param isFirst if true, message is set as first, if false message is set as last!
      */
-    public UserMessageView(FakeMessage message, boolean isFirst) {
-        this(message);
+    public UserMessageView(MessageDetail message, boolean collapsed, boolean isFirst) {
+        this(message, collapsed);
         if (isFirst) {
             header.getParentElement().addClassName(style.messageFirst());
         } else {
             header.getParentElement().addClassName(style.messageLast());
+
+            // NOT USED keep commented
+
             // Get buttons list, and set Eventhandlers for them;
             // According to DOM specification and widget structure, it's the last child div of
             // parent div. It's NOT the last child, because last ist the textNode after that div.
             // That means childCount - 2
-            Element actionButtonBar = (Element) body.getChild(body.getChildCount() - 2);
-            actionButtonBar.getStyle().setDisplay(Display.BLOCK);
+//            Element actionButtonBar = (Element) body.getChild(body.getChildCount() - 2);
+//            actionButtonBar.getStyle().setDisplay(Display.BLOCK);
 //            DOM.sinkEvents(elem, eventBits);
         }
     }
 
-    public UserMessageView(FakeMessage message) {
+    public UserMessageView(MessageDetail message, boolean collapsed) {
         initWidget(uiBinder.createAndBindUi(this));
         // set headerTable 100% width
         Element messagePart =  (Element) headerTable.getChild(DESCRIPTION_TD);
@@ -98,23 +94,26 @@ public class UserMessageView extends Composite implements HasClickHandlers {
         // set header data
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
         // author
-        tableColumns.getItem(0).setInnerText(message.getAuthor());
-        GWT.log(tableColumns.getItem(2).getClassName());
+        tableColumns.getItem(0).setInnerText(message.getSubject());
 
         // message
-        messagePreview.setInnerText(message.getMessageBody());
+        messagePreview.setInnerText(message.getBody());
 
         // date
-        tableColumns.getItem(3).setInnerText(message.getDate());
+        tableColumns.getItem(3).setInnerText(message.getSent().toString());
 
 //        header.getElementsByTagName("div").getItem(0).setInnerText(message.getDate());
         // the first child is our content place
-        body.getElementsByTagName("div").getItem(0).setInnerHTML(message.getMessageBody());
+        body.getElementsByTagName("div").getItem(0).setInnerHTML(message.getBody());
 
+        // GWT cut off css3 style, but this shouldn't be visible at all
+//        replyButton.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
+//                + "rgb(122,118,122) 54%");
 
-        // TODO
-        replyButton.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
-                + "rgb(122,118,122) 54%");
+        // set collapsed state
+        this.collapsed = collapsed;
+        toggleMessageBody();
+
     }
 
     public void toggleMessageBody() {
@@ -154,13 +153,8 @@ public class UserMessageView extends Composite implements HasClickHandlers {
         return (com.google.gwt.user.client.Element) elem;
     }
 
-    @Override
-    public HandlerRegistration addClickHandler(ClickHandler handler) {
-        return addDomHandler(handler, ClickEvent.getType());
-    }
-
-    public Anchor getReplyButton() {
-        return replyButton;
-    }
+//    public Anchor getReplyButton() {
+//        return replyButton;
+//    }
 
 }

@@ -37,7 +37,7 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
     }
 
     public void initReplyWindow(SimplePanel holder, Long messageId) {
-        holder.setWidget(holder);
+        holder.setWidget(view.getWidgetView());
         this.messageId  = messageId;
     }
 

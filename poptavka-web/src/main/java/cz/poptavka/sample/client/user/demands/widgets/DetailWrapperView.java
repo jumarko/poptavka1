@@ -23,6 +23,8 @@ public class DetailWrapperView extends Composite
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         GWT.log("DEMAND DETAIL view LOADED");
+        GWT.log("Is there a conversation panel: " + (conversationPanel == null));
+
     }
 
     @Override

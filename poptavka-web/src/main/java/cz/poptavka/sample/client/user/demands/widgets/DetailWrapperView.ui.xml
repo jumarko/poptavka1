@@ -19,6 +19,6 @@
             </g:HTML>
         </g:SimplePanel>
         <d:UserConversationPanel ui:field="conversationPanel"/>
-        <g:SimplePanel ui:field="replyHolder"/>
+        <g:SimplePanel ui:field="replyHolder" />
     </g:HTMLPanel>
 </ui:UiBinder>

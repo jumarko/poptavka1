@@ -10,7 +10,6 @@
                 margin: 10px auto;
                 padding: 5px;
                 position: relative;
-                margin-top: -15px;
                 -moz-border-radius: 10px;
                 -webkit-border-radius: 10px;
                 -moz-box-shadow: 0 0 5px #888888;
@@ -33,64 +32,54 @@
 
             .text-area {
                 width: 100%;
-                border: 0;
                 margin-right: 90px;
                 font-family: inherit;
             }
 
-            <!--
-            .reply-message-arrow-border {--><!--
-                border-color: transparent transparent #666666 transparent; --> <!--
-                border-style: solid; --> <!--
-                border-width: 10px; --> <!--
-                height: 0; --> <!--
-                width: 0; --> <!--
-                position: absolute; --> <!--
-                top: -21px; --> <!--
+            .reply-message-arrow-border {
+                border-color: transparent transparent #666666 transparent;
+                border-style: solid;
+                border-width: 10px;
+                height: 0;
+                width: 0;
+                position: absolute;
+                top: -21px;
                 left: 25px;
-                -->
-                <!--
             }
 
-            -->
-            <!--
-            .reply-message-arrow {--><!--
-                border-color: transparent transparent white transparent; --> <!--
-                border-style: solid; --> <!--
-                border-width: 10px; --> <!--
-                height: 0; --> <!--
-                width: 0; --> <!--
-                position: absolute; --> <!--
-                top: -18px; --> <!--
+            .reply-message-arrow {
+                border-color: transparent transparent white transparent;
+                border-style: solid;
+                border-width: 10px;
+                height: 0;
+                width: 0;
+                position: absolute;
+                top: -18px;
                 left: 25px;
-                -->
-                <!--
             }
-
-            -->
 
         </ui:style>
     <g:HTMLPanel>
         <div class="{style.reply-message}">
-            <div ui:field="header" class="{style.reply-message-header}" style="background-color: #CDCDCD">
+            <div ui:field="header" class="{style.reply-message-header}" >
                 <span style="text-align: center;">
                     <ui:msg key="clickMe">Click to Respond</ui:msg>
                 </span>
             </div>
             <div style="display: none;">
                 <!-- reply arrow -->
-                <!-- <div> -->
-                <!-- <div class="{style.reply-message-arrow-border}"></div> -->
-                <!-- <div class="{style.reply-message-arrow}"></div> -->
-                <!-- </div> -->
+                <div style="display: none;">
+                <div class="{style.reply-message-arrow-border}"></div>
+                <div class="{style.reply-message-arrow}"></div>
+                </div>
                 <!-- Message composition content -->
                 <div>
-                    <div style="float: right; height: 100%; width: 85px;">
+                    <div style="float: right; width: 85px;">
                         <g:Anchor ui:field="submitBtn">
                             <ui:msg key="submit">Submit</ui:msg>
                         </g:Anchor>
                         <g:Anchor ui:field="cancelBtn">
-                            <ui:msg key="submit">Submit</ui:msg>
+                            <ui:msg key="close">Close</ui:msg>
                         </g:Anchor>
                     </div>
                     <g:TextArea ui:field="replyTextArea" styleName="{style.text-area}" />

@@ -132,9 +132,6 @@ public interface UserEventBus extends EventBusWithLookup {
     /**
      * method for displaying conversation to selected demand.
      **/
-    @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setDemandMessages(ArrayList<MessageDetail> param, DetailType typeOfDetail);
-
     @Event(handlers = UserPresenter.class)
     void requestPotentialDemandConversation(long messageId);
     @Event(handlers = MessageHandler.class)

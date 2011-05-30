@@ -42,9 +42,10 @@ public class DetailWrapperPresenter extends
      * @param detailSection holder for widget
      * @param type type of view, where is this widget loaded
      */
-    public void initDetailWrapper(SimplePanel detailSection, DetailType type) {
+    public void initDetailWrapper(SimplePanel detailSection, DetailType detailType) {
         GWT.log("DEMAND DETAIL Presenter LOADED");
         detailSection.setWidget(view.getWidgetView());
+        this.type = detailType;
     }
 
     /**
@@ -83,19 +84,11 @@ public class DetailWrapperPresenter extends
             //event not for this instance of presenter
             return;
         }
-        view.getConversationPanel().setMessageList(messageList);
-    }
-
-    public void onSetDemandMessages(ArrayList<MessageDetail> messages, DetailType typeOfDetail) {
-        if (!typeOfDetail.equals(type)) {
-            //event not for this instance of presenter
-            return;
-        }
-        view.getConversationPanel().setMessageList(messages);
+        view.getConversationPanel().setMessageList(messageList, true);
     }
 
     /**
-     * Visual sign, that demand detail is loading
+     * Visual sign, that demand detail is loading.
      * @param demandId
      * @param typeOfDetail
      */

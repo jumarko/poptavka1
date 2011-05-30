@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.shared.domain.FakeMessage;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 
 /**
@@ -47,23 +46,23 @@ public class UserConversationPanel extends Composite {
      *
      * @param messages list of messages to be displayed
      */
-    public void setMessageList(ArrayList<MessageDetail> messages) {
+    public void setMessageList(ArrayList<MessageDetail> messages, boolean collapsed) {
         if (messages.size() == 0) {
             return;
         }
+        // Last message is always visible
         if (messages.size() == 1) {
-            messagePanel.add(new UserMessageView(new FakeMessage(), false));
+            messagePanel.add(new UserMessageView(messages.get(0), false, false));
             return;
         }
-        messagePanel.add(new UserMessageView(new FakeMessage(), true));
+        messagePanel.add(new UserMessageView(messages.get(0), collapsed, true));
         ((UserMessageView) messagePanel.getWidget(messagePanel.getWidgetCount() - 1)).toggleMessageBody();
         for (int i = 1; i < (messages.size() - 1); i++) {
-            messagePanel.add(new UserMessageView(new FakeMessage()));
+            messagePanel.add(new UserMessageView(messages.get(i), collapsed));
             ((UserMessageView) messagePanel.getWidget(messagePanel.getWidgetCount() - 1)).toggleMessageBody();
-
         }
-//        messagePanel.add(new UserMessageView(messages.get(messages.size() - 1)));
-        messagePanel.add(new UserMessageView(new FakeMessage(), false));
+        // Last message is always visible
+        messagePanel.add(new UserMessageView(messages.get(messages.size() - 1), false, false));
     }
 
 }
