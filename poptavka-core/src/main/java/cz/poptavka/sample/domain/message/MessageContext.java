@@ -11,13 +11,16 @@ package cz.poptavka.sample.domain.message;
  */
 public enum MessageContext {
     /* Message for supplier with potential demand. */
+
     POTENTIAL_SUPPLIERS_DEMAND(Integer.valueOf(1)),
     /* Message for client with potential offer. */
     POTENTIAL_CLIENTS_OFFER(Integer.valueOf(2)),
     /* Message from client when new demand is created. */
     NEW_CLIENTS_DEMAND(Integer.valueOf(3)),
     /* Message from supplier about query to potential demand. */
-    QUERY_TO_POTENTIAL_SUPPLIERS_DEMAND(Integer.valueOf(4));
+    QUERY_TO_POTENTIAL_SUPPLIERS_DEMAND(Integer.valueOf(4)),
+    /* Offer sent by Supplier. */
+    POTENTIAL_OFFER_FROM_SUPPLIER(Integer.valueOf(5));
     private final Integer value;
 
     MessageContext(Integer value) {
