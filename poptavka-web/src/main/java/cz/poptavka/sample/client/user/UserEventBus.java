@@ -27,6 +27,7 @@ import cz.poptavka.sample.client.user.handler.UserHandler;
 import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
@@ -61,15 +62,24 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DemandsLayoutPresenter.class)
     void addNewDemand(DemandDetail result);
 
-
+    /** Potential demands GETTER/SETTER. **/
     @Event(handlers = UserPresenter.class)
     void requestPotentialDemands();
-
     @Event(handlers = UserHandler.class)
     void getPotentialDemands(long businessUserId);
-
     @Event(handlers = PotentialDemandsPresenter.class)
     void responsePotentialDemands(ArrayList<PotentialDemandDetail> potentialDemandsList);
+
+    /** Offer demands GETTER/SETTER **/
+    // this same method should be called to MyDemandsPresenter
+    // depends on it's demandDetailType
+    @Event(handlers = UserPresenter.class)
+    void requestOfferClientDemands();
+    @Event(handlers = UserHandler.class)
+    void getClientDemandsWithOffers(Long clientId);
+    @Event(handlers = OffersPresenter.class)
+    void responseClientDemandsWithOffers(ArrayList<OfferDemandDetail> result);
+
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
@@ -80,9 +90,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void setTabWidget(Widget tabBody);
 
-    /** DEVEL **/
-    @Event(handlers = OffersPresenter.class)
-    void responseOffers(ArrayList<ArrayList<OfferDetail>> offers);
 
     // for operator only
     @Event
@@ -175,9 +182,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdministrationPresenter.class)
     void responseAdminDemandDetail(Widget widget);
-
-    @Event(handlers = UserHandler.class)
-    void requestOffers(ArrayList<Long> idList);
 
     /** Call to UserPresenter **/
     /**
@@ -301,6 +305,9 @@ public interface UserEventBus extends EventBusWithLookup {
      */
     @Event(handlers = UserPresenter.class)
     void bubbleOfferSending(OfferDetail offerToSend);
+
+
+
 
 
 

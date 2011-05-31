@@ -14,7 +14,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -63,11 +63,11 @@ public class DemandsLayoutPresenter
 
         void setAdministrationToken(String linkString);
 
-        Button getPotentDevelButton();
+        Button getDevelButton();
     }
 
     // TODO clean up after development
-    private PotentialDemandsPresenter develPresenter = null;
+    private OffersPresenter develPresenter = null;
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
@@ -76,7 +76,7 @@ public class DemandsLayoutPresenter
         view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
         view.setMyDemandsOperatorToken(getTokenGenerator().invokeMyDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
-        view.getPotentDevelButton().addClickHandler(new ClickHandler() {
+        view.getDevelButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -84,8 +84,8 @@ public class DemandsLayoutPresenter
                     develPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(develPresenter);
                 }
-                develPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
-                develPresenter.onInvokePotentialDemands();
+                develPresenter = eventBus.addHandler(OffersPresenter.class);
+                develPresenter.onInvokeOffers();
             }
         });
     }

@@ -13,10 +13,11 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
@@ -28,6 +29,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     private DemandRPCServiceAsync demandService = null;
     @Inject
     private UserRPCServiceAsync userService = null;
+    @Inject
+    private OfferRPCServiceAsync offerService = null;
 
 
     private static final LocalizableMessages MSGS = GWT
@@ -47,22 +50,6 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
                     public void onFailure(Throwable exc) {
                         eventBus.loadingHide();
                         Window.alert(exc.getMessage());
-                    }
-                });
-    }
-
-    public void onRequestOffers(ArrayList<Long> idList) {
-        demandService.getDemandOffers(idList,
-                new AsyncCallback<ArrayList<ArrayList<OfferDetail>>>() {
-
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                    }
-
-                    @Override
-                    public void onSuccess(
-                            ArrayList<ArrayList<OfferDetail>> result) {
-                        eventBus.responseOffers(result);
                     }
                 });
     }
@@ -144,6 +131,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
     /**
      * Get Supplier's potential demands list
+     *
+     * @param businessUserId
      */
     public void onGetPotentialDemands(long businessUserId) {
         demandService.getPotentialDemandsForSupplier(businessUserId,
@@ -160,6 +149,27 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
                         eventBus.responsePotentialDemands(result);
                     }
                 });
+    }
+
+
+    /**
+     * Get Client's demands for offers.
+     *
+     * @param clientId
+     */
+    public void onGetClientDemandsWithOffers(Long clientId) {
+        offerService.getClientDemands(clientId, new AsyncCallback<ArrayList<OfferDemandDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("UserHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<OfferDemandDetail> result) {
+                eventBus.responseClientDemandsWithOffers(result);
+            }
+        });
     }
 
 }

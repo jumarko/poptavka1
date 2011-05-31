@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -100,11 +99,5 @@ public class PotentialDemandsPresenter extends
         // widget display
         eventBus.displayContent(view.getWidgetView());
     }
-
-    public void cleanDetailWrapperPresenterForDevelopment() {
-        GWT.log("WRAPPER REMOVED");
-        eventBus.removeHandler(detailPresenter);
-    }
-
 
 }

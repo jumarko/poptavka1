@@ -129,6 +129,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         eventBus.getPotentialDemands(user.getId());
     }
 
+    public void onRequestOfferClientDemands() {
+        eventBus.getClientDemandsWithOffers(user.getClientId());
+    }
+
+    /** messaging subsection **/
     public void onRequestPotentialDemandConversation(long messageId, int test) {
         eventBus.getPotentialDemandConversation(messageId, user.getId(), test);
     }

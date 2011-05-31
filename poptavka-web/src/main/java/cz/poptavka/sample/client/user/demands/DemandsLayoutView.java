@@ -92,7 +92,7 @@ public class DemandsLayoutView extends Composite
 
     // TODO Beho - clean up after devel
     @Override
-    public Button getPotentDevelButton() {
+    public Button getDevelButton() {
         return potentDevelBtn;
     }
 }
