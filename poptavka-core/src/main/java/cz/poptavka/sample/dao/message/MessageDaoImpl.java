@@ -49,6 +49,21 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     /**
      * Loads conversation between supplier and  client related to potential demand supplier's queries.
      *
+     * Juraj tato metoda mi musi vratit vsetky spravy medzi Dodavatelom(parameter User user) a
+     * Klientom (ziskas z parametru message.getSender()). Vsetky tieto spravy maju spolocne
+     * vlakno messageThread (vstupny parameter message). Snazil som sa tento SQL zostavit cez
+     * Criteria ale ako vidis nizsie nepodarilo sa mi to. Chcel som si vyselektovat vsetky
+     * spravy s danym threadRoot a s danymi rolami. Tieto role my mali vymedzit 2 typy
+     * sprav (
+     * 1. vsetky spravy od Dodavatela(SENDER) ku Klientovi(TO) a
+     * 2. vsetky spravy od Klienta(SENDER) ku Dodavatelovi(TO). Tymto by som mal ziskat
+     * uplne vsetky spravy tohto vlakna obmedzene len na daneho dodavatela a klienta.
+     *
+     * PS: Tieto role si vytvorim ako objetky ale je treba ich nacitat priamo z DB,
+     * aby konecne vytvorenie selectu nehadzalo chybu parameter je null.  ROle si z DB
+     * nenacitavam pretoze neviem ako a cela tato metoda sa mi nepaci. Potrebujem tvoju
+     * expertizu.
+     *
      * @param message
      * @param user
      * @param messageFilter
@@ -124,6 +139,7 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         List<MessageUserRole> rolesFromClientToSupplier = new ArrayList<MessageUserRole>();
         rolesFromClientToSupplier.add(roleToSupplier);
         rolesFromClientToSupplier.add(roleFromClient);
+
         // From Supplier role
         MessageUserRole roleFromSupplier = new MessageUserRole();
         roleFromSupplier.setUser(user);
