@@ -4,16 +4,7 @@
  */
 package cz.poptavka.sample.server.service.message;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
-import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
@@ -31,6 +22,13 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -114,7 +112,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     /**
      * Offer sent by supplier to potential demand.
-     * @param OfferDetail
+     * @param offer
      * @return message
      */
     public OfferDetail sendOffer(OfferDetail offer) {
@@ -176,7 +174,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Message threadRoot = messageService.getById(threadId);
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
-                threadRoot, user, MessageFilter.EMPTY_FILTER);
+                threadRoot, user);
         ArrayList<MessageDetail> messageDetails = new ArrayList<MessageDetail>();
         for (Message message : messages) {
             MessageDetail md = new MessageDetail();

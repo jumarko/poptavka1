@@ -42,7 +42,7 @@ public interface MessageDao extends GenericDao<Message> {
      * Returns a userMessage of given message. UserMessage stores attributes like
      * isRead, isStared
      *
-     * @param message
+     * @param messages
      * @param messageFilter
      * @return
      */
@@ -52,9 +52,8 @@ public interface MessageDao extends GenericDao<Message> {
      * Loads conversation between supplier and  client related to potential demand supplier's queries.
      *
      * @param message
-     * @param user
-     * @param messageFilter
+     * @param supplierUser
      * @return
      */
-    List<Message> getPotentialDemandConversation(Message message, User user, MessageFilter messageFilter);
+    List<Message> getPotentialDemandConversation(Message message, User supplierUser);
 }

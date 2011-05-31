@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
@@ -23,10 +24,20 @@ import javax.persistence.NamedQuery;
  * Associates a user to a message and assigns him/her a role
  */
 @Entity
-@NamedQuery(name = "getUserMessageThreads",
-        query = "select messageUserRole.message "
-                + " from MessageUserRole messageUserRole"
-                + " where messageUserRole.user = :user")
+@NamedQueries({
+        @NamedQuery(name = "getUserMessageThreads",
+                query = "select messageUserRole.message "
+                        + " from MessageUserRole messageUserRole"
+                        + " where messageUserRole.user = :user"),
+
+        @NamedQuery(name = "getPotentialDemandConversation",
+                query = " select messageUserRole.message"
+                        + " from MessageUserRole messageUserRole"
+                        + " where "
+                        // either message itself is thread root or it has given thread root
+                        + " (messageUserRole.message = :threadRoot OR messageUserRole.message.threadRoot = :threadRoot)"
+                        + "   and messageUserRole.user = :supplier") }
+)
 public class MessageUserRole extends DomainObject {
     @ManyToOne
     private User user;

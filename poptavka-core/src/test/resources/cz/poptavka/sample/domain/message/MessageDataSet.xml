@@ -49,8 +49,37 @@
     <MESSAGEUSERROLE ID="8" MESSAGE_ID="4" USER_ID="111111111" TYPE="TO"/>
 
 
-    !-- Completely different Thread root -->
+
+
+
+    <!-- Communication with another client (but the same supplier remains) -->
+    <!-- ================================================================= -->
+    <!-- Second thread root => the same as first one, but sent to the other client -->
     <MESSAGE ID="5"
+             CREATED="2011-05-11"
+             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             FIRSTBORN_ID="5"
+             SUBJECT="Dnes nepridem - zajtra" />
+
+
+
+    <MESSAGE ID="6"
+             CREATED="2011-05-31"
+             SUBJECT="Re: Dnes nepridem - zajtra"
+             BODY="Ahoj, Kamilko, tu tvoja druha teta. Pridi si kedy chces.!"
+             PARENT_ID="5"
+             SENDER_ID="111111111"
+             THREADROOT_ID="5" />
+
+    <MESSAGEUSERROLE ID="51" MESSAGE_ID="5" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="52" MESSAGE_ID="5" USER_ID="111111113" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="53" MESSAGE_ID="6" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="54" MESSAGE_ID="7" USER_ID="111111113" TYPE="TO"/>
+
+    !-- Completely different Thread root -->
+    <MESSAGE ID="100"
              BODY="Ahoj, ahoj, ahoj, dnes, kupit, slivowitz."
              PARENT_ID="[NULL]"
              SUBJECT="Spam - ahoj, ahoj" />

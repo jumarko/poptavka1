@@ -6,6 +6,7 @@ import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.service.GeneralService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
@@ -29,6 +30,9 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private GeneralService generalService;
 
     private User user;
 
@@ -94,6 +98,22 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
+    @Test
+    public void testGetPotentialDemandConversation() {
+        final Message threadRoot = this.messageService.getById(1L);
+        final User supplier = this.generalService.find(User.class, 111111112L);
+        final List<Message> potentialDemandConversation =
+                this.messageService.getPotentialDemandConversation(threadRoot, supplier);
+
+        Assert.assertEquals(4, potentialDemandConversation.size());
+        // check if all expected messages are in conversation
+        checkUserMessageExists(1L, potentialDemandConversation);
+        checkUserMessageExists(2L, potentialDemandConversation);
+        checkUserMessageExists(3L, potentialDemandConversation);
+        checkUserMessageExists(4L, potentialDemandConversation);
+    }
+
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
@@ -111,5 +131,5 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                     }
                 }));
     }
-
 }
+
