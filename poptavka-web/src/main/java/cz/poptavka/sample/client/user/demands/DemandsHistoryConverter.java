@@ -28,7 +28,7 @@ import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 
     /*******************************************************************/
-    /**           DEVEL PRESENTER INITIALIZATION SECTION               */
+    /**           .DEVEL PRESENTER INITIALIZATION SECTION.               */
 
     private static final String DEMAND_MY = "invokeMyDemands";
     private static final String DEMAND_OFFERS = "invokeOffers";
@@ -59,6 +59,7 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
             //devel behaviour
             if (historyName.equals(DEMAND_MY)) {
                 if (myDemandPresenter != null) {
+                    myDemandPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(myDemandPresenter);
                 }
                 myDemandPresenter = eventBus.addHandler(MyDemandsPresenter.class);
@@ -67,6 +68,7 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 
             if (historyName.equals(DEMAND_OFFERS)) {
                 if (offersPresenter != null) {
+                    offersPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(offersPresenter);
                 }
                 offersPresenter = eventBus.addHandler(OffersPresenter.class);
@@ -81,6 +83,7 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
             }
             if (historyName.equals(DEMANDS_POTENTIAL)) {
                 if (potentialDemandsPresenter != null) {
+                    potentialDemandsPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(potentialDemandsPresenter);
                 }
                 potentialDemandsPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
@@ -88,6 +91,7 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
             }
             if (historyName.equals(DEMANDS_OPERATOR)) {
                 if (operatorPresenter != null) {
+                    operatorPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(operatorPresenter);
                 }
                 operatorPresenter = eventBus.addHandler(DemandsOperatorPresenter.class);

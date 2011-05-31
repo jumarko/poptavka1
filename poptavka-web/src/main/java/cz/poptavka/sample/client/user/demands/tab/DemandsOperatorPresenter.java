@@ -81,4 +81,10 @@ public class DemandsOperatorPresenter extends
         view.getDataProvider().getList().addAll(demands);
         refreshDisplays();
     }
+
+    // TODO delete, just devel tool
+    public void cleanDetailWrapperPresenterForDevelopment() {
+        GWT.log("WRAPPER REMOVED");
+        eventBus.removeHandler(detailPresenter);
+    }
 }

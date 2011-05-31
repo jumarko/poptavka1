@@ -140,6 +140,7 @@ public class OffersPresenter extends
         view.getDetailSection().setWidget(widget);
     }
 
+    // TODO delete, just devel tool
     public void cleanDetailWrapperPresenterForDevelopment() {
         GWT.log("WRAPPER REMOVED");
         eventBus.removeHandler(detailPresenter);
