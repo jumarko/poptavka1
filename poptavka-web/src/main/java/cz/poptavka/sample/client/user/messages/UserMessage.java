@@ -89,14 +89,11 @@ public class UserMessage extends Composite {
     public void setMessageStyle(MessageDisplayType type) {
         switch (type) {
             case FIRST:
-                GWT.log(" --------- FIRST");
                 header.getParentElement().addClassName(style.messageFirst());
                 break;
             case BOTH:
-                GWT.log(" --------- BOTH");
                 header.getParentElement().addClassName(style.messageFirst());
             case LAST:
-                GWT.log(" --------- LAST");
                 header.getParentElement().addClassName(style.messageLast());
                 break;
             case NONE:

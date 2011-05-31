@@ -26,7 +26,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
 public class MyDemandsOperatorView extends Composite
-    implements MyDemandsOperatorPresenter.MyDemandsOperatorViewInterface {
+    implements DemandsOperatorPresenter.MyDemandsOperatorViewInterface {
 
     private static MyDemandsOperatorUiBinder uiBinder = GWT
             .create(MyDemandsOperatorUiBinder.class);

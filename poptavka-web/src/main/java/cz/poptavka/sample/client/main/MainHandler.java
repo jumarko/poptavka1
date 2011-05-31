@@ -145,7 +145,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                         // signal event
                         eventBus.loadingHide();
                         // TODO forward to user/atAccount
-                        eventBus.addNewDemand(result);
+//                        eventBus.addNewDemand(result);
                     }
                 });
         LOGGER.info("submitting new demand");

@@ -13,6 +13,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
+import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -62,7 +63,6 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     // init of demandLayout tab
     public void onSetUser(UserDetail userDetail) {
         this.user = userDetail;
-        eventBus.loadingHide();
 
         showDevelUserInfoPopupThatShouldBedeletedAfter();
 
@@ -76,6 +76,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         eventBus.setUserLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
 
+        eventBus.loadingHide();
     }
 
     public void onFireMarkedEvent() {
@@ -106,13 +107,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         view.setBody(tabBody);
     }
 
-    /** REQUESTs && RESPONSEs **/
-    public void onRequestClientId() {
-        eventBus.responseClientId(user.getClientId());
-    }
-
-    public void onRequestSupplierId() {
-        eventBus.responseSupplierId(user.getSupplierId());
+    /** REQUESTs && RESPONSEs. **/
+    public void onRequestClientId(DemandDetail newDemand) {
+        // TODO refactor this method to call just demand
+        newDemand.setClientId(user.getClientId());
+        eventBus.createDemand(newDemand, user.getClientId());
     }
 
     public void onMarkEventToLoad(String historyName) {
@@ -142,13 +141,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         messageToSend.setSenderId(user.getId());
         eventBus.sendQueryToPotentialDemand(messageToSend);
     }
-
     public void onBubbleOfferSending(OfferDetail offerToSend) {
         offerToSend.getMessageDetail().setSenderId(user.getId());
         offerToSend.setSupplierId(user.getSupplierId());
         eventBus.sendDemandOffer(offerToSend);
     }
-
 
  // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {

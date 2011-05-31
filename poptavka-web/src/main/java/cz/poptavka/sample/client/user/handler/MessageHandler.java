@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.user.handler;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -25,38 +24,20 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, int test) {
 
         // TODO NOT WORKING NOW
-//        messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId,
-//                new AsyncCallback<ArrayList<MessageDetail>>() {
-//
-//                @Override
-//                public void onFailure(Throwable caught) {
-//                    Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
-//                }
-//
-//                @Override
-//                public void onSuccess(ArrayList<MessageDetail> messageList) {
-//                    eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
-//                }
-//            });
+        messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId,
+                new AsyncCallback<ArrayList<MessageDetail>>() {
 
-        // Devel
-        ArrayList<MessageDetail> messageList = new ArrayList<MessageDetail>();
-        MessageDetail message = new MessageDetail();
-        message.setThreadRootId(6);
-        message.setParentId(6);
-        message.setId(22);
-        message.setSenderId(116);
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
+                }
 
-        GWT.log(message.getSenderId() + " -< ID");
-        message.setBody("Testing Message");
-        message.setMessageState("SENT");
-        message.setSubject("Demand Subject");
-        message.setSent(new Date(2011, 12, 07));
-
-        for (int i = 0; i < test; i++) {
-            messageList.add(message);
-        }
-        eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+                @Override
+                public void onSuccess(ArrayList<MessageDetail> messageList) {
+                    GWT.log("Conversation size: " + messageList.size());
+                    eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+                }
+            });
     }
 
     public void onSendQueryToPotentialDemand(MessageDetail messageToSend) {

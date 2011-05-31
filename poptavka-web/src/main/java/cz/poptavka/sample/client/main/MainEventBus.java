@@ -57,9 +57,10 @@ public interface MainEventBus extends EventBus {
     @Event(modulesToLoad = UserModule.class, handlers = MainPresenter.class)
     void atAccount();
 
+    // TODO
     //from event handler automatic redirection
-    @Event(modulesToLoad = UserModule.class, passive = true)
-    void addNewDemand(DemandDetail result);
+//    @Event(modulesToLoad = UserModule.class, passive = true)
+//    void addNewDemand(DemandDetail result);
 
     @Event(modulesToLoad = HomeModule.class)
     void atCreateDemand();

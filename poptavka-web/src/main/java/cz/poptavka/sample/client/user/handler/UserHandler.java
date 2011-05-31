@@ -32,27 +32,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     @Inject
     private OfferRPCServiceAsync offerService = null;
 
-
     private static final LocalizableMessages MSGS = GWT
             .create(LocalizableMessages.class);
-
-    public void onGetClientsDemands(Long id) {
-        demandService.getClientDemands(id,
-                new AsyncCallback<ArrayList<DemandDetail>>() {
-
-                    @Override
-                    public void onSuccess(ArrayList<DemandDetail> list) {
-                        eventBus.setClientDemands(list);
-                        eventBus.loadingHide();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable exc) {
-                        eventBus.loadingHide();
-                        Window.alert(exc.getMessage());
-                    }
-                });
-    }
 
     public void onGetAllDemands() {
         demandService.getAllDemands(new AsyncCallback<List<DemandDetail>>() {
@@ -84,7 +65,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     }
 
     /**
-     * Get User according to stored sessionID from DB after login
+     * Get User according to stored sessionID from DB after login.
      */
     public void onGetUser() {
         // get sessionId cookie
@@ -118,7 +99,6 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
         demandService.getDemand(demandId, new AsyncCallback<DemandDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                // TODO
                 Window.alert(caught.getMessage());
             }
 
@@ -130,7 +110,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     }
 
     /**
-     * Get Supplier's potential demands list
+     * Get Supplier's potential demands list.
      *
      * @param businessUserId
      */

@@ -74,6 +74,11 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
             @Override
             public void onSuccess(UserDetail client) {
                 LOGGER.fine("verify result");
+                if (client == null) {
+                    eventBus.loadingHide();
+                    eventBus.loginError();
+                    return;
+                }
                 if (client.getId() != -1) {
                     eventBus.prepareNewDemandForNewClient(client);
                 } else {

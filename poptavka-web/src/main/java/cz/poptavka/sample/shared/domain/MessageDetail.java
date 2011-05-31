@@ -4,9 +4,10 @@
  */
 package cz.poptavka.sample.shared.domain;
 
-import cz.poptavka.sample.domain.message.Message;
 import java.io.Serializable;
 import java.util.Date;
+
+import cz.poptavka.sample.domain.message.Message;
 
 /**
  *
@@ -40,7 +41,7 @@ public class MessageDetail implements Serializable {
 //        m.setFirstBornId(serialVersionUID);
         m.setMessageState(message.getMessageState().name());
 //        m.setNexSiblingId(serialVersionUID);
-        m.setParentId(message.getParent().getId());
+        m.setParentId(message.getParent() == null ? m.getThreadRootId() : message.getParent().getId());
 //        m.setReceiverId();
         m.setSenderId(message.getSender().getId());
         m.setSent(message.getSent());
@@ -220,6 +221,22 @@ public class MessageDetail implements Serializable {
         this.receiverId = receiverId;
     }
 
-
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Message ID: " + id);
+        sb.append("\nThreadID: " + threadRootId);
+        sb.append("\nParentID: " + parentId);
+        sb.append("\nFirstBornIdID: " + firstBornId);
+        sb.append("\nNexSiblingID: " + nexSiblingId);
+        sb.append("\ndemandID: " + demandId);
+        sb.append("\nSubject: " + subject);
+        sb.append("\nBody: " + body);
+        sb.append("\nMessageState: " + messageState);
+        sb.append("\nDate-Created: " + (created == null ? "null" : created.toString()));
+        sb.append("\nDate-sent: " + (sent == null ? "null" : sent.toString()));
+        sb.append("\nSenderID: " + senderId);
+        sb.append("\nReceiverID: " + receiverId);
+        return sb.toString();
+    }
 
 }

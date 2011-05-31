@@ -27,7 +27,7 @@ import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
-@Presenter(view = NewDemandView.class)
+@Presenter(view = NewDemandView.class, multiple = true)
 public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDemandInterface, UserEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
@@ -67,7 +67,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(ADVANCED)) {
-                    eventBus.requestClientId();
+                    createNewDemand();
                 }
             }
         });
@@ -95,7 +95,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
         });
     }
 
-    public void onResponseClientId(Long id) {
+    public void createNewDemand() {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
         DemandDetail demand = new DemandDetail();
@@ -109,7 +109,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
         demand.setAdvInfo(((FormDemandAdvViewInterface)
                 view.getHolderPanel(ADVANCED).getWidget()).getValues());
 
-        eventBus.createDemand(demand, id);
+        eventBus.requestClientId(demand);
         eventBus.loadingShow(MSGS.progressCreatingDemand());
     }
 

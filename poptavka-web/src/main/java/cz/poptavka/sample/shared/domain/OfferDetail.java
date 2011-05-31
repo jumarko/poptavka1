@@ -1,10 +1,11 @@
 package cz.poptavka.sample.shared.domain;
 
-import cz.poptavka.sample.domain.message.Message;
-import cz.poptavka.sample.domain.offer.Offer;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.offer.Offer;
 
 public class OfferDetail implements Serializable {
 

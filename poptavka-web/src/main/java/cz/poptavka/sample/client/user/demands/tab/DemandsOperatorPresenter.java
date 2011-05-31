@@ -18,9 +18,9 @@ import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 
-@Presenter(view = MyDemandsOperatorView.class)
-public class MyDemandsOperatorPresenter extends
-    LazyPresenter<MyDemandsOperatorPresenter.MyDemandsOperatorViewInterface, UserEventBus> {
+@Presenter(view = MyDemandsOperatorView.class, multiple = true)
+public class DemandsOperatorPresenter extends
+    LazyPresenter<DemandsOperatorPresenter.MyDemandsOperatorViewInterface, UserEventBus> {
 
     public interface MyDemandsOperatorViewInterface extends LazyView {
         Widget getWidgetView();
@@ -50,7 +50,7 @@ public class MyDemandsOperatorPresenter extends
 
     private DetailWrapperPresenter detailPresenter = null;
 
-    public void onInvokeMyDemandsOperator() {
+    public void onInvokeDemandsOperator() {
         eventBus.displayContent(view.getWidgetView());
 
      // Init DetailWrapper for this view

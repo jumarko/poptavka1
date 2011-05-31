@@ -177,18 +177,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 threadRoot, user);
         ArrayList<MessageDetail> messageDetails = new ArrayList<MessageDetail>();
         for (Message message : messages) {
-            MessageDetail md = new MessageDetail();
-            md.setBody(message.getBody());
-            md.setCreated(message.getCreated());
-            md.setFirstBornId(message.getFirstBorn().getId());
-            md.setMessageState(message.getMessageState().name());
-            md.setNexSiblingId(message.getNextSibling().getId().longValue());
-            md.setParentId(message.getParent().getId());
-            md.setDemandId(message.getDemand().getId());
-            md.setSent(message.getSent());
-            md.setSubject(message.getSubject());
-            md.setThreadRootId(message.getThreadRoot().getId());
-            messageDetails.add(md);
+            messageDetails.add(MessageDetail.generateMessageDetail(message));
         }
         return messageDetails;
     }

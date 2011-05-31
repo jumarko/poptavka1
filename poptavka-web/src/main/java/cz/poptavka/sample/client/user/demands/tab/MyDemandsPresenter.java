@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -19,7 +20,7 @@ import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 
-@Presenter(view = MyDemandsView.class)
+@Presenter(view = MyDemandsView.class, multiple = true)
 public class MyDemandsPresenter extends
         LazyPresenter<MyDemandsPresenter.MyDemandsInterface, UserEventBus> {
 
@@ -74,7 +75,10 @@ public class MyDemandsPresenter extends
         }
         eventBus.displayContent(view.getWidgetView());
         GWT.log("Demands are on the way - getDemands!");
-        eventBus.requestClientDemands();
+        PopupPanel panel = new PopupPanel(true);
+
+        // TODO temporal
+        panel.getElement().setInnerText("No GET demands event call");
     }
 
     public void onResponseClientDemands(ArrayList<DemandDetail> demands) {

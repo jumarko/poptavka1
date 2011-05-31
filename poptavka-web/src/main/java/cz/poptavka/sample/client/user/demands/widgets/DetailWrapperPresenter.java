@@ -124,6 +124,11 @@ public class DetailWrapperPresenter extends
             return;
         }
         view.getConversationPanel().setMessageList(messageList, true);
+
+        for (MessageDetail m : messageList) {
+            GWT.log(m.toString());
+        }
+
     }
 
     public void onAddReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType) {

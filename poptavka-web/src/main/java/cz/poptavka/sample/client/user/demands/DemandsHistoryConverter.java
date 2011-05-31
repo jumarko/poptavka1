@@ -1,29 +1,98 @@
 package cz.poptavka.sample.client.user.demands;
 
-import java.util.logging.Logger;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Cookies;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.tab.DemandsOperatorPresenter;
+import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
+import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 
+/**
+ * History Converter for Demands tab in user interface. Instances of view
+ * are singletons - loaded only once.
+ *
+ * During development phase will ALL these presenters set to multiple = true.
+ * To achieve faster development without need of view refresh.
+ *
+ * For production this wil be set back to normal.
+ *
+ * @author Beho
+ */
 @History(type = HistoryConverterType.NONE)
 public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 
+    /*******************************************************************/
+    /**           DEVEL PRESENTER INITIALIZATION SECTION               */
 
-    private static final Logger LOGGER = Logger
-            .getLogger(DemandsHistoryConverter.class.getName());
+    private static final String DEMAND_MY = "invokeMyDemands";
+    private static final String DEMAND_OFFERS = "invokeOffers";
+    private static final String DEMAND_NEW = "invokeNewDemand";
+    private static final String DEMANDS_POTENTIAL = "invokePotentialDemands";
+    private static final String DEMANDS_OPERATOR = "invokeDemandsOperator";
+
+    private MyDemandsPresenter myDemandPresenter = null;
+    private OffersPresenter offersPresenter = null;
+    private NewDemandPresenter newDemandPresenter = null;
+    private PotentialDemandsPresenter potentialDemandsPresenter = null;
+    private DemandsOperatorPresenter operatorPresenter = null;
+
+    /**           DEVEL PRESENTER INITIALIZATION SECTION               */
+    /*******************************************************************/
 
     @Override
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
-        LOGGER.fine("History Name: " + historyName + " || Param: " + param);
         String cookie = Cookies.getCookie("user-presenter");
-        LOGGER.fine("Cookie value: " + cookie);
         if (cookie.equals("loaded")) {
-            eventBus.dispatch(historyName);
+//            normal behaviour
+//            eventBus.dispatch(historyName);
+
+            GWT.log(historyName);
+
+
+            //devel behaviour
+            if (historyName.equals(DEMAND_MY)) {
+                if (myDemandPresenter != null) {
+                    eventBus.removeHandler(myDemandPresenter);
+                }
+                myDemandPresenter = eventBus.addHandler(MyDemandsPresenter.class);
+                myDemandPresenter.onInvokeMyDemands();
+            }
+
+            if (historyName.equals(DEMAND_OFFERS)) {
+                if (offersPresenter != null) {
+                    eventBus.removeHandler(offersPresenter);
+                }
+                offersPresenter = eventBus.addHandler(OffersPresenter.class);
+                offersPresenter.onInvokeOffers();
+            }
+            if (historyName.equals(DEMAND_NEW)) {
+                if (newDemandPresenter != null) {
+                    eventBus.removeHandler(newDemandPresenter);
+                }
+                newDemandPresenter = eventBus.addHandler(NewDemandPresenter.class);
+                newDemandPresenter.onInvokeNewDemand();
+            }
+            if (historyName.equals(DEMANDS_POTENTIAL)) {
+                if (potentialDemandsPresenter != null) {
+                    eventBus.removeHandler(potentialDemandsPresenter);
+                }
+                potentialDemandsPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
+                potentialDemandsPresenter.onInvokePotentialDemands();
+            }
+            if (historyName.equals(DEMANDS_OPERATOR)) {
+                if (operatorPresenter != null) {
+                    eventBus.removeHandler(operatorPresenter);
+                }
+                operatorPresenter = eventBus.addHandler(DemandsOperatorPresenter.class);
+                operatorPresenter.onInvokeDemandsOperator();
+            }
         } else {
             eventBus.atAccount();
             eventBus.markEventToLoad(historyName);
