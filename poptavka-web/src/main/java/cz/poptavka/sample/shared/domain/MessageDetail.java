@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.shared.domain;
 
+import cz.poptavka.sample.domain.message.Message;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,6 +29,23 @@ public class MessageDetail implements Serializable {
     private Date sent;
     private long senderId;
     private long receiverId;
+
+    public static MessageDetail generateMessageDetail(Message message) {
+        MessageDetail m = new MessageDetail();
+        m.setBody(message.getBody());
+        m.setCreated(message.getCreated());
+//        m.setFirstBornId(serialVersionUID);
+        m.setMessageState(message.getMessageState().name());
+//        m.setNexSiblingId(serialVersionUID);
+        m.setParentId(message.getParent().getId());
+//        m.setReceiverId();
+        m.setSenderId(message.getSender().getId());
+        m.setSent(message.getSent());
+        m.setSubject(message.getSubject());
+        m.setThreadRootId(message.getThreadRoot().getId());
+        return m;
+    }
+
 
     /**
      * @return the threadRootId

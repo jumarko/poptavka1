@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements MessageRPCService {
 
+    // TODO ivlcek - konstanty nacitat cez lokalizovane rozhranie
+    public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     /**
      * Generated serialVersionUID.
      */
@@ -59,7 +61,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param messageDetail
      * @return message
      */
-    public Message sendQueryToPotentialDemand(MessageDetail messageDetail) {
+    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetail) {
         Message m = new Message();
         m.setBody(messageDetail.getBody());
         m.setCreated(new Date());
@@ -72,7 +74,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         User sender = this.generalService.find(User.class, messageDetail.getSenderId());
         m.setSender(sender);
         m.setSent(new Date());
-        m.setSubject(messageDetail.getSubject());
+        m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
         m.setThreadRoot(this.messageService.getById(messageDetail.getThreadRootId()));
         // set message roles
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
@@ -91,12 +93,13 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageFromUserRole.setUser(sender);
         messageUserRoles.add(messageFromUserRole);
         m.setRoles(messageUserRoles);
-        this.messageService.create(m);
-        // TODO set children for parent message
+        MessageDetail messageDetailPersisted = MessageDetail.generateMessageDetail(this.messageService.create(m));
+        // TODO set children for parent message - check if it is correct
         parentMessage.getChildren().add(m);
         parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
-        this.messageService.update(parentMessage);
-        return m;
+        parentMessage = this.messageService.update(parentMessage);
+
+        return messageDetailPersisted;
     }
 
     @Override
