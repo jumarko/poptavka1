@@ -82,6 +82,12 @@ public class DetailWrapperPresenter extends
     public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType) {
         if (!wrapperhandlerType.equals(type)) {
             //event not for this instance of presenter
+            GWT.log(view.getWidgetView().getClass().getName()
+                    + " does NOT handle method onSetPotentialDemandConversation");
+            return;
+        }
+        if (messageList == null) {
+            GWT.log(" ** messageList is empty()");
             return;
         }
         view.getConversationPanel().setMessageList(messageList, true);

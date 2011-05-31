@@ -3,11 +3,11 @@
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:d="urn:import:cz.poptavka.sample.client.user.messages">
     <ui:style>
-        .important {
-            font-weight: bold;
+        .overflow {
+            overflow: auto;
         }
     </ui:style>
-    <g:HTMLPanel>
+    <g:HTMLPanel ui:field="container" styleName="{style.overflow}">
         <g:SimplePanel ui:field="detailHolder">
             <g:HTML>
                 <center>

@@ -1,9 +1,8 @@
 package cz.poptavka.sample.client.user.handler;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -19,20 +18,38 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     @Inject
     private MessageRPCServiceAsync messageService;
 
-    public void onGetPotentialDemandConversation(long messageId, long businessUserId) {
-        messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
+    public void onGetPotentialDemandConversation(long messageId, long businessUserId, int test) {
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
-                }
+        // TODO NOT WORKING NOW
+//        messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId,
+//                new AsyncCallback<ArrayList<MessageDetail>>() {
+//
+//                @Override
+//                public void onFailure(Throwable caught) {
+//                    Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
+//                }
+//
+//                @Override
+//                public void onSuccess(ArrayList<MessageDetail> messageList) {
+//                    eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+//                }
+//            });
 
-                @Override
-                public void onSuccess(ArrayList<MessageDetail> messageList) {
-                    eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
-                }
-            });
+        // Devel
+        ArrayList<MessageDetail> messageList = new ArrayList<MessageDetail>();
+        MessageDetail message = new MessageDetail();
+        message.setThreadRootId(6);
+        message.setBody("Testing Message");
+        message.setMessageState("SENT");
+        message.setSubject("Demand Subject");
+        message.setSent(new Date(2011, 12, 07));
+
+        for (int i = 0; i < test; i++) {
+            messageList.add(message);
+        }
+        eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+
+
     }
 
 }

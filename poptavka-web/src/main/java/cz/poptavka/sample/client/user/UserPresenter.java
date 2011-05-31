@@ -127,8 +127,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         eventBus.getPotentialDemands(user.getId());
     }
 
-    public void onRequestPotentialDemandConversation(long messageId) {
-        eventBus.getPotentialDemandConversation(messageId, user.getId());
+    public void onRequestPotentialDemandConversation(long messageId, int test) {
+        eventBus.getPotentialDemandConversation(messageId, user.getId(), test);
     }
 
 

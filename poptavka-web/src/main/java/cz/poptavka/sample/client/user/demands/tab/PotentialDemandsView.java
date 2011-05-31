@@ -6,6 +6,7 @@ import java.util.Set;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -19,7 +20,6 @@ import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSe
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -28,6 +28,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
+import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 
@@ -38,7 +39,7 @@ import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
  * @author Beho
  *
  */
-public class PotentialDemandsView extends Composite implements
+public class PotentialDemandsView extends OverflowComposite implements
         PotentialDemandsPresenter.IPotentialDemands {
 
     private static PotentialDemandsViewUiBinder uiBinder = GWT
@@ -60,8 +61,6 @@ public class PotentialDemandsView extends Composite implements
     @UiField
     Button replyBtn, deleteBtn, moreActionsBtn, refreshBtn;
 
-    // TODO decide what panel to use
-    // @UiField DetailWrapperView detailSection;
     @UiField
     SimplePanel detailSection;
 
@@ -79,6 +78,7 @@ public class PotentialDemandsView extends Composite implements
         GWT.log("LOAD");
         initCellWidget();
         initWidget(uiBinder.createAndBindUi(this));
+        setParentOverflow(detailSection, Overflow.AUTO);
 
         // Element newHeadDiv = header.getElement();
         // GWT.log(newHeadDiv.getNodeName());
@@ -114,11 +114,7 @@ public class PotentialDemandsView extends Composite implements
         selectionModel = new MultiSelectionModel<PotentialDemandDetail>(
                 KEY_PROVIDER);
         cellTable.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager
-                        .<PotentialDemandDetail>createCheckboxManager());
-
-        // cellTable.setSelectionModel(selectionModel,
-        // DefaultSelectionEventManager.<PotentialDemandDetail>createCheckboxManager());
+                DefaultSelectionEventManager.<PotentialDemandDetail>createCheckboxManager());
 
         initTableColumns(selectionModel, sorHandler);
 
@@ -127,14 +123,14 @@ public class PotentialDemandsView extends Composite implements
     }
 
     private void initTableColumns(
-            final SelectionModel<PotentialDemandDetail> selectionModel,
+            final SelectionModel<PotentialDemandDetail> tableSelectionModel,
             ListHandler<PotentialDemandDetail> sortHandler) {
         // MultipleSelection Checkbox
         Column<PotentialDemandDetail, Boolean> checkBoxColumn = new Column<PotentialDemandDetail, Boolean>(
                 new CheckboxCell(true, false)) {
             @Override
             public Boolean getValue(PotentialDemandDetail object) {
-                return selectionModel.isSelected(object);
+                return tableSelectionModel.isSelected(object);
             }
         };
 
@@ -152,7 +148,7 @@ public class PotentialDemandsView extends Composite implements
                 new TextCell()) {
             @Override
             public String getValue(PotentialDemandDetail object) {
-                return object.getPrice().toString();
+                return (object.getPrice().intValue() < 0 ? "none" : object.getPrice().toString());
             }
         });
 
@@ -261,13 +257,6 @@ public class PotentialDemandsView extends Composite implements
     public Set<PotentialDemandDetail> getSelectedSet() {
         return selectionModel.getSelectedSet();
     }
-
-    // TODO cleanup after setting good solution
-
-    // @Override
-    // public DetailWrapperView getDetailSection() {
-    // return detailSection;
-    // }
 
     @Override
     public SimplePanel getDetailSection() {

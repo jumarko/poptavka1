@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,10 +46,6 @@ public class PotentialDemandsPresenter extends
 
         Set<PotentialDemandDetail> getSelectedSet();
 
-        // TODO clean up detail section
-
-//        DetailWrapperView getDetailSection();
-
         SimplePanel getDetailSection();
     }
 
@@ -65,13 +62,12 @@ public class PotentialDemandsPresenter extends
 //                    // do not show any demand detail
 //                    return;
 //                }
-
                 Iterator<PotentialDemandDetail> iter = view.getSelectedSet().iterator();
                 PotentialDemandDetail selected = iter.next();
 
                 // event calls from the click
                 eventBus.getDemandDetail(selected.getDemandId(), DetailType.POTENTIAL);
-                eventBus.requestPotentialDemandConversation(selected.getMessageId());
+                eventBus.requestPotentialDemandConversation(selected.getMessageId(), Random.nextInt(6));
                 detailPresenter.setMessageId(selected.getMessageId());
             }
         });

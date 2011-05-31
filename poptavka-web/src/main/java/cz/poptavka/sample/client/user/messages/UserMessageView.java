@@ -17,7 +17,11 @@ import cz.poptavka.sample.shared.domain.MessageDetail;
 
 public class UserMessageView extends Composite {
 
-    private static final int DESCRIPTION_TD = 3;
+    public enum MessageType {
+        FIRST, LAST, BOTH, NONE;
+    }
+
+    private static final int DATE_POS = 3;
 
     private static UserMessageViewUiBinder uiBinder = GWT
             .create(UserMessageViewUiBinder.class);
@@ -65,15 +69,11 @@ public class UserMessageView extends Composite {
      * Constructs object of user message with custom parameter
      *
      * @param message message to fill the view
-     * @param isFirst if true, message is set as first, if false message is set as last!
+     * @param style if true, message is set as first, if false message is set as last!
      */
-    public UserMessageView(MessageDetail message, boolean collapsed, boolean isFirst) {
+    public UserMessageView(MessageDetail message, boolean collapsed, MessageType style) {
         this(message, collapsed);
-        if (isFirst) {
-            header.getParentElement().addClassName(style.messageFirst());
-        } else {
-            header.getParentElement().addClassName(style.messageLast());
-
+        setMessageStyle(style);
             // NOT USED keep commented
 
             // Get buttons list, and set Eventhandlers for them;
@@ -83,14 +83,35 @@ public class UserMessageView extends Composite {
 //            Element actionButtonBar = (Element) body.getChild(body.getChildCount() - 2);
 //            actionButtonBar.getStyle().setDisplay(Display.BLOCK);
 //            DOM.sinkEvents(elem, eventBits);
+
+    }
+
+    public void setMessageStyle(MessageType type) {
+        switch (type) {
+            case FIRST:
+                GWT.log(" --------- FIRST");
+                header.getParentElement().addClassName(style.messageFirst());
+                break;
+            case BOTH:
+                GWT.log(" --------- BOTH");
+                header.getParentElement().addClassName(style.messageFirst());
+            case LAST:
+                GWT.log(" --------- LAST");
+                header.getParentElement().addClassName(style.messageLast());
+                break;
+            case NONE:
+                header.getParentElement().removeClassName(style.messageLast());
+                break;
+            default:
+                break;
         }
     }
 
     public UserMessageView(MessageDetail message, boolean collapsed) {
         initWidget(uiBinder.createAndBindUi(this));
         // set headerTable 100% width
-        Element messagePart =  (Element) headerTable.getChild(DESCRIPTION_TD);
-        messagePart.setAttribute("width", "100%");
+//        Element messagePart =  (Element) headerTable.getChild(DATE_POS);
+//        messagePart.setAttribute("width", "100%");
         // set header data
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
         // author
@@ -100,7 +121,7 @@ public class UserMessageView extends Composite {
         messagePreview.setInnerText(message.getBody());
 
         // date
-        tableColumns.getItem(3).setInnerText(message.getSent().toString());
+        tableColumns.getItem(DATE_POS).setInnerText(message.getSent().toString());
 
 //        header.getElementsByTagName("div").getItem(0).setInnerText(message.getDate());
         // the first child is our content place
@@ -113,7 +134,6 @@ public class UserMessageView extends Composite {
         // set collapsed state
         this.collapsed = collapsed;
         toggleMessageBody();
-
     }
 
     public void toggleMessageBody() {

@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -15,6 +16,7 @@ public class DetailWrapperView extends Composite
     private static DetailWrapperViewUiBinder uiBinder = GWT.create(DetailWrapperViewUiBinder.class);
     interface DetailWrapperViewUiBinder extends UiBinder<Widget, DetailWrapperView> {   }
 
+    @UiField HTMLPanel container;
     @UiField SimplePanel detailHolder;
     @UiField UserConversationPanel conversationPanel;
     @UiField SimplePanel replyHolder;
@@ -23,8 +25,6 @@ public class DetailWrapperView extends Composite
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         GWT.log("DEMAND DETAIL view LOADED");
-        GWT.log("Is there a conversation panel: " + (conversationPanel == null));
-
     }
 
     @Override

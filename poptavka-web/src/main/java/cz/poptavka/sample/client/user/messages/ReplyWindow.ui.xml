@@ -7,7 +7,7 @@
             .reply-message {
                 background-color: white;
                 border: 2px solid #666666;
-                margin: 10px auto;
+                margin: 10px 15px 0px 15px;
                 padding: 5px;
                 position: relative;
                 -moz-border-radius: 10px;
@@ -32,7 +32,7 @@
 
             .text-area {
                 width: 100%;
-                margin-right: 90px;
+                max-width: 100%;
                 font-family: inherit;
             }
 
@@ -57,38 +57,53 @@
                 top: -18px;
                 left: 25px;
             }
-
         </ui:style>
     <g:HTMLPanel>
         <div class="{style.reply-message}">
-            <div ui:field="header" class="{style.reply-message-header}" >
-                <span style="text-align: center;">
-                    <ui:msg key="clickMe">Click to Respond</ui:msg>
-                </span>
+            <div ui:field="header" class="{style.reply-message-header}">
+                <div style="display: inline-block">
+                    <span style="font-weight: bold; position: relative; left: 10%;">
+                        <g:Anchor ui:field="offerReplyBtn">Offer Response</g:Anchor>
+                    </span>
+                </div>
+                <div style="display: inline">
+                    <span style="font-weight: bold; margin-left: 30px;">
+                        <g:Anchor ui:field="questionReplyBtn">Question Response</g:Anchor>
+                    </span>
+                </div>
             </div>
             <div style="display: none;">
                 <!-- reply arrow -->
-                <div style="display: none;">
-                <div class="{style.reply-message-arrow-border}"></div>
-                <div class="{style.reply-message-arrow}"></div>
+                <!-- <div style="display: none;"> -->
+                <div>
+                    <div class="{style.reply-message-arrow-border}"></div>
+                    <div class="{style.reply-message-arrow}"></div>
                 </div>
                 <!-- Message composition content -->
                 <div>
-                    <div style="float: right; width: 85px;">
-                        <g:Anchor ui:field="submitBtn">
-                            <ui:msg key="submit">Submit</ui:msg>
-                        </g:Anchor>
-                        <g:Anchor ui:field="cancelBtn">
-                            <ui:msg key="close">Close</ui:msg>
-                        </g:Anchor>
-                    </div>
                     <g:TextArea ui:field="replyTextArea" styleName="{style.text-area}" />
-                    <g:DisclosurePanel>
-                        <g:header>
-                            <ui:msg key="advancedOptions">Advanced Options</ui:msg>
-                        </g:header>
-                        <g:HTML>content</g:HTML>
-                    </g:DisclosurePanel>
+                    <div>
+                        <g:DisclosurePanel>
+                            <g:header>
+                                <ui:msg key="advancedOptions">Advanced Options</ui:msg>
+                            </g:header>
+                            <g:HTML>content</g:HTML>
+                        </g:DisclosurePanel>
+                        <div>
+                            <div style="text-align: right;">
+                                <g:Anchor ui:field="submitBtn">
+                                    <span style="cursor: pointer; cursor: hand;">
+                                        <ui:msg key="submit">Submit</ui:msg>
+                                    </span>
+                                </g:Anchor>
+                                <g:Anchor ui:field="cancelBtn">
+                                    <span style="cursor: pointer; cursor: hand;">
+                                        <ui:msg key="close">Close</ui:msg>
+                                    </span>
+                                </g:Anchor>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -35,12 +35,19 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         String textArea();
     }
 
+    private static final int RESPONSE_OFFER = 0;
+    private static final int RESPONSE_QUESTION = 1;
+
     @UiField Element header;
+    @UiField Anchor offerReplyBtn;
+    @UiField Anchor questionReplyBtn;
     @UiField TextArea replyTextArea;
     @UiField Anchor submitBtn;
     @UiField Anchor cancelBtn;
     //main widget part is hidden
     private boolean hiddenReplyBody = true;
+
+    private int selectedResponse = 0;
 
     //replying message related stuff
     private Long messageToReplyId;
@@ -52,31 +59,47 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
 
     @Override
     protected void onLoad() {
-        com.google.gwt.user.client.Element castedElement = castElement(header);
-        DOM.sinkEvents(castedElement, Event.ONCLICK);
-        DOM.setEventListener(castedElement, new MessageToggleHangler());
-    }
-
-    private class MessageToggleHangler implements EventListener {
-        @Override
-        public void onBrowserEvent(Event event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (event.getTypeInt() == Event.ONCLICK) {
-                toggleReplyBody();
+//        com.google.gwt.user.client.Element castedElement = castElement(header);
+//        DOM.sinkEvents(castedElement, Event.ONCLICK);
+//        DOM.setEventListener(castedElement, new MessageToggleHangler());
+        offerReplyBtn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                selectedResponse = RESPONSE_OFFER;
+                replyTextArea.getElement().getNextSiblingElement()
+                    .getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
+                toggleWidget();
             }
-        }
+        });
+        questionReplyBtn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                selectedResponse = RESPONSE_QUESTION;
+                replyTextArea.getElement().getNextSiblingElement()
+                    .getFirstChildElement().getStyle().setDisplay(Display.NONE);
+                toggleWidget();
+            }
+        });
+        cancelBtn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                toggleWidget();
+                replyTextArea.setText("");
+            }
+        });
     }
 
-    private void toggleReplyBody() {
+    private void toggleWidget() {
         if (hiddenReplyBody) {
             header.getStyle().setDisplay(Display.NONE);
             header.getNextSiblingElement().getStyle().setDisplay(Display.BLOCK);
-            header.getNextSiblingElement().getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
+            // not needed, commented in uiBinder
+//            header.getNextSiblingElement().getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
         } else {
             header.getStyle().setDisplay(Display.BLOCK);
             header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
-            header.getNextSiblingElement().getFirstChildElement().getStyle().setDisplay(Display.NONE);
+            // not needed, commented in uiBinder
+//            header.getNextSiblingElement().getFirstChildElement().getStyle().setDisplay(Display.NONE);
             replyTextArea.setValue("");
         }
         hiddenReplyBody = !hiddenReplyBody;
@@ -96,14 +119,8 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
      * Add ClickHandler to submitButton. ClickHandler to cancelButton is added automatically
      * @param submitButtonHandler
      */
-    public void addClickHandlers(ClickHandler submitButtonHandler) {
+    public void addClickHandler(ClickHandler submitButtonHandler) {
         submitBtn.addClickHandler(submitButtonHandler);
-        cancelBtn.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                toggleReplyBody();
-            }
-        });
     }
 
     @Override
@@ -119,6 +136,20 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         this.messageToReplyId = messageToReplyId;
     }
 
+    private class MessageToggleHangler implements EventListener {
+        @Override
+        public void onBrowserEvent(Event event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.getTypeInt() == Event.ONCLICK) {
+                toggleWidget();
+            }
+        }
+    }
 
+    @Override
+    public void addClickHandlers(ClickHandler submitButtonHandler) {
+        submitBtn.addClickHandler(submitButtonHandler);
+    }
 
 }

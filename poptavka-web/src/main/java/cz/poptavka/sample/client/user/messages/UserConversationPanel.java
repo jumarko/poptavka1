@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.user.messages.UserMessageView.MessageType;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 
 /**
@@ -37,32 +38,50 @@ public class UserConversationPanel extends Composite {
 
     @UiField FlowPanel messagePanel;
 
+    private int messageCount = 0;
+    private MessageDetail replyToMessage;
+
+
     public UserConversationPanel() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
     /**
      * Display list of messages. When messages are set, control panell should be displayed as well.
+     * Message List size is at least always 1
      *
      * @param messages list of messages to be displayed
      */
     public void setMessageList(ArrayList<MessageDetail> messages, boolean collapsed) {
-        if (messages.size() == 0) {
-            return;
+        GWT.log("Widget count: " + messagePanel.getWidgetCount());
+        // add new messageList
+        messagePanel.clear();
+        messageCount = 0;
+
+        // Last message is visible, when there are more messages
+        // last message is always stored for reply
+        replyToMessage = messages.get(messages.size() - 1);
+        if (messages.size() > 1) {
+            messagePanel.add(new UserMessageView(messages.get(1), collapsed, MessageType.FIRST));
+            messageCount++;
+            for (int i = 2; i < (messages.size() - 1); i++) {
+                messagePanel.add(new UserMessageView(messages.get(i), collapsed));
+                messageCount++;
+            }
+            messagePanel.add(new UserMessageView(replyToMessage, false, MessageType.LAST));
+            messageCount++;
         }
-        // Last message is always visible
-        if (messages.size() == 1) {
-            messagePanel.add(new UserMessageView(messages.get(0), false, false));
-            return;
+        if (messageCount == 1) {
+            ((UserMessageView) messagePanel.getWidget(0)).setMessageStyle(MessageType.BOTH);
         }
-        messagePanel.add(new UserMessageView(messages.get(0), collapsed, true));
-        ((UserMessageView) messagePanel.getWidget(messagePanel.getWidgetCount() - 1)).toggleMessageBody();
-        for (int i = 1; i < (messages.size() - 1); i++) {
-            messagePanel.add(new UserMessageView(messages.get(i), collapsed));
-            ((UserMessageView) messagePanel.getWidget(messagePanel.getWidgetCount() - 1)).toggleMessageBody();
-        }
-        // Last message is always visible
-        messagePanel.add(new UserMessageView(messages.get(messages.size() - 1), false, false));
+        GWT.log("- - - MSG count: " + messageCount);
+    }
+
+    public void addMessage(MessageDetail lastMessage) {
+        UserMessageView last = (UserMessageView) messagePanel.getWidget(messageCount - 1);
+        last.setMessageStyle(MessageType.NONE);
+        messagePanel.add(new UserMessageView(lastMessage, false, MessageType.LAST));
+        messageCount++;
     }
 
 }

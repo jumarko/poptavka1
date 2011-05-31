@@ -52,9 +52,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         this.generalService = generalService;
     }
 
-    @Override
+
     //TODO add description support
     //TODO setService
+    @Override
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
