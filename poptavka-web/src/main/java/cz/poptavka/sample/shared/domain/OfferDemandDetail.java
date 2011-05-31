@@ -19,7 +19,7 @@ public class OfferDemandDetail {
     private String title;
     private BigDecimal price;
     private Date endDate;
-    private Date finishDate;
+    private Date validTo;
     private boolean bold;
 
     /**
@@ -129,14 +129,14 @@ public class OfferDemandDetail {
      * @return the finishDate
      */
     public Date getFinishDate() {
-        return finishDate;
+        return validTo;
     }
 
     /**
      * @param finishDate the finishDate to set
      */
     public void setFinishDate(Date finishDate) {
-        this.finishDate = finishDate;
+        this.validTo = finishDate;
     }
 
     @Override
@@ -148,6 +148,6 @@ public class OfferDemandDetail {
                 + ", title=" + title
                 + ", price=" + price
                 + ", endDate=" + endDate
-                + ", finishDate=" + finishDate + '}';
+                + ", finishDate=" + validTo + '}';
     }
 }
