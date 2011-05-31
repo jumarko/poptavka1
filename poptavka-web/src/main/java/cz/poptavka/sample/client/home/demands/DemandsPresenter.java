@@ -105,11 +105,12 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         eventBus.getLocalities();
 
-        ResultCriteria criteria = ResultCriteria.EMPTY_CRITERIA;
-        criteria = new ResultCriteria.Builder()
-                .firstResult(0)
-                .maxResults(10).build();
-        eventBus.getDemands(criteria);
+//        ResultCriteria criteria = ResultCriteria.EMPTY_CRITERIA;
+//        criteria = new ResultCriteria.Builder()
+//                .firstResult(0)
+//                .maxResults(10).build();
+//        eventBus.getDemands(criteria);
+        eventBus.getDemands2(1, 5);
 
         eventBus.setBodyWidget(view.getWidgetView());
     }

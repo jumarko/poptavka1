@@ -41,4 +41,6 @@ public interface DemandRPCServiceAsync {
     void getDemand(Long demandId, AsyncCallback<DemandDetail> callback);
 
     void getWholeDemand(Long demandId, AsyncCallback<Demand> callback);
+
+    void getDemands(int fromResult, int toResult, AsyncCallback<List<DemandDetail>> callback);
 }

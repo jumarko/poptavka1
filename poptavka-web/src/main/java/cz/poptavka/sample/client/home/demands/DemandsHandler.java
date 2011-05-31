@@ -29,7 +29,6 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
-
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
@@ -75,6 +74,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
     public void onGetLocalities() {
         localityService.getLocalities(LocalityType.REGION,
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
+
                     @Override
                     public void onSuccess(ArrayList<LocalityDetail> list) {
                         eventBus.setLocalityData(list);
@@ -111,26 +111,24 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 //
 //            }
 //        });
-//    }
-
+    //    }
     /**
      * Get all categories. Used for display in listBox categories.
      */
     public void onGetCategories() {
-        categoryService
-                .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
+        categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
 
-                    @Override
-                    public void onSuccess(ArrayList<CategoryDetail> list) {
-                        LOGGER.info("categories found: " + list.size());
-                        eventBus.setCategoryData(list);
-                    }
+            @Override
+            public void onSuccess(ArrayList<CategoryDetail> list) {
+                LOGGER.info("categories found: " + list.size());
+                eventBus.setCategoryData(list);
+            }
 
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        LOGGER.info("onFailureCategory");
-                    }
-                });
+            @Override
+            public void onFailure(Throwable arg0) {
+                LOGGER.info("onFailureCategory");
+            }
+        });
     }
 
     // *** GET DEMANDS
@@ -150,12 +148,32 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
             }
         });
     }
+
     /**
      * Get all demand from database.
      */
     public void onGetDemands(ResultCriteria resultCriteria) {
         LOGGER.info("Get demands: " + resultCriteria.getFirstResult());
         demandService.getDemands(resultCriteria,
+                new AsyncCallback<List<DemandDetail>>() {
+
+                    @Override
+                    public void onSuccess(List<DemandDetail> result) {
+                        LOGGER.info("Demands found: " + result.size());
+
+                        eventBus.displayDemands(result);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        LOGGER.info("onFailureGetDemands");
+                    }
+                });
+    }
+
+    public void onGetDemands2(int fromResult, int toResult) {
+//        LOGGER.info("Get demands: " + resultCriteria.getFirstResult());
+        demandService.getDemands(fromResult, toResult,
                 new AsyncCallback<List<DemandDetail>>() {
 
                     @Override

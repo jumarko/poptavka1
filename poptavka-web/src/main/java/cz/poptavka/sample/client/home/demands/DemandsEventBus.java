@@ -38,7 +38,6 @@ public interface DemandsEventBus extends EventBus {
 //    //Category
 //    @Event(handlers = DemandsHandler.class)
 //    void getCategory(long id);
-
     @Event(handlers = DemandsHandler.class)
     void getCategories();
 
@@ -52,6 +51,9 @@ public interface DemandsEventBus extends EventBus {
     //Demands
     @Event(handlers = DemandsHandler.class)
     void getDemands(ResultCriteria resultCriteria);
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemands2(int fromResult, int toResult);
 
     @Event(handlers = DemandsHandler.class)
     void getDemand(DemandDetail demandDetail);

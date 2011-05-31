@@ -244,7 +244,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return demandDetails;
     }
 
-
     @Override
     public List<DemandDetail> getDemands(Locality... localities) {
         return this.transformToDemandDetail(demandService.getDemands(localities));
@@ -257,6 +256,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public List<DemandDetail> getDemands(ResultCriteria resultCriteria) {
+        return this.transformToDemandDetail(demandService.getAll(resultCriteria));
+    }
+
+    @Override
+    public List<DemandDetail> getDemands(int fromResult, int toResult) {
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(fromResult).maxResults(toResult).build();
         return this.transformToDemandDetail(demandService.getAll(resultCriteria));
     }
 

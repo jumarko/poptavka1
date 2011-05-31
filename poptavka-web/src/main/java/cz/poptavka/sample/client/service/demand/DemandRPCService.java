@@ -54,4 +54,6 @@ public interface DemandRPCService extends RemoteService {
     DemandDetail getDemand(Long demandId);
 
     Demand getWholeDemand(Long demandId);
+
+    List<DemandDetail> getDemands(int fromResult, int toResult);
 }

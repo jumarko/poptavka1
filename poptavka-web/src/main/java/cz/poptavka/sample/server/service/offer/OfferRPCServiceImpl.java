@@ -45,6 +45,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         this.clientService = clientService;
     }
 
+    @Override
     public ArrayList<OfferDemandDetail> getClientDemands(long clientId) {
         Client client = clientService.getById(clientId);
         ArrayList<OfferDemandDetail> offerDemandDetails = new ArrayList<OfferDemandDetail>();
