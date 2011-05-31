@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.shared.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,8 +12,12 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
-public class OfferDemandDetail {
+public class OfferDemandDetail implements Serializable {
 
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -927462467233123906L;
     private long demandId;
     private int numberOfOffers;
     private int maxOffers;
@@ -39,7 +44,6 @@ public class OfferDemandDetail {
     public void setBold(boolean bold) {
         this.bold = bold;
     }
-
 
     /**
      * @return the demandId
@@ -135,7 +139,7 @@ public class OfferDemandDetail {
     /**
      * @param finishDate the finishDate to set
      */
-    public void setFinishDate(Date finishDate) {
+    public void setValidToDate(Date finishDate) {
         this.validTo = finishDate;
     }
 

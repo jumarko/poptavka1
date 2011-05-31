@@ -83,6 +83,16 @@
         <url-pattern>/poptavka/service/messages</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>OfferRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.message.MessageRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OfferRPCService</servlet-name>
+        <url-pattern>/poptavka/service/offers</url-pattern>
+    </servlet-mapping>
+
+
 
     <servlet>
         <servlet-name>LocalityRPCService</servlet-name>
