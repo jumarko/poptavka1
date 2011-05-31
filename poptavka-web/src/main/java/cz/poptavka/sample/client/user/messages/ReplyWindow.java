@@ -12,9 +12,12 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 
 public class ReplyWindow extends Composite implements ReplyWindowPresenter.ReplyInterface {
 
@@ -42,12 +45,16 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     @UiField Anchor offerReplyBtn;
     @UiField Anchor questionReplyBtn;
     @UiField TextArea replyTextArea;
+    @UiField TextBox priceBox;
+    @UiField DateBox dateBox;
     @UiField Anchor submitBtn;
     @UiField Anchor cancelBtn;
     //main widget part is hidden
     private boolean hiddenReplyBody = true;
 
     private int selectedResponse = 0;
+
+    private long demandId = 0;
 
     @Override
     public void createView() {
@@ -113,11 +120,14 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     }
 
     /**
-     * Add ClickHandler to submitButton. ClickHandler to cancelButton is added automatically
+     * Add ClickHandler to submitButton and demandId of demand user is replying to.
+     *
      * @param submitButtonHandler
+     * @param selectedDemandId
      */
-    public void addClickHandler(ClickHandler submitButtonHandler) {
+    public void addClickHandler(ClickHandler submitButtonHandler, long selectedDemandId) {
         submitBtn.addClickHandler(submitButtonHandler);
+        demandId = selectedDemandId;
     }
 
     @Override
@@ -129,7 +139,35 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     public MessageDetail getCreatedMessage() {
         MessageDetail message = new MessageDetail();
         message.setBody(replyTextArea.getText());
+        message.setDemandId(demandId);
         return message;
+    }
+
+    @Override
+    public boolean isValid() {
+        int errorCount = 0;
+        errorCount += (replyTextArea.getText().equals("") ? 1 : 0);
+        if (selectedResponse == RESPONSE_OFFER) {
+            errorCount += (priceBox.getText().equals("") ? 1 : 0);
+            try {
+                Long.parseLong(priceBox.getValue());
+            } catch (Exception ex) {
+                errorCount++;
+            }
+            errorCount += (dateBox.getValue() == null ? 1 : 0);
+        }
+        // TODO error display
+        return errorCount == 0;
+    }
+
+    @Override
+    public OfferDetail getCreatedOffer() {
+        OfferDetail offer = new OfferDetail();
+        MessageDetail message = getCreatedMessage();
+        offer.setPrice(priceBox.getText());
+        offer.setFinishDate(dateBox.getValue());
+        offer.setMessageDetail(message);
+        return offer;
     }
 
     @Override
@@ -146,6 +184,11 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         // display sending message window, whatever
         header.getStyle().setDisplay(Display.BLOCK);
         header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+    }
+
+    @Override
+    public boolean isResponseQuestion() {
+        return selectedResponse == RESPONSE_QUESTION;
     }
 
 //    public Long getMessageToReplyId() {

@@ -90,7 +90,6 @@ public class UserConversationPanel extends Composite {
      */
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
-        messageDetail.setParentId(replyToMessage.getParentId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getId());
         return messageDetail;

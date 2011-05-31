@@ -9,6 +9,7 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 
 @Presenter(view = ReplyWindow.class, multiple = true)
 public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.ReplyInterface, UserEventBus> {
@@ -16,23 +17,28 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
     public interface ReplyInterface extends LazyView {
         Widget getWidgetView();
 
-        void addClickHandler(ClickHandler submitButtonHandler);
+        void addClickHandler(ClickHandler submitButtonHandler, long demandId);
+
+        boolean isValid();
 
         MessageDetail getCreatedMessage();
+
+        OfferDetail getCreatedOffer();
 
         void setSendingStyle();
 
         void setNormalStyle();
 
-//        MessageType getMessageType();
+        boolean isResponseQuestion();
+
     }
 
     public void initReplyWindow(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
     }
 
-    public void addSubmitHandler(ClickHandler submitButtonHandler) {
-        view.addClickHandler(submitButtonHandler);
+    public void addSubmitHandler(ClickHandler submitButtonHandler, long demandId) {
+        view.addClickHandler(submitButtonHandler, demandId);
     }
 
     public MessageDetail getCreatedMessage() {
@@ -40,8 +46,21 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
         return view.getCreatedMessage();
     }
 
+    public OfferDetail getOfferMessage() {
+        view.setSendingStyle();
+        return view.getCreatedOffer();
+    }
+
     public void enableResponse() {
         view.setNormalStyle();
+    }
+
+    public boolean isMessageValid() {
+        return view.isValid();
+    }
+
+    public boolean hasResponseQuestion() {
+        return view.isResponseQuestion();
     }
 
 }

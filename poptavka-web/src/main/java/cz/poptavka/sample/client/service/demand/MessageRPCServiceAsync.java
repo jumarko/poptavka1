@@ -6,6 +6,8 @@ package cz.poptavka.sample.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
+
 import java.util.ArrayList;
 
 /**
@@ -18,4 +20,6 @@ public interface MessageRPCServiceAsync {
             long threadId, long userId, AsyncCallback<ArrayList<MessageDetail>> callback);
 
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+
+    void sendOffer(OfferDetail demandOffer, AsyncCallback<OfferDetail> callback);
 }

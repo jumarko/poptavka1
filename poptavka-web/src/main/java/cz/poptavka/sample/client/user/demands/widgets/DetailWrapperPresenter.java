@@ -16,6 +16,7 @@ import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
@@ -35,8 +36,6 @@ public class DetailWrapperPresenter extends
     private DetailType type;
 
     private ReplyWindowPresenter replyPresenter = null;
-
-    private long messageId;
 
     /**
      * Initialize widget and sets his type.
@@ -80,7 +79,7 @@ public class DetailWrapperPresenter extends
         }
         replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
         replyPresenter.initReplyWindow(view.getReplyHolder());
-        replyPresenter.addSubmitHandler(bindReplyWindowAction());
+        replyPresenter.addSubmitHandler(bindReplyWindowAction(), detail.getId());
 
         // GUI visual event
         eventBus.loadingHide();
@@ -91,9 +90,24 @@ public class DetailWrapperPresenter extends
         return new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                MessageDetail messageToSend = replyPresenter.getCreatedMessage();
-                messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
-                eventBus.bubbleMessageSending(messageToSend);
+                // sending message only when valid
+                GWT.log("START OF CLICK EVENT");
+                if (replyPresenter.isMessageValid()) {
+                    GWT.log("* * valid");
+                    //distinguish what kind of message should be sent
+                    if (replyPresenter.hasResponseQuestion()) {
+                        MessageDetail messageToSend = replyPresenter.getCreatedMessage();
+                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+                        eventBus.bubbleMessageSending(messageToSend);
+                    } else {
+                        // TODO offer branch
+                        OfferDetail offerToSend = replyPresenter.getOfferMessage();
+                        offerToSend.setMessageDetail(view.getConversationPanel()
+                                .updateSendingMessage(offerToSend.getMessageDetail()));
+                        eventBus.bubbleOfferSending(offerToSend);
+                    }
+                }
+                GWT.log("END OF CLICK EVENT");
             }
         };
     }
@@ -134,10 +148,6 @@ public class DetailWrapperPresenter extends
         }
         Widget anchor = view.getWidgetView();
         eventBus.loadingShowWithAnchor("", anchor);
-    }
-
-    public void setMessageId(long messageId) {
-        this.messageId = messageId;
     }
 
 }

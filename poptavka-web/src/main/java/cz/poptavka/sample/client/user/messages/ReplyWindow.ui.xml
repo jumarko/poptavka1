@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
     <ui:style ui:field="style"
         type="cz.poptavka.sample.client.user.messages.ReplyWindow.ReplyStyle">
@@ -83,13 +83,30 @@
                 <div>
                     <g:TextArea ui:field="replyTextArea" styleName="{style.text-area}" />
                     <div>
-                        <g:DisclosurePanel>
-                            <g:header>
-                                <ui:msg key="advancedOptions">Advanced Options</ui:msg>
-                            </g:header>
-                            <g:HTML>content</g:HTML>
-                        </g:DisclosurePanel>
                         <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <ui:msg key="price">Price</ui:msg>
+                                        </td>
+                                        <td>
+                                            <g:TextBox ui:field="priceBox" />
+                                        </td>
+                                        <td>
+                                            <ui:msg key="finishDate">Finish Date</ui:msg>
+                                        </td>
+                                        <td>
+                                            <p1:DateBox ui:field="dateBox" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="float: left; display: none;">
+                                Content
+                            </div>
                             <div style="text-align: right;">
                                 <g:Anchor ui:field="submitBtn">
                                     <span style="cursor: pointer; cursor: hand;">

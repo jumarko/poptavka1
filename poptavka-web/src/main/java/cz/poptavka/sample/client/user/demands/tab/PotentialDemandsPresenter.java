@@ -67,8 +67,8 @@ public class PotentialDemandsPresenter extends
 
                 // event calls from the click
                 eventBus.getDemandDetail(selected.getDemandId(), DetailType.POTENTIAL);
-                eventBus.requestPotentialDemandConversation(selected.getMessageId(), Random.nextInt(6));
-                detailPresenter.setMessageId(selected.getMessageId());
+                eventBus.requestPotentialDemandConversation(selected.getMessageId(), Random.nextInt(6) + 1);
+
             }
         });
     }

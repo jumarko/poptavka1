@@ -14,6 +14,7 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
@@ -135,6 +136,12 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     public void onBubbleMessageSending(MessageDetail messageToSend) {
         messageToSend.setSenderId(user.getId());
         eventBus.sendQueryToPotentialDemand(messageToSend);
+    }
+
+    public void onBubbleOfferSending(OfferDetail offerToSend) {
+        offerToSend.getMessageDetail().setSenderId(user.getId());
+        offerToSend.setSupplierId(user.getSupplierId());
+        eventBus.sendDemandOffer(offerToSend);
     }
 
 

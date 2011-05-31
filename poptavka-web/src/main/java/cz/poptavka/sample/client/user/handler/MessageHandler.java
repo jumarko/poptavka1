@@ -13,6 +13,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 
 @EventHandler
@@ -45,6 +46,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         message.setParentId(6);
         message.setId(22);
         message.setSenderId(116);
+
         GWT.log(message.getSenderId() + " -< ID");
         message.setBody("Testing Message");
         message.setMessageState("SENT");
@@ -70,6 +72,24 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onSuccess(MessageDetail result) {
                 eventBus.addReplyToPotentailDemandConversation(result, DetailType.POTENTIAL);
+            }
+        });
+    }
+
+    public void onSendDemandOffer(OfferDetail offerToSend) {
+        GWT.log(" ** Offer demand ID: " + offerToSend.getDemandId());
+        messageService.sendOffer(offerToSend, new AsyncCallback<OfferDetail>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
+                Window.alert(MessageHandler.class.getName()
+                        + " at onSendDemandOffer\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(OfferDetail result) {
+                Window.alert("Offer Success");
+//                eventBus.
             }
         });
     }

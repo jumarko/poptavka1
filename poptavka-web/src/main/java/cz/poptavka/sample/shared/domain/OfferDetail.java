@@ -15,7 +15,6 @@ public class OfferDetail implements Serializable {
     private BigDecimal price;
     private boolean displayed = false;
     private Date finishDate;
-    private long demandId;
     private long supplierId;
     private long messageId;
     private String supplierName;
@@ -37,13 +36,13 @@ public class OfferDetail implements Serializable {
         m.setThreadRootId(message.getThreadRoot().getId());
         OfferDetail o = new OfferDetail();
         Offer offer = message.getOffer();
-        o.setDemandId(offer.getDemand().getId());
         o.setFinishDate(offer.getFinishDate());
         o.setMessageDetail(m);
         // tofo ivlcek verify id
         o.setMessageId(m.getId());
         o.setPrice(offer.getPrice());
         o.setSupplierId(offer.getSupplier().getId());
+        o.setDemandId(offer.getDemand().getId());
         return o;
     }
 
@@ -56,6 +55,23 @@ public class OfferDetail implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public void setPrice(String price) {
+        long priceLong = Long.parseLong(price);
+        this.price = BigDecimal.valueOf(priceLong);
+    }
+
+    public void setDemandId(Long demandId) {
+        this.getMessageDetail().setDemandId(demandId);
+    }
+
+    public long getDemandId() {
+        return this.getMessageDetail().getDemandId();
+    }
+
+    public String getPriceString() {
+        return price.toPlainString();
     }
 
     public boolean isDisplayed() {
@@ -72,14 +88,6 @@ public class OfferDetail implements Serializable {
 
     public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
-    }
-
-    public long getDemandId() {
-        return demandId;
-    }
-
-    public void setDemandId(long demandId) {
-        this.demandId = demandId;
     }
 
     public long getSupplierId() {

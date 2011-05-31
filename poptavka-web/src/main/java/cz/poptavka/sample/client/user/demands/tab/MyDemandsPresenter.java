@@ -56,7 +56,6 @@ public class MyDemandsPresenter extends
 
                             // TODO delete this and uncomment the one below
 //                            eventBus.getDemandMessages(0, DetailType.EDITABLE);
-                            detailPresenter.setMessageId(0);
 
 //                            eventBus.getDemandMessages(selected.getId(), DetailType.POTENTIAL);
 //                            detailPresenter.setMessageId(selected.getMessageId());

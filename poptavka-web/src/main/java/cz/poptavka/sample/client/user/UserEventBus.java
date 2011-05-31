@@ -278,7 +278,8 @@ public interface UserEventBus extends EventBusWithLookup {
      **/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
-
+    @Event(handlers = MessageHandler.class)
+    void sendDemandOffer(OfferDetail offerToSend);
 
 
     /**
@@ -292,6 +293,15 @@ public interface UserEventBus extends EventBusWithLookup {
     void sendQueryToPotentialDemand(MessageDetail messageToSend);
     @Event(handlers = DetailWrapperPresenter.class)
     void addReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType);
+
+    /**
+     * Bubbling offer to send to UserPresenter to get the user ID and supplier ID
+     *
+     * @param messageToSend message to be sent
+     */
+    @Event(handlers = UserPresenter.class)
+    void bubbleOfferSending(OfferDetail offerToSend);
+
 
 
 }
