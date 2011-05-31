@@ -5,7 +5,6 @@
 package cz.poptavka.sample.server.service.demand;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +40,7 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
+import java.util.Collection;
 
 /**
  * @author Excalibur
@@ -299,7 +299,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         // TODO ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
         // parameter pre dalsi dotaz do DB na ziskanie userMessages
         final List<UserMessage> userMessages =
-                userMessageService.getUserMessages(messages, MessageFilter.EMPTY_FILTER);
+                userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
         userMessages.size();
         // fill list
         ArrayList<PotentialDemandDetail> potentialDemandDetails = new ArrayList<PotentialDemandDetail>();
