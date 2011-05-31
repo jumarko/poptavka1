@@ -26,7 +26,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private SupplierService supplierService;
 
     @Autowired
-    public void setGeneralService(SupplierService roleService) {
+    public void setSupplierService(SupplierService roleService) {
         this.supplierService = roleService;
     }
 
