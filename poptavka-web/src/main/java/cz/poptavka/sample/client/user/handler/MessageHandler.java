@@ -3,6 +3,9 @@ package cz.poptavka.sample.client.user.handler;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -39,6 +42,10 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         ArrayList<MessageDetail> messageList = new ArrayList<MessageDetail>();
         MessageDetail message = new MessageDetail();
         message.setThreadRootId(6);
+        message.setParentId(6);
+        message.setId(22);
+        message.setSenderId(116);
+        GWT.log(message.getSenderId() + " -< ID");
         message.setBody("Testing Message");
         message.setMessageState("SENT");
         message.setSubject("Demand Subject");
@@ -48,8 +55,22 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             messageList.add(message);
         }
         eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
-
-
     }
 
+    public void onSendQueryToPotentialDemand(MessageDetail messageToSend) {
+        messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
+                Window.alert(MessageHandler.class.getName()
+                        + " at onSendQueryToPotentialDemand\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(MessageDetail result) {
+                eventBus.addReplyToPotentailDemandConversation(result, DetailType.POTENTIAL);
+            }
+        });
+    }
 }

@@ -274,10 +274,24 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /**
      * hacky later fire event Needed when refreshing in User Section - refresh
-     * not neededi in prod
+     * not neededi in prod.
      **/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
+
+
+
+    /**
+     * Bubbling message to send to UserPresenter to get the user ID
+     *
+     * @param messageToSend message to be sent
+     */
+    @Event(handlers = UserPresenter.class)
+    void bubbleMessageSending(MessageDetail messageToSend);
+    @Event(handlers = MessageHandler.class)
+    void sendQueryToPotentialDemand(MessageDetail messageToSend);
+    @Event(handlers = DetailWrapperPresenter.class)
+    void addReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType);
 
 
 }

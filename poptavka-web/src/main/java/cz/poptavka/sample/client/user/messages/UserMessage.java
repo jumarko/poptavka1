@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.shared.domain.MessageDetail;
 
-public class UserMessageView extends Composite {
+public class UserMessage extends Composite {
 
-    public enum MessageType {
+    public enum MessageDisplayType {
         FIRST, LAST, BOTH, NONE;
     }
 
@@ -27,7 +27,7 @@ public class UserMessageView extends Composite {
             .create(UserMessageViewUiBinder.class);
 
     interface UserMessageViewUiBinder extends
-            UiBinder<Widget, UserMessageView> {
+            UiBinder<Widget, UserMessage> {
     }
 
     public interface MessageStyle extends CssResource {
@@ -71,7 +71,7 @@ public class UserMessageView extends Composite {
      * @param message message to fill the view
      * @param style if true, message is set as first, if false message is set as last!
      */
-    public UserMessageView(MessageDetail message, boolean collapsed, MessageType style) {
+    public UserMessage(MessageDetail message, boolean collapsed, MessageDisplayType style) {
         this(message, collapsed);
         setMessageStyle(style);
             // NOT USED keep commented
@@ -86,7 +86,7 @@ public class UserMessageView extends Composite {
 
     }
 
-    public void setMessageStyle(MessageType type) {
+    public void setMessageStyle(MessageDisplayType type) {
         switch (type) {
             case FIRST:
                 GWT.log(" --------- FIRST");
@@ -107,7 +107,7 @@ public class UserMessageView extends Composite {
         }
     }
 
-    public UserMessageView(MessageDetail message, boolean collapsed) {
+    public UserMessage(MessageDetail message, boolean collapsed) {
         initWidget(uiBinder.createAndBindUi(this));
         // set headerTable 100% width
 //        Element messagePart =  (Element) headerTable.getChild(DATE_POS);
@@ -138,9 +138,9 @@ public class UserMessageView extends Composite {
 
     public void toggleMessageBody() {
         if (collapsed) {
-            body.getStyle().setDisplay(Display.BLOCK);
-        } else {
             body.getStyle().setDisplay(Display.NONE);
+        } else {
+            body.getStyle().setDisplay(Display.BLOCK);
         }
         collapsed = !collapsed;
     }

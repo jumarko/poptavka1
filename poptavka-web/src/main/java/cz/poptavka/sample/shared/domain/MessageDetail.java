@@ -18,10 +18,12 @@ public class MessageDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -928374659233195109L;
+    private long id;
     private long threadRootId;
     private long parentId;
     private long firstBornId;
     private long nexSiblingId;
+    private long demandId;
     private String subject;
     private String body;
     private String messageState;
@@ -32,6 +34,7 @@ public class MessageDetail implements Serializable {
 
     public static MessageDetail generateMessageDetail(Message message) {
         MessageDetail m = new MessageDetail();
+        m.setId(message.getId());
         m.setBody(message.getBody());
         m.setCreated(message.getCreated());
 //        m.setFirstBornId(serialVersionUID);
@@ -44,6 +47,14 @@ public class MessageDetail implements Serializable {
         m.setSubject(message.getSubject());
         m.setThreadRootId(message.getThreadRoot().getId());
         return m;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
 
@@ -101,6 +112,14 @@ public class MessageDetail implements Serializable {
      */
     public void setNexSiblingId(long nexSiblingId) {
         this.nexSiblingId = nexSiblingId;
+    }
+
+    public long getDemandId() {
+        return demandId;
+    }
+
+    public void setDemandId(long demandId) {
+        this.demandId = demandId;
     }
 
     /**

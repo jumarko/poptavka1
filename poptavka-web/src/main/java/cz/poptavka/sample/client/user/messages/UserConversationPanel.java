@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.user.messages.UserMessageView.MessageType;
+import cz.poptavka.sample.client.user.messages.UserMessage.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 
 /**
@@ -53,35 +53,47 @@ public class UserConversationPanel extends Composite {
      * @param messages list of messages to be displayed
      */
     public void setMessageList(ArrayList<MessageDetail> messages, boolean collapsed) {
-        GWT.log("Widget count: " + messagePanel.getWidgetCount());
-        // add new messageList
         messagePanel.clear();
-        messageCount = 0;
 
         // Last message is visible, when there are more messages
         // last message is always stored for reply
         replyToMessage = messages.get(messages.size() - 1);
         if (messages.size() > 1) {
-            messagePanel.add(new UserMessageView(messages.get(1), collapsed, MessageType.FIRST));
+            messagePanel.add(new UserMessage(messages.get(1), collapsed, MessageDisplayType.FIRST));
             messageCount++;
             for (int i = 2; i < (messages.size() - 1); i++) {
-                messagePanel.add(new UserMessageView(messages.get(i), collapsed));
+                messagePanel.add(new UserMessage(messages.get(i), collapsed));
                 messageCount++;
             }
-            messagePanel.add(new UserMessageView(replyToMessage, false, MessageType.LAST));
+            messagePanel.add(new UserMessage(replyToMessage, false, MessageDisplayType.LAST));
             messageCount++;
         }
         if (messageCount == 1) {
-            ((UserMessageView) messagePanel.getWidget(0)).setMessageStyle(MessageType.BOTH);
+            ((UserMessage) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
         }
-        GWT.log("- - - MSG count: " + messageCount);
+        messageCount = messagePanel.getWidgetCount();
     }
 
     public void addMessage(MessageDetail lastMessage) {
-        UserMessageView last = (UserMessageView) messagePanel.getWidget(messageCount - 1);
-        last.setMessageStyle(MessageType.NONE);
-        messagePanel.add(new UserMessageView(lastMessage, false, MessageType.LAST));
+        UserMessage last = (UserMessage) messagePanel.getWidget(messageCount - 1);
+        last.setMessageStyle(MessageDisplayType.NONE);
+        messagePanel.add(new UserMessage(lastMessage, false, MessageDisplayType.LAST));
         messageCount++;
+        replyToMessage = lastMessage;
+    }
+
+    /**
+     * Received the message being sent and fills it with necessary attributes, from stored message.
+     *
+     * @param messageDetail message being sent
+     * @return updated message
+     */
+    public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
+        messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
+        messageDetail.setParentId(replyToMessage.getParentId());
+        messageDetail.setReceiverId(replyToMessage.getSenderId());
+        messageDetail.setParentId(replyToMessage.getId());
+        return messageDetail;
     }
 
 }

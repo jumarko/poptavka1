@@ -17,4 +17,6 @@ import java.util.ArrayList;
 public interface MessageRPCService extends RemoteService {
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId);
+
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 }

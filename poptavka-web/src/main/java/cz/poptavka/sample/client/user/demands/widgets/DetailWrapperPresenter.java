@@ -3,6 +3,8 @@ package cz.poptavka.sample.client.user.demands.widgets;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -71,13 +73,30 @@ public class DetailWrapperPresenter extends
         view.getConversationPanel();
 
         // reply part
+        // TODO it's not necessary to define new instance of reply window
+        // it's just for devel. Just one creation and then check if null
+        if (replyPresenter != null) {
+            eventBus.removeHandler(replyPresenter);
+        }
         replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
-        replyPresenter.initReplyWindow(view.getReplyHolder(), messageId);
+        replyPresenter.initReplyWindow(view.getReplyHolder());
+        replyPresenter.addSubmitHandler(bindReplyWindowAction());
 
         // GUI visual event
         eventBus.loadingHide();
     }
 
+
+    private ClickHandler bindReplyWindowAction() {
+        return new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                MessageDetail messageToSend = replyPresenter.getCreatedMessage();
+                messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+                eventBus.bubbleMessageSending(messageToSend);
+            }
+        };
+    }
 
     public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType) {
         if (!wrapperhandlerType.equals(type)) {
@@ -91,6 +110,17 @@ public class DetailWrapperPresenter extends
             return;
         }
         view.getConversationPanel().setMessageList(messageList, true);
+    }
+
+    public void onAddReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType) {
+        if (!wrapperhandlerType.equals(type)) {
+            //event not for this instance of presenter
+            GWT.log(view.getWidgetView().getClass().getName()
+                    + " does NOT handle method onSetPotentialDemandConversation");
+            return;
+        }
+        replyPresenter.enableResponse();
+        view.getConversationPanel().addMessage(result);
     }
 
     /**

@@ -93,6 +93,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageFromUserRole.setUser(sender);
         messageUserRoles.add(messageFromUserRole);
         m.setRoles(messageUserRoles);
+        // TODO set the id correctly, check it
         MessageDetail messageDetailPersisted = MessageDetail.generateMessageDetail(this.messageService.create(m));
         // TODO set children for parent message - check if it is correct
         parentMessage.getChildren().add(m);
@@ -117,6 +118,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             md.setMessageState(message.getMessageState().name());
             md.setNexSiblingId(message.getNextSibling().getId().longValue());
             md.setParentId(message.getParent().getId());
+            md.setDemandId(message.getDemand().getId());
             md.setSent(message.getSent());
             md.setSubject(message.getSubject());
             md.setThreadRootId(message.getThreadRoot().getId());

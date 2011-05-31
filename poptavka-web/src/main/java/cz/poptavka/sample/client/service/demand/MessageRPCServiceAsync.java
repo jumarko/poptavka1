@@ -16,4 +16,6 @@ public interface MessageRPCServiceAsync {
 
     void loadSuppliersPotentialDemandConversation(
             long threadId, long userId, AsyncCallback<ArrayList<MessageDetail>> callback);
+
+    void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 }

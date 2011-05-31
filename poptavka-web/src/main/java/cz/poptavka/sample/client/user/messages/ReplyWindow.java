@@ -9,12 +9,12 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+
+import cz.poptavka.sample.shared.domain.MessageDetail;
 
 public class ReplyWindow extends Composite implements ReplyWindowPresenter.ReplyInterface {
 
@@ -48,9 +48,6 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     private boolean hiddenReplyBody = true;
 
     private int selectedResponse = 0;
-
-    //replying message related stuff
-    private Long messageToReplyId;
 
     @Override
     public void createView() {
@@ -89,7 +86,7 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         });
     }
 
-    private void toggleWidget() {
+    public void toggleWidget() {
         if (hiddenReplyBody) {
             header.getStyle().setDisplay(Display.NONE);
             header.getNextSiblingElement().getStyle().setDisplay(Display.BLOCK);
@@ -128,28 +125,35 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         return this;
     }
 
-    public Long getMessageToReplyId() {
-        return messageToReplyId;
-    }
-
-    public void setMessageToReplyId(Long messageToReplyId) {
-        this.messageToReplyId = messageToReplyId;
-    }
-
-    private class MessageToggleHangler implements EventListener {
-        @Override
-        public void onBrowserEvent(Event event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (event.getTypeInt() == Event.ONCLICK) {
-                toggleWidget();
-            }
-        }
+    @Override
+    public MessageDetail getCreatedMessage() {
+        MessageDetail message = new MessageDetail();
+        message.setBody(replyTextArea.getText());
+        return message;
     }
 
     @Override
-    public void addClickHandlers(ClickHandler submitButtonHandler) {
-        submitBtn.addClickHandler(submitButtonHandler);
+    public void setSendingStyle() {
+        // TODO Auto-generated method stub
+        // display sending message window, whatever
+        header.getStyle().setDisplay(Display.NONE);
+        header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
     }
+
+    @Override
+    public void setNormalStyle() {
+        // TODO Auto-generated method stub
+        // display sending message window, whatever
+        header.getStyle().setDisplay(Display.BLOCK);
+        header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+    }
+
+//    public Long getMessageToReplyId() {
+//        return messageToReplyId;
+//    }
+//
+//    public void setMessageToReplyId(Long messageToReplyId) {
+//        this.messageToReplyId = messageToReplyId;
+//    }
 
 }
