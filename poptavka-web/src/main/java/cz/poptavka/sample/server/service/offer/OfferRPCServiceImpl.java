@@ -12,6 +12,8 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,5 +68,11 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             offerDemandDetails.add(offerDemandDetail);
         }
         return offerDemandDetails;
+    }
+
+    @Override
+    public ArrayList<OfferDetail> getDemandOffers(long demandId) {
+        // TODO Auto-generated method stub
+        return new ArrayList<OfferDetail>();
     }
 }

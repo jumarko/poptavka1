@@ -1,16 +1,19 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -36,35 +39,50 @@ public class OffersPresenter extends
         Button getActionButton();
         Button getRefreshButton();
 
-        ListDataProvider<OfferDemandDetail> getDataProvider();
+        ListDataProvider<OfferDemandDetail> getDemandTableProvider();
 
-        MultiSelectionModel<OfferDemandDetail> getSelectionModel();
+        NoSelectionModel<OfferDemandDetail> getDemandTableModel();
+
+        ListDataProvider<OfferDetail> getOfferTableProvider();
+
+        MultiSelectionModel<OfferDetail> getOfferTableModel();
 
         Set<OfferDemandDetail> getSelectedSet();
 
+        Set<OfferDetail> getSelectedOffers();
+
         SimplePanel getDetailSection();
+
+        void swapTables();
+
+        Anchor getBackToDemandsButton();
     }
 
     private DetailWrapperPresenter detailPresenter = null;
     private boolean loaded = false;
 
     public void bindView() {
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        view.getDemandTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-//                // TODO fix multiSelection
-//                GWT.log("SIZE of result set: " + view.getSelectedSet().size());
-//                if (view.getSelectedSet().size() != 1) {
-//                    // do not show any demand detail
-//                    return;
-//                }
-                Iterator<OfferDemandDetail> iter = view.getSelectedSet().iterator();
-                OfferDemandDetail selected = iter.next();
-
-                // event calls from the click
-
-//                eventBus.getDemandDetail(selected.getDemandId(), DetailType.POTENTIAL);
-//                eventBus.requestPotentialDemandConversation(selected.getMessageId(), Random.nextInt(6) + 1);
+                view.swapTables();
+                OfferDemandDetail obj = view.getDemandTableModel().getLastSelectedObject();
+                eventBus.getDemandOffers(obj.getDemandId());
+            }
+        });
+        view.getOfferTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Set<OfferDetail> set = view.getSelectedOffers();
+                // TODO call demand detail
+//                eventBus.getDemandDetail(demandId, DetailType.OFFER);
+                // TODO display every single offer and display it only ONCE
+            }
+        });
+        view.getBackToDemandsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.swapTables();
             }
         });
     }
@@ -76,17 +94,17 @@ public class OffersPresenter extends
             return;
         }
         // TODO is this individual demandDetail type needed?
-        eventBus.requestOfferClientDemands();
+        eventBus.requestClientOfferDemands();
         loaded = true;
     }
 
     public void onResponseClientDemandsWithOffers(ArrayList<OfferDemandDetail> data) {
-        List<OfferDemandDetail> list = view.getDataProvider().getList();
+        List<OfferDemandDetail> list = view.getDemandTableProvider().getList();
         list.clear();
         for (OfferDemandDetail d : data) {
             list.add(d);
         }
-        view.getDataProvider().refresh();
+        view.getDemandTableProvider().refresh();
 
         // Init DetailWrapper for this view
         if (detailPresenter  == null) {
@@ -98,46 +116,19 @@ public class OffersPresenter extends
         eventBus.displayContent(view.getWidgetView());
     }
 
-//    public void onResponseOffers(ArrayList<ArrayList<OfferDetail>> offersList) {
-//        view.getTable().setOffers(offersList);
-//    }
-
-//    /** Help method for requestOffers. **/
-//    private ArrayList<Long> getDemandIds(ArrayList<DemandDetail> demands) {
-//        ArrayList<Long> idList = new ArrayList<Long>();
-//        for (DemandDetail demand : demands) {
-//            idList.add(demand.getId());
-//        }
-//        return idList;
-//    }
-
-//    public void resolveTableClick(HashMap<Integer, Integer> map) {
-//        LOGGER.fine("A-" + map.get(OffersFlexTable.RESULT_ACTION));
-//        LOGGER.fine("T-" + map.get(OffersFlexTable.RESULT_TYPE));
-//        LOGGER.fine("ID-" + map.get(OffersFlexTable.RESULT_ID));
-//        if (map.get(OffersFlexTable.RESULT_TYPE) == OffersFlexTable.ACTION_SORT) {
-//            //just pure table thing
-//            return;
-//        }
-//        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_OFFER) {
-//            view.getAcceptBtn().setEnabled(true);
-//            view.getAnswerBtn().setEnabled(true);
-//            view.getRefuseBtn().setEnabled(true);
-//        }
-//        if (map.get(OffersFlexTable.RESULT_ACTION) == OffersFlexTable.ACTION_DEMAND) {
-//            view.getAcceptBtn().setEnabled(false);
-//            view.getAnswerBtn().setEnabled(false);
-//            view.getRefuseBtn().setEnabled(false);
-//            //demandDetail call
-////            eventBus.requestDemandDetail(map.get(OffersFlexTable.RESULT_ID));
-//        }
-////        offer message
-////        toggle - to disable buttons
-//    }
-
-    // TODO delete
-    public void onResponseDemandDetail(Widget widget) {
-        view.getDetailSection().setWidget(widget);
+    /**
+     * Initial fill of Offer table.
+     *
+     * @param offers list of offer to be added into provider
+     */
+    public void onSetDemandOffers(ArrayList<OfferDetail> offers) {
+        List<OfferDetail> data = view.getOfferTableProvider().getList();
+        // needed clear before inserting offers of some demand
+        data.clear();
+        for (OfferDetail o : offers) {
+            data.add(o);
+        }
+        view.getOfferTableProvider().refresh();
     }
 
     // TODO delete, just devel tool

@@ -1,9 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c='urn:import:com.google.gwt.user.cellview.client'
+    xmlns:w="urn:import:cz.poptavka.sample.client.user.demands.widgets">
 
-    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
 
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="450">
@@ -27,14 +28,38 @@
                     <!-- </g:ToggleButton> -->
                 </div>
                 <div>
-                    <div>
-                        <c:CellTable ui:field="demandTable" />
-                        <c:SimplePager ui:field="demandPager" />
+                    <div style="height: 100%; overflow: auto; display: block;">
+                        <w:GlobalDemandOfferTable ui:field="demandTable" />
+                        <div>
+                            <table width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td align="center">
+                                            <c:SimplePager ui:field="demandPager" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div>
-                        This is the offer table
-<!--                         <c:CellTable ui:field="offerTable" /> -->
-<!--                         <c:SimplePager ui:field="offerTable" /> -->
+                    <div style="height: 100%; overflow: auto; display: hidden;">
+                        <g:Anchor ui:field="backToDemandsBtn">
+                            <span style="cursor: pointer; cursor: hand">
+                                <ui:msg key="backToDemands">Back to Demand List</ui:msg>
+                            </span>
+                        </g:Anchor>
+                        <w:SingleDemandOfferTable ui:field="offerTable" />
+                        <div>
+                            <table width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td align="center">
+                                            <c:SimplePager ui:field="offerPager" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -42,7 +67,7 @@
 
             </g:HTMLPanel>
         </g:west>
-         <g:center>
+        <g:center>
             <g:SimplePanel ui:field="detailSection" />
         </g:center>
     </g:SplitLayoutPanel>

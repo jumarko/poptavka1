@@ -63,14 +63,21 @@ public interface UserEventBus extends EventBusWithLookup {
     void responsePotentialDemands(ArrayList<PotentialDemandDetail> potentialDemandsList);
 
     /** Offer demands GETTER/SETTER. **/
-    // this same method should be called to MyDemandsPresenter
-    // depends on it's demandDetailType
+    // this same method could be called to MyDemandsPresenter
+    // depends on it's demandDetailType and what will be difference in data, probably different
+    // method will be used
     @Event(handlers = UserPresenter.class)
-    void requestOfferClientDemands();
+    void requestClientOfferDemands();
     @Event(handlers = UserHandler.class)
     void getClientDemandsWithOffers(Long clientId);
     @Event(handlers = OffersPresenter.class)
     void responseClientDemandsWithOffers(ArrayList<OfferDemandDetail> result);
+
+    /** Demand Offers GETTER/SETTER **/
+    @Event(handlers = UserHandler.class)
+    void getDemandOffers(long demandId);
+    @Event(handlers = OffersPresenter.class)
+    void setDemandOffers(ArrayList<OfferDetail> offers);
 
 
     /**
@@ -271,5 +278,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = UserPresenter.class)
     void clearUserOnUnload();
+
 
 }

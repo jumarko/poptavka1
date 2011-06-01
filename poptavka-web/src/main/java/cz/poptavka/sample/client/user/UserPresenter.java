@@ -133,7 +133,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
     }
 
-    public void onRequestOfferClientDemands() {
+    public void onRequestClientOfferDemands() {
         if (user.getRoleList().contains(Role.CLIENT)) {
             eventBus.getClientDemandsWithOffers(user.getClientId());
         }

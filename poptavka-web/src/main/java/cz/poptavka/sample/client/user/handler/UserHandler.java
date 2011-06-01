@@ -18,6 +18,7 @@ import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
@@ -148,6 +149,20 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onSuccess(ArrayList<OfferDemandDetail> result) {
                 eventBus.responseClientDemandsWithOffers(result);
+            }
+        });
+    }
+
+    public void onGetDemandOffers(long demandId) {
+        offerService.getDemandOffers(demandId, new AsyncCallback<ArrayList<OfferDetail>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("UserHandler at getDemandOffers exception:\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<OfferDetail> offers) {
+                eventBus.setDemandOffers(offers);
             }
         });
     }
