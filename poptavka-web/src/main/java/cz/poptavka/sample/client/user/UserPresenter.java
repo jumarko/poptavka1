@@ -3,8 +3,14 @@ package cz.poptavka.sample.client.user;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
@@ -173,7 +179,9 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
  // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
-        PopupPanel userInfoPanel = new PopupPanel(true);
+        final DialogBox userInfoPanel = new DialogBox(false, false);
+        userInfoPanel.setText("User Info Box");
+        userInfoPanel.setWidth("200px");
         String br = "<br />";
         StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
         sb.append("ID: " + user.getId() + br);
@@ -207,14 +215,25 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
         sb.append("Messages: " + "n/a" + " / " + "n/a" + br);
 
-        userInfoPanel.getElement().setInnerHTML(sb.toString());
-        userInfoPanel.center();
+        HTML content = new HTML(sb.toString());
+        Button closeButton = new Button("Close");
+        closeButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                userInfoPanel.hide();
+            }
+        });
+        FlowPanel m = new FlowPanel();
+        m.add(content);
+        m.add(closeButton);
+        userInfoPanel.add(m);
+        userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 80);
         userInfoPanel.show();
     }
 
     // TODO devel warning poput, in prod, you wont see others options
     private void accessDenied() {
-        PopupPanel p = new PopupPanel();
+        PopupPanel p = new PopupPanel(true);
         p.setWidget(new HTML("You cannot access this funcionality.<br />You are logged as user, "
                 + "who does not support this"));
         p.center();
