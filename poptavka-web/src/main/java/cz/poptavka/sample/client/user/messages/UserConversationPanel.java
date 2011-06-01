@@ -58,20 +58,26 @@ public class UserConversationPanel extends Composite {
         // Last message is visible, when there are more messages
         // last message is always stored for reply
         replyToMessage = messages.get(messages.size() - 1);
+
+        //local
+        boolean moreThanOneVisibleMessage = false;
+
         if (messages.size() > 1) {
             messagePanel.add(new UserMessage(messages.get(1), collapsed, MessageDisplayType.FIRST));
-            messageCount++;
             for (int i = 2; i < (messages.size() - 1); i++) {
                 messagePanel.add(new UserMessage(messages.get(i), collapsed));
-                messageCount++;
+                moreThanOneVisibleMessage = true;
             }
-            messagePanel.add(new UserMessage(replyToMessage, false, MessageDisplayType.LAST));
-            messageCount++;
+            if (moreThanOneVisibleMessage) {
+                messagePanel.add(new UserMessage(replyToMessage, false, MessageDisplayType.LAST));
+            }
         }
+
+        messageCount = messagePanel.getWidgetCount();
+
         if (messageCount == 1) {
             ((UserMessage) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
         }
-        messageCount = messagePanel.getWidgetCount();
     }
 
     public void addMessage(MessageDetail lastMessage) {
