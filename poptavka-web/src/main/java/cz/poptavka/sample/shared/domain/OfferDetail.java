@@ -20,7 +20,6 @@ public class OfferDetail implements Serializable {
     private long messageId;
     private String supplierName;
     private MessageDetail messageDetail;
-    private long demandId;
 
     public static OfferDetail generateOfferDetail(Message message) {
         MessageDetail m = new MessageDetail();
@@ -65,11 +64,11 @@ public class OfferDetail implements Serializable {
     }
 
     public void setDemandId(Long demandId) {
-        this.demandId = demandId;
+        this.getMessageDetail().setDemandId(demandId);
     }
 
     public long getDemandId() {
-        return demandId;
+        return this.getMessageDetail().getDemandId();
     }
 
     public String getPriceString() {
