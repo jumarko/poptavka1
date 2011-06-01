@@ -1,10 +1,12 @@
 package cz.poptavka.sample.dao.message;
 
 import cz.poptavka.sample.dao.GenericHibernateDao;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
+import java.util.ArrayList;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -76,6 +78,23 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return runNamedQuery("getPotentialDemandConversation", queryParams);
     }
 
+    @Override
+    public Message getThreadRootMessage(Demand demand) {
+        final Criteria criteria = getHibernateSession().createCriteria(Message.class);
+        criteria.add(Restrictions.eq("demand", demand)).add(Restrictions.isNull("parent"));
+        return (Message) criteria.uniqueResult();
+    }
+
+    public List<Message> getAllOfferMessagesForDemand(Message threadRoot) {
+        List<Message> offerMessages = new ArrayList<Message>();
+        for (Message message : threadRoot.getChildren()) {
+            if (message.getOffer() != null) {
+                offerMessages.add(message);
+            }
+        }
+        return offerMessages;
+    }
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Build criterion which can be used for getting all messages of given user restricted by
@@ -115,5 +134,4 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
 //        userMessageCriteria.setProjection(Projections.property("message"));
         return userMessageCriteria;
     }
-
 }

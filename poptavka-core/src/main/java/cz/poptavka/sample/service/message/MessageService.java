@@ -2,6 +2,7 @@ package cz.poptavka.sample.service.message;
 
 import cz.poptavka.sample.dao.message.MessageDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
@@ -56,4 +57,18 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @return
      */
     List<Message> getPotentialDemandConversation(Message message, User supplierUser);
+
+    /**
+     * Returns message thread root assigned to given demand.
+     * @param demand
+     * @return
+     */
+    Message getThreadRootMessage(Demand demand);
+
+    /**
+     * Returns offer messages from this threadRoot
+     * @param threadRoot
+     * @return
+     */
+    List<Message> getAllOfferMessagesForDemand(Message threadRoot);
 }
