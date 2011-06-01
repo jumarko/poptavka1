@@ -19,6 +19,7 @@ public class OfferDemandDetail implements Serializable {
      */
     private static final long serialVersionUID = -927462467233123906L;
     private long demandId;
+    private long threadRootId;
     private int numberOfOffers;
     private int maxOffers;
     private String title;
@@ -152,6 +153,21 @@ public class OfferDemandDetail implements Serializable {
                 + ", title=" + title
                 + ", price=" + price
                 + ", endDate=" + endDate
+                + ", threadRootId=" + threadRootId
                 + ", finishDate=" + validTo + '}';
+    }
+
+    /**
+     * @return the threadRootId
+     */
+    public long getThreadRootId() {
+        return threadRootId;
+    }
+
+    /**
+     * @param threadRootId the threadRootId to set
+     */
+    public void setThreadRootId(long threadRootId) {
+        this.threadRootId = threadRootId;
     }
 }

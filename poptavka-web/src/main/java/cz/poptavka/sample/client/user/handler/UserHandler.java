@@ -153,8 +153,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    public void onGetDemandOffers(long demandId) {
-        offerService.getDemandOffers(demandId, new AsyncCallback<ArrayList<OfferDetail>>() {
+    public void onGetDemandOffers(long demandId, long threadRootId) {
+        offerService.getDemandOffers(demandId, threadRootId, new AsyncCallback<ArrayList<OfferDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("UserHandler at getDemandOffers exception:\n\n" + caught.getMessage());

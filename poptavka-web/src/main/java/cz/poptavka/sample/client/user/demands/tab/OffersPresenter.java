@@ -66,7 +66,7 @@ public class OffersPresenter extends
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.swapTables();
                 OfferDemandDetail obj = view.getDemandTableModel().getLastSelectedObject();
-                eventBus.getDemandOffers(obj.getDemandId());
+                eventBus.getDemandOffers(obj.getDemandId(), obj.getThreadRootId());
                 eventBus.getDemandDetail(obj.getDemandId(), DetailType.OFFER);
             }
         });

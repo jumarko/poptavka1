@@ -13,6 +13,6 @@ public interface OfferRPCService extends RemoteService {
 
     ArrayList<OfferDemandDetail> getClientDemands(long clientId);
 
-    ArrayList<OfferDetail> getDemandOffers(long demandId);
+    ArrayList<OfferDetail> getDemandOffers(long demandId, long threadRootId);
 
 }

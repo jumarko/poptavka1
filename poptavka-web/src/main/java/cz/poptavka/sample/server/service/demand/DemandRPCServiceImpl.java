@@ -156,7 +156,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @param demand
      */
     private void sendDemandToSuppliersTest(Demand demand) {
-        // TODO Refaktorovat celu metody s Jurajom
+        // TODO Refaktorovat celu metody s Jurajom a presunut do nejakeho JOBu
         Set<Supplier> suppliers = new HashSet<Supplier>();
         suppliers.addAll(supplierService.getSuppliers(demand.getCategories().
                 toArray(new Category[demand.getCategories().size()])));

@@ -85,6 +85,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         m.setThreadRoot(this.messageService.getById(messageDetail.getThreadRootId()));
         // set message roles
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
+        // handles events when I send reply to my own message
+        if (messageDetail.getSenderId() == messageDetail.getReceiverId()) {
+            messageDetail.setReceiverId(m.getThreadRoot().getSender().getId().longValue());
+        }
         // messageToUserRole
         MessageUserRole messageToUserRole = new MessageUserRole();
         messageToUserRole.setMessage(m);
@@ -112,6 +116,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     /**
      * Offer sent by supplier to potential demand.
+     * TODO replace this into OfferRPCServiceImpl
      * @param offer
      * @return message
      */
@@ -134,12 +139,13 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         m.setMessageState(MessageState.SENT);
         // TODO ivlcek - how to set this next sibling?
 //        m.setNextSibling(null);
-        Message parentMessage = this.messageService.getById(messageDetail.getParentId());
+        Message parentMessage = this.messageService.getById(messageDetail.getThreadRootId());
         m.setParent(parentMessage);
         BusinessUser supplier = this.generalService.find(BusinessUser.class, messageDetail.getSenderId());
         m.setSender(supplier);
         m.setSent(new Date());
         m.setSubject(supplier.getBusinessUserData().getCompanyName());
+        // TODO ivlcek - threadRoot is loaded two times. See above
         m.setThreadRoot(this.messageService.getById(messageDetail.getThreadRootId()));
         // set message roles
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();

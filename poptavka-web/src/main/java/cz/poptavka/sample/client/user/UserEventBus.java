@@ -75,7 +75,7 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /** Demand Offers GETTER/SETTER **/
     @Event(handlers = UserHandler.class)
-    void getDemandOffers(long demandId);
+    void getDemandOffers(long demandId, long threadRootId);
     @Event(handlers = OffersPresenter.class)
     void setDemandOffers(ArrayList<OfferDetail> offers);
 
