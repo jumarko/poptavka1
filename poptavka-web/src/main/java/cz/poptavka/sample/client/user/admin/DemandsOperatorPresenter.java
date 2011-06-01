@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -59,6 +61,11 @@ public class DemandsOperatorPresenter extends
             detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.OPERATOR);
         }
 
+        // TODO Beho - just for information, delete when implementing
+        PopupPanel p = new PopupPanel(true);
+        p.setWidget(new HTML("NO EVENT CALL, SO NO DATA WILL BE VISIBLE. YOu HAVE TO IMPLEMENT IT"));
+        p.center();
+        p.show();
     }
 
     /**
@@ -84,7 +91,8 @@ public class DemandsOperatorPresenter extends
 
     // TODO delete, just devel tool
     public void cleanDetailWrapperPresenterForDevelopment() {
-        GWT.log("WRAPPER REMOVED");
-        eventBus.removeHandler(detailPresenter);
+        if (detailPresenter != null) {
+            eventBus.removeHandler(detailPresenter);
+        }
     }
 }

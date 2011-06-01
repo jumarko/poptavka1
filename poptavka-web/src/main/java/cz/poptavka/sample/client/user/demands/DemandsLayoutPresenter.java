@@ -52,6 +52,9 @@ public class DemandsLayoutPresenter
         void setAdministrationToken(String linkString);
 
         Button getDevelButton();
+
+
+
     }
 
     // TODO clean up after development
@@ -74,6 +77,7 @@ public class DemandsLayoutPresenter
                 }
                 develPresenter = eventBus.addHandler(OffersPresenter.class);
                 develPresenter.onInvokeOffers();
+//                eventBus.createLoadingPopup(String loadingMessage, Widget anchor)
             }
         });
     }

@@ -104,8 +104,9 @@ public class MyDemandsPresenter extends
 
     // TODO delete, just devel tool
     public void cleanDetailWrapperPresenterForDevelopment() {
-        GWT.log("WRAPPER REMOVED");
-        eventBus.removeHandler(detailPresenter);
+        if (detailPresenter != null) {
+            eventBus.removeHandler(detailPresenter);
+        }
     }
 
 }

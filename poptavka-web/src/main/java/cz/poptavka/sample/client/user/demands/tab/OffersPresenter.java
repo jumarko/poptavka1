@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -68,6 +67,7 @@ public class OffersPresenter extends
                 view.swapTables();
                 OfferDemandDetail obj = view.getDemandTableModel().getLastSelectedObject();
                 eventBus.getDemandOffers(obj.getDemandId());
+                eventBus.getDemandDetail(obj.getDemandId(), DetailType.OFFER);
             }
         });
         view.getOfferTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -109,7 +109,7 @@ public class OffersPresenter extends
         // Init DetailWrapper for this view
         if (detailPresenter  == null) {
             detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
-            detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.POTENTIAL);
+            detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.OFFER);
         }
 
         // widget display
@@ -133,7 +133,8 @@ public class OffersPresenter extends
 
     // TODO delete, just devel tool
     public void cleanDetailWrapperPresenterForDevelopment() {
-        GWT.log("WRAPPER REMOVED");
-        eventBus.removeHandler(detailPresenter);
+        if (detailPresenter != null) {
+            eventBus.removeHandler(detailPresenter);
+        }
     }
 }

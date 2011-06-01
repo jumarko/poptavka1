@@ -3,6 +3,8 @@ package cz.poptavka.sample.client.user.demands.widgets;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -151,7 +153,10 @@ public class DetailWrapperPresenter extends
         if (!typeOfDetail.equals(type)) {
             return;
         }
-        Widget anchor = view.getWidgetView();
+        Widget anchor = view.getWidgetView().getParent();
+        anchor.getElement().getStyle().setBorderColor("red");
+        anchor.getElement().getStyle().setBorderStyle(BorderStyle.DASHED);
+        anchor.getElement().getStyle().setBorderWidth(12, Unit.PX);
         eventBus.loadingShowWithAnchor(" ", anchor);
     }
 

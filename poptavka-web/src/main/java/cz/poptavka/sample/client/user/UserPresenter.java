@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -113,6 +114,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         if (user.getRoleList().contains(Role.CLIENT)) {
             newDemand.setClientId(user.getClientId());
             eventBus.createDemand(newDemand, user.getClientId());
+        } else {
+            accessDenied();
         }
     }
 
@@ -124,18 +127,24 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     public void onClearUserOnUnload() {
         if (user != null) {
             this.user = null;
+        } else {
+            accessDenied();
         }
     }
 
     public void onRequestPotentialDemands() {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             eventBus.getPotentialDemands(user.getId());
+        } else {
+            accessDenied();
         }
     }
 
     public void onRequestClientOfferDemands() {
         if (user.getRoleList().contains(Role.CLIENT)) {
             eventBus.getClientDemandsWithOffers(user.getClientId());
+        } else {
+            accessDenied();
         }
     }
 
@@ -143,6 +152,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     public void onRequestPotentialDemandConversation(long messageId, int test) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             eventBus.getPotentialDemandConversation(messageId, user.getId(), test);
+        } else {
+            accessDenied();
         }
     }
 
@@ -155,6 +166,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             offerToSend.getMessageDetail().setSenderId(user.getId());
             offerToSend.setSupplierId(user.getSupplierId());
             eventBus.sendDemandOffer(offerToSend);
+        } else {
+            accessDenied();
         }
     }
 
@@ -195,6 +208,16 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         sb.append("Messages: " + "n/a" + " / " + "n/a" + br);
 
         userInfoPanel.getElement().setInnerHTML(sb.toString());
+        userInfoPanel.center();
         userInfoPanel.show();
+    }
+
+    // TODO devel warning poput, in prod, you wont see others options
+    private void accessDenied() {
+        PopupPanel p = new PopupPanel();
+        p.setWidget(new HTML("You cannot access this funcionality.<br />You are logged as user, "
+                + "who does not support this"));
+        p.center();
+        p.show();
     }
 }

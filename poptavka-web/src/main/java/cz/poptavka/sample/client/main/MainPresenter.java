@@ -148,7 +148,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     public void onLoadingShowWithAnchor(String loadingMessage, Widget anchor) {
-        if (!(popup == null)) {
+        if (popup != null) {
             LoadingPopup popupContent = (LoadingPopup) popup.getWidget();
             popupContent.setMessage(loadingMessage);
         } else {
@@ -181,9 +181,12 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
 //        popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X, (Window.getClientHeight() / 2) - OFFSET_Y);
         int top = anchor.getAbsoluteTop() + (anchor.getOffsetHeight() / 2);
         int left = anchor.getAbsoluteLeft() + (anchor.getOffsetWidth() / 2) - OFFSET_X;
-//        popup.showRelativeTo(anchor);
+        popup.showRelativeTo(anchor);
+        GWT.log("AbsoluteLeft: " + anchor.getAbsoluteLeft() + " OffsetWidth: " + (anchor.getOffsetWidth()));
+        GWT.log("AbsoluteTop: " + anchor.getAbsoluteTop() + " Offsetheight: " + (anchor.getOffsetHeight()));
+
         GWT.log("L: " + left + " T: " + top);
-        popup.setPopupPosition(left, top);
+//        popup.setPopupPosition(left, top);
 
         popup.show();
     }
