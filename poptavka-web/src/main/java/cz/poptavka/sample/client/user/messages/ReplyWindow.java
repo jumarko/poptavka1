@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.messages;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.CssResource;
@@ -59,6 +60,13 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+
+        /** CSS3 specific styling **/
+        submitBtn.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
+                + "rgb(122,118,122) 54%");
+
+        cancelBtn.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
+                + " rgb(122,118,122) 54%;");
     }
 
     @Override
@@ -71,7 +79,7 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
             public void onClick(ClickEvent event) {
                 selectedResponse = RESPONSE_OFFER;
                 replyTextArea.getElement().getNextSiblingElement()
-                    .getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
+                    .getFirstChildElement().getStyle().setVisibility(Visibility.VISIBLE);
                 toggleWidget();
             }
         });
@@ -80,7 +88,7 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
             public void onClick(ClickEvent event) {
                 selectedResponse = RESPONSE_QUESTION;
                 replyTextArea.getElement().getNextSiblingElement()
-                    .getFirstChildElement().getStyle().setDisplay(Display.NONE);
+                    .getFirstChildElement().getStyle().setVisibility(Visibility.HIDDEN);
                 toggleWidget();
             }
         });
@@ -184,6 +192,7 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         // display sending message window, whatever
         header.getStyle().setDisplay(Display.BLOCK);
         header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+        hiddenReplyBody = true;
     }
 
     @Override

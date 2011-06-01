@@ -75,11 +75,15 @@ public class UserConversationPanel extends Composite {
     }
 
     public void addMessage(MessageDetail lastMessage) {
-        UserMessage last = (UserMessage) messagePanel.getWidget(messageCount - 1);
-        last.setMessageStyle(MessageDisplayType.NONE);
+        if (messageCount > 0) {
+            UserMessage last = (UserMessage) messagePanel.getWidget(messageCount - 1);
+            last.setMessageStyle(MessageDisplayType.NORMAL);
+        }
         messagePanel.add(new UserMessage(lastMessage, false, MessageDisplayType.LAST));
-        messageCount++;
         replyToMessage = lastMessage;
+
+
+        messageCount = messagePanel.getWidgetCount();
     }
 
     /**

@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.tab;
+package cz.poptavka.sample.client.user.admin;
 
 import java.util.Date;
 
@@ -25,14 +25,14 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.DemandDetail;
 
-public class MyDemandsOperatorView extends Composite
+public class DemandsOperatorView extends Composite
     implements DemandsOperatorPresenter.MyDemandsOperatorViewInterface {
 
-    private static MyDemandsOperatorUiBinder uiBinder = GWT
-            .create(MyDemandsOperatorUiBinder.class);
+    private static DemandsOperatorUiBinder uiBinder = GWT
+            .create(DemandsOperatorUiBinder.class);
 
-    interface MyDemandsOperatorUiBinder extends
-            UiBinder<Widget, MyDemandsOperatorView> {
+    interface DemandsOperatorUiBinder extends
+            UiBinder<Widget, DemandsOperatorView> {
     }
 
     private Button answerBtn;

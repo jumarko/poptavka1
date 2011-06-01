@@ -152,7 +152,7 @@ public class DetailWrapperPresenter extends
             return;
         }
         Widget anchor = view.getWidgetView();
-        eventBus.loadingShowWithAnchor("", anchor);
+        eventBus.loadingShowWithAnchor(" ", anchor);
     }
 
 }

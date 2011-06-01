@@ -71,7 +71,6 @@ public class PotentialDemandsView extends OverflowComposite implements
     // @UiField ToggleButton moreActionsBtn;
 
     private ListDataProvider<PotentialDemandDetail> dataProvider = new ListDataProvider<PotentialDemandDetail>();
-    private MultiSelectionModel<PotentialDemandDetail> selectionModel;
 
     @Override
     public void createView() {
@@ -111,8 +110,8 @@ public class PotentialDemandsView extends OverflowComposite implements
                 true);
         pager.setDisplay(cellTable);
 
-        selectionModel = new MultiSelectionModel<PotentialDemandDetail>(
-                KEY_PROVIDER);
+        final MultiSelectionModel<PotentialDemandDetail> selectionModel =
+                new MultiSelectionModel<PotentialDemandDetail>(KEY_PROVIDER);
         cellTable.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<PotentialDemandDetail>createCheckboxManager());
 
@@ -218,7 +217,7 @@ public class PotentialDemandsView extends OverflowComposite implements
 
     @Override
     public MultiSelectionModel<PotentialDemandDetail> getSelectionModel() {
-        return selectionModel;
+        return (MultiSelectionModel<PotentialDemandDetail>) cellTable.getSelectionModel();
     }
 
     private static final ProvidesKey<PotentialDemandDetail> KEY_PROVIDER = new ProvidesKey<PotentialDemandDetail>() {
@@ -255,7 +254,7 @@ public class PotentialDemandsView extends OverflowComposite implements
 
     @Override
     public Set<PotentialDemandDetail> getSelectedSet() {
-        return selectionModel.getSelectedSet();
+        return getSelectionModel().getSelectedSet();
     }
 
     @Override

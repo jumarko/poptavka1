@@ -57,6 +57,21 @@
                 top: -18px;
                 left: 25px;
             }
+            .action-button {
+                backgrount-color: #525252;
+                background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.04, rgb(46,
+                    45, 46) ), color-stop(0.54, rgb(122, 118, 122) ) );
+                background-image: -moz-linear-gradient(center bottom, rgb(46, 45, 46) 4%,
+                    rgb(122, 118, 122) 54% );
+                border-radius: 5px;
+                -webkit-box-radius: 7px;
+                -moz-border-radius: 7px;
+                padding: 2px 5px 2px 5px;
+                color: white;
+                text-decoration: none;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
         </ui:style>
     <g:HTMLPanel>
         <div class="{style.reply-message}">
@@ -83,7 +98,7 @@
                 <div>
                     <g:TextArea ui:field="replyTextArea" styleName="{style.text-area}" />
                     <div>
-                        <div>
+                        <div style="display: inline;">
                             <table>
                                 <tbody>
                                     <tr>
@@ -103,17 +118,14 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div>
-                            <div style="float: left; display: none;">
-                                Content
-                            </div>
+                        <div style="margin: 5px; margin-bottom: 10px;">
                             <div style="text-align: right;">
-                                <g:Anchor ui:field="submitBtn">
+                                <g:Anchor ui:field="submitBtn" >
                                     <span style="cursor: pointer; cursor: hand;">
                                         <ui:msg key="submit">Submit</ui:msg>
                                     </span>
                                 </g:Anchor>
-                                <g:Anchor ui:field="cancelBtn">
+                                <g:Anchor ui:field="cancelBtn" >
                                     <span style="cursor: pointer; cursor: hand;">
                                         <ui:msg key="close">Close</ui:msg>
                                     </span>

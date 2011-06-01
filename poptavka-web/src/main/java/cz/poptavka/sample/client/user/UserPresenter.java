@@ -110,8 +110,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     /** REQUESTs && RESPONSEs. **/
     public void onRequestClientId(DemandDetail newDemand) {
         // TODO refactor this method to call just demand
-        newDemand.setClientId(user.getClientId());
-        eventBus.createDemand(newDemand, user.getClientId());
+        if (user.getRoleList().contains(Role.CLIENT)) {
+            newDemand.setClientId(user.getClientId());
+            eventBus.createDemand(newDemand, user.getClientId());
+        }
     }
 
     public void onMarkEventToLoad(String historyName) {
@@ -124,17 +126,24 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             this.user = null;
         }
     }
+
     public void onRequestPotentialDemands() {
-        eventBus.getPotentialDemands(user.getId());
+        if (user.getRoleList().contains(Role.SUPPLIER)) {
+            eventBus.getPotentialDemands(user.getId());
+        }
     }
 
     public void onRequestOfferClientDemands() {
-        eventBus.getClientDemandsWithOffers(user.getClientId());
+        if (user.getRoleList().contains(Role.CLIENT)) {
+            eventBus.getClientDemandsWithOffers(user.getClientId());
+        }
     }
 
     /** messaging subsection **/
     public void onRequestPotentialDemandConversation(long messageId, int test) {
-        eventBus.getPotentialDemandConversation(messageId, user.getId(), test);
+        if (user.getRoleList().contains(Role.SUPPLIER)) {
+            eventBus.getPotentialDemandConversation(messageId, user.getId(), test);
+        }
     }
 
     public void onBubbleMessageSending(MessageDetail messageToSend) {
@@ -142,9 +151,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         eventBus.sendQueryToPotentialDemand(messageToSend);
     }
     public void onBubbleOfferSending(OfferDetail offerToSend) {
-        offerToSend.getMessageDetail().setSenderId(user.getId());
-        offerToSend.setSupplierId(user.getSupplierId());
-        eventBus.sendDemandOffer(offerToSend);
+        if (user.getRoleList().contains(Role.SUPPLIER)) {
+            offerToSend.getMessageDetail().setSenderId(user.getId());
+            offerToSend.setSupplierId(user.getSupplierId());
+            eventBus.sendDemandOffer(offerToSend);
+        }
     }
 
  // TODO delete for production

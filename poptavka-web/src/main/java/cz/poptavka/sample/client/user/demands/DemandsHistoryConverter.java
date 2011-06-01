@@ -7,7 +7,7 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.tab.DemandsOperatorPresenter;
+import cz.poptavka.sample.client.user.admin.DemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;

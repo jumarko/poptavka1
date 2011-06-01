@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.tab;
+package cz.poptavka.sample.client.user.admin;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DetailType;
 
-@Presenter(view = MyDemandsOperatorView.class, multiple = true)
+@Presenter(view = DemandsOperatorView.class, multiple = true)
 public class DemandsOperatorPresenter extends
     LazyPresenter<DemandsOperatorPresenter.MyDemandsOperatorViewInterface, UserEventBus> {
 

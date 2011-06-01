@@ -18,7 +18,7 @@ import cz.poptavka.sample.shared.domain.MessageDetail;
 public class UserMessage extends Composite {
 
     public enum MessageDisplayType {
-        FIRST, LAST, BOTH, NONE;
+        FIRST, LAST, BOTH, NORMAL;
     }
 
     private static final int DATE_POS = 3;
@@ -61,14 +61,35 @@ public class UserMessage extends Composite {
     @UiField Element headerTable;
     @UiField Element messagePreview;
 
+//    NOT USED
 //    @UiField Anchor replyButton;
 
     private boolean collapsed = false;
 
+    public UserMessage() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    public UserMessage(MessageDetail message, boolean collapsed) {
+        this();
+        // GWT cut off css3 style, but this shouldn't be visible at all
+
+//        replyButton.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
+//                + "rgb(122,118,122) 54%");
+
+        setMessage(message);
+
+        // set collapsed state
+        this.collapsed = collapsed;
+        toggleCollapsed();
+    }
+
     /**
-     * Constructs object of user message with custom parameter
+     * Constructs object of user message with custom parameter. Used for FIRST or LAST message
+     * in the conversation. If there is only one message, it's style should be BOTH
      *
      * @param message message to fill the view
+     * @param collapsed define if this newly created message should be collapsed
      * @param style if true, message is set as first, if false message is set as last!
      */
     public UserMessage(MessageDetail message, boolean collapsed, MessageDisplayType style) {
@@ -86,30 +107,7 @@ public class UserMessage extends Composite {
 
     }
 
-    public void setMessageStyle(MessageDisplayType type) {
-        switch (type) {
-            case FIRST:
-                header.getParentElement().addClassName(style.messageFirst());
-                break;
-            case BOTH:
-                header.getParentElement().addClassName(style.messageFirst());
-            case LAST:
-                header.getParentElement().addClassName(style.messageLast());
-                break;
-            case NONE:
-                header.getParentElement().removeClassName(style.messageLast());
-                break;
-            default:
-                break;
-        }
-    }
-
-    public UserMessage(MessageDetail message, boolean collapsed) {
-        initWidget(uiBinder.createAndBindUi(this));
-        // set headerTable 100% width
-//        Element messagePart =  (Element) headerTable.getChild(DATE_POS);
-//        messagePart.setAttribute("width", "100%");
-        // set header data
+    public void setMessage(MessageDetail message) {
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
         // author
         tableColumns.getItem(0).setInnerText(message.getSubject());
@@ -120,20 +118,31 @@ public class UserMessage extends Composite {
         // date
         tableColumns.getItem(DATE_POS).setInnerText(message.getSent().toString());
 
-//        header.getElementsByTagName("div").getItem(0).setInnerText(message.getDate());
+        // message body
         // the first child is our content place
         body.getElementsByTagName("div").getItem(0).setInnerHTML(message.getBody());
-
-        // GWT cut off css3 style, but this shouldn't be visible at all
-//        replyButton.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
-//                + "rgb(122,118,122) 54%");
-
-        // set collapsed state
-        this.collapsed = collapsed;
-        toggleMessageBody();
     }
 
-    public void toggleMessageBody() {
+
+    public void setMessageStyle(MessageDisplayType type) {
+        switch (type) {
+            case FIRST:
+                header.getParentElement().addClassName(style.messageFirst());
+                break;
+            case BOTH:
+                header.getParentElement().addClassName(style.messageFirst());
+            case LAST:
+                header.getParentElement().addClassName(style.messageLast());
+                break;
+            case NORMAL:
+                header.getParentElement().removeClassName(style.messageLast());
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void toggleCollapsed() {
         if (collapsed) {
             body.getStyle().setDisplay(Display.NONE);
         } else {
@@ -142,22 +151,13 @@ public class UserMessage extends Composite {
         collapsed = !collapsed;
     }
 
+    /**********************************************************************************/
+    /**                       Widget internal behavior handling.                       */
     @Override
     protected void onLoad() {
         com.google.gwt.user.client.Element castedElement = castElement(header);
         DOM.sinkEvents(castedElement, Event.ONCLICK);
         DOM.setEventListener(castedElement, new MessageToggleHangler());
-    }
-
-    private class MessageToggleHangler implements EventListener {
-        @Override
-        public void onBrowserEvent(Event event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (event.getTypeInt() == Event.ONCLICK) {
-                toggleMessageBody();
-            }
-        }
     }
 
     @Override
@@ -170,8 +170,15 @@ public class UserMessage extends Composite {
         return (com.google.gwt.user.client.Element) elem;
     }
 
-//    public Anchor getReplyButton() {
-//        return replyButton;
-//    }
+    private class MessageToggleHangler implements EventListener {
+        @Override
+        public void onBrowserEvent(Event event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.getTypeInt() == Event.ONCLICK) {
+                toggleCollapsed();
+            }
+        }
+    }
 
 }
