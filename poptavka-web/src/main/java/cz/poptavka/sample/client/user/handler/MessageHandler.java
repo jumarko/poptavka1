@@ -21,7 +21,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     @Inject
     private MessageRPCServiceAsync messageService;
 
-    public void onGetPotentialDemandConversation(long messageId, long businessUserId, int test) {
+    public void onGetPotentialDemandConversation(long messageId, long businessUserId) {
 
         // TODO NOT WORKING NOW
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId,
@@ -36,6 +36,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 public void onSuccess(ArrayList<MessageDetail> messageList) {
                     GWT.log("Conversation size: " + messageList.size());
                     eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+                    // TODO delete
+                    /** DEBUG INFO **/
+                    for (MessageDetail m : messageList) {
+                        GWT.log(m.toString());
+                    }
                 }
             });
     }
@@ -71,6 +76,22 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             public void onSuccess(OfferDetail result) {
                 Window.alert("Offer Success");
 //                eventBus.
+            }
+        });
+    }
+
+    public void onRequestPotentialDemandReadStatusChange(ArrayList<Long> messagesId, boolean isRead) {
+        messageService.setMessageReadStatus(messagesId, isRead, new AsyncCallback<Void>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Auto-generated method stub
+                Window.alert(MessageHandler.class.getName()
+                        + " at onRequestPotentialDemandReadStatusChange\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Void result) {
+                // there is nothing to do
             }
         });
     }

@@ -14,6 +14,9 @@ import java.util.Date;
  */
 public class PotentialDemandDetail implements Serializable {
 
+    private static final String HTML_READ = "";
+    private static final String HTML_UNREAD_START = "<strong>";
+    private static final String HTML_UNREAD_END = "</strong>";
     /**
      * Generated serialVersionUID.
      */
@@ -22,8 +25,8 @@ public class PotentialDemandDetail implements Serializable {
     private long demandId;
     private long messageId;
     private long userMessageId;
-    private boolean isRead;
-    private boolean isStarred;
+    private boolean read;
+    private boolean starred;
     private String clientName;
     private int numberOfReplies;
     private String demandTitle;
@@ -34,6 +37,9 @@ public class PotentialDemandDetail implements Serializable {
     /* numberOfReplies designates the number of all messages in this thread. */
     private BigDecimal price;
     private String demandStatus;
+
+    private String htmlDisplayStart = HTML_UNREAD_START;
+    private String htmlDisplayEnd = HTML_UNREAD_END;
 
     /** for serialization. **/
     public PotentialDemandDetail() {
@@ -82,31 +88,38 @@ public class PotentialDemandDetail implements Serializable {
     }
 
     /**
-     * @return the isRead
+     * @return the read
      */
-    public boolean isIsRead() {
-        return isRead;
+    public boolean isRead() {
+        return read;
     }
 
     /**
-     * @param isRead the isRead to set
+     * @param read true, if is read, or was read in the past
      */
-    public void setIsRead(boolean isRead) {
-        this.isRead = isRead;
+    public void setRead(boolean isRead) {
+        this.read = isRead;
+        if (read) {
+            this.htmlDisplayStart = HTML_READ;
+            this.htmlDisplayEnd = HTML_READ;
+        } else {
+            this.htmlDisplayStart = HTML_UNREAD_START;
+            this.htmlDisplayEnd = HTML_UNREAD_END;
+        }
     }
 
     /**
-     * @return the isStarred
+     * @return the starred
      */
-    public boolean isIsStarred() {
-        return isStarred;
+    public boolean isStarred() {
+        return starred;
     }
 
     /**
-     * @param isStarred the isStarred to set
+     * @param starred the starred to set
      */
-    public void setIsStarred(boolean isStarred) {
-        this.isStarred = isStarred;
+    public void setStarred(boolean isStarred) {
+        this.starred = isStarred;
     }
 
     /**
@@ -114,6 +127,9 @@ public class PotentialDemandDetail implements Serializable {
      */
     public String getClientName() {
         return clientName;
+    }
+    public String getClientNameHtml() {
+        return htmlDisplay(clientName);
     }
 
     /**
@@ -142,6 +158,10 @@ public class PotentialDemandDetail implements Serializable {
      */
     public String getDemandTitle() {
         return demandTitle;
+    }
+
+    public String getDemandTitleHtml() {
+        return htmlDisplay(demandTitle);
     }
 
     /**
@@ -219,6 +239,20 @@ public class PotentialDemandDetail implements Serializable {
      */
     public void setDemandStatus(String demandStatus) {
         this.demandStatus = demandStatus;
+    }
+
+    /**
+     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
+     * User CANNOT call this nethod due to security issues.
+     * @param trustedHtml
+     * @return string in html tags
+     */
+    public String htmlDisplay(String trustedHtml) {
+        StringBuilder sb = new StringBuilder()
+            .append(htmlDisplayStart)
+            .append(trustedHtml)
+            .append(htmlDisplayEnd);
+        return sb.toString();
     }
 
 }

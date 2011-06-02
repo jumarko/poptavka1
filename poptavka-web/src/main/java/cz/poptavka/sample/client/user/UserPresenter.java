@@ -155,9 +155,9 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
 
     /** messaging subsection **/
-    public void onRequestPotentialDemandConversation(long messageId, int test) {
+    public void onRequestPotentialDemandConversation(long messageId) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            eventBus.getPotentialDemandConversation(messageId, user.getId(), test);
+            eventBus.getPotentialDemandConversation(messageId, user.getId());
         } else {
             accessDenied();
         }
@@ -227,7 +227,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         m.add(content);
         m.add(closeButton);
         userInfoPanel.add(m);
-        userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 80);
+        userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
     }
 

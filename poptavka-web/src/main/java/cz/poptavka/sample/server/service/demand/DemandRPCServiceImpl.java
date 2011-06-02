@@ -327,8 +327,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             p.setDemandId(demand.getId());
             p.setDemandStatus(demand.getStatus().getValue());
             p.setEndDate(demand.getEndDate());
-            p.setIsRead(userMessage.isIsRead());
-            p.setIsStarred(userMessage.isIsStarred());
+            p.setRead(userMessage.isIsRead());
+            p.setStarred(userMessage.isIsStarred());
             p.setMessageId(message.getId());
             p.setNumberOfReplies(message.getChildren().size());
             p.setPrice(demand.getPrice());

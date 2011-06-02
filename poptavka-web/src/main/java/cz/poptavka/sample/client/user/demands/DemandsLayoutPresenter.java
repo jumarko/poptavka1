@@ -11,7 +11,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
@@ -58,7 +58,7 @@ public class DemandsLayoutPresenter
     }
 
     // TODO clean up after development
-    private OffersPresenter develPresenter = null;
+    private PotentialDemandsPresenter develPresenter = null;
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
@@ -75,8 +75,8 @@ public class DemandsLayoutPresenter
                     develPresenter.cleanDetailWrapperPresenterForDevelopment();
                     eventBus.removeHandler(develPresenter);
                 }
-                develPresenter = eventBus.addHandler(OffersPresenter.class);
-                develPresenter.onInvokeOffers();
+                develPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
+                develPresenter.onInvokePotentialDemands();
 //                eventBus.createLoadingPopup(String loadingMessage, Widget anchor)
             }
         });

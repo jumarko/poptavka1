@@ -9,6 +9,7 @@ import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,4 +23,6 @@ public interface MessageRPCServiceAsync {
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
     void sendOffer(OfferDetail demandOffer, AsyncCallback<OfferDetail> callback);
+
+    void setMessageReadStatus(List<Long> messagesId, boolean isRead, AsyncCallback<Void> callback);
 }

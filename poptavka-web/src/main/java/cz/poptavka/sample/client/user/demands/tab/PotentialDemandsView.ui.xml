@@ -15,6 +15,9 @@
                     <g:Button ui:field="deleteBtn">
                         <ui:msg key="delete">Delete</ui:msg>
                     </g:Button>
+                    <g:Button ui:field="markBtn">
+                        <ui:msg key="markButton">Mark</ui:msg>
+                    </g:Button>
                     <g:Button ui:field="moreActionsBtn">
                         <ui:msg key="moreActions">More Actions</ui:msg>
                     </g:Button>

@@ -131,9 +131,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /** method for displaying conversation to selected demand. **/
     @Event(handlers = UserPresenter.class)
-    void requestPotentialDemandConversation(long messageId, int testValue);
+    void requestPotentialDemandConversation(long messageId);
     @Event(handlers = MessageHandler.class)
-    void getPotentialDemandConversation(long messageId, long id, int test);
+    void getPotentialDemandConversation(long messageId, long id);
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
     void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType);
 
@@ -158,6 +158,9 @@ public interface UserEventBus extends EventBusWithLookup {
     void bubbleOfferSending(OfferDetail offerToSend);
     @Event(handlers = MessageHandler.class)
     void sendDemandOffer(OfferDetail offerToSend);
+
+    @Event(handlers = MessageHandler.class)
+    void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);
 
     /** TODO - ivlcek this could be replaced to new EventBus for Admin **/
     @Event(handlers = UserHandler.class)

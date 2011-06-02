@@ -10,6 +10,7 @@ import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,4 +24,6 @@ public interface MessageRPCService extends RemoteService {
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 
     OfferDetail sendOffer(OfferDetail demandOffer);
+
+    void setMessageReadStatus(List<Long> messagesId, boolean isRead);
 }

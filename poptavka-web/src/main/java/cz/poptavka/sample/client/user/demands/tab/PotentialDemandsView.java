@@ -10,6 +10,10 @@ import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -27,6 +31,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
+import com.mvp4g.client.view.ReverseViewInterface;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -40,7 +45,7 @@ import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
  *
  */
 public class PotentialDemandsView extends OverflowComposite implements
-        PotentialDemandsPresenter.IPotentialDemands {
+        PotentialDemandsPresenter.IPotentialDemands, ReverseViewInterface<PotentialDemandsPresenter> {
 
     private static PotentialDemandsViewUiBinder uiBinder = GWT
             .create(PotentialDemandsViewUiBinder.class);
@@ -59,7 +64,7 @@ public class PotentialDemandsView extends OverflowComposite implements
     @UiField(provided = true)
     SimplePager pager;
     @UiField
-    Button replyBtn, deleteBtn, moreActionsBtn, refreshBtn;
+    Button replyBtn, deleteBtn, markBtn, moreActionsBtn, refreshBtn;
 
     @UiField
     SimplePanel detailSection;
@@ -71,6 +76,11 @@ public class PotentialDemandsView extends OverflowComposite implements
     // @UiField ToggleButton moreActionsBtn;
 
     private ListDataProvider<PotentialDemandDetail> dataProvider = new ListDataProvider<PotentialDemandDetail>();
+
+    private PotentialDemandsPresenter presenter;
+
+    // Global read status for selected messages
+    private boolean readStatus = false;
 
     @Override
     public void createView() {
@@ -96,8 +106,7 @@ public class PotentialDemandsView extends OverflowComposite implements
         cellTable = new CellTable<PotentialDemandDetail>(KEY_PROVIDER);
         // cellTable.setPageSize(5);
         cellTable.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
-        cellTable
-                .setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+        cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 
         ListHandler<PotentialDemandDetail> sorHandler = new ListHandler<PotentialDemandDetail>(
                 dataProvider.getList());
@@ -121,9 +130,21 @@ public class PotentialDemandsView extends OverflowComposite implements
         dataProvider.addDataDisplay(cellTable);
     }
 
-    private void initTableColumns(
-            final SelectionModel<PotentialDemandDetail> tableSelectionModel,
+    private void initTableColumns(final SelectionModel<PotentialDemandDetail> tableSelectionModel,
             ListHandler<PotentialDemandDetail> sortHandler) {
+
+        // for EVERY text display
+        TextCell tableTextCell = new TextCell(new SafeHtmlRenderer<String>() {
+            @Override
+            public SafeHtml render(String object) {
+                return SafeHtmlUtils.fromTrustedString(object);
+            }
+            @Override
+            public void render(String object, SafeHtmlBuilder builder) {
+                builder.appendHtmlConstant(object);
+            }
+        });
+
         // MultipleSelection Checkbox
         Column<PotentialDemandDetail, Boolean> checkBoxColumn = new Column<PotentialDemandDetail, Boolean>(
                 new CheckboxCell(true, false)) {
@@ -135,42 +156,43 @@ public class PotentialDemandsView extends OverflowComposite implements
 
         // Demand Title Column
         Column<PotentialDemandDetail, String> titleColumn = (new Column<PotentialDemandDetail, String>(
-                new TextCell()) {
+                tableTextCell) {
             @Override
             public String getValue(PotentialDemandDetail object) {
-                return object.getDemandTitle();
+                GWT.log("Object is read? " + object.isRead());
+                return object.getDemandTitleHtml();
             }
         });
 
         // Demand Price Column
-        Column<PotentialDemandDetail, String> priceColumn = (new Column<PotentialDemandDetail, String>(
-                new TextCell()) {
+        Column<PotentialDemandDetail, String> priceColumn = new Column<PotentialDemandDetail, String>(tableTextCell) {
             @Override
             public String getValue(PotentialDemandDetail object) {
-                return (object.getPrice().intValue() < 0 ? "none" : object.getPrice().toString());
+                return (object.getPrice().intValue() < 0
+                        ? object.htmlDisplay("none") : object.htmlDisplay(object.getPrice().toString()));
             }
-        });
+        };
 
-        final DateTimeFormat dateFormat = DateTimeFormat
-                .getFormat(PredefinedFormat.DATE_MEDIUM);
+        final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
 
         // Demand Finish Column
-        Column<PotentialDemandDetail, String> endDateColumn = (new Column<PotentialDemandDetail, String>(
-                new TextCell()) {
-            @Override
-            public String getValue(PotentialDemandDetail object) {
-                return dateFormat.format(object.getEndDate());
-            }
-        });
+        Column<PotentialDemandDetail, String> endDateColumn
+            = new Column<PotentialDemandDetail, String>(tableTextCell) {
+                @Override
+                public String getValue(PotentialDemandDetail object) {
+                    return object.htmlDisplay(dateFormat.format(object.getEndDate()));
+                }
+            };
 
         // Demand sent Date column
-        Column<PotentialDemandDetail, String> sentDateColumn = (new Column<PotentialDemandDetail, String>(
-                new TextCell()) {
-            @Override
-            public String getValue(PotentialDemandDetail object) {
-                return dateFormat.format(object.getSent());
-            }
-        });
+        Column<PotentialDemandDetail, String> sentDateColumn
+            =
+            new Column<PotentialDemandDetail, String>(tableTextCell) {
+                @Override
+                public String getValue(PotentialDemandDetail object) {
+                    return object.htmlDisplay(dateFormat.format(object.getSent()));
+                }
+            };
 
         // sort methods
         titleColumn.setSortable(true);
@@ -260,6 +282,31 @@ public class PotentialDemandsView extends OverflowComposite implements
     @Override
     public SimplePanel getDetailSection() {
         return detailSection;
+    }
+
+    @Override
+    public CellTable<PotentialDemandDetail> getDemandTable() {
+        return cellTable;
+    }
+
+    @Override
+    public void setPresenter(PotentialDemandsPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public PotentialDemandsPresenter getPresenter() {
+        return presenter;
+    }
+
+    @Override
+    public Button getMarkButton() {
+        return markBtn;
+    }
+
+    @Override
+    public boolean getReadValueForMarkedMessages() {
+        return readStatus;
     }
 
 }

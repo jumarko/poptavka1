@@ -27,4 +27,7 @@ public interface TableStyle extends CssResource {
 
     @ClassName("column-hidden")
     String columnHidden();
+
+    @ClassName("bold")
+    String bold();
 }
