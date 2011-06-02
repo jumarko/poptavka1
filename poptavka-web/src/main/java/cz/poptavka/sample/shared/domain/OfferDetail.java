@@ -15,14 +15,14 @@ public class OfferDetail implements Serializable {
     private static final long serialVersionUID = -563380651738612866L;
     private BigDecimal price;
     // TODO remove dipslpayed
-    private boolean displayed = false;
+    private boolean isRead;
     private Date finishDate;
     private long supplierId;
     private long messageId;
     private long offerId;
     private String supplierName;
     private MessageDetail messageDetail;
-    private Integer state;
+    private String state;
 
     public static OfferDetail generateOfferDetail(Message message) {
         MessageDetail m = new MessageDetail();
@@ -49,7 +49,7 @@ public class OfferDetail implements Serializable {
         o.setDemandId(offer.getDemand().getId());
         o.setOfferId(offer.getId());
         // TODO ivlcek - opravit na nieco rozumne
-        o.setState(Integer.valueOf(offer.getState().getId().intValue()));
+        o.setState(offer.getState().getCode());
         return o;
     }
 
@@ -81,12 +81,12 @@ public class OfferDetail implements Serializable {
         return price.toPlainString();
     }
 
-    public boolean isDisplayed() {
-        return displayed;
+    public boolean getIsRead() {
+        return isRead;
     }
 
-    public void setDisplayed(boolean displayed) {
-        this.displayed = displayed;
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
     public Date getFinishDate() {
@@ -144,14 +144,14 @@ public class OfferDetail implements Serializable {
     /**
      * @return the state
      */
-    public Integer getState() {
+    public String getState() {
         return state;
     }
 
     /**
      * @param state the state to set
      */
-    public void setState(Integer state) {
+    public void setState(String state) {
         this.state = state;
     }
 

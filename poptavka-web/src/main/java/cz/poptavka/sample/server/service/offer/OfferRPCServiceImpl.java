@@ -5,16 +5,21 @@
 package cz.poptavka.sample.server.service.offer;
 
 import cz.poptavka.sample.client.service.demand.OfferRPCService;
+import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.offer.OfferState;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.message.MessageService;
+import cz.poptavka.sample.service.offer.OfferService;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -36,6 +41,18 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     private GeneralService generalService;
     private MessageService messageService;
     private ClientService clientService;
+    private UserMessageService userMessageService;
+    private OfferService offerService;
+
+    @Autowired
+    public void setUserMessageService(UserMessageService userMessageService) {
+        this.userMessageService = userMessageService;
+    }
+
+    @Autowired
+    public void setOfferService(OfferService offerService) {
+        this.offerService = offerService;
+    }
 
     @Autowired
     public void setMessageService(MessageService messageService) {
@@ -84,25 +101,31 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
     @Override
     public ArrayList<OfferDetail> getDemandOffers(long demandId, long threadRootId) {
-        List<Offer> offers = this.demandService.getById(demandId).getOffers();
-        Message threadRoot = this.messageService.getById(threadRootId);
-        // todo get all children messages where OfferId is not null -> all offers to this demand
-        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getAllOfferMessagesForDemand(threadRoot);
+//        List<Offer> offers = this.demandService.getById(demandId).getOffers();
         ArrayList<OfferDetail> offerDetails = new ArrayList<OfferDetail>();
-        for (Message message : messages) {
+        Message threadRoot = this.messageService.getById(threadRootId);
+        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getAllOfferMessagesForDemand(threadRoot);
+        // retrieve userMessages for each message
+        if (messages.isEmpty()) {
+            return offerDetails;
+        }
+        List<UserMessage> userMessages = this.userMessageService.getUserMessages(
+                messages, (BusinessUser) threadRoot.getSender(), MessageFilter.EMPTY_FILTER);
+        userMessages.size();
+
+        for (UserMessage userMessage : userMessages) {
+            Message message = userMessage.getMessage();
             OfferDetail o = new OfferDetail();
             Offer offer = message.getOffer();
             o.setMessageDetail(MessageDetail.generateMessageDetail(message));
             // TODO zmenit LOng na maly long v setovacej metode
             o.setDemandId(Long.valueOf(demandId));
             // TODO ivlcek what is this?
-            o.setDisplayed(true);
+            o.setIsRead(userMessage.isIsRead());
             o.setFinishDate(offer.getFinishDate());
-            // TODO set messageDetail
-
-            // TODO set messageId
             o.setMessageId(message.getId());
             // TODO add offer state to OfferDetail
+            o.setState(offer.getState().getCode());
             o.setPrice(offer.getPrice());
             o.setSupplierId(offer.getSupplier().getId());
             o.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
@@ -112,13 +135,13 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         return offerDetails;
     }
 
+    @Override
     public OfferDetail changeOfferState(OfferDetail offerDetail) {
         Offer offer = this.generalService.find(Offer.class, offerDetail.getOfferId());
-        OfferState offerState = this.generalService.find(OfferState.class,
-                Long.parseLong(offerDetail.getState().toString()));
+        OfferState offerState = this.offerService.getOfferState(offerDetail.getState());
         offer.setState(offerState);
         offer = (Offer) this.generalService.save(offer);
-        offerDetail.setState(Integer.valueOf(offer.getState().getId().intValue()));
+        offerDetail.setState(offer.getState().getCode());
         return offerDetail;
     }
 }

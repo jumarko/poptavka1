@@ -155,7 +155,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         // messageToUserRole
         MessageUserRole messageToUserRole = new MessageUserRole();
         messageToUserRole.setMessage(m);
-        messageToUserRole.setUser(this.generalService.find(User.class, messageDetail.getReceiverId()));
+        User receiver = this.generalService.find(User.class, messageDetail.getReceiverId());
+        messageToUserRole.setUser(receiver);
         messageToUserRole.setType(MessageUserRoleType.TO);
         messageToUserRole.setMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER);
         messageUserRoles.add(messageToUserRole);
@@ -169,7 +170,15 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         m.setRoles(messageUserRoles);
         // set the offer to message
         m.setOffer(o);
-        OfferDetail offerDetailPersisted = OfferDetail.generateOfferDetail(this.messageService.create(m));
+        m = this.messageService.create(m);
+        OfferDetail offerDetailPersisted = OfferDetail.generateOfferDetail(m);
+        // create UserMessage for Client receiving this message
+        UserMessage userMessage = new UserMessage();
+        userMessage.setIsRead(false);
+        userMessage.setIsStarred(false);
+        userMessage.setMessage(m);
+        userMessage.setUser(receiver);
+        generalService.save(userMessage);
         // TODO set children for parent message - check if it is correct
         parentMessage.getChildren().add(m);
         parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
