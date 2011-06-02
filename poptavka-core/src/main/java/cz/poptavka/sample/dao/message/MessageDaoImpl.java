@@ -79,6 +79,16 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
+    public List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("threadRoot", threadRoot);
+        queryParams.put("supplier", supplierUser);
+
+        return runNamedQuery("getPotentialOfferConversation", queryParams);
+    }
+
+
+    @Override
     public Message getThreadRootMessage(Demand demand) {
         final Criteria criteria = getHibernateSession().createCriteria(Message.class);
         criteria.add(Restrictions.eq("demand", demand)).add(Restrictions.isNull("parent"));

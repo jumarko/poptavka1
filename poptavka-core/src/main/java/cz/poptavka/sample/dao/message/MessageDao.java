@@ -71,4 +71,13 @@ public interface MessageDao extends GenericDao<Message> {
      * @return
      */
     List<Message> getAllOfferMessagesForDemand(Message threadRoot);
+
+    /**
+     * Loads conversation between supplier and client related to potential offer.
+     *
+     * @param message
+     * @param supplierUser
+     * @return
+     */
+    List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser);
 }

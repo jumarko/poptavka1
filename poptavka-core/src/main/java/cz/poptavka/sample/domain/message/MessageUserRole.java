@@ -36,7 +36,15 @@ import javax.persistence.NamedQuery;
                         + " where "
                         // either message itself is thread root or it has given thread root
                         + " (messageUserRole.message = :threadRoot OR messageUserRole.message.threadRoot = :threadRoot)"
-                        + "   and messageUserRole.user = :supplier and messageUserRole.message.offer is null") }
+                        + "   and messageUserRole.user = :supplier and messageUserRole.message.offer is null"),
+
+        @NamedQuery(name = "getPotentialOfferConversation",
+                query = " select messageUserRole.message"
+                        + " from MessageUserRole messageUserRole"
+                        + " where "
+                        // either message itself is thread root or it has given thread root
+                        + " (messageUserRole.message = :threadRoot OR messageUserRole.message.threadRoot = :threadRoot)"
+                        + "   and messageUserRole.user = :supplier and messageUserRole.message.offer is not null") }
 )
 public class MessageUserRole extends DomainObject {
     @ManyToOne

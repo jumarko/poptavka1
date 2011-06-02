@@ -60,4 +60,16 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     public List<Message> getAllOfferMessagesForDemand(Message threadRoot) {
         return getDao().getAllOfferMessagesForDemand(threadRoot);
     }
+
+    /**
+     * Loads conversation between supplier and client related to potential offer.
+     *
+     * @param message
+     * @param supplierUser
+     * @return
+     */
+    @Override
+    public List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser) {
+        return getDao().getPotentialOfferConversation(threadRoot, supplierUser);
+    }
 }
