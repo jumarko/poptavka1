@@ -102,6 +102,7 @@
 
     <bean id="offerService" class="cz.poptavka.sample.service.offer.OfferServiceImpl">
         <constructor-arg ref="OfferDao" />
+        <property name="registerService" ref="registerService" />
     </bean>
 
     <bean id="processCrawledDemandsService" class="cz.poptavka.sample.service.demand.ProcessCrawledDemandsServiceImpl">

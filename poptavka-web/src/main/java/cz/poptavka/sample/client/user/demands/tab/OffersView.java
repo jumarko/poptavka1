@@ -114,11 +114,11 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
         return null;
     }
     @Override
-    public NoSelectionModel<OfferDemandDetail> getDemandTableModel() {
+    public NoSelectionModel<OfferDemandDetail> getDemandModel() {
         return (NoSelectionModel<OfferDemandDetail>) demandTable.getSelectionModel();
     }
     @Override
-    public ListDataProvider<OfferDemandDetail> getDemandTableProvider() {
+    public ListDataProvider<OfferDemandDetail> getDemandProvider() {
         return demandTable.getDataProvider();
     }
 
@@ -128,18 +128,18 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
     }
 
     @Override
-    public ListDataProvider<OfferDetail> getOfferTableProvider() {
+    public ListDataProvider<OfferDetail> getOfferProvider() {
         return offerTable.getDataProvider();
     }
 
     @Override
-    public MultiSelectionModel<OfferDetail> getOfferTableModel() {
+    public MultiSelectionModel<OfferDetail> getOfferModel() {
         return (MultiSelectionModel<OfferDetail>) offerTable.getSelectionModel();
     }
 
     @Override
     public Set<OfferDetail> getSelectedOffers() {
-        return getOfferTableModel().getSelectedSet();
+        return getOfferModel().getSelectedSet();
     }
 
     @Override

@@ -9,24 +9,30 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.user.messages.UserMessage.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.MessageDetail;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 
-public class UserActionMessage extends Composite implements UserMessagePresenter.ActionMessageInterface {
+/**
+ * Dummy message with no actions, just to display data.
+ *
+ * @author Beho
+ */
+public class SimpleMessageWindow extends Composite {
+
+    public enum MessageDisplayType {
+        FIRST, LAST, BOTH, NORMAL;
+    }
 
     private static final int DATE_POS = 3;
 
-    private static UserActionMessageViewUiBinder uiBinder = GWT
-            .create(UserActionMessageViewUiBinder.class);
+    private static SimpleMessageWindowUiBinder uiBinder = GWT
+            .create(SimpleMessageWindowUiBinder.class);
 
-    interface UserActionMessageViewUiBinder extends
-            UiBinder<Widget, UserActionMessage> {
+    interface SimpleMessageWindowUiBinder extends
+            UiBinder<Widget, SimpleMessageWindow> {
     }
 
     private static final StyleResource CSS = GWT.create(StyleResource.class);
@@ -36,26 +42,16 @@ public class UserActionMessage extends Composite implements UserMessagePresenter
     @UiField Element headerTable;
     @UiField Element messagePreview;
 
-    @UiField Anchor acceptButton;
-    @UiField Anchor replyButton;
-    @UiField Anchor deleteButton;
-
     private boolean collapsed = false;
 
-    private OfferDetail offerDetail;
-
-    @Override
-    public void createView() {
+    public SimpleMessageWindow() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-
-    public void setContent(MessageDetail message, boolean collapsed) {
+    public SimpleMessageWindow(MessageDetail message, boolean isCollapsed) {
+        this();
         setMessage(message);
-
-        // set collapsed state
-        this.collapsed = collapsed;
-        toggleCollapsed();
+        setCollapsed(isCollapsed);
     }
 
     /**
@@ -66,8 +62,8 @@ public class UserActionMessage extends Composite implements UserMessagePresenter
      * @param collapsed define if this newly created message should be collapsed
      * @param style if true, message is set as first, if false message is set as last!
      */
-    public void setContent(MessageDetail message, boolean collapsed, MessageDisplayType style) {
-        setContent(message, collapsed);
+    public SimpleMessageWindow(MessageDetail message, boolean collapsed, MessageDisplayType style) {
+        this(message, collapsed);
         setMessageStyle(style);
     }
 
@@ -87,6 +83,10 @@ public class UserActionMessage extends Composite implements UserMessagePresenter
         body.getElementsByTagName("div").getItem(0).setInnerHTML(message.getBody());
     }
 
+    public void setCollapsed(boolean isCollapsed) {
+        this.collapsed = isCollapsed;
+        toggleCollapsed();
+    }
 
     public void setMessageStyle(MessageDisplayType type) {
         switch (type) {
@@ -113,14 +113,6 @@ public class UserActionMessage extends Composite implements UserMessagePresenter
             body.getStyle().setDisplay(Display.BLOCK);
         }
         collapsed = !collapsed;
-    }
-
-    public OfferDetail getOfferDetail() {
-        return offerDetail;
-    }
-
-    public void setOfferDetail(OfferDetail offerDetail) {
-        this.offerDetail = offerDetail;
     }
 
     /**********************************************************************************/
@@ -152,28 +144,4 @@ public class UserActionMessage extends Composite implements UserMessagePresenter
             }
         }
     }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-
-    @Override
-    public Anchor getAcceptButton() {
-        return acceptButton;
-    }
-
-
-    @Override
-    public Anchor getReplyButton() {
-        return replyButton;
-    }
-
-
-    @Override
-    public Anchor getDeleteButton() {
-        return deleteButton;
-    }
-
 }

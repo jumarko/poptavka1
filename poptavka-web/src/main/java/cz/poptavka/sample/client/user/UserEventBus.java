@@ -46,8 +46,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void getUser();
 
     /**
-     * setter of userDetail for whole application. This user represents logged
-     * user
+     * setter of userDetail for whole application. This user represents logged user
      *
      * @param user
      */
@@ -57,8 +56,10 @@ public interface UserEventBus extends EventBusWithLookup {
     /** Potential demands GETTER/SETTER. **/
     @Event(handlers = UserPresenter.class)
     void requestPotentialDemands();
+
     @Event(handlers = UserHandler.class)
     void getPotentialDemands(long businessUserId);
+
     @Event(handlers = PotentialDemandsPresenter.class)
     void responsePotentialDemands(ArrayList<PotentialDemandDetail> potentialDemandsList);
 
@@ -68,22 +69,25 @@ public interface UserEventBus extends EventBusWithLookup {
     // method will be used
     @Event(handlers = UserPresenter.class)
     void requestClientOfferDemands();
+
     @Event(handlers = UserHandler.class)
     void getClientDemandsWithOffers(Long clientId);
+
     @Event(handlers = OffersPresenter.class)
     void responseClientDemandsWithOffers(ArrayList<OfferDemandDetail> result);
 
     /** Demand Offers GETTER/SETTER. **/
     @Event(handlers = UserHandler.class)
     void getDemandOffers(long demandId, long threadRootId);
+
     @Event(handlers = OffersPresenter.class)
     void setDemandOffers(ArrayList<OfferDetail> offers);
-
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
      *
-     * @param tabBody current widget
+     * @param tabBody
+     *            current widget
      */
     @Event(handlers = UserPresenter.class)
     void setTabWidget(Widget tabBody);
@@ -115,15 +119,16 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void requestClientId(DemandDetail newDemand);
 
-    @Event(handlers = { MyDemandsPresenter.class,
-            DemandsOperatorPresenter.class }, passive = true)
+    @Event(handlers = { MyDemandsPresenter.class, DemandsOperatorPresenter.class }, passive = true)
     void responseClientDemands(ArrayList<DemandDetail> demands);
 
     /**
      * common method for displaying Demand Detail in the window.
      * **/
     // TODO implements demandDetail section loading for Wrapper
-    @Event(handlers = {UserHandler.class, DetailWrapperPresenter.class })
+    @Event(handlers = { UserHandler.class,
+            // serves for visual sing, that content is loading
+            DetailWrapperPresenter.class })
     void getDemandDetail(Long demandId, DetailType typeOfDetail);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
@@ -132,38 +137,47 @@ public interface UserEventBus extends EventBusWithLookup {
     /** method for displaying conversation to selected demand. **/
     @Event(handlers = UserPresenter.class)
     void requestPotentialDemandConversation(long messageId, long userMessageId);
+
     @Event(handlers = MessageHandler.class)
     void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
+
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
     void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType);
 
     /**
      * Bubbling message to send to UserPresenter to get the user ID.
      *
-     * @param messageToSend message to be sent
+     * @param messageToSend
+     *            message to be sent
      */
     @Event(handlers = UserPresenter.class)
     void bubbleMessageSending(MessageDetail messageToSend);
+
     @Event(handlers = MessageHandler.class)
     void sendQueryToPotentialDemand(MessageDetail messageToSend);
+
     @Event(handlers = DetailWrapperPresenter.class)
     void addReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType);
 
     /** Offers message display & state change. **/
     @Event(handlers = DetailWrapperPresenter.class)
     void setOfferMessage(OfferDetail offerDetail);
+
     @Event(handlers = MessageHandler.class)
     void getOfferStatusChange(OfferDetail offerDetail);
+
     @Event(handlers = OffersPresenter.class)
     void setOfferDetailChange(OfferDetail offerDetail);
 
     /**
      * Bubbling offer to send to UserPresenter to get the user ID and supplier ID.
      *
-     * @param messageToSend message to be sent
+     * @param messageToSend
+     *            message to be sent
      */
     @Event(handlers = UserPresenter.class)
     void bubbleOfferSending(OfferDetail offerToSend);
+
     @Event(handlers = MessageHandler.class)
     void sendDemandOffer(OfferDetail offerToSend);
 
@@ -202,51 +216,45 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DemandsLayoutPresenter.class)
     void displayContent(Widget contentWidget);
 
-/**
- * Navigation events section. /* Presenters do NOT listen to events when
- * deactivated
- **/
+    /**
+     * Navigation events section. /* Presenters do NOT listen to events when deactivated
+     **/
     @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, NewDemandPresenter.class,
-            PotentialDemandsPresenter.class, DemandsOperatorPresenter.class,
-            AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, NewDemandPresenter.class, PotentialDemandsPresenter.class,
+            DemandsOperatorPresenter.class, AdministrationPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
-    @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
-            MyDemandsPresenter.class, NewDemandPresenter.class,
-            PotentialDemandsPresenter.class, DemandsOperatorPresenter.class,
+    @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = { MyDemandsPresenter.class,
+            NewDemandPresenter.class, PotentialDemandsPresenter.class, DemandsOperatorPresenter.class,
             AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeOffers();
 
     @Event(handlers = NewDemandPresenter.class, activate = NewDemandPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class,
-            PotentialDemandsPresenter.class, DemandsOperatorPresenter.class,
-            AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
+            DemandsOperatorPresenter.class, AdministrationPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokeNewDemand();
 
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class,
-            NewDemandPresenter.class, DemandsOperatorPresenter.class,
+            OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class, DemandsOperatorPresenter.class,
             AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
     @Event(handlers = DemandsOperatorPresenter.class, activate = DemandsOperatorPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class,
-            PotentialDemandsPresenter.class, NewDemandPresenter.class,
+            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class, NewDemandPresenter.class,
             AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeDemandsOperator();
 
     @Event(handlers = AdministrationPresenter.class, activate = AdministrationPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class,
-            PotentialDemandsPresenter.class, NewDemandPresenter.class,
+            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class, NewDemandPresenter.class,
             DemandsOperatorPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeAdministration();
 
-/** Navigation Events section END **/
+    /** Navigation Events section END **/
 
     /**
-     * hacky later fire event Needed when refreshing in User Section - refresh
-     * not neededi in prod.
+     * hacky later fire event Needed when refreshing in User Section - refresh not neededi in prod.
      **/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
@@ -289,6 +297,5 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = UserPresenter.class)
     void clearUserOnUnload();
-
 
 }

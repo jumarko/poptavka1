@@ -3,8 +3,6 @@ package cz.poptavka.sample.client.user.demands.widgets;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.BorderStyle;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -14,10 +12,9 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.messages.OfferWindowPresenter;
 import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
-import cz.poptavka.sample.client.user.messages.UserMessage;
-import cz.poptavka.sample.client.user.messages.UserMessagePresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -62,38 +59,100 @@ public class DetailWrapperPresenter extends
      */
     public void onSetDemandDetail(DemandDetail detail, DetailType typeOfDetail) {
         if (!typeOfDetail.equals(type)) {
-            //event not for this instance of presenter
             return;
         }
-
-        // initialization of parts of view
-
-        //detail part
-        // TODO selection if editable or not
         view.setDetail(new DemandDetailView(detail));
-
-        // reply part
-        // TODO it's not necessary to define new instance of reply window
-        // it's just for devel. Just one creation and then check if null
-        if (typeOfDetail.equals(DetailType.OFFER)) {
-//            view.getConversationPanel().setClickHandlers(acceptHandler, replyHandler, deleteHandler);
-            return;
+        // create reply window
+        // POTENTIAL
+        if (typeOfDetail.equals(DetailType.POTENTIAL)) {
+            setReplyWidget(detail.getId());
         }
-
 
         // GUI visual event
         eventBus.loadingHide();
     }
 
+    // TODO test
+    public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType) {
+        // TODO this should be enough, testing needed
+//        if (!(!wrapperhandlerType.equals(type) || messageList == null)) {
+//            return;
+//        }
+
+        // old and long, test commented one
+        if (!wrapperhandlerType.equals(type)) {
+            return;
+        }
+        if (messageList == null) {
+            return;
+        }
+        view.getConversationPanel().setMessageList(messageList, true);
+    }
+
+    public void onAddReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType) {
+        if (!wrapperhandlerType.equals(type)) {
+            return;
+        }
+        replyPresenter.enableResponse();
+    }
+
+    /**
+     * Visual sign, that demand detail is loading it's children. clear all it's children;
+     *
+     * @param demandId not needed for this method
+     * @param typeOfDetail
+     */
+    // TODO REWORK completely
+    public void onGetDemandDetail(Long demandId, DetailType typeOfDetail) {
+        if (!typeOfDetail.equals(type)) {
+            return;
+        }
+        eventBus.loadingShow("Loading...");
+
+        // clear offersPresenters for OFFER
+        // messages are cleared in the widget itself
+        ArrayList<OfferWindowPresenter> listToClear = view.getConversationPanel().clearContent();
+        for (OfferWindowPresenter p : listToClear) {
+            eventBus.removeHandler(p);
+        }
+
+        // reply window stay always loaded, do not do anything
+    }
+
+    /**
+     * Display offer message from presenter. Client can react to it.
+     *
+     * @param offerDetail offer detail
+     */
+    public void onSetOfferMessage(OfferDetail offerDetail) {
+
+        OfferWindowPresenter presenter = eventBus.addHandler(OfferWindowPresenter.class);
+        presenter.setOfferDetail(offerDetail);
+        GWT.log("OFFER ID: " + offerDetail.getOfferId());
+        view.getConversationPanel().addOfferMessagePresenter(presenter);
+    }
+
+
+    /**
+     * Creates reply window for creating Offer/Question message.
+     *
+     * @param demandId
+     */
+    public void setReplyWidget(Long demandId) {
+        if (replyPresenter != null) {
+            eventBus.removeHandler(replyPresenter);
+        }
+        replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
+        replyPresenter.initReplyWindow(view.getReplyHolder());
+        replyPresenter.addSubmitHandler(bindReplyWindowAction(), demandId);
+    }
 
     private ClickHandler bindReplyWindowAction() {
         return new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
-                GWT.log("START OF CLICK EVENT");
                 if (replyPresenter.isMessageValid()) {
-                    GWT.log("* * valid");
                     //distinguish what kind of message should be sent
                     if (replyPresenter.hasResponseQuestion()) {
                         MessageDetail messageToSend = replyPresenter.getCreatedMessage();
@@ -107,75 +166,8 @@ public class DetailWrapperPresenter extends
                         eventBus.bubbleOfferSending(offerToSend);
                     }
                 }
-                GWT.log("END OF CLICK EVENT");
             }
         };
-    }
-
-    public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType) {
-        if (!wrapperhandlerType.equals(type)) {
-            //event not for this instance of presenter
-            GWT.log(view.getWidgetView().getClass().getName()
-                    + " does NOT handle method onSetPotentialDemandConversation");
-            return;
-        }
-        if (messageList == null) {
-            GWT.log(" ** messageList is empty()");
-            return;
-        }
-        view.getConversationPanel().setMessageList(messageList, true);
-    }
-
-    public void onAddReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType) {
-        if (!wrapperhandlerType.equals(type)) {
-            //event not for this instance of presenter
-            GWT.log(view.getWidgetView().getClass().getName()
-                    + " does NOT handle method onSetPotentialDemandConversation");
-            return;
-        }
-        replyPresenter.enableResponse();
-        view.getConversationPanel();
-    }
-
-    /**
-     * Visual sign, that demand detail is loading.
-     * @param demandId
-     * @param typeOfDetail
-     */
-    public void onGetDemandDetail(Long demandId, DetailType typeOfDetail) {
-        if (!typeOfDetail.equals(type)) {
-            return;
-        }
-        Widget anchor = view.getWidgetView().getParent();
-        anchor.getElement().getStyle().setBorderColor("red");
-        anchor.getElement().getStyle().setBorderStyle(BorderStyle.DASHED);
-        anchor.getElement().getStyle().setBorderWidth(12, Unit.PX);
-        eventBus.loadingShowWithAnchor(" ", anchor);
-    }
-
-    public void onSetOfferMessage(OfferDetail offerDetail) {
-        MessageDetail offerMessage = offerDetail.getMessageDetail();
-        UserMessage displayedOffer = new UserMessage(offerMessage, false);
-//        displayedOffer.addAcceptHandler(createAcceptOfferHandler(offerDetail));
-        displayedOffer.setEventBusCall(eventBus, offerDetail);
-
-        UserMessagePresenter presenter = eventBus.addHandler(UserMessagePresenter.class);
-        presenter.setOfferDetail(offerDetail);
-
-        view.getConversationPanel().addOfferMessagePresenter(presenter);
-    }
-
-//    public UserEventBus createAcceptOfferHandler(final OfferDetail offerDetail) {
-//        return
-//    }
-
-    public void setReplyWidget(Long demandId) {
-        if (replyPresenter != null) {
-            eventBus.removeHandler(replyPresenter);
-        }
-        replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
-        replyPresenter.initReplyWindow(view.getReplyHolder());
-        replyPresenter.addSubmitHandler(bindReplyWindowAction(), demandId);
     }
 
 }

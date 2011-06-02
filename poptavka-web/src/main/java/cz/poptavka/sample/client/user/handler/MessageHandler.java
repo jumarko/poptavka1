@@ -99,6 +99,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetOfferStatusChange(OfferDetail offerDetail) {
+        GWT.log("STATE: " + offerDetail.getState());
         offerService.changeOfferState(offerDetail, new AsyncCallback<OfferDetail>() {
 
             @Override

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.google.gwt.core.client.GWT;
+
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.offer.Offer;
 
@@ -48,6 +50,7 @@ public class OfferDetail implements Serializable {
         o.setSupplierId(offer.getSupplier().getId());
         o.setDemandId(offer.getDemand().getId());
         o.setOfferId(offer.getId());
+        GWT.log("OFFER ID: " + offer.getId() + ", OFFER DETAIL ID: " + o.getOfferId());
         // TODO ivlcek - opravit na nieco rozumne
         o.setState(offer.getState().getCode());
         return o;

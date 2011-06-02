@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -28,8 +29,6 @@ import cz.poptavka.sample.shared.domain.demand.DetailType;
 public class OffersPresenter extends
         LazyPresenter<OffersPresenter.OffersInterface, UserEventBus> {
 
-    private ArrayList<ArrayList<OfferDetail>> offers = new ArrayList<ArrayList<OfferDetail>>();
-
     public interface OffersInterface extends LazyView {
         Widget getWidgetView();
 
@@ -38,13 +37,13 @@ public class OffersPresenter extends
         Button getActionButton();
         Button getRefreshButton();
 
-        ListDataProvider<OfferDemandDetail> getDemandTableProvider();
+        ListDataProvider<OfferDemandDetail> getDemandProvider();
 
-        NoSelectionModel<OfferDemandDetail> getDemandTableModel();
+        NoSelectionModel<OfferDemandDetail> getDemandModel();
 
-        ListDataProvider<OfferDetail> getOfferTableProvider();
+        ListDataProvider<OfferDetail> getOfferProvider();
 
-        MultiSelectionModel<OfferDetail> getOfferTableModel();
+        MultiSelectionModel<OfferDetail> getOfferModel();
 
         Set<OfferDemandDetail> getSelectedSet();
 
@@ -61,22 +60,22 @@ public class OffersPresenter extends
     private boolean loaded = false;
 
     public void bindView() {
-        view.getDemandTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        // Demand selected -> OffersTable is loaded and shown, DemandDetail as well
+        view.getDemandModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.swapTables();
-                OfferDemandDetail obj = view.getDemandTableModel().getLastSelectedObject();
+                OfferDemandDetail obj = view.getDemandModel().getLastSelectedObject();
                 eventBus.getDemandOffers(obj.getDemandId(), obj.getThreadRootId());
                 eventBus.getDemandDetail(obj.getDemandId(), DetailType.OFFER);
             }
         });
-        view.getOfferTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        // Offer selected -> that offer is loaded and shown as well
+        view.getOfferModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 Set<OfferDetail> set = view.getSelectedOffers();
-                // TODO call demand detail
                 OfferDetail o = set.iterator().next();
-                eventBus.getDemandDetail(o.getDemandId(), DetailType.OFFER);
                 eventBus.setOfferMessage(o);
                 // TODO display every single offer and display it only ONCE
             }
@@ -100,13 +99,13 @@ public class OffersPresenter extends
         loaded = true;
     }
 
-    public void onResponseClientDemandsWithOffers(ArrayList<OfferDemandDetail> data) {
-        List<OfferDemandDetail> list = view.getDemandTableProvider().getList();
+    public void onResponseClientDemandsWithOffers(ArrayList<OfferDemandDetail> demands) {
+        List<OfferDemandDetail> list = view.getDemandProvider().getList();
         list.clear();
-        for (OfferDemandDetail d : data) {
+        for (OfferDemandDetail d : demands) {
             list.add(d);
         }
-        view.getDemandTableProvider().refresh();
+        view.getDemandProvider().refresh();
 
         // Init DetailWrapper for this view
         if (detailPresenter  == null) {
@@ -121,22 +120,23 @@ public class OffersPresenter extends
     /**
      * Initial fill of Offer table.
      *
-     * @param offers list of offer to be added into provider
+     * @param offerList list of offer to be added into provider
      */
     public void onSetDemandOffers(ArrayList<OfferDetail> offers) {
-        List<OfferDetail> data = view.getOfferTableProvider().getList();
-        // needed clear before inserting offers of some demand
-        data.clear();
+        List<OfferDetail> offerList = view.getOfferProvider().getList();
+        // needed clear before inserting offerList of some demand
+        offerList.clear();
         for (OfferDetail o : offers) {
-            data.add(o);
+            GWT.log("OfferDetail ID: " + o.getOfferId());
+            offerList.add(o);
         }
-        view.getOfferTableProvider().refresh();
+        view.getOfferProvider().refresh();
     }
 
     public void onSetOfferDetailChange(OfferDetail offerDetail) {
-        List<OfferDetail> data = view.getOfferTableProvider().getList();
+        List<OfferDetail> data = view.getOfferProvider().getList();
         data.get(data.indexOf(offerDetail)).setState(offerDetail.getState());
-        view.getOfferTableProvider().refresh();
+        view.getOfferProvider().refresh();
     }
 
     // TODO delete, just devel tool

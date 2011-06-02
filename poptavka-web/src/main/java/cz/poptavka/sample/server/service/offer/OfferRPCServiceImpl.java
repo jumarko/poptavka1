@@ -4,6 +4,11 @@
  */
 package cz.poptavka.sample.server.service.offer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cz.poptavka.sample.client.service.demand.OfferRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -23,9 +28,6 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -117,6 +119,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             Message message = userMessage.getMessage();
             OfferDetail o = new OfferDetail();
             Offer offer = message.getOffer();
+            o.setOfferId(offer.getId());
             o.setMessageDetail(MessageDetail.generateMessageDetail(message));
             // TODO zmenit LOng na maly long v setovacej metode
             o.setDemandId(Long.valueOf(demandId));
@@ -137,7 +140,13 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
     @Override
     public OfferDetail changeOfferState(OfferDetail offerDetail) {
+        System.out.println("OFFER ID: " + offerDetail.getOfferId());
+        System.out.println("is service: " + (generalService == null));
+
         Offer offer = this.generalService.find(Offer.class, offerDetail.getOfferId());
+
+        System.out.println("is Offer null: " + (offer == null));
+
         OfferState offerState = this.offerService.getOfferState(offerDetail.getState());
         offer.setState(offerState);
         offer = (Offer) this.generalService.save(offer);

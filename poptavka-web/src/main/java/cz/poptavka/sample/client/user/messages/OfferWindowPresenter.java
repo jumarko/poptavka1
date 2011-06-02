@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.user.messages;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -12,8 +13,8 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.OfferStateDetail;
 
-@Presenter(view = UserActionMessage.class, multiple = true)
-public class UserMessagePresenter extends LazyPresenter<UserMessagePresenter.ActionMessageInterface, UserEventBus> {
+@Presenter(view = OfferWindow.class, multiple = true)
+public class OfferWindowPresenter extends LazyPresenter<OfferWindowPresenter.ActionMessageInterface, UserEventBus> {
 
     public interface ActionMessageInterface extends LazyView {
         Widget getWidgetView();
@@ -35,6 +36,9 @@ public class UserMessagePresenter extends LazyPresenter<UserMessagePresenter.Act
             @Override
             public void onClick(ClickEvent event) {
                 OfferDetail d = view.getOfferDetail();
+
+                GWT.log("OFFER ID:" + d.getOfferId());
+
                 d.setState(OfferStateDetail.ACCEPTED.getValue());
                 eventBus.getOfferStatusChange(d);
             }

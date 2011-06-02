@@ -30,9 +30,9 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
 //        if (historyName.equals("invokeMyDemandsOperator")) {
 //            eventBus.invokeMyDemandsOperator();
 //        }
-//        if (historyName.equals("invokeAdministration")) {
-//            eventBus.invokeAdministration();
-//        }
+        if (historyName.equals("invokeAdministration")) {
+            eventBus.invokeAdministration();
+        }
     }
 
     @Override

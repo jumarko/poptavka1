@@ -10,11 +10,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.user.messages.UserMessage.MessageDisplayType;
+import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 
 /**
- * UserMessage holder, enabling features:
+ * SimpleMessageWindow holder, enabling features:
  * <ul>
  * TODO
  * <li>collapsing</li>
@@ -37,7 +37,7 @@ public class UserConversationPanel extends Composite {
     interface UserConversationPanelUiBinder extends UiBinder<Widget, UserConversationPanel> {
     }
 
-    private ArrayList<UserMessagePresenter> offers = new ArrayList<UserMessagePresenter>();
+    private ArrayList<OfferWindowPresenter> offerPresenters = new ArrayList<OfferWindowPresenter>();
 
     @UiField FlowPanel messagePanel;
 
@@ -75,50 +75,42 @@ public class UserConversationPanel extends Composite {
         boolean moreThanOneVisibleMessage = false;
 
         if (messages.size() > 1) {
-            messagePanel.add(new UserMessage(messages.get(1), collapsed, MessageDisplayType.FIRST));
+            messagePanel.add(new SimpleMessageWindow(messages.get(1), collapsed, MessageDisplayType.FIRST));
             for (int i = 2; i < (messages.size() - 1); i++) {
-                messagePanel.add(new UserMessage(messages.get(i), collapsed));
+                messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
                 moreThanOneVisibleMessage = true;
             }
             if (moreThanOneVisibleMessage) {
-                messagePanel.add(new UserMessage(replyToMessage, false, MessageDisplayType.LAST));
+                messagePanel.add(new SimpleMessageWindow(replyToMessage, false, MessageDisplayType.LAST));
             }
         }
 
         messageCount = messagePanel.getWidgetCount();
 
         if (messageCount == 1) {
-            ((UserMessage) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
-        }
-
-        for (int i = 0; i < messageCount; i++) {
-            UserMessage m = (UserMessage) messagePanel.getWidget(i);
-            m.addAcceptHandler(acceptHandler);
-            m.addReplyHandler(replyHandler);
-            m.addDeleteHandler(deleteHandler);
+            ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
         }
     }
 
     public void addMessage(MessageDetail lastMessage) {
         if (messageCount > 0) {
-            UserMessage last = (UserMessage) messagePanel.getWidget(messageCount - 1);
+            SimpleMessageWindow last = (SimpleMessageWindow) messagePanel.getWidget(messageCount - 1);
             last.setMessageStyle(MessageDisplayType.NORMAL);
         }
-        messagePanel.add(new UserMessage(lastMessage, false, MessageDisplayType.LAST));
+        messagePanel.add(new SimpleMessageWindow(lastMessage, false, MessageDisplayType.LAST));
         replyToMessage = lastMessage;
 
 
         messageCount = messagePanel.getWidgetCount();
     }
 
-    public void addOfferMessagePresenter(UserMessagePresenter presenter) {
-        offers.add(presenter);
+    public void addOfferMessagePresenter(OfferWindowPresenter presenter) {
+        offerPresenters.add(presenter);
         messagePanel.add(presenter.getWidgetView());
     }
 
-    public ArrayList<UserMessagePresenter> clearContent() {
-
-        return offers;
+    public ArrayList<OfferWindowPresenter> clearContent() {
+        return offerPresenters;
     }
 
     /**
