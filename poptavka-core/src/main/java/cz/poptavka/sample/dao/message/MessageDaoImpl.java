@@ -95,7 +95,9 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return (Message) criteria.uniqueResult();
     }
 
+    @Override
     public List<Message> getAllOfferMessagesForDemand(Message threadRoot) {
+        // TODO ivlcek - prerobit na select
         List<Message> offerMessages = new ArrayList<Message>();
         for (Message message : threadRoot.getChildren()) {
             if (message.getOffer() != null) {
