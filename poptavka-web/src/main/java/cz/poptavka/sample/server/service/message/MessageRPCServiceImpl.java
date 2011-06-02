@@ -20,6 +20,7 @@ import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.user.BusinessUser;
@@ -179,10 +180,11 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     @Override
     // TODO call setMessageReadStatus in body
-    public ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId) {
+    public ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(
+            long threadId, long userId, long userMessageId) {
         Message threadRoot = messageService.getById(threadId);
 
-        setMessageReadStatus(Arrays.asList(new Long[] {threadId}), true);
+        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
 
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
@@ -194,49 +196,26 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return messageDetails;
     }
 
-    public void setMessageReadStatus(List<Long> messageId, boolean isRead) {
-        // TODO
+    public ArrayList<MessageDetail> loadClientsPotentialOfferConversation(long threadId, long userId) {
+        Message threadRoot = messageService.getById(threadId);
+        User user = this.generalService.find(User.class, userId);
+        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialOfferConversation(
+                threadRoot, user);
+        ArrayList<MessageDetail> messageDetails = new ArrayList<MessageDetail>();
+        for (Message message : messages) {
+            messageDetails.add(MessageDetail.generateMessageDetail(message));
+        }
+        return messageDetails;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) {
+        for (Long userMessageId : userMessageIds) {
+            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
+            if (!userMessage.isIsRead()) {
+                userMessage.setIsRead(isRead);
+                this.generalService.save(userMessage);
+            }
+        }
+    }
 }

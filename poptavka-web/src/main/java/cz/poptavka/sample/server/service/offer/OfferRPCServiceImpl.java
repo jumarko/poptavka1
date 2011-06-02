@@ -8,6 +8,7 @@ import cz.poptavka.sample.client.service.demand.OfferRPCService;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.offer.Offer;
+import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
@@ -92,6 +93,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             OfferDetail o = new OfferDetail();
             Offer offer = message.getOffer();
             o.setMessageDetail(MessageDetail.generateMessageDetail(message));
+            // TODO zmenit LOng na maly long v setovacej metode
             o.setDemandId(Long.valueOf(demandId));
             // TODO ivlcek what is this?
             o.setDisplayed(true);
@@ -108,5 +110,14 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
         }
         return offerDetails;
+    }
+
+    public OfferDetail changeOfferState(OfferDetail offerDetail) {
+        Offer offer = this.generalService.find(Offer.class, offerDetail.getOfferId());
+        OfferState offerState = this.generalService.find(OfferState.class, offerDetail.getState());
+        offer.setState(offerState);
+        offer = (Offer) this.generalService.save(offer);
+        offerDetail.setState(Integer.valueOf(offer.getState().getId().intValue()));
+        return offerDetail;
     }
 }

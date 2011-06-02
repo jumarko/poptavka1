@@ -72,7 +72,7 @@ public class PotentialDemandsPresenter extends
                 PotentialDemandDetail selected = iter.next();
 
                 eventBus.getDemandDetail(selected.getDemandId(), DETAIL_TYPE);
-                eventBus.requestPotentialDemandConversation(selected.getMessageId());
+                eventBus.requestPotentialDemandConversation(selected.getMessageId(), selected.getUserMessageId());
 
                 //default set this demand as read
                 // TODO this should be automatically done on server side as well

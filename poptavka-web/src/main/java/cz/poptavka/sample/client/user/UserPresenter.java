@@ -154,10 +154,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
     }
 
-    /** messaging subsection **/
-    public void onRequestPotentialDemandConversation(long messageId) {
+    /** messaging subsection. **/
+    public void onRequestPotentialDemandConversation(long messageId, long userMessageId) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            eventBus.getPotentialDemandConversation(messageId, user.getId());
+            eventBus.getPotentialDemandConversation(messageId, user.getId(), userMessageId);
         } else {
             accessDenied();
         }

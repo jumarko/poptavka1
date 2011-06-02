@@ -13,4 +13,5 @@ public interface OfferRPCServiceAsync {
 
     void getDemandOffers(long demandId, long threadRootId, AsyncCallback<ArrayList<OfferDetail>> callback);
 
+    void changeOfferState(OfferDetail offerDetail, AsyncCallback<OfferDetail> callback);
 }

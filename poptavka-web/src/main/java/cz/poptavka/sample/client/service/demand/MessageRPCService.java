@@ -19,11 +19,11 @@ import java.util.List;
 @RemoteServiceRelativePath("service/messages")
 public interface MessageRPCService extends RemoteService {
 
-    ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId);
+    ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId);
 
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 
     OfferDetail sendOffer(OfferDetail demandOffer);
 
-    void setMessageReadStatus(List<Long> messagesId, boolean isRead);
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
 }

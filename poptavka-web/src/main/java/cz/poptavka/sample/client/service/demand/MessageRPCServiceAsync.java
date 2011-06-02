@@ -18,11 +18,11 @@ import java.util.List;
 public interface MessageRPCServiceAsync {
 
     void loadSuppliersPotentialDemandConversation(
-            long threadId, long userId, AsyncCallback<ArrayList<MessageDetail>> callback);
+            long threadId, long userId, long userMessageId, AsyncCallback<ArrayList<MessageDetail>> callback);
 
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
     void sendOffer(OfferDetail demandOffer, AsyncCallback<OfferDetail> callback);
 
-    void setMessageReadStatus(List<Long> messagesId, boolean isRead, AsyncCallback<Void> callback);
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 }

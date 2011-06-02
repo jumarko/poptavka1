@@ -21,10 +21,10 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     @Inject
     private MessageRPCServiceAsync messageService;
 
-    public void onGetPotentialDemandConversation(long messageId, long businessUserId) {
+    public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
 
         // TODO NOT WORKING NOW
-        messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId,
+        messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
                 @Override

@@ -15,4 +15,6 @@ public interface OfferRPCService extends RemoteService {
 
     ArrayList<OfferDetail> getDemandOffers(long demandId, long threadRootId);
 
+    OfferDetail changeOfferState(OfferDetail offerDetail);
+
 }

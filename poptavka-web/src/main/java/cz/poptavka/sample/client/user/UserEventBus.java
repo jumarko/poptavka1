@@ -73,7 +73,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = OffersPresenter.class)
     void responseClientDemandsWithOffers(ArrayList<OfferDemandDetail> result);
 
-    /** Demand Offers GETTER/SETTER **/
+    /** Demand Offers GETTER/SETTER. **/
     @Event(handlers = UserHandler.class)
     void getDemandOffers(long demandId, long threadRootId);
     @Event(handlers = OffersPresenter.class)
@@ -94,7 +94,7 @@ public interface UserEventBus extends EventBusWithLookup {
 
     // TODO beho - I think, this is obsolete and should be removed
     // Who is working on problems or what does this do?
-    /** Messages secition **/
+    /** Messages secition. **/
     @Event(handlers = MessagesPresenter.class)
     void reply();
 
@@ -131,9 +131,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /** method for displaying conversation to selected demand. **/
     @Event(handlers = UserPresenter.class)
-    void requestPotentialDemandConversation(long messageId);
+    void requestPotentialDemandConversation(long messageId, long userMessageId);
     @Event(handlers = MessageHandler.class)
-    void getPotentialDemandConversation(long messageId, long id);
+    void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
     void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType);
 
@@ -162,7 +162,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);
 
-    /** TODO - ivlcek this could be replaced to new EventBus for Admin **/
+    /** TODO - ivlcek this could be replaced to new EventBus for Admin. **/
     @Event(handlers = UserHandler.class)
     void getAllDemands();
 
@@ -248,7 +248,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void markEventToLoad(String historyName);
 
-    /** Calls to MainEventBus **/
+    /** Calls to MainEventBus. **/
     @Event(forwardToParent = true)
     void initDemandBasicForm(SimplePanel holderPanel);
 
