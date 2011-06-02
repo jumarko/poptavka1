@@ -149,6 +149,14 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DetailWrapperPresenter.class)
     void addReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType);
 
+    /** Offers message display & state change. **/
+    @Event(handlers = DetailWrapperPresenter.class)
+    void setOfferMessage(OfferDetail offerDetail);
+    @Event(handlers = MessageHandler.class)
+    void getOfferStatusChange(OfferDetail offerDetail);
+    @Event(handlers = OffersPresenter.class)
+    void setOfferDetailChange(OfferDetail offerDetail);
+
     /**
      * Bubbling offer to send to UserPresenter to get the user ID and supplier ID.
      *

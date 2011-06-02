@@ -1,0 +1,80 @@
+@CHARSET "UTF-8";
+
+.message {
+    border: 2px solid #666666;
+    background-color: #EDEDED;
+    padding: 2px;
+    margin-top: -15px;
+    width: 100%;
+    margin-right: 20%;
+    padding-bottom: 15px;
+    -moz-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-box-shadow: 0 0 5px #888888;
+    -webkit-box-shadow: 0 0 5px #888888;
+    border-radius: 10px;
+}
+
+.message-first {
+    margin-top: 15px;
+}
+
+.message-last {
+    padding-bottom: 2px;
+}
+
+.message-opened {
+    padding-bottom: 2px;
+    margin-bottom: 20px;
+}
+
+.message-header {
+    background-color: white;
+    cursor: pointer;
+    cursor: hand;
+    border-radius: 5px;
+    -webkit-box-top-left-radius: 7px;
+    -webkit-box-top-right-radius: 7px;
+    -moz-border-topleft-radius: 7px;
+    -moz-border-topright-radius: 7px;
+    height: 20px;
+    padding-bottom: 2px;
+}
+
+.message-body {
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div.message-header:hover {
+    background-color: #DDDDDD;
+}
+
+.action-button {
+    backgrount-color: #525252;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.04, rgb(46,
+        45, 46) ), color-stop(0.54, rgb(122, 118, 122) ) );
+    background-image: -moz-linear-gradient(center bottom, rgb(46, 45, 46) 4%,
+        rgb(122, 118, 122) 54% );
+    border-radius: 5px;
+    -webkit-box-radius: 7px;
+    -moz-border-radius: 7px;
+    padding: 2px 5px 2px 5px;
+    color: white;
+    text-decoration: none;
+}
+
+.action-button:hover {
+    backgrount-color: #bfbfbf;
+    background-image: -webkit-gradient(linear, left bottom, left bottom, color-stop(0.04, rgb(46
+        , 46, 46) ), color-stop(0.54, rgb(122, 118, 122) ) );
+    background-image: -moz-linear-gradient(center center, rgb(46, 46, 46) 4%,
+        rgb(122, 118, 122) 54% );
+}
+
+.wrapper {
+    margin-left: 10px;
+    margin-right: 10px;
+}

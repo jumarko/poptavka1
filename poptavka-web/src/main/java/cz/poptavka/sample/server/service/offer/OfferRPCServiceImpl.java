@@ -114,7 +114,8 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
     public OfferDetail changeOfferState(OfferDetail offerDetail) {
         Offer offer = this.generalService.find(Offer.class, offerDetail.getOfferId());
-        OfferState offerState = this.generalService.find(OfferState.class, offerDetail.getState());
+        OfferState offerState = this.generalService.find(OfferState.class,
+                Long.parseLong(offerDetail.getState().toString()));
         offer.setState(offerState);
         offer = (Offer) this.generalService.save(offer);
         offerDetail.setState(Integer.valueOf(offer.getState().getId().intValue()));

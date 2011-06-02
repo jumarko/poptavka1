@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.messages;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -36,11 +37,22 @@ public class UserConversationPanel extends Composite {
     interface UserConversationPanelUiBinder extends UiBinder<Widget, UserConversationPanel> {
     }
 
+    private ArrayList<UserMessagePresenter> offers = new ArrayList<UserMessagePresenter>();
+
     @UiField FlowPanel messagePanel;
+
+    ClickHandler acceptHandler = null;
+    ClickHandler replyHandler = null;
+    ClickHandler deleteHandler = null;
 
     private int messageCount = 0;
     private MessageDetail replyToMessage;
 
+    public void setClickHandlers(ClickHandler acceptHandler, ClickHandler replyHandler, ClickHandler deleteHandler) {
+        this.acceptHandler = acceptHandler;
+        this.replyHandler = replyHandler;
+        this.deleteHandler = deleteHandler;
+    }
 
     public UserConversationPanel() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -78,6 +90,13 @@ public class UserConversationPanel extends Composite {
         if (messageCount == 1) {
             ((UserMessage) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
         }
+
+        for (int i = 0; i < messageCount; i++) {
+            UserMessage m = (UserMessage) messagePanel.getWidget(i);
+            m.addAcceptHandler(acceptHandler);
+            m.addReplyHandler(replyHandler);
+            m.addDeleteHandler(deleteHandler);
+        }
     }
 
     public void addMessage(MessageDetail lastMessage) {
@@ -90,6 +109,16 @@ public class UserConversationPanel extends Composite {
 
 
         messageCount = messagePanel.getWidgetCount();
+    }
+
+    public void addOfferMessagePresenter(UserMessagePresenter presenter) {
+        offers.add(presenter);
+        messagePanel.add(presenter.getWidgetView());
+    }
+
+    public ArrayList<UserMessagePresenter> clearContent() {
+
+        return offers;
     }
 
     /**

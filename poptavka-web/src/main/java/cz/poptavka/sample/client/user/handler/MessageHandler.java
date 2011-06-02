@@ -10,6 +10,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -20,6 +21,8 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     @Inject
     private MessageRPCServiceAsync messageService;
+    @Inject
+    private OfferRPCServiceAsync offerService;
 
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
 
@@ -27,22 +30,22 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
-                }
-
-                @Override
-                public void onSuccess(ArrayList<MessageDetail> messageList) {
-                    GWT.log("Conversation size: " + messageList.size());
-                    eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
-                    // TODO delete
-                    /** DEBUG INFO **/
-                    for (MessageDetail m : messageList) {
-                        GWT.log(m.toString());
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
                     }
-                }
-            });
+
+                    @Override
+                    public void onSuccess(ArrayList<MessageDetail> messageList) {
+                        GWT.log("Conversation size: " + messageList.size());
+                        eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+                        // TODO delete
+                        /** DEBUG INFO **/
+                        for (MessageDetail m : messageList) {
+                            GWT.log(m.toString());
+                        }
+                    }
+                });
     }
 
     public void onSendQueryToPotentialDemand(MessageDetail messageToSend) {
@@ -51,8 +54,8 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Auto-generated method stub
-                Window.alert(MessageHandler.class.getName()
-                        + " at onSendQueryToPotentialDemand\n\n" + caught.getMessage());
+                Window.alert(MessageHandler.class.getName() + " at onSendQueryToPotentialDemand\n\n"
+                        + caught.getMessage());
             }
 
             @Override
@@ -68,14 +71,13 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Auto-generated method stub
-                Window.alert(MessageHandler.class.getName()
-                        + " at onSendDemandOffer\n\n" + caught.getMessage());
+                Window.alert(MessageHandler.class.getName() + " at onSendDemandOffer\n\n" + caught.getMessage());
             }
 
             @Override
             public void onSuccess(OfferDetail result) {
                 Window.alert("Offer Success");
-//                eventBus.
+                // eventBus.
             }
         });
     }
@@ -85,13 +87,28 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Auto-generated method stub
-                Window.alert(MessageHandler.class.getName()
-                        + " at onRequestPotentialDemandReadStatusChange\n\n" + caught.getMessage());
+                Window.alert(MessageHandler.class.getName() + " at onRequestPotentialDemandReadStatusChange\n\n"
+                        + caught.getMessage());
             }
 
             @Override
             public void onSuccess(Void result) {
                 // there is nothing to do
+            }
+        });
+    }
+
+    public void onGetOfferStatusChange(OfferDetail offerDetail) {
+        offerService.changeOfferState(offerDetail, new AsyncCallback<OfferDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert(MessageHandler.class.getName() + " at onGetOfferStatusChange\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(OfferDetail result) {
+                eventBus.setOfferDetailChange(result);
             }
         });
     }

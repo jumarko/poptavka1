@@ -75,7 +75,9 @@ public class OffersPresenter extends
             public void onSelectionChange(SelectionChangeEvent event) {
                 Set<OfferDetail> set = view.getSelectedOffers();
                 // TODO call demand detail
-//                eventBus.getDemandDetail(demandId, DetailType.OFFER);
+                OfferDetail o = set.iterator().next();
+                eventBus.getDemandDetail(o.getDemandId(), DetailType.OFFER);
+                eventBus.setOfferMessage(o);
                 // TODO display every single offer and display it only ONCE
             }
         });
@@ -128,6 +130,12 @@ public class OffersPresenter extends
         for (OfferDetail o : offers) {
             data.add(o);
         }
+        view.getOfferTableProvider().refresh();
+    }
+
+    public void onSetOfferDetailChange(OfferDetail offerDetail) {
+        List<OfferDetail> data = view.getOfferTableProvider().getList();
+        data.get(data.indexOf(offerDetail)).setState(offerDetail.getState());
         view.getOfferTableProvider().refresh();
     }
 

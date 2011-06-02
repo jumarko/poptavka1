@@ -4,9 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Display;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
@@ -16,52 +13,23 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.messages.UserMessage.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.OfferStateDetail;
 
-public class UserMessage extends Composite {
-
-    public enum MessageDisplayType {
-        FIRST, LAST, BOTH, NORMAL;
-    }
+public class UserActionMessage extends Composite implements UserMessagePresenter.ActionMessageInterface {
 
     private static final int DATE_POS = 3;
 
-    private static UserMessageViewUiBinder uiBinder = GWT
-            .create(UserMessageViewUiBinder.class);
+    private static UserActionMessageViewUiBinder uiBinder = GWT
+            .create(UserActionMessageViewUiBinder.class);
 
-    interface UserMessageViewUiBinder extends
-            UiBinder<Widget, UserMessage> {
+    interface UserActionMessageViewUiBinder extends
+            UiBinder<Widget, UserActionMessage> {
     }
 
-    public interface MessageStyle extends CssResource {
-        @ClassName("message")
-        String message();
-
-        @ClassName("message-first")
-        String messageFirst();
-
-        @ClassName("message-last")
-        String messageLast();
-
-        @ClassName("message-opened")
-        String messageOpened();
-
-        @ClassName("message-header")
-        String messageHeader();
-
-        @ClassName("message-body")
-        String messageBody();
-
-        @ClassName("action-button")
-        String actionButton();
-
-    }
-
-    @UiField MessageStyle style;
+    private static final StyleResource CSS = GWT.create(StyleResource.class);
 
     @UiField Element header;
     @UiField Element body;
@@ -74,17 +42,15 @@ public class UserMessage extends Composite {
 
     private boolean collapsed = false;
 
-    public UserMessage() {
+    private OfferDetail offerDetail;
+
+    @Override
+    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public UserMessage(MessageDetail message, boolean collapsed) {
-        this();
-        // GWT cut off css3 style, but this shouldn't be visible at all
 
-//        replyButton.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
-//                + "rgb(122,118,122) 54%");
-
+    public void setContent(MessageDetail message, boolean collapsed) {
         setMessage(message);
 
         // set collapsed state
@@ -100,19 +66,9 @@ public class UserMessage extends Composite {
      * @param collapsed define if this newly created message should be collapsed
      * @param style if true, message is set as first, if false message is set as last!
      */
-    public UserMessage(MessageDetail message, boolean collapsed, MessageDisplayType style) {
-        this(message, collapsed);
+    public void setContent(MessageDetail message, boolean collapsed, MessageDisplayType style) {
+        setContent(message, collapsed);
         setMessageStyle(style);
-            // NOT USED keep commented
-
-            // Get buttons list, and set Eventhandlers for them;
-            // According to DOM specification and widget structure, it's the last child div of
-            // parent div. It's NOT the last child, because last ist the textNode after that div.
-            // That means childCount - 2
-//            Element actionButtonBar = (Element) body.getChild(body.getChildCount() - 2);
-//            actionButtonBar.getStyle().setDisplay(Display.BLOCK);
-//            DOM.sinkEvents(elem, eventBits);
-
     }
 
     public void setMessage(MessageDetail message) {
@@ -135,15 +91,15 @@ public class UserMessage extends Composite {
     public void setMessageStyle(MessageDisplayType type) {
         switch (type) {
             case FIRST:
-                header.getParentElement().addClassName(style.messageFirst());
+                header.getParentElement().addClassName(CSS.message().messageFirst());
                 break;
             case BOTH:
-                header.getParentElement().addClassName(style.messageFirst());
+                header.getParentElement().addClassName(CSS.message().messageFirst());
             case LAST:
-                header.getParentElement().addClassName(style.messageLast());
+                header.getParentElement().addClassName(CSS.message().messageLast());
                 break;
             case NORMAL:
-                header.getParentElement().removeClassName(style.messageLast());
+                header.getParentElement().removeClassName(CSS.message().messageLast());
                 break;
             default:
                 break;
@@ -159,20 +115,13 @@ public class UserMessage extends Composite {
         collapsed = !collapsed;
     }
 
-    public void addAcceptHandler(ClickHandler acceptHandler) {
-        GWT.log("TESTING");
-        acceptButton.addClickHandler(acceptHandler);
+    public OfferDetail getOfferDetail() {
+        return offerDetail;
     }
 
-    public void addReplyHandler(ClickHandler replyHandler) {
-        replyButton.addClickHandler(replyHandler);
+    public void setOfferDetail(OfferDetail offerDetail) {
+        this.offerDetail = offerDetail;
     }
-
-    public void addDeleteHandler(ClickHandler deleteHandler) {
-        deleteButton.addClickHandler(deleteHandler);
-    }
-
-
 
     /**********************************************************************************/
     /**                       Widget internal behavior handling.                       */
@@ -204,20 +153,27 @@ public class UserMessage extends Composite {
         }
     }
 
-    public void setEventBusCall(final UserEventBus eventBus, final OfferDetail offerDetail) {
-        GWT.log("EVENT BUS IS SET");
-        ClickHandler a = (new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                GWT.log("clickEvent");
-                offerDetail.setState(OfferStateDetail.ACCEPTED.getValue());
-                eventBus.getOfferStatusChange(offerDetail);
-            }
-        });
-
-
-        addAcceptHandler(a);
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 
+
+    @Override
+    public Anchor getAcceptButton() {
+        return acceptButton;
+    }
+
+
+    @Override
+    public Anchor getReplyButton() {
+        return replyButton;
+    }
+
+
+    @Override
+    public Anchor getDeleteButton() {
+        return deleteButton;
+    }
 
 }

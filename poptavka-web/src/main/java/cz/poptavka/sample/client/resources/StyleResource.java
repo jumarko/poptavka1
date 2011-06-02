@@ -38,6 +38,9 @@ public interface StyleResource extends ClientBundle {
     @Source("table.css")
     TableStyle table();
 
+    @Source("user-message.css")
+    UserMessageStyle message();
+
     Images images();
 
     /**

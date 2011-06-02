@@ -16,6 +16,8 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
+import cz.poptavka.sample.client.user.messages.UserMessage;
+import cz.poptavka.sample.client.user.messages.UserMessagePresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -70,18 +72,14 @@ public class DetailWrapperPresenter extends
         // TODO selection if editable or not
         view.setDetail(new DemandDetailView(detail));
 
-        // conversation part
-        view.getConversationPanel();
-
         // reply part
         // TODO it's not necessary to define new instance of reply window
         // it's just for devel. Just one creation and then check if null
-        if (replyPresenter != null) {
-            eventBus.removeHandler(replyPresenter);
+        if (typeOfDetail.equals(DetailType.OFFER)) {
+//            view.getConversationPanel().setClickHandlers(acceptHandler, replyHandler, deleteHandler);
+            return;
         }
-        replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
-        replyPresenter.initReplyWindow(view.getReplyHolder());
-        replyPresenter.addSubmitHandler(bindReplyWindowAction(), detail.getId());
+
 
         // GUI visual event
         eventBus.loadingHide();
@@ -136,7 +134,7 @@ public class DetailWrapperPresenter extends
             return;
         }
         replyPresenter.enableResponse();
-        view.getConversationPanel().addMessage(result);
+        view.getConversationPanel();
     }
 
     /**
@@ -153,6 +151,31 @@ public class DetailWrapperPresenter extends
         anchor.getElement().getStyle().setBorderStyle(BorderStyle.DASHED);
         anchor.getElement().getStyle().setBorderWidth(12, Unit.PX);
         eventBus.loadingShowWithAnchor(" ", anchor);
+    }
+
+    public void onSetOfferMessage(OfferDetail offerDetail) {
+        MessageDetail offerMessage = offerDetail.getMessageDetail();
+        UserMessage displayedOffer = new UserMessage(offerMessage, false);
+//        displayedOffer.addAcceptHandler(createAcceptOfferHandler(offerDetail));
+        displayedOffer.setEventBusCall(eventBus, offerDetail);
+
+        UserMessagePresenter presenter = eventBus.addHandler(UserMessagePresenter.class);
+        presenter.setOfferDetail(offerDetail);
+
+        view.getConversationPanel().addOfferMessagePresenter(presenter);
+    }
+
+//    public UserEventBus createAcceptOfferHandler(final OfferDetail offerDetail) {
+//        return
+//    }
+
+    public void setReplyWidget(Long demandId) {
+        if (replyPresenter != null) {
+            eventBus.removeHandler(replyPresenter);
+        }
+        replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
+        replyPresenter.initReplyWindow(view.getReplyHolder());
+        replyPresenter.addSubmitHandler(bindReplyWindowAction(), demandId);
     }
 
 }
