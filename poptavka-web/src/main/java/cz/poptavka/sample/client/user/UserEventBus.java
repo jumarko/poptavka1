@@ -248,7 +248,7 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdministrationPresenter.class, activate = AdministrationPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class, NewDemandPresenter.class,
-            DemandsOperatorPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            DemandsOperatorPresenter.class }, historyConverter = UserHistoryConverter.class)
     String invokeAdministration();
 
     /** Navigation Events section END **/
