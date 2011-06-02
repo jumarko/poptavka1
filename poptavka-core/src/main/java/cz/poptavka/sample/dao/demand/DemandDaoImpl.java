@@ -77,6 +77,10 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return (Long) runNamedQueryForSingleResult("getDemandsCountForLocalityWithoutChildren", params);
     }
 
+    @Override
+    public long getAllDemandsCount() {
+        return (Long) runNamedQueryForSingleResult("getAllDemandsCount", Collections.EMPTY_MAP);
+    }
 
     //------------------------------------- Categories -----------------------------------------------------------------
 

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.poptavka.sample.service.demand;
 
 import com.google.common.base.Preconditions;
@@ -40,14 +39,11 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     private ClientService clientService;
     private SupplierService supplierService;
-
     private RegisterService registerService;
-
 
     public DemandServiceImpl(DemandDao demandDao) {
         setDao(demandDao);
     }
-
 
     /**
      * Create new demand.
@@ -76,7 +72,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return super.create(demand);
     }
 
-
     //----------------------------------  Methods for DemandType-s -----------------------------------------------------
     @Override
     public List<DemandType> getDemandTypes() {
@@ -88,7 +83,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
         return this.registerService.getValue(code, DemandType.class);
     }
-
 
     //----------------------------------  Methods for DemandOrigin-s ---------------------------------------------------
     @Override
@@ -102,8 +96,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return this.registerService.getValue(code, DemandOrigin.class);
     }
 
-
-
     //----------------------------------  Methods for Demands ----------------------------------------------------------
     /** {@inheritDoc} */
     @Override
@@ -112,12 +104,12 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return getDemands(ResultCriteria.EMPTY_CRITERIA, localities);
     }
 
-
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public Set<Demand> getDemands(final ResultCriteria resultCriteria, final Locality... localities) {
         final ResultProvider<Demand> demandProvider = new ResultProvider<Demand>(resultCriteria) {
+
             @Override
             public Collection<Demand> getResult() {
                 return DemandServiceImpl.this.getDao().getDemands(localities, getResultCriteria());
@@ -126,7 +118,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         return new LinkedHashSet<Demand>(applyOrderByCriteria(demandProvider, resultCriteria));
     }
-
 
     /** {@inheritDoc} */
     @Transactional(readOnly = true)
@@ -144,8 +135,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return demandsCountForLocalitiesMap;
     }
 
-
-
     /**
      * {@inheritDoc}
      * <p>
@@ -157,7 +146,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     public long getDemandsCount(Locality... localities) {
         return this.getDao().getDemandsCount(localities);
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -228,6 +216,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return this.getDao().getDemandsCountWithoutChildren(category);
     }
 
+    /**
+     * Returns the count of all demands in DB.
+     * @return
+     */
+    @Override
+    public long getAllDemandsCount() {
+        return this.getDao().getAllDemandsCount();
+    }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
     public void setClientService(ClientService clientService) {
@@ -243,7 +239,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     //---------------------------------------------- HELPER METHODS ----------------------------------------------------
-
     private boolean isNewClient(Demand demand) {
         return demand.getClient().getId() == null;
     }
@@ -257,5 +252,4 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
             }
         }
     }
-
 }

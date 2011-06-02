@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -50,6 +52,10 @@ import cz.poptavka.sample.util.strings.ToStringUtils;
 @Entity
 @Audited
 @Indexed
+@NamedQueries({
+    @NamedQuery(name = "getAllDemandsCount",
+    query = "select count(*) from Demand")
+})
 public class Demand extends DomainObject {
 
     /** Fields that are available for full-text search. */

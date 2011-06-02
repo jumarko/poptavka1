@@ -177,4 +177,10 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
 
     /** @see DemandDao#getDemandsCountWithoutChildren(cz.poptavka.sample.domain.demand.Category) */
     long getDemandsCountWithoutChildren(Category category);
+
+    /**
+     * Returns the count of all demands in DB.
+     * @return
+     */
+    long getAllDemandsCount();
 }

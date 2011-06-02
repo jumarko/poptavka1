@@ -144,4 +144,10 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     long getDemandsCountWithoutChildren(Category category);
 
+    /**
+     * Returns the count of all demands in DB.
+     * @return
+     */
+    long getAllDemandsCount();
+
 }
