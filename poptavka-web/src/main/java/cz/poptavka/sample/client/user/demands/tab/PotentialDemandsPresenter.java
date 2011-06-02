@@ -88,7 +88,7 @@ public class PotentialDemandsPresenter extends
                 while (it.hasNext()) {
                     PotentialDemandDetail d = it.next();
                     markMessagesAsRead(d, isRead);
-                    messages.add(d.getMessageId());
+                    messages.add(d.getUserMessageId());
                 }
                 eventBus.requestPotentialDemandReadStatusChange(messages, isRead);
             }
