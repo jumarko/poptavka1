@@ -38,6 +38,8 @@
 
     <bean id="userMessageDao" class="cz.poptavka.sample.dao.usermessage.UserMessageDaoImpl" />
 
+    <bean id="OfferDao" class="cz.poptavka.sample.dao.offer.OfferDaoImpl" />
+
 
     <!-- Service -->
     <bean id="generalService" class="cz.poptavka.sample.service.GeneralServiceImpl">
@@ -96,6 +98,10 @@
 
     <bean id="userMessageService" class="cz.poptavka.sample.service.usermessage.UserMessageServiceImpl">
         <constructor-arg ref="userMessageDao" />
+    </bean>
+
+    <bean id="offerService" class="cz.poptavka.sample.service.offer.OfferServiceImpl">
+        <constructor-arg ref="OfferDao" />
     </bean>
 
     <bean id="processCrawledDemandsService" class="cz.poptavka.sample.service.demand.ProcessCrawledDemandsServiceImpl">
