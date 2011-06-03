@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.AsyncDataProvider;
 import cz.poptavka.sample.client.home.demands.demand.DemandView;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
@@ -25,7 +25,7 @@ import java.util.Date;
 /**
  *
  * @author Martin Slavkovsky
- *
+ * TODO Lokalizacia.
  */
 public class DemandsView extends OverflowComposite implements DemandsPresenter.DemandsViewInterface {
 
@@ -47,7 +47,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     CellTable<DemandDetail> cellTable;
     @UiField(provided = true)
     SimplePager pager;
-    private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
+    private AsyncDataProvider<DemandDetail> dataProvider;
 
     public DemandsView() {
         initCellTable();
@@ -78,8 +78,13 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
 
     @Override
-    public ListDataProvider<DemandDetail> getDataProvider() {
+    public AsyncDataProvider<DemandDetail> getDataProvider() {
         return dataProvider;
+    }
+
+    @Override
+    public void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider) {
+        this.dataProvider = dataProvider;
     }
 
     @Override
@@ -96,6 +101,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     public Label getDemandDetailLabel() {
         return demandDetailLabel;
     }
+
     /**
      * Initialize this example.
      */
@@ -104,9 +110,6 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         cellTable = new CellTable<DemandDetail>();
         cellTable.setWidth("100%", true);
         cellTable.setRowCount(2, true);
-
-        // Connect the table to the data provider.
-        dataProvider.addDataDisplay(cellTable);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);

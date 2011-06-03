@@ -80,13 +80,13 @@ public class FlexPagerPresenter extends BasePresenter<FlexPagerPresenter.FlexPag
 
     public void onBeginClicked() {
         page = 0;
-        eventBus.getDemands(this.getResultsCriteria());
+//        eventBus.getDemands(this.getResultsCriteria());
     }
 
     public void onLessClicked() {
         if (page != 0) {
             page -= 1;
-            eventBus.getDemands(this.getResultsCriteria());
+//            eventBus.getDemands(this.getResultsCriteria());
         }
     }
 
@@ -95,13 +95,13 @@ public class FlexPagerPresenter extends BasePresenter<FlexPagerPresenter.FlexPag
         if ((maxCount % view.getPageSize()) == 0) {
             page -= 1;
         }
-        eventBus.getDemands(this.getResultsCriteria());
+//        eventBus.getDemands(this.getResultsCriteria());
     }
 
     public void onMoreClicked() {
         if (this.getUpperValue() < maxCount) {
             page += 1;
-            eventBus.getDemands(this.getResultsCriteria());
+//            eventBus.getDemands(this.getResultsCriteria());
         }
     }
 

@@ -17,6 +17,12 @@ public interface DemandRPCServiceAsync {
 
     void getAllDemands(AsyncCallback<List<DemandDetail>> callback);
 
+    void getAllDemandsCount(AsyncCallback<Long> callback);
+
+    void getDemandsCount(Category[] categories, AsyncCallback<Long> callback);
+
+    void getDemandsCount(Locality[] localities, AsyncCallback<Long> callback);
+
     void createNewDemand(DemandDetail newDemand, Long clientId,
             AsyncCallback<DemandDetail> callback);
 
@@ -27,6 +33,10 @@ public interface DemandRPCServiceAsync {
     void getDemands(ResultCriteria resultCriteria, AsyncCallback<List<DemandDetail>> callback);
 
     void getDemands(ResultCriteria resultCriteria, Category[] categories, AsyncCallback<List<DemandDetail>> callback);
+
+    void getDemandsByCategory(int fromResult, int toResult, long id, AsyncCallback<List<DemandDetail>> callback);
+
+    void getDemandsByLocality(int fromResult, int toResult, String code, AsyncCallback<List<DemandDetail>> callback);
 
     void getDemands(ResultCriteria resultCriteria, Locality[] localities, AsyncCallback<List<DemandDetail>> callback);
 

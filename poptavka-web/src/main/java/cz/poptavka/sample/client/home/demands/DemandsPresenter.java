@@ -10,18 +10,19 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.home.demands.demand.DemandView;
-import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -44,7 +45,9 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         ListBox getLocalityList();
 
-        ListDataProvider<DemandDetail> getDataProvider();
+        AsyncDataProvider<DemandDetail> getDataProvider();
+
+        void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider);
 
         CellTable<DemandDetail> getCellTable();
 
@@ -54,6 +57,11 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         DemandView getDemandView();
     }
+    private int start = 0;
+
+    //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
+    //TODO - ako ziskat pri pouziti filtrovania pocet filtrovanych zaznamov,
+    //bez toho, aby som musel opat zistovat vsetky kategorie a ich podkategorie <- dlho trva
 
     /**
      * Bind objects and theirs action handlers.
@@ -65,19 +73,24 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             @Override
             public void onChange(ChangeEvent arg0) {
                 LOGGER.info("OnCategoryListChange");
-//                eventBus.getCategory(Long.parseLong(view.getCategoryList().getValue(
-//                        view.getCategoryList().getSelectedIndex())));
+                eventBus.getDemandsByCategories(0, 10, Long.valueOf(view.getCategoryList().getValue(
+                        view.getCategoryList().getSelectedIndex())));
+                //TODO - dat uzivatelovi vediet, ze nacitava - zmenit cursor abo take daco
             }
         });
         view.getLocalityList().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                LOGGER.info("OnLocalityListChange");
-                eventBus.getLocality(Long.parseLong(view.getLocalityList().getValue(
-                        view.getLocalityList().getSelectedIndex())));
+                LOGGER.info("OnLocalityListChange: " + view.getLocalityList().getValue(
+                        view.getLocalityList().getSelectedIndex()));
+                eventBus.getDemandsByLocalities(0, 10, view.getLocalityList().getValue(
+                        view.getLocalityList().getSelectedIndex()));
+                //TODO - dat uzivatelovi vediet, ze nacitava - zmenit cursor abo take daco
             }
         });
+
+//        dataProvider.addDataDisplay(view.getCellTable());
         // Add a selection model to handle user selection.
         final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
         view.getCellTable().setSelectionModel(selectionModel);
@@ -87,10 +100,34 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             public void onSelectionChange(SelectionChangeEvent event) {
                 DemandDetail selected = selectionModel.getSelectedObject();
                 if (selected != null) {
-                    eventBus.getDemand(selected);
+                    DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "progress");
+                    //eventBus.getDemand(selected);
+                    eventBus.setDemand(selected);
                 }
             }
         });
+    }
+    private AsyncDataProvider dataProvider = new AsyncDataProvider<DemandDetail>() {
+
+        @Override
+        protected void onRangeChanged(HasData<DemandDetail> display) {
+            //just for initializing cellTable
+            //will be implemented later, when allDemandsCount value will be retrieved
+        }
+    };
+
+    public void onCreateAsyncDataProvider(final long result) {
+        this.dataProvider = new AsyncDataProvider<DemandDetail>() {
+
+            @Override
+            protected void onRangeChanged(HasData<DemandDetail> display) {
+                display.setRowCount((int) result);
+                start = display.getVisibleRange().getStart();
+                int length = display.getVisibleRange().getLength();
+                eventBus.getDemands(start, start + length);
+            }
+        };
+        this.dataProvider.addDataDisplay(view.getCellTable());
     }
 
     /**
@@ -101,16 +138,11 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     public void onAtDemands() {
         LOGGER.info("Starting demands presenter...");
 
+        eventBus.getAllDemandsCount();
+
         eventBus.getCategories();
 
         eventBus.getLocalities();
-
-//        ResultCriteria criteria = ResultCriteria.EMPTY_CRITERIA;
-//        criteria = new ResultCriteria.Builder()
-//                .firstResult(0)
-//                .maxResults(10).build();
-//        eventBus.getDemands(criteria);
-        eventBus.getDemands2(1, 5);
 
         eventBus.setBodyWidget(view.getWidgetView());
     }
@@ -127,7 +159,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void execute() {
-                LOGGER.info("Filling category list...");
                 box.addItem("Categories...");
                 for (int i = 0; i < list.size(); i++) {
                     box.addItem(list.get(i).getName(),
@@ -151,10 +182,10 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void execute() {
-                LOGGER.info("Filling locality list...");
                 box.addItem("Localities...");
                 for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName());
+                    box.addItem(list.get(i).getName(),
+                            String.valueOf(list.get(i).getCode()));
                 }
                 box.setSelectedIndex(0);
                 LOGGER.info("Locality List filled");
@@ -163,31 +194,16 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     }
 
     public void onDisplayDemands(Collection<DemandDetail> result) {
-        Object[] array = result.toArray();
 
-        List<DemandDetail> list = view.getDataProvider().getList();
+        List<DemandDetail> list = new ArrayList<DemandDetail>(result);
 
-        for (int i = 0; i < array.length; i++) {
-            list.add((DemandDetail) array[i]);
-        }
-
-        view.getDataProvider().refresh();
+        dataProvider.updateRowData(start, list);
     }
 
-    public void onSetDemand(Demand demand) {
+    public void onSetDemand(DemandDetail demand) {
         view.getDemandDetailLabel().setVisible(true);
         view.getDemandView().setVisible(true);
         view.getDemandView().setDemand(demand);
-    }
-
-    public ResultCriteria getResultsCriteria() {
-        ResultCriteria criteria = ResultCriteria.EMPTY_CRITERIA;
-
-        criteria = new ResultCriteria.Builder()
-                .firstResult(view.getPager().getPage() * view.getPager().getPageCount())
-                .maxResults(view.getPager().getPageCount())
-                .build();
-
-        return criteria;
+        DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
     }
 }

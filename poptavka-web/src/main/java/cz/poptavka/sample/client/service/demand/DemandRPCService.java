@@ -28,6 +28,12 @@ public interface DemandRPCService extends RemoteService {
 
     List<DemandDetail> getAllDemands();
 
+    Long getAllDemandsCount();
+
+    Long getDemandsCount(Category[] categories);
+
+    Long getDemandsCount(Locality[] localities);
+
     List<DemandDetail> getDemands(ResultCriteria resultCriteria);
 
     List<DemandDetail> getDemands(Locality[] localities);
@@ -37,6 +43,10 @@ public interface DemandRPCService extends RemoteService {
     List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
 
     List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories);
+
+    List<DemandDetail> getDemandsByCategory(int fromResult, int toResult, long id);
+
+    List<DemandDetail> getDemandsByLocality(int fromResult, int toResult, String code);
 
     ArrayList<DemandDetail> getClientDemands(long id);
 

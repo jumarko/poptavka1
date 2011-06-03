@@ -10,17 +10,18 @@
     <g:HorizontalPanel>
       <g:VerticalPanel>
         <g:FlexTable ui:field="infoTable"/>
-        <g:TextArea ui:field="textArea" text="textArea" />
+        <g:Label text="Popis:" />
+        <g:TextArea ui:field="textArea" width="320px" height="50px"/>
       </g:VerticalPanel>
       <g:VerticalPanel>
         <!--  <p1:CellList ui:field="cellList" /> -->
-        <g:Button ui:field="buttonAttachments">Attachments</g:Button>
+        <g:Button ui:field="buttonAttachments">Prevzít</g:Button>
       </g:VerticalPanel>
       <g:VerticalPanel>
-        <g:Label ui:field="label1" text="Reagovat?" />
-        <g:Button ui:field="buttonLogin">Log in</g:Button>
-        <g:Label ui:field="label2" text="Not in system?" />
-        <g:Button ui:field="buttonRegister">Register</g:Button>
+<!--        <g:Label ui:field="label1" text="Reagovat?" />-->
+        <g:Button ui:field="buttonLogin">Prihlásit</g:Button>
+<!--        <g:Label ui:field="label2" text="Not in system?" />-->
+        <g:Button ui:field="buttonRegister">Registrace</g:Button>
       </g:VerticalPanel>
     </g:HorizontalPanel>
   </g:HTMLPanel>

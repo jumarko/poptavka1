@@ -5,7 +5,7 @@
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
   xmlns:d="urn:import:cz.poptavka.sample.client.home.demands.demand">
       
-    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+<!--    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>-->
     <ui:style>
     .name {
       font-weight: bold;
@@ -28,27 +28,26 @@
                 <g:ListBox ui:field="category" styleName="{style.list}" />
                 <g:ListBox ui:field="locality" styleName="{style.list}" />
             </g:HorizontalPanel>
-            <g:DecoratorPanel>
-                <g:HTMLPanel>
-                    <table cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td valign='top'>
-                                <g:ScrollPanel>
+                <g:DecoratorPanel>
+                    <g:HTMLPanel>
+                        <table cellspacing='0' cellpadding='0'>
+                            <tr>
+                                <td valign='top'>
                                     <c:CellTable pageSize='10' ui:field='cellTable' />
-                                </g:ScrollPanel>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align='center'>
-                                <c:SimplePager ui:field='pager' />
-                            </td>
-                        </tr>
-                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align='center'>
+                                    <c:SimplePager ui:field='pager' />
+                                </td>
+                            </tr>
+                        </table>
 
-                </g:HTMLPanel>
-            </g:DecoratorPanel>
-            <g:Label ui:field="demandDetailLabel">Detail poptávky:</g:Label>
-            <d:DemandView ui:field="demandView"/>
+                    </g:HTMLPanel>
+                </g:DecoratorPanel>
+                <g:Label ui:field="demandDetailLabel">Detail poptávky:</g:Label>
+                <d:DemandView ui:field="demandView"/>
         </g:VerticalPanel>
+        
     </g:HTMLPanel>
 </ui:UiBinder>

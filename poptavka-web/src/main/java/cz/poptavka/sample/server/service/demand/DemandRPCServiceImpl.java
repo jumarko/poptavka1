@@ -41,6 +41,7 @@ import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author Excalibur
@@ -246,34 +247,82 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public List<DemandDetail> getDemands(Locality... localities) {
-        return this.transformToDemandDetail(demandService.getDemands(localities));
+        return this.createDemandDetailList(demandService.getDemands(localities));
     }
 
     @Override
     public List<DemandDetail> getDemands(Category... categories) {
-        return this.transformToDemandDetail(demandService.getDemands(categories));
-    }
-
-    @Override
-    public List<DemandDetail> getDemands(ResultCriteria resultCriteria) {
-        return this.transformToDemandDetail(demandService.getAll(resultCriteria));
+        return this.createDemandDetailList(demandService.getDemands(categories));
     }
 
     @Override
     public List<DemandDetail> getDemands(int fromResult, int toResult) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(fromResult).maxResults(toResult).build();
-        return this.transformToDemandDetail(demandService.getAll(resultCriteria));
+                .firstResult(fromResult)
+                .maxResults(toResult)
+                .build();
+        return this.createDemandDetailList(demandService.getAll(resultCriteria));
     }
 
     @Override
     public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
-        return this.transformToDemandDetail(demandService.getDemands(resultCriteria, localities));
+        return this.createDemandDetailList(demandService.getDemands(resultCriteria, localities));
     }
 
     @Override
-    public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories) {
-        return this.transformToDemandDetail(demandService.getDemands(resultCriteria, categories));
+    public List<DemandDetail> getDemandsByCategory(int fromResult, int toResult, long id) {
+        List<Category> categories = new LinkedList<Category>();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(fromResult)
+                .maxResults(toResult)
+                .build();
+
+        //level 0
+        categories.add(categoryService.getById(id));
+        //other levels
+        int i = 0;
+        List<Category> workingCatList;
+        while (categories.size() != i) {
+            workingCatList = new LinkedList<Category>();
+            workingCatList = categoryService.getById(categories.get(i++).getId()).getChildren();
+            if (workingCatList != null && workingCatList.size() > 0) {
+                //and children categories
+                categories.addAll(workingCatList);
+            }
+        }
+        //tested for here - working
+        //I should have now all subcategories of given id (chosen category vrom combobox)
+        //Now, get demands
+        // TODO - nasledujuci riadok nefunguje. Preco?
+        return this.createDemandDetailList(demandService.getDemands(resultCriteria, (Category[]) categories.toArray()));
+    }
+
+    @Override
+    public List<DemandDetail> getDemandsByLocality(int fromResult, int toResult, String code) {
+        List<Locality> localities = new LinkedList<Locality>();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(fromResult)
+                .maxResults(toResult)
+                .build();
+
+        //level 0
+        localities.add(localityService.getLocality(code));
+        //other levels
+        int i = 0;
+        List<Locality> workingCatList;
+        while (localities.size() != i) {
+            workingCatList = new LinkedList<Locality>();
+            workingCatList = localityService.getLocality(localities.get(i++).getCode()).getChildren();
+            if (workingCatList != null && workingCatList.size() > 0) {
+                //and children categories
+                localities.addAll(workingCatList);
+            }
+        }
+        //tested for here - working
+        //I should have now all subcategories of given id (chosen category vrom combobox)
+        //Now, get demands
+        // TODO - nasledujuci riadok nefunguje. Preco?
+        return this.createDemandDetailList(demandService.getDemands(resultCriteria, (Locality[]) localities.toArray()));
     }
 
     @Override
@@ -349,11 +398,36 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return this.demandService.getById(demandId);
     }
 
-    private List<DemandDetail> transformToDemandDetail(Collection<Demand> demands) {
+    private List<DemandDetail> createDemandDetailList(Collection<Demand> demands) {
         List<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
         for (Demand demand : demands) {
             demandDetails.add(DemandDetail.createDemandDetail(demand));
         }
         return demandDetails;
+    }
+
+    @Override
+    public List<DemandDetail> getDemands(ResultCriteria resultCriteria) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Long getAllDemandsCount() {
+        return demandService.getAllDemandsCount();
+    }
+
+    @Override
+    public Long getDemandsCount(Category[] categories) {
+        return demandService.getDemandsCount(categories);
+    }
+
+    @Override
+    public Long getDemandsCount(Locality[] localities) {
+        return demandService.getDemandsCount(localities);
     }
 }

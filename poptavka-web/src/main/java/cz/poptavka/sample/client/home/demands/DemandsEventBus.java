@@ -8,11 +8,7 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
-
-import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.demand.Category;
-import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.client.home.demands.demand.DemandPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -35,34 +31,26 @@ public interface DemandsEventBus extends EventBus {
     @Event(forwardToParent = true)
     void setBodyWidget(Widget content);
 
-//    //Category
-//    @Event(handlers = DemandsHandler.class)
-//    void getCategory(long id);
+    //Category
     @Event(handlers = DemandsHandler.class)
     void getCategories();
 
     //Locality
     @Event(handlers = DemandsHandler.class)
-    void getLocality(long id);
-
-    @Event(handlers = DemandsHandler.class)
     void getLocalities();
 
-    //Demands
+    //Demand
     @Event(handlers = DemandsHandler.class)
-    void getDemands(ResultCriteria resultCriteria);
+    void getDemands(int fromResult, int toResult);
 
     @Event(handlers = DemandsHandler.class)
-    void getDemands2(int fromResult, int toResult);
+    void getAllDemandsCount();
 
     @Event(handlers = DemandsHandler.class)
-    void getDemand(DemandDetail demandDetail);
+    void getDemandsByCategories(int fromResult, int toResult, long id);
 
     @Event(handlers = DemandsHandler.class)
-    void getDemandsByCategories(ResultCriteria resultCriteria, Category[] categories);
-
-    @Event(handlers = DemandsHandler.class)
-    void getDemandsByLocalities(ResultCriteria resultCriteria, Locality[] localities);
+    void getDemandsByLocalities(int fromResult, int toResult, String id);
 
     //Display
     @Event(handlers = DemandsPresenter.class)
@@ -75,5 +63,18 @@ public interface DemandsEventBus extends EventBus {
     void displayDemands(Collection<DemandDetail> result);
 
     @Event(handlers = DemandsPresenter.class)
-    void setDemand(Demand demand);
+    void setDemand(DemandDetail demand);
+
+    @Event(handlers = DemandsPresenter.class)
+    void createAsyncDataProvider(final long result);
+
+    //***************** DEMAND **********************
+    @Event(handlers = DemandPresenter.class)
+    void attachement();
+
+    @Event(handlers = DemandPresenter.class)
+    void login();
+
+    @Event(handlers = DemandPresenter.class)
+    void register();
 }
