@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.admin;
+package cz.poptavka.sample.client.user.admin.tab;
 
 import java.util.Date;
 

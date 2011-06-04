@@ -41,6 +41,14 @@
                 <h1>Contacts tab</h1>
             </g:HTML>
         </g:tab>
+         <g:tab>
+            <g:header>
+                <ui:msg key='administration'>Admistration</ui:msg>
+            </g:header>
+            <g:HTML>
+                <h1>Administration tab</h1>
+            </g:HTML>
+        </g:tab>
         <g:tab>
             <g:customHeader>
                 <g:FlowPanel>
