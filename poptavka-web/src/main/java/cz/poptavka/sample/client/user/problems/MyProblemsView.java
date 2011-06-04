@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.problems;
 
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -8,12 +7,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
-
-import cz.poptavka.sample.client.common.messages.MessagesView;
 
 import java.util.Date;
 import java.util.List;
@@ -26,25 +25,17 @@ public class MyProblemsView extends Composite implements
 
     private final SingleSelectionModel<Problem> selectionModel = new SingleSelectionModel<Problem>();
 
-    @UiField
+    @UiField(provided = true)
     CellTable<Problem> cellTable;
 
-    @UiField
-    MessagesView messages;
+    @UiField(provided = true)
+    SimplePager pager;
 
     @UiField
-    Button respond;
-    @UiField
-    Button edit;
-    @UiField
-    Button close;
-    @UiField
-    Button cancel;
-    @UiField
-    Button activate;
-    @UiField
-    Button deny;
+    Button replyBtn, editBtn, closeBtn, cancelBtn, refuseBtn;
 
+    @UiField
+    SimplePanel detailSection;
 
     interface MyProblemsUiBinder extends UiBinder<Widget, MyProblemsView> {
     }
@@ -72,11 +63,6 @@ public class MyProblemsView extends Composite implements
     }
 
     @Override
-    public void displayMessages(Problem problem) {
-        messages.displayMessages(problem);
-    }
-
-    @Override
     public CellTable<Problem> getCellTable() {
         return cellTable;
     }
@@ -89,16 +75,16 @@ public class MyProblemsView extends Composite implements
         // cellTable.setSelectionModel(selectionModel);
 
         // ******************* CHECK BOX *************************************
-        Column<Problem, Boolean> checkColumn = new Column<Problem, Boolean>(
-                new CheckboxCell()) {
-            @Override
-            public Boolean getValue(Problem object) {
-                // Get the value from the selection model.
-                return selectionModel.isSelected(object);
-            }
-        };
+//        Column<Problem, Boolean> checkColumn = new Column<Problem, Boolean>(
+//                new CheckboxCell()) {
+//            @Override
+//            public Boolean getValue(Problem object) {
+//                // Get the value from the selection model.
+//                return selectionModel.isSelected(object);
+//            }
+//        };
 
-        cellTable.addColumn(checkColumn, "TODO");
+//        cellTable.addColumn(checkColumn, "TODO");
 
         // ******************* DEMAND NAME *************************************
         Column<Problem, String> demandName = new Column<Problem, String>(
@@ -109,7 +95,7 @@ public class MyProblemsView extends Composite implements
             }
         };
 
-        cellTable.addColumn(demandName, "Demand name");
+        cellTable.addColumn(demandName, "Demand title");
 
         // ******************* STATE *************************************
         Column<Problem, String> state = new Column<Problem, String>(

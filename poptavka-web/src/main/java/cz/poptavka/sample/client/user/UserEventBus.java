@@ -10,8 +10,6 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 
-import cz.poptavka.sample.client.common.messages.MessagesPresenter;
-import cz.poptavka.sample.client.common.messages.message.MessagePresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdministrationPresenter;
 import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
@@ -24,7 +22,6 @@ import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
-import cz.poptavka.sample.client.user.problems.Problem;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDemandDetail;
@@ -95,21 +92,6 @@ public interface UserEventBus extends EventBusWithLookup {
     // for operator only
     @Event
     void invokeProblems();
-
-    // TODO beho - I think, this is obsolete and should be removed
-    // Who is working on problems or what does this do?
-    /** Messages secition. **/
-    @Event(handlers = MessagesPresenter.class)
-    void reply();
-
-    @Event(handlers = MessagePresenter.class)
-    void send();
-
-    @Event(handlers = MessagesPresenter.class)
-    void discard();
-
-    @Event(handlers = MessagesPresenter.class)
-    void displayMessages(Problem problem);
 
     /** handler method area. **/
 

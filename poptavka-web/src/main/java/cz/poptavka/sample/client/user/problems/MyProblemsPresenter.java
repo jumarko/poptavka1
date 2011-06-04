@@ -34,8 +34,6 @@ public class MyProblemsPresenter
 
         void displayProblems(List<Problem> problems);
 
-        void displayMessages(Problem problem);
-
         CellTable<Problem> getCellTable();
     }
 
@@ -63,7 +61,6 @@ public class MyProblemsPresenter
 
     public void onDisplayMessages(Problem problem) {
         LOGGER.info("onDisplayMessages in MessagesPresenter");
-        view.displayMessages(problem);
     }
 
     public List<Message> getMessages(String sufix) {
