@@ -22,6 +22,8 @@ import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
+import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
+import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDemandDetail;
@@ -90,8 +92,14 @@ public interface UserEventBus extends EventBusWithLookup {
     void setTabWidget(Widget tabBody);
 
     // for operator only
-    @Event
-    void invokeProblems();
+//    @Event
+//    void invokeMyProblems();
+
+    /**
+     * Handlers for widget MyProblems.
+     */
+    @Event(handlers = MyProblemsPresenter.class)
+    void requestMyProblems();
 
     /** handler method area. **/
 
@@ -206,6 +214,13 @@ public interface UserEventBus extends EventBusWithLookup {
             DemandsOperatorPresenter.class, AdministrationPresenter.class },
             historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
+
+//    @Event(handlers = MyProblemsPresenter.class, activate = MyProblemsPresenter.class, deactivate = {
+//            OffersPresenter.class, NewDemandPresenter.class, PotentialDemandsPresenter.class,
+//            DemandsOperatorPresenter.class, AdministrationPresenter.class },
+//            historyConverter = DemandsHistoryConverter.class)
+    @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
+    String invokeMyProblems();
 
     @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = { MyDemandsPresenter.class,
             NewDemandPresenter.class, PotentialDemandsPresenter.class, DemandsOperatorPresenter.class,

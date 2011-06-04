@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
 
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.user.User;
@@ -21,40 +24,54 @@ import cz.poptavka.sample.domain.user.User;
  * @author Martin Slavkovsky
  *
  */
-@Presenter(view = MyProblemsView.class)
+@Presenter(view = MyProblemsView.class, multiple = true)
 public class MyProblemsPresenter
-        extends
-        BasePresenter<MyProblemsPresenter.MyProblemsViewInterface, MyProblemsEventBus> {
+        extends BasePresenter<MyProblemsPresenter.MyProblemsViewInterface, UserEventBus> {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(MyProblemsPresenter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MyProblemsPresenter.class.getName());
 
     public interface MyProblemsViewInterface {
+
         Widget getWidgetView();
 
         void displayProblems(List<Problem> problems);
 
         CellTable<Problem> getCellTable();
+
+        SingleSelectionModel<Problem> getSelectionModel();
+
+        Button getReplyBtn();
+
+        Button getEditBtn();
+
+        Button getCloseBtn();
+
+        Button getCancelBtn();
+
+        Button getRefuseBtn();
     }
+    private DetailWrapperPresenter detailPresenter = null;
 
     public void bind() {
-        LOGGER.info("BIND my problems");
-        final SingleSelectionModel<Problem> selectionModel = new SingleSelectionModel<Problem>();
-        view.getCellTable().setSelectionModel(selectionModel);
-        selectionModel
-                .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-                    public void onSelectionChange(SelectionChangeEvent event) {
-                        Problem selected = selectionModel.getSelectedObject();
-                        if (selected != null) {
-                            eventBus.displayMessages(selected);
-                        }
-                    }
-                });
+        view.getCellTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Problem selected = view.getSelectionModel().getSelectedObject();
+                if (selected != null) {
+                    //TODO Martin - add funkcionality
+//                   eventBus.displayMessages(selected);
+                }
+            }
+        });
+        //TODO Martin -- provide data from db, not fake data
     }
 
-    public void onDisplayProblems() {
-        // Initialize Problems
-        eventBus.setBodyWidget(view.getWidgetView());
+    public void onInvokeMyProblems() {
+        eventBus.displayContent(view.getWidgetView());
+
+        eventBus.requestMyProblems();
+    }
+
+    public void onRequestMyProblems() {
         // Initialize Messages
         view.displayProblems(this.getProblems());
     }
@@ -142,5 +159,12 @@ public class MyProblemsPresenter
         contacts.add(p3);
 
         return contacts;
+    }
+
+    // TODO delete, just devel tool
+    public void cleanDetailWrapperPresenterForDevelopment() {
+        if (detailPresenter != null) {
+            eventBus.removeHandler(detailPresenter);
+        }
     }
 }

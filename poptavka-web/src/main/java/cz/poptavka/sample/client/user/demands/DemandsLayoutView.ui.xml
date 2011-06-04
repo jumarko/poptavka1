@@ -37,6 +37,11 @@
                         </g:Hyperlink>
                     </li>
                     <li>
+                        <g:Hyperlink ui:field="myProblemsLink">
+                            <ui:msg key="myProblemsLink">My Problems </ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                    <li>
                         <g:Hyperlink ui:field="administration">
                             <ui:msg key="administration">Administration</ui:msg>
                         </g:Hyperlink>

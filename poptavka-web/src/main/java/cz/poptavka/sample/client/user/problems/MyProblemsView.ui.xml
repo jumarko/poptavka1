@@ -34,7 +34,7 @@
                     </g:Button>
                 </div>
                 <div>
-                    <c:CellTable ui:field="cellTable" />
+                    <c:CellTable ui:field="cellTable" pageSize='10'/>
                     <c:SimplePager ui:field="pager" />
                 </div>
 <!--                <g:SimplePanel ui:field="develPanel" />-->

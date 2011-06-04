@@ -8,10 +8,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import java.util.Date;
@@ -20,8 +23,7 @@ import java.util.List;
 public class MyProblemsView extends Composite implements
         MyProblemsPresenter.MyProblemsViewInterface {
 
-    private static MyProblemsUiBinder uiBinder = GWT
-            .create(MyProblemsUiBinder.class);
+    private static MyProblemsUiBinder uiBinder = GWT.create(MyProblemsUiBinder.class);
 
     private final SingleSelectionModel<Problem> selectionModel = new SingleSelectionModel<Problem>();
 
@@ -37,13 +39,21 @@ public class MyProblemsView extends Composite implements
     @UiField
     SimplePanel detailSection;
 
+    private AsyncDataProvider dataProvider = new AsyncDataProvider() {
+
+        @Override
+        protected void onRangeChanged(HasData display) {
+            //implemented in presenter
+        }
+    };
+
     interface MyProblemsUiBinder extends UiBinder<Widget, MyProblemsView> {
     }
 
     public MyProblemsView() {
-        initWidget(uiBinder.createAndBindUi(this));
+        this.initCellTable();
 
-        this.initTableColumns();
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
     public MyProblemsView(String firstName) {
@@ -65,6 +75,21 @@ public class MyProblemsView extends Composite implements
     @Override
     public CellTable<Problem> getCellTable() {
         return cellTable;
+    }
+
+    private void initCellTable() {
+        cellTable = new CellTable<Problem>(2);
+        cellTable.setSelectionModel(selectionModel);
+        dataProvider.addDataDisplay(cellTable);
+        cellTable.setWidth("100%", true);
+
+        // Create a Pager to control the table.
+        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
+                true);
+        pager.setDisplay(cellTable);
+
+        initTableColumns();
     }
 
     /**
@@ -89,6 +114,7 @@ public class MyProblemsView extends Composite implements
         // ******************* DEMAND NAME *************************************
         Column<Problem, String> demandName = new Column<Problem, String>(
                 new TextCell()) {
+
             @Override
             public String getValue(Problem object) {
                 return object.getDemandName();
@@ -100,6 +126,7 @@ public class MyProblemsView extends Composite implements
         // ******************* STATE *************************************
         Column<Problem, String> state = new Column<Problem, String>(
                 new TextCell()) {
+
             @Override
             public String getValue(Problem object) {
                 return object.getState();
@@ -110,6 +137,7 @@ public class MyProblemsView extends Composite implements
 
         // ****************** DATE *******************************
         Column<Problem, Date> date = new Column<Problem, Date>(new DateCell()) {
+
             @Override
             public Date getValue(Problem object) {
                 return object.getDate();
@@ -120,6 +148,7 @@ public class MyProblemsView extends Composite implements
         // ****************** CENA *******************************
         Column<Problem, String> price = new Column<Problem, String>(
                 new TextCell()) {
+
             @Override
             public String getValue(Problem object) {
                 return object.getPrice();
@@ -127,6 +156,36 @@ public class MyProblemsView extends Composite implements
         };
 
         cellTable.addColumn(price, "Price");
+    }
+
+    @Override
+    public SingleSelectionModel<Problem> getSelectionModel() {
+        return selectionModel;
+    }
+
+    @Override
+    public Button getReplyBtn() {
+        return replyBtn;
+    }
+
+    @Override
+    public Button getEditBtn() {
+        return editBtn;
+    }
+
+    @Override
+    public Button getCloseBtn() {
+        return closeBtn;
+    }
+
+    @Override
+    public Button getCancelBtn() {
+        return cancelBtn;
+    }
+
+    @Override
+    public Button getRefuseBtn() {
+        return refuseBtn;
     }
 
     @Override

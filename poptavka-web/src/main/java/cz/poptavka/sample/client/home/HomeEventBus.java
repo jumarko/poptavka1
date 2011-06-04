@@ -17,7 +17,6 @@ import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
-import cz.poptavka.sample.client.user.problems.MyProblemsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -26,9 +25,8 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
-        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true),
-        @ChildModule(moduleClass = MyProblemsModule.class, autoDisplay = false, async = true)
-        })
+        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true)
+})
 public interface HomeEventBus extends EventBus {
 
     /** init method  **/
@@ -128,11 +126,6 @@ public interface HomeEventBus extends EventBus {
 
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
-
-    /** TODO Martin Sl. - move to correct place */
-    /** display MyProblems module */
-    @Event(modulesToLoad = MyProblemsModule.class)
-    void displayProblems();
 
     /** Supplier registration **/
     @Event(handlers = HomeHandler.class)

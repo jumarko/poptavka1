@@ -49,6 +49,8 @@ public class DemandsLayoutPresenter
 
         void setMyDemandsOperatorToken(String linkString);
 
+        void setMyProblemsToken(String linkString);
+
         void setAdministrationToken(String linkString);
 
         Button getDevelButton();
@@ -62,6 +64,7 @@ public class DemandsLayoutPresenter
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
+        view.setMyProblemsToken(getTokenGenerator().invokeMyProblems());
         view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
         view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());

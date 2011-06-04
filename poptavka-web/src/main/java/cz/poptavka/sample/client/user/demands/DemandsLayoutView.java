@@ -30,7 +30,10 @@ public class DemandsLayoutView extends Composite
     SimplePanel contentPanel;
 
     @UiField
-    Hyperlink myDemandsLink, offersLink, newDemandLink, potentialDemandsLink, myDemandsOperatorLink, administration;
+    Hyperlink myDemandsLink, offersLink, newDemandLink, potentialDemandsLink;
+
+    @UiField
+    Hyperlink myDemandsOperatorLink, myProblemsLink, administration;
 
     // TODO Beho - delete when potential demands are done
     @UiField Button potentDevelBtn;
@@ -64,6 +67,10 @@ public class DemandsLayoutView extends Composite
 
     public void setMyDemandsOperatorToken(String linkString) {
         myDemandsOperatorLink.setTargetHistoryToken(linkString);
+    }
+
+    public void setMyProblemsToken(String linkString) {
+        myProblemsLink.setTargetHistoryToken(linkString);
     }
 
     public void setAdministrationToken(String linkString) {
