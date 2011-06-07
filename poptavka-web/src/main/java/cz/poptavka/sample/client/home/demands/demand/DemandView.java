@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 public class DemandView extends Composite implements
         DemandPresenter.DemandViewInterface {
@@ -61,7 +61,7 @@ public class DemandView extends Composite implements
         return buttonRegister;
     }
 
-    public void setDemand(DemandDetail demand) {
+    public void setDemand(ClientDemandDetail demand) {
         infoTable.clear();
         textArea.setText("");
         buttonAttachments.setVisible(false);
@@ -79,7 +79,7 @@ public class DemandView extends Composite implements
 
         if (demand.getPrice() != null) {
             infoTable.setWidget(row, 0, new Label("Cena: "));
-            infoTable.setWidget(row++, 1, new Label(demand.getPriceString()));
+            infoTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
         }
 
         if (demand.getEndDate() != null) {
@@ -87,9 +87,9 @@ public class DemandView extends Composite implements
             infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
         }
 
-        if (demand.getExpireDate() != null) {
+        if (demand.getValidToDate() != null) {
             infoTable.setWidget(row, 0, new Label("Validní do: "));
-            infoTable.setWidget(row++, 1, new Label(demand.getExpireDate().toString()));
+            infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
         }
 
         if (demand.getDemandType() != null) {

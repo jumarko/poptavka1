@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail.DemandField;
 
 public class FormDemandAdvView extends Composite
     implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate  {
@@ -23,7 +24,7 @@ public class FormDemandAdvView extends Composite
     interface FormDemandAdvViewUiBinder extends UiBinder<Widget, FormDemandAdvView> {    }
 
     ArrayList<HasValue> widgets = new ArrayList<HasValue>();
-    HashMap<String, Object> map = new HashMap<String, Object>();
+    HashMap<DemandField, Object> map = new HashMap<DemandField, Object>();
 
     @UiField IntegerBox maxOffersBox;
     @UiField IntegerBox minRatingBox;
@@ -60,9 +61,9 @@ public class FormDemandAdvView extends Composite
     }
 
     @Override
-    public HashMap<String, Object> getValues() {
-        map.put("maxOffers", maxOffersBox.getValue());
-        map.put("minRating", minRatingBox.getValue());
+    public HashMap<DemandField, Object> getValues() {
+        map.put(DemandField.MAX_OFFERS, maxOffersBox.getValue());
+        map.put(DemandField.MIN_RATING, minRatingBox.getValue());
         //demand types
         String resultValue = "";
         if (classicRadio.getValue()) {
@@ -72,7 +73,7 @@ public class FormDemandAdvView extends Composite
                 resultValue = "attractive";
             }
         }
-        map.put("demandType", resultValue);
+        map.put(DemandField.DEMAND_TYPE, resultValue);
         // TODO excluded suppliers
         return map;
     }

@@ -16,12 +16,12 @@ import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
-import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
@@ -37,21 +37,21 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             .create(LocalizableMessages.class);
 
     public void onGetAllDemands() {
-        demandService.getAllDemands(new AsyncCallback<List<DemandDetail>>() {
+        demandService.getAllDemands(new AsyncCallback<List<ClientDemandDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
             }
 
             @Override
-            public void onSuccess(List<DemandDetail> result) {
+            public void onSuccess(List<ClientDemandDetail> result) {
                 eventBus.setAllDemands(result);
             }
         });
     }
 
-    public void onUpdateDemand(DemandDetail demand) {
-        demandService.updateDemand(demand, new AsyncCallback<DemandDetail>() {
+    public void onUpdateDemand(ClientDemandDetail demand) {
+        demandService.updateDemand(demand, new AsyncCallback<ClientDemandDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -59,7 +59,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(DemandDetail result) {
+            public void onSuccess(ClientDemandDetail result) {
                 eventBus.refreshUpdatedDemand(result);
             }
         });
@@ -95,16 +95,16 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     /**
      * Get Detail according to demand id.
      */
-    public void onGetDemandDetail(Long demandId, final DetailType typeOfDetail) {
+    public void onGetDemandDetail(Long demandId, final ViewType typeOfDetail) {
         GWT.log("REACH RPC");
-        demandService.getDemand(demandId, new AsyncCallback<DemandDetail>() {
+        demandService.getDemand(demandId, new AsyncCallback<ClientDemandDetail>() {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert(caught.getMessage());
             }
 
             @Override
-            public void onSuccess(DemandDetail result) {
+            public void onSuccess(ClientDemandDetail result) {
                 eventBus.setDemandDetail(result, typeOfDetail);
             }
         });
@@ -117,7 +117,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
      */
     public void onGetPotentialDemands(long businessUserId) {
         demandService.getPotentialDemandsForSupplier(businessUserId,
-                new AsyncCallback<ArrayList<PotentialDemandDetail>>() {
+                new AsyncCallback<ArrayList<BaseDemandDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Error in UserHandler in method: onGetPotentialDemandsList"
@@ -126,7 +126,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onSuccess(
-                            ArrayList<PotentialDemandDetail> result) {
+                            ArrayList<BaseDemandDetail> result) {
                         eventBus.responsePotentialDemands(result);
                     }
                 });

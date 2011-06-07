@@ -14,7 +14,7 @@ import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
 public class MessageHandler extends BaseEventHandler<UserEventBus> {
@@ -24,8 +24,22 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     @Inject
     private OfferRPCServiceAsync offerService;
 
-    public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
+    public void onGetClientDemands(Long userId, int fakeParameter) {
+        messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<MessageDetail>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("MessageHandler: onGetClientDemands:\n\n" + caught.getMessage());
+            }
 
+            @Override
+            public void onSuccess(ArrayList<MessageDetail> result) {
+                eventBus.responseClientDemands(result);
+            }
+        });
+    }
+
+
+    public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
         // TODO NOT WORKING NOW
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
@@ -38,7 +52,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> messageList) {
                         GWT.log("Conversation size: " + messageList.size());
-                        eventBus.setPotentialDemandConversation(messageList, DetailType.POTENTIAL);
+                        eventBus.setPotentialDemandConversation(messageList, ViewType.POTENTIAL);
                         // TODO delete
                         /** DEBUG INFO **/
                         for (MessageDetail m : messageList) {
@@ -60,7 +74,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(MessageDetail result) {
-                eventBus.addReplyToPotentailDemandConversation(result, DetailType.POTENTIAL);
+                eventBus.addReplyToPotentailDemandConversation(result, ViewType.POTENTIAL);
             }
         });
     }

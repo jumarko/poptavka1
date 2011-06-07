@@ -19,6 +19,8 @@ import java.util.List;
 @RemoteServiceRelativePath("service/messages")
 public interface MessageRPCService extends RemoteService {
 
+    ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam);
+
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId);
 
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);

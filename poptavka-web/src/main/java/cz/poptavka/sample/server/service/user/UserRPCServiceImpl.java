@@ -45,9 +45,9 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
             System.out.println("NULL branch");
             return null;
         }
-        userDetail.setId(user.getId());
+        userDetail.setUserId(user.getId());
         System.out.println("USER branch");
-        return "id=" + userDetail.getId();
+        return "id=" + userDetail.getUserId();
     }
 
     @Override
@@ -76,7 +76,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         }
         // TODO add other useful attributes like, count of new demands, offers,
         // messages and so on
-        userDetail.setId(roles.get(0).getBusinessUser().getId());
+        userDetail.setUserId(roles.get(0).getBusinessUser().getId());
 
         return userDetail;
     }

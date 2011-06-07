@@ -200,12 +200,14 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
         return selectedResponse == RESPONSE_QUESTION;
     }
 
-//    public Long getMessageToReplyId() {
-//        return messageToReplyId;
-//    }
-//
-//    public void setMessageToReplyId(Long messageToReplyId) {
-//        this.messageToReplyId = messageToReplyId;
-//    }
+    @Override
+    public Anchor getCancelButton() {
+        return cancelBtn;
+    }
+
+    @Override
+    public void setResponseToQuestion() {
+        selectedResponse = RESPONSE_QUESTION;
+    }
 
 }

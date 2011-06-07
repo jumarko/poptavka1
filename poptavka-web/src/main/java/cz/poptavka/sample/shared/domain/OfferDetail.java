@@ -28,7 +28,7 @@ public class OfferDetail implements Serializable {
 
     public static OfferDetail generateOfferDetail(Message message) {
         MessageDetail m = new MessageDetail();
-        m.setId(message.getId());
+        m.setMessageId(message.getId());
         m.setBody(message.getBody());
         m.setCreated(message.getCreated());
 //        m.setFirstBornId(serialVersionUID);
@@ -45,7 +45,7 @@ public class OfferDetail implements Serializable {
         o.setFinishDate(offer.getFinishDate());
         o.setMessageDetail(m);
         // tofo ivlcek verify id
-        o.setMessageId(m.getId());
+        o.setMessageId(m.getMessageId());
         o.setPrice(offer.getPrice());
         o.setSupplierId(offer.getSupplier().getId());
         o.setDemandId(offer.getDemand().getId());

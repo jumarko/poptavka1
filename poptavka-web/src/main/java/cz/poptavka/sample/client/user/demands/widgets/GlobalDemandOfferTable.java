@@ -16,7 +16,7 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.NoSelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 
 public class GlobalDemandOfferTable extends CellTable<OfferDemandDetail> {
 
@@ -82,7 +82,7 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandDetail> {
         Column<OfferDemandDetail, String> validToDateColumn = (new Column<OfferDemandDetail, String>(new TextCell()) {
             @Override
             public String getValue(OfferDemandDetail object) {
-                return dateFormat.format(object.getFinishDate());
+                return dateFormat.format(object.getEndDate());
             }
         });
 
@@ -110,16 +110,16 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandDetail> {
         });
 
         endDateColumn.setSortable(true);
-        validToDateColumn.setSortable(true);
-        Comparator<OfferDemandDetail> dateComparator = new Comparator<OfferDemandDetail>() {
-            @Override
-            public int compare(OfferDemandDetail o1, OfferDemandDetail o2) {
-                // TODO Auto-generated method stub
-                return o1.getEndDate().compareTo(o2.getEndDate());
-            }
-        };
-        sortHandler.setComparator(endDateColumn, dateComparator);
-        sortHandler.setComparator(validToDateColumn, dateComparator);
+//        validToDateColumn.setSortable(true);
+//        Comparator<OfferDemandDetail> dateComparator = new Comparator<OfferDemandDetail>() {
+//            @Override
+//            public int compare(OfferDemandDetail o1, OfferDemandDetail o2) {
+//                // TODO Auto-generated method stub
+//                return o1.getEndDate().compareTo(o2.getEndDate());
+//            }
+//        };
+//        sortHandler.setComparator(endDateColumn, dateComparator);
+//        sortHandler.setComparator(validToDateColumn, dateComparator);
         // add columns into table
         // this.addColumn(checkBoxColumn);
         this.addColumn(titleColumn, msgs.title());

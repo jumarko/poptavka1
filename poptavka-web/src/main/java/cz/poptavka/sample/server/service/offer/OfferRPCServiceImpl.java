@@ -26,8 +26,8 @@ import cz.poptavka.sample.service.offer.OfferService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.MessageDetail;
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 
 /**
  *
@@ -85,7 +85,6 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             OfferDemandDetail offerDemandDetail = new OfferDemandDetail();
             // TODO - set to bold if new
             // TODO load userMessage
-            offerDemandDetail.setBold(true);
             offerDemandDetail.setDemandId(demand.getId());
             offerDemandDetail.setEndDate(demand.getEndDate());
             offerDemandDetail.setValidToDate(demand.getValidTo());
@@ -95,7 +94,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             // TODO ivlcek - ked si pytam len size tak nacitavaju HIbernaty vsekty Offers? dufam, ze nie
             // inak to musime prekopat do servisy, ktora vrati len pocet
             offerDemandDetail.setNumberOfOffers(demand.getOffers().size());
-            offerDemandDetail.setThreadRootId(this.messageService.getThreadRootMessage(demand).getId());
+            offerDemandDetail.setMessageId(this.messageService.getThreadRootMessage(demand).getId());
             offerDemandDetails.add(offerDemandDetail);
         }
         return offerDemandDetails;

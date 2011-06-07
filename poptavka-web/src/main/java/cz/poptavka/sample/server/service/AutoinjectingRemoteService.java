@@ -26,12 +26,12 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 
 /**
@@ -65,10 +65,10 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
     }
 
 
-    protected ArrayList<DemandDetail> toDemandDetailList(List<Demand> list) {
-        ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
+    protected ArrayList<ClientDemandDetail> toDemandDetailList(List<Demand> list) {
+        ArrayList<ClientDemandDetail> details = new ArrayList<ClientDemandDetail>();
         for (Demand demand : list) {
-            details.add(DemandDetail.createDemandDetail(demand));
+            details.add(ClientDemandDetail.createDemandDetail(demand));
         }
         return details;
     }
@@ -98,7 +98,7 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         }
 
         UserDetail detail = new UserDetail();
-        detail.setId(userId);
+        detail.setUserId(userId);
 
         // Set UserDetail according to his roles
         for (BusinessUserRole role : userRoles) {

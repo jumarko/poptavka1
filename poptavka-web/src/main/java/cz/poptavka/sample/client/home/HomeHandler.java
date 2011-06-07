@@ -79,7 +79,7 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
                     eventBus.loginError();
                     return;
                 }
-                if (client.getId() != -1) {
+                if (client.getClientId() != -1) {
                     eventBus.prepareNewDemandForNewClient(client);
                 } else {
                     eventBus.loadingHide();
@@ -102,7 +102,7 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
             }
             @Override
             public void onSuccess(UserDetail client) {
-                if (client.getId() != -1) {
+                if (client.getClientId() != -1) {
                     eventBus.prepareNewDemandForNewClient(client);
                 }
             }

@@ -9,7 +9,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 public class DemandDetailView extends Composite {
 
@@ -21,7 +21,7 @@ public class DemandDetailView extends Composite {
     @UiField ParagraphElement descArea;
     @UiField SpanElement nameSpan;
 
-    public DemandDetailView(DemandDetail demand) {
+    public DemandDetailView(ClientDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
         titleHeader.setInnerText(demand.getTitle());
         descArea.setInnerHTML(demand.getDescription());

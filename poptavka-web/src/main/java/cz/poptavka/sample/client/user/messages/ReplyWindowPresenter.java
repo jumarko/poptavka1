@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.user.messages;
 
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -30,6 +31,10 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
         void setNormalStyle();
 
         boolean isResponseQuestion();
+
+        Anchor getCancelButton();
+
+        void setResponseToQuestion();
 
     }
 
@@ -61,6 +66,12 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
 
     public boolean hasResponseQuestion() {
         return view.isResponseQuestion();
+    }
+
+
+    public void createOfferReplyWindow(ClickHandler closingHandler) {
+        view.setResponseToQuestion();
+        view.getCancelButton().addClickHandler(closingHandler);
     }
 
 }

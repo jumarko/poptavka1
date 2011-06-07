@@ -25,4 +25,6 @@ public interface MessageRPCServiceAsync {
     void sendOffer(OfferDetail demandOffer, AsyncCallback<OfferDetail> callback);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
+
+    void getClientDemands(long businessUserId, int fakeParam, AsyncCallback<ArrayList<MessageDetail>> callback);
 }

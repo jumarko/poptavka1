@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.main;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -15,8 +16,8 @@ import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -131,9 +132,10 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
      * @param clientId
      *            client id
      */
-    public void onCreateDemand(DemandDetail detail, Long clientId) {
+    public void onCreateDemand(ClientDemandDetail detail, Long clientId) {
+        GWT.log("Am I here?");
         demandService.createNewDemand(detail, clientId,
-                new AsyncCallback<DemandDetail>() {
+                new AsyncCallback<ClientDemandDetail>() {
                     @Override
                     public void onFailure(Throwable arg0) {
                         eventBus.loadingHide();
@@ -141,7 +143,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                     }
 
                     @Override
-                    public void onSuccess(DemandDetail result) {
+                    public void onSuccess(ClientDemandDetail result) {
                         // signal event
                         eventBus.loadingHide();
                         // TODO forward to user/atAccount

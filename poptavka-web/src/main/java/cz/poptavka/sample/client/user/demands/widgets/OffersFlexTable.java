@@ -14,9 +14,10 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ToggleButton;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
+// TODO beho delete after making sure, it can't be used.
 public class OffersFlexTable extends FlexTable {
 
     private static final Logger LOGGER = Logger.getLogger(OffersFlexTable.class.getName());
@@ -49,7 +50,7 @@ public class OffersFlexTable extends FlexTable {
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
 
-    private ArrayList<DemandDetail> demands = new ArrayList<DemandDetail>();
+    private ArrayList<ClientDemandDetail> demands = new ArrayList<ClientDemandDetail>();
     private ArrayList<ArrayList<OfferDetail>> offers = new ArrayList<ArrayList<OfferDetail>>();
 
     public OffersFlexTable() {
@@ -88,27 +89,27 @@ public class OffersFlexTable extends FlexTable {
     }
 
 
-    public void setData(ArrayList<DemandDetail> demands) {
+    public void setData(ArrayList<ClientDemandDetail> demands) {
         if (this.demands.hashCode() != demands.hashCode()) {
             this.demands = demands;
-            for (DemandDetail demand : this.demands) {
+            for (ClientDemandDetail demand : this.demands) {
                 setDemandRow(demand);
             }
         }
     }
 
-    public void setDemandRow(DemandDetail demand) {
+    public void setDemandRow(ClientDemandDetail demand) {
         int nextRow = this.getRowCount();
         ToggleButton button = new ToggleButton(new Image(StyleResource.INSTANCE.images().showMiddle()),
                 new Image(StyleResource.INSTANCE.images().showDown()));
         this.setWidget(nextRow, COULMN_SIGN, button);
         this.setHTML(nextRow, COLUMN_DEMAND, demand.getTitle());
-        this.setHTML(nextRow, COLUMN_PRICE,
-                (demand.getEndDate() == null ? MSGS.emptyField() : demand.getEndDate().toString()));
-        this.setHTML(nextRow, COLUMN_RATING, demand.getMinRating() + "%");
-        this.setHTML(nextRow, COLUMN_DATE,
-                (demand.getEndDate() != null ? demand.getEndDate().toString() : MSGS.emptyField()));
-        this.setHTML(nextRow, COLUMN_ID, demand.getId() + "");
+//        this.setHTML(nextRow, COLUMN_PRICE,
+//                (demand.getEndDate() == null ? MSGS.emptyField() : demand.getEndDate().toString()));
+//        this.setHTML(nextRow, COLUMN_RATING, demand.getMinRating() + "%");
+//        this.setHTML(nextRow, COLUMN_DATE,
+//                (demand.getEndDate() != null ? demand.getEndDate().toString() : MSGS.emptyField()));
+//        this.setHTML(nextRow, COLUMN_ID, demand.getId() + "");
         this.getCellFormatter().addStyleName(nextRow, COLUMN_ID, StyleResource.INSTANCE.table().hiddenField());
         this.setHTML(nextRow, COLUMN_TYPE, TYPE_DEMAND + "");
         this.getCellFormatter().addStyleName(nextRow, COLUMN_TYPE, StyleResource.INSTANCE.table().hiddenField());

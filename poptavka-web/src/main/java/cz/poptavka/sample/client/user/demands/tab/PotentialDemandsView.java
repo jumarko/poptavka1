@@ -35,7 +35,7 @@ import com.mvp4g.client.view.ReverseViewInterface;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 
 /**
  * View representing potential demands for supplier. Supplier can list them,
@@ -60,7 +60,7 @@ public class PotentialDemandsView extends OverflowComposite implements
     }
 
     @UiField(provided = true)
-    CellTable<PotentialDemandDetail> cellTable;
+    CellTable<BaseDemandDetail> cellTable;
     @UiField(provided = true)
     SimplePager pager;
     @UiField
@@ -75,7 +75,7 @@ public class PotentialDemandsView extends OverflowComposite implements
 
     // @UiField ToggleButton moreActionsBtn;
 
-    private ListDataProvider<PotentialDemandDetail> dataProvider = new ListDataProvider<PotentialDemandDetail>();
+    private ListDataProvider<BaseDemandDetail> dataProvider = new ListDataProvider<BaseDemandDetail>();
 
     private PotentialDemandsPresenter presenter;
 
@@ -103,12 +103,12 @@ public class PotentialDemandsView extends OverflowComposite implements
 
     private void initCellWidget() {
         // Init table
-        cellTable = new CellTable<PotentialDemandDetail>(KEY_PROVIDER);
+        cellTable = new CellTable<BaseDemandDetail>(KEY_PROVIDER);
         // cellTable.setPageSize(5);
         cellTable.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
         cellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 
-        ListHandler<PotentialDemandDetail> sorHandler = new ListHandler<PotentialDemandDetail>(
+        ListHandler<BaseDemandDetail> sorHandler = new ListHandler<BaseDemandDetail>(
                 dataProvider.getList());
         cellTable.addColumnSortHandler(sorHandler);
 
@@ -119,10 +119,10 @@ public class PotentialDemandsView extends OverflowComposite implements
                 true);
         pager.setDisplay(cellTable);
 
-        final MultiSelectionModel<PotentialDemandDetail> selectionModel =
-                new MultiSelectionModel<PotentialDemandDetail>(KEY_PROVIDER);
+        final MultiSelectionModel<BaseDemandDetail> selectionModel =
+                new MultiSelectionModel<BaseDemandDetail>(KEY_PROVIDER);
         cellTable.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager.<PotentialDemandDetail>createCheckboxManager());
+                DefaultSelectionEventManager.<BaseDemandDetail>createCheckboxManager());
 
         initTableColumns(selectionModel, sorHandler);
 
@@ -130,8 +130,8 @@ public class PotentialDemandsView extends OverflowComposite implements
         dataProvider.addDataDisplay(cellTable);
     }
 
-    private void initTableColumns(final SelectionModel<PotentialDemandDetail> tableSelectionModel,
-            ListHandler<PotentialDemandDetail> sortHandler) {
+    private void initTableColumns(final SelectionModel<BaseDemandDetail> tableSelectionModel,
+            ListHandler<BaseDemandDetail> sortHandler) {
 
         // for EVERY text display
         TextCell tableTextCell = new TextCell(new SafeHtmlRenderer<String>() {
@@ -146,89 +146,94 @@ public class PotentialDemandsView extends OverflowComposite implements
         });
 
         // MultipleSelection Checkbox
-        Column<PotentialDemandDetail, Boolean> checkBoxColumn = new Column<PotentialDemandDetail, Boolean>(
+        Column<BaseDemandDetail, Boolean> checkBoxColumn = new Column<BaseDemandDetail, Boolean>(
                 new CheckboxCell(true, false)) {
             @Override
-            public Boolean getValue(PotentialDemandDetail object) {
+            public Boolean getValue(BaseDemandDetail object) {
                 return tableSelectionModel.isSelected(object);
             }
         };
 
         // Demand Title Column
-        Column<PotentialDemandDetail, String> titleColumn = (new Column<PotentialDemandDetail, String>(
+        Column<BaseDemandDetail, String> titleColumn = (new Column<BaseDemandDetail, String>(
                 tableTextCell) {
             @Override
-            public String getValue(PotentialDemandDetail object) {
+            public String getValue(BaseDemandDetail object) {
                 GWT.log("Object is read? " + object.isRead());
-                return object.getDemandTitleHtml();
+                return object.displayTitle();
             }
         });
 
-        // Demand Price Column
-        Column<PotentialDemandDetail, String> priceColumn = new Column<PotentialDemandDetail, String>(tableTextCell) {
-            @Override
-            public String getValue(PotentialDemandDetail object) {
-                return (object.getPrice().intValue() < 0
-                        ? object.htmlDisplay("none") : object.htmlDisplay(object.getPrice().toString()));
-            }
-        };
+        // TODO not implemented
+//        // Demand Price Column
+//        Column<BaseDemandDetail, String> priceColumn = new Column<BaseDemandDetail, String>(tableTextCell) {
+//            @Override
+//            public String getValue(BaseDemandDetail object) {
+//                return (object.getPrice().intValue() < 0
+//                        ? object.htmlDisplay("none") : object.htmlDisplay(object.getPrice().toString()));
+//            }
+//        };
 
         final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
 
         // Demand Finish Column
-        Column<PotentialDemandDetail, String> endDateColumn
-            = new Column<PotentialDemandDetail, String>(tableTextCell) {
+        Column<BaseDemandDetail, String> endDateColumn
+            = new Column<BaseDemandDetail, String>(tableTextCell) {
                 @Override
-                public String getValue(PotentialDemandDetail object) {
-                    return object.htmlDisplay(dateFormat.format(object.getEndDate()));
+                public String getValue(BaseDemandDetail object) {
+                    return object.displayFinishDate();
                 }
             };
 
-        // Demand sent Date column
-        Column<PotentialDemandDetail, String> sentDateColumn
-            =
-            new Column<PotentialDemandDetail, String>(tableTextCell) {
-                @Override
-                public String getValue(PotentialDemandDetail object) {
-                    return object.htmlDisplay(dateFormat.format(object.getSent()));
-                }
-            };
+            // TODO not implemented
+//        // Demand sent Date column
+//        Column<BaseDemandDetail, String> sentDateColumn
+//            =
+//            new Column<BaseDemandDetail, String>(tableTextCell) {
+//                @Override
+//                public String getValue(BaseDemandDetail object) {
+//                    return object.htmlDisplay(dateFormat.format(object.getSent()));
+//                }
+//            };
 
         // sort methods
         titleColumn.setSortable(true);
         sortHandler.setComparator(titleColumn,
-                new Comparator<PotentialDemandDetail>() {
+                new Comparator<BaseDemandDetail>() {
                     @Override
-                    public int compare(PotentialDemandDetail o1,
-                            PotentialDemandDetail o2) {
+                    public int compare(BaseDemandDetail o1,
+                            BaseDemandDetail o2) {
                         if (o1 == o2) {
                             return 0;
                         }
 
                         // Compare the name columns.
                         if (o1 != null) {
-                            return (o2 != null) ? o1.getDemandTitle()
-                                    .compareTo(o2.getDemandTitle()) : 1;
+                            return (o2 != null) ? o1.getTitle()
+                                    .compareTo(o2.getTitle()) : 1;
                         }
                         return -1;
                     }
                 });
-        priceColumn.setSortable(true);
-        sortHandler.setComparator(priceColumn,
-                new Comparator<PotentialDemandDetail>() {
-                    @Override
-                    public int compare(PotentialDemandDetail o1,
-                            PotentialDemandDetail o2) {
-                        return o1.getPrice().compareTo(o2.getPrice());
-                    }
-                });
+        // TODO not implemented
+//        priceColumn.setSortable(true);
+//        sortHandler.setComparator(priceColumn,
+//                new Comparator<BaseDemandDetail>() {
+//                    @Override
+//                    public int compare(BaseDemandDetail o1,
+//                            BaseDemandDetail o2) {
+//                        return o1.getPrice().compareTo(o2.getPrice());
+//                    }
+//                });
 
         // add columns into table
         cellTable.addColumn(checkBoxColumn);
         cellTable.addColumn(titleColumn, MSGS.title());
-        cellTable.addColumn(priceColumn, MSGS.price());
+        // TODO not implemented
+//        cellTable.addColumn(priceColumn, MSGS.price());
         cellTable.addColumn(endDateColumn, MSGS.endDate());
-        cellTable.addColumn(sentDateColumn, MSGS.expireDate());
+        // TODO not implemented
+//        cellTable.addColumn(sentDateColumn, MSGS.expireDate());
 
     }
 
@@ -238,19 +243,19 @@ public class PotentialDemandsView extends OverflowComposite implements
     }
 
     @Override
-    public MultiSelectionModel<PotentialDemandDetail> getSelectionModel() {
-        return (MultiSelectionModel<PotentialDemandDetail>) cellTable.getSelectionModel();
+    public MultiSelectionModel<BaseDemandDetail> getSelectionModel() {
+        return (MultiSelectionModel<BaseDemandDetail>) cellTable.getSelectionModel();
     }
 
-    private static final ProvidesKey<PotentialDemandDetail> KEY_PROVIDER = new ProvidesKey<PotentialDemandDetail>() {
+    private static final ProvidesKey<BaseDemandDetail> KEY_PROVIDER = new ProvidesKey<BaseDemandDetail>() {
         @Override
-        public Object getKey(PotentialDemandDetail item) {
+        public Object getKey(BaseDemandDetail item) {
             return item == null ? null : item.getDemandId();
         }
     };
 
     @Override
-    public ListDataProvider<PotentialDemandDetail> getDataProvider() {
+    public ListDataProvider<BaseDemandDetail> getDataProvider() {
         return dataProvider;
     }
 
@@ -275,7 +280,7 @@ public class PotentialDemandsView extends OverflowComposite implements
     }
 
     @Override
-    public Set<PotentialDemandDetail> getSelectedSet() {
+    public Set<BaseDemandDetail> getSelectedSet() {
         return getSelectionModel().getSelectedSet();
     }
 
@@ -285,7 +290,7 @@ public class PotentialDemandsView extends OverflowComposite implements
     }
 
     @Override
-    public CellTable<PotentialDemandDetail> getDemandTable() {
+    public CellTable<BaseDemandDetail> getDemandTable() {
         return cellTable;
     }
 

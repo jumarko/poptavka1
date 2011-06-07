@@ -10,8 +10,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.view.BaseCycleView;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
@@ -19,7 +20,7 @@ import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 
 // TODO extend SimpleMessageWindow, if possible.
-public class OfferWindow extends Composite implements OfferWindowPresenter.ActionMessageInterface {
+public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.ActionMessageInterface {
 
     private static final int DATE_POS = 3;
 
@@ -40,6 +41,8 @@ public class OfferWindow extends Composite implements OfferWindowPresenter.Actio
     @UiField Anchor acceptButton;
     @UiField Anchor replyButton;
     @UiField Anchor deleteButton;
+
+    @UiField SimplePanel responseHolder;
 
     private boolean collapsed = false;
 
@@ -126,14 +129,14 @@ public class OfferWindow extends Composite implements OfferWindowPresenter.Actio
     /**********************************************************************************/
     /**                       Widget internal behavior handling.                       */
     @Override
-    protected void onLoad() {
+    public void onLoad() {
         com.google.gwt.user.client.Element castedElement = castElement(header);
         DOM.sinkEvents(castedElement, Event.ONCLICK);
         DOM.setEventListener(castedElement, new MessageToggleHangler());
     }
 
     @Override
-    protected void onUnload() {
+    public void onUnload() {
         super.onUnload();
         DOM.setEventListener(castElement(header), null);
     }
@@ -172,8 +175,14 @@ public class OfferWindow extends Composite implements OfferWindowPresenter.Actio
 
 
     @Override
-    public Anchor getDeleteButton() {
+    public Anchor getDeclineButton() {
         return deleteButton;
+    }
+
+
+    @Override
+    public SimplePanel getResponseHolder() {
+        return responseHolder;
     }
 
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 
 public interface OfferRPCServiceAsync {
 

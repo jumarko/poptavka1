@@ -17,8 +17,8 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DemandsOperatorView.class, multiple = true)
 public class DemandsOperatorPresenter extends
@@ -41,13 +41,13 @@ public class DemandsOperatorPresenter extends
 
         Button getRejectBtn();
 
-        CellTable<DemandDetail> getCellTable();
+        CellTable<ClientDemandDetail> getCellTable();
 
         SimplePanel getDetailSection();
 
-        SingleSelectionModel<DemandDetail> getSelectionModel();
+        SingleSelectionModel<ClientDemandDetail> getSelectionModel();
 
-        ListDataProvider<DemandDetail> getDataProvider();
+        ListDataProvider<ClientDemandDetail> getDataProvider();
     }
 
     private DetailWrapperPresenter detailPresenter = null;
@@ -58,7 +58,7 @@ public class DemandsOperatorPresenter extends
      // Init DetailWrapper for this view
         if (detailPresenter  == null) {
             detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
-            detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.OPERATOR);
+            detailPresenter.initDetailWrapper(view.getDetailSection(), ViewType.OPERATOR);
         }
 
         // TODO Beho - just for information, delete when implementing
@@ -79,7 +79,7 @@ public class DemandsOperatorPresenter extends
         view.getDetailSection().setWidget(widget);
     }
 
-    public void onResponseClientDemands(ArrayList<DemandDetail> demands) {
+    public void onResponseClientDemands(ArrayList<ClientDemandDetail> demands) {
         GWT.log("Demands are on the way.    demands.size = " + demands.size());
 
         // Add the data to the data provider, which automatically pushes it to

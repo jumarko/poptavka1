@@ -21,11 +21,11 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 /**
  * Main presenter for User account.
@@ -50,7 +50,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
 
     private DemandsLayoutPresenter demandsLayoutPresenter = null;
+
+    // TODO useless!!!!!
+    // do NOT paste code, when you do NOT know, why is it there!!!!!
     private AdminLayoutPresenter adminLayoutPresenter = null;
+
     private UserDetail user = null;
 
     private String eventMarkedToFire;
@@ -117,7 +121,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
 
     /** REQUESTs && RESPONSEs. **/
-    public void onRequestClientId(DemandDetail newDemand) {
+    public void onRequestClientId(ClientDemandDetail newDemand) {
         // TODO refactor this method to call just demand
         if (user.getRoleList().contains(Role.CLIENT)) {
             newDemand.setClientId(user.getClientId());
@@ -140,9 +144,13 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
     }
 
+    public void onRequestClientDemands() {
+        eventBus.getClientDemands(user.getUserId(), 0);
+    }
+
     public void onRequestPotentialDemands() {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            eventBus.getPotentialDemands(user.getId());
+            eventBus.getPotentialDemands(user.getUserId());
         } else {
             accessDenied();
         }
@@ -159,19 +167,18 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     /** messaging subsection. **/
     public void onRequestPotentialDemandConversation(long messageId, long userMessageId) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            eventBus.getPotentialDemandConversation(messageId, user.getId(), userMessageId);
+            eventBus.getPotentialDemandConversation(messageId, user.getUserId(), userMessageId);
         } else {
             accessDenied();
         }
     }
-
     public void onBubbleMessageSending(MessageDetail messageToSend) {
-        messageToSend.setSenderId(user.getId());
+        messageToSend.setSenderId(user.getUserId());
         eventBus.sendQueryToPotentialDemand(messageToSend);
     }
     public void onBubbleOfferSending(OfferDetail offerToSend) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            offerToSend.getMessageDetail().setSenderId(user.getId());
+            offerToSend.getMessageDetail().setSenderId(user.getUserId());
             offerToSend.setSupplierId(user.getSupplierId());
             eventBus.sendDemandOffer(offerToSend);
         } else {
@@ -186,7 +193,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         userInfoPanel.setWidth("200px");
         String br = "<br />";
         StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
-        sb.append("ID: " + user.getId() + br);
+        sb.append("ID: " + user.getUserId() + br);
 
         sb.append("<i>-- user roles --</i>" + br);
         if (user.getRoleList().contains(Role.CLIENT)) {

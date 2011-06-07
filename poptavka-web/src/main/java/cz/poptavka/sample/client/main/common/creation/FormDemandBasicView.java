@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail.DemandField;
 
 public class FormDemandBasicView extends Composite
     implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate  {
@@ -31,7 +32,7 @@ public class FormDemandBasicView extends Composite
     }
 
     ArrayList<HasValue> widgets = new ArrayList<HasValue>();
-    HashMap<String, Object> map = new HashMap<String, Object>();
+    HashMap<DemandField, Object> map = new HashMap<DemandField, Object>();
 
     @UiField TextBox titleBox;
     @UiField LongBox priceBox;
@@ -80,17 +81,17 @@ public class FormDemandBasicView extends Composite
     }
 
     @Override
-    public HashMap<String, Object> getValues() {
+    public HashMap<DemandField, Object> getValues() {
         LOGGER.info("Filling map with basic values");
-        map.put("title", titleBox.getText());
-        map.put("description", descriptionBox.getValue());
+        map.put(DemandField.TITLE, titleBox.getText());
+        map.put(DemandField.DESCRIPTION, descriptionBox.getValue());
         try {
-            map.put("price", (priceBox.getValue() == null ? new Long(-1) : priceBox.getValue()));
+            map.put(DemandField.PRICE, String.valueOf(priceBox.getValue()));
         } catch (Exception ex) {
             Window.alert("Exception: " + ex.getMessage());
         }
-        map.put("endDate", finishDateBox.getValue());
-        map.put("expireDate", expireDateBox.getValue());
+        map.put(DemandField.FINISH_DATE, finishDateBox.getValue());
+        map.put(DemandField.VALID_TO_DATE, expireDateBox.getValue());
 
         LOGGER.info("Filling map with basic values ... DONE");
         return map;

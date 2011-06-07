@@ -21,9 +21,9 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = OffersView.class, multiple = true)
 public class OffersPresenter extends
@@ -60,14 +60,14 @@ public class OffersPresenter extends
     private boolean loaded = false;
 
     public void bindView() {
-        // Demand selected -> OffersTable is loaded and shown, DemandDetail as well
+        // Demand selected -> OffersTable is loaded and shown, ClientDemandDetail as well
         view.getDemandModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.swapTables();
                 OfferDemandDetail obj = view.getDemandModel().getLastSelectedObject();
-                eventBus.getDemandOffers(obj.getDemandId(), obj.getThreadRootId());
-                eventBus.getDemandDetail(obj.getDemandId(), DetailType.OFFER);
+//                eventBus.getDemandOffers(obj.getDemandId(), obj.getThreadRootId());
+                eventBus.getDemandDetail(obj.getDemandId(), ViewType.OFFER);
             }
         });
         // Offer selected -> that offer is loaded and shown as well
@@ -110,7 +110,7 @@ public class OffersPresenter extends
         // Init DetailWrapper for this view
         if (detailPresenter  == null) {
             detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
-            detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.OFFER);
+            detailPresenter.initDetailWrapper(view.getDetailSection(), ViewType.OFFER);
         }
 
         // widget display

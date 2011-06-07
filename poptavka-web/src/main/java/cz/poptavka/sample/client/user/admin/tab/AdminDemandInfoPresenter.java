@@ -13,7 +13,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.google.gwt.user.client.ui.Button;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 /**
  *
@@ -25,12 +25,12 @@ public class AdminDemandInfoPresenter
     public interface AdminDemandInfoInterface extends LazyView {
         Widget getWidgetView();
 
-        void setDemandDetail(DemandDetail contact);
+        void setDemandDetail(ClientDemandDetail contact);
 
         Button getUpdateBtn();
     }
 
-    public void onShowAdminDemandDetail(DemandDetail selectedObject) {
+    public void onShowAdminDemandDetail(ClientDemandDetail selectedObject) {
 //        eventBus.displayContent(view.getWidgetView());
         view.setDemandDetail(selectedObject);
         eventBus.responseAdminDemandDetail(view.getWidgetView());

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.type;
 
 /**
  *
@@ -10,7 +10,7 @@ package cz.poptavka.sample.shared.domain;
  * Nemozem pouzit priamo domenovy objekt?
  * @author ivan.vlcek
  */
-public enum DemandStatusDetail {
+public enum DemandStatusType {
     NEW("NEW"),
     /**
      * There are two meanings for this state. Brand new Client created Demand during registration
@@ -58,7 +58,7 @@ public enum DemandStatusDetail {
     CANCELED("CANCELED");
     private final String value;
 
-    DemandStatusDetail(String value) {
+    DemandStatusType(String value) {
         this.value = value;
     }
 

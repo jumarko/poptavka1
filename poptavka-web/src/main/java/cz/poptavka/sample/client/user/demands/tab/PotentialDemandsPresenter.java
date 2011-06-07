@@ -22,8 +22,8 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
-import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
  * Presenter for handling view actions.
@@ -35,7 +35,7 @@ import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
 public class PotentialDemandsPresenter extends
     LazyPresenter<PotentialDemandsPresenter.IPotentialDemands, UserEventBus> {
 
-    private static final DetailType DETAIL_TYPE = DetailType.POTENTIAL;
+    private static final ViewType DETAIL_TYPE = ViewType.POTENTIAL;
 
     public interface IPotentialDemands extends LazyView {
         Widget getWidgetView();
@@ -48,13 +48,13 @@ public class PotentialDemandsPresenter extends
 
         boolean getReadValueForMarkedMessages();
 
-        CellTable<PotentialDemandDetail> getDemandTable();
+        CellTable<BaseDemandDetail> getDemandTable();
 
-        ListDataProvider<PotentialDemandDetail> getDataProvider();
+        ListDataProvider<BaseDemandDetail> getDataProvider();
 
-        MultiSelectionModel<PotentialDemandDetail> getSelectionModel();
+        MultiSelectionModel<BaseDemandDetail> getSelectionModel();
 
-        Set<PotentialDemandDetail> getSelectedSet();
+        Set<BaseDemandDetail> getSelectedSet();
 
         SimplePanel getDetailSection();
     }
@@ -68,8 +68,8 @@ public class PotentialDemandsPresenter extends
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Iterator<PotentialDemandDetail> iter = view.getSelectedSet().iterator();
-                PotentialDemandDetail selected = iter.next();
+                Iterator<BaseDemandDetail> iter = view.getSelectedSet().iterator();
+                BaseDemandDetail selected = iter.next();
 
                 eventBus.getDemandDetail(selected.getDemandId(), DETAIL_TYPE);
                 eventBus.requestPotentialDemandConversation(selected.getMessageId(), selected.getUserMessageId());
@@ -83,10 +83,10 @@ public class PotentialDemandsPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 boolean isRead = !view.getReadValueForMarkedMessages();
-                Iterator<PotentialDemandDetail> it = view.getSelectedSet().iterator();
+                Iterator<BaseDemandDetail> it = view.getSelectedSet().iterator();
                 ArrayList<Long> messages = new ArrayList<Long>();
                 while (it.hasNext()) {
-                    PotentialDemandDetail d = it.next();
+                    BaseDemandDetail d = it.next();
                     markMessagesAsRead(d, isRead);
                     messages.add(d.getUserMessageId());
                 }
@@ -104,11 +104,11 @@ public class PotentialDemandsPresenter extends
         loaded = true;
     }
 
-    public void onResponsePotentialDemands(ArrayList<PotentialDemandDetail> data) {
+    public void onResponsePotentialDemands(ArrayList<BaseDemandDetail> data) {
 
-        List<PotentialDemandDetail> list = view.getDataProvider().getList();
+        List<BaseDemandDetail> list = view.getDataProvider().getList();
         list.clear();
-        for (PotentialDemandDetail d : data) {
+        for (BaseDemandDetail d : data) {
             if (!d.isRead()) {
             }
 
@@ -120,15 +120,15 @@ public class PotentialDemandsPresenter extends
         // Init DetailWrapper for this view
         if (detailPresenter == null) {
             detailPresenter = eventBus.addHandler(DetailWrapperPresenter.class);
-            detailPresenter.initDetailWrapper(view.getDetailSection(), DetailType.POTENTIAL);
+            detailPresenter.initDetailWrapper(view.getDetailSection(), ViewType.POTENTIAL);
         }
 
         // widget display
         eventBus.displayContent(view.getWidgetView());
     }
 
-    public void markMessagesAsRead(PotentialDemandDetail detail, boolean isRead) {
-        List<PotentialDemandDetail> list = view.getDataProvider().getList();
+    public void markMessagesAsRead(BaseDemandDetail detail, boolean isRead) {
+        List<BaseDemandDetail> list = view.getDataProvider().getList();
         list.get(list.indexOf(detail)).setRead(isRead);
         view.getDataProvider().refresh();
     }

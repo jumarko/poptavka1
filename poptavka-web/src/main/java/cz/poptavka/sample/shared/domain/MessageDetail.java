@@ -19,11 +19,11 @@ public class MessageDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -928374659233195109L;
-    private long id;
+    private long messageId;
     private long threadRootId;
     private long parentId;
-    private long firstBornId;
-    private long nexSiblingId;
+//    private long firstBornId;
+//    private long nexSiblingId;
     private long demandId;
     private String subject;
     private String body;
@@ -34,32 +34,35 @@ public class MessageDetail implements Serializable {
     private long receiverId;
 
     public static MessageDetail generateMessageDetail(Message message) {
-        MessageDetail m = new MessageDetail();
-        m.setId(message.getId());
-        m.setBody(message.getBody());
-        m.setCreated(message.getCreated());
+        MessageDetail detail = new MessageDetail();
+        detail.setMessageId(message.getId());
+        detail.setBody(message.getBody());
+        detail.setCreated(message.getCreated());
 //        m.setFirstBornId(serialVersionUID);
-        m.setMessageState(message.getMessageState().name());
+        detail.setMessageState(message.getMessageState().name());
 //        m.setNexSiblingId(serialVersionUID);
-        m.setParentId(message.getParent() == null ? m.getThreadRootId() : message.getParent().getId());
+        detail.setParentId(message.getParent() == null ? detail.getThreadRootId() : message.getParent().getId());
 //        m.setReceiverId();
-        m.setSenderId(message.getSender().getId());
-        m.setSent(message.getSent());
-        m.setSubject(message.getSubject());
-        m.setThreadRootId(message.getThreadRoot().getId());
-        return m;
+        detail.setSenderId(message.getSender().getId());
+        detail.setSent(message.getSent());
+        detail.setSubject(message.getSubject());
+        detail.setThreadRootId(message.getThreadRoot().getId());
+        return detail;
     }
 
-    public long getId() {
-        return id;
+    public long getMessageId() {
+        return messageId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMessageId(long id) {
+        this.messageId = id;
     }
 
 
     /**
+     * Return the root message representing one communication thread. Still the same, child messages inherit this
+     * id.
+     *
      * @return the threadRootId
      */
     public long getThreadRootId() {
@@ -74,6 +77,8 @@ public class MessageDetail implements Serializable {
     }
 
     /**
+     * For Root Message messageId equals threadId.
+     *
      * @return the parentId
      */
     public long getParentId() {
@@ -81,39 +86,42 @@ public class MessageDetail implements Serializable {
     }
 
     /**
+     * For Root Message messageId equals threadId.
+     *
      * @param parentId the parentId to set
      */
     public void setParentId(long parentId) {
         this.parentId = parentId;
     }
 
-    /**
-     * @return the firstBornId
-     */
-    public long getFirstBornId() {
-        return firstBornId;
-    }
-
-    /**
-     * @param firstBornId the firstBornId to set
-     */
-    public void setFirstBornId(long firstBornId) {
-        this.firstBornId = firstBornId;
-    }
-
-    /**
-     * @return the nexSiblingId
-     */
-    public long getNexSiblingId() {
-        return nexSiblingId;
-    }
-
-    /**
-     * @param nexSiblingId the nexSiblingId to set
-     */
-    public void setNexSiblingId(long nexSiblingId) {
-        this.nexSiblingId = nexSiblingId;
-    }
+//    TODO for praso: are these attributes/methods needed? They are never used, yet.
+//    /**
+//     * @return the firstBornId
+//     */
+//    public long getFirstBornId() {
+//        return firstBornId;
+//    }
+//
+//    /**
+//     * @param firstBornId the firstBornId to set
+//     */
+//    public void setFirstBornId(long firstBornId) {
+//        this.firstBornId = firstBornId;
+//    }
+//
+//    /**
+//     * @return the nexSiblingId
+//     */
+//    public long getNexSiblingId() {
+//        return nexSiblingId;
+//    }
+//
+//    /**
+//     * @param nexSiblingId the nexSiblingId to set
+//     */
+//    public void setNexSiblingId(long nexSiblingId) {
+//        this.nexSiblingId = nexSiblingId;
+//    }
 
     public long getDemandId() {
         return demandId;
@@ -179,6 +187,7 @@ public class MessageDetail implements Serializable {
         this.created = created;
     }
 
+    // TODO for praso: what's the difference between sent and created date? Is it needed
     /**
      * @return the sent
      */
@@ -186,6 +195,7 @@ public class MessageDetail implements Serializable {
         return sent;
     }
 
+    // TODO for praso: what's the difference between sent and created date? Is it needed
     /**
      * @param sent the sent to set
      */
@@ -223,11 +233,11 @@ public class MessageDetail implements Serializable {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Message ID: " + id);
+        sb.append("MessageID: " + messageId);
         sb.append("\nThreadID: " + threadRootId);
         sb.append("\nParentID: " + parentId);
-        sb.append("\nFirstBornIdID: " + firstBornId);
-        sb.append("\nNexSiblingID: " + nexSiblingId);
+//        sb.append("\nFirstBornIdID: " + firstBornId);
+//        sb.append("\nNexSiblingID: " + nexSiblingId);
         sb.append("\ndemandID: " + demandId);
         sb.append("\nSubject: " + subject);
         sb.append("\nBody: " + body);

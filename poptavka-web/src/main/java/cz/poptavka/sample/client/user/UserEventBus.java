@@ -24,13 +24,13 @@ import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
 import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
-import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Events(startView = UserView.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -52,15 +52,17 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void setUser(UserDetail user);
 
+    /** Client demands list GETTER/SETTER **/
+    @Event(handlers = UserPresenter.class)
+    void requestClientDemands();
+
     /** Potential demands GETTER/SETTER. **/
     @Event(handlers = UserPresenter.class)
     void requestPotentialDemands();
-
     @Event(handlers = UserHandler.class)
     void getPotentialDemands(long businessUserId);
-
     @Event(handlers = PotentialDemandsPresenter.class)
-    void responsePotentialDemands(ArrayList<PotentialDemandDetail> potentialDemandsList);
+    void responsePotentialDemands(ArrayList<BaseDemandDetail> potentialDemandsList);
 
     /** Offer demands GETTER/SETTER. **/
     // this same method could be called to MyDemandsPresenter
@@ -68,17 +70,14 @@ public interface UserEventBus extends EventBusWithLookup {
     // method will be used
     @Event(handlers = UserPresenter.class)
     void requestClientOfferDemands();
-
     @Event(handlers = UserHandler.class)
     void getClientDemandsWithOffers(Long clientId);
-
     @Event(handlers = OffersPresenter.class)
     void responseClientDemandsWithOffers(ArrayList<OfferDemandDetail> result);
 
     /** Demand Offers GETTER/SETTER. **/
     @Event(handlers = UserHandler.class)
     void getDemandOffers(long demandId, long threadRootId);
-
     @Event(handlers = OffersPresenter.class)
     void setDemandOffers(ArrayList<OfferDetail> offers);
 
@@ -107,10 +106,10 @@ public interface UserEventBus extends EventBusWithLookup {
     // Always in pairs
     /** get client id. **/
     @Event(handlers = UserPresenter.class)
-    void requestClientId(DemandDetail newDemand);
-
-    @Event(handlers = { MyDemandsPresenter.class, DemandsOperatorPresenter.class }, passive = true)
-    void responseClientDemands(ArrayList<DemandDetail> demands);
+    void requestClientId(ClientDemandDetail newDemand);
+//
+//    @Event(handlers = { MyDemandsPresenter.class, DemandsOperatorPresenter.class }, passive = true)
+//    void responseClientDemands(ArrayList<ClientDemandDetail> demands);
 
     /**
      * common method for displaying Demand Detail in the window.
@@ -119,10 +118,10 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = { UserHandler.class,
             // serves for visual sing, that content is loading
             DetailWrapperPresenter.class })
-    void getDemandDetail(Long demandId, DetailType typeOfDetail);
+    void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setDemandDetail(DemandDetail detail, DetailType typeOfDetail);
+    void setDemandDetail(ClientDemandDetail detail, ViewType typeOfDetail);
 
     /** method for displaying conversation to selected demand. **/
     @Event(handlers = UserPresenter.class)
@@ -132,7 +131,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType);
+    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType);
 
     /**
      * Bubbling message to send to UserPresenter to get the user ID.
@@ -147,7 +146,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void sendQueryToPotentialDemand(MessageDetail messageToSend);
 
     @Event(handlers = DetailWrapperPresenter.class)
-    void addReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType);
+    void addReplyToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
 
     /** Offers message display & state change. **/
     @Event(handlers = DetailWrapperPresenter.class)
@@ -179,16 +178,16 @@ public interface UserEventBus extends EventBusWithLookup {
     void getAllDemands();
 
     @Event(handlers = UserHandler.class)
-    void updateDemand(DemandDetail demand);
+    void updateDemand(ClientDemandDetail demand);
 
     @Event(handlers = AdministrationPresenter.class)
-    void refreshUpdatedDemand(DemandDetail demand);
+    void refreshUpdatedDemand(ClientDemandDetail demand);
 
     @Event(handlers = AdministrationPresenter.class)
-    void setAllDemands(List<DemandDetail> demands);
+    void setAllDemands(List<ClientDemandDetail> demands);
 
     @Event(handlers = AdminDemandInfoPresenter.class)
-    void showAdminDemandDetail(DemandDetail selectedObject);
+    void showAdminDemandDetail(ClientDemandDetail selectedObject);
 
     @Event(handlers = AdministrationPresenter.class)
     void responseAdminDemandDetail(Widget widget);
@@ -281,7 +280,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void loadingShowWithAnchor(String progressGettingDemandDataring, Widget anchor);
 
     @Event(forwardToParent = true)
-    void createDemand(DemandDetail demand, Long id);
+    void createDemand(ClientDemandDetail demand, Long id);
 
     @Event(forwardToParent = true)
     void setUserLayout();
@@ -294,5 +293,12 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = UserPresenter.class)
     void clearUserOnUnload();
+
+    /** TEST CLIENT DEMANDS ON MESSAGE BASED SYSTEM **/
+    @Event(handlers = MessageHandler.class)
+    void getClientDemands(Long userId, int fakeParameter);
+
+    @Event(handlers = MyDemandsPresenter.class)
+    void responseClientDemands(ArrayList<MessageDetail> result);
 
 }

@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
+import cz.poptavka.sample.dao.message.MessageFilter;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
@@ -46,7 +46,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -2239531608577928736L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageRPCServiceImpl.class);
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;
@@ -64,6 +63,58 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
+    }
+
+    public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) {
+        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+        final List<Message> messages = this.messageService.getAllMessages(
+                businessUser,
+                MessageFilter.MessageFilterBuilder.messageFilter().
+                withMessageUserRoleType(MessageUserRoleType.SENDER).
+                withMessageContext(MessageContext.NEW_CLIENTS_DEMAND).
+                withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
+        System.out.println("Messages count: " + messages.size());
+        ArrayList<MessageDetail> details = new ArrayList<MessageDetail>();
+
+        for (Message m : messages) {
+            MessageDetail md = new MessageDetail();
+            md.setMessageId(m.getId());
+            md.setThreadRootId(md.getMessageId());
+            md.setParentId(md.getMessageId());
+            md.setSenderId(m.getSender().getId());
+            md.setCreated(m.getCreated());
+            md.setSent(m.getSent());
+            md.setDemandId(m.getDemand().getId());
+            md.setSubject(m.getDemand().getTitle());
+            md.setBody(m.getDemand().getDescription());
+            details.add(md);
+        }
+
+//        final List<UserMessage> userMessages =
+//            userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
+//        System.out.println("UserMessages count: " + userMessages.size());
+//        ArrayList<MessageDetail> details = new ArrayList<MessageDetail>();
+//        for (UserMessage um : userMessages) {
+//            MessageDetail md = new MessageDetail();
+//            // messageID of demand ROOT message is the same as threadRootID
+//            md.setMessageId(um.getMessage().getId());
+//            // it is parent to itself
+//            md.setParentId(md.getMessageId());
+//            md.setThreadRootId(md.getMessageId());
+//            md.setCreated(um.getMessage().getCreated());
+//            md.setSent(um.getMessage().getSent());
+//            md.setSenderId(um.getMessage().getSender().getId());
+//            // demand related stuff
+//            md.setDemandId(um.getMessage().getDemand().getId());
+//            md.setSubject(um.getMessage().getDemand().getTitle());
+//            md.setBody(um.getMessage().getDemand().getDescription());
+//
+//            details.add(md);
+//            System.out.println("iteration");
+//        }
+
+        System.out.println("SIZE: " + details.size());
+        return details;
     }
 
     /**

@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 
 public class ServiceDetail implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1325587667656361089L;
     private long id;
     private String title;
     private String description;

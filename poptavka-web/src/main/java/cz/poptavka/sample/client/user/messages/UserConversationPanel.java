@@ -48,12 +48,6 @@ public class UserConversationPanel extends Composite {
     private int messageCount = 0;
     private MessageDetail replyToMessage;
 
-    public void setClickHandlers(ClickHandler acceptHandler, ClickHandler replyHandler, ClickHandler deleteHandler) {
-        this.acceptHandler = acceptHandler;
-        this.replyHandler = replyHandler;
-        this.deleteHandler = deleteHandler;
-    }
-
     public UserConversationPanel() {
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -122,7 +116,7 @@ public class UserConversationPanel extends Composite {
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
-        messageDetail.setParentId(replyToMessage.getId());
+        messageDetail.setParentId(replyToMessage.getMessageId());
         return messageDetail;
     }
 

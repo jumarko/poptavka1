@@ -5,8 +5,10 @@
 package cz.poptavka.sample.server.service.demand;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -37,11 +39,9 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.PotentialDemandDetail;
-import java.util.Collection;
-import java.util.LinkedList;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 /**
  * @author Excalibur
@@ -106,7 +106,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public DemandDetail createNewDemand(DemandDetail detail, Long cliendId) {
+    public ClientDemandDetail createNewDemand(ClientDemandDetail detail, Long cliendId) {
+        System.out.println("TEST IF I GET HERE");
         final Demand demand = new Demand();
         demand.setTitle(detail.getTitle());
         demand.setDescription(detail.getDescription());
@@ -116,7 +117,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setMinRating(detail.getMinRating());
         demand.setStatus(DemandStatus.TEMPORARY);
         demand.setEndDate(detail.getEndDate());
-        demand.setValidTo(detail.getExpireDate());
+        demand.setValidTo(detail.getValidToDate());
         demand.setClient(this.generalService.find(Client.class, cliendId));
 
         /** localities **/
@@ -136,7 +137,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         Demand newDemand = demandService.create(demand);
         // TODO ivlcek - test sending demand to proper suppliers
         sendDemandToSuppliersTest(newDemand);
-        return DemandDetail.createDemandDetail(newDemand);
+        return ClientDemandDetail.createDemandDetail(newDemand);
     }
 
     private Locality getLocalityByExample(String searchString) {
@@ -210,53 +211,53 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     /**
      * Method updates demand object in database.
      *
-     * @param demandDetail - updated demandDetail from front end
-     * @return DemandDetail
+     * @param clientDemandDetail - updated demandDetail from front end
+     * @return ClientDemandDetail
      */
     @Override
-    public DemandDetail updateDemand(DemandDetail demandDetail) {
+    public ClientDemandDetail updateDemand(ClientDemandDetail clientDemandDetail) {
         // TODO ivlcek - update entity by sa mal robit jednoduchsie ako toto?
-        Demand demand = demandService.getById(demandDetail.getId());
+        Demand demand = demandService.getById(clientDemandDetail.getDemandId());
 //        demand.setCategories(null);
-        demand.setClient(clientService.getById(demandDetail.getClientId()));
+        demand.setClient(clientService.getById(clientDemandDetail.getClientId()));
 //        demand.setDescription(null);
-        demand.setEndDate(demandDetail.getEndDate());
+        demand.setEndDate(clientDemandDetail.getEndDate());
 //        demand.setExcludedSuppliers(null);
 //        demand.setLocalities(null);
-        demand.setMaxSuppliers(Integer.valueOf(demandDetail.getMaxOffers()));
-        demand.setMinRating(Integer.valueOf(demandDetail.getMinRating()));
+        demand.setMaxSuppliers(Integer.valueOf(clientDemandDetail.getMaxOffers()));
+        demand.setMinRating(Integer.valueOf(clientDemandDetail.getMinRating()));
 //        demand.setOffers(null);
 //        demand.setOrigin(null);
-        demand.setPrice(demandDetail.getPrice());
+        demand.setPrice(clientDemandDetail.getPrice());
 //        demand.setStatus(null);
-        demand.setTitle(demandDetail.getTitle());
-        demand.setType(this.demandService.getDemandType(demandDetail.getDemandType()));
-        demand.setValidTo(demandDetail.getExpireDate());
+        demand.setTitle(clientDemandDetail.getTitle());
+        demand.setType(this.demandService.getDemandType(clientDemandDetail.getDemandType()));
+        demand.setValidTo(clientDemandDetail.getValidToDate());
         demandService.update(demand);
-        return demandDetail;
+        return clientDemandDetail;
     }
 
     @Override
-    public List<DemandDetail> getAllDemands() {
-        List<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
+    public List<ClientDemandDetail> getAllDemands() {
+        List<ClientDemandDetail> clientDemandDetails = new ArrayList<ClientDemandDetail>();
         for (Demand demand : demandService.getAll()) {
-            demandDetails.add(DemandDetail.createDemandDetail(demand));
+            clientDemandDetails.add(ClientDemandDetail.createDemandDetail(demand));
         }
-        return demandDetails;
+        return clientDemandDetails;
     }
 
     @Override
-    public List<DemandDetail> getDemands(Locality... localities) {
+    public List<ClientDemandDetail> getDemands(Locality... localities) {
         return this.createDemandDetailList(demandService.getDemands(localities));
     }
 
     @Override
-    public List<DemandDetail> getDemands(Category... categories) {
+    public List<ClientDemandDetail> getDemands(Category... categories) {
         return this.createDemandDetailList(demandService.getDemands(categories));
     }
 
     @Override
-    public List<DemandDetail> getDemands(int fromResult, int toResult) {
+    public List<ClientDemandDetail> getDemands(int fromResult, int toResult) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
                 .maxResults(toResult)
@@ -265,12 +266,12 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
+    public List<ClientDemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
         return this.createDemandDetailList(demandService.getDemands(resultCriteria, localities));
     }
 
     @Override
-    public List<DemandDetail> getDemandsByCategory(int fromResult, int toResult, long id) {
+    public List<ClientDemandDetail> getDemandsByCategory(int fromResult, int toResult, long id) {
         List<Category> categories = new LinkedList<Category>();
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
@@ -298,7 +299,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public List<DemandDetail> getDemandsByLocality(int fromResult, int toResult, String code) {
+    public List<ClientDemandDetail> getDemandsByLocality(int fromResult, int toResult, String code) {
         List<Locality> localities = new LinkedList<Locality>();
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
@@ -326,7 +327,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public ArrayList<DemandDetail> getClientDemands(long id) {
+    public ArrayList<ClientDemandDetail> getClientDemands(long id) {
         Client client = clientService.getById(id);
         return this.toDemandDetailList(client.getDemands());
     }
@@ -342,7 +343,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public ArrayList<PotentialDemandDetail> getPotentialDemandsForSupplier(long businessUserId) {
+    public ArrayList<BaseDemandDetail> getPotentialDemandsForSupplier(long businessUserId) {
         // load data from DB
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
@@ -357,40 +358,44 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
         userMessages.size();
         // fill list
-        ArrayList<PotentialDemandDetail> potentialDemandDetails = new ArrayList<PotentialDemandDetail>();
+        ArrayList<BaseDemandDetail> supplierDemandDetails = new ArrayList<BaseDemandDetail>();
         for (UserMessage userMessage : userMessages) {
-            PotentialDemandDetail p = new PotentialDemandDetail();
+            BaseDemandDetail p = new BaseDemandDetail();
             Demand demand = userMessage.getMessage().getDemand();
             String title = demand.getTitle();
-            int messageRowLength = 200;
+//            int messageRowLength = 200;
             Message message = userMessage.getMessage();
             // TODO - toto je prilis dlhe volanie. Musime to upravit
-            p.setClientName(demand.getClient().getBusinessUser().getBusinessUserData().getCompanyName());
-            if (title.length() <= messageRowLength) {
-                p.setDemandTitle(title);
-                p.setCutDescription(demand.getDescription());
-            } else {
-                p.setDemandTitle(title.substring(0, messageRowLength));
-                p.setCutDescription("");
-            }
+//            p.setClientName(demand.getClient().getBusinessUser().getBusinessUserData().getCompanyName());
+//            if (title.length() <= messageRowLength) {
+//                p.setDemandTitle(title);
+//                p.setCutDescription(demand.getDescription());
+//            } else {
+//                p.setDemandTitle(title.substring(0, messageRowLength));
+//                p.setCutDescription("");
+//            }
+            p.setDescription(demand.getDescription());
             p.setDemandId(demand.getId());
-            p.setDemandStatus(demand.getStatus().getValue());
+            // TODO beho - missing in detail
+//            p.setDemandStatus(demand.getStatus().getValue());
             p.setEndDate(demand.getEndDate());
             p.setRead(userMessage.isIsRead());
             p.setStarred(userMessage.isIsStarred());
             p.setMessageId(message.getId());
-            p.setNumberOfReplies(message.getChildren().size());
-            p.setPrice(demand.getPrice());
-            p.setSent(message.getSent());
+            // TODO missing beho - missing in detail
+//            p.setNumberOfReplies(message.getChildren().size());
+            // TODO missing beho - missing in detail
+//            p.setPrice(demand.getPrice());
+//            p.setSent(message.getSent());
             p.setUserMessageId(userMessage.getId());
-            potentialDemandDetails.add(p);
+            supplierDemandDetails.add(p);
         }
-        return potentialDemandDetails;
+        return supplierDemandDetails;
     }
 
     @Override
-    public DemandDetail getDemand(Long demandId) {
-        return DemandDetail.createDemandDetail(this.demandService.getById(demandId));
+    public ClientDemandDetail getDemand(Long demandId) {
+        return ClientDemandDetail.createDemandDetail(this.demandService.getById(demandId));
     }
 
     @Override
@@ -398,21 +403,21 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return this.demandService.getById(demandId);
     }
 
-    private List<DemandDetail> createDemandDetailList(Collection<Demand> demands) {
-        List<DemandDetail> demandDetails = new ArrayList<DemandDetail>();
+    private List<ClientDemandDetail> createDemandDetailList(Collection<Demand> demands) {
+        List<ClientDemandDetail> clientDemandDetails = new ArrayList<ClientDemandDetail>();
         for (Demand demand : demands) {
-            demandDetails.add(DemandDetail.createDemandDetail(demand));
+            clientDemandDetails.add(ClientDemandDetail.createDemandDetail(demand));
         }
-        return demandDetails;
+        return clientDemandDetails;
     }
 
     @Override
-    public List<DemandDetail> getDemands(ResultCriteria resultCriteria) {
+    public List<ClientDemandDetail> getDemands(ResultCriteria resultCriteria) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories) {
+    public List<ClientDemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

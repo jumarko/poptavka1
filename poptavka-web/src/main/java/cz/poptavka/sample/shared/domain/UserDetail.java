@@ -3,7 +3,17 @@ package cz.poptavka.sample.shared.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * represents all types of system users
+ * @author Beho
+ *
+ */
 public class UserDetail implements Serializable {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6224665779446848218L;
 
     public enum Role {
         CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
@@ -16,7 +26,7 @@ public class UserDetail implements Serializable {
     /** List of roles. **/
     private ArrayList<Role> roleList = new ArrayList<Role>();
 
-    private Long id;
+    private Long userId;
     private Long clientId = -1L;
     private Long supplierId = -1L;
     private String email;
@@ -29,6 +39,7 @@ public class UserDetail implements Serializable {
     private String taxId = null;
     private String website;
     private AddressDetail address;
+    // TODO check if used, otherwise delete
     private ArrayList<String> demandsId = new ArrayList<String>();
 
     private boolean verified = false;
@@ -41,12 +52,12 @@ public class UserDetail implements Serializable {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long id) {
+        this.userId = id;
     }
 
     public Long getClientId() {

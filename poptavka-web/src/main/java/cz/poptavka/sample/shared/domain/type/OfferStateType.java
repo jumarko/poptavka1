@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.type;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author ivan.vlcek
  */
-public enum OfferStateDetail implements Serializable {
+public enum OfferStateType implements Serializable {
 
     ACCEPTED("ACCEPTED"),
     PENDING("PENDING"),
@@ -22,7 +22,7 @@ public enum OfferStateDetail implements Serializable {
      */
     private static final long serialVersionUID = -102932467233112389L;
 
-    OfferStateDetail(String value) {
+    OfferStateType(String value) {
         this.value = value;
     }
 

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 
 @RemoteServiceRelativePath("service/offers")
 public interface OfferRPCService extends RemoteService {

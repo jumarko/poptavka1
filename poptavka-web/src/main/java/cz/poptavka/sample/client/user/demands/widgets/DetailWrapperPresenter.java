@@ -15,10 +15,10 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.messages.OfferWindowPresenter;
 import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.DetailType;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
 public class DetailWrapperPresenter extends
@@ -34,7 +34,7 @@ public class DetailWrapperPresenter extends
         SimplePanel getReplyHolder();
     }
 
-    private DetailType type;
+    private ViewType type;
 
     private ReplyWindowPresenter replyPresenter = null;
 
@@ -44,28 +44,28 @@ public class DetailWrapperPresenter extends
      * @param detailSection holder for widget
      * @param type type of view, where is this widget loaded
      */
-    public void initDetailWrapper(SimplePanel detailSection, DetailType detailType) {
+    public void initDetailWrapper(SimplePanel detailSection, ViewType viewType) {
         GWT.log("DEMAND DETAIL Presenter LOADED");
         detailSection.setWidget(view.getWidgetView());
-        this.type = detailType;
+        this.type = viewType;
     }
 
     /**
      * Response when user click demand to see the details. DemandDetails widget,
      * past conversation regarding this demand and reply widget is created.
      *
-     * @param detail DemandDetail to be displayed
+     * @param detail ClientDemandDetail to be displayed
      * @param typeOfDetail type of what detail section should handle this event
      */
-    public void onSetDemandDetail(DemandDetail detail, DetailType typeOfDetail) {
+    public void onSetDemandDetail(ClientDemandDetail detail, ViewType typeOfDetail) {
         if (!typeOfDetail.equals(type)) {
             return;
         }
         view.setDetail(new DemandDetailView(detail));
         // create reply window
         // POTENTIAL
-        if (typeOfDetail.equals(DetailType.POTENTIAL)) {
-            setReplyWidget(detail.getId());
+        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
+            setReplyWidget(detail.getDemandId());
         }
 
         // GUI visual event
@@ -73,7 +73,7 @@ public class DetailWrapperPresenter extends
     }
 
     // TODO test
-    public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, DetailType wrapperhandlerType) {
+    public void onSetPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType) {
         // TODO this should be enough, testing needed
 //        if (!(!wrapperhandlerType.equals(type) || messageList == null)) {
 //            return;
@@ -89,7 +89,7 @@ public class DetailWrapperPresenter extends
         view.getConversationPanel().setMessageList(messageList, true);
     }
 
-    public void onAddReplyToPotentailDemandConversation(MessageDetail result, DetailType wrapperhandlerType) {
+    public void onAddReplyToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType) {
         if (!wrapperhandlerType.equals(type)) {
             return;
         }
@@ -103,7 +103,7 @@ public class DetailWrapperPresenter extends
      * @param typeOfDetail
      */
     // TODO REWORK completely
-    public void onGetDemandDetail(Long demandId, DetailType typeOfDetail) {
+    public void onGetDemandDetail(Long demandId, ViewType typeOfDetail) {
         if (!typeOfDetail.equals(type)) {
             return;
         }

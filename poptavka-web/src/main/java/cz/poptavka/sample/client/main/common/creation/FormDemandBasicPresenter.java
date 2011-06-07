@@ -9,6 +9,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.MainEventBus;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail.DemandField;
 
 @Presenter(view = FormDemandBasicView.class, multiple = true)
 public class FormDemandBasicPresenter
@@ -20,7 +21,7 @@ public class FormDemandBasicPresenter
 
         boolean isValid();
 
-        HashMap<String, Object> getValues();
+        HashMap<DemandField, Object> getValues();
     }
 
     /** Injecting widget. **/

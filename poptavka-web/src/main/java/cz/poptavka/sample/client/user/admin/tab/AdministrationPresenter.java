@@ -20,9 +20,9 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.DemandStatusDetail;
-import cz.poptavka.sample.shared.domain.DemandTypeDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ClientDemandType;
+import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
 import java.util.Date;
 import java.util.List;
@@ -49,25 +49,25 @@ public class AdministrationPresenter
         Widget getWidgetView();
 
 //        SimplePager getPager();
-        CellTable<DemandDetail> getCellTable();
+        CellTable<ClientDemandDetail> getCellTable();
 
-        ListDataProvider<DemandDetail> getDataProvider();
+        ListDataProvider<ClientDemandDetail> getDataProvider();
 
-        Column<DemandDetail, String> getClientIdColumn();
+        Column<ClientDemandDetail, String> getClientIdColumn();
 
-        Column<DemandDetail, String> getDemandTypeColumn();
+        Column<ClientDemandDetail, String> getDemandTypeColumn();
 
-        Column<DemandDetail, String> getDemandStatusColumn();
+        Column<ClientDemandDetail, String> getDemandStatusColumn();
 
-        Column<DemandDetail, Date> getDemandExpirationColumn();
+        Column<ClientDemandDetail, Date> getDemandExpirationColumn();
 
-        Column<DemandDetail, Date> getDemandEndColumn();
+        Column<ClientDemandDetail, Date> getDemandEndColumn();
 
-        DemandTypeDetail[] getDemandTypes();
+        ClientDemandType[] getDemandTypes();
 
-        DemandStatusDetail[] getDemandStatuses();
+        DemandStatusType[] getDemandStatuses();
 
-        SingleSelectionModel<DemandDetail> getSelectionModel();
+        SingleSelectionModel<ClientDemandDetail> getSelectionModel();
 
         SimplePanel getAdminDemandDetail();
     }
@@ -80,14 +80,14 @@ public class AdministrationPresenter
         eventBus.getAllDemands();
     }
 
-    public void onSetAllDemands(List<DemandDetail> demandDetails) {
+    public void onSetAllDemands(List<ClientDemandDetail> clientDemandDetails) {
         // Add the data to the data provider, which automatically pushes it to the widget.
         // TODO ivlcek - try to set list in for cycle. Maybe it depends on how you populate
         // data into ListProvider. DONE - it realy depends on how you set data to list provider
 //        view.getDataProvider().setList(demandDetails);
 
-        List<DemandDetail> list = view.getDataProvider().getList();
-        for (DemandDetail d : demandDetails) {
+        List<ClientDemandDetail> list = view.getDataProvider().getList();
+        for (ClientDemandDetail d : clientDemandDetails) {
             list.add(d);
         }
 
@@ -95,7 +95,7 @@ public class AdministrationPresenter
         refreshDisplays();
     }
 
-    public void onRefreshUpdatedDemand(DemandDetail demand) {
+    public void onRefreshUpdatedDemand(ClientDemandDetail demand) {
 //        view.getCellTable().setSize("10%", "10%");
     }
 
@@ -112,49 +112,49 @@ public class AdministrationPresenter
 
     @Override
     public void bindView() {
-        view.getClientIdColumn().setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
+        view.getClientIdColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
             @Override
-            public void update(int index, DemandDetail object, String value) {
+            public void update(int index, ClientDemandDetail object, String value) {
                 object.setClientId(Long.valueOf(value));
                 eventBus.updateDemand(object);
                 refreshDisplays();
             }
         });
-        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
+        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
             @Override
-            public void update(int index, DemandDetail object, String value) {
-                for (DemandTypeDetail demandTypeDetail : view.getDemandTypes()) {
-                    if (demandTypeDetail.name().equals(value)) {
-                        object.setDemandType(demandTypeDetail.name());
+            public void update(int index, ClientDemandDetail object, String value) {
+                for (ClientDemandType clientDemandType : view.getDemandTypes()) {
+                    if (clientDemandType.name().equals(value)) {
+                        object.setDemandType(clientDemandType.name());
                         eventBus.updateDemand(object);
                     }
                 }
                 refreshDisplays();
             }
         });
-        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<DemandDetail, String>() {
+        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
             @Override
-            public void update(int index, DemandDetail object, String value) {
-                for (DemandStatusDetail demandStatusDetail : view.getDemandStatuses()) {
-                    if (demandStatusDetail.name().equals(value)) {
-                        object.setDemandType(demandStatusDetail.name());
+            public void update(int index, ClientDemandDetail object, String value) {
+                for (DemandStatusType demandStatusType : view.getDemandStatuses()) {
+                    if (demandStatusType.name().equals(value)) {
+                        object.setDemandType(demandStatusType.name());
                         eventBus.updateDemand(object);
                     }
                 }
                 refreshDisplays();
             }
         });
-        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<DemandDetail, Date>() {
+        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, Date>() {
             @Override
-            public void update(int index, DemandDetail object, Date value) {
-                object.setExpireDate(value);
+            public void update(int index, ClientDemandDetail object, Date value) {
+                object.setValidToDate(value);
                 eventBus.updateDemand(object);
                 refreshDisplays();
             }
         });
-        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<DemandDetail, Date>() {
+        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, Date>() {
             @Override
-            public void update(int index, DemandDetail object, Date value) {
+            public void update(int index, ClientDemandDetail object, Date value) {
                 object.setEndDate(value);
                 eventBus.updateDemand(object);
                 refreshDisplays();

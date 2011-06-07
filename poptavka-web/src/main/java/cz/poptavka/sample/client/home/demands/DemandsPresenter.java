@@ -24,8 +24,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.home.demands.demand.DemandView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 /**
  *
@@ -45,11 +45,11 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         ListBox getLocalityList();
 
-        AsyncDataProvider<DemandDetail> getDataProvider();
+        AsyncDataProvider<ClientDemandDetail> getDataProvider();
 
-        void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider);
+        void setDataProvider(AsyncDataProvider<ClientDemandDetail> dataProvider);
 
-        CellTable<DemandDetail> getCellTable();
+        CellTable<ClientDemandDetail> getCellTable();
 
         SimplePager getPager();
 
@@ -92,13 +92,13 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
 //        dataProvider.addDataDisplay(view.getCellTable());
         // Add a selection model to handle user selection.
-        final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
+        final SingleSelectionModel<ClientDemandDetail> selectionModel = new SingleSelectionModel<ClientDemandDetail>();
         view.getCellTable().setSelectionModel(selectionModel);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                DemandDetail selected = selectionModel.getSelectedObject();
+                ClientDemandDetail selected = selectionModel.getSelectedObject();
                 if (selected != null) {
                     DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "progress");
                     //eventBus.getDemand(selected);
@@ -107,20 +107,20 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             }
         });
     }
-    private AsyncDataProvider dataProvider = new AsyncDataProvider<DemandDetail>() {
+    private AsyncDataProvider dataProvider = new AsyncDataProvider<ClientDemandDetail>() {
 
         @Override
-        protected void onRangeChanged(HasData<DemandDetail> display) {
+        protected void onRangeChanged(HasData<ClientDemandDetail> display) {
             //just for initializing cellTable
             //will be implemented later, when allDemandsCount value will be retrieved
         }
     };
 
     public void onCreateAsyncDataProvider(final long result) {
-        this.dataProvider = new AsyncDataProvider<DemandDetail>() {
+        this.dataProvider = new AsyncDataProvider<ClientDemandDetail>() {
 
             @Override
-            protected void onRangeChanged(HasData<DemandDetail> display) {
+            protected void onRangeChanged(HasData<ClientDemandDetail> display) {
                 display.setRowCount((int) result);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
@@ -193,14 +193,14 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         });
     }
 
-    public void onDisplayDemands(Collection<DemandDetail> result) {
+    public void onDisplayDemands(Collection<ClientDemandDetail> result) {
 
-        List<DemandDetail> list = new ArrayList<DemandDetail>(result);
+        List<ClientDemandDetail> list = new ArrayList<ClientDemandDetail>(result);
 
         dataProvider.updateRowData(start, list);
     }
 
-    public void onSetDemand(DemandDetail demand) {
+    public void onSetDemand(ClientDemandDetail demand) {
         view.getDemandDetailLabel().setVisible(true);
         view.getDemandView().setVisible(true);
         view.getDemandView().setDemand(demand);

@@ -21,8 +21,8 @@ import com.google.gwt.view.client.NoSelectionModel;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.demands.widgets.GlobalDemandOfferTable;
 import cz.poptavka.sample.client.user.demands.widgets.SingleDemandOfferTable;
-import cz.poptavka.sample.shared.domain.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 
 public class OffersView extends Composite implements OffersPresenter.OffersInterface {
 

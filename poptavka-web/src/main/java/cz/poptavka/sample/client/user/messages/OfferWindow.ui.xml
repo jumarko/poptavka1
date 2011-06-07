@@ -39,5 +39,6 @@
                 </div>
             </div>
         </div>
+        <g:SimplePanel ui:field="responseHolder"/>
     </g:HTMLPanel>
 </ui:UiBinder>

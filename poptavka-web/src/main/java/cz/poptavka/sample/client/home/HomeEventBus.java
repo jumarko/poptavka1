@@ -18,8 +18,8 @@ import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.DemandDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
@@ -81,7 +81,7 @@ public interface HomeEventBus extends EventBus {
 
     /** main module calls - Handler calls */
     @Event(forwardToParent = true)
-    void createDemand(DemandDetail newDemand, Long clientId);
+    void createDemand(ClientDemandDetail newDemand, Long clientId);
 
     @Event(forwardToParent = true)
     void getRootCategories();

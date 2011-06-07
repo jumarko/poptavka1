@@ -19,9 +19,9 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import cz.poptavka.sample.shared.domain.DemandDetail;
-import cz.poptavka.sample.shared.domain.DemandStatusDetail;
-import cz.poptavka.sample.shared.domain.DemandTypeDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ClientDemandType;
+import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
 /**
  *
@@ -68,7 +68,7 @@ public class AdminDemandInfoView extends Composite implements
     @UiField
     Button updateButton;
 
-    private DemandDetail demandInfo;
+    private ClientDemandDetail demandInfo;
 
     @Override
     public Widget getWidgetView() {
@@ -115,7 +115,7 @@ public class AdminDemandInfoView extends Composite implements
                 demandInfo.setDescription(descriptionBox.getText());
                 demandInfo.setPrice(priceBox.getText());
                 demandInfo.setEndDate(endDateBox.getValue());
-                demandInfo.setExpireDate(expirationBox.getValue());
+                demandInfo.setValidToDate(expirationBox.getValue());
                 demandInfo.setClientId(Long.valueOf(clientID.getText()));
                 demandInfo.setMaxOffers(Integer.valueOf(maxOffers.getValue()));
                 demandInfo.setMinRating(Integer.valueOf(minRating.getValue()));
@@ -129,11 +129,11 @@ public class AdminDemandInfoView extends Composite implements
         createButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                demandInfo = new DemandDetail();
+                demandInfo = new ClientDemandDetail();
                 demandInfo.setTitle(titleBox.getText());
                 demandInfo.setDescription(descriptionBox.getText());
                 demandInfo.setClientId(Long.valueOf(clientID.getText()));
-                demandInfo.setExpireDate(expirationBox.getValue());
+                demandInfo.setValidToDate(expirationBox.getValue());
                 // enter new Demand into DB if it is good feature for Admin
                 // ContactDatabase.get().addContact(demandInfo);
                 setDemandDetail(demandInfo);
@@ -141,23 +141,23 @@ public class AdminDemandInfoView extends Composite implements
         });
     }
 
-    public void setDemandDetail(DemandDetail contact) {
+    public void setDemandDetail(ClientDemandDetail contact) {
         this.demandInfo = contact;
         updateButton.setEnabled(contact != null);
         if (contact != null) {
             titleBox.setText(contact.getTitle());
             descriptionBox.setText(contact.getDescription());
-            priceBox.setText(contact.getPriceString());
+            priceBox.setText(contact.getPrice().toString());
             endDateBox.setValue(contact.getEndDate());
-            expirationBox.setValue(contact.getExpireDate());
+            expirationBox.setValue(contact.getValidToDate());
             clientID.setText(String.valueOf(contact.getClientId()));
             maxOffers.setText(String.valueOf(contact.getMaxOffers()));
             minRating.setText(String.valueOf(contact.getMinRating()));
 
             // demand type settings
             // Add the types to the status box.
-            final DemandTypeDetail[] types = DemandTypeDetail.values();
-            for (DemandTypeDetail type : types) {
+            final ClientDemandType[] types = ClientDemandType.values();
+            for (ClientDemandType type : types) {
                 demandType.addItem(type.getValue());
             }
 
@@ -172,8 +172,8 @@ public class AdminDemandInfoView extends Composite implements
 
             // demand status settings
             // Add the statuses to the status box.
-            final DemandStatusDetail[] statuses = DemandStatusDetail.values();
-            for (DemandStatusDetail status : statuses) {
+            final DemandStatusType[] statuses = DemandStatusType.values();
+            for (DemandStatusType status : statuses) {
                 demandStatus.addItem(status.getValue());
             }
 

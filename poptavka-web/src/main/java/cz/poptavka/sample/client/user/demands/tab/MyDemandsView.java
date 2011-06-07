@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
 import java.util.Date;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
@@ -11,8 +12,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -20,10 +21,11 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.MessageDetail;
 
 public class MyDemandsView extends Composite implements
         MyDemandsPresenter.MyDemandsInterface {
@@ -40,7 +42,7 @@ public class MyDemandsView extends Composite implements
     private Button cancelBtn;
 
     @UiField(provided = true)
-    CellTable<DemandDetail> table;
+    CellTable<MessageDetail> table;
 
     @UiField
     SimplePanel myDemandDetail;
@@ -61,14 +63,14 @@ public class MyDemandsView extends Composite implements
     /**
      * Data provider that will cell table with data.
      */
-    private ListDataProvider<DemandDetail> dataProvider = new ListDataProvider<DemandDetail>();
+    private ListDataProvider<MessageDetail> dataProvider = new ListDataProvider<MessageDetail>();
 
-    final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
+    final SingleSelectionModel<MessageDetail> selectionModel = new SingleSelectionModel<MessageDetail>();
 
     /**
      * @return the dataProvider
      */
-    public ListDataProvider<DemandDetail> getDataProvider() {
+    public ListDataProvider<MessageDetail> getDataProvider() {
         return dataProvider;
     }
 
@@ -86,8 +88,8 @@ public class MyDemandsView extends Composite implements
     }
 
     private void initCellTable(
-            final SingleSelectionModel<DemandDetail> selectionModel) {
-        table = new CellTable<DemandDetail>(2);
+            final SingleSelectionModel<MessageDetail> selectionModel) {
+        table = new CellTable<MessageDetail>(KEY_PROVIDER);
         table.setSelectionModel(selectionModel);
         dataProvider.addDataDisplay(table);
         table.setWidth("100%", true);
@@ -95,7 +97,7 @@ public class MyDemandsView extends Composite implements
         // TODO ivlcek - make it working without keyprovider
         // Attach a column sort handler to the ListDataProvider to sort the
         // list.
-        ListHandler<DemandDetail> sortHandler = new ListHandler<DemandDetail>(
+        ListHandler<MessageDetail> sortHandler = new ListHandler<MessageDetail>(
                 dataProvider.getList());
         table.addColumnSortHandler(sortHandler);
 
@@ -113,13 +115,13 @@ public class MyDemandsView extends Composite implements
      * Add the columns to the table.
      */
     private void initTableColumns(
-            final SelectionModel<DemandDetail> selectionModel,
-            ListHandler<DemandDetail> sortHandler) {
+            final SelectionModel<MessageDetail> selectionModel,
+            ListHandler<MessageDetail> sortHandler) {
 
         // Create name column.
         addColumn(new TextCell(), "Title", new GetValue<String>() {
-            public String getValue(DemandDetail demandDetail) {
-                return demandDetail.getTitle();
+            public String getValue(MessageDetail clientDemandDetail) {
+                return clientDemandDetail.getSubject();
             }
         });
 
@@ -127,20 +129,21 @@ public class MyDemandsView extends Composite implements
         DateTimeFormat dateFormat = DateTimeFormat
                 .getFormat(PredefinedFormat.DATE_SHORT);
         addColumn(new DateCell(dateFormat), "EndDate", new GetValue<Date>() {
-            public Date getValue(DemandDetail demandDetail) {
-                return demandDetail.getEndDate();
+            public Date getValue(MessageDetail clientDemandDetail) {
+                return clientDemandDetail.getSent();
             }
         });
 
         // Create name column.
         addColumn(new TextCell(), "Price", new GetValue<String>() {
-            public String getValue(DemandDetail demandDetail) {
-                return demandDetail.getPrice().toString() + " czk";
+            public String getValue(MessageDetail clientDemandDetail) {
+                // TODO
+                return "Field is missing in messageDetail class " + " czk";
             }
         });
     }
 
-    public CellTable<DemandDetail> getCellTable() {
+    public CellTable<MessageDetail> getCellTable() {
         return table;
     }
 
@@ -150,7 +153,7 @@ public class MyDemandsView extends Composite implements
         myDemandDetail.setWidget(header);
     }
 
-    public SingleSelectionModel<DemandDetail> getSelectionModel() {
+    public SingleSelectionModel<MessageDetail> getSelectionModel() {
         return selectionModel;
     }
 
@@ -191,11 +194,11 @@ public class MyDemandsView extends Composite implements
      * @param getter
      *            the value getter for the cell
      */
-    private <C> Column<DemandDetail, C> addColumn(Cell<C> cell,
+    private <C> Column<MessageDetail, C> addColumn(Cell<C> cell,
             String headerText, final GetValue<C> getter) {
-        Column<DemandDetail, C> column = new Column<DemandDetail, C>(cell) {
+        Column<MessageDetail, C> column = new Column<MessageDetail, C>(cell) {
             @Override
-            public C getValue(DemandDetail object) {
+            public C getValue(MessageDetail object) {
                 return getter.getValue(object);
             }
         };
@@ -210,12 +213,19 @@ public class MyDemandsView extends Composite implements
      *            the cell type
      */
     private static interface GetValue<C> {
-        C getValue(DemandDetail contact);
+        C getValue(MessageDetail contact);
     }
 
     @Override
     public SimplePanel getDetailSection() {
         return myDemandDetail;
     }
+
+    private static final ProvidesKey<MessageDetail> KEY_PROVIDER = new ProvidesKey<MessageDetail>() {
+        @Override
+        public Object getKey(MessageDetail item) {
+            return item == null ? null : item.getDemandId();
+        }
+    };
 
 }

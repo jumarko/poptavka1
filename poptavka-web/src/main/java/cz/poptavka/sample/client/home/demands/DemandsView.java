@@ -19,7 +19,8 @@ import cz.poptavka.sample.client.home.demands.demand.DemandView;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+
 import java.util.Date;
 
 /**
@@ -44,10 +45,10 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     @UiField
     Label demandDetailLabel;
     @UiField(provided = true)
-    CellTable<DemandDetail> cellTable;
+    CellTable<ClientDemandDetail> cellTable;
     @UiField(provided = true)
     SimplePager pager;
-    private AsyncDataProvider<DemandDetail> dataProvider;
+    private AsyncDataProvider<ClientDemandDetail> dataProvider;
 
     public DemandsView() {
         initCellTable();
@@ -78,17 +79,17 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
 
     @Override
-    public AsyncDataProvider<DemandDetail> getDataProvider() {
+    public AsyncDataProvider<ClientDemandDetail> getDataProvider() {
         return dataProvider;
     }
 
     @Override
-    public void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider) {
+    public void setDataProvider(AsyncDataProvider<ClientDemandDetail> dataProvider) {
         this.dataProvider = dataProvider;
     }
 
     @Override
-    public CellTable<DemandDetail> getCellTable() {
+    public CellTable<ClientDemandDetail> getCellTable() {
         return cellTable;
     }
 
@@ -107,7 +108,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      */
     private void initCellTable() {
         // Create a CellTable.
-        cellTable = new CellTable<DemandDetail>();
+        cellTable = new CellTable<ClientDemandDetail>();
         cellTable.setWidth("100%", true);
         cellTable.setRowCount(2, true);
 
@@ -124,11 +125,11 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      */
     private void initTableColumns() {
         // Title
-        Column<DemandDetail, String> demandTitle = new Column<DemandDetail, String>(
+        Column<ClientDemandDetail, String> demandTitle = new Column<ClientDemandDetail, String>(
                 new TextCell()) {
 
             @Override
-            public String getValue(DemandDetail object) {
+            public String getValue(ClientDemandDetail object) {
                 return object.getTitle();
             }
         };
@@ -136,11 +137,11 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         cellTable.setColumnWidth(demandTitle, 320, Unit.PX);
 
         // Date
-        Column<DemandDetail, Date> demandDate = new Column<DemandDetail, Date>(
+        Column<ClientDemandDetail, Date> demandDate = new Column<ClientDemandDetail, Date>(
                 new DateCell()) {
 
             @Override
-            public Date getValue(DemandDetail object) {
+            public Date getValue(ClientDemandDetail object) {
                 return object.getEndDate();
             }
         };
