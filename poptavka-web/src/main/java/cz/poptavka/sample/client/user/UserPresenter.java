@@ -21,11 +21,11 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 /**
  * Main presenter for User account.
@@ -121,7 +121,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
 
     /** REQUESTs && RESPONSEs. **/
-    public void onRequestClientId(ClientDemandDetail newDemand) {
+    public void onRequestClientId(FullDemandDetail newDemand) {
         // TODO refactor this method to call just demand
         if (user.getRoleList().contains(Role.CLIENT)) {
             newDemand.setClientId(user.getClientId());

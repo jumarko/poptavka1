@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widgets;
+package cz.poptavka.sample.client.user.demands.widget;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,10 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.messages.OfferWindowPresenter;
 import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
@@ -54,19 +55,30 @@ public class DetailWrapperPresenter extends
      * Response when user click demand to see the details. DemandDetails widget,
      * past conversation regarding this demand and reply widget is created.
      *
-     * @param detail ClientDemandDetail to be displayed
+     * @param detail FullDemandDetail to be displayed
      * @param typeOfDetail type of what detail section should handle this event
      */
-    public void onSetDemandDetail(ClientDemandDetail detail, ViewType typeOfDetail) {
+    public void onSetFullDemandDetail(FullDemandDetail detail, ViewType typeOfDetail) {
+        if (!typeOfDetail.equals(type)) {
+            return;
+        }
+        view.setDetail(new DemandDetailView(detail));
+
+        // GUI visual event
+        eventBus.loadingHide();
+    }
+
+    public void onSetBaseDemandDetail(BaseDemandDetail detail, ViewType typeOfDetail) {
         if (!typeOfDetail.equals(type)) {
             return;
         }
         view.setDetail(new DemandDetailView(detail));
         // create reply window
         // POTENTIAL
-        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
-            setReplyWidget(detail.getDemandId());
-        }
+        // TODO reimplement reply window
+//        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
+//            setReplyWidget(detail.getDemandId());
+//        }
 
         // GUI visual event
         eventBus.loadingHide();

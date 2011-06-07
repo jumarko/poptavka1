@@ -19,8 +19,8 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.NoSelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.user.demands.widgets.GlobalDemandOfferTable;
-import cz.poptavka.sample.client.user.demands.widgets.SingleDemandOfferTable;
+import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandOfferTable;
+import cz.poptavka.sample.client.user.demands.widget.table.SingleDemandOfferTable;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 

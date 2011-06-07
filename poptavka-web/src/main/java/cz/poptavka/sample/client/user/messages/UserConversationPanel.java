@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
-import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 /**
  * SimpleMessageWindow holder, enabling features:
@@ -110,7 +110,7 @@ public class UserConversationPanel extends Composite {
     /**
      * Received the message being sent and fills it with necessary attributes, from stored message.
      *
-     * @param messageDetail message being sent
+     * @param MessageDetail message being sent
      * @return updated message
      */
     public MessageDetail updateSendingMessage(MessageDetail messageDetail) {

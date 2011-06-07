@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 /**
  * Dummy message with no actions, just to display data.
@@ -45,6 +45,7 @@ public class SimpleMessageWindow extends Composite {
     private boolean collapsed = false;
 
     public SimpleMessageWindow() {
+        CSS.message().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 

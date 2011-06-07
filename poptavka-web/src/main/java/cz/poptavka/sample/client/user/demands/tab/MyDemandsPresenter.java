@@ -17,8 +17,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = MyDemandsView.class, multiple = true)
@@ -93,7 +93,7 @@ public class MyDemandsPresenter extends
         refreshDisplays();
     }
 
-//    public void onResponseClientDemands(ArrayList<ClientDemandDetail> demands) {
+//    public void onResponseClientDemands(ArrayList<FullDemandDetail> demands) {
 //        GWT.log("Demands are on the way.    demands.size = " + demands.size());
 //
 //        // Add the data to the data provider, which automatically pushes it to

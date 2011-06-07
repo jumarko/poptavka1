@@ -3,7 +3,7 @@
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
     <ui:style field='uiBinderStyle'
-        type="cz.poptavka.sample.client.user.demands.widgets.MessageWriteWidget.SelectionStyle">
+        type="cz.poptavka.sample.client.user.demands.widget.MessageWriteWidget.SelectionStyle">
         .panel {
             position: absolute;
             bottom: 0px;

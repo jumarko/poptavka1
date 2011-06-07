@@ -8,7 +8,6 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -21,8 +20,9 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.demands.widget.table.PotentialDemandTable;
+import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
@@ -42,19 +42,18 @@ public class PotentialDemandsPresenter extends
 
         Button getReplyButton();
         Button getDeleteButton();
-        Button getMarkButton();
         Button getActionButton();
         Button getRefreshButton();
+        Button getMarkReadButton();
+        Button getMarkUnreadButton();
 
-        boolean getReadValueForMarkedMessages();
+        PotentialDemandTable getDemandTable();
 
-        CellTable<BaseDemandDetail> getDemandTable();
+        ListDataProvider<PotentialMessageDetail> getDataProvider();
 
-        ListDataProvider<BaseDemandDetail> getDataProvider();
+        MultiSelectionModel<PotentialMessageDetail> getSelectionModel();
 
-        MultiSelectionModel<BaseDemandDetail> getSelectionModel();
-
-        Set<BaseDemandDetail> getSelectedSet();
+        Set<PotentialMessageDetail> getSelectedSet();
 
         SimplePanel getDetailSection();
     }
@@ -62,14 +61,16 @@ public class PotentialDemandsPresenter extends
     private static final StyleResource RSC = GWT.create(StyleResource.class);
 
     private DetailWrapperPresenter detailPresenter = null;
-    private boolean loaded = false;
+    private boolean presenterLoaded = false;
+
+    /** GUI buttons */
 
     public void bindView() {
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Iterator<BaseDemandDetail> iter = view.getSelectedSet().iterator();
-                BaseDemandDetail selected = iter.next();
+                Iterator<PotentialMessageDetail> iter = view.getSelectedSet().iterator();
+                PotentialMessageDetail selected = iter.next();
 
                 eventBus.getDemandDetail(selected.getDemandId(), DETAIL_TYPE);
                 eventBus.requestPotentialDemandConversation(selected.getMessageId(), selected.getUserMessageId());
@@ -79,39 +80,49 @@ public class PotentialDemandsPresenter extends
                 markMessagesAsRead(selected, true);
             }
         });
-        view.getMarkButton().addClickHandler(new ClickHandler() {
+        view.getMarkReadButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                boolean isRead = !view.getReadValueForMarkedMessages();
-                Iterator<BaseDemandDetail> it = view.getSelectedSet().iterator();
+                Iterator<PotentialMessageDetail> it = view.getSelectedSet().iterator();
                 ArrayList<Long> messages = new ArrayList<Long>();
                 while (it.hasNext()) {
-                    BaseDemandDetail d = it.next();
-                    markMessagesAsRead(d, isRead);
+                    PotentialMessageDetail d = it.next();
+                    markMessagesAsRead(d, true);
                     messages.add(d.getUserMessageId());
                 }
-                eventBus.requestPotentialDemandReadStatusChange(messages, isRead);
+                eventBus.requestPotentialDemandReadStatusChange(messages, true);
+            }
+        });
+        view.getMarkUnreadButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                Iterator<PotentialMessageDetail> it = view.getSelectedSet().iterator();
+                ArrayList<Long> messages = new ArrayList<Long>();
+                while (it.hasNext()) {
+                    PotentialMessageDetail d = it.next();
+                    markMessagesAsRead(d, false);
+                    messages.add(d.getUserMessageId());
+                }
+                eventBus.requestPotentialDemandReadStatusChange(messages, false);
             }
         });
     }
 
     public void onInvokePotentialDemands() {
-        if (loaded) {
+        if (presenterLoaded) {
             eventBus.displayContent(view.getWidgetView());
             return;
         }
         eventBus.requestPotentialDemands();
-        loaded = true;
+        presenterLoaded = true;
     }
 
-    public void onResponsePotentialDemands(ArrayList<BaseDemandDetail> data) {
+    public void onResponsePotentialDemands(ArrayList<PotentialMessageDetail> data) {
 
-        List<BaseDemandDetail> list = view.getDataProvider().getList();
+        GWT.log("Size on frontEnd: " + data.size());
+        List<PotentialMessageDetail> list = view.getDataProvider().getList();
         list.clear();
-        for (BaseDemandDetail d : data) {
-            if (!d.isRead()) {
-            }
-
+        for (PotentialMessageDetail d : data) {
             list.add(d);
         }
         GWT.log("** DEBUG onResponsePotentialDemands NEW ");
@@ -127,8 +138,8 @@ public class PotentialDemandsPresenter extends
         eventBus.displayContent(view.getWidgetView());
     }
 
-    public void markMessagesAsRead(BaseDemandDetail detail, boolean isRead) {
-        List<BaseDemandDetail> list = view.getDataProvider().getList();
+    public void markMessagesAsRead(PotentialMessageDetail detail, boolean isRead) {
+        List<PotentialMessageDetail> list = view.getDataProvider().getList();
         list.get(list.indexOf(detail)).setRead(isRead);
         view.getDataProvider().refresh();
     }

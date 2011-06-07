@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import cz.poptavka.sample.domain.demand.Demand;
+
 
 public class BaseDemandDetail implements Serializable {
 
@@ -14,7 +16,6 @@ public class BaseDemandDetail implements Serializable {
     /**
      * Constants for html display of demands in view tables.
      */
-    private static final String HTML_READ = "";
     private static final String HTML_UNREAD_START = "<strong>";
     private static final String HTML_UNREAD_END = "</strong>";
 
@@ -31,8 +32,23 @@ public class BaseDemandDetail implements Serializable {
     private String description;
     private BigDecimal price;
 
-    private String htmlDisplayStart = HTML_UNREAD_START;
-    private String htmlDisplayEnd = HTML_UNREAD_END;
+    /**
+     * Method created FullDemandDetail from provided Demand domain object.
+     * @param demand
+     * @return FullDemandDetail
+     */
+    public static BaseDemandDetail createDemandDetail(Demand demand) {
+
+        BaseDemandDetail detail = new BaseDemandDetail();
+        detail.setDemandId(demand.getId());
+        detail.setTitle(demand.getTitle());
+        detail.setDescription(demand.getDescription());
+        detail.setPrice(demand.getPrice());
+        detail.setEndDate(demand.getEndDate());
+        detail.setValidToDate(demand.getValidTo());
+        //categories
+        return detail;
+    }
 
     public BaseDemandDetail() {    }
 
@@ -62,13 +78,6 @@ public class BaseDemandDetail implements Serializable {
     }
     public void setRead(boolean read) {
         this.read = read;
-        if (read) {
-            this.htmlDisplayStart = HTML_READ;
-            this.htmlDisplayEnd = HTML_READ;
-        } else {
-            this.htmlDisplayStart = HTML_UNREAD_START;
-            this.htmlDisplayEnd = HTML_UNREAD_END;
-        }
     }
     public boolean isStarred() {
         return starred;
@@ -100,9 +109,6 @@ public class BaseDemandDetail implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String displayDescription() {
-        return htmlDisplay(description);
-    }
     public BigDecimal getPrice() {
         return price;
     }
@@ -112,10 +118,6 @@ public class BaseDemandDetail implements Serializable {
         }
         return price.toString();
     }
-    public String displayPriceHtml() {
-        return htmlDisplay(displayPrice());
-    }
-
     public void setPrice(String price) {
         if (price.equals("")) {
             this.price = null;
@@ -123,12 +125,10 @@ public class BaseDemandDetail implements Serializable {
             this.price = BigDecimal.valueOf(Long.valueOf(price));
         }
     }
-
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    @Override
     public String toString() {
         return "BaseDemandDetail{"
                 + demandId + "\n demandId="
@@ -148,37 +148,12 @@ public class BaseDemandDetail implements Serializable {
      * @param trustedHtml
      * @return string in html tags
      */
-    protected String htmlDisplay(String trustedHtml) {
-        StringBuilder sb = new StringBuilder()
-            .append(htmlDisplayStart)
-            .append(trustedHtml)
-            .append(htmlDisplayEnd);
-        return sb.toString();
-    }
-
-    /**
-     * HTML read representation of demandTitle.
-     */
-    public String displayTitle() {
-        return htmlDisplay(title);
-    }
-
-    /**
-     * HTML read representation of endDate.
-     */
-    public String displayFinishDate() {
-        return endDate.toString();
-        // TODO wrong
-//        return htmlDisplay(dateFormat.format(endDate));
-    }
-
-    /**
-     * HTML read representation of endDate.
-     */
-    public String displayValidToDate() {
-        return validToDate.toString();
-        // TODO wrong
-//        return htmlDisplay(dateFormat.format(validToDate));
+    public static String displayHtml(String trustedHtml, boolean isRead) {
+        if (isRead) {
+            return trustedHtml;
+        } else {
+            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
+        }
     }
 
 }

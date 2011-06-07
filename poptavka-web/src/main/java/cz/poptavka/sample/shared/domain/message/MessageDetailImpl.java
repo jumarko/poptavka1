@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.message;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +13,7 @@ import cz.poptavka.sample.domain.message.Message;
  *
  * @author ivan.vlcek
  */
-public class MessageDetail implements Serializable {
+public class MessageDetailImpl implements Serializable, MessageDetail {
 
     /**
      * Generated serialVersionUID.
@@ -33,8 +33,8 @@ public class MessageDetail implements Serializable {
     private long senderId;
     private long receiverId;
 
-    public static MessageDetail generateMessageDetail(Message message) {
-        MessageDetail detail = new MessageDetail();
+    public static MessageDetail createMessageDetail(Message message) {
+        MessageDetail detail = new MessageDetailImpl();
         detail.setMessageId(message.getId());
         detail.setBody(message.getBody());
         detail.setCreated(message.getCreated());

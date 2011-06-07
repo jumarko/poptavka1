@@ -25,7 +25,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 public class MyDemandsView extends Composite implements
         MyDemandsPresenter.MyDemandsInterface {

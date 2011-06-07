@@ -20,7 +20,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
@@ -49,25 +49,25 @@ public class AdministrationPresenter
         Widget getWidgetView();
 
 //        SimplePager getPager();
-        CellTable<ClientDemandDetail> getCellTable();
+        CellTable<FullDemandDetail> getCellTable();
 
-        ListDataProvider<ClientDemandDetail> getDataProvider();
+        ListDataProvider<FullDemandDetail> getDataProvider();
 
-        Column<ClientDemandDetail, String> getClientIdColumn();
+        Column<FullDemandDetail, String> getClientIdColumn();
 
-        Column<ClientDemandDetail, String> getDemandTypeColumn();
+        Column<FullDemandDetail, String> getDemandTypeColumn();
 
-        Column<ClientDemandDetail, String> getDemandStatusColumn();
+        Column<FullDemandDetail, String> getDemandStatusColumn();
 
-        Column<ClientDemandDetail, Date> getDemandExpirationColumn();
+        Column<FullDemandDetail, Date> getDemandExpirationColumn();
 
-        Column<ClientDemandDetail, Date> getDemandEndColumn();
+        Column<FullDemandDetail, Date> getDemandEndColumn();
 
         ClientDemandType[] getDemandTypes();
 
         DemandStatusType[] getDemandStatuses();
 
-        SingleSelectionModel<ClientDemandDetail> getSelectionModel();
+        SingleSelectionModel<FullDemandDetail> getSelectionModel();
 
         SimplePanel getAdminDemandDetail();
     }
@@ -80,14 +80,14 @@ public class AdministrationPresenter
         eventBus.getAllDemands();
     }
 
-    public void onSetAllDemands(List<ClientDemandDetail> clientDemandDetails) {
+    public void onSetAllDemands(List<FullDemandDetail> fullDemandDetails) {
         // Add the data to the data provider, which automatically pushes it to the widget.
         // TODO ivlcek - try to set list in for cycle. Maybe it depends on how you populate
         // data into ListProvider. DONE - it realy depends on how you set data to list provider
 //        view.getDataProvider().setList(demandDetails);
 
-        List<ClientDemandDetail> list = view.getDataProvider().getList();
-        for (ClientDemandDetail d : clientDemandDetails) {
+        List<FullDemandDetail> list = view.getDataProvider().getList();
+        for (FullDemandDetail d : fullDemandDetails) {
             list.add(d);
         }
 
@@ -95,7 +95,7 @@ public class AdministrationPresenter
         refreshDisplays();
     }
 
-    public void onRefreshUpdatedDemand(ClientDemandDetail demand) {
+    public void onRefreshUpdatedDemand(FullDemandDetail demand) {
 //        view.getCellTable().setSize("10%", "10%");
     }
 
@@ -112,17 +112,17 @@ public class AdministrationPresenter
 
     @Override
     public void bindView() {
-        view.getClientIdColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
+        view.getClientIdColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
             @Override
-            public void update(int index, ClientDemandDetail object, String value) {
+            public void update(int index, FullDemandDetail object, String value) {
                 object.setClientId(Long.valueOf(value));
                 eventBus.updateDemand(object);
                 refreshDisplays();
             }
         });
-        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
+        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
             @Override
-            public void update(int index, ClientDemandDetail object, String value) {
+            public void update(int index, FullDemandDetail object, String value) {
                 for (ClientDemandType clientDemandType : view.getDemandTypes()) {
                     if (clientDemandType.name().equals(value)) {
                         object.setDemandType(clientDemandType.name());
@@ -132,9 +132,9 @@ public class AdministrationPresenter
                 refreshDisplays();
             }
         });
-        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
+        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
             @Override
-            public void update(int index, ClientDemandDetail object, String value) {
+            public void update(int index, FullDemandDetail object, String value) {
                 for (DemandStatusType demandStatusType : view.getDemandStatuses()) {
                     if (demandStatusType.name().equals(value)) {
                         object.setDemandType(demandStatusType.name());
@@ -144,17 +144,17 @@ public class AdministrationPresenter
                 refreshDisplays();
             }
         });
-        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, Date>() {
+        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
             @Override
-            public void update(int index, ClientDemandDetail object, Date value) {
+            public void update(int index, FullDemandDetail object, Date value) {
                 object.setValidToDate(value);
                 eventBus.updateDemand(object);
                 refreshDisplays();
             }
         });
-        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, Date>() {
+        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
             @Override
-            public void update(int index, ClientDemandDetail object, Date value) {
+            public void update(int index, FullDemandDetail object, Date value) {
                 object.setEndDate(value);
                 eventBus.updateDemand(object);
                 refreshDisplays();

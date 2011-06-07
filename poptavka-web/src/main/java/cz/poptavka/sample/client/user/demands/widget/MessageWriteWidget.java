@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widgets;
+package cz.poptavka.sample.client.user.demands.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
@@ -14,6 +14,9 @@ import com.google.gwt.user.client.ui.LongBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
+
+// DEPRECATED use ReplyWindow instead
+// TODO DELETE
 public class MessageWriteWidget extends Composite {
 
     private static MessageWriteWidgetUiBinder uiBinder = GWT

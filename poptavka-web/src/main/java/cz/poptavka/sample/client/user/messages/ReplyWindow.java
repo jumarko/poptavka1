@@ -17,8 +17,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
 public class ReplyWindow extends Composite implements ReplyWindowPresenter.ReplyInterface {
 
@@ -144,8 +144,8 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     }
 
     @Override
-    public MessageDetail getCreatedMessage() {
-        MessageDetail message = new MessageDetail();
+    public MessageDetailImpl getCreatedMessage() {
+        MessageDetailImpl message = new MessageDetailImpl();
         message.setBody(replyTextArea.getText());
         message.setDemandId(demandId);
         return message;
@@ -171,7 +171,7 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     @Override
     public OfferDetail getCreatedOffer() {
         OfferDetail offer = new OfferDetail();
-        MessageDetail message = getCreatedMessage();
+        MessageDetailImpl message = getCreatedMessage();
         offer.setPrice(priceBox.getText());
         offer.setFinishDate(dateBox.getValue());
         offer.setMessageDetail(message);

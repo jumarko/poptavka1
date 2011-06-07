@@ -4,12 +4,14 @@
  */
 package cz.poptavka.sample.client.service.demand;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import cz.poptavka.sample.shared.domain.MessageDetail;
-import cz.poptavka.sample.shared.domain.OfferDetail;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
 
 /**
  *
@@ -27,4 +29,6 @@ public interface MessageRPCServiceAsync {
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 
     void getClientDemands(long businessUserId, int fakeParam, AsyncCallback<ArrayList<MessageDetail>> callback);
+
+    void getPotentialDemands(long businessUserId, AsyncCallback<ArrayList<PotentialMessageDetail>> asyncCallback);
 }

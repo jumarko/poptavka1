@@ -29,7 +29,7 @@ import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 @Presenter(view = DemandCreationView.class)
 public class DemandCreationPresenter
@@ -131,7 +131,7 @@ public class DemandCreationPresenter
         FormDemandAdvViewInterface advValues =
             (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
 
-        ClientDemandDetail demand = new ClientDemandDetail();
+        FullDemandDetail demand = new FullDemandDetail();
         demand.setBasicInfo(basicValues.getValues());
         demand.setCategories(categoryValues.getSelectedCategoryCodes());
         demand.setLocalities(localityValues.getSelectedLocalityCodes());

@@ -17,7 +17,7 @@ import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -132,10 +132,10 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
      * @param clientId
      *            client id
      */
-    public void onCreateDemand(ClientDemandDetail detail, Long clientId) {
+    public void onCreateDemand(FullDemandDetail detail, Long clientId) {
         GWT.log("Am I here?");
         demandService.createNewDemand(detail, clientId,
-                new AsyncCallback<ClientDemandDetail>() {
+                new AsyncCallback<FullDemandDetail>() {
                     @Override
                     public void onFailure(Throwable arg0) {
                         eventBus.loadingHide();
@@ -143,7 +143,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                     }
 
                     @Override
-                    public void onSuccess(ClientDemandDetail result) {
+                    public void onSuccess(FullDemandDetail result) {
                         // signal event
                         eventBus.loadingHide();
                         // TODO forward to user/atAccount

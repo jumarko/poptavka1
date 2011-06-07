@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widgets;
+package cz.poptavka.sample.client.user.demands.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

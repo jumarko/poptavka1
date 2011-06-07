@@ -20,7 +20,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -60,7 +60,7 @@ public class OffersPresenter extends
     private boolean loaded = false;
 
     public void bindView() {
-        // Demand selected -> OffersTable is loaded and shown, ClientDemandDetail as well
+        // Demand selected -> OffersTable is loaded and shown, FullDemandDetail as well
         view.getDemandModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {

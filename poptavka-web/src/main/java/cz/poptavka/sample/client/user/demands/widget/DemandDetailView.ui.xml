@@ -4,6 +4,7 @@
     <ui:style>
         .important {
             font-weight: bold;
+            font-style: italic;
         }
     </ui:style>
     <g:HTMLPanel>
@@ -12,6 +13,6 @@
             Description:
             <p ui:field='descArea'></p>
         </div>
-        <span class="{style.important}" ui:field="nameSpan" />
+        <span class="{style.important}" ui:field="typeSpan" />
     </g:HTMLPanel>
 </ui:UiBinder>

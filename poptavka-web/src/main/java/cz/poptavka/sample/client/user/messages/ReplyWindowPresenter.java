@@ -9,8 +9,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
 @Presenter(view = ReplyWindow.class, multiple = true)
 public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.ReplyInterface, UserEventBus> {
@@ -22,7 +22,7 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
 
         boolean isValid();
 
-        MessageDetail getCreatedMessage();
+        MessageDetailImpl getCreatedMessage();
 
         OfferDetail getCreatedOffer();
 
@@ -46,7 +46,7 @@ public class ReplyWindowPresenter extends LazyPresenter<ReplyWindowPresenter.Rep
         view.addClickHandler(submitButtonHandler, demandId);
     }
 
-    public MessageDetail getCreatedMessage() {
+    public MessageDetailImpl getCreatedMessage() {
         view.setSendingStyle();
         return view.getCreatedMessage();
     }

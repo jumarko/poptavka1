@@ -4,13 +4,15 @@
  */
 package cz.poptavka.sample.client.service.demand;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import cz.poptavka.sample.shared.domain.MessageDetail;
-import cz.poptavka.sample.shared.domain.OfferDetail;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
+import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
 
 /**
  *
@@ -20,6 +22,8 @@ import java.util.List;
 public interface MessageRPCService extends RemoteService {
 
     ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam);
+
+    ArrayList<PotentialMessageDetail> getPotentialDemands(long businessUserId);
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId);
 

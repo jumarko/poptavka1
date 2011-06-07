@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 public class DemandView extends Composite implements
         DemandPresenter.DemandViewInterface {
@@ -61,7 +61,7 @@ public class DemandView extends Composite implements
         return buttonRegister;
     }
 
-    public void setDemand(ClientDemandDetail demand) {
+    public void setDemand(FullDemandDetail demand) {
         infoTable.clear();
         textArea.setText("");
         buttonAttachments.setVisible(false);

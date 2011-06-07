@@ -18,9 +18,9 @@ import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
@@ -36,22 +36,23 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     private static final LocalizableMessages MSGS = GWT
             .create(LocalizableMessages.class);
 
+    // TODO move to different module for admin
     public void onGetAllDemands() {
-        demandService.getAllDemands(new AsyncCallback<List<ClientDemandDetail>>() {
+        demandService.getAllDemands(new AsyncCallback<List<FullDemandDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
             }
 
             @Override
-            public void onSuccess(List<ClientDemandDetail> result) {
+            public void onSuccess(List<FullDemandDetail> result) {
                 eventBus.setAllDemands(result);
             }
         });
     }
 
-    public void onUpdateDemand(ClientDemandDetail demand) {
-        demandService.updateDemand(demand, new AsyncCallback<ClientDemandDetail>() {
+    public void onUpdateDemand(FullDemandDetail demand) {
+        demandService.updateDemand(demand, new AsyncCallback<FullDemandDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -59,7 +60,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(ClientDemandDetail result) {
+            public void onSuccess(FullDemandDetail result) {
                 eventBus.refreshUpdatedDemand(result);
             }
         });
@@ -96,42 +97,34 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
      * Get Detail according to demand id.
      */
     public void onGetDemandDetail(Long demandId, final ViewType typeOfDetail) {
-        GWT.log("REACH RPC");
-        demandService.getDemand(demandId, new AsyncCallback<ClientDemandDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert(caught.getMessage());
-            }
+        // for suppliers potential demands base DemandDetail is enough
+        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
+            demandService.getBaseDemandDetail(demandId, new AsyncCallback<BaseDemandDetail>() {
 
-            @Override
-            public void onSuccess(ClientDemandDetail result) {
-                eventBus.setDemandDetail(result, typeOfDetail);
-            }
-        });
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("UserHandler at onGetDemandDetail: \n\n" + caught.getMessage());
+                }
+
+                @Override
+                public void onSuccess(BaseDemandDetail result) {
+                    eventBus.setBaseDemandDetail(result, typeOfDetail);
+                }
+            });
+        } else {
+            demandService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert(caught.getMessage());
+                }
+
+                @Override
+                public void onSuccess(FullDemandDetail result) {
+                    eventBus.setFullDemandDetail(result, typeOfDetail);
+                }
+            });
+        }
     }
-
-    /**
-     * Get Supplier's potential demands list.
-     *
-     * @param businessUserId
-     */
-    public void onGetPotentialDemands(long businessUserId) {
-        demandService.getPotentialDemandsForSupplier(businessUserId,
-                new AsyncCallback<ArrayList<BaseDemandDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("Error in UserHandler in method: onGetPotentialDemandsList"
-                                + caught.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(
-                            ArrayList<BaseDemandDetail> result) {
-                        eventBus.responsePotentialDemands(result);
-                    }
-                });
-    }
-
 
     /**
      * Get Client's demands for offers.

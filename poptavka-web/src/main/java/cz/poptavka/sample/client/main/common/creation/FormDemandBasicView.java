@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail.DemandField;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail.DemandField;
 
 public class FormDemandBasicView extends Composite
     implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate  {

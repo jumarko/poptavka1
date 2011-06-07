@@ -15,8 +15,11 @@
                     <g:Button ui:field="deleteBtn">
                         <ui:msg key="delete">Delete</ui:msg>
                     </g:Button>
-                    <g:Button ui:field="markBtn">
-                        <ui:msg key="markButton">Mark</ui:msg>
+                    <g:Button ui:field="markReadBtn">
+                        <ui:msg key="markAsRead">Mark As Read</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="markUnreadBtn">
+                        <ui:msg key="markAsUnread">Mark As Unread</ui:msg>
                     </g:Button>
                     <g:Button ui:field="moreActionsBtn">
                         <ui:msg key="moreActions">More Actions</ui:msg>
@@ -30,8 +33,8 @@
                     <!-- </g:ToggleButton> -->
                 </div>
                 <div>
-                    <c:CellTable ui:field="cellTable" />
-                    <c:SimplePager ui:field="pager" />
+                    <c:CellTable ui:field="demandTable" />
+                    <c:SimplePager ui:field="demandTablePager" />
                 </div>
 
                 <g:SimplePanel ui:field="develPanel" />

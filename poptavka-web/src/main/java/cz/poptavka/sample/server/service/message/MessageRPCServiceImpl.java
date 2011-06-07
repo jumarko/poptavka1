@@ -30,8 +30,11 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialMessageDetailImpl;
 
 /**
  *
@@ -73,11 +76,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 withMessageUserRoleType(MessageUserRoleType.SENDER).
                 withMessageContext(MessageContext.NEW_CLIENTS_DEMAND).
                 withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
-        System.out.println("Messages count: " + messages.size());
         ArrayList<MessageDetail> details = new ArrayList<MessageDetail>();
 
         for (Message m : messages) {
-            MessageDetail md = new MessageDetail();
+            MessageDetail md = new MessageDetailImpl();
             md.setMessageId(m.getId());
             md.setThreadRootId(md.getMessageId());
             md.setParentId(md.getMessageId());
@@ -89,64 +91,39 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             md.setBody(m.getDemand().getDescription());
             details.add(md);
         }
-
-//        final List<UserMessage> userMessages =
-//            userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
-//        System.out.println("UserMessages count: " + userMessages.size());
-//        ArrayList<MessageDetail> details = new ArrayList<MessageDetail>();
-//        for (UserMessage um : userMessages) {
-//            MessageDetail md = new MessageDetail();
-//            // messageID of demand ROOT message is the same as threadRootID
-//            md.setMessageId(um.getMessage().getId());
-//            // it is parent to itself
-//            md.setParentId(md.getMessageId());
-//            md.setThreadRootId(md.getMessageId());
-//            md.setCreated(um.getMessage().getCreated());
-//            md.setSent(um.getMessage().getSent());
-//            md.setSenderId(um.getMessage().getSender().getId());
-//            // demand related stuff
-//            md.setDemandId(um.getMessage().getDemand().getId());
-//            md.setSubject(um.getMessage().getDemand().getTitle());
-//            md.setBody(um.getMessage().getDemand().getDescription());
-//
-//            details.add(md);
-//            System.out.println("iteration");
-//        }
-
-        System.out.println("SIZE: " + details.size());
         return details;
     }
 
     /**
      * Message sent by supplier about a query to potential demand.
-     * @param messageDetail
+     * @param messageDetailImpl
      * @return message
      */
-    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetail) {
+    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) {
         Message m = new Message();
-        m.setBody(messageDetail.getBody());
+        m.setBody(messageDetailImpl.getBody());
         m.setCreated(new Date());
         m.setLastModified(new Date());
         m.setMessageState(MessageState.SENT);
         // TODO ivlcek - how to set this next sibling?
 //        m.setNextSibling(null);
-        Message parentMessage = this.messageService.getById(messageDetail.getParentId());
+        Message parentMessage = this.messageService.getById(messageDetailImpl.getParentId());
         m.setParent(parentMessage);
-        User sender = this.generalService.find(User.class, messageDetail.getSenderId());
+        User sender = this.generalService.find(User.class, messageDetailImpl.getSenderId());
         m.setSender(sender);
         m.setSent(new Date());
         m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
-        m.setThreadRoot(this.messageService.getById(messageDetail.getThreadRootId()));
+        m.setThreadRoot(this.messageService.getById(messageDetailImpl.getThreadRootId()));
         // set message roles
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
         // handles events when I send reply to my own message
-        if (messageDetail.getSenderId() == messageDetail.getReceiverId()) {
-            messageDetail.setReceiverId(m.getThreadRoot().getSender().getId().longValue());
+        if (messageDetailImpl.getSenderId() == messageDetailImpl.getReceiverId()) {
+            messageDetailImpl.setReceiverId(m.getThreadRoot().getSender().getId().longValue());
         }
         // messageToUserRole
         MessageUserRole messageToUserRole = new MessageUserRole();
         messageToUserRole.setMessage(m);
-        messageToUserRole.setUser(this.generalService.find(User.class, messageDetail.getReceiverId()));
+        messageToUserRole.setUser(this.generalService.find(User.class, messageDetailImpl.getReceiverId()));
         messageToUserRole.setType(MessageUserRoleType.TO);
         messageToUserRole.setMessageContext(MessageContext.QUERY_TO_POTENTIAL_SUPPLIERS_DEMAND);
         messageUserRoles.add(messageToUserRole);
@@ -159,7 +136,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageUserRoles.add(messageFromUserRole);
         m.setRoles(messageUserRoles);
         // TODO set the id correctly, check it
-        MessageDetail messageDetailPersisted = MessageDetail.generateMessageDetail(this.messageService.create(m));
+        MessageDetail messageDetailPersisted = MessageDetailImpl.createMessageDetail(this.messageService.create(m));
         // TODO set children for parent message - check if it is correct
         parentMessage.getChildren().add(m);
         parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
@@ -186,27 +163,27 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         o = this.generalService.save(o);
 
         Message m = new Message();
-        MessageDetail messageDetail = offer.getMessageDetail();
-        m.setBody(messageDetail.getBody());
+        MessageDetail messageDetailImpl = offer.getMessageDetail();
+        m.setBody(messageDetailImpl.getBody());
         m.setCreated(new Date());
         m.setLastModified(new Date());
         m.setMessageState(MessageState.SENT);
         // TODO ivlcek - how to set this next sibling?
 //        m.setNextSibling(null);
-        Message parentMessage = this.messageService.getById(messageDetail.getThreadRootId());
+        Message parentMessage = this.messageService.getById(messageDetailImpl.getThreadRootId());
         m.setParent(parentMessage);
-        BusinessUser supplier = this.generalService.find(BusinessUser.class, messageDetail.getSenderId());
+        BusinessUser supplier = this.generalService.find(BusinessUser.class, messageDetailImpl.getSenderId());
         m.setSender(supplier);
         m.setSent(new Date());
         m.setSubject(supplier.getBusinessUserData().getCompanyName());
         // TODO ivlcek - threadRoot is loaded two times. See above
-        m.setThreadRoot(this.messageService.getById(messageDetail.getThreadRootId()));
+        m.setThreadRoot(this.messageService.getById(messageDetailImpl.getThreadRootId()));
         // set message roles
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
         // messageToUserRole
         MessageUserRole messageToUserRole = new MessageUserRole();
         messageToUserRole.setMessage(m);
-        User receiver = this.generalService.find(User.class, messageDetail.getReceiverId());
+        User receiver = this.generalService.find(User.class, messageDetailImpl.getReceiverId());
         messageToUserRole.setUser(receiver);
         messageToUserRole.setType(MessageUserRoleType.TO);
         messageToUserRole.setMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER);
@@ -249,11 +226,11 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
                 threadRoot, user);
-        ArrayList<MessageDetail> messageDetails = new ArrayList<MessageDetail>();
+        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
         for (Message message : messages) {
-            messageDetails.add(MessageDetail.generateMessageDetail(message));
+            messageDetailImpls.add(MessageDetailImpl.createMessageDetail(message));
         }
-        return messageDetails;
+        return messageDetailImpls;
     }
 
     public ArrayList<MessageDetail> loadClientsPotentialOfferConversation(long threadId, long userId) {
@@ -261,21 +238,41 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialOfferConversation(
                 threadRoot, user);
-        ArrayList<MessageDetail> messageDetails = new ArrayList<MessageDetail>();
+        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
         for (Message message : messages) {
-            messageDetails.add(MessageDetail.generateMessageDetail(message));
+            messageDetailImpls.add(MessageDetailImpl.createMessageDetail(message));
         }
-        return messageDetails;
+        return messageDetailImpls;
     }
 
     @Override
     public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
-            if (!userMessage.isIsRead()) {
-                userMessage.setIsRead(isRead);
-                this.generalService.save(userMessage);
-            }
+            userMessage.setIsRead(isRead);
+            this.generalService.save(userMessage);
         }
+    }
+
+    @Override
+    public ArrayList<PotentialMessageDetail> getPotentialDemands(long businessUserId) {
+        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+        final List<Message> messages = this.messageService.getAllMessages(
+                businessUser,
+                MessageFilter.MessageFilterBuilder.messageFilter().
+                withMessageUserRoleType(MessageUserRoleType.TO).
+                withMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND).
+                withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
+        // TODO ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
+        // parameter pre dalsi dotaz do DB na ziskanie userMessages
+        final List<UserMessage> userMessages =
+                userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
+        // fill list
+        ArrayList<PotentialMessageDetail> potentailDemands = new ArrayList<PotentialMessageDetail>();
+        for (UserMessage um : userMessages) {
+            PotentialMessageDetail detail = PotentialMessageDetailImpl.createMessageDetail(um);
+            potentailDemands.add(detail);
+        }
+        return potentailDemands;
     }
 }

@@ -23,7 +23,7 @@ import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 @Events(startView = MainView.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -60,7 +60,7 @@ public interface MainEventBus extends EventBus {
     // TODO
     //from event handler automatic redirection
 //    @Event(modulesToLoad = UserModule.class, passive = true)
-//    void addNewDemand(ClientDemandDetail result);
+//    void addNewDemand(FullDemandDetail result);
 
     @Event(modulesToLoad = HomeModule.class)
     void atCreateDemand();
@@ -92,7 +92,7 @@ public interface MainEventBus extends EventBus {
     void initDemandAdvForm(SimplePanel holderWidget);
 
     @Event(handlers = MainHandler.class)
-    void createDemand(ClientDemandDetail detail, Long clientId);
+    void createDemand(FullDemandDetail detail, Long clientId);
 
     /** CategorySelection section **/
     @Event(handlers = MainPresenter.class)

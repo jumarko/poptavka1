@@ -16,8 +16,8 @@ import com.mvp4g.client.view.BaseCycleView;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 // TODO extend SimpleMessageWindow, if possible.
 public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.ActionMessageInterface {

@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail.DemandField;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail.DemandField;
 
 public class FormDemandAdvView extends Composite
     implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate  {

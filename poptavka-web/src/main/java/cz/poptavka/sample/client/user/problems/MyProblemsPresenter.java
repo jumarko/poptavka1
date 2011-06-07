@@ -14,7 +14,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.user.User;

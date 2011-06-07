@@ -16,8 +16,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widgets.DetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DemandsOperatorView.class, multiple = true)
@@ -41,13 +41,13 @@ public class DemandsOperatorPresenter extends
 
         Button getRejectBtn();
 
-        CellTable<ClientDemandDetail> getCellTable();
+        CellTable<FullDemandDetail> getCellTable();
 
         SimplePanel getDetailSection();
 
-        SingleSelectionModel<ClientDemandDetail> getSelectionModel();
+        SingleSelectionModel<FullDemandDetail> getSelectionModel();
 
-        ListDataProvider<ClientDemandDetail> getDataProvider();
+        ListDataProvider<FullDemandDetail> getDataProvider();
     }
 
     private DetailWrapperPresenter detailPresenter = null;
@@ -79,7 +79,7 @@ public class DemandsOperatorPresenter extends
         view.getDetailSection().setWidget(widget);
     }
 
-    public void onResponseClientDemands(ArrayList<ClientDemandDetail> demands) {
+    public void onResponseClientDemands(ArrayList<FullDemandDetail> demands) {
         GWT.log("Demands are on the way.    demands.size = " + demands.size());
 
         // Add the data to the data provider, which automatically pushes it to

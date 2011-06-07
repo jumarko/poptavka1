@@ -8,6 +8,8 @@ import com.google.gwt.core.client.GWT;
 
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.offer.Offer;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
 public class OfferDetail implements Serializable {
 
@@ -27,7 +29,7 @@ public class OfferDetail implements Serializable {
     private String state;
 
     public static OfferDetail generateOfferDetail(Message message) {
-        MessageDetail m = new MessageDetail();
+        MessageDetailImpl m = new MessageDetailImpl();
         m.setMessageId(message.getId());
         m.setBody(message.getBody());
         m.setCreated(message.getCreated());
@@ -126,8 +128,8 @@ public class OfferDetail implements Serializable {
     /**
      * @param messageDetail the messageDetail to set
      */
-    public void setMessageDetail(MessageDetail messageDetail) {
-        this.messageDetail = messageDetail;
+    public void setMessageDetail(MessageDetail messageDetailImpl) {
+        this.messageDetail = messageDetailImpl;
     }
 
     /**

@@ -12,8 +12,9 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.MessageDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
@@ -126,5 +127,28 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 eventBus.setOfferDetailChange(result);
             }
         });
+    }
+
+    /**
+     * Get Supplier's potential demands list.
+     *
+     * @param businessUserId
+     */
+    public void onGetPotentialDemands(long businessUserId) {
+        messageService.getPotentialDemands(businessUserId,
+                new AsyncCallback<ArrayList<PotentialMessageDetail>>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Error in UserHandler in method: onGetPotentialDemandsList"
+                                + caught.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(
+                            ArrayList<PotentialMessageDetail> result) {
+                        GWT.log("Result size: " + result.size());
+                        eventBus.responsePotentialDemands(result);
+                    }
+                });
     }
 }

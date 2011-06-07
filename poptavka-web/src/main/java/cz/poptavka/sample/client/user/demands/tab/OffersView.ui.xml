@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c='urn:import:com.google.gwt.user.cellview.client'
-    xmlns:w="urn:import:cz.poptavka.sample.client.user.demands.widgets">
+    xmlns:w="urn:import:cz.poptavka.sample.client.user.demands.widget.table">
 
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />

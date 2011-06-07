@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widgets;
+package cz.poptavka.sample.client.user.demands.widget.table;
 
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.i18n.client.DateTimeFormat;

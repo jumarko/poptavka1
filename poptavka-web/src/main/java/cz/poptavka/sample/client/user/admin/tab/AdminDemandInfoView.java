@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
@@ -68,7 +68,7 @@ public class AdminDemandInfoView extends Composite implements
     @UiField
     Button updateButton;
 
-    private ClientDemandDetail demandInfo;
+    private FullDemandDetail demandInfo;
 
     @Override
     public Widget getWidgetView() {
@@ -129,7 +129,7 @@ public class AdminDemandInfoView extends Composite implements
         createButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                demandInfo = new ClientDemandDetail();
+                demandInfo = new FullDemandDetail();
                 demandInfo.setTitle(titleBox.getText());
                 demandInfo.setDescription(descriptionBox.getText());
                 demandInfo.setClientId(Long.valueOf(clientID.getText()));
@@ -141,7 +141,7 @@ public class AdminDemandInfoView extends Composite implements
         });
     }
 
-    public void setDemandDetail(ClientDemandDetail contact) {
+    public void setDemandDetail(FullDemandDetail contact) {
         this.demandInfo = contact;
         updateButton.setEnabled(contact != null);
         if (contact != null) {

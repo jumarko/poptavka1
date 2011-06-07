@@ -15,7 +15,7 @@ import cz.poptavka.sample.domain.demand.Demand;
  * @author Beho
  *
  */
-public class ClientDemandDetail extends BaseDemandDetail implements Serializable {
+public class FullDemandDetail extends BaseDemandDetail implements Serializable {
     /**
      * Generated serialVersionUID.
      */
@@ -35,18 +35,18 @@ public class ClientDemandDetail extends BaseDemandDetail implements Serializable
     private String demandStatus;
 
     /** for serialization. **/
-    public ClientDemandDetail() {
+    public FullDemandDetail() {
         super();
     }
 
     /**
-     * Method created ClientDemandDetail from provided Demand domain object.
+     * Method created FullDemandDetail from provided Demand domain object.
      * @param demand
-     * @return ClientDemandDetail
+     * @return FullDemandDetail
      */
-    public static ClientDemandDetail createDemandDetail(Demand demand) {
+    public static FullDemandDetail createDemandDetail(Demand demand) {
 
-        ClientDemandDetail detail = new ClientDemandDetail();
+        FullDemandDetail detail = new FullDemandDetail();
         detail.setDemandId(demand.getId());
         detail.setTitle(demand.getTitle());
         detail.setDescription(demand.getDescription());
@@ -139,7 +139,7 @@ public class ClientDemandDetail extends BaseDemandDetail implements Serializable
 
     @Override
     public String toString() {
-        return " ++ ClientDemandDetail{"
+        return "++ FullDemandDetail{"
                 + localities + "\n localities="
                 + categories + "\n categories="
                 + clientId + "\n clientId="

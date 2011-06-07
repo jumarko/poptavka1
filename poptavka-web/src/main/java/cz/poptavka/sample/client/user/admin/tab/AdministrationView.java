@@ -34,7 +34,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
@@ -56,7 +56,7 @@ public class AdministrationView extends Composite implements
      * @return the dataProvider
      */
     @Override
-    public ListDataProvider<ClientDemandDetail> getDataProvider() {
+    public ListDataProvider<FullDemandDetail> getDataProvider() {
 //        ColumnSortEvent fire = ColumnSortEvent.fire(this, cellTable.getColumnSortList());
 //        cellTable.fireEvent(fire);
         return dataProvider;
@@ -66,7 +66,7 @@ public class AdministrationView extends Composite implements
      * @return the clientIdColumn
      */
     @Override
-    public Column<ClientDemandDetail, String> getClientIdColumn() {
+    public Column<FullDemandDetail, String> getClientIdColumn() {
         return clientIdColumn;
     }
 
@@ -74,7 +74,7 @@ public class AdministrationView extends Composite implements
      * @return the demandTypeColumn
      */
     @Override
-    public Column<ClientDemandDetail, String> getDemandTypeColumn() {
+    public Column<FullDemandDetail, String> getDemandTypeColumn() {
         return demandTypeColumn;
     }
 
@@ -84,7 +84,7 @@ public class AdministrationView extends Composite implements
     }
 
     @Override
-    public CellTable<ClientDemandDetail> getCellTable() {
+    public CellTable<FullDemandDetail> getCellTable() {
         return cellTable;
     }
 
@@ -108,7 +108,7 @@ public class AdministrationView extends Composite implements
      * @return the demandStatusColumn
      */
     @Override
-    public Column<ClientDemandDetail, String> getDemandStatusColumn() {
+    public Column<FullDemandDetail, String> getDemandStatusColumn() {
         return demandStatusColumn;
     }
 
@@ -116,7 +116,7 @@ public class AdministrationView extends Composite implements
      * @return the demandExpirationColumn
      */
     @Override
-    public Column<ClientDemandDetail, Date> getDemandExpirationColumn() {
+    public Column<FullDemandDetail, Date> getDemandExpirationColumn() {
         return demandExpirationColumn;
     }
 
@@ -124,14 +124,14 @@ public class AdministrationView extends Composite implements
      * @return the demandEndColumn
      */
     @Override
-    public Column<ClientDemandDetail, Date> getDemandEndColumn() {
+    public Column<FullDemandDetail, Date> getDemandEndColumn() {
         return demandEndColumn;
     }
 
     /**
      * @return the selectionModel
      */
-    public SingleSelectionModel<ClientDemandDetail> getSelectionModel() {
+    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
         return selectionModel;
     }
 
@@ -148,7 +148,7 @@ public class AdministrationView extends Composite implements
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
     @UiField(provided = true)
-    CellTable<ClientDemandDetail> cellTable;
+    CellTable<FullDemandDetail> cellTable;
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
@@ -166,14 +166,14 @@ public class AdministrationView extends Composite implements
     /**
      * Data provider that will cell table with data.
      */
-    private ListDataProvider<ClientDemandDetail> dataProvider = new ListDataProvider<ClientDemandDetail>();
-    private SingleSelectionModel<ClientDemandDetail> selectionModel;
+    private ListDataProvider<FullDemandDetail> dataProvider = new ListDataProvider<FullDemandDetail>();
+    private SingleSelectionModel<FullDemandDetail> selectionModel;
     /** Editable Columns in CellTable. **/
-    private Column<ClientDemandDetail, String> clientIdColumn;
-    private Column<ClientDemandDetail, String> demandTypeColumn;
-    private Column<ClientDemandDetail, String> demandStatusColumn;
-    private Column<ClientDemandDetail, Date> demandExpirationColumn;
-    private Column<ClientDemandDetail, Date> demandEndColumn;
+    private Column<FullDemandDetail, String> clientIdColumn;
+    private Column<FullDemandDetail, String> demandTypeColumn;
+    private Column<FullDemandDetail, String> demandStatusColumn;
+    private Column<FullDemandDetail, Date> demandExpirationColumn;
+    private Column<FullDemandDetail, Date> demandEndColumn;
     private final ClientDemandType[] demandTypes = ClientDemandType.values();
     private final DemandStatusType[] demandStatuses = DemandStatusType.values();
 
@@ -189,7 +189,7 @@ public class AdministrationView extends Composite implements
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        cellTable = new CellTable<ClientDemandDetail>(KEY_PROVIDER);
+        cellTable = new CellTable<FullDemandDetail>(KEY_PROVIDER);
         cellTable.setWidth("100%", true);
 //        cellTable.setRowCount(2, true);
 
@@ -199,7 +199,7 @@ public class AdministrationView extends Composite implements
 
         // TODO ivlcek - make it working without keyprovider
         // Attach a column sort handler to the ListDataProvider to sort the list.
-        ListHandler<ClientDemandDetail> sortHandler = new ListHandler<ClientDemandDetail>(
+        ListHandler<FullDemandDetail> sortHandler = new ListHandler<FullDemandDetail>(
                 dataProvider.getList());
         cellTable.addColumnSortHandler(sortHandler);
 
@@ -211,12 +211,12 @@ public class AdministrationView extends Composite implements
 //        pager.setPageSize(5);
 
         // Add a selection model to handle user selection.
-//        final MultiSelectionModel<ClientDemandDetail> selectionModel =
-//        new MultiSelectionModel<ClientDemandDetail>(KEY_PROVIDER);
+//        final MultiSelectionModel<FullDemandDetail> selectionModel =
+//        new MultiSelectionModel<FullDemandDetail>(KEY_PROVIDER);
         // Add a single selection model to handle user selection.
-        selectionModel = new SingleSelectionModel<ClientDemandDetail>(KEY_PROVIDER);
+        selectionModel = new SingleSelectionModel<FullDemandDetail>(KEY_PROVIDER);
         cellTable.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<ClientDemandDetail>createCheckboxManager());
+                DefaultSelectionEventManager.<FullDemandDetail>createCheckboxManager());
 
         // Initialize the columns.
         initTableColumns(getSelectionModel(), sortHandler);
@@ -225,16 +225,16 @@ public class AdministrationView extends Composite implements
     /**
      * Add the columns to the table.
      */
-    private void initTableColumns(final SelectionModel<ClientDemandDetail> selectionModel,
-            ListHandler<ClientDemandDetail> sortHandler) {
+    private void initTableColumns(final SelectionModel<FullDemandDetail> selectionModel,
+            ListHandler<FullDemandDetail> sortHandler) {
 
         // Checkbox column. This table will uses a checkbox column for selection.
         // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
         // mouse selection.
-        Column<ClientDemandDetail, Boolean> checkColumn = new Column<ClientDemandDetail, Boolean>(
+        Column<FullDemandDetail, Boolean> checkColumn = new Column<FullDemandDetail, Boolean>(
                 new CheckboxCell(true, false)) {
             @Override
-            public Boolean getValue(ClientDemandDetail object) {
+            public Boolean getValue(FullDemandDetail object) {
                 // Get the value from the selection model.
                 return selectionModel.isSelected(object);
             }
@@ -243,16 +243,16 @@ public class AdministrationView extends Composite implements
         cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
 
         // Demand ID.
-        Column<ClientDemandDetail, String> idColumn = new Column<ClientDemandDetail, String>(new TextCell()) {
+        Column<FullDemandDetail, String> idColumn = new Column<FullDemandDetail, String>(new TextCell()) {
             @Override
-            public String getValue(ClientDemandDetail object) {
+            public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getDemandId());
             }
         };
         idColumn.setSortable(true);
-        sortHandler.setComparator(idColumn, new Comparator<ClientDemandDetail>() {
+        sortHandler.setComparator(idColumn, new Comparator<FullDemandDetail>() {
             @Override
-            public int compare(ClientDemandDetail o1, ClientDemandDetail o2) {
+            public int compare(FullDemandDetail o1, FullDemandDetail o2) {
                 return Long.valueOf(o1.getDemandId()).compareTo(Long.valueOf(o2.getDemandId()));
             }
         });
@@ -260,17 +260,17 @@ public class AdministrationView extends Composite implements
         cellTable.setColumnWidth(idColumn, 50, Unit.PX);
 
         // Clietn ID.
-        clientIdColumn = new Column<ClientDemandDetail, String>(
+        clientIdColumn = new Column<FullDemandDetail, String>(
                 new EditTextCell()) {
             @Override
-            public String getValue(ClientDemandDetail object) {
+            public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getClientId());
             }
         };
         getClientIdColumn().setSortable(true);
-        sortHandler.setComparator(getClientIdColumn(), new Comparator<ClientDemandDetail>() {
+        sortHandler.setComparator(getClientIdColumn(), new Comparator<FullDemandDetail>() {
             @Override
-            public int compare(ClientDemandDetail o1, ClientDemandDetail o2) {
+            public int compare(FullDemandDetail o1, FullDemandDetail o2) {
                 return Long.valueOf(o1.getClientId()).compareTo(Long.valueOf(o2.getClientId()));
             }
         });
@@ -284,10 +284,10 @@ public class AdministrationView extends Composite implements
             demandTypeNames.add(clientDemandType.getValue());
         }
         SelectionCell demandTypeCell = new SelectionCell(demandTypeNames);
-        demandTypeColumn = new Column<ClientDemandDetail, String>(
+        demandTypeColumn = new Column<FullDemandDetail, String>(
                 demandTypeCell) {
             @Override
-            public String getValue(ClientDemandDetail object) {
+            public String getValue(FullDemandDetail object) {
                 // TODO ivlcek - localize message
                 return object.getDemandType();
             }
@@ -302,10 +302,10 @@ public class AdministrationView extends Composite implements
             demandStatusNames.add(demandStatusType.getValue());
         }
         SelectionCell demandStatusCell = new SelectionCell(demandStatusNames);
-        demandStatusColumn = new Column<ClientDemandDetail, String>(
+        demandStatusColumn = new Column<FullDemandDetail, String>(
                 demandStatusCell) {
             @Override
-            public String getValue(ClientDemandDetail object) {
+            public String getValue(FullDemandDetail object) {
                 // TODO ivlcek - localize message
                 return object.getDemandStatus();
             }
@@ -318,8 +318,8 @@ public class AdministrationView extends Composite implements
         demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration",
                 new GetValue<Date>() {
                     @Override
-                    public Date getValue(ClientDemandDetail clientDemandDetail) {
-                        return clientDemandDetail.getValidToDate();
+                    public Date getValue(FullDemandDetail fullDemandDetail) {
+                        return fullDemandDetail.getValidToDate();
                     }
                 }, null);
 
@@ -327,8 +327,8 @@ public class AdministrationView extends Composite implements
         demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End",
                 new GetValue<Date>() {
                     @Override
-                    public Date getValue(ClientDemandDetail clientDemandDetail) {
-                        return clientDemandDetail.getEndDate();
+                    public Date getValue(FullDemandDetail fullDemandDetail) {
+                        return fullDemandDetail.getEndDate();
                     }
                 }, null);
     }
@@ -339,7 +339,7 @@ public class AdministrationView extends Composite implements
      * @param <C> the cell type
      */
     private static interface GetValue<C> {
-        C getValue(ClientDemandDetail clientDemandDetail);
+        C getValue(FullDemandDetail fullDemandDetail);
     }
 
     /**
@@ -350,11 +350,11 @@ public class AdministrationView extends Composite implements
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<ClientDemandDetail, C> addColumn(Cell<C> cell, String headerText,
-            final GetValue<C> getter, FieldUpdater<ClientDemandDetail, C> fieldUpdater) {
-        Column<ClientDemandDetail, C> column = new Column<ClientDemandDetail, C>(cell) {
+    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell, String headerText,
+            final GetValue<C> getter, FieldUpdater<FullDemandDetail, C> fieldUpdater) {
+        Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
             @Override
-            public C getValue(ClientDemandDetail object) {
+            public C getValue(FullDemandDetail object) {
                 return getter.getValue(object);
             }
         };
@@ -366,11 +366,11 @@ public class AdministrationView extends Composite implements
         return column;
     }
     /**
-     * The key provider that provides the unique ID of a ClientDemandDetail.
+     * The key provider that provides the unique ID of a FullDemandDetail.
      */
-    private static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER = new ProvidesKey<ClientDemandDetail>() {
+    private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
         @Override
-        public Object getKey(ClientDemandDetail item) {
+        public Object getKey(FullDemandDetail item) {
             return item == null ? null : item.getDemandId();
         }
     };

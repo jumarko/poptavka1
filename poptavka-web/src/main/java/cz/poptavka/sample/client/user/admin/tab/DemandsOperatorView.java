@@ -23,7 +23,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 public class DemandsOperatorView extends Composite
     implements DemandsOperatorPresenter.MyDemandsOperatorViewInterface {
@@ -44,7 +44,7 @@ public class DemandsOperatorView extends Composite
     private Button rejectBtn;
 
     @UiField(provided = true)
-    CellTable<ClientDemandDetail> table;
+    CellTable<FullDemandDetail> table;
 
     @UiField
     SimplePanel detailSection;
@@ -59,9 +59,9 @@ public class DemandsOperatorView extends Composite
     /**
      * Data provider that will cell table with data.
      */
-    private ListDataProvider<ClientDemandDetail> dataProvider = new ListDataProvider<ClientDemandDetail>();
+    private ListDataProvider<FullDemandDetail> dataProvider = new ListDataProvider<FullDemandDetail>();
 
-    final SingleSelectionModel<ClientDemandDetail> selectionModel = new SingleSelectionModel<ClientDemandDetail>();
+    final SingleSelectionModel<FullDemandDetail> selectionModel = new SingleSelectionModel<FullDemandDetail>();
 
 
     @Override
@@ -70,11 +70,11 @@ public class DemandsOperatorView extends Composite
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public CellTable<ClientDemandDetail> getCellTable() {
+    public CellTable<FullDemandDetail> getCellTable() {
         return table;
     }
 
-    public SingleSelectionModel<ClientDemandDetail> getSelectionModel() {
+    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
         return selectionModel;
     }
 
@@ -120,14 +120,14 @@ public class DemandsOperatorView extends Composite
     /**
      * @return the dataProvider
      */
-    public ListDataProvider<ClientDemandDetail> getDataProvider() {
+    public ListDataProvider<FullDemandDetail> getDataProvider() {
         return dataProvider;
     }
 
 
     private void initCellTable(
-            final SingleSelectionModel<ClientDemandDetail> tableSelectionModel) {
-        table = new CellTable<ClientDemandDetail>(2);
+            final SingleSelectionModel<FullDemandDetail> tableSelectionModel) {
+        table = new CellTable<FullDemandDetail>(2);
         table.setSelectionModel(tableSelectionModel);
         dataProvider.addDataDisplay(table);
         table.setWidth("100%", true);
@@ -135,7 +135,7 @@ public class DemandsOperatorView extends Composite
         // TODO ivlcek - make it working without keyprovider
         // Attach a column sort handler to the ListDataProvider to sort the
         // list.
-        ListHandler<ClientDemandDetail> sortHandler = new ListHandler<ClientDemandDetail>(
+        ListHandler<FullDemandDetail> sortHandler = new ListHandler<FullDemandDetail>(
                 dataProvider.getList());
         table.addColumnSortHandler(sortHandler);
 
@@ -154,13 +154,13 @@ public class DemandsOperatorView extends Composite
      * Add the columns to the table.
      */
     private void initTableColumns(
-            final SelectionModel<ClientDemandDetail> tableSelectionModel,
-            ListHandler<ClientDemandDetail> sortHandler) {
+            final SelectionModel<FullDemandDetail> tableSelectionModel,
+            ListHandler<FullDemandDetail> sortHandler) {
 
         // Create name column.
         addColumn(new TextCell(), "Title", new GetValue<String>() {
-            public String getValue(ClientDemandDetail clientDemandDetail) {
-                return clientDemandDetail.getTitle();
+            public String getValue(FullDemandDetail fullDemandDetail) {
+                return fullDemandDetail.getTitle();
             }
         });
 
@@ -168,15 +168,15 @@ public class DemandsOperatorView extends Composite
         DateTimeFormat dateFormat = DateTimeFormat
                 .getFormat(PredefinedFormat.DATE_SHORT);
         addColumn(new DateCell(dateFormat), "EndDate", new GetValue<Date>() {
-            public Date getValue(ClientDemandDetail clientDemandDetail) {
-                return clientDemandDetail.getEndDate();
+            public Date getValue(FullDemandDetail fullDemandDetail) {
+                return fullDemandDetail.getEndDate();
             }
         });
 
         // Create name column.
         addColumn(new TextCell(), "Price", new GetValue<String>() {
-            public String getValue(ClientDemandDetail clientDemandDetail) {
-                return clientDemandDetail.getPrice().toString() + " czk";
+            public String getValue(FullDemandDetail fullDemandDetail) {
+                return fullDemandDetail.getPrice().toString() + " czk";
             }
         });
     }
@@ -188,7 +188,7 @@ public class DemandsOperatorView extends Composite
      *            the cell type
      */
     private static interface GetValue<C> {
-        C getValue(ClientDemandDetail contact);
+        C getValue(FullDemandDetail contact);
     }
 
     /**
@@ -203,11 +203,11 @@ public class DemandsOperatorView extends Composite
      * @param getter
      *            the value getter for the cell
      */
-    private <C> Column<ClientDemandDetail, C> addColumn(Cell<C> cell,
+    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell,
             String headerText, final GetValue<C> getter) {
-        Column<ClientDemandDetail, C> column = new Column<ClientDemandDetail, C>(cell) {
+        Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
             @Override
-            public C getValue(ClientDemandDetail object) {
+            public C getValue(FullDemandDetail object) {
                 return getter.getValue(object);
             }
         };

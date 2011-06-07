@@ -25,7 +25,7 @@ import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter.F
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 @Presenter(view = NewDemandView.class, multiple = true)
 public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDemandInterface, UserEventBus> {
@@ -98,7 +98,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
     public void createNewDemand() {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
-        ClientDemandDetail demand = new ClientDemandDetail();
+        FullDemandDetail demand = new FullDemandDetail();
 
         demand.setBasicInfo(((FormDemandBasicInterface)
                 view.getHolderPanel(BASIC).getWidget()).getValues());

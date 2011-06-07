@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widgets;
+package cz.poptavka.sample.client.user.demands.widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 // TODO beho delete after making sure, it can't be used.
 public class OffersFlexTable extends FlexTable {
@@ -50,7 +50,7 @@ public class OffersFlexTable extends FlexTable {
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
 
-    private ArrayList<ClientDemandDetail> demands = new ArrayList<ClientDemandDetail>();
+    private ArrayList<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
     private ArrayList<ArrayList<OfferDetail>> offers = new ArrayList<ArrayList<OfferDetail>>();
 
     public OffersFlexTable() {
@@ -89,16 +89,16 @@ public class OffersFlexTable extends FlexTable {
     }
 
 
-    public void setData(ArrayList<ClientDemandDetail> demands) {
+    public void setData(ArrayList<FullDemandDetail> demands) {
         if (this.demands.hashCode() != demands.hashCode()) {
             this.demands = demands;
-            for (ClientDemandDetail demand : this.demands) {
+            for (FullDemandDetail demand : this.demands) {
                 setDemandRow(demand);
             }
         }
     }
 
-    public void setDemandRow(ClientDemandDetail demand) {
+    public void setDemandRow(FullDemandDetail demand) {
         int nextRow = this.getRowCount();
         ToggleButton button = new ToggleButton(new Image(StyleResource.INSTANCE.images().showMiddle()),
                 new Image(StyleResource.INSTANCE.images().showDown()));
