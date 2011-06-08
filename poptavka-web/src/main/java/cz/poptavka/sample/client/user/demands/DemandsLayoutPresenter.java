@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
@@ -12,6 +13,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
@@ -53,14 +55,19 @@ public class DemandsLayoutPresenter
 
         void setAdministrationToken(String linkString);
 
+        SimplePanel getContentPanel();
+
+        // devel buttons
+        // TODO delete
         Button getDevelButton();
 
-
+        Button getTestBtn();
 
     }
 
     // TODO clean up after development
     private PotentialDemandsPresenter develPresenter = null;
+    private LoadingDiv loading = null;
 
     public void bind() {
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
@@ -81,6 +88,12 @@ public class DemandsLayoutPresenter
                 develPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
                 develPresenter.onInvokePotentialDemands();
 //                eventBus.createLoadingPopup(String loadingMessage, Widget anchor)
+            }
+        });
+        view.getTestBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.toggleLoading();
             }
         });
     }
@@ -108,7 +121,19 @@ public class DemandsLayoutPresenter
     }
 
     public void onDisplayContent(Widget contentWidget) {
+        onToggleLoading();
         view.setContent(contentWidget);
+    }
+
+    public void onToggleLoading() {
+        if (loading == null) {
+            GWT.log("  - loading created");
+            loading = new LoadingDiv(view.getContentPanel().getParent());
+        } else {
+            GWT.log("  - loading removed");
+            loading.getElement().removeFromParent();
+            loading = null;
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.shared.domain.type.DemandDetailType;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
@@ -15,11 +16,13 @@ import cz.poptavka.sample.domain.demand.Demand;
  * @author Beho
  *
  */
-public class FullDemandDetail extends BaseDemandDetail implements Serializable {
+public class FullDemandDetail extends BaseDemandDetail implements Serializable, DemandDetail {
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
+
+    private static final DemandDetailType TYPE = DemandDetailType.FULL;
 
     public enum DemandField {
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
@@ -42,17 +45,10 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable {
     /**
      * Method created FullDemandDetail from provided Demand domain object.
      * @param demand
-     * @return FullDemandDetail
+     * @return DemandDetail
      */
-    public static FullDemandDetail createDemandDetail(Demand demand) {
-
-        FullDemandDetail detail = new FullDemandDetail();
-        detail.setDemandId(demand.getId());
-        detail.setTitle(demand.getTitle());
-        detail.setDescription(demand.getDescription());
-        detail.setPrice(demand.getPrice());
-        detail.setEndDate(demand.getEndDate());
-        detail.setValidToDate(demand.getValidTo());
+    public static DemandDetail createDemandDetail(Demand demand) {
+        FullDemandDetail detail = (FullDemandDetail) BaseDemandDetail.fillDemandDetail(new FullDemandDetail(), demand);
         detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
         detail.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
         //categories
@@ -139,15 +135,18 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "++ FullDemandDetail{"
-                + localities + "\n localities="
-                + categories + "\n categories="
-                + clientId + "\n clientId="
-                + maxOffers + "\n maxOffers="
-                + minRating + "\n minRating="
-                + demandType + "\n demandType="
-                + demandStatus + "\n demandStauts="
-                + "}";
+
+        return super.toString()
+                + "* FullDemandDetail:"
+                + "\n     localities="
+                + localities + "\n     categories="
+                + categories + "\n     clientId="
+                + clientId + "\n     maxOffers="
+                + maxOffers + "\n     minRating="
+                + minRating + "\n     demandType="
+                + demandType + "\n     demandStatus="
+                + demandStatus + "\n"
+                + "TEST na TYPE: " + getType();
     }
 
     public String getDemandStatus() {

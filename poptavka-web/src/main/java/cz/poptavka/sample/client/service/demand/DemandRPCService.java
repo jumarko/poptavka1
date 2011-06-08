@@ -16,8 +16,9 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {
@@ -26,7 +27,7 @@ public interface DemandRPCService extends RemoteService {
 
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId);
 
-    List<FullDemandDetail> getAllDemands();
+    List<DemandDetail> getAllDemands();
 
     Long getAllDemandsCount();
 
@@ -34,36 +35,35 @@ public interface DemandRPCService extends RemoteService {
 
     Long getDemandsCount(Locality[] localities);
 
-    List<FullDemandDetail> getDemands(ResultCriteria resultCriteria);
+    List<DemandDetail> getDemands(ResultCriteria resultCriteria);
 
-    List<FullDemandDetail> getDemands(Locality[] localities);
+    List<DemandDetail> getDemands(Locality[] localities);
 
-    List<FullDemandDetail> getDemands(Category[] categories);
+    List<DemandDetail> getDemands(Category[] categories);
 
-    List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
+    List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
 
-    List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories);
+    List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories);
 
-    List<FullDemandDetail> getDemandsByCategory(int fromResult, int toResult, long id);
+    List<DemandDetail> getDemandsByCategory(int fromResult, int toResult, long id);
 
-    List<FullDemandDetail> getDemandsByLocality(int fromResult, int toResult, String code);
+    List<DemandDetail> getDemandsByLocality(int fromResult, int toResult, String code);
 
-    ArrayList<FullDemandDetail> getClientDemands(long id);
+    ArrayList<DemandDetail> getClientDemands(long id);
 
     ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
 
     /**
-     * Gets FullDemandDetail from DB.
+     * Gets DemandDetail from DB.
      *
      * @param demandId id of demand
      * @param typeOfDetail type of Detail that should be returned
-     * @return FullDemandDetail of selected DemandType
+     * @return DemandDetail of selected DemandType
      */
-    FullDemandDetail getFullDemandDetail(Long demandId);
-
-    BaseDemandDetail getBaseDemandDetail(Long demandId);
+    DemandDetail getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     Demand getWholeDemand(Long demandId);
 
-    List<FullDemandDetail> getDemands(int fromResult, int toResult);
+    List<DemandDetail> getDemands(int fromResult, int toResult);
+
 }

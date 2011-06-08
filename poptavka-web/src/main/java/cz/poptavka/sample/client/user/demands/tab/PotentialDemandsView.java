@@ -55,8 +55,6 @@ public class PotentialDemandsView extends OverflowComposite implements
     @UiField
     SimplePanel develPanel;
 
-    private ListDataProvider<PotentialMessageDetail> dataProvider = new ListDataProvider<PotentialMessageDetail>();
-
     @Override
     public void createView() {
         demandTable = new PotentialDemandTable(MSGS, RSCS);

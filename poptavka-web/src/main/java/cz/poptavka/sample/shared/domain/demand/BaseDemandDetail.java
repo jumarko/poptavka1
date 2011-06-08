@@ -5,9 +5,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.shared.domain.type.DemandDetailType;
 
 
-public class BaseDemandDetail implements Serializable {
+public class BaseDemandDetail implements Serializable, DemandDetail {
 
     /**
      *
@@ -18,6 +19,7 @@ public class BaseDemandDetail implements Serializable {
      */
     private static final String HTML_UNREAD_START = "<strong>";
     private static final String HTML_UNREAD_END = "</strong>";
+    private DemandDetailType detailType = DemandDetailType.BASE;
 
     private long demandId;
     // messageId = threadRoot
@@ -37,18 +39,20 @@ public class BaseDemandDetail implements Serializable {
      * @param demand
      * @return FullDemandDetail
      */
-    public static BaseDemandDetail createDemandDetail(Demand demand) {
+    public static DemandDetail createDemandDetail(Demand demand) {
+        return fillDemandDetail(new BaseDemandDetail(), demand);
+    }
 
-        BaseDemandDetail detail = new BaseDemandDetail();
+    public static DemandDetail fillDemandDetail(DemandDetail detail, Demand demand) {
         detail.setDemandId(demand.getId());
         detail.setTitle(demand.getTitle());
         detail.setDescription(demand.getDescription());
         detail.setPrice(demand.getPrice());
         detail.setEndDate(demand.getEndDate());
         detail.setValidToDate(demand.getValidTo());
-        //categories
         return detail;
     }
+
 
     public BaseDemandDetail() {    }
 
@@ -130,16 +134,18 @@ public class BaseDemandDetail implements Serializable {
     }
 
     public String toString() {
-        return "BaseDemandDetail{"
-                + demandId + "\n demandId="
-                + title + "\n title="
-                + description + "\n Description="
-                + price + "\n Price="
-                + endDate + "\n endDate="
-                + validToDate + "\n validToDate="
-                + read + "\n isRead="
-                + starred + "\n isStarred="
-                + '}';
+        return "\nGlobal Demand Detail Info"
+                + "\n- BaseDemandDetail:"
+                + "\n    demandId="
+                + demandId + "\n     title="
+                + title + "\n    Description="
+                + description + "\n  Price="
+                + price + "\n    endDate="
+                + endDate + "\n  validToDate="
+                + validToDate + "\n  isRead="
+                + read + "\n     isStarred="
+                + starred + "\n  detailType="
+                + detailType + "\n";
     }
 
     /**
@@ -154,6 +160,15 @@ public class BaseDemandDetail implements Serializable {
         } else {
             return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
         }
+    }
+
+    public void setType(DemandDetailType detailType) {
+        this.detailType = detailType;
+    }
+
+    @Override
+    public DemandDetailType getType() {
+        return detailType;
     }
 
 }

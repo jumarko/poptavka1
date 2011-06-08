@@ -47,4 +47,9 @@ public class DetailWrapperView extends Composite
         return replyHolder;
     }
 
+    @Override
+    public SimplePanel getDetailHolder() {
+        return detailHolder;
+    }
+
 }

@@ -26,7 +26,7 @@ import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -122,12 +122,10 @@ public interface UserEventBus extends EventBusWithLookup {
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setFullDemandDetail(FullDemandDetail detail, ViewType typeOfDetail);
-    @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setBaseDemandDetail(BaseDemandDetail result, ViewType typeOfDetail);
+    void setDemandDetail(DemandDetail detail, ViewType typeOfDetail);
 
     /** method for displaying conversation to selected demand. **/
-    @Event(handlers = UserPresenter.class)
+    @Event(handlers = {UserPresenter.class, DetailWrapperPresenter.class })
     void requestPotentialDemandConversation(long messageId, long userMessageId);
 
     @Event(handlers = MessageHandler.class)
@@ -187,7 +185,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void refreshUpdatedDemand(FullDemandDetail demand);
 
     @Event(handlers = AdministrationPresenter.class)
-    void setAllDemands(List<FullDemandDetail> demands);
+    void setAllDemands(List<DemandDetail> demands);
 
     @Event(handlers = AdminDemandInfoPresenter.class)
     void showAdminDemandDetail(FullDemandDetail selectedObject);
@@ -304,5 +302,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MyDemandsPresenter.class)
     void responseClientDemands(ArrayList<MessageDetail> result);
 
+    @Event(handlers = DemandsLayoutPresenter.class)
+    void toggleLoading();
 
 }

@@ -20,6 +20,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
@@ -80,15 +81,15 @@ public class AdministrationPresenter
         eventBus.getAllDemands();
     }
 
-    public void onSetAllDemands(List<FullDemandDetail> fullDemandDetails) {
+    public void onSetAllDemands(List<DemandDetail> fullDemandDetails) {
         // Add the data to the data provider, which automatically pushes it to the widget.
         // TODO ivlcek - try to set list in for cycle. Maybe it depends on how you populate
         // data into ListProvider. DONE - it realy depends on how you set data to list provider
 //        view.getDataProvider().setList(demandDetails);
 
         List<FullDemandDetail> list = view.getDataProvider().getList();
-        for (FullDemandDetail d : fullDemandDetails) {
-            list.add(d);
+        for (DemandDetail d : fullDemandDetails) {
+            list.add((FullDemandDetail) d);
         }
 
         // TODO ivlcek - try to remove refreshDispalys

@@ -25,6 +25,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.home.demands.demand.DemandView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 /**
@@ -45,11 +46,11 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         ListBox getLocalityList();
 
-        AsyncDataProvider<FullDemandDetail> getDataProvider();
+        AsyncDataProvider<DemandDetail> getDataProvider();
 
-        void setDataProvider(AsyncDataProvider<FullDemandDetail> dataProvider);
+        void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider);
 
-        CellTable<FullDemandDetail> getCellTable();
+        CellTable<DemandDetail> getCellTable();
 
         SimplePager getPager();
 
@@ -92,13 +93,13 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
 //        dataProvider.addDataDisplay(view.getCellTable());
         // Add a selection model to handle user selection.
-        final SingleSelectionModel<FullDemandDetail> selectionModel = new SingleSelectionModel<FullDemandDetail>();
+        final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
         view.getCellTable().setSelectionModel(selectionModel);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                FullDemandDetail selected = selectionModel.getSelectedObject();
+                DemandDetail selected = selectionModel.getSelectedObject();
                 if (selected != null) {
                     DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "progress");
                     //eventBus.getDemand(selected);
@@ -193,17 +194,17 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         });
     }
 
-    public void onDisplayDemands(Collection<FullDemandDetail> result) {
+    public void onDisplayDemands(Collection<DemandDetail> result) {
 
-        List<FullDemandDetail> list = new ArrayList<FullDemandDetail>(result);
+        List<DemandDetail> list = new ArrayList<DemandDetail>(result);
 
         dataProvider.updateRowData(start, list);
     }
 
-    public void onSetDemand(FullDemandDetail demand) {
+    public void onSetDemand(DemandDetail demand) {
         view.getDemandDetailLabel().setVisible(true);
         view.getDemandView().setVisible(true);
-        view.getDemandView().setDemand(demand);
+        view.getDemandView().setDemand((FullDemandDetail) demand);
         DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
     }
 }

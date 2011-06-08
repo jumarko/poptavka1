@@ -79,8 +79,6 @@ public class MyDemandsPresenter extends
         panel.show();
         GWT.log("Demands are on the way - getDemands!");
         eventBus.requestClientDemands();
-
-        eventBus.displayContent(view.getWidgetView());
     }
 
     public void onResponseClientDemands(ArrayList<MessageDetail> demandMessageList) {
@@ -91,6 +89,8 @@ public class MyDemandsPresenter extends
         }
         GWT.log("DATA SIZE: " + list.size());
         refreshDisplays();
+
+        eventBus.displayContent(view.getWidgetView());
     }
 
 //    public void onResponseClientDemands(ArrayList<FullDemandDetail> demands) {

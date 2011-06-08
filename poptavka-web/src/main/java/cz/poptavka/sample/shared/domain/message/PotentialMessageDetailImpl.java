@@ -17,19 +17,7 @@ public class PotentialMessageDetailImpl extends MessageDetailImpl implements Ser
 
     public static PotentialMessageDetail createMessageDetail(UserMessage message) {
         PotentialMessageDetail detail = new PotentialMessageDetailImpl();
-        detail.setMessageId(message.getMessage().getId());
-        detail.setBody(message.getMessage().getBody());
-        detail.setCreated(message.getMessage().getCreated());
-//        m.setFirstBornId(serialVersionUID);
-        detail.setMessageState(message.getMessage().getMessageState().name());
-//        m.setNexSiblingId(serialVersionUID);
-        detail.setParentId(message.getMessage().getParent() == null ? detail.getThreadRootId()
-                : message.getMessage().getParent().getId());
-//        m.setReceiverId();
-        detail.setSenderId(message.getMessage().getSender().getId());
-        detail.setSent(message.getMessage().getSent());
-        detail.setSubject(message.getMessage().getSubject());
-        detail.setThreadRootId(message.getMessage().getThreadRoot().getId());
+        detail = (PotentialMessageDetail) MessageDetailImpl.fillMessageDetail(detail, message.getMessage());
         detail.setUserMessageId(message.getId());
         detail.setDemandId(message.getMessage().getDemand().getId());
         detail.setPrice(message.getMessage().getDemand().getPrice());

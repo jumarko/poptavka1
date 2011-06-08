@@ -10,12 +10,13 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.type.ViewType;
 
 public interface DemandRPCServiceAsync {
 
-    void getAllDemands(AsyncCallback<List<FullDemandDetail>> callback);
+    void getAllDemands(AsyncCallback<List<DemandDetail>> callback);
 
     void getAllDemandsCount(AsyncCallback<Long> callback);
 
@@ -26,34 +27,33 @@ public interface DemandRPCServiceAsync {
     void createNewDemand(FullDemandDetail newDemand, Long clientId,
             AsyncCallback<FullDemandDetail> callback);
 
-    void getDemands(Category[] categories, AsyncCallback<List<FullDemandDetail>> callback);
+    void getDemands(Category[] categories, AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemands(Locality[] localities, AsyncCallback<List<FullDemandDetail>> callback);
+    void getDemands(Locality[] localities, AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemands(ResultCriteria resultCriteria, AsyncCallback<List<FullDemandDetail>> callback);
+    void getDemands(ResultCriteria resultCriteria, AsyncCallback<List<DemandDetail>> callback);
 
     void getDemands(ResultCriteria resultCriteria, Category[] categories,
-            AsyncCallback<List<FullDemandDetail>> callback);
+            AsyncCallback<List<DemandDetail>> callback);
 
-    void getDemandsByCategory(int fromResult, int toResult, long id, AsyncCallback<List<FullDemandDetail>> callback);
+    void getDemandsByCategory(int fromResult, int toResult, long id, AsyncCallback<List<DemandDetail>> callback);
 
     void getDemandsByLocality(int fromResult, int toResult, String code,
-            AsyncCallback<List<FullDemandDetail>> callback);
+            AsyncCallback<List<DemandDetail>> callback);
 
     void getDemands(ResultCriteria resultCriteria, Locality[] localities,
-            AsyncCallback<List<FullDemandDetail>> callback);
+            AsyncCallback<List<DemandDetail>> callback);
 
-    void getClientDemands(long id, AsyncCallback<ArrayList<FullDemandDetail>> callback);
+    void getClientDemands(long id, AsyncCallback<ArrayList<DemandDetail>> callback);
 
     void getDemandOffers(ArrayList<Long> idList, AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
 
     void updateDemand(FullDemandDetail demand, AsyncCallback<FullDemandDetail> asyncCallback);
 
-    void getFullDemandDetail(Long demandId, AsyncCallback<FullDemandDetail> callback);
-
     void getWholeDemand(Long demandId, AsyncCallback<Demand> callback);
 
-    void getDemands(int fromResult, int toResult, AsyncCallback<List<FullDemandDetail>> callback);
+    void getDemands(int fromResult, int toResult, AsyncCallback<List<DemandDetail>> callback);
 
-    void getBaseDemandDetail(Long demandId, AsyncCallback<BaseDemandDetail> callback);
+    void getDemandDetail(Long demandId, ViewType typeOfDetail, AsyncCallback<DemandDetail> callback);
+
 }

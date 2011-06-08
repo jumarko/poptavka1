@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 public class DemandDetailView extends Composite {
@@ -22,15 +23,27 @@ public class DemandDetailView extends Composite {
     @UiField ParagraphElement descArea;
     @UiField SpanElement typeSpan;
 
-    public DemandDetailView(FullDemandDetail demand) {
+    public DemandDetailView(DemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
-        titleHeader.setInnerText(demand.getTitle());
-        descArea.setInnerHTML(demand.getDescription());
-        typeSpan.setInnerHTML("Full Demand Detail");
+        switch (demand.getType()) {
+            case BASE:
+                init((BaseDemandDetail) demand);
+                break;
+            case FULL:
+                init((BaseDemandDetail) demand);
+                break;
+            default:
+                break;
+        }
     }
 
-    public DemandDetailView(BaseDemandDetail demand) {
-        initWidget(uiBinder.createAndBindUi(this));
+    private void init(BaseDemandDetail demand) {
+        titleHeader.setInnerText(demand.getTitle());
+        descArea.setInnerHTML(demand.getDescription());
+        typeSpan.setInnerHTML("Base Demand Detail");
+    }
+
+    private void init(FullDemandDetail demand) {
         titleHeader.setInnerText(demand.getTitle());
         descArea.setInnerHTML(demand.getDescription());
         typeSpan.setInnerHTML("Base Demand Detail");

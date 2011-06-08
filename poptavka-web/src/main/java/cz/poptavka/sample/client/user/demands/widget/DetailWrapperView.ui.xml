@@ -6,9 +6,13 @@
         .overflow {
             overflow: auto;
         }
+        .relative {
+            position: relative;
+            min-height: 50px;
+        }
     </ui:style>
     <g:HTMLPanel ui:field="container" styleName="{style.overflow}">
-        <g:SimplePanel ui:field="detailHolder">
+        <g:SimplePanel ui:field="detailHolder" styleName="{style.relative}">
             <g:HTML>
                 <center>
                     <h2>Demand Detail window</h2>
@@ -18,7 +22,7 @@
                 </center>
             </g:HTML>
         </g:SimplePanel>
-        <d:UserConversationPanel ui:field="conversationPanel"/>
+        <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
         <g:SimplePanel ui:field="replyHolder" />
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -8,10 +8,11 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+
 import cz.poptavka.sample.client.home.demands.demand.DemandPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 
 /**
  *
@@ -60,10 +61,10 @@ public interface DemandsEventBus extends EventBus {
     void setLocalityData(ArrayList<LocalityDetail> list);
 
     @Event(handlers = DemandsPresenter.class)
-    void displayDemands(Collection<FullDemandDetail> result);
+    void displayDemands(Collection<DemandDetail> result);
 
     @Event(handlers = DemandsPresenter.class)
-    void setDemand(FullDemandDetail demand);
+    void setDemand(DemandDetail demand);
 
     @Event(handlers = DemandsPresenter.class)
     void createAsyncDataProvider(final long result);

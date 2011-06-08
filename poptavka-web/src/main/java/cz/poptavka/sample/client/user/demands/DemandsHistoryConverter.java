@@ -53,8 +53,8 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 //            normal behaviour
 //            eventBus.dispatch(historyName);
 
-            GWT.log(historyName);
-
+            GWT.log("history name called: " + historyName);
+            eventBus.toggleLoading();
 
             //devel behaviour
             if (historyName.equals(DEMAND_MY)) {
@@ -97,7 +97,9 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
                 operatorPresenter = eventBus.addHandler(DemandsOperatorPresenter.class);
                 operatorPresenter.onInvokeDemandsOperator();
             }
+
         } else {
+            GWT.log("event marked to fire later: " + historyName);
             eventBus.atAccount();
             eventBus.markEventToLoad(historyName);
         }

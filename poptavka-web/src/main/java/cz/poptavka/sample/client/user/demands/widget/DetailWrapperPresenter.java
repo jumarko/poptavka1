@@ -17,7 +17,7 @@ import cz.poptavka.sample.client.user.messages.ReplyWindowPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -30,6 +30,8 @@ public class DetailWrapperPresenter extends
 
         void setDetail(Widget demandDetailWidget);
 
+        SimplePanel getDetailHolder();
+
         UserConversationPanel getConversationPanel();
 
         SimplePanel getReplyHolder();
@@ -38,6 +40,9 @@ public class DetailWrapperPresenter extends
     private ViewType type;
 
     private ReplyWindowPresenter replyPresenter = null;
+
+    private LoadingDiv detailLoader;
+    private LoadingDiv conversationLoader;
 
     /**
      * Initialize widget and sets his type.
@@ -58,14 +63,13 @@ public class DetailWrapperPresenter extends
      * @param detail FullDemandDetail to be displayed
      * @param typeOfDetail type of what detail section should handle this event
      */
-    public void onSetFullDemandDetail(FullDemandDetail detail, ViewType typeOfDetail) {
+    public void onSetDemandDetail(DemandDetail detail, ViewType typeOfDetail) {
         if (!typeOfDetail.equals(type)) {
             return;
         }
         view.setDetail(new DemandDetailView(detail));
-
         // GUI visual event
-        eventBus.loadingHide();
+        toggleDetailLoading();
     }
 
     public void onSetBaseDemandDetail(BaseDemandDetail detail, ViewType typeOfDetail) {
@@ -73,15 +77,10 @@ public class DetailWrapperPresenter extends
             return;
         }
         view.setDetail(new DemandDetailView(detail));
-        // create reply window
-        // POTENTIAL
-        // TODO reimplement reply window
-//        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
-//            setReplyWidget(detail.getDemandId());
-//        }
+
 
         // GUI visual event
-        eventBus.loadingHide();
+        toggleDetailLoading();
     }
 
     // TODO test
@@ -90,11 +89,11 @@ public class DetailWrapperPresenter extends
 //        if (!(!wrapperhandlerType.equals(type) || messageList == null)) {
 //            return;
 //        }
-
         // old and long, test commented one
         if (!wrapperhandlerType.equals(type)) {
             return;
         }
+        toggleConversationLoading();
         if (messageList == null) {
             return;
         }
@@ -119,7 +118,7 @@ public class DetailWrapperPresenter extends
         if (!typeOfDetail.equals(type)) {
             return;
         }
-        eventBus.loadingShow("Loading...");
+        toggleDetailLoading();
 
         // clear offersPresenters for OFFER
         // messages are cleared in the widget itself
@@ -180,6 +179,35 @@ public class DetailWrapperPresenter extends
                 }
             }
         };
+    }
+
+    /** loading events **/
+    //just to enable loading
+    public void onRequestPotentialDemandConversation(long messageId, long userMessageId) {
+        toggleConversationLoading();
+    }
+
+
+    public void toggleDetailLoading() {
+        if (detailLoader == null) {
+            GWT.log("  - loading created");
+            detailLoader = new LoadingDiv(view.getDetailHolder());
+        } else {
+            GWT.log("  - loading removed");
+            detailLoader.getElement().removeFromParent();
+            detailLoader = null;
+        }
+    }
+
+    public void toggleConversationLoading() {
+        if (conversationLoader == null) {
+            GWT.log("  - loading created");
+            conversationLoader = new LoadingDiv(view.getConversationPanel());
+        } else {
+            GWT.log("  - loading removed");
+            conversationLoader.getElement().removeFromParent();
+            conversationLoader = null;
+        }
     }
 
 }

@@ -36,7 +36,7 @@ public class DemandsLayoutView extends Composite
     Hyperlink myDemandsOperatorLink, myProblemsLink, administration;
 
     // TODO Beho - delete when potential demands are done
-    @UiField Button potentDevelBtn;
+    @UiField Button potentDevelBtn, develBtn;
 
     public DemandsLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -101,5 +101,17 @@ public class DemandsLayoutView extends Composite
     @Override
     public Button getDevelButton() {
         return potentDevelBtn;
+    }
+
+    @Override
+    public Button getTestBtn() {
+        // TODO Auto-generated method stub
+        return develBtn;
+    }
+
+    @Override
+    public SimplePanel getContentPanel() {
+        // TODO Auto-generated method stub
+        return contentPanel;
     }
 }

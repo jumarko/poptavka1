@@ -1,10 +1,10 @@
 package cz.poptavka.sample.client.home.demands;
 
-import com.google.gwt.user.client.Window;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -17,6 +17,7 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 //@SuppressWarnings("deprecation")
@@ -123,10 +124,10 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
      */
     public void onGetDemands(int fromResult, int toResult) {
 //        LOGGER.info("Get demands: " + resultCriteria.getFirstResult());
-        demandService.getDemands(fromResult, toResult, new AsyncCallback<List<FullDemandDetail>>() {
+        demandService.getDemands(fromResult, toResult, new AsyncCallback<List<DemandDetail>>() {
 
             @Override
-            public void onSuccess(List<FullDemandDetail> result) {
+            public void onSuccess(List<DemandDetail> result) {
                 eventBus.displayDemands(result);
             }
 
@@ -139,7 +140,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
     public void onGetDemandsByCategories(int fromResult, int toResult, long id) {
         demandService.getDemandsByCategory(fromResult, toResult, id,
-                new AsyncCallback<List<FullDemandDetail>>() {
+                new AsyncCallback<List<DemandDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -147,7 +148,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
                     }
 
                     @Override
-                    public void onSuccess(List<FullDemandDetail> result) {
+                    public void onSuccess(List<DemandDetail> result) {
                         eventBus.displayDemands(result);
                     }
                 });
@@ -155,10 +156,10 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
     public void onGetDemandsByLocalities(int fromResult, int toResult, String id) {
         demandService.getDemandsByLocality(fromResult, toResult, id,
-                new AsyncCallback<List<FullDemandDetail>>() {
+                new AsyncCallback<List<DemandDetail>>() {
 
                     @Override
-                    public void onSuccess(List<FullDemandDetail> result) {
+                    public void onSuccess(List<DemandDetail> result) {
                         LOGGER.info("onSuccessGetDemandsByLocality");
                         eventBus.displayDemands(result);
                     }

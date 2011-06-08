@@ -34,7 +34,10 @@ public class MessageDetailImpl implements Serializable, MessageDetail {
     private long receiverId;
 
     public static MessageDetail createMessageDetail(Message message) {
-        MessageDetail detail = new MessageDetailImpl();
+        return fillMessageDetail(new MessageDetailImpl(), message);
+    }
+
+    public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {
         detail.setMessageId(message.getId());
         detail.setBody(message.getBody());
         detail.setCreated(message.getCreated());

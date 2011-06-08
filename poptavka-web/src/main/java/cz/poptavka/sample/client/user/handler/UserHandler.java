@@ -18,7 +18,7 @@ import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -38,14 +38,14 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
     // TODO move to different module for admin
     public void onGetAllDemands() {
-        demandService.getAllDemands(new AsyncCallback<List<FullDemandDetail>>() {
+        demandService.getAllDemands(new AsyncCallback<List<DemandDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
             }
 
             @Override
-            public void onSuccess(List<FullDemandDetail> result) {
+            public void onSuccess(List<DemandDetail> result) {
                 eventBus.setAllDemands(result);
             }
         });
@@ -97,33 +97,17 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
      * Get Detail according to demand id.
      */
     public void onGetDemandDetail(Long demandId, final ViewType typeOfDetail) {
-        // for suppliers potential demands base DemandDetail is enough
-        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
-            demandService.getBaseDemandDetail(demandId, new AsyncCallback<BaseDemandDetail>() {
+        demandService.getDemandDetail(demandId, typeOfDetail, new AsyncCallback<DemandDetail>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert(caught.getMessage());
+            }
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("UserHandler at onGetDemandDetail: \n\n" + caught.getMessage());
-                }
-
-                @Override
-                public void onSuccess(BaseDemandDetail result) {
-                    eventBus.setBaseDemandDetail(result, typeOfDetail);
-                }
-            });
-        } else {
-            demandService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert(caught.getMessage());
-                }
-
-                @Override
-                public void onSuccess(FullDemandDetail result) {
-                    eventBus.setFullDemandDetail(result, typeOfDetail);
-                }
-            });
-        }
+            @Override
+            public void onSuccess(DemandDetail result) {
+                eventBus.setDemandDetail(result, typeOfDetail);
+            }
+        });
     }
 
     /**

@@ -27,7 +27,8 @@
                         <g:Hyperlink ui:field="potentialDemandsLink">
                             <ui:msg key="potentialDemands">Potential Demands</ui:msg>
                         </g:Hyperlink>
-                        <g:Button ui:field="potentDevelBtn">R</g:Button>
+                        <g:Button ui:field="potentDevelBtn">Reload Button</g:Button>
+                        <g:Button ui:field="develBtn">Test</g:Button>
                         <hr />
                     </li>
 
