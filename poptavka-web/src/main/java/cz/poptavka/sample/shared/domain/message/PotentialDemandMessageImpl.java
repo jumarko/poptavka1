@@ -5,8 +5,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.shared.domain.type.MessageType;
 
-public class PotentialMessageDetailImpl extends MessageDetailImpl implements Serializable, PotentialMessageDetail {
+public class PotentialDemandMessageImpl extends MessageDetailImpl implements Serializable, PotentialDemandMessage {
 
     private long userMessageId;
     private BigDecimal price;
@@ -15,9 +16,9 @@ public class PotentialMessageDetailImpl extends MessageDetailImpl implements Ser
     private Date endDate;
     private Date validToDate;
 
-    public static PotentialMessageDetail createMessageDetail(UserMessage message) {
-        PotentialMessageDetail detail = new PotentialMessageDetailImpl();
-        detail = (PotentialMessageDetail) MessageDetailImpl.fillMessageDetail(detail, message.getMessage());
+    public static PotentialDemandMessage createMessageDetail(UserMessage message) {
+        PotentialDemandMessage detail = new PotentialDemandMessageImpl();
+        detail = (PotentialDemandMessage) MessageDetailImpl.fillMessageDetail(detail, message.getMessage());
         detail.setUserMessageId(message.getId());
         detail.setDemandId(message.getMessage().getDemand().getId());
         detail.setPrice(message.getMessage().getDemand().getPrice());
@@ -70,7 +71,11 @@ public class PotentialMessageDetailImpl extends MessageDetailImpl implements Ser
 
     @Override
     public void setPrice(BigDecimal price) {
-        this.price = price;
+        if (price == null) {
+            this.price = BigDecimal.ZERO;
+        } else {
+            this.price = price;
+        }
     }
 
     @Override
@@ -86,6 +91,11 @@ public class PotentialMessageDetailImpl extends MessageDetailImpl implements Ser
     @Override
     public Long getUserMessageId() {
         return userMessageId;
+    }
+
+    @Override
+    public MessageType getMessageType() {
+        return MessageType.POTENTIAL_DEMAND;
     }
 
 

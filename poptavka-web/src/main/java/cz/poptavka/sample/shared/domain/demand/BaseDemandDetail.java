@@ -123,7 +123,7 @@ public class BaseDemandDetail implements Serializable, DemandDetail {
         return price.toString();
     }
     public void setPrice(String price) {
-        if (price.equals("")) {
+        if (price.equals("") || price.equals("null")) {
             this.price = null;
         } else {
             this.price = BigDecimal.valueOf(Long.valueOf(price));

@@ -22,8 +22,6 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
      */
     private static final long serialVersionUID = -530982467233195456L;
 
-    private static final DemandDetailType TYPE = DemandDetailType.FULL;
-
     public enum DemandField {
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
@@ -40,6 +38,7 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
     /** for serialization. **/
     public FullDemandDetail() {
         super();
+        setType(DemandDetailType.FULL);
     }
 
     /**
@@ -145,8 +144,7 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
                 + maxOffers + "\n     minRating="
                 + minRating + "\n     demandType="
                 + demandType + "\n     demandStatus="
-                + demandStatus + "\n"
-                + "TEST na TYPE: " + getType();
+                + demandStatus;
     }
 
     public String getDemandStatus() {

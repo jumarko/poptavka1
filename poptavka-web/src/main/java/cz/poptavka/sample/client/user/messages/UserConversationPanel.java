@@ -87,11 +87,14 @@ public class UserConversationPanel extends Composite {
     }
 
     public void addMessage(MessageDetail lastMessage) {
+        MessageDisplayType newLastMessage = MessageDisplayType.BOTH;
         if (messageCount > 0) {
             SimpleMessageWindow last = (SimpleMessageWindow) messagePanel.getWidget(messageCount - 1);
             last.setMessageStyle(MessageDisplayType.NORMAL);
+            last.setCollapsed(true);
+            newLastMessage = MessageDisplayType.LAST;
         }
-        messagePanel.add(new SimpleMessageWindow(lastMessage, false, MessageDisplayType.LAST));
+        messagePanel.add(new SimpleMessageWindow(lastMessage, false, newLastMessage));
         replyToMessage = lastMessage;
 
 
@@ -117,6 +120,7 @@ public class UserConversationPanel extends Composite {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setDemandId(replyToMessage.getDemandId());
         return messageDetail;
     }
 

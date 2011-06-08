@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 
-// DEPRECATED use ReplyWindow instead
+// DEPRECATED use OfferQuestionWindow instead
 // TODO DELETE
 public class MessageWriteWidget extends Composite {
 

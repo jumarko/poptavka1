@@ -3,7 +3,7 @@ package cz.poptavka.sample.shared.domain.message;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public interface PotentialMessageDetail extends MessageDetail {
+public interface PotentialDemandMessage extends MessageDetail {
 
     void setPrice(BigDecimal price);
     BigDecimal getPrice();

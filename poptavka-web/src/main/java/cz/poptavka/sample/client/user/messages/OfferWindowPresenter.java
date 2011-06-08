@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.user.messages;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -33,7 +32,7 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
         SimplePanel getResponseHolder();
     }
 
-    private ReplyWindowPresenter replyPresenter = null;
+    private OfferQuestionPresenter replyPresenter = null;
 
     public void bindView() {
         view.getAcceptButton().addClickHandler(new ClickHandler() {
@@ -78,22 +77,22 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
         }
     }
 
-    private void createReplyWindow() {
-        replyPresenter = eventBus.addHandler(ReplyWindowPresenter.class);
-        replyPresenter.createOfferReplyWindow(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.removeHandler(replyPresenter);
-            }
-        });
-        replyPresenter.addSubmitHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
-                Window.alert("CLick");
-            }
-        }, 0);
-    }
+//    private void createReplyWindow() {
+//        replyPresenter = eventBus.addHandler(OfferQuestionPresenter.class);
+////        replyPresenter.createOfferReplyWindow(new ClickHandler() {
+////            @Override
+////            public void onClick(ClickEvent event) {
+////                eventBus.removeHandler(replyPresenter);
+////            }
+////        });
+//        replyPresenter.addSubmitHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                // TODO Auto-generated method stub
+//                Window.alert("CLick");
+//            }
+//        });
+//    }
 
 }

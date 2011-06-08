@@ -17,7 +17,7 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.demands.widget.table.PotentialDemandTable;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
 /**
  * View representing potential demands for supplier. Supplier can list them,
@@ -29,16 +29,13 @@ import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
 public class PotentialDemandsView extends OverflowComposite implements
         PotentialDemandsPresenter.IPotentialDemands {
 
-    private static PotentialDemandsViewUiBinder uiBinder = GWT
-            .create(PotentialDemandsViewUiBinder.class);
+    private static PotentialDemandsViewUiBinder uiBinder = GWT.create(PotentialDemandsViewUiBinder.class);
 
     private static final StyleResource RSCS = GWT.create(StyleResource.class);
 
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    interface PotentialDemandsViewUiBinder extends
-            UiBinder<Widget, PotentialDemandsView> {
+    interface PotentialDemandsViewUiBinder extends UiBinder<Widget, PotentialDemandsView> {
     }
 
     @UiField(provided = true) PotentialDemandTable demandTable;
@@ -82,17 +79,17 @@ public class PotentialDemandsView extends OverflowComposite implements
     }
 
     @Override
-    public MultiSelectionModel<PotentialMessageDetail> getSelectionModel() {
-        return (MultiSelectionModel<PotentialMessageDetail>) demandTable.getSelectionModel();
+    public MultiSelectionModel<PotentialDemandMessage> getSelectionModel() {
+        return (MultiSelectionModel<PotentialDemandMessage>) demandTable.getSelectionModel();
     }
 
     @Override
-    public Set<PotentialMessageDetail> getSelectedSet() {
+    public Set<PotentialDemandMessage> getSelectedSet() {
         return getSelectionModel().getSelectedSet();
     }
 
     @Override
-    public ListDataProvider<PotentialMessageDetail> getDataProvider() {
+    public ListDataProvider<PotentialDemandMessage> getDataProvider() {
         return demandTable.getDataProvider();
     }
 

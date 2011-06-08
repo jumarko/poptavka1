@@ -23,6 +23,8 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
@@ -36,6 +38,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private SupplierService supplierService;
     private GeneralService generalService;
     private ClientService clientService;
+    private LocalityService localityService;
+    private CategoryService categoryService;
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -52,6 +56,15 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         this.generalService = generalService;
     }
 
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @Autowired
+    public void setLocalityService(LocalityService localirtService) {
+        this.localityService = localityService;
+    }
 
     //TODO add description support
     //TODO setService
@@ -169,4 +182,16 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         }
         return convertToServiceDetails(services);
     }
+
+ // TODO FIX this, it's not working nullPointerException.
+    public Locality getLocality(String code) {
+        System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
+//        return localityService.getLocality(code);
+        return localityService.getById(10);
+    }
+
+    public Category getCategory(String id) {
+        return categoryService.getById(Long.parseLong(id));
+    }
+
 }

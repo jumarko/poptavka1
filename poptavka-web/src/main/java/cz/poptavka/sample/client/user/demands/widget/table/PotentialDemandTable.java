@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.user.demands.widget.table;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 
 import com.google.gwt.cell.client.CheckboxCell;
@@ -22,23 +23,23 @@ import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
-public class PotentialDemandTable extends CellTable<PotentialMessageDetail> {
+public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
 
-    private ListDataProvider<PotentialMessageDetail> dataProvider = new ListDataProvider<PotentialMessageDetail>();
+    private ListDataProvider<PotentialDemandMessage> dataProvider = new ListDataProvider<PotentialDemandMessage>();
 
     public PotentialDemandTable(LocalizableMessages msgs, StyleResource rscs) {
         super(KEY_PROVIDER);
 
-        ListHandler<PotentialMessageDetail> sorHandler
-            = new ListHandler<PotentialMessageDetail>(dataProvider.getList());
+        ListHandler<PotentialDemandMessage> sorHandler
+            = new ListHandler<PotentialDemandMessage>(dataProvider.getList());
         this.addColumnSortHandler(sorHandler);
 
-        final SelectionModel<PotentialMessageDetail> selectionModel = new MultiSelectionModel<PotentialMessageDetail>(
+        final SelectionModel<PotentialDemandMessage> selectionModel = new MultiSelectionModel<PotentialDemandMessage>(
                 KEY_PROVIDER);
         this.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager.<PotentialMessageDetail>createDefaultManager());
+                DefaultSelectionEventManager.<PotentialDemandMessage>createDefaultManager());
 
         initTableColumns(selectionModel, sorHandler, msgs);
 
@@ -46,8 +47,8 @@ public class PotentialDemandTable extends CellTable<PotentialMessageDetail> {
         dataProvider.addDataDisplay(this);
     }
 
-    private void initTableColumns(final SelectionModel<PotentialMessageDetail> tableSelectionModel,
-            ListHandler<PotentialMessageDetail> sortHandler, LocalizableMessages msgs) {
+    private void initTableColumns(final SelectionModel<PotentialDemandMessage> tableSelectionModel,
+            ListHandler<PotentialDemandMessage> sortHandler, final LocalizableMessages msgs) {
      // for EVERY text display
         TextCell tableTextCell = new TextCell(new SafeHtmlRenderer<String>() {
             @Override
@@ -60,50 +61,51 @@ public class PotentialDemandTable extends CellTable<PotentialMessageDetail> {
             }
         });
 //         MultipleSelection Checkbox
-        Column<PotentialMessageDetail, Boolean> checkBoxColumn = new Column<PotentialMessageDetail, Boolean>(
+        Column<PotentialDemandMessage, Boolean> checkBoxColumn = new Column<PotentialDemandMessage, Boolean>(
                 new CheckboxCell(true, false)) {
             @Override
-            public Boolean getValue(PotentialMessageDetail object) {
+            public Boolean getValue(PotentialDemandMessage object) {
                 return tableSelectionModel.isSelected(object);
             }
         };
 
         // Demand Title Column
-        Column<PotentialMessageDetail, String> titleColumn
-            = (new Column<PotentialMessageDetail, String>(tableTextCell) {
+        Column<PotentialDemandMessage, String> titleColumn
+            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
                 @Override
-                public String getValue(PotentialMessageDetail object) {
+                public String getValue(PotentialDemandMessage object) {
                     return BaseDemandDetail.displayHtml(object.getSubject(), object.isRead());
                 }
             });
 
         // Demand Price Column
-        Column<PotentialMessageDetail, String> priceColumn
-            = (new Column<PotentialMessageDetail, String>(tableTextCell) {
+        Column<PotentialDemandMessage, String> priceColumn
+            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
                 @Override
-                public String getValue(PotentialMessageDetail object) {
-                    String price = (object.getPrice().intValue() < 0
-                            ? ("none") : object.getPrice().toString());
-                    return BaseDemandDetail.displayHtml(price, object.isRead());
+                public String getValue(PotentialDemandMessage object) {
+                    if (object.getPrice().equals(BigDecimal.ZERO)) {
+                        return BaseDemandDetail.displayHtml(msgs.notEntered(), object.isRead());
+                    }
+                    return BaseDemandDetail.displayHtml(object.getPrice().toString(), object.isRead());
                 }
             });
 
         final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
 
         // Demand Finish Column
-        Column<PotentialMessageDetail, String> endDateColumn
-            = (new Column<PotentialMessageDetail, String>(tableTextCell) {
+        Column<PotentialDemandMessage, String> endDateColumn
+            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
                 @Override
-                public String getValue(PotentialMessageDetail object) {
+                public String getValue(PotentialDemandMessage object) {
                     return BaseDemandDetail.displayHtml(dateFormat.format(object.getEndDate()), object.isRead());
                 }
             });
 
         // Demand sent Date column
-        Column<PotentialMessageDetail, String> validToDateColumn
-            = (new Column<PotentialMessageDetail, String>(tableTextCell) {
+        Column<PotentialDemandMessage, String> validToDateColumn
+            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
                 @Override
-                public String getValue(PotentialMessageDetail object) {
+                public String getValue(PotentialDemandMessage object) {
                     return BaseDemandDetail.displayHtml(dateFormat.format(object.getValidToDate()), object.isRead());
                 }
             });
@@ -111,10 +113,10 @@ public class PotentialDemandTable extends CellTable<PotentialMessageDetail> {
         // sort methods ****************************
         titleColumn.setSortable(true);
         sortHandler.setComparator(titleColumn,
-                new Comparator<PotentialMessageDetail>() {
+                new Comparator<PotentialDemandMessage>() {
                     @Override
-                    public int compare(PotentialMessageDetail o1,
-                            PotentialMessageDetail o2) {
+                    public int compare(PotentialDemandMessage o1,
+                            PotentialDemandMessage o2) {
                         if (o1 == o2) {
                             return 0;
                         }
@@ -129,24 +131,24 @@ public class PotentialDemandTable extends CellTable<PotentialMessageDetail> {
                 });
         priceColumn.setSortable(true);
         sortHandler.setComparator(priceColumn,
-                new Comparator<PotentialMessageDetail>() {
+                new Comparator<PotentialDemandMessage>() {
                     @Override
-                    public int compare(PotentialMessageDetail o1,
-                            PotentialMessageDetail o2) {
+                    public int compare(PotentialDemandMessage o1,
+                            PotentialDemandMessage o2) {
                         return o1.getPrice().compareTo(o2.getPrice());
                     }
                 });
         endDateColumn.setSortable(true);
         validToDateColumn.setSortable(true);
-        Comparator<PotentialMessageDetail> endComparator = new Comparator<PotentialMessageDetail>() {
+        Comparator<PotentialDemandMessage> endComparator = new Comparator<PotentialDemandMessage>() {
             @Override
-            public int compare(PotentialMessageDetail o1, PotentialMessageDetail o2) {
+            public int compare(PotentialDemandMessage o1, PotentialDemandMessage o2) {
                 return o1.getEndDate().compareTo(o2.getEndDate());
             }
         };
-        Comparator<PotentialMessageDetail> validComparator = new Comparator<PotentialMessageDetail>() {
+        Comparator<PotentialDemandMessage> validComparator = new Comparator<PotentialDemandMessage>() {
             @Override
-            public int compare(PotentialMessageDetail o1, PotentialMessageDetail o2) {
+            public int compare(PotentialDemandMessage o1, PotentialDemandMessage o2) {
                 return o1.getValidToDate().compareTo(o2.getValidToDate());
             }
         };
@@ -160,14 +162,14 @@ public class PotentialDemandTable extends CellTable<PotentialMessageDetail> {
         this.addColumn(validToDateColumn, msgs.expireDate());
     }
 
-    private static final ProvidesKey<PotentialMessageDetail> KEY_PROVIDER = new ProvidesKey<PotentialMessageDetail>() {
+    private static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER = new ProvidesKey<PotentialDemandMessage>() {
         @Override
-        public Object getKey(PotentialMessageDetail item) {
+        public Object getKey(PotentialDemandMessage item) {
             return item == null ? null : item.getDemandId();
         }
     };
 
-    public ListDataProvider<PotentialMessageDetail> getDataProvider() {
+    public ListDataProvider<PotentialDemandMessage> getDataProvider() {
         return dataProvider;
     }
 

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.shared.domain.type.MessageType;
 
 /**
  *
@@ -250,6 +251,11 @@ public class MessageDetailImpl implements Serializable, MessageDetail {
         sb.append("\nSenderID: " + senderId);
         sb.append("\nReceiverID: " + receiverId);
         return sb.toString();
+    }
+
+    @Override
+    public MessageType getMessageType() {
+        return MessageType.CONVERSATION;
     }
 
 }

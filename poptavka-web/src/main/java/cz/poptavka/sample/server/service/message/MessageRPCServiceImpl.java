@@ -29,12 +29,15 @@ import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.message.MessageService;
+import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
 
 /**
  *
@@ -52,6 +55,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;
+    private ClientService clientService;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -66,6 +70,11 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
+    }
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) {
@@ -245,6 +254,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return messageDetailImpls;
     }
 
+    /**
+     * COMMON.
+     * Change 'read' status of sent messages to chosen value
+     */
     @Override
     public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) {
         for (Long userMessageId : userMessageIds) {
@@ -254,8 +267,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
     }
 
+    /**
+     * SUPPLIER.
+     * Returns messages for PotentialDemandsView's table
+     */
     @Override
-    public ArrayList<PotentialMessageDetail> getPotentialDemands(long businessUserId) {
+    public ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
                 businessUser,
@@ -268,11 +285,41 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         final List<UserMessage> userMessages =
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
         // fill list
-        ArrayList<PotentialMessageDetail> potentailDemands = new ArrayList<PotentialMessageDetail>();
+        ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
         for (UserMessage um : userMessages) {
-            PotentialMessageDetail detail = PotentialMessageDetailImpl.createMessageDetail(um);
+            PotentialDemandMessage detail = PotentialDemandMessageImpl.createMessageDetail(um);
             potentailDemands.add(detail);
         }
         return potentailDemands;
+    }
+
+    /**
+     * CLIENT.
+     * Returns messages for OffersView's table
+     */
+    @Override
+    public ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId) {
+
+        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+        final List<Message> messages = this.messageService.getAllMessages(
+                businessUser,
+                MessageFilter.MessageFilterBuilder.messageFilter().
+                withMessageUserRoleType(MessageUserRoleType.TO).
+                withMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER).
+                withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
+
+        // TODO ivlcek - prerobit tak aby som nemusel nacitavat list messages, ktoru sluzit len ako
+        // parameter pre dalsi dotaz do DB na ziskanie userMessages
+        final List<UserMessage> userMessages =
+                userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
+        // fill list
+
+        ArrayList<OfferDemandMessage> offerDemands = new ArrayList<OfferDemandMessage>();
+        for (UserMessage m : userMessages) {
+            OfferDemandMessage om = OfferDemandMessageImpl.createMessageDetail(m);
+            offerDemands.add(om);
+        }
+
+        return offerDemands;
     }
 }

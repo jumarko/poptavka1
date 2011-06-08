@@ -20,7 +20,6 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
@@ -106,26 +105,6 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onSuccess(DemandDetail result) {
                 eventBus.setDemandDetail(result, typeOfDetail);
-            }
-        });
-    }
-
-    /**
-     * Get Client's demands for offers.
-     *
-     * @param clientId
-     */
-    public void onGetClientDemandsWithOffers(Long clientId) {
-        offerService.getClientDemands(clientId, new AsyncCallback<ArrayList<OfferDemandDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("UserHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
-            }
-
-            @Override
-            public void onSuccess(ArrayList<OfferDemandDetail> result) {
-                eventBus.responseClientDemandsWithOffers(result);
             }
         });
     }

@@ -77,4 +77,5 @@ public interface LocalizableMessages extends Messages {
     String progressGetUserDetail();
     String progressCreatingUserInterface();
     String progressDemandsLayoutInit();
+    String notEntered();
 }

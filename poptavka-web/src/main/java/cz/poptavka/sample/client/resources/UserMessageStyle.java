@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.resources;
 
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.CssResource.ClassName;
 
 public interface UserMessageStyle extends CssResource {
 
@@ -27,4 +28,13 @@ public interface UserMessageStyle extends CssResource {
 
     @ClassName("wrapper")
     String wrapper();
+
+    @ClassName("reply-message-arrow-border")
+    String replyMessageArrowBorder();
+
+    @ClassName("reply-message-arrow")
+    String replyMessageArrow();
+
+    @ClassName("reply-text-area")
+    String replyTextArea();
 }

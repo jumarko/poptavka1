@@ -23,6 +23,7 @@ import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandOfferTabl
 import cz.poptavka.sample.client.user.demands.widget.table.SingleDemandOfferTable;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 
 public class OffersView extends Composite implements OffersPresenter.OffersInterface {
 
@@ -87,7 +88,6 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
     }
 
 
-
     @Override
     public Button getReplyButton() {
         return replyBtn;
@@ -114,11 +114,11 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
         return null;
     }
     @Override
-    public NoSelectionModel<OfferDemandDetail> getDemandModel() {
-        return (NoSelectionModel<OfferDemandDetail>) demandTable.getSelectionModel();
+    public NoSelectionModel<OfferDemandMessage> getDemandModel() {
+        return (NoSelectionModel<OfferDemandMessage>) demandTable.getSelectionModel();
     }
     @Override
-    public ListDataProvider<OfferDemandDetail> getDemandProvider() {
+    public ListDataProvider<OfferDemandMessage> getDemandProvider() {
         return demandTable.getDataProvider();
     }
 

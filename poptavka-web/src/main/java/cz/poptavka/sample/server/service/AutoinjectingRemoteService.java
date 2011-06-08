@@ -8,12 +8,10 @@ import javax.servlet.ServletException;
 
 import net.sf.gilead.gwt.PersistentRemoteService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.offer.Offer;
@@ -24,8 +22,6 @@ import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
-import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
@@ -42,19 +38,6 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 public abstract class AutoinjectingRemoteService extends PersistentRemoteService  {
 
     private static final long serialVersionUID = 237077627422062352L;
-
-    private CategoryService categoryService;
-    private LocalityService localityService;
-
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
-    @Autowired
-    public void setLocalityService(LocalityService localityService) {
-        this.localityService = localityService;
-    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -162,14 +145,6 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
             }
         }
         return details;
-    }
-
-    public Category getCategory(String id) {
-        return categoryService.getById(Long.parseLong(id));
-    }
-
-    public Locality getLocality(String code) {
-        return localityService.getLocality(code);
     }
 
 }

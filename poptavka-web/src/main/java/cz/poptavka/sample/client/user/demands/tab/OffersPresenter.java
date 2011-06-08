@@ -23,6 +23,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = OffersView.class, multiple = true)
@@ -37,9 +38,9 @@ public class OffersPresenter extends
         Button getActionButton();
         Button getRefreshButton();
 
-        ListDataProvider<OfferDemandDetail> getDemandProvider();
+        ListDataProvider<OfferDemandMessage> getDemandProvider();
 
-        NoSelectionModel<OfferDemandDetail> getDemandModel();
+        NoSelectionModel<OfferDemandMessage> getDemandModel();
 
         ListDataProvider<OfferDetail> getOfferProvider();
 
@@ -65,7 +66,7 @@ public class OffersPresenter extends
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.swapTables();
-                OfferDemandDetail obj = view.getDemandModel().getLastSelectedObject();
+                OfferDemandMessage obj = view.getDemandModel().getLastSelectedObject();
 //                eventBus.getDemandOffers(obj.getDemandId(), obj.getThreadRootId());
                 eventBus.getDemandDetail(obj.getDemandId(), ViewType.OFFER);
             }
@@ -99,10 +100,10 @@ public class OffersPresenter extends
         loaded = true;
     }
 
-    public void onResponseClientDemandsWithOffers(ArrayList<OfferDemandDetail> demands) {
-        List<OfferDemandDetail> list = view.getDemandProvider().getList();
+    public void onResponseClientDemandsWithOffers(ArrayList<OfferDemandMessage> demands) {
+        List<OfferDemandMessage> list = view.getDemandProvider().getList();
         list.clear();
-        for (OfferDemandDetail d : demands) {
+        for (OfferDemandMessage d : demands) {
             list.add(d);
         }
         view.getDemandProvider().refresh();

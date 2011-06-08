@@ -12,7 +12,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
 /**
  *
@@ -23,7 +24,7 @@ public interface MessageRPCService extends RemoteService {
 
     ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam);
 
-    ArrayList<PotentialMessageDetail> getPotentialDemands(long businessUserId);
+    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId);
 
@@ -32,4 +33,6 @@ public interface MessageRPCService extends RemoteService {
     OfferDetail sendOffer(OfferDetail demandOffer);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
+
+    ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId);
 }

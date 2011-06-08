@@ -28,9 +28,9 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Events(startView = UserView.class, module = UserModule.class)
@@ -63,7 +63,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void getPotentialDemands(long businessUserId);
     @Event(handlers = PotentialDemandsPresenter.class)
-    void responsePotentialDemands(ArrayList<PotentialMessageDetail> potentialDemandsList);
+    void responsePotentialDemands(ArrayList<PotentialDemandMessage> potentialDemandsList);
 
     /** Offer demands GETTER/SETTER. **/
     // this same method could be called to MyDemandsPresenter
@@ -71,10 +71,10 @@ public interface UserEventBus extends EventBusWithLookup {
     // method will be used
     @Event(handlers = UserPresenter.class)
     void requestClientOfferDemands();
-    @Event(handlers = UserHandler.class)
-    void getClientDemandsWithOffers(Long clientId);
+    @Event(handlers = MessageHandler.class)
+    void getClientDemandsWithOffers(Long businessUserId);
     @Event(handlers = OffersPresenter.class)
-    void responseClientDemandsWithOffers(ArrayList<OfferDemandDetail> result);
+    void responseClientDemandsWithOffers(ArrayList<OfferDemandMessage> result);
 
     /** Demand Offers GETTER/SETTER. **/
     @Event(handlers = UserHandler.class)
@@ -144,10 +144,10 @@ public interface UserEventBus extends EventBusWithLookup {
     void bubbleMessageSending(MessageDetail messageToSend);
 
     @Event(handlers = MessageHandler.class)
-    void sendQueryToPotentialDemand(MessageDetail messageToSend);
+    void sendMessageToPotentialDemand(MessageDetail messageToSend);
 
     @Event(handlers = DetailWrapperPresenter.class)
-    void addReplyToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
+    void addMessageToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
 
     /** Offers message display & state change. **/
     @Event(handlers = DetailWrapperPresenter.class)

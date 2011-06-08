@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.user.demands.widget.table;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 
 import com.google.gwt.cell.client.TextCell;
@@ -11,28 +12,28 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
-import com.google.gwt.view.client.NoSelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 
-public class GlobalDemandOfferTable extends CellTable<OfferDemandDetail> {
+public class GlobalDemandOfferTable extends CellTable<OfferDemandMessage> {
 
-    private ListDataProvider<OfferDemandDetail> dataProvider = new ListDataProvider<OfferDemandDetail>();
+    private ListDataProvider<OfferDemandMessage> dataProvider = new ListDataProvider<OfferDemandMessage>();
 
     public GlobalDemandOfferTable(LocalizableMessages msgs, StyleResource rscs) {
         super(KEY_PROVIDER);
 
-        ListHandler<OfferDemandDetail> sorHandler = new ListHandler<OfferDemandDetail>(dataProvider.getList());
+        ListHandler<OfferDemandMessage> sorHandler = new ListHandler<OfferDemandMessage>(dataProvider.getList());
         this.addColumnSortHandler(sorHandler);
 
         // Create a demandPager to control the table.
 
-        final SelectionModel<OfferDemandDetail> selectionModel = new NoSelectionModel<OfferDemandDetail>(
+        final SelectionModel<OfferDemandMessage> selectionModel = new NoSelectionModel<OfferDemandMessage>(
                 KEY_PROVIDER);
-        this.setSelectionModel(selectionModel, DefaultSelectionEventManager.<OfferDemandDetail>createDefaultManager());
+        this.setSelectionModel(selectionModel, DefaultSelectionEventManager.<OfferDemandMessage>createDefaultManager());
 
         initTableColumns(selectionModel, sorHandler, msgs);
 
@@ -40,102 +41,106 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandDetail> {
         dataProvider.addDataDisplay(this);
     }
 
-    private void initTableColumns(final SelectionModel<OfferDemandDetail> tableSelectionModel,
-            ListHandler<OfferDemandDetail> sortHandler, LocalizableMessages msgs) {
+    private void initTableColumns(final SelectionModel<OfferDemandMessage> tableSelectionModel,
+            ListHandler<OfferDemandMessage> sortHandler, final LocalizableMessages msgs) {
         // MultipleSelection Checkbox
-        // Column<OfferDemandDetail, Boolean> checkBoxColumn = new Column<OfferDemandDetail, Boolean>(
+        // Column<OfferDemandMessage, Boolean> checkBoxColumn = new Column<OfferDemandMessage, Boolean>(
         // new CheckboxCell(true, false)) {
         // @Override
-        // public Boolean getValue(OfferDemandDetail object) {
+        // public Boolean getValue(OfferDemandMessage object) {
         // return tableSelectionModel.isSelected(object);
         // }
         // };
 
         // Demand Title Column
-        Column<OfferDemandDetail, String> titleColumn = (new Column<OfferDemandDetail, String>(new TextCell()) {
+        Column<OfferDemandMessage, String> titleColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
-            public String getValue(OfferDemandDetail object) {
-                return object.getTitle() + "(" + object.getNumberOfOffers() + "/" + object.getMaxOffers() + ")";
+            public String getValue(OfferDemandMessage object) {
+                return object.getSubject() + " (" + object.getOfferCount() + "/" + object.getMaxOfferCount() + ")";
             }
         });
 
         // Demand Price Column
-        Column<OfferDemandDetail, String> priceColumn = (new Column<OfferDemandDetail, String>(new TextCell()) {
+        Column<OfferDemandMessage, String> priceColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
-            public String getValue(OfferDemandDetail object) {
+            public String getValue(OfferDemandMessage object) {
                 // TODO add 'none' value into Localizable resources
-                return (object.getPrice() == null ? "None" : object.getPrice().toString());
+                return (object.getPrice().equals(BigDecimal.ZERO) ? msgs.notEntered() : object.getPrice().toString());
             }
         });
 
         final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
 
         // Demand Finish Column
-        Column<OfferDemandDetail, String> endDateColumn = (new Column<OfferDemandDetail, String>(new TextCell()) {
+        Column<OfferDemandMessage, String> endDateColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
-            public String getValue(OfferDemandDetail object) {
+            public String getValue(OfferDemandMessage object) {
                 return dateFormat.format(object.getEndDate());
             }
         });
 
         // Demand sent Date column
-        Column<OfferDemandDetail, String> validToDateColumn = (new Column<OfferDemandDetail, String>(new TextCell()) {
+        Column<OfferDemandMessage, String> validToDateColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
-            public String getValue(OfferDemandDetail object) {
+            public String getValue(OfferDemandMessage object) {
                 return dateFormat.format(object.getEndDate());
             }
         });
 
         // sort methods ****************************
         titleColumn.setSortable(true);
-        sortHandler.setComparator(titleColumn, new Comparator<OfferDemandDetail>() {
+        sortHandler.setComparator(titleColumn, new Comparator<OfferDemandMessage>() {
             @Override
-            public int compare(OfferDemandDetail o1, OfferDemandDetail o2) {
+            public int compare(OfferDemandMessage o1, OfferDemandMessage o2) {
                 if (o1 == o2) {
                     return 0;
                 }
                 // Compare the name columns.
                 if (o1 != null) {
-                    return (o2 != null) ? o1.getTitle().compareTo(o2.getTitle()) : 1;
+                    return (o2 != null) ? o1.getSubject().compareTo(o2.getSubject()) : 1;
                 }
                 return -1;
             }
         });
         priceColumn.setSortable(true);
-        sortHandler.setComparator(priceColumn, new Comparator<OfferDemandDetail>() {
+        sortHandler.setComparator(priceColumn, new Comparator<OfferDemandMessage>() {
             @Override
-            public int compare(OfferDemandDetail o1, OfferDemandDetail o2) {
+            public int compare(OfferDemandMessage o1, OfferDemandMessage o2) {
                 return o1.getPrice().compareTo(o2.getPrice());
             }
         });
-
         endDateColumn.setSortable(true);
-//        validToDateColumn.setSortable(true);
-//        Comparator<OfferDemandDetail> dateComparator = new Comparator<OfferDemandDetail>() {
-//            @Override
-//            public int compare(OfferDemandDetail o1, OfferDemandDetail o2) {
-//                // TODO Auto-generated method stub
-//                return o1.getEndDate().compareTo(o2.getEndDate());
-//            }
-//        };
-//        sortHandler.setComparator(endDateColumn, dateComparator);
-//        sortHandler.setComparator(validToDateColumn, dateComparator);
-        // add columns into table
-        // this.addColumn(checkBoxColumn);
+        validToDateColumn.setSortable(true);
+        Comparator<OfferDemandMessage> endComparator = new Comparator<OfferDemandMessage>() {
+            @Override
+            public int compare(OfferDemandMessage o1, OfferDemandMessage o2) {
+                return o1.getEndDate().compareTo(o2.getEndDate());
+            }
+        };
+        Comparator<OfferDemandMessage> validComparator = new Comparator<OfferDemandMessage>() {
+            @Override
+            public int compare(OfferDemandMessage o1, OfferDemandMessage o2) {
+                return o1.getValidToDate().compareTo(o2.getValidToDate());
+            }
+        };
+        sortHandler.setComparator(endDateColumn, endComparator);
+        sortHandler.setComparator(validToDateColumn, validComparator);
+//         add columns into table
+//         this.addColumn(checkBoxColumn);
         this.addColumn(titleColumn, msgs.title());
         this.addColumn(priceColumn, msgs.price());
         this.addColumn(endDateColumn, msgs.endDate());
         this.addColumn(validToDateColumn, msgs.expireDate());
     }
 
-    private static final ProvidesKey<OfferDemandDetail> KEY_PROVIDER = new ProvidesKey<OfferDemandDetail>() {
+    private static final ProvidesKey<OfferDemandMessage> KEY_PROVIDER = new ProvidesKey<OfferDemandMessage>() {
         @Override
-        public Object getKey(OfferDemandDetail item) {
+        public Object getKey(OfferDemandMessage item) {
             return item == null ? null : item.getDemandId();
         }
     };
 
-    public ListDataProvider<OfferDemandDetail> getDataProvider() {
+    public ListDataProvider<OfferDemandMessage> getDataProvider() {
         return dataProvider;
     }
 

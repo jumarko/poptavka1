@@ -2,6 +2,8 @@ package cz.poptavka.sample.shared.domain.message;
 
 import java.util.Date;
 
+import cz.poptavka.sample.shared.domain.type.MessageType;
+
 public interface MessageDetail {
 
     void setMessageId(long messageId);
@@ -38,4 +40,6 @@ public interface MessageDetail {
     long getReceiverId();
 
     String toString();
+
+    MessageType getMessageType();
 }

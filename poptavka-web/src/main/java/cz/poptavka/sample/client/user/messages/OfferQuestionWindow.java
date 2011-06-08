@@ -1,12 +1,13 @@
 package cz.poptavka.sample.client.user.messages;
 
+import java.math.BigDecimal;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
@@ -17,30 +18,26 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 
-public class ReplyWindow extends Composite implements ReplyWindowPresenter.ReplyInterface {
+/**
+ * Mixed widget for sending offer as well for asking questions
+ *
+ * @author Beho
+ */
+public class OfferQuestionWindow extends Composite implements OfferQuestionPresenter.ReplyInterface {
 
     private static ReplyWindowUiBinder uiBinder = GWT.create(ReplyWindowUiBinder.class);
-    interface ReplyWindowUiBinder extends UiBinder<Widget, ReplyWindow> {   }
+    interface ReplyWindowUiBinder extends UiBinder<Widget, OfferQuestionWindow> {   }
 
-    public interface ReplyStyle extends CssResource {
-        @ClassName("reply-message")
-        String replyMessage();
+    private static final StyleResource CSS = GWT.create(StyleResource.class);
 
-        @ClassName("reply-message-arrow-border")
-        String replyMessageArrowBorder();
-
-        @ClassName("reply-message-arrow")
-        String replyMessageArrow();
-
-        @ClassName("text-area")
-        String textArea();
-    }
-
-    private static final int RESPONSE_OFFER = 0;
-    private static final int RESPONSE_QUESTION = 1;
+    private static final String RESPONSE_OFFER = "offer";
+    private static final String RESPONSE_QUESTION = "question";
 
     @UiField Element header;
     @UiField Anchor offerReplyBtn;
@@ -53,20 +50,14 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     //main widget part is hidden
     private boolean hiddenReplyBody = true;
 
-    private int selectedResponse = 0;
+    private String selectedResponse = null;
 
     private long demandId = 0;
 
     @Override
     public void createView() {
+        CSS.message().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
-
-        /** CSS3 specific styling **/
-        submitBtn.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
-                + "rgb(122,118,122) 54%");
-
-        cancelBtn.getElement().getStyle().setBackgroundImage("-moz-linear-gradient(center bottom,rgb(46,45,46) 4%,"
-                + " rgb(122,118,122) 54%;");
     }
 
     @Override
@@ -133,9 +124,9 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
      * @param submitButtonHandler
      * @param selectedDemandId
      */
-    public void addClickHandler(ClickHandler submitButtonHandler, long selectedDemandId) {
+    public void addClickHandler(ClickHandler submitButtonHandler) {
         submitBtn.addClickHandler(submitButtonHandler);
-        demandId = selectedDemandId;
+//        demandId = selectedDemandId;
     }
 
     @Override
@@ -144,8 +135,22 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     }
 
     @Override
-    public MessageDetailImpl getCreatedMessage() {
-        MessageDetailImpl message = new MessageDetailImpl();
+    public MessageDetail getCreatedMessage() {
+        MessageDetail message = null;
+        if (selectedResponse.equals(RESPONSE_OFFER)) {
+            OfferMessageDetail offer = new OfferMessageDetailImpl();
+            Long price = null;
+            try {
+                price = Long.parseLong(priceBox.getValue());
+            } catch (Exception ex) {
+                price = 0L;
+            }
+            offer.setPrice(BigDecimal.valueOf(price));
+            offer.setEndDate(dateBox.getValue());
+            message = offer;
+        } else {
+            message = new MessageDetailImpl();
+        }
         message.setBody(replyTextArea.getText());
         message.setDemandId(demandId);
         return message;
@@ -155,7 +160,7 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     public boolean isValid() {
         int errorCount = 0;
         errorCount += (replyTextArea.getText().equals("") ? 1 : 0);
-        if (selectedResponse == RESPONSE_OFFER) {
+        if (selectedResponse.equals(RESPONSE_OFFER)) {
             errorCount += (priceBox.getText().equals("") ? 1 : 0);
             try {
                 Long.parseLong(priceBox.getValue());
@@ -169,42 +174,28 @@ public class ReplyWindow extends Composite implements ReplyWindowPresenter.Reply
     }
 
     @Override
-    public OfferDetail getCreatedOffer() {
-        OfferDetail offer = new OfferDetail();
-        MessageDetailImpl message = getCreatedMessage();
-        offer.setPrice(priceBox.getText());
-        offer.setFinishDate(dateBox.getValue());
-        offer.setMessageDetail(message);
-        return offer;
-    }
-
-    @Override
     public void setSendingStyle() {
-        // TODO Auto-generated method stub
-        // display sending message window, whatever
+        // display sending message window, some loader or whatever
         header.getStyle().setDisplay(Display.NONE);
         header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
     }
 
     @Override
     public void setNormalStyle() {
-        // TODO Auto-generated method stub
         // display sending message window, whatever
         header.getStyle().setDisplay(Display.BLOCK);
         header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
         hiddenReplyBody = true;
+        replyTextArea.setText("");
     }
 
+    // TODO maybe not necessary, check
     @Override
     public boolean isResponseQuestion() {
         return selectedResponse == RESPONSE_QUESTION;
     }
 
-    @Override
-    public Anchor getCancelButton() {
-        return cancelBtn;
-    }
-
+    // TODO maybe not necessary, check
     @Override
     public void setResponseToQuestion() {
         selectedResponse = RESPONSE_QUESTION;

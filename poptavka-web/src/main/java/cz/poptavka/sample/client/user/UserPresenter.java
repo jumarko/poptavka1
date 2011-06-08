@@ -158,7 +158,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     public void onRequestClientOfferDemands() {
         if (user.getRoleList().contains(Role.CLIENT)) {
-            eventBus.getClientDemandsWithOffers(user.getClientId());
+            eventBus.getClientDemandsWithOffers(user.getUserId());
         } else {
             accessDenied();
         }
@@ -174,7 +174,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
     public void onBubbleMessageSending(MessageDetail messageToSend) {
         messageToSend.setSenderId(user.getUserId());
-        eventBus.sendQueryToPotentialDemand(messageToSend);
+        eventBus.sendMessageToPotentialDemand(messageToSend);
     }
     public void onBubbleOfferSending(OfferDetail offerToSend) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {

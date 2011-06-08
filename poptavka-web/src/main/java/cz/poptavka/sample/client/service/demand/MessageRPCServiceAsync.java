@@ -11,7 +11,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
 /**
  *
@@ -30,5 +31,7 @@ public interface MessageRPCServiceAsync {
 
     void getClientDemands(long businessUserId, int fakeParam, AsyncCallback<ArrayList<MessageDetail>> callback);
 
-    void getPotentialDemands(long businessUserId, AsyncCallback<ArrayList<PotentialMessageDetail>> asyncCallback);
+    void getPotentialDemands(long businessUserId, AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
+
+    void getOfferDemands(long businessUserId, AsyncCallback<ArrayList<OfferDemandMessage>> callback);
 }

@@ -24,6 +24,7 @@ import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -37,6 +38,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
     private GeneralService generalService;
     private ClientService clientService;
+    private LocalityService localityService;
 
     public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
@@ -51,6 +53,11 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
+    }
+
+    @Autowired
+    public void setLocalityService(LocalityService localirtService) {
+        this.localityService = localityService;
     }
 
     /**
@@ -139,6 +146,13 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
         // email is free if no such user exists
         return userByEmail == null;
+    }
+
+    // TODO FIX this, it's not working nullPointerException.
+    public Locality getLocality(String code) {
+        System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
+//        return localityService.getLocality(code);
+        return localityService.getById(10);
     }
 
 }

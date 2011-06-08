@@ -14,7 +14,8 @@ import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
@@ -63,7 +64,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 });
     }
 
-    public void onSendQueryToPotentialDemand(MessageDetail messageToSend) {
+    public void onSendMessageToPotentialDemand(MessageDetail messageToSend) {
         messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
@@ -75,7 +76,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(MessageDetail result) {
-                eventBus.addReplyToPotentailDemandConversation(result, ViewType.POTENTIAL);
+                eventBus.addMessageToPotentailDemandConversation(result, ViewType.POTENTIAL);
             }
         });
     }
@@ -136,7 +137,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      */
     public void onGetPotentialDemands(long businessUserId) {
         messageService.getPotentialDemands(businessUserId,
-                new AsyncCallback<ArrayList<PotentialMessageDetail>>() {
+                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Error in UserHandler in method: onGetPotentialDemandsList"
@@ -145,10 +146,30 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onSuccess(
-                            ArrayList<PotentialMessageDetail> result) {
+                            ArrayList<PotentialDemandMessage> result) {
                         GWT.log("Result size: " + result.size());
                         eventBus.responsePotentialDemands(result);
                     }
                 });
+    }
+
+    /**
+     * Get Client's demands for offers.
+     *
+     * @param clientId
+     */
+    public void onGetClientDemandsWithOffers(Long businessUserId) {
+        messageService.getOfferDemands(businessUserId, new AsyncCallback<ArrayList<OfferDemandMessage>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("UserHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<OfferDemandMessage> result) {
+                eventBus.responseClientDemandsWithOffers(result);
+            }
+        });
     }
 }
