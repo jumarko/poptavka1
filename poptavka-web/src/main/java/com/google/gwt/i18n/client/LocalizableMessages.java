@@ -78,4 +78,13 @@ public interface LocalizableMessages extends Messages {
     String progressCreatingUserInterface();
     String progressDemandsLayoutInit();
     String notEntered();
+
+    //used in displying demands
+    String date();
+    String validTo();
+    String type();
+    String category();
+    String locality();
+    String offers();
+    String attachment();
 }

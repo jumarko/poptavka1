@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.home.demands.demand.DemandView;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
@@ -26,7 +28,6 @@ import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 /**
  *
  * @author Martin Slavkovsky
- * TODO Lokalizacia.
  */
 public class DemandsView extends OverflowComposite implements DemandsPresenter.DemandsViewInterface {
 
@@ -36,19 +37,27 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
     @UiField
     VerticalPanel verticalContent;
+
     @UiField
-    ListBox category;
-    @UiField
-    ListBox locality;
+    ListBox category, locality;
+
     @UiField
     DemandView demandView;
+
     @UiField
     Label demandDetailLabel;
+
     @UiField(provided = true)
     CellTable<DemandDetail> cellTable;
+
     @UiField(provided = true)
     SimplePager pager;
-    private AsyncDataProvider<DemandDetail> dataProvider;
+
+    private final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
+
+    private AsyncDataProvider dataProvider;
+
+    LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
 
     public DemandsView() {
         initCellTable();
@@ -112,6 +121,8 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         cellTable.setWidth("100%", true);
         cellTable.setRowCount(2, true);
 
+        cellTable.setSelectionModel(selectionModel);
+
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
@@ -133,7 +144,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
                 return object.getTitle();
             }
         };
-        cellTable.addColumn(demandTitle, "Názov poptávky");
+        cellTable.addColumn(demandTitle, bundle.demand());
         cellTable.setColumnWidth(demandTitle, 320, Unit.PX);
 
         // Date
@@ -145,7 +156,12 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
                 return object.getEndDate();
             }
         };
-        cellTable.addColumn(demandDate, "Dátum");
+        cellTable.addColumn(demandDate, bundle.date());
         cellTable.setColumnWidth(demandDate, 80, Unit.PX);
+    }
+
+    @Override
+    public SingleSelectionModel<DemandDetail> getSelectionModel() {
+        return selectionModel;
     }
 }

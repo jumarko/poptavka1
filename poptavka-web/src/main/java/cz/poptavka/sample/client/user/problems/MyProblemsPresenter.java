@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -49,6 +50,8 @@ public class MyProblemsPresenter
         Button getCancelBtn();
 
         Button getRefuseBtn();
+
+        SimplePanel getDetailSection();
     }
     private DetailWrapperPresenter detailPresenter = null;
 

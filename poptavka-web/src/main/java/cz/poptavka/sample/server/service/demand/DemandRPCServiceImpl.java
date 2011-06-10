@@ -105,6 +105,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.generalService = generalService;
     }
 
+    //Last computed categories and localities
+    private List<Category> categoriesHistory = new ArrayList<Category>();
+    private List<Locality> localitiesHistory = new ArrayList<Locality>();
+
     @Override
     public FullDemandDetail createNewDemand(FullDemandDetail detail, Long cliendId) {
         final Demand demand = new Demand();
@@ -260,58 +264,66 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public List<DemandDetail> getDemandsByCategory(int fromResult, int toResult, long id) {
-        List<Category> categories = new LinkedList<Category>();
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
                 .maxResults(toResult)
                 .build();
 
-        //level 0
-        categories.add(categoryService.getById(id));
-        //other levels
-        int i = 0;
-        List<Category> workingCatList;
-        while (categories.size() != i) {
-            workingCatList = new LinkedList<Category>();
-            workingCatList = categoryService.getById(categories.get(i++).getId()).getChildren();
-            if (workingCatList != null && workingCatList.size() > 0) {
-                //and children categories
-                categories.addAll(workingCatList);
+        return this.createDemandDetailList(demandService.getDemands(resultCriteria, this.getAllSubcategories(id)));
+    }
+
+    private Category[] getAllSubcategories(long id) {
+        //if stored are not what i am looking for, retrieve new/actual
+        if (categoriesHistory.isEmpty() || categoriesHistory.get(0).getId() != id) {
+            //clear
+            categoriesHistory = new LinkedList<Category>();
+            //level 0
+            categoriesHistory.add(categoryService.getById(id));
+            //other levels
+            int i = 0;
+            List<Category> workingCatList;
+            while (categoriesHistory.size() != i) {
+                workingCatList = new LinkedList<Category>();
+                workingCatList = categoryService.getById(categoriesHistory.get(i++).getId()).getChildren();
+                if (workingCatList != null && workingCatList.size() > 0) {
+                    //and children categories
+                    categoriesHistory.addAll(workingCatList);
+                }
             }
         }
-        //tested for here - working
-        //I should have now all subcategories of given id (chosen category vrom combobox)
-        //Now, get demands
-        // TODO - nasledujuci riadok nefunguje. Preco?
-        return this.createDemandDetailList(demandService.getDemands(resultCriteria, (Category[]) categories.toArray()));
+        return categoriesHistory.toArray(new Category[categoriesHistory.size()]);
     }
 
     @Override
     public List<DemandDetail> getDemandsByLocality(int fromResult, int toResult, String code) {
-        List<Locality> localities = new LinkedList<Locality>();
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
                 .maxResults(toResult)
                 .build();
 
-        //level 0
-        localities.add(localityService.getLocality(code));
-        //other levels
-        int i = 0;
-        List<Locality> workingCatList;
-        while (localities.size() != i) {
-            workingCatList = new LinkedList<Locality>();
-            workingCatList = localityService.getLocality(localities.get(i++).getCode()).getChildren();
-            if (workingCatList != null && workingCatList.size() > 0) {
-                //and children categories
-                localities.addAll(workingCatList);
+        return this.createDemandDetailList(demandService.getDemands(resultCriteria, this.getAllSublocalities(code)));
+    }
+
+    private Locality[] getAllSublocalities(String code) {
+        //if stored are not what i am looking for, retrieve new/actual
+        if (localitiesHistory.isEmpty() || !localitiesHistory.get(0).getCode().equals(code)) {
+            //clear
+            localitiesHistory = new LinkedList<Locality>();
+            //level 0
+            localitiesHistory.add(localityService.getLocality(code));
+            //other levels
+            int i = 0;
+            List<Locality> workingCatList;
+            while (localitiesHistory.size() != i) {
+                workingCatList = new LinkedList<Locality>();
+                workingCatList = localityService.getLocality(localitiesHistory.get(i++).getCode()).getChildren();
+                if (workingCatList != null && workingCatList.size() > 0) {
+                    //and children categories
+                    localitiesHistory.addAll(workingCatList);
+                }
             }
         }
-        //tested for here - working
-        //I should have now all subcategories of given id (chosen category vrom combobox)
-        //Now, get demands
-        // TODO - nasledujuci riadok nefunguje. Preco?
-        return this.createDemandDetailList(demandService.getDemands(resultCriteria, (Locality[]) localities.toArray()));
+        return localitiesHistory.toArray(new Locality[localitiesHistory.size()]);
     }
 
     @Override
@@ -380,6 +392,16 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
     }
 
+    @Override
+    public Long getDemandsCountByCategory(long id) {
+        return this.getDemandsCount(this.getAllSubcategories(id));
+    }
+
+    @Override
+    public Long getDemandsCountByLocality(String code) {
+        return this.getDemandsCount(this.getAllSublocalities(code));
+    }
+
     // TODO FIX this, it's not working nullPointerException.
     public Locality getLocality(String code) {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
@@ -390,5 +412,4 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public Category getCategory(String id) {
         return categoryService.getById(Long.parseLong(id));
     }
-
 }

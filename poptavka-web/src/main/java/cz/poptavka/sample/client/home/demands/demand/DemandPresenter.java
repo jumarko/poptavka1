@@ -1,8 +1,5 @@
 package cz.poptavka.sample.client.home.demands.demand;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -13,11 +10,11 @@ public class DemandPresenter extends BasePresenter<DemandPresenter.DemandViewInt
 
     public interface DemandViewInterface {
 
-        HasClickHandlers getButtonAttachments();
+        void setAttachmentToken(String token);
 
-        HasClickHandlers getButtonLogin();
+        void setLoginToken(String token);
 
-        HasClickHandlers getButtonRegister();
+        void setRegisterToken(String token);
     }
 
     /**
@@ -25,35 +22,15 @@ public class DemandPresenter extends BasePresenter<DemandPresenter.DemandViewInt
      */
     @Override
     public void bind() {
-        view.getButtonAttachments().addClickHandler(new ClickHandler() {
+        //TODO - dorobit
+        //view.setAttachmentToken(getTokenGenerator().atAttachment());
 
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.attachement();
-            }
-        });
-        view.getButtonLogin().addClickHandler(new ClickHandler() {
+        //TODO - dorobit, ked sa bude vediet ako to ma vyzerat
+        //view.setLoginToken(getTokenGenerator().atLogin());
 
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.login();
-            }
-        });
-        view.getButtonRegister().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.register();
-            }
-        });
+//        view.setRegisterToken(getTokenGenerator().atRegisterSupplier());
     }
 
-    public void onAttachement() {
-    }
-
-    public void onLogin() {
-    }
-
-    public void onRegister() {
-    }
+//    public void onAtRegisterSupplier() {
+//    }
 }

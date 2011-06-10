@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.home.demands;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.Window;
@@ -19,6 +18,7 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.List;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
@@ -103,6 +103,7 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
             }
         });
     }
+    //*************** GET DEMANDS COUNT *********************
 
     public void onGetAllDemandsCount() {
         demandService.getAllDemandsCount(new AsyncCallback<Long>() {
@@ -114,16 +115,49 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
             @Override
             public void onSuccess(Long result) {
+                eventBus.setSource("all");
                 eventBus.createAsyncDataProvider(result);
             }
         });
     }
 
+    public void onGetDemandsCountCategory(long id) {
+        demandService.getDemandsCountByCategory(id, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onGetDemandsCountCategory failed.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.setSource("category");
+                eventBus.createAsyncDataProvider(result);
+            }
+        });
+    }
+
+    public void onGetDemandsCountLocality(String code) {
+        demandService.getDemandsCountByLocality(code, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onGetDemandsCountLocality failed.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.setSource("locality");
+                eventBus.createAsyncDataProvider(result);
+            }
+        });
+    }
+
+    //*************** GET DEMANDS DATA *********************
     /**
      * Get all demand from database.
      */
     public void onGetDemands(int fromResult, int toResult) {
-//        LOGGER.info("Get demands: " + resultCriteria.getFirstResult());
         demandService.getDemands(fromResult, toResult, new AsyncCallback<List<DemandDetail>>() {
 
             @Override

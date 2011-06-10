@@ -192,4 +192,9 @@ public class MyProblemsView extends Composite implements
     public Widget getWidgetView() {
         return this;
     }
+
+    @Override
+    public SimplePanel getDetailSection() {
+        return detailSection;
+    }
 }

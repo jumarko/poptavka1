@@ -5,7 +5,7 @@
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
   xmlns:d="urn:import:cz.poptavka.sample.client.home.demands.demand">
       
-<!--    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>-->
+    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
     <ui:style>
     .name {
       font-weight: bold;
@@ -24,29 +24,33 @@
     <g:HTMLPanel>
         <g:VerticalPanel ui:field="verticalContent">
             <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
-                <g:Label styleName="{style.name}" text="Demand Filters" />
+                <g:Label styleName="{style.name}">
+                    <ui:msg key="filter">Filter:</ui:msg>
+                </g:Label>
                 <g:ListBox ui:field="category" styleName="{style.list}" />
                 <g:ListBox ui:field="locality" styleName="{style.list}" />
             </g:HorizontalPanel>
-                <g:DecoratorPanel>
-                    <g:HTMLPanel>
-                        <table cellspacing='0' cellpadding='0'>
-                            <tr>
-                                <td valign='top'>
-                                    <c:CellTable pageSize='10' ui:field='cellTable' />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='center'>
-                                    <c:SimplePager ui:field='pager' />
-                                </td>
-                            </tr>
-                        </table>
+            <g:DecoratorPanel>
+                <g:HTMLPanel>
+                    <table cellspacing='0' cellpadding='0'>
+                        <tr>
+                            <td valign='top'>
+                                <c:CellTable pageSize='10' ui:field='cellTable' />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align='center'>
+                                <c:SimplePager ui:field='pager' />
+                            </td>
+                        </tr>
+                    </table>
 
-                    </g:HTMLPanel>
-                </g:DecoratorPanel>
-                <g:Label ui:field="demandDetailLabel">Detail poptávky:</g:Label>
-                <d:DemandView ui:field="demandView"/>
+                </g:HTMLPanel>
+            </g:DecoratorPanel>
+            <g:Label ui:field="demandDetailLabel">
+                <ui:msg key="demandDetail">Demand detail:</ui:msg>
+            </g:Label>
+            <d:DemandView ui:field="demandView"/>
         </g:VerticalPanel>
         
     </g:HTMLPanel>

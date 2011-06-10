@@ -57,13 +57,15 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         Label getDemandDetailLabel();
 
         DemandView getDemandView();
+
+        SingleSelectionModel<DemandDetail> getSelectionModel();
     }
     private int start = 0;
+    private String source = "";
 
     //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
     //TODO - ako ziskat pri pouziti filtrovania pocet filtrovanych zaznamov,
     //bez toho, aby som musel opat zistovat vsetky kategorie a ich podkategorie <- dlho trva
-
     /**
      * Bind objects and theirs action handlers.
      */
@@ -73,36 +75,39 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                LOGGER.info("OnCategoryListChange");
-                eventBus.getDemandsByCategories(0, 10, Long.valueOf(view.getCategoryList().getValue(
-                        view.getCategoryList().getSelectedIndex())));
-                //TODO - dat uzivatelovi vediet, ze nacitava - zmenit cursor abo take daco
+                view.getLocalityList().setSelectedIndex(0);
+                if (view.getCategoryList().getSelectedIndex() == 0) {
+                    eventBus.getAllDemandsCount();
+                } else {
+                    eventBus.getDemandsCountCategory(Long.valueOf(view.getCategoryList().getValue(
+                            view.getCategoryList().getSelectedIndex())));
+                }
             }
         });
+        //TODO martin - get know user that server is counting subcategories
         view.getLocalityList().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                LOGGER.info("OnLocalityListChange: " + view.getLocalityList().getValue(
-                        view.getLocalityList().getSelectedIndex()));
-                eventBus.getDemandsByLocalities(0, 10, view.getLocalityList().getValue(
-                        view.getLocalityList().getSelectedIndex()));
-                //TODO - dat uzivatelovi vediet, ze nacitava - zmenit cursor abo take daco
+                view.getCategoryList().setSelectedIndex(0);
+                if (view.getLocalityList().getSelectedIndex() == 0) {
+                    eventBus.getAllDemandsCount();
+                } else {
+                    eventBus.getDemandsCountLocality(view.getLocalityList().getValue(
+                            view.getLocalityList().getSelectedIndex()));
+                }
             }
         });
+        //TODO martin - get know usert that server is counting sublocalities
+        //TODO Martin - kombinacia filtrovanie locality a sucasne categories?
 
-//        dataProvider.addDataDisplay(view.getCellTable());
         // Add a selection model to handle user selection.
-        final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
-        view.getCellTable().setSelectionModel(selectionModel);
-        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        view.getCellTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                DemandDetail selected = selectionModel.getSelectedObject();
+                DemandDetail selected = view.getSelectionModel().getSelectedObject();
                 if (selected != null) {
-                    DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "progress");
-                    //eventBus.getDemand(selected);
                     eventBus.setDemand(selected);
                 }
             }
@@ -118,17 +123,42 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     };
 
     public void onCreateAsyncDataProvider(final long result) {
+        //reset pager
+        if (view.getPager().getPage() != 0) {
+            view.getPager().firstPage();
+        }
+        //clear table
+        view.getCellTable().setRowCount(0);
+        view.getCellTable().setRowCount(10, true);
+
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
             protected void onRangeChanged(HasData<FullDemandDetail> display) {
                 display.setRowCount((int) result);
-                start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getDemands(start, start + length);
+
+                start = display.getVisibleRange().getStart();
+                if (source.equals("all")) {
+                    eventBus.getDemands(start, start + length);
+                } else if (source.equals("category")) {
+                    eventBus.getDemandsByCategories(start, start + length,
+                            Long.valueOf(view.getCategoryList().getValue(
+                            view.getCategoryList().getSelectedIndex())));
+                } else if (source.equals("locality")) {
+                    eventBus.getDemandsByLocalities(start, start + length,
+                            view.getLocalityList().getValue(
+                            view.getLocalityList().getSelectedIndex()));
+                }
+
+
             }
         };
         this.dataProvider.addDataDisplay(view.getCellTable());
+    }
+
+    public void onSetSource(String sourceString) {
+        this.source = sourceString;
     }
 
     /**
@@ -160,7 +190,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void execute() {
-                box.addItem("Categories...");
+                box.addItem("All categories...");
                 for (int i = 0; i < list.size(); i++) {
                     box.addItem(list.get(i).getName(),
                             String.valueOf(list.get(i).getId()));
@@ -183,7 +213,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void execute() {
-                box.addItem("Localities...");
+                box.addItem("All localities...");
                 for (int i = 0; i < list.size(); i++) {
                     box.addItem(list.get(i).getName(),
                             String.valueOf(list.get(i).getCode()));

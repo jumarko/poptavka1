@@ -1,12 +1,12 @@
 package cz.poptavka.sample.client.home.demands.demand;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,15 +23,12 @@ public class DemandView extends Composite implements
 
     public DemandView() {
         initWidget(uiBinder.createAndBindUi(this));
-        buttonAttachments.setVisible(false);
+        linkAttachment.setVisible(false);
 
     }
     @UiField
-    Button buttonAttachments;
-    @UiField
-    Button buttonLogin;
-    @UiField
-    Button buttonRegister;
+    Hyperlink linkAttachment, linkLogin, linkRegister;
+
     @UiField
     FlexTable infoTable;
 //    @UiField
@@ -41,30 +38,32 @@ public class DemandView extends Composite implements
     @UiField
     TextArea textArea;
 
+    LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
+
     public DemandView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
-        buttonAttachments.setVisible(false);
+        linkAttachment.setVisible(false);
     }
 
     @Override
-    public HasClickHandlers getButtonAttachments() {
-        return buttonAttachments;
+    public void setAttachmentToken(String token) {
+        linkAttachment.setTargetHistoryToken(token);
     }
 
     @Override
-    public HasClickHandlers getButtonLogin() {
-        return buttonLogin;
+    public void setLoginToken(String token) {
+        linkLogin.setTargetHistoryToken(token);
     }
 
     @Override
-    public HasClickHandlers getButtonRegister() {
-        return buttonRegister;
+    public void setRegisterToken(String token) {
+        linkRegister.setTargetHistoryToken(token);
     }
 
     public void setDemand(FullDemandDetail demand) {
         infoTable.clear();
         textArea.setText("");
-        buttonAttachments.setVisible(false);
+        linkAttachment.setVisible(false);
 
         int row = 0;
 
@@ -73,47 +72,47 @@ public class DemandView extends Composite implements
         }
 
         if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label("Název: "));
+            infoTable.setWidget(row, 0, new Label(bundle.title()));
             infoTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
         }
 
         if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label("Cena: "));
+            infoTable.setWidget(row, 0, new Label(bundle.price()));
             infoTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
         }
 
         if (demand.getEndDate() != null) {
-            infoTable.setWidget(row, 0, new Label("Dátum ukončení: "));
+            infoTable.setWidget(row, 0, new Label(bundle.endDate()));
             infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
         }
 
         if (demand.getValidToDate() != null) {
-            infoTable.setWidget(row, 0, new Label("Validní do: "));
+            infoTable.setWidget(row, 0, new Label(bundle.validTo()));
             infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
         }
 
         if (demand.getDemandType() != null) {
-            infoTable.setWidget(row, 0, new Label("Typ: "));
+            infoTable.setWidget(row, 0, new Label(bundle.type()));
             infoTable.setWidget(row++, 1, new Label(demand.getDemandType()));
         }
 
         if (demand.getCategories() != null) {
-            infoTable.setWidget(row, 0, new Label("Kategórie: "));
+            infoTable.setWidget(row, 0, new Label(bundle.category()));
             infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()));
         }
 
         if (demand.getLocalities() != null) {
-            infoTable.setWidget(row, 0, new Label("Lokality: "));
+            infoTable.setWidget(row, 0, new Label(bundle.locality()));
             infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()));
         }
 
-        infoTable.setWidget(row, 0, new Label("Ponuky: "));
+        infoTable.setWidget(row, 0, new Label(bundle.offers()));
         infoTable.setWidget(row++, 1, new Label(Integer.toString(demand.getMaxOffers())));
 
         if (demand.getPrice() != null) {
-            infoTable.setWidget(row++, 0, new Label("Prílohy: "));
+            infoTable.setWidget(row++, 0, new Label(bundle.attachment()));
             infoTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
-            buttonAttachments.setVisible(true);
+            linkAttachment.setVisible(true);
         }
     }
 }

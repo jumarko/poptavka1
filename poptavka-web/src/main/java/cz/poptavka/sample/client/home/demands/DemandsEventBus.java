@@ -8,8 +8,6 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
-
-import cz.poptavka.sample.client.home.demands.demand.DemandPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
@@ -48,6 +46,12 @@ public interface DemandsEventBus extends EventBus {
     void getAllDemandsCount();
 
     @Event(handlers = DemandsHandler.class)
+    void getDemandsCountCategory(long id);
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemandsCountLocality(String code);
+
+    @Event(handlers = DemandsHandler.class)
     void getDemandsByCategories(int fromResult, int toResult, long id);
 
     @Event(handlers = DemandsHandler.class)
@@ -69,13 +73,16 @@ public interface DemandsEventBus extends EventBus {
     @Event(handlers = DemandsPresenter.class)
     void createAsyncDataProvider(final long result);
 
+    @Event(handlers = DemandsPresenter.class)
+    void setSource(String source);
+
     //***************** DEMAND **********************
-    @Event(handlers = DemandPresenter.class)
-    void attachement();
+    //@Event(handlers = , historyConverter = )
+    //String atLogin();
 
-    @Event(handlers = DemandPresenter.class)
-    void login();
+    //@Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
+//    String atRegisterSupplier();
 
-    @Event(handlers = DemandPresenter.class)
-    void register();
+//    @Event(handlers = , historyConverter = )
+//    String atAttachment();
 }
