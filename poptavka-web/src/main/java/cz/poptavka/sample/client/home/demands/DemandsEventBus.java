@@ -76,6 +76,11 @@ public interface DemandsEventBus extends EventBus {
     @Event(handlers = DemandsPresenter.class)
     void setSource(String source);
 
+    @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void loadingHide();
     //***************** DEMAND **********************
     //@Event(handlers = , historyConverter = )
     //String atLogin();

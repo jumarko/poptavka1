@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.home.demands;
 
+import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,12 +9,11 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -37,6 +37,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsViewInterface, DemandsEventBus> {
 
     private static final Logger LOGGER = Logger.getLogger(DemandsPresenter.class.getName());
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface DemandsViewInterface {
 
@@ -56,6 +57,8 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         Label getDemandDetailLabel();
 
+        Label getBannerLabel();
+
         DemandView getDemandView();
 
         SingleSelectionModel<DemandDetail> getSelectionModel();
@@ -73,7 +76,10 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "wait");
+                eventBus.loadingShow(MSGS.loading());
+                view.getDemandView().setVisible(false);
+                view.getDemandDetailLabel().setVisible(false);
+                view.getBannerLabel().setVisible(true);
                 view.getLocalityList().setSelectedIndex(0);
                 if (view.getCategoryList().getSelectedIndex() == 0) {
                     eventBus.getAllDemandsCount();
@@ -83,12 +89,14 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                 }
             }
         });
-        //TODO martin - get know user that server is counting subcategories
         view.getLocalityList().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "wait");
+                eventBus.loadingShow(MSGS.loading());
+                view.getDemandView().setVisible(false);
+                view.getDemandDetailLabel().setVisible(false);
+                view.getBannerLabel().setVisible(true);
                 view.getCategoryList().setSelectedIndex(0);
                 if (view.getLocalityList().getSelectedIndex() == 0) {
                     eventBus.getAllDemandsCount();
@@ -98,7 +106,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                 }
             }
         });
-        //TODO martin - get know usert that server is counting sublocalities
         //TODO Martin - kombinacia filtrovanie locality a sucasne categories?
 
         // Add a selection model to handle user selection.
@@ -108,7 +115,14 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             public void onSelectionChange(SelectionChangeEvent event) {
                 DemandDetail selected = view.getSelectionModel().getSelectedObject();
                 if (selected != null) {
+                    view.getBannerLabel().setVisible(false);
+                    view.getDemandView().setVisible(true);
+                    view.getDemandDetailLabel().setVisible(true);
                     eventBus.setDemand(selected);
+                } else {
+                    view.getDemandView().setVisible(false);
+                    view.getDemandDetailLabel().setVisible(false);
+                    view.getBannerLabel().setVisible(true);
                 }
             }
         });
@@ -150,12 +164,9 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                             view.getLocalityList().getValue(
                             view.getLocalityList().getSelectedIndex()));
                 }
-
-
             }
         };
         this.dataProvider.addDataDisplay(view.getCellTable());
-        DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
     }
 
     public void onSetSource(String sourceString) {
@@ -170,6 +181,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     public void onAtDemands() {
         LOGGER.info("Starting demands presenter...");
 
+        eventBus.loadingShow(MSGS.loading());
         eventBus.getAllDemandsCount();
 
         eventBus.getCategories();

@@ -21,37 +21,43 @@
       width: 100px;
     }
     </ui:style>
-    <g:HTMLPanel>
-        <g:VerticalPanel ui:field="verticalContent">
-            <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
-                <g:Label styleName="{style.name}">
-                    <ui:msg key="filter">Filter:</ui:msg>
-                </g:Label>
-                <g:ListBox ui:field="category" styleName="{style.list}" />
-                <g:ListBox ui:field="locality" styleName="{style.list}" />
-            </g:HorizontalPanel>
-            <g:DecoratorPanel>
-                <g:HTMLPanel>
-                    <table cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td valign='top'>
-                                <c:CellTable pageSize='10' ui:field='cellTable' />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align='center'>
-                                <c:SimplePager ui:field='pager' />
-                            </td>
-                        </tr>
-                    </table>
-
-                </g:HTMLPanel>
-            </g:DecoratorPanel>
-            <g:Label ui:field="demandDetailLabel">
-                <ui:msg key="demandDetail">Demand detail:</ui:msg>
-            </g:Label>
-            <d:DemandView ui:field="demandView"/>
-        </g:VerticalPanel>
         
-    </g:HTMLPanel>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:west size="600">
+            
+            <g:HTMLPanel>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
+                                <g:Label styleName="{style.name}">
+                                    <ui:msg key="filter">Filter:</ui:msg>
+                                </g:Label>
+                                <g:ListBox ui:field="category" styleName="{style.list}" />
+                                <g:ListBox ui:field="locality" styleName="{style.list}" />
+                            </g:HorizontalPanel>                    
+                                <c:CellTable pageSize='15' ui:field='cellTable' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <c:SimplePager ui:field='pager' />
+                        </td>
+                    </tr>
+                </table>                        
+            </g:HTMLPanel>
+            
+        </g:west>
+        <g:center>
+            <g:HTMLPanel>
+                <g:VerticalPanel>
+                    <g:Label ui:field="demandDetailLabel">
+                        <ui:msg key="demandDetail">Demand detail:</ui:msg>
+                    </g:Label>
+                    <d:DemandView ui:field="demandView"/>
+                    <g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
+                </g:VerticalPanel>
+            </g:HTMLPanel>
+        </g:center>
+    </g:SplitLayoutPanel>
 </ui:UiBinder>

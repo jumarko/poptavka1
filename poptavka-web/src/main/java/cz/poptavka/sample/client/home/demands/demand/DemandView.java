@@ -27,7 +27,7 @@ public class DemandView extends Composite implements
 
     }
     @UiField
-    Hyperlink linkAttachment, linkLogin, linkRegister;
+    Hyperlink linkAttachment, linkLogin, linkRegisterClient, linkRegisterSupplier;
 
     @UiField
     FlexTable infoTable;
@@ -57,12 +57,14 @@ public class DemandView extends Composite implements
 
     @Override
     public void setRegisterToken(String token) {
-        linkRegister.setTargetHistoryToken(token);
+        linkRegisterClient.setTargetHistoryToken(token);
     }
 
     public void setDemand(FullDemandDetail demand) {
         infoTable.clear();
         textArea.setText("");
+        textArea.setWidth("400px");
+        textArea.setHeight("250px");
         linkAttachment.setVisible(false);
 
         int row = 0;
@@ -98,12 +100,14 @@ public class DemandView extends Composite implements
 
         if (demand.getCategories() != null) {
             infoTable.setWidget(row, 0, new Label(bundle.category()));
-            infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()));
+            infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()
+                    .substring(1, demand.getCategories().toString().length() - 1)));
         }
 
         if (demand.getLocalities() != null) {
             infoTable.setWidget(row, 0, new Label(bundle.locality()));
-            infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()));
+            infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()
+                    .substring(1, demand.getLocalities().toString().length() - 1)));
         }
 
         infoTable.setWidget(row, 0, new Label(bundle.offers()));

@@ -8,28 +8,29 @@
     }
     </ui:style>
     <g:HTMLPanel>
-        <g:HorizontalPanel>
+        <g:VerticalPanel>
             <g:VerticalPanel>
                 <g:FlexTable ui:field="infoTable"/>
                 <g:Label text="Popis:" />
                 <g:TextArea ui:field="textArea" width="320px" height="50px"/>
             </g:VerticalPanel>
-            <g:VerticalPanel>
         <!--  <p1:CellList ui:field="cellList" /> -->
                 <g:Hyperlink ui:field="linkAttachment" styleName='{res.layout.homeMenu}'>
                     <ui:msg key="getAttachment">Get attachment</ui:msg>
                 </g:Hyperlink>
-            </g:VerticalPanel>
-            <g:VerticalPanel>
+            <g:HorizontalPanel>
 <!--        <g:Label ui:field="label1" text="Reagovat?" />-->
                 <g:Hyperlink ui:field="linkLogin" styleName='{res.layout.homeMenu}'>
-                    <ui:msg key="sign">Sign</ui:msg>
+                    <ui:msg key="sign"> Sign </ui:msg>
                 </g:Hyperlink>
 <!--        <g:Label ui:field="label2" text="Not in system?" />-->
-                <g:Hyperlink ui:field="linkRegister" styleName='{res.layout.homeMenu}'>
-                    <ui:msg key="register">Register</ui:msg>
+                <g:Hyperlink ui:field="linkRegisterClient" styleName='{res.layout.homeMenu}'>
+                    <ui:msg key="register"> Register client </ui:msg>
                 </g:Hyperlink>
-            </g:VerticalPanel>
-        </g:HorizontalPanel>
+                <g:Hyperlink ui:field="linkRegisterSupplier" styleName='{res.layout.homeMenu}'>
+                    <ui:msg key="register"> Register supplier </ui:msg>
+                </g:Hyperlink>
+            </g:HorizontalPanel>
+        </g:VerticalPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

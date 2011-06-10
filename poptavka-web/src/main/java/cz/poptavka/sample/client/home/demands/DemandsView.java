@@ -6,6 +6,7 @@ import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,7 +16,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -35,28 +35,20 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
 
     interface DemandsUiBinder extends UiBinder<Widget, DemandsView> {
     }
-    @UiField
-    VerticalPanel verticalContent;
-
+//    @UiField
+//    VerticalPanel verticalContent;
     @UiField
     ListBox category, locality;
-
     @UiField
     DemandView demandView;
-
     @UiField
-    Label demandDetailLabel;
-
+    Label demandDetailLabel, bannerLabel;
     @UiField(provided = true)
     CellTable<DemandDetail> cellTable;
-
     @UiField(provided = true)
     SimplePager pager;
-
     private final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
-
     private AsyncDataProvider dataProvider;
-
     LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
 
     public DemandsView() {
@@ -145,11 +137,11 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
             }
         };
         cellTable.addColumn(demandTitle, bundle.demand());
-        cellTable.setColumnWidth(demandTitle, 320, Unit.PX);
+        cellTable.setColumnWidth(demandTitle, 200, Unit.PX);
 
         // Date
         Column<DemandDetail, Date> demandDate = new Column<DemandDetail, Date>(
-                new DateCell()) {
+                new DateCell(DateTimeFormat.getFormat("MM.dd.yyyy"))) {
 
             @Override
             public Date getValue(DemandDetail object) {
@@ -157,11 +149,16 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
             }
         };
         cellTable.addColumn(demandDate, bundle.date());
-        cellTable.setColumnWidth(demandDate, 80, Unit.PX);
+        cellTable.setColumnWidth(demandDate, 40, Unit.PX);
     }
 
     @Override
     public SingleSelectionModel<DemandDetail> getSelectionModel() {
         return selectionModel;
+    }
+
+    @Override
+    public Label getBannerLabel() {
+        return bannerLabel;
     }
 }
