@@ -64,8 +64,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     private String source = "";
 
     //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
-    //TODO - ako ziskat pri pouziti filtrovania pocet filtrovanych zaznamov,
-    //bez toho, aby som musel opat zistovat vsetky kategorie a ich podkategorie <- dlho trva
     /**
      * Bind objects and theirs action handlers.
      */
@@ -75,6 +73,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void onChange(ChangeEvent arg0) {
+                DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "wait");
                 view.getLocalityList().setSelectedIndex(0);
                 if (view.getCategoryList().getSelectedIndex() == 0) {
                     eventBus.getAllDemandsCount();
@@ -89,6 +88,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void onChange(ChangeEvent arg0) {
+                DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "wait");
                 view.getCategoryList().setSelectedIndex(0);
                 if (view.getLocalityList().getSelectedIndex() == 0) {
                     eventBus.getAllDemandsCount();
@@ -155,6 +155,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             }
         };
         this.dataProvider.addDataDisplay(view.getCellTable());
+        DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
     }
 
     public void onSetSource(String sourceString) {
@@ -235,6 +236,5 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         view.getDemandDetailLabel().setVisible(true);
         view.getDemandView().setVisible(true);
         view.getDemandView().setDemand((FullDemandDetail) demand);
-        DOM.setStyleAttribute(RootPanel.getBodyElement(), "cursor", "default");
     }
 }
