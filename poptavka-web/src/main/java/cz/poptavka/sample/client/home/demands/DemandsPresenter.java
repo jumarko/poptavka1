@@ -164,6 +164,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                             view.getLocalityList().getValue(
                             view.getLocalityList().getSelectedIndex()));
                 }
+                eventBus.loadingHide();
             }
         };
         this.dataProvider.addDataDisplay(view.getCellTable());
@@ -181,7 +182,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     public void onAtDemands() {
         LOGGER.info("Starting demands presenter...");
 
-        eventBus.loadingShow(MSGS.loading());
         eventBus.getAllDemandsCount();
 
         eventBus.getCategories();
