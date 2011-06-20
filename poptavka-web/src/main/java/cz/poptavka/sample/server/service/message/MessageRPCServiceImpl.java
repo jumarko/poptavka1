@@ -32,6 +32,7 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
@@ -77,6 +78,13 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         this.clientService = clientService;
     }
 
+    /**
+     * Tato metoda ma zrejme vratit vsetky spravy (dotazy od dodavatelov a dotazy
+     * operatora) tykajuce sa klientovych poptaviek?
+     * @param businessUserId - jediny vsetupny parameter
+     * @param fakeParam - ignorovat
+     * @return messageDetails je ArrayList, ktory obsahuje objekty MessageDetail
+     */
     public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
@@ -102,6 +110,33 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
         return details;
     }
+
+
+    /**
+     * Metoda, ktora vrati zoznam klientovych poptavkovych sprav.
+     *
+     * Metoda vrati vsetky spravy #Message, pre ktore plati:
+     * - sprava je koren (tj.poptavkova sprava) #message.threadRoot is not null
+     * - odosielatel spravy je businessUserId tj. nas klient #message.sender = businessUserId
+     * - sprava ma priradenu poptavku #message.demand is not null
+     *
+     * Pre kazdu poptavkovu spravu z vyselektovaneho zoznamu si musime dotiahnut
+     * pocet neprecitanych podsprav. Selekt neprecitanych podspravby mal vyzera nasledovne
+     * - message.threadRoot = poptavkova sprava z vyssieho zoznamu
+     * - message.messageUserRole.messageContext = MessageContext.QUERY_TO_POTENTIAL_SUPPLIERS_DEMAND
+     * (vid metodu sendQueryToPotentialDemand)
+     * - UserMessage.message = message.id (konkretna podsprava)
+     * - UserMessage.user = businessUserId
+     * - UserMessage.isRead = false
+     *
+     * @param businessUserId - parameter z UI
+     * @param clientId - parameter z UI
+     * @return ClientDemandMessageDetail
+     */
+    public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
+        return null;
+    }
+
 
     /**
      * Message sent by supplier about a query to potential demand.
