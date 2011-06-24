@@ -115,6 +115,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     /**
      * Metoda, ktora vrati zoznam klientovych poptavkovych sprav.
      *
+     * Pouzitie na UI: odkaz na wireframe - webgres.cz/axure/ -> UC.73 Moje poptavky_new
+     *
      * Metoda vrati vsetky spravy #Message, pre ktore plati:
      * - sprava je koren (tj.poptavkova sprava) #message.threadRoot is not null
      * - odosielatel spravy je businessUserId tj. nas klient #message.sender = businessUserId
