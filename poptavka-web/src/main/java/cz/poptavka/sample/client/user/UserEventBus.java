@@ -181,6 +181,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserHandler.class)
     void updateDemand(FullDemandDetail demand);
 
+    @Event(handlers = UserHandler.class)
+    void updateOffer(OfferDetail demand);
+
     @Event(handlers = AdministrationPresenter.class)
     void refreshUpdatedDemand(FullDemandDetail demand);
 
@@ -189,6 +192,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminDemandInfoPresenter.class)
     void showAdminDemandDetail(FullDemandDetail selectedObject);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void showAdminOfferDetail(OfferDetail selectedObject);
 
     @Event(handlers = AdministrationPresenter.class)
     void responseAdminDemandDetail(Widget widget);
