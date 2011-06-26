@@ -18,6 +18,6 @@ public interface OfferRPCService extends RemoteService {
 
     OfferDetail changeOfferState(OfferDetail offerDetail);
 
-    FullOfferDetail updateDemand(FullOfferDetail newOffer);
+    FullOfferDetail updateOffer(FullOfferDetail newOffer);
 
 }

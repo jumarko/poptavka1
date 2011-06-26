@@ -1,0 +1,151 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateLocales='default'>
+
+	<ui:style>
+		.header {
+			font-size: 110%;
+			font-weight: bold;
+			color: #555;
+		}
+
+		.label {
+			font-weight: bold;
+		}
+
+		.decorationPanel {
+			width: 100%;
+		}
+
+		.titleBox {
+			width: 100%;
+			height: 55px;
+		}
+
+		.descriptionBox {
+			width: 100%;
+			height: 150px;
+		}
+
+		.priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
+			{
+
+		}
+	</ui:style>
+
+	<g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
+		<g:HTMLPanel>
+			<table style="width: 100%;">
+				<tr>
+					<td colspan='2' align='center' class='{style.header}'>
+						<ui:msg key='contactInfoFormTitle'>Offer Info</ui:msg>
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='title'>Title:</ui:msg>
+					</td>
+					<td>
+						<g:TextArea ui:field='titleBox' styleName='{style.titleBox}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='description'>Description:</ui:msg>
+					</td>
+					<td>
+						<g:TextArea ui:field='descriptionBox' styleName='{style.descriptionBox}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='price'>Price:</ui:msg>
+					</td>
+					<td>
+						<g:TextBox ui:field='priceBox' styleName='{style.priceBox}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='endDate'>End Date:</ui:msg>
+					</td>
+					<td>
+						<d:DateBox ui:field='endDateBox' styleName='{style.endDateBox}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='expiration'>Expiration:</ui:msg>
+					</td>
+					<td>
+						<d:DateBox ui:field='expirationBox' styleName='{style.expirationBox}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='clientID'>ClientID:</ui:msg>
+					</td>
+					<td>
+						<g:TextBox ui:field='clientID' styleName='{style.clientID}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='maxOffers'>Max Offers:</ui:msg>
+					</td>
+					<td>
+						<g:TextBox ui:field='maxOffers' styleName='{style.maxOffers}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='minRating'>MinRating:</ui:msg>
+					</td>
+					<td>
+						<g:TextBox ui:field='minRating' styleName='{style.minRating}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='demandType'>Demand Type:</ui:msg>
+					</td>
+					<td>
+						<g:ListBox ui:field='demandType' styleName='{style.demandType}' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='demandStatus'>Demand Status:</ui:msg>
+					</td>
+					<td>
+						<g:ListBox ui:field='demandStatus' styleName='{style.demandStatus}' />
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2' align='center'>
+						<g:Button ui:field='categoryButton'>
+							<ui:msg key='demandCategoryList'>Category List</ui:msg>
+						</g:Button>
+						&nbsp;
+						<g:Button ui:field='localityButton'>
+							<ui:msg key='demandLocalityList'>Locality List</ui:msg>
+						</g:Button>
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2' align='center'>
+						<g:Button ui:field='updateButton'>
+							<ui:msg key='demandDetailFormUpdateButton'>Update Demand</ui:msg>
+						</g:Button>
+						&nbsp;
+						<g:Button ui:field='createButton'>
+							<ui:msg key='demandDetailFormCreateButton'>Create Demand</ui:msg>
+						</g:Button>
+					</td>
+				</tr>
+			</table>
+		</g:HTMLPanel>
+	</g:DecoratorPanel>
+</ui:UiBinder>

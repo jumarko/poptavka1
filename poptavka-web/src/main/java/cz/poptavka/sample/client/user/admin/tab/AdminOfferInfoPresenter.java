@@ -5,12 +5,14 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
+@Presenter(view = AdminOfferInfoView.class)
 public class AdminOfferInfoPresenter
                     extends LazyPresenter<AdminOfferInfoPresenter.AdminOfferInfoInterface, UserEventBus> {
     public interface AdminOfferInfoInterface extends LazyView {

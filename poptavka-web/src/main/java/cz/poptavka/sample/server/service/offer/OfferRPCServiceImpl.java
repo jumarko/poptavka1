@@ -161,7 +161,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     }
 
     @Override
-    public FullOfferDetail updateDemand(FullOfferDetail newOffer) {
+    public FullOfferDetail updateOffer(FullOfferDetail newOffer) {
         Offer offer = offerService.getById(newOffer.getOfferId());
         //      demand.setCategories(null);
         offer.setSupplier(supplierSerivce.getById(newOffer.getSupplierId()));

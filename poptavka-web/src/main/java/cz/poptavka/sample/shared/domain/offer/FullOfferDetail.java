@@ -1,5 +1,6 @@
 package cz.poptavka.sample.shared.domain.offer;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
-public class FullOfferDetail {
+public class FullOfferDetail implements Serializable {
     /**
      * Generated serialVersionUID.
      */
