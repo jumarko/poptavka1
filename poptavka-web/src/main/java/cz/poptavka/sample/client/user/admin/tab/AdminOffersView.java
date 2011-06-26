@@ -38,7 +38,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.OfferStateType;
 
 
@@ -56,7 +56,7 @@ public class AdminOffersView extends Composite implements
      * @return the dataProvider
      */
     @Override
-    public ListDataProvider<OfferDetail> getDataProvider() {
+    public ListDataProvider<FullOfferDetail> getDataProvider() {
 //        ColumnSortEvent fire = ColumnSortEvent.fire(this, cellTable.getColumnSortList());
 //        cellTable.fireEvent(fire);
         return dataProvider;
@@ -66,7 +66,7 @@ public class AdminOffersView extends Composite implements
      * @return the clientIdColumn
      */
     @Override
-    public Column<OfferDetail, String> getSupplierIdColumn() {
+    public Column<FullOfferDetail, String> getSupplierIdColumn() {
         return supplierIdColumn;
     }
 
@@ -76,7 +76,7 @@ public class AdminOffersView extends Composite implements
     }
 
     @Override
-    public CellTable<OfferDetail> getCellTable() {
+    public CellTable<FullOfferDetail> getCellTable() {
         return cellTable;
     }
 
@@ -92,7 +92,7 @@ public class AdminOffersView extends Composite implements
      * @return the demandStatusColumn
      */
     @Override
-    public Column<OfferDetail, String> getOfferStatusColumn() {
+    public Column<FullOfferDetail, String> getOfferStatusColumn() {
         return offerStatusColumn;
     }
 
@@ -100,14 +100,14 @@ public class AdminOffersView extends Composite implements
      * @return the demandEndColumn
      */
     @Override
-    public Column<OfferDetail, Date> getOfferFinishColumn() {
+    public Column<FullOfferDetail, Date> getOfferFinishColumn() {
         return offerFinishColumn;
     }
 
     /**
      * @return the selectionModel
      */
-    public SingleSelectionModel<OfferDetail> getSelectionModel() {
+    public SingleSelectionModel<FullOfferDetail> getSelectionModel() {
         return selectionModel;
     }
 
@@ -124,7 +124,7 @@ public class AdminOffersView extends Composite implements
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
     @UiField(provided = true)
-    CellTable<OfferDetail> cellTable;
+    CellTable<FullOfferDetail> cellTable;
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
@@ -142,12 +142,12 @@ public class AdminOffersView extends Composite implements
     /**
      * Data provider that will cell table with data.
      */
-    private ListDataProvider<OfferDetail> dataProvider = new ListDataProvider<OfferDetail>();
-    private SingleSelectionModel<OfferDetail> selectionModel;
+    private ListDataProvider<FullOfferDetail> dataProvider = new ListDataProvider<FullOfferDetail>();
+    private SingleSelectionModel<FullOfferDetail> selectionModel;
     /** Editable Columns in CellTable. **/
-    private Column<OfferDetail, String> supplierIdColumn;
-    private Column<OfferDetail, String> offerStatusColumn;
-    private Column<OfferDetail, Date> offerFinishColumn;
+    private Column<FullOfferDetail, String> supplierIdColumn;
+    private Column<FullOfferDetail, String> offerStatusColumn;
+    private Column<FullOfferDetail, Date> offerFinishColumn;
     private final OfferStateType[] offerStatuses = OfferStateType.values();
 
     @Override
@@ -162,7 +162,7 @@ public class AdminOffersView extends Composite implements
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        cellTable = new CellTable<OfferDetail>(KEY_PROVIDER);
+        cellTable = new CellTable<FullOfferDetail>(KEY_PROVIDER);
         cellTable.setWidth("100%", true);
 //        cellTable.setRowCount(2, true);
 
@@ -172,7 +172,7 @@ public class AdminOffersView extends Composite implements
 
         // TODO ivlcek - make it working without keyprovider
         // Attach a column sort handler to the ListDataProvider to sort the list.
-        ListHandler<OfferDetail> sortHandler = new ListHandler<OfferDetail>(
+        ListHandler<FullOfferDetail> sortHandler = new ListHandler<FullOfferDetail>(
                 dataProvider.getList());
         cellTable.addColumnSortHandler(sortHandler);
 
@@ -186,9 +186,9 @@ public class AdminOffersView extends Composite implements
         // Add a selection model to handle user selection.
 //        final MultiSelectionModel<DemandDetail> selectionModel = new MultiSelectionModel<DemandDetail>(KEY_PROVIDER);
         // Add a single selection model to handle user selection.
-        selectionModel = new SingleSelectionModel<OfferDetail>(KEY_PROVIDER);
+        selectionModel = new SingleSelectionModel<FullOfferDetail>(KEY_PROVIDER);
         cellTable.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<OfferDetail>createCheckboxManager());
+                DefaultSelectionEventManager.<FullOfferDetail>createCheckboxManager());
 
         // Initialize the columns.
         initTableColumns(getSelectionModel(), sortHandler);
@@ -197,16 +197,16 @@ public class AdminOffersView extends Composite implements
     /**
      * Add the columns to the table.
      */
-    private void initTableColumns(final SelectionModel<OfferDetail> selectionModel,
-            ListHandler<OfferDetail> sortHandler) {
+    private void initTableColumns(final SelectionModel<FullOfferDetail> selectionModel,
+            ListHandler<FullOfferDetail> sortHandler) {
 
         // Checkbox column. This table will uses a checkbox column for selection.
         // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
         // mouse selection.
-        Column<OfferDetail, Boolean> checkColumn = new Column<OfferDetail, Boolean>(
+        Column<FullOfferDetail, Boolean> checkColumn = new Column<FullOfferDetail, Boolean>(
                 new CheckboxCell(true, false)) {
             @Override
-            public Boolean getValue(OfferDetail object) {
+            public Boolean getValue(FullOfferDetail object) {
                 // Get the value from the selection model.
                 return selectionModel.isSelected(object);
             }
@@ -215,16 +215,16 @@ public class AdminOffersView extends Composite implements
         cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
 
         // Demand ID.
-        Column<OfferDetail, String> idColumn = new Column<OfferDetail, String>(new TextCell()) {
+        Column<FullOfferDetail, String> idColumn = new Column<FullOfferDetail, String>(new TextCell()) {
             @Override
-            public String getValue(OfferDetail object) {
+            public String getValue(FullOfferDetail object) {
                 return String.valueOf(object.getMessageId());
             }
         };
         idColumn.setSortable(true);
-        sortHandler.setComparator(idColumn, new Comparator<OfferDetail>() {
+        sortHandler.setComparator(idColumn, new Comparator<FullOfferDetail>() {
             @Override
-            public int compare(OfferDetail o1, OfferDetail o2) {
+            public int compare(FullOfferDetail o1, FullOfferDetail o2) {
                 return Long.valueOf(o1.getMessageId()).compareTo(Long.valueOf(o2.getMessageId()));
             }
         });
@@ -232,17 +232,17 @@ public class AdminOffersView extends Composite implements
         cellTable.setColumnWidth(idColumn, 50, Unit.PX);
 
         // Clietn ID.
-        supplierIdColumn = new Column<OfferDetail, String>(
+        supplierIdColumn = new Column<FullOfferDetail, String>(
                 new EditTextCell()) {
             @Override
-            public String getValue(OfferDetail object) {
+            public String getValue(FullOfferDetail object) {
                 return String.valueOf(object.getSupplierId());
             }
         };
         getSupplierIdColumn().setSortable(true);
-        sortHandler.setComparator(getSupplierIdColumn(), new Comparator<OfferDetail>() {
+        sortHandler.setComparator(getSupplierIdColumn(), new Comparator<FullOfferDetail>() {
             @Override
-            public int compare(OfferDetail o1, OfferDetail o2) {
+            public int compare(FullOfferDetail o1, FullOfferDetail o2) {
                 return Long.valueOf(o1.getSupplierId()).compareTo(Long.valueOf(o2.getSupplierId()));
             }
         });
@@ -257,10 +257,10 @@ public class AdminOffersView extends Composite implements
             offerStatesNames.add(offerStatusDetail.getValue());
         }
         SelectionCell offerStatusCell = new SelectionCell(offerStatesNames);
-        offerStatusColumn = new Column<OfferDetail, String>(
+        offerStatusColumn = new Column<FullOfferDetail, String>(
                 offerStatusCell) {
             @Override
-            public String getValue(OfferDetail object) {
+            public String getValue(FullOfferDetail object) {
                 // TODO ivlcek - localize message
                 return object.getState();
             }
@@ -275,7 +275,7 @@ public class AdminOffersView extends Composite implements
         offerFinishColumn = addColumn(new DatePickerCell(dateFormat), "End",
                 new GetValue<Date>() {
                     @Override
-                    public Date getValue(OfferDetail offerDetail) {
+                    public Date getValue(FullOfferDetail offerDetail) {
                         return offerDetail.getFinishDate();
                     }
                 }, null);
@@ -287,7 +287,7 @@ public class AdminOffersView extends Composite implements
      * @param <C> the cell type
      */
     private static interface GetValue<C> {
-        C getValue(OfferDetail offerDetail);
+        C getValue(FullOfferDetail offerDetail);
     }
 
     /**
@@ -298,11 +298,11 @@ public class AdminOffersView extends Composite implements
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<OfferDetail, C> addColumn(Cell<C> cell, String headerText,
-            final GetValue<C> getter, FieldUpdater<OfferDetail, C> fieldUpdater) {
-        Column<OfferDetail, C> column = new Column<OfferDetail, C>(cell) {
+    private <C> Column<FullOfferDetail, C> addColumn(Cell<C> cell, String headerText,
+            final GetValue<C> getter, FieldUpdater<FullOfferDetail, C> fieldUpdater) {
+        Column<FullOfferDetail, C> column = new Column<FullOfferDetail, C>(cell) {
             @Override
-            public C getValue(OfferDetail object) {
+            public C getValue(FullOfferDetail object) {
                 return getter.getValue(object);
             }
         };
@@ -316,9 +316,9 @@ public class AdminOffersView extends Composite implements
     /**
      * The key provider that provides the unique ID of a DemandDetail.
      */
-    private static final ProvidesKey<OfferDetail> KEY_PROVIDER = new ProvidesKey<OfferDetail>() {
+    private static final ProvidesKey<FullOfferDetail> KEY_PROVIDER = new ProvidesKey<FullOfferDetail>() {
         @Override
-        public Object getKey(OfferDetail item) {
+        public Object getKey(FullOfferDetail item) {
             return item == null ? null : item.getMessageId();
         }
     };

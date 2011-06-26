@@ -374,4 +374,10 @@ public class AdministrationView extends Composite implements
             return item == null ? null : item.getDemandId();
         }
     };
+
+    @Override
+    public SimplePanel getAdminOfferDetail() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

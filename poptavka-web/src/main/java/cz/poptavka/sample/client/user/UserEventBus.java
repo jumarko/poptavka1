@@ -11,6 +11,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminOfferInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdministrationPresenter;
 import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
@@ -31,6 +32,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Events(startView = UserView.class, module = UserModule.class)
@@ -182,10 +184,13 @@ public interface UserEventBus extends EventBusWithLookup {
     void updateDemand(FullDemandDetail demand);
 
     @Event(handlers = UserHandler.class)
-    void updateOffer(OfferDetail demand);
+    void updateOffer(FullOfferDetail offer);
 
     @Event(handlers = AdministrationPresenter.class)
     void refreshUpdatedDemand(FullDemandDetail demand);
+
+    @Event(handlers = AdministrationPresenter.class)
+    void refreshUpdatedOffer(FullOfferDetail demand);
 
     @Event(handlers = AdministrationPresenter.class)
     void setAllDemands(List<DemandDetail> demands);
@@ -193,11 +198,14 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminDemandInfoPresenter.class)
     void showAdminDemandDetail(FullDemandDetail selectedObject);
 
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void showAdminOfferDetail(OfferDetail selectedObject);
+    @Event(handlers = AdminOfferInfoPresenter.class)
+    void showAdminOfferDetail(FullOfferDetail selectedObject);
 
     @Event(handlers = AdministrationPresenter.class)
     void responseAdminDemandDetail(Widget widget);
+
+    @Event(handlers = AdministrationPresenter.class)
+    void responseAdminOfferDetail(Widget widget);
 
     /** Call to UserPresenter **/
     /**

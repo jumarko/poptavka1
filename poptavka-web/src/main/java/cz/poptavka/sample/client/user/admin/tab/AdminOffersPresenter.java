@@ -20,8 +20,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.OfferStateType;
 
 @Presenter(view = AdminOffersView.class)
@@ -42,19 +42,19 @@ public class AdminOffersPresenter
         Widget getWidgetView();
 
 //        SimplePager getPager();
-        CellTable<OfferDetail> getCellTable();
+        CellTable<FullOfferDetail> getCellTable();
 
-        ListDataProvider<OfferDetail> getDataProvider();
+        ListDataProvider<FullOfferDetail> getDataProvider();
 
-        Column<OfferDetail, String> getSupplierIdColumn();
+        Column<FullOfferDetail, String> getSupplierIdColumn();
 
-        Column<OfferDetail, String> getOfferStatusColumn();
+        Column<FullOfferDetail, String> getOfferStatusColumn();
 
-        Column<OfferDetail, Date> getOfferFinishColumn();
+        Column<FullOfferDetail, Date> getOfferFinishColumn();
 
         OfferStateType[] getOfferStatuses();
 
-        SingleSelectionModel<OfferDetail> getSelectionModel();
+        SingleSelectionModel<FullOfferDetail> getSelectionModel();
 
         SimplePanel getAdminOfferDetail();
     }
@@ -67,14 +67,14 @@ public class AdminOffersPresenter
         eventBus.getAllDemands();
     }
 
-    public void onSetAllOffer(List<OfferDetail> offerDetails) {
+    public void onSetAllOffer(List<FullOfferDetail> offerDetails) {
         // Add the data to the data provider, which automatically pushes it to the widget.
         // TODO ivlcek - try to set list in for cycle. Maybe it depends on how you populate
         // data into ListProvider. DONE - it realy depends on how you set data to list provider
 //        view.getDataProvider().setList(demandDetails);
 
-        List<OfferDetail> list = view.getDataProvider().getList();
-        for (OfferDetail d : offerDetails) {
+        List<FullOfferDetail> list = view.getDataProvider().getList();
+        for (FullOfferDetail d : offerDetails) {
             list.add(d);
         }
 
@@ -99,17 +99,17 @@ public class AdminOffersPresenter
 
     @Override
     public void bindView() {
-        view.getSupplierIdColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
+        view.getSupplierIdColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, String>() {
             @Override
-            public void update(int index, OfferDetail object, String value) {
+            public void update(int index, FullOfferDetail object, String value) {
                 object.setSupplierId(Long.valueOf(value));
                 eventBus.updateOffer(object);
                 refreshDisplays();
             }
         });
-        view.getOfferStatusColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
+        view.getOfferStatusColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, String>() {
             @Override
-            public void update(int index, OfferDetail object, String value) {
+            public void update(int index, FullOfferDetail object, String value) {
                 for (OfferStateType offerStatusDetail : view.getOfferStatuses()) {
                     if (offerStatusDetail.name().equals(value)) {
                         object.setState(offerStatusDetail.name());
@@ -119,9 +119,9 @@ public class AdminOffersPresenter
                 refreshDisplays();
             }
         });
-        view.getOfferFinishColumn().setFieldUpdater(new FieldUpdater<OfferDetail, Date>() {
+        view.getOfferFinishColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, Date>() {
             @Override
-            public void update(int index, OfferDetail object, Date value) {
+            public void update(int index, FullOfferDetail object, Date value) {
                 object.setFinishDate(value);
                 eventBus.updateOffer(object);
                 refreshDisplays();

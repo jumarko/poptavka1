@@ -24,10 +24,12 @@ import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.offer.OfferService;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
 /**
  *
@@ -45,6 +47,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     private ClientService clientService;
     private UserMessageService userMessageService;
     private OfferService offerService;
+    private SupplierService supplierSerivce;
 
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
@@ -74,6 +77,10 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    public void setSupplierSerivce(SupplierService supplierSerivce) {
+        this.supplierSerivce = supplierSerivce;
     }
 
     @Override
@@ -151,5 +158,18 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         offer = (Offer) this.generalService.save(offer);
         offerDetail.setState(offer.getState().getCode());
         return offerDetail;
+    }
+
+    @Override
+    public FullOfferDetail updateDemand(FullOfferDetail newOffer) {
+        Offer offer = offerService.getById(newOffer.getOfferId());
+        //      demand.setCategories(null);
+        offer.setSupplier(supplierSerivce.getById(newOffer.getSupplierId()));
+        //      demand.setDescription(null);
+        offer.setFinishDate(newOffer.getFinishDate());
+        //      demand.setExcludedSuppliers(null);
+        //      demand.setLocalities(null);
+        offerService.update(offer);
+        return newOffer;
     }
 }

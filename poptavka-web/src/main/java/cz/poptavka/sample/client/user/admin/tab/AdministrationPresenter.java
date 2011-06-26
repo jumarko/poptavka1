@@ -4,6 +4,9 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
+import java.util.Date;
+import java.util.List;
+
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -19,14 +22,13 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -71,6 +73,8 @@ public class AdministrationPresenter
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
 
         SimplePanel getAdminDemandDetail();
+
+        SimplePanel getAdminOfferDetail();
     }
 
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
@@ -100,8 +104,16 @@ public class AdministrationPresenter
 //        view.getCellTable().setSize("10%", "10%");
     }
 
+    public void onRefreshUpdatedOffer(FullOfferDetail demand) {
+//      view.getCellTable().setSize("10%", "10%");
+    }
+
     public void onResponseAdminDemandDetail(Widget widget) {
         view.getAdminDemandDetail().setWidget(widget);
+    }
+
+    public void onResponseAdminOfferDetail(Widget widget) {
+        view.getAdminOfferDetail().setWidget(widget);
     }
 
     /**

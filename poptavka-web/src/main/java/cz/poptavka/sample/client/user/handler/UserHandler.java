@@ -20,7 +20,10 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
+
+
 
 @EventHandler
 public class UserHandler extends BaseEventHandler<UserEventBus> {
@@ -61,6 +64,21 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onSuccess(FullDemandDetail result) {
                 eventBus.refreshUpdatedDemand(result);
+            }
+        });
+    }
+
+    public void onUpdateOffer(FullOfferDetail offer) {
+        offerService.updateOffer(offer, new AsyncCallback<FullOfferDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(FullOfferDetail result) {
+                eventBus.refreshUpdatedOffer(result);
             }
         });
     }

@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
 public interface OfferRPCServiceAsync {
 
@@ -14,4 +15,6 @@ public interface OfferRPCServiceAsync {
     void getDemandOffers(long demandId, long threadRootId, AsyncCallback<ArrayList<OfferDetail>> callback);
 
     void changeOfferState(OfferDetail offerDetail, AsyncCallback<OfferDetail> callback);
+
+    void updateOffer(FullOfferDetail offer, AsyncCallback<FullOfferDetail> asyncCallback);
 }
