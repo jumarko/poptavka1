@@ -221,7 +221,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 //        demand.setOffers(null);
 //        demand.setOrigin(null);
         demand.setPrice(fullDemandDetail.getPrice());
-//        demand.setStatus(null);
+        demand.setStatus(DemandStatus.valueOf(fullDemandDetail.getDemandStatus()));
         demand.setTitle(fullDemandDetail.getTitle());
         demand.setType(this.demandService.getDemandType(fullDemandDetail.getDemandType()));
         demand.setValidTo(fullDemandDetail.getValidToDate());
