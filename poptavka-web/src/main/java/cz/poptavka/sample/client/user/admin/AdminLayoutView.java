@@ -31,6 +31,12 @@ public class AdminLayoutView extends Composite
     @UiField
     Hyperlink operatorDemandsLink;
 
+    @UiField
+    Hyperlink adminDemandsLink;
+
+    @UiField
+    Hyperlink adminOffersLink;
+
     public AdminLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
@@ -48,6 +54,14 @@ public class AdminLayoutView extends Composite
 
     public void setOperatorDemandsToken(String linkString) {
         operatorDemandsLink.setTargetHistoryToken(linkString);
+    }
+
+    public void setAdminDemandsToken(String linkString) {
+        adminDemandsLink.setTargetHistoryToken(linkString);
+    }
+
+    public void setAdminOffersToken(String linkString) {
+        adminOffersLink.setTargetHistoryToken(linkString);
     }
 
     /** toggle visible actions/buttons for current user decided by his role. **/

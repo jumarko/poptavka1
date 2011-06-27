@@ -17,6 +17,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
 
     @UiField TabLayoutPanel tabLayoutPanel;
     @UiField SimplePanel tabPanel;
+    @UiField SimplePanel adminPanel;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));

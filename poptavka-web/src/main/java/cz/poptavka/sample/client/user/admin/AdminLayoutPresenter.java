@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.admin;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.StyleInterface;
@@ -10,6 +11,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
+@Presenter(view = AdminLayoutView.class)
 public class AdminLayoutPresenter         extends
         BasePresenter<AdminLayoutPresenter.AdminLayoutInterface, UserEventBus> {
 
@@ -24,12 +26,24 @@ public class AdminLayoutPresenter         extends
 
         void setOperatorDemandsToken(String link);
 
+        void setAdminDemandsToken(String link);
+
+        void setAdminOffersToken(String link);
+
 
 
     }
 
     public void bind() {
         view.setOperatorDemandsToken(getTokenGenerator().invokeMyDemands());
+    }
+
+    public void onInitAdmin() {
+        eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
+        eventBus.setTabWidget(view.getWidgetView());
+        eventBus.fireMarkedEvent();
+
+        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
     public void init(UserDetail user) {

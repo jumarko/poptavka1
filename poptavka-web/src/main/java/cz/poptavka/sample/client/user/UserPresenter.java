@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
+import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
@@ -35,6 +37,21 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
  */
 @Presenter(view = UserView.class)
 public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface, UserEventBus> {
+
+    protected static final int ADMIN_SECTION = 4;
+
+    @Override
+    public void bindView() {
+        view.getLayoutPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+
+            @Override
+            public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
+                if (event.getItem().intValue() == ADMIN_SECTION) {
+                    eventBus.initAdmin();
+                }
+            }
+        });
+    }
 
     private static final Logger LOGGER = Logger.getLogger("UserPresenter");
 

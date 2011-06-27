@@ -14,6 +14,20 @@
                         </g:Hyperlink>
                     </li>
                 </ul>
+                <ul>
+                    <li>
+                        <g:Hyperlink ui:field="adminDemandsLink">
+                            <ui:msg key="adminDemands">Admin Demands</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <g:Hyperlink ui:field="adminOffersLink">
+                            <ui:msg key="adminOffers">Admin Offers</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
             </g:HTMLPanel>
         </g:west>
         <g:center>

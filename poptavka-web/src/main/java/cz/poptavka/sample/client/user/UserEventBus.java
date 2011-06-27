@@ -10,6 +10,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 
+import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOfferInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdministrationPresenter;
@@ -318,5 +319,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = DemandsLayoutPresenter.class)
     void toggleLoading();
+
+    @Event(handlers = AdminLayoutPresenter.class)
+    void initAdmin();
 
 }
