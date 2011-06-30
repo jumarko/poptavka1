@@ -136,6 +136,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return ClientDemandMessageDetail
      */
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
+        // TODO backend
         return null;
     }
 
