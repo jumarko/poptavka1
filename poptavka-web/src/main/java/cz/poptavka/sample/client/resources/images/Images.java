@@ -71,4 +71,17 @@ public interface Images extends ClientBundle {
 
     @Source("bronzeStar16.png")
     ImageResource starBronze();
+
+    //In displaying demands
+    @Source("redCyrcle.png")
+    ImageResource urgent();
+
+    @Source("orangeCyrcle.png")
+    ImageResource lessUrgent();
+
+    @Source("greenCyrcle.png")
+    ImageResource normal();
+
+    @Source("blueCyrcle.png")
+    ImageResource lessNormal();
 }

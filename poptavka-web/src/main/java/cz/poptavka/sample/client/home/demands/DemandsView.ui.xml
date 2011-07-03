@@ -23,10 +23,12 @@
     </ui:style>
         
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:west size="600">
-            
+        <g:north size="300">
+            <g:ScrollPanel>
             <g:HTMLPanel>
+                
                 <table width="100%">
+                    
                     <tr>
                         <td>
                             <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
@@ -36,7 +38,13 @@
                                 <g:ListBox ui:field="category" styleName="{style.list}" />
                                 <g:ListBox ui:field="locality" styleName="{style.list}" />
                             </g:HorizontalPanel>                    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <g:ScrollPanel>
                                 <c:CellTable pageSize='15' ui:field='cellTable' />
+                            </g:ScrollPanel>
                         </td>
                     </tr>
                     <tr>
@@ -44,20 +52,21 @@
                             <c:SimplePager ui:field='pager' />
                         </td>
                     </tr>
+                
                 </table>                        
+                    
             </g:HTMLPanel>
-            
-        </g:west>
+            </g:ScrollPanel>
+        </g:north>
         <g:center>
-            <g:HTMLPanel>
-                <g:VerticalPanel>
-                    <g:Label ui:field="demandDetailLabel">
-                        <ui:msg key="demandDetail">Demand detail:</ui:msg>
-                    </g:Label>
-                    <d:DemandView ui:field="demandView"/>
-                    <g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
-                </g:VerticalPanel>
-            </g:HTMLPanel>
+            <g:ScrollPanel>
+                <g:HTMLPanel>
+                    <g:VerticalPanel>
+                        <d:DemandView ui:field="demandView"/>
+                        <g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
+                    </g:VerticalPanel>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>
 </ui:UiBinder>

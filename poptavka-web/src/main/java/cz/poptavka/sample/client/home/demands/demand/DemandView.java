@@ -8,7 +8,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -31,12 +30,9 @@ public class DemandView extends Composite implements
 
     @UiField
     FlexTable infoTable;
-//    @UiField
-//    Label label1;
-//    @UiField
-//    Label label2;
+
     @UiField
-    TextArea textArea;
+    Label textArea;
 
     LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
 
@@ -63,8 +59,8 @@ public class DemandView extends Composite implements
     public void setDemand(FullDemandDetail demand) {
         infoTable.clear();
         textArea.setText("");
-        textArea.setWidth("400px");
-        textArea.setHeight("250px");
+
+        textArea.getElement().getStyle().setProperty("whiteSpace", "pre");
         linkAttachment.setVisible(false);
 
         int row = 0;

@@ -55,8 +55,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         SimplePager getPager();
 
-        Label getDemandDetailLabel();
-
         Label getBannerLabel();
 
         DemandView getDemandView();
@@ -78,7 +76,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             public void onChange(ChangeEvent arg0) {
                 eventBus.loadingShow(MSGS.loading());
                 view.getDemandView().setVisible(false);
-                view.getDemandDetailLabel().setVisible(false);
                 view.getBannerLabel().setVisible(true);
                 view.getLocalityList().setSelectedIndex(0);
                 if (view.getCategoryList().getSelectedIndex() == 0) {
@@ -95,7 +92,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             public void onChange(ChangeEvent arg0) {
                 eventBus.loadingShow(MSGS.loading());
                 view.getDemandView().setVisible(false);
-                view.getDemandDetailLabel().setVisible(false);
                 view.getBannerLabel().setVisible(true);
                 view.getCategoryList().setSelectedIndex(0);
                 if (view.getLocalityList().getSelectedIndex() == 0) {
@@ -117,11 +113,9 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                 if (selected != null) {
                     view.getBannerLabel().setVisible(false);
                     view.getDemandView().setVisible(true);
-                    view.getDemandDetailLabel().setVisible(true);
                     eventBus.setDemand(selected);
                 } else {
                     view.getDemandView().setVisible(false);
-                    view.getDemandDetailLabel().setVisible(false);
                     view.getBannerLabel().setVisible(true);
                 }
             }
@@ -245,7 +239,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
     }
 
     public void onSetDemand(DemandDetail demand) {
-        view.getDemandDetailLabel().setVisible(true);
         view.getDemandView().setVisible(true);
         view.getDemandView().setDemand((FullDemandDetail) demand);
     }
