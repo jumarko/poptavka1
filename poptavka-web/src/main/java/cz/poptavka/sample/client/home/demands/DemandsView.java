@@ -42,8 +42,8 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
 
     interface DemandsUiBinder extends UiBinder<Widget, DemandsView> {
     }
-//    @UiField
-//    VerticalPanel verticalContent;
+    @UiField(provided = true)
+    ListBox combo;
     @UiField
     ListBox category, locality;
     @UiField
@@ -59,6 +59,14 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
 
     public DemandsView() {
+        combo = new ListBox();
+        combo.addItem("5");
+        combo.addItem("10");
+        combo.addItem("15");
+        combo.addItem("20");
+        combo.addItem("25");
+        combo.addItem("30");
+        combo.setSelectedIndex(2);
         initCellTable();
         initWidget(uiBinder.createAndBindUi(this));
         demandView.setVisible(false);
@@ -105,6 +113,11 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         return pager;
     }
 
+    @Override
+    public ListBox getCombo() {
+        return combo;
+    }
+
     /**
      * Initialize this example.
      */
@@ -112,7 +125,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         // Create a CellTable.
         cellTable = new CellTable<DemandDetail>();
         cellTable.setWidth("100%", true);
-        cellTable.setRowCount(9, true);
+        cellTable.setRowCount(Integer.valueOf(combo.getItemText(combo.getSelectedIndex())), true);
 
         cellTable.setSelectionModel(selectionModel);
 
@@ -129,7 +142,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      */
     private void initTableColumns() {
         // Date of creation TODO Martin - opravit ak bude dostupny datum vlozenia
-        addColumn(new DateCell(DateTimeFormat.getFormat("MM.dd.yyyy")), bundle.date(), 30, new GetValue<Date>() {
+        addColumn(new DateCell(DateTimeFormat.getFormat("MM.dd.yyyy")), bundle.createdDate(), 30, new GetValue<Date>() {
 
             public Date getValue(FullDemandDetail fullDemandDetail) {
                 return fullDemandDetail.getEndDate();
@@ -137,7 +150,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         });
 
         // Time of creation TODO Martin - opravit ak bude dostupny cas vlozenia
-        addColumn(new DateCell(DateTimeFormat.getFormat("hh:mm")), "time", 20, new GetValue<Date>() {
+        addColumn(new DateCell(DateTimeFormat.getFormat("hh:mm")), bundle.createdTime(), 20, new GetValue<Date>() {
 
             public Date getValue(FullDemandDetail fullDemandDetail) {
                 return fullDemandDetail.getEndDate();
@@ -145,7 +158,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         });
 
         // Root category info
-        addColumn(new TextCell(), "root category", 40, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.category(), 40, new GetValue<String>() {
 
             public String getValue(FullDemandDetail fullDemandDetail) {
                 if (fullDemandDetail.getCategories() != null
@@ -166,7 +179,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         });
 
         // Mesto
-        addColumn(new TextCell(), "lokalita", 40, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.locality(), 40, new GetValue<String>() {
 
             public String getValue(FullDemandDetail fullDemandDetail) {
                 if (fullDemandDetail.getLocalities() != null
@@ -179,7 +192,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         });
 
         // Urgencia
-        addColumn(new ImageStatus(), "urgencia", 40, new GetValue<Date>() {
+        addColumn(new ImageStatus(), bundle.urgency(), 40, new GetValue<Date>() {
 
             public Date getValue(FullDemandDetail object) {
                 return object.getEndDate();
@@ -187,7 +200,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         });
 
         // Cena
-        addColumn(new TextCell(), "mesto", 30, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.price(), 30, new GetValue<String>() {
 
             public String getValue(FullDemandDetail fullDemandDetail) {
                 return String.valueOf(fullDemandDetail.getPrice());
@@ -206,7 +219,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
 
     /**
-     * The Cell used to render a {@link ContactInfo}.
+     * The Cell used to render Urgent image with text
      */
     private static class ImageStatus extends AbstractCell<Date> {
 

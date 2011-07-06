@@ -87,4 +87,7 @@ public interface LocalizableMessages extends Messages {
     String locality();
     String offers();
     String attachment();
+    String createdDate();
+    String createdTime();
+    String urgency();
 }

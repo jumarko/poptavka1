@@ -43,13 +43,15 @@
                     <tr>
                         <td>
                             <g:ScrollPanel>
-                                <c:CellTable pageSize='15' ui:field='cellTable' />
+                                <c:CellTable ui:field='cellTable' />
                             </g:ScrollPanel>
                         </td>
                     </tr>
                     <tr>
                         <td align="center">
+<!--                            <c:SimplePager ui:field='pager' />-->
                             <c:SimplePager ui:field='pager' />
+                            <g:ListBox ui:field='combo'/>
                         </td>
                     </tr>
                 

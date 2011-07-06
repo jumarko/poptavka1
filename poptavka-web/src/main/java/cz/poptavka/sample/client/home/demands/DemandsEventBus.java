@@ -71,10 +71,13 @@ public interface DemandsEventBus extends EventBus {
     void setDemand(DemandDetail demand);
 
     @Event(handlers = DemandsPresenter.class)
-    void createAsyncDataProvider(final long result);
+    void createAsyncDataProvider();
 
     @Event(handlers = DemandsPresenter.class)
-    void setSource(String source);
+    void setResultSource(String resultSource);
+
+    @Event(handlers = DemandsPresenter.class)
+    void setResultCount(long resultCount);
 
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);

@@ -70,47 +70,47 @@ public class DemandView extends Composite implements
         }
 
         if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.title()));
+            infoTable.setWidget(row, 0, new Label(bundle.title() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
         }
 
         if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.price()));
+            infoTable.setWidget(row, 0, new Label(bundle.price() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
         }
 
         if (demand.getEndDate() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.endDate()));
+            infoTable.setWidget(row, 0, new Label(bundle.endDate() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
         }
 
         if (demand.getValidToDate() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.validTo()));
+            infoTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
         }
 
         if (demand.getDemandType() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.type()));
+            infoTable.setWidget(row, 0, new Label(bundle.type() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getDemandType()));
         }
 
         if (demand.getCategories() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.category()));
+            infoTable.setWidget(row, 0, new Label(bundle.category() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()
                     .substring(1, demand.getCategories().toString().length() - 1)));
         }
 
         if (demand.getLocalities() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.locality()));
+            infoTable.setWidget(row, 0, new Label(bundle.locality() + ":"));
             infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()
                     .substring(1, demand.getLocalities().toString().length() - 1)));
         }
 
-        infoTable.setWidget(row, 0, new Label(bundle.offers()));
+        infoTable.setWidget(row, 0, new Label(bundle.offers() + ":"));
         infoTable.setWidget(row++, 1, new Label(Integer.toString(demand.getMaxOffers())));
 
         if (demand.getPrice() != null) {
-            infoTable.setWidget(row++, 0, new Label(bundle.attachment()));
+            infoTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));
             infoTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
             linkAttachment.setVisible(true);
         }

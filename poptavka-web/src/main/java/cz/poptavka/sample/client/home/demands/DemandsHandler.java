@@ -115,8 +115,9 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-                eventBus.setSource("all");
-                eventBus.createAsyncDataProvider(result);
+                eventBus.setResultSource("all");
+                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProvider();
             }
         });
     }
@@ -131,8 +132,9 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-                eventBus.setSource("category");
-                eventBus.createAsyncDataProvider(result);
+                eventBus.setResultSource("category");
+                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProvider();
             }
         });
     }
@@ -147,8 +149,9 @@ public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-                eventBus.setSource("locality");
-                eventBus.createAsyncDataProvider(result);
+                eventBus.setResultSource("locality");
+                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProvider();
             }
         });
     }

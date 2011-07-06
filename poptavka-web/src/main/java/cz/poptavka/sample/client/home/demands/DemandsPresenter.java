@@ -47,6 +47,8 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         ListBox getLocalityList();
 
+        ListBox getCombo();
+
         AsyncDataProvider<DemandDetail> getDataProvider();
 
         void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider);
@@ -62,7 +64,8 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         SingleSelectionModel<DemandDetail> getSelectionModel();
     }
     private int start = 0;
-    private String source = "";
+    private String resultSource = "";
+    private long resultCount = 0;
 
     //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
     /**
@@ -120,6 +123,24 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                 }
             }
         });
+
+        view.getCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                view.getCellTable().setRowCount(0, true);
+
+                int newPage = Integer.valueOf(view.getCombo()
+                        .getItemText(view.getCombo().getSelectedIndex()));
+
+                view.getCellTable().setRowCount(newPage, true);
+
+                int page = view.getPager().getPageStart() / view.getPager().getPageSize();
+
+                view.getPager().setPageStart(page * newPage);
+                view.getPager().setPageSize(newPage);
+            }
+        });
     }
     private AsyncDataProvider dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
@@ -130,30 +151,22 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         }
     };
 
-    public void onCreateAsyncDataProvider(final long result) {
-        //reset pager
-        if (view.getPager().getPage() != 0) {
-            view.getPager().firstPage();
-        }
-        //clear table
-        view.getCellTable().setRowCount(0);
-        view.getCellTable().setRowCount(10, true);
-
+    public void onCreateAsyncDataProvider() {
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
             protected void onRangeChanged(HasData<FullDemandDetail> display) {
-                display.setRowCount((int) result);
+                display.setRowCount((int) resultCount);
+                start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
 
-                start = display.getVisibleRange().getStart();
-                if (source.equals("all")) {
+                if (resultSource.equals("all")) {
                     eventBus.getDemands(start, start + length);
-                } else if (source.equals("category")) {
+                } else if (resultSource.equals("category")) {
                     eventBus.getDemandsByCategories(start, start + length,
                             Long.valueOf(view.getCategoryList().getValue(
                             view.getCategoryList().getSelectedIndex())));
-                } else if (source.equals("locality")) {
+                } else if (resultSource.equals("locality")) {
                     eventBus.getDemandsByLocalities(start, start + length,
                             view.getLocalityList().getValue(
                             view.getLocalityList().getSelectedIndex()));
@@ -164,8 +177,12 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         this.dataProvider.addDataDisplay(view.getCellTable());
     }
 
-    public void onSetSource(String sourceString) {
-        this.source = sourceString;
+    public void onSetResultSource(String source) {
+        this.resultSource = source;
+    }
+
+    public void onSetResultCount(long count) {
+        this.resultCount = count;
     }
 
     /**
