@@ -32,6 +32,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField Hyperlink linkHome;
     @UiField Hyperlink linkCreateDemand;
     @UiField Hyperlink linkDisplayDemands;
+    @UiField Hyperlink linkDisplaySuppliers;
     @UiField Hyperlink linkRegisterSupplier;
 
     @UiField SimplePanel contentHolder;
@@ -108,8 +109,14 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         linkHome.setTargetHistoryToken(token);
     }
 
+    @Override
     public void setDisplayDemandsToken(String token) {
         linkDisplayDemands.setTargetHistoryToken(token);
+    }
+
+    @Override
+    public void setDisplaySuppliersToken(String token) {
+        linkDisplaySuppliers.setTargetHistoryToken(token);
     }
 
     @Override

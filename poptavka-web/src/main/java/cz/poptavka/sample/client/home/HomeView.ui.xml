@@ -25,6 +25,11 @@
                     </g:Hyperlink>
                 </li>
                 <li>
+                    <g:Hyperlink ui:field="linkDisplaySuppliers" styleName='{res.layout.homeMenu}'>
+                        <ui:msg key="displaySuppliersLink">Display Suppliers</ui:msg>
+                    </g:Hyperlink>
+                </li>
+                <li>
                     <g:Hyperlink ui:field="linkRegisterSupplier" styleName='{res.layout.homeMenu}'>
                         <ui:msg key="registerSupplier">Register Supplier</ui:msg>
                     </g:Hyperlink>

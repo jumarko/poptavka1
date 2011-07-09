@@ -16,6 +16,7 @@ import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
+import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -25,7 +26,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
-        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true)
+        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true),
+        @ChildModule(moduleClass = DisplaySuppliersModule.class, autoDisplay = false, async = true)
 })
 public interface HomeEventBus extends EventBus {
 
@@ -56,6 +58,9 @@ public interface HomeEventBus extends EventBus {
 
     @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();
+
+    @Event(modulesToLoad = DisplaySuppliersModule.class, historyConverter = HomeHistoryConverter.class)
+    String atSuppliers();
 
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atRegisterSupplier();

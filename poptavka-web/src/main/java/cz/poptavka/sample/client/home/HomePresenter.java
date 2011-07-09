@@ -22,6 +22,8 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         void setDisplayDemandsToken(String token);
 
+        void setDisplaySuppliersToken(String token);
+
         void setRegisterSupplierToken(String token);
 
         Widget getWidgetView();
@@ -38,6 +40,8 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         view.setCreateDemandToken(getTokenGenerator().atCreateDemand());
 
         view.setDisplayDemandsToken(getTokenGenerator().atDemands());
+
+        view.setDisplaySuppliersToken(getTokenGenerator().atSuppliers());
 
         view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
     }
