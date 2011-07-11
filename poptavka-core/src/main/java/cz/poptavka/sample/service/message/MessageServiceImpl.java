@@ -9,6 +9,7 @@ import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.service.GenericServiceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juraj Martinka
@@ -72,4 +73,17 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     public List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser) {
         return getDao().getPotentialOfferConversation(threadRoot, supplierUser);
     }
+
+    /**
+     * Loads all root messages related to <code>client</code>'s demands
+     * along with the number of unread messages that span from each of the root
+     * demand message.
+     *
+     * @param client
+     * @return
+     */
+    public Map<Message, Long> getListOfClientDemandMessages(User user) {
+        return getDao().getListOfClientDemandMessages(user);
+    }
+
 }

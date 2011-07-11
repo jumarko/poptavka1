@@ -28,6 +28,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -39,6 +41,38 @@ import org.hibernate.annotations.CascadeType;
  */
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "getListOfClientDemandMessages",
+                query = "from Message message\n"
+                        + "where parent is null"
+                        + " and message.demand is not null"
+                        + " and message.sender = :sender\n"),
+
+        @NamedQuery(name = "getListOfClientDemandMessagesUnreadSub",
+                query = "select message.id, count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join"
+                        + " subUserMessage.message as subMessage"
+                        + " right join subMessage.threadRoot as message\n"
+                        + "where subUserMessage.isRead = false"
+                        + " and subUserMessage.user = :user"
+                        + " and message.demand is not null"
+                        + " and message.sender = :sender\n"
+                        + "group by message.id") }
+)
+
+/* @NamedQueries({
+        @NamedQuery(name = "getListOfClientDemandMessages",
+                query = "select m.id, count(um.id)\n"
+                        + "from UserMessage as um inner join"
+                        + " um.message as m\n"
+                        + "where um.isRead = false"
+                        + " and um.user = :user\n"
+                        + "group by m.id\n"
+                        + "having m.sender = :sender"
+                        ) }
+) */
+
+
 public class Message extends DomainObject {
 
     /* the first message in the thread, i.e. the original question */

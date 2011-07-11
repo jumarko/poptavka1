@@ -7,6 +7,7 @@ import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Basic interface for dao which is provides methods for messages.
@@ -80,4 +81,6 @@ public interface MessageDao extends GenericDao<Message> {
      * @return
      */
     List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser);
+
+    Map<Message, Long> getListOfClientDemandMessages(User user);
 }

@@ -9,7 +9,9 @@
              PARENT_ID="[NULL]"
              SENDER_ID="111111112"
              FIRSTBORN_ID="3"
-             SUBJECT="Dnes nepridem - zajtra" />
+             SUBJECT="Dnes nepridem - zajtra"
+             THREADROOT_ID="1"
+             DEMAND_ID="2" />
 
     <!-- Reply to the original (thread root) message -->
     <MESSAGE ID="3" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
@@ -18,7 +20,8 @@
              SUBJECT="Re: Dnes nepridem - zajtra "
              SENDER_ID="111111111"
              FIRSTBORN_ID="2"
-             THREADROOT_ID="1" />
+             THREADROOT_ID="1"
+             DEMAND_ID="2" />
 
     <!-- Reply to the reply of original (thread root) message -->
     <MESSAGE ID="2"
@@ -28,7 +31,8 @@
              PARENT_ID="3"
              SENDER_ID="111111112"
              NEXTSIBLING_ID="4"
-             THREADROOT_ID="1" />
+             THREADROOT_ID="1"
+             DEMAND_ID="2" />
 
     <!-- Second Reply to the reply to the original (thread root) message -->
     <MESSAGE ID="4"
@@ -37,7 +41,8 @@
              BODY="Ahoj, teta, opat zmena - predsa len dojdem dnes pre tu slivovicu!"
              PARENT_ID="3"
              SENDER_ID="111111112"
-             THREADROOT_ID="1" />
+             THREADROOT_ID="1"
+             DEMAND_ID="2" />
 
     <MESSAGEUSERROLE ID="1" MESSAGE_ID="1" USER_ID="111111112" TYPE="SENDER"/>
     <MESSAGEUSERROLE ID="2" MESSAGE_ID="1" USER_ID="111111111" TYPE="TO"/>
@@ -47,6 +52,16 @@
     <MESSAGEUSERROLE ID="6" MESSAGE_ID="3" USER_ID="111111112" TYPE="TO"/>
     <MESSAGEUSERROLE ID="7" MESSAGE_ID="4" USER_ID="111111112" TYPE="SENDER"/>
     <MESSAGEUSERROLE ID="8" MESSAGE_ID="4" USER_ID="111111111" TYPE="TO"/>
+
+    <USERMESSAGE ID="1" MESSAGE_ID="1" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="2" MESSAGE_ID="1" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="3" MESSAGE_ID="2" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="4" MESSAGE_ID="2" USER_ID="111111111" ISREAD="0" ISSTARRED="0"/>
+    <USERMESSAGE ID="5" MESSAGE_ID="3" USER_ID="111111112" ISREAD="0" ISSTARRED="0"/>
+    <USERMESSAGE ID="6" MESSAGE_ID="3" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="7" MESSAGE_ID="4" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="8" MESSAGE_ID="4" USER_ID="111111111" ISREAD="0" ISSTARRED="0"/>
+
 
 
 
@@ -61,6 +76,7 @@
              PARENT_ID="[NULL]"
              SENDER_ID="111111112"
              FIRSTBORN_ID="5"
+             THREADROOT_ID="5"
              SUBJECT="Dnes nepridem - zajtra" />
 
 
@@ -82,6 +98,55 @@
     <MESSAGE ID="100"
              BODY="Ahoj, ahoj, ahoj, dnes, kupit, slivowitz."
              PARENT_ID="[NULL]"
+             THREADROOT_ID="100"
              SUBJECT="Spam - ahoj, ahoj" />
+
+    <!-- Thread root -->
+    <MESSAGE ID="200"
+             CREATED="2011-05-11"
+             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             FIRSTBORN_ID="[NULL]"
+             THREADROOT_ID="200"
+             SUBJECT="Dnes nepridem - zajtra"
+             DEMAND_ID="2" />
+
+    <MESSAGEUSERROLE ID="201" MESSAGE_ID="200" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="202" MESSAGE_ID="200" USER_ID="111111111" TYPE="TO"/>
+
+    <USERMESSAGE ID="201" MESSAGE_ID="200" USER_ID="111111112" ISREAD="0" ISSTARRED="0"/>
+    <USERMESSAGE ID="202" MESSAGE_ID="200" USER_ID="111111111" ISREAD="0" ISSTARRED="0"/>
+
+    <!-- Thread root -->
+    <MESSAGE ID="300"
+             CREATED="2011-05-11"
+             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             FIRSTBORN_ID="3"
+             THREADROOT_ID="300"
+             SUBJECT="Dnes nepridem - zajtra"
+             DEMAND_ID="2" />
+
+    <!-- Reply to the original (thread root) message -->
+    <MESSAGE ID="301" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
+             CREATED="2011-05-11"
+             PARENT_ID="300"
+             SUBJECT="Re: Dnes nepridem - zajtra "
+             SENDER_ID="111111111"
+             FIRSTBORN_ID="[NULL]"
+             THREADROOT_ID="300"
+             DEMAND_ID="2" />
+
+    <MESSAGEUSERROLE ID="301" MESSAGE_ID="300" USER_ID="111111112" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="302" MESSAGE_ID="300" USER_ID="111111111" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="303" MESSAGE_ID="301" USER_ID="111111111" TYPE="SENDER"/>
+    <MESSAGEUSERROLE ID="304" MESSAGE_ID="301" USER_ID="111111112" TYPE="TO"/>
+
+    <USERMESSAGE ID="301" MESSAGE_ID="300" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="302" MESSAGE_ID="300" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="303" MESSAGE_ID="301" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="304" MESSAGE_ID="301" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
 
 </dataset>

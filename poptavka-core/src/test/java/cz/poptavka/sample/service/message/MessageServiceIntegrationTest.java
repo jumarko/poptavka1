@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juraj Martinka
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @DataSet(path = {
         "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
         "classpath:cz/poptavka/sample/domain/message/MessageDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
@@ -50,9 +52,12 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final List<Message> messageThreads = this.messageService.getMessageThreads(this.user,
                 MessageFilter.EMPTY_FILTER);
 
-        // one thread root for tested user
-        Assert.assertEquals(1, messageThreads.size());
+        System.out.println("$$$:\n" + messageThreads);
+        // three thread roots for tested user
+        Assert.assertEquals(3, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
+        checkUserMessageExists(200L, messageThreads);
+        checkUserMessageExists(300L, messageThreads);
 
         // one reply to the thread root message
         Assert.assertEquals(1, messageThreads.get(0).getChildren().size());
@@ -68,11 +73,14 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
-        Assert.assertEquals(4, allUserMessages.size());
+        Assert.assertEquals(7, allUserMessages.size());
         checkUserMessageExists(1L, allUserMessages);
         checkUserMessageExists(2L, allUserMessages);
         checkUserMessageExists(3L, allUserMessages);
         checkUserMessageExists(4L, allUserMessages);
+        checkUserMessageExists(200L, allUserMessages);
+        checkUserMessageExists(300L, allUserMessages);
+        checkUserMessageExists(301L, allUserMessages);
     }
 
     @Test
@@ -81,10 +89,12 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.TO).build());
-        Assert.assertEquals(3, allUserReceivedMessages.size());
+        Assert.assertEquals(5, allUserReceivedMessages.size());
         checkUserMessageExists(1L, allUserReceivedMessages);
         checkUserMessageExists(2L, allUserReceivedMessages);
         checkUserMessageExists(4L, allUserReceivedMessages);
+        checkUserMessageExists(200L, allUserReceivedMessages);
+        checkUserMessageExists(300L, allUserReceivedMessages);
     }
 
     @Test
@@ -93,8 +103,9 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.SENDER).build());
-        Assert.assertEquals(1, allUserReceivedMessages.size());
+        Assert.assertEquals(2, allUserReceivedMessages.size());
         checkUserMessageExists(3L, allUserReceivedMessages);
+        checkUserMessageExists(301L, allUserReceivedMessages);
     }
 
 
@@ -112,6 +123,29 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         checkUserMessageExists(3L, potentialDemandConversation);
         checkUserMessageExists(4L, potentialDemandConversation);
     }
+
+    @Test
+    public void testGetListOfClientDemandMessages() {
+        final Message threadRoot1 = this.messageService.getById(1L);
+        final Message threadRoot200 = this.messageService.getById(200L);
+        final Message threadRoot300 = this.messageService.getById(300L);
+        final User client = this.generalService.find(User.class, 111111112L);
+        final Map<Message, Long> listOfClientDemandMessages =
+                this.messageService.getListOfClientDemandMessages(client);
+        Assert.assertEquals("Inacurrate number of threadRoot messages selected",
+                3, listOfClientDemandMessages.size());
+
+        checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 1L, (Object) listOfClientDemandMessages.get(threadRoot1));
+        checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 1L, (Object) listOfClientDemandMessages.get(threadRoot200));
+        checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 0L, (Object) listOfClientDemandMessages.get(threadRoot300));
+    }
+
 
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------

@@ -39,6 +39,8 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
@@ -137,7 +139,25 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      */
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
         // TODO backend
-        return null;
+        ArrayList<ClientDemandMessageDetail> result = new ArrayList();
+        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+        Map<Message, Long> messagesAndCounts = this.messageService.getListOfClientDemandMessages(businessUser);
+        for (Entry<Message, Long> entry : messagesAndCounts.entrySet()) {
+            Message message = entry.getKey();
+            long count = entry.getValue();
+            ClientDemandMessageDetail detail = new ClientDemandMessageDetail();
+            detail.setMessageId(message.getId());
+            detail.setThreadRoodId(message.getThreadRoot().getId());
+            detail.setDemandId(message.getDemand().getId());
+            detail.setSenderId(message.getSender().getId());
+            detail.setUnreadSubmessages((int) count);
+            detail.setDemandTitle(message.getDemand().getTitle());
+            detail.setDemandStatus(message.getDemand().getStatus().toString());
+            detail.setEndDate(message.getDemand().getEndDate());
+            detail.setExpiryDate(message.getDemand().getValidTo());
+            result.add(detail);
+        }
+        return result;
     }
 
 

@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Juraj Martinka
@@ -87,6 +88,33 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return runNamedQuery("getPotentialOfferConversation", queryParams);
     }
 
+    public Map<Message, Long> getListOfClientDemandMessages(User user) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("sender", user);
+        queryParams.put("user", user);
+
+        List<Object[]> unread = runNamedQuery(
+                "getListOfClientDemandMessagesUnreadSub",
+                queryParams);
+        Map<Long, Long> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((Long) entry[0], (Long) entry[1]);
+        }
+        Map<Message, Long> messageMap = new HashMap();
+        queryParams.remove("user");
+        List<Message> messages = runNamedQuery(
+                "getListOfClientDemandMessages",
+                queryParams);
+        for (Message message : messages) {
+            if (unreadMap.containsKey(message.getId())) {
+                messageMap.put(message, unreadMap.get(message.getId()));
+            } else {
+                messageMap.put(message, 0L);
+            }
+        }
+        return messageMap;
+
+    }
 
     @Override
     public Message getThreadRootMessage(Demand demand) {
