@@ -13,6 +13,8 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import java.util.ArrayList;
 
 @Presenter(view = DisplaySuppliersView.class)
 public class DisplaySuppliersPresenter
@@ -32,12 +34,28 @@ public class DisplaySuppliersPresenter
         SimplePager getPager();
 
         Widget getWidgetView();
+
+        void setFlexTable(int columns, ArrayList<CategoryDetail> categories);
     }
 
     private SupplierInfoPresenter presenter = null;
 
     public void onAtSuppliers() {
+        eventBus.getCategories();
+
         eventBus.setBodyWidget(view.getWidgetView());
-        LOGGER.info("Display Suppliers presenter");
+    }
+
+    public void onDisplaySubcategories(ArrayList<CategoryDetail> subcategories) {
+        view.setFlexTable(3, subcategories);
+        eventBus.setBodyWidget(view.getWidgetView());
+    }
+
+    /**
+     * Fills category listBox with given list of localities.
+     * @param list - data (categories)
+     */
+    public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
+        view.setFlexTable(4, list);
     }
 }

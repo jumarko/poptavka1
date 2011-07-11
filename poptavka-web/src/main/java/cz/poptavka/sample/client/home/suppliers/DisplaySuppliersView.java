@@ -16,11 +16,16 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
+import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,8 +36,10 @@ public class DisplaySuppliersView extends OverflowComposite
 
     interface DisplaySuppliersViewUiBinder extends UiBinder<Widget, DisplaySuppliersView> {
     }
+
     private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+
     @UiField
     FlexTable table;
     @UiField(provided = true)
@@ -86,6 +93,42 @@ public class DisplaySuppliersView extends OverflowComposite
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(list);
+    }
+
+    //TODO Martin - zistit ci je toto ok, alebo to radsej urobit pomocou cez horizontal
+    //panel, cellListami a abstractCell, ktora bude zobrazovat Logo (ak bude), a label
+    //Teraz je to cez FlexTable, kde cell je SimplePanel, ktory obsahuje Logo(ak je) a Label
+    //Hlavna otazka je, co so stylom, potom co jednoduchsie a rychlejsie
+    @Override
+    public void setFlexTable(int columns, ArrayList<CategoryDetail> categories) {
+        table.clear();
+        int row = 0;
+        int col = 0;
+        StringBuilder text;
+        for (CategoryDetail category : categories) {
+            text = new StringBuilder();
+            if (category == null) {
+                continue;
+            }
+            if (col == columns) {
+                col = 0;
+                row++;
+            }
+            HorizontalPanel cellPanel = new HorizontalPanel();
+            Label id = new Label(Long.toString(category.getId()));
+            id.setTitle("abc");
+            id.setVisible(false);
+            cellPanel.add(id);
+            cellPanel.add(new Image(StyleResource.INSTANCE.images().normal()));
+            text.append(category.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
+            text.append(" (");
+            text.append(category.getSuppliers());
+            text.append(")");
+            Label label = new Label(text.toString());
+//            label.setStylePrimaryName(DEBUG_ID_PREFIX);
+            cellPanel.add(label);
+            table.setWidget(row, col++, cellPanel);
+        }
     }
 }
 
@@ -174,3 +217,67 @@ class SupplierCell extends AbstractCell<Supplier> {
         Window.alert("You clicked " + value.getId());
     }
 }
+//
+///**
+// * A custom {@link Cell} used to render a {@link Contact}. We extend
+// * {@link AbstractCell} because it provides reasonable implementations of
+// * methods that work for most use cases.
+// */
+//class CategoryCell extends AbstractCell<CategoryDetail> {
+//
+//    public CategoryCell() {
+//        /*
+//         * Let the parent class know that our cell responds to click events and
+//         * keydown events.
+//         */
+//        super("click", "keydown");
+//    }
+//
+//    @Override
+//    public void onBrowserEvent(Context context, Element parent, CategoryDetail value,
+//            NativeEvent event, ValueUpdater<CategoryDetail> valueUpdater) {
+//        // Check that the value is not null.
+//        if (value == null) {
+//            return;
+//        }
+//
+//        // Call the super handler, which handlers the enter key.
+//        super.onBrowserEvent(context, parent, value, event, valueUpdater);
+//
+//        // On click, perform the same action that we perform on enter.
+//        if ("click".equals(event.getType())) {
+//            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
+//        }
+//    }
+//
+//    @Override
+//    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
+//        /*
+//         * Always do a null check on the value. Cell widgets can pass null to
+//         * cells if the underlying data contains a null, or if the data arrives
+//         * out of order.
+//         */
+//        if (value == null) {
+//            return;
+//        }
+//
+//        // Display the name in big letters.
+//        sb.appendHtmlConstant("<div><span style=\"font-weight : bold;\"");
+//        sb.appendEscaped(value.getName() + " (");
+//        sb.appendHtmlConstant("</span>");
+//        sb.appendEscaped(value.getSuppliers() + ")");
+//        sb.appendHtmlConstant("</div>");
+//
+//    }
+//
+//    /**
+//     * By convention, cells that respond to user events should handle the enter
+//     * key. This provides a consistent user experience when users use keyboard
+//     * navigation in the widget.
+//     */
+//    @Override
+//    protected void onEnterKeyDown(Context context, Element parent,
+//            CategoryDetail value, NativeEvent event, ValueUpdater<CategoryDetail> valueUpdater) {
+//        Window.alert("You clicked " + value.getName());
+//    }
+//}
