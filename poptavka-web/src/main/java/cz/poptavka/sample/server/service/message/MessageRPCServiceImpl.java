@@ -28,6 +28,7 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
@@ -59,6 +60,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private MessageService messageService;
     private UserMessageService userMessageService;
     private ClientService clientService;
+    private TreeItemService treeItemService;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -78,6 +80,11 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    @Autowired
+    public void setTreeItemService(TreeItemService treeItemService) {
+        this.treeItemService = treeItemService;
     }
 
     // TODO verify
@@ -149,18 +156,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         for (Entry<Message, Long> entry : messagesAndCounts.entrySet()) {
             Message message = entry.getKey();
             long count = entry.getValue();
-            ClientDemandMessageDetail detail = new ClientDemandMessageDetail();
-            detail.setMessageId(message.getId());
-            detail.setThreadRoodId(message.getThreadRoot().getId());
-            detail.setDemandId(message.getDemand().getId());
-            detail.setSenderId(message.getSender().getId());
-            detail.setUnreadSubmessages((int) count);
-            detail.setDemandTitle(message.getDemand().getTitle());
-            detail.setDemandStatus(message.getDemand().getStatus().toString());
-            detail.setPrice(message.getDemand().getPrice());
-            detail.setEndDate(message.getDemand().getEndDate());
-            detail.setExpiryDate(message.getDemand().getValidTo());
-            result.add(detail);
+            result.add(ClientDemandMessageDetail.createDetail(message, count));
         }
         return result;
     }
@@ -384,5 +380,17 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
 
         return offerDemands;
+    }
+
+    @Override
+    public ArrayList<MessageDetail> getClientDemandConversations(long threadRootId) {
+        ArrayList<MessageDetail> childrenList = new ArrayList<MessageDetail>();
+
+        Message root = messageService.getById(threadRootId);
+        List<Message> threads = root.getChildren();
+        for (Message msg : threads) {
+            childrenList.add(MessageDetailImpl.createMessageDetail(msg));
+        }
+        return childrenList;
     }
 }

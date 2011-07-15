@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import cz.poptavka.sample.domain.message.Message;
+
 /**
  *
  * @author ivan.vlcek
@@ -25,6 +27,23 @@ public class ClientDemandMessageDetail implements Serializable {
     private Date endDate;
     private Date expiryDate;
     private BigDecimal price;
+
+    public static ClientDemandMessageDetail createDetail(Message message, long unreadMessageCount) {
+        ClientDemandMessageDetail detail = new ClientDemandMessageDetail();
+        detail.setMessageId(message.getId());
+        detail.setThreadRoodId(message.getThreadRoot().getId());
+        detail.setDemandId(message.getDemand().getId());
+        detail.setSenderId(message.getSender().getId());
+        detail.setUnreadSubmessages((int) unreadMessageCount);
+        detail.setDemandTitle(message.getDemand().getTitle());
+        detail.setDemandStatus(message.getDemand().getStatus().toString());
+        detail.setPrice(message.getDemand().getPrice());
+        detail.setEndDate(message.getDemand().getEndDate());
+        detail.setExpiryDate(message.getDemand().getValidTo());
+
+        return detail;
+    }
+
 
     /**
      * @return the messageId

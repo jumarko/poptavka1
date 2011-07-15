@@ -18,7 +18,9 @@ import com.google.gwt.view.client.NoSelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandConversationTable;
+import cz.poptavka.sample.client.user.demands.widget.table.SingleDemandConversationTable;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 public class MyDemandsView extends Composite implements
         MyDemandsPresenter.MyDemandsInterface {
@@ -37,7 +39,7 @@ public class MyDemandsView extends Composite implements
     @UiField(provided = true) GlobalDemandConversationTable demandTable;
     @UiField(provided = true) SimplePager demandPager;
 
-    @UiField(provided = true) GlobalDemandConversationTable conversationTable;
+    @UiField(provided = true) SingleDemandConversationTable conversationTable;
     @UiField(provided = true) SimplePager conversationPager;
 
     @UiField
@@ -52,7 +54,7 @@ public class MyDemandsView extends Composite implements
     @Override
     public void createView() {
         demandTable = new GlobalDemandConversationTable(MSGS, RSCS);
-        conversationTable = new GlobalDemandConversationTable(MSGS, RSCS);
+        conversationTable = new SingleDemandConversationTable(MSGS, RSCS);
 
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         demandPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
@@ -126,18 +128,18 @@ public class MyDemandsView extends Composite implements
     }
 
     @Override
-    public GlobalDemandConversationTable getConversationTable() {
+    public SingleDemandConversationTable getConversationTable() {
         return conversationTable;
     }
 
     @Override
-    public ListDataProvider<ClientDemandMessageDetail> getConversationProvider() {
+    public ListDataProvider<MessageDetail> getConversationProvider() {
         return conversationTable.getDataProvider();
     }
 
     @Override
-    public MultiSelectionModel<ClientDemandMessageDetail> getConversationTableModel() {
-        return (MultiSelectionModel<ClientDemandMessageDetail>) conversationTable.getSelectionModel();
+    public MultiSelectionModel<MessageDetail> getConversationTableModel() {
+        return (MultiSelectionModel<MessageDetail>) conversationTable.getSelectionModel();
     }
 
 }

@@ -316,25 +316,33 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void getClientDemands(Long userId, int fakeParameter);
 
-    @Event(handlers = MyDemandsPresenter.class)
-    void responseClientDemands(ArrayList<MessageDetail> result);
+    // Beho: ??? needed ???
+//    @Event(handlers = MyDemandsPresenter.class)
+//    void responseClientDemands(ArrayList<MessageDetail> result);
 
     @Event(handlers = DemandsLayoutPresenter.class)
     void toggleLoading();
 
     @Event(handlers = UserPresenter.class)
-    void requestDemandConversations();
+    void requestDemandsWithConversationInfo();
 
     @Event(handlers = MessageHandler.class)
-    void getClientDemandConversations(Long userId, Long clientId);
+    void getClientDemandWithConversations(Long userId, Long clientId);
 
     @Event(handlers = MyDemandsPresenter.class)
-    void setClientDemandConversations(ArrayList<ClientDemandMessageDetail> result);
+    void setClientDemandWithConversations(ArrayList<ClientDemandMessageDetail> result);
 
+    @Event(handlers = MessageHandler.class)
+    void requestDemandConversations(long messageId);
+
+    @Event(handlers = MyDemandsPresenter.class)
+    void setDemandConversations(ArrayList<MessageDetail> conversations);
     //END
 
     @Event(handlers = AdminLayoutPresenter.class)
     void initAdmin();
+
+
 
 
 

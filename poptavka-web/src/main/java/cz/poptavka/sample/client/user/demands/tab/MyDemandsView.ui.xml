@@ -75,7 +75,7 @@
                                     <ui:msg key="backToDemands">Back to Demand List</ui:msg>
                                 </span>
                             </g:Anchor>
-                            <w:GlobalDemandConversationTable ui:field="conversationTable" />
+                            <w:SingleDemandConversationTable ui:field="conversationTable" />
                             <div>
                                 <table width="100%">
                                     <tbody>

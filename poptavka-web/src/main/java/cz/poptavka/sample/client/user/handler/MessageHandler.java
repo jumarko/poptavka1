@@ -27,6 +27,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     @Inject
     private OfferRPCServiceAsync offerService;
 
+    // Beho: ??? needed ???
     public void onGetClientDemands(Long userId, int fakeParameter) {
         messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<MessageDetail>>() {
             @Override
@@ -36,12 +37,12 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<MessageDetail> result) {
-                eventBus.responseClientDemands(result);
+//                eventBus.responseClientDemands(result);
             }
         });
     }
 
-    public void onGetClientDemandConversations(Long userId, Long clientId) {
+    public void onGetClientDemandWithConversations(Long userId, Long clientId) {
         messageService.getListOfClientDemandMessages(userId, clientId,
                 new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
 
@@ -52,9 +53,23 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                 @Override
                 public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
-                    eventBus.setClientDemandConversations(result);
+                    eventBus.setClientDemandWithConversations(result);
                 }
             });
+    }
+
+    public void onRequestDemandConversations(long messageId) {
+        messageService.getClientDemandConversations(messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("MessageHandler: onRequestDemandConversations:\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<MessageDetail> conversations) {
+                eventBus.setDemandConversations(conversations);
+            }
+        });
     }
 
 

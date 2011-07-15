@@ -6,7 +6,6 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -22,6 +21,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandConversationTable;
+import cz.poptavka.sample.client.user.demands.widget.table.SingleDemandConversationTable;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -46,9 +46,9 @@ public class MyDemandsPresenter extends
         NoSelectionModel<ClientDemandMessageDetail> getDemandTableModel();
 
         // TODO maybe will be need type change
-        GlobalDemandConversationTable getConversationTable();
-        ListDataProvider<ClientDemandMessageDetail> getConversationProvider();
-        MultiSelectionModel<ClientDemandMessageDetail> getConversationTableModel();
+        SingleDemandConversationTable getConversationTable();
+        ListDataProvider<MessageDetail> getConversationProvider();
+        MultiSelectionModel<MessageDetail> getConversationTableModel();
 
         SimplePanel getDetailSection();
 
@@ -64,8 +64,8 @@ public class MyDemandsPresenter extends
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.swapTables();
-//                eventBus.requestDemandConversations();
-                Window.alert("List whole conversation eventBus call : Empty now... TODO");
+                ClientDemandMessageDetail detail = view.getDemandTableModel().getLastSelectedObject();
+                eventBus.requestDemandConversations(detail.getMessageId());
             }
         });
         view.getBackToDemandsButton().addClickHandler(new ClickHandler() {
@@ -83,18 +83,11 @@ public class MyDemandsPresenter extends
             detailPresenter.initDetailWrapper(view.getDetailSection(),
                     ViewType.EDITABLE);
         }
-        // get client's demands conversations (with admin/suppliers)
-        // new
-
-        eventBus.requestDemandConversations();
-
-        // OLD
-//        GWT.log("Get Client's Demands");
-//        eventBus.requestClientDemands();
+        eventBus.requestDemandsWithConversationInfo();
     }
 
     // PARENT TABLE
-    public void onSetClientDemandConversations(ArrayList<ClientDemandMessageDetail> demandMessageList) {
+    public void onSetClientDemandWithConversations(ArrayList<ClientDemandMessageDetail> demandMessageList) {
         List<ClientDemandMessageDetail> list = view.getDemandProvider().getList();
         list.clear();
         for (ClientDemandMessageDetail m : demandMessageList) {
@@ -107,15 +100,15 @@ public class MyDemandsPresenter extends
     }
 
     // CHILD TABLE
-    public void onResponseClientDemands(ArrayList<MessageDetail> demandMessageList) {
+    public void onSetDemandConversations(ArrayList<MessageDetail> conversations) {
         // TODO need to be implemented according to type of messageDetail
-//        List<MessageDetail> list = view.getDemandProvider().getList();
-//        list.clear();
-//        for (MessageDetail m : demandMessageList) {
-//            list.add(m);
-//        }
-//        GWT.log("DATA SIZE: " + list.size());
-//        refreshDisplays();
+        List<MessageDetail> list = view.getConversationProvider().getList();
+        list.clear();
+        for (MessageDetail m : conversations) {
+            list.add(m);
+        }
+        GWT.log("Conversation DATA SIZE: " + list.size());
+        refreshDisplays();
 
     }
 
