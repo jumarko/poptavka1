@@ -138,7 +138,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return ClientDemandMessageDetail
      */
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
-        // TODO backend
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         Map<Message, Long> messagesAndCounts = this.messageService.getListOfClientDemandMessages(businessUser);
