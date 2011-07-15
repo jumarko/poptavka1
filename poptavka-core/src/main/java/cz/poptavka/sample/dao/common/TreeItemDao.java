@@ -17,7 +17,7 @@ public interface TreeItemDao {
      * Get all descendants (recursively) of given <code>parentNode</code>.
      * If parent node is not specified then method returns all tree items of specified class.
      * <p>
-     * Completely all children are returned, not only direct descendants!
+     * Completely all descendants are returned, not only direct descendants (children)!
      *
      * @param parentNode parent node whose children are loaded and returned. Can be null, then all instances of
      * entity class <code>treeItemClass</code> are returned.
@@ -25,9 +25,8 @@ public interface TreeItemDao {
      * @param resultCriteria additional criteria that are applied to the result, can be null
      * @return all children of <code>parentNode</code>.
      */
-    <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+    <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass,
                                                 ResultCriteria resultCriteria);
-
 
     /**
      *  Get IDs of all tree items that match between left bound and right bound
@@ -41,6 +40,22 @@ public interface TreeItemDao {
      */
     <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<? extends TreeItem> treeItems,
                                                                   Class<T> treeItemClass);
+
+    /**
+     *
+     * Gets all children of given <code>parentNode</code>.
+     * If parent node is not specified then method returns all top-most tree items of the specified class.
+     * <p>
+     * Just direct descendants - children - are returned
+     *
+     * @param parentNode parent node whose children are loaded and returned. Can be null, then all instances of
+     * entity class <code>treeItemClass</code> are returned.
+     * @param treeItemClass type of children
+     * @param resultCriteria additional criteria that are applied to the result, can be null
+     * @return all children of <code>parentNode</code>.
+     */
+    <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+                                                ResultCriteria resultCriteria);
 
     /**
      * Get IDs of all leaves in hierarchical structure.

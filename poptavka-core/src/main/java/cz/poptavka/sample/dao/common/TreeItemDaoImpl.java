@@ -21,17 +21,17 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
 
     /** {@inheritDoc} */
     @Override
-    public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+    public <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass,
                                                        ResultCriteria resultCriteria) {
-        final Criteria allChildrenCriteria = getHibernateSession().createCriteria(treeItemClass);
+        final Criteria allDescendantsCriteria = getHibernateSession().createCriteria(treeItemClass);
         if (parentNode != null) {
             // only descendants of specified parent
-            allChildrenCriteria.add(Restrictions.between("leftBound",
+            allDescendantsCriteria.add(Restrictions.between("leftBound",
                 parentNode.getLeftBound() + 1,
                 parentNode.getRightBound() - 1));
         }
 
-        return buildResultCriteria(allChildrenCriteria, resultCriteria).list();
+        return buildResultCriteria(allDescendantsCriteria, resultCriteria).list();
     }
 
 
@@ -57,6 +57,25 @@ public class TreeItemDaoImpl extends GenericHibernateDao<TreeItem> implements Tr
         // For all tree items we want to get only their IDs for using them in native SQL query or somewhere else.
         // Apply also additional criteria if required.
         return getTreeItemsIds(allTreeItemsCriteria.list());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
+                                                       ResultCriteria resultCriteria) {
+        final Criteria allChildrenCriteria = getHibernateSession().createCriteria(treeItemClass);
+        if (parentNode != null) {
+            // only descendants of specified parent
+            allChildrenCriteria.add(Restrictions.between("leftBound",
+                parentNode.getLeftBound() + 1,
+                parentNode.getRightBound() - 1));
+            allChildrenCriteria.add(Restrictions.eq("level",
+                    parentNode.getLevel() + 1));
+        } else {
+            allChildrenCriteria.add(Restrictions.eq("level", 0));
+        }
+
+        return buildResultCriteria(allChildrenCriteria, resultCriteria).list();
     }
 
     /** {@inheritDoc} */

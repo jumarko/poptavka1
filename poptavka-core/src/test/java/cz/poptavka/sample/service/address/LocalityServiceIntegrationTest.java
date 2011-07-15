@@ -100,7 +100,7 @@ public class LocalityServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetAllLocalitiesForParent() {
         final Locality czechRepublic = this.localityService.getLocality("CZ");
-        final List<Locality> allLocalitiesInCzechRepublic = this.treeItemService.getAllChildren(czechRepublic,
+        final List<Locality> allLocalitiesInCzechRepublic = this.treeItemService.getAllDescendants(czechRepublic,
                 Locality.class);
 
         Assert.assertEquals(11, allLocalitiesInCzechRepublic.size());

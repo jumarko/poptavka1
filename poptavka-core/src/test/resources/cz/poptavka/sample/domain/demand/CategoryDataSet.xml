@@ -18,8 +18,8 @@
 
     <!-- first level of categories -->
     <CATEGORY ID="2" CODE="cat1"  NAME="Category 1" DESCRIPTION="Category desc 1" LEVEL="1"  PARENT_ID="1" LEFTBOUND="2" RIGHTBOUND="15" />
-    <CATEGORY ID="4" CODE="cat3"  NAME="Category 3" DESCRIPTION="Category desc 3" LEVEL="3"  PARENT_ID="1" LEFTBOUND="24" RIGHTBOUND="31" />
-    <CATEGORY ID="3" CODE="cat2"  NAME="Category 2" DESCRIPTION="Category desc 2" LEVEL="2"  PARENT_ID="1" LEFTBOUND="16" RIGHTBOUND="23" />
+    <CATEGORY ID="4" CODE="cat3"  NAME="Category 3" DESCRIPTION="Category desc 3" LEVEL="1"  PARENT_ID="1" LEFTBOUND="24" RIGHTBOUND="31" />
+    <CATEGORY ID="3" CODE="cat2"  NAME="Category 2" DESCRIPTION="Category desc 2" LEVEL="1"  PARENT_ID="1" LEFTBOUND="16" RIGHTBOUND="23" />
 
     <!-- Second level -->
     <CATEGORY ID="5" CODE="cat11"  NAME="Category 11" DESCRIPTION="Category desc 11" LEVEL="2"  PARENT_ID="2" LEFTBOUND="3" RIGHTBOUND="14" />

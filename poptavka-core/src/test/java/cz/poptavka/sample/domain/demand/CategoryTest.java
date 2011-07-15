@@ -40,50 +40,81 @@ public class CategoryTest extends DBUnitBaseTest {
 
 
     @Test
-    public void testGetAllChildren() {
-        checkGetAllCategoryChildren(null, 17);
-        checkGetAllCategoryChildren("cat11", 5);
-        checkGetAllCategoryChildren("cat113", 2);
-        checkGetAllCategoryChildren("cat2", 3);
+    public void testGetAllDescendants() {
+        checkGetAllCategoryDescendants(null, 17);
+        checkGetAllCategoryDescendants("cat11", 5);
+        checkGetAllCategoryDescendants("cat113", 2);
+        checkGetAllCategoryDescendants("cat2", 3);
+    }
+
+    @Test
+    public void testGetChildrenCounts() {
+        checkGetCategoryChildren(null, 2);
+        checkGetCategoryChildren("cat11", 3);
+        checkGetCategoryChildren("cat113", 2);
+        checkGetCategoryChildren("cat2", 3);
     }
 
 
+
     @Test
-    public void testGetAllChildrenWithMaxResults() {
+    public void testGetDescendantsWithMaxResults() {
         final ResultCriteria maxResults = new ResultCriteria.Builder()
                 .maxResults(4)
                 .build();
-        checkGetAllCategoryChildrenWithAdditionalCriteria(null, maxResults, 4);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat11", maxResults, 4);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat113", maxResults, 2);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat2", maxResults, 3);
+        checkGetCategoryDescendantsWithAdditionalCriteria(null, maxResults, 4);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat11", maxResults, 4);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat113", maxResults, 2);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat2", maxResults, 3);
     }
 
     @Test
-    public void testGetAllChildrenWithFirstResultMaxResults() {
+    public void testGetChildrenWithMaxResults() {
+        final ResultCriteria maxResults = new ResultCriteria.Builder()
+                .maxResults(2)
+                .build();
+        checkGetCategoryChildrenWithAdditionalCriteria(null, maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria("cat11", maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria("cat113", maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria("cat2", maxResults, 2);
+    }
+
+    @Test
+    public void testGetDescendantsWithFirstResultMaxResults() {
         final ResultCriteria maxResults = new ResultCriteria.Builder()
                 .maxResults(4)
                 .firstResult(2)
                 .build();
-        checkGetAllCategoryChildrenWithAdditionalCriteria(null, maxResults, 4);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat11", maxResults, 3);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat113", maxResults, 0);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat2", maxResults, 1);
+        checkGetCategoryDescendantsWithAdditionalCriteria(null, maxResults, 4);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat11", maxResults, 3);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat113", maxResults, 0);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat2", maxResults, 1);
     }
 
     @Test
-    public void testGetAllChildrenWithFirstResultOrderBy() {
+    public void testGetChildrenWithFirstResultMaxResults() {
+        final ResultCriteria maxResults = new ResultCriteria.Builder()
+                .maxResults(2)
+                .firstResult(1)
+                .build();
+        checkGetCategoryChildrenWithAdditionalCriteria(null, maxResults, 1);
+        checkGetCategoryChildrenWithAdditionalCriteria("cat11", maxResults, 2);
+        checkGetCategoryChildrenWithAdditionalCriteria("cat113", maxResults, 1);
+        checkGetCategoryChildrenWithAdditionalCriteria("cat2", maxResults, 2);
+    }
+
+    @Test
+    public void testGetDescendantsWithFirstResultOrderBy() {
         final ResultCriteria criteria = new ResultCriteria.Builder()
                 .firstResult(2)
                 .orderByColumns(Arrays.asList("name"))
                 .build();
-        checkGetAllCategoryChildrenWithAdditionalCriteria(null, criteria, 15);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat11", criteria, 3);
-        checkGetAllCategoryChildrenWithAdditionalCriteria("cat113", criteria, 0);
-        final List<Category> cat2 = checkGetAllCategoryChildrenWithAdditionalCriteria("cat2", criteria, 1);
+        checkGetCategoryDescendantsWithAdditionalCriteria(null, criteria, 15);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat11", criteria, 3);
+        checkGetCategoryDescendantsWithAdditionalCriteria("cat113", criteria, 0);
+        final List<Category> cat2 = checkGetCategoryDescendantsWithAdditionalCriteria("cat2", criteria, 1);
         Assert.assertEquals("Category 23", (cat2.get(0).getName()));
     }
-
 
     //----------------------------------- HELPER METHODS ---------------------------------------------------------------
     private void checkGetCategoryChildren(String parentCategoryCode,
@@ -118,11 +149,26 @@ public class CategoryTest extends DBUnitBaseTest {
 
 
     /**
-     * Check if category with given <code>categoryCode</code> has expected number of ALL children.
+     * Check if category with given <code>categoryCode</code> has expected number of descendants.
      *
      * @param categoryCode code of category that will be checked.
      */
-    private void checkGetAllCategoryChildren(String categoryCode, int subCategoriesCount) {
+    private void checkGetAllCategoryDescendants(String categoryCode, int subCategoriesCount) {
+        Category category = null;
+        if (categoryCode != null) {
+            category = this.categoryDao.getCategory(categoryCode);
+        }
+        final List<Category> allCategories = this.treeItemService.getAllDescendants(category, Category.class);
+        Assert.assertNotNull(allCategories);
+        Assert.assertEquals(subCategoriesCount, allCategories.size());
+    }
+
+    /**
+     * Check if category with given <code>categoryCode</code> has expected number of children.
+     *
+     * @param categoryCode code of category that will be checked.
+     */
+    private void checkGetCategoryChildren(String categoryCode, int subCategoriesCount) {
         Category category = null;
         if (categoryCode != null) {
             category = this.categoryDao.getCategory(categoryCode);
@@ -132,26 +178,47 @@ public class CategoryTest extends DBUnitBaseTest {
         Assert.assertEquals(subCategoriesCount, allCategories.size());
     }
 
-
     /**
      * Check if category with given <code>categoryCode</code> and satisfying <code>additionaCriteria</code>
-     * has expected number of ALL children.
+     * has expected number of ALL descendants.
      *
      * @param categoryCode code of category that will be checked.
      */
-    private List<Category> checkGetAllCategoryChildrenWithAdditionalCriteria(String categoryCode,
+    private List<Category> checkGetCategoryDescendantsWithAdditionalCriteria(String categoryCode,
                                                                              ResultCriteria resultCriteria,
                                                                              int subCategoriesCount) {
         Category category = null;
         if (categoryCode != null) {
             category = this.categoryDao.getCategory(categoryCode);
         }
-        final List<Category> allCategories = this.treeItemService.getAllChildren(
+        final List<Category> allCategories = this.treeItemService.getAllDescendants(
                 category, Category.class, resultCriteria);
         Assert.assertNotNull(allCategories);
-        //15 real categories plus 2 virtual root categories
+
         Assert.assertEquals(subCategoriesCount, allCategories.size());
         return allCategories;
     }
+
+    /**
+     * Check if category with given <code>categoryCode</code> and satisfying <code>additionaCriteria</code>
+     * has expected number of children.
+     *
+     * @param categoryCode code of category that will be checked.
+     */
+    private List<Category> checkGetCategoryChildrenWithAdditionalCriteria(String categoryCode,
+                                                                             ResultCriteria resultCriteria,
+                                                                             int subCategoriesCount) {
+        Category category = null;
+        if (categoryCode != null) {
+            category = this.categoryDao.getCategory(categoryCode);
+        }
+        final List<Category> childCategories = this.treeItemService.getAllChildren(
+                category, Category.class, resultCriteria);
+        Assert.assertNotNull(childCategories);
+
+        Assert.assertEquals(subCategoriesCount, childCategories.size());
+        return childCategories;
+    }
+
 
 }

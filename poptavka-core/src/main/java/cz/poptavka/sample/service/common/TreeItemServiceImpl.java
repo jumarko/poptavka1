@@ -23,6 +23,27 @@ public class TreeItemServiceImpl implements TreeItemService {
 
     /** {@inheritDoc} */
     @Override
+    public <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass) {
+        return getAllDescendants(parentNode, treeItemClass, ResultCriteria.EMPTY_CRITERIA);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass,
+                                                       ResultCriteria resultCriteria) {
+        return this.treeItemDao.getAllDescendants(parentNode, treeItemClass, resultCriteria);
+    }
+
+
+    /** {@inheritDoc} */
+    @Override
+    public <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems,
+                                                                         Class<T> treeItemClass) {
+        return this.treeItemDao.getAllChildItemsIdsRecursively(treeItems, treeItemClass);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass) {
         return getAllChildren(parentNode, treeItemClass, ResultCriteria.EMPTY_CRITERIA);
     }
@@ -34,13 +55,6 @@ public class TreeItemServiceImpl implements TreeItemService {
         return this.treeItemDao.getAllChildren(parentNode, treeItemClass, resultCriteria);
     }
 
-
-    /** {@inheritDoc} */
-    @Override
-    public <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems,
-                                                                         Class<T> treeItemClass) {
-        return this.treeItemDao.getAllChildItemsIdsRecursively(treeItems, treeItemClass);
-    }
 
 
     /** {@inheritDoc} */

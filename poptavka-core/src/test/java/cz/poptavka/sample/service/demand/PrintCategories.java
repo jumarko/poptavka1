@@ -34,7 +34,7 @@ public class PrintCategories extends BasicIntegrationTest {
 
     @Test
     public void printAllCategories() {
-        final List<Category> allCategories = treeItemService.getAllChildren(null, Category.class);
+        final List<Category> allCategories = treeItemService.getAllDescendants(null, Category.class);
         for (Category category   : allCategories) {
             System.out.println(category);
         }

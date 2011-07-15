@@ -13,6 +13,31 @@ import java.util.Set;
 public interface TreeItemService {
 
     /**
+     * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllDescendants(cz.poptavka.sample.domain.common.TreeItem,
+     *      Class, cz.poptavka.sample.domain.common.ResultCriteria)
+     */
+    <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass);
+
+    /**
+     * The same as {@link #getAllDescendants(cz.poptavka.sample.domain.common.TreeItem, Class)},
+     * but additional criteria are applied on the result.
+     *
+     * @param parentNode
+     * @param treeItemClass
+     * @param resultCriteria additional criteria that are applied and only that result is returned, can be null
+     * @param <T>
+     * @return
+     */
+    <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass,
+                                                ResultCriteria resultCriteria);
+
+
+    /**
+     * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildItemsIdsRecursively(java.util.List, Class)
+     */
+    <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems, Class<T> treeItemClass);
+
+    /**
      * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildren(cz.poptavka.sample.domain.common.TreeItem,
      *      Class, cz.poptavka.sample.domain.common.ResultCriteria)
      */
@@ -30,13 +55,6 @@ public interface TreeItemService {
      */
     <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass,
                                                 ResultCriteria resultCriteria);
-
-
-    /**
-     * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllChildItemsIdsRecursively(java.util.List, Class)
-     */
-    <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems, Class<T> treeItemClass);
-
 
     /**
      * @see cz.poptavka.sample.dao.common.TreeItemDao#getAllLeavesIds(Class)

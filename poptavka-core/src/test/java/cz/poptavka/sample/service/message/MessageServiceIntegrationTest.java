@@ -52,7 +52,6 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final List<Message> messageThreads = this.messageService.getMessageThreads(this.user,
                 MessageFilter.EMPTY_FILTER);
 
-        System.out.println("$$$:\n" + messageThreads);
         // three thread roots for tested user
         Assert.assertEquals(3, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
