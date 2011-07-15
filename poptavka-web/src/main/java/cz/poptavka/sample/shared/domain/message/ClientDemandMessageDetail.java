@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.shared.domain.message;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
-public class ClientDemandMessageDetail {
+public class ClientDemandMessageDetail implements Serializable {
 
     private long messageId;
     private long threadRoodId;
@@ -167,15 +168,15 @@ public class ClientDemandMessageDetail {
 
     @Override
     public String toString() {
-        return "ClientDemandMessageDetail{" + "messageId=" + messageId
-                + ", threadRoodId=" + threadRoodId
-                + ", demandId=" + demandId
-                + ", senderId=" + senderId
-                + ", unreadSubmessages=" + unreadSubmessages
-                + ", demandTitle=" + demandTitle
-                + ", demandStatus=" + demandStatus
-                + ", endDate=" + endDate
-                + ", expiryDate=" + expiryDate
-                + ", price=" + price + '}';
+        return "ClientDemandMessageDetail{\n" + "messageId=" + messageId
+                + ",\n threadRoodId=" + threadRoodId
+                + ",\n demandId=" + demandId
+                + ",\n senderId=" + senderId
+                + ",\n unreadSubmessages=" + unreadSubmessages
+                + ",\n demandTitle=" + demandTitle
+                + ",\n demandStatus=" + demandStatus
+                + ",\n endDate=" + endDate
+                + ",\n expiryDate=" + expiryDate
+                + ",\n price=" + price + "}\n\n";
     }
 }

@@ -4,20 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandConversationTable;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -36,34 +41,39 @@ public class MyDemandsPresenter extends
 
         Button getCancelBtn();
 
-        CellTable<MessageDetail> getCellTable();
+        GlobalDemandConversationTable getDemandTable();
+        ListDataProvider<ClientDemandMessageDetail> getDemandProvider();
+        NoSelectionModel<ClientDemandMessageDetail> getDemandTableModel();
 
-        SingleSelectionModel<MessageDetail> getSelectionModel();
+        // TODO maybe will be need type change
+        GlobalDemandConversationTable getConversationTable();
+        ListDataProvider<ClientDemandMessageDetail> getConversationProvider();
+        MultiSelectionModel<ClientDemandMessageDetail> getConversationTableModel();
 
         SimplePanel getDetailSection();
 
-        ListDataProvider<MessageDetail> getDataProvider();
+        void swapTables();
+
+        Anchor getBackToDemandsButton();
     }
 
     private DetailWrapperPresenter detailPresenter = null;
 
     public void bindView() {
-        view.getCellTable().getSelectionModel()
-                .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-                    public void onSelectionChange(SelectionChangeEvent event) {
-                        MessageDetail selected = view.getSelectionModel().getSelectedObject();
-                        if (selected != null) {
-                            // event calls from the click
-                            eventBus.getDemandDetail(selected.getDemandId(), ViewType.EDITABLE);
-
-                            // TODO delete this and uncomment the one below
-//                            eventBus.getDemandMessages(0, ViewType.EDITABLE);
-
-//                            eventBus.getDemandMessages(selected.getId(), ViewType.POTENTIAL);
-//                            detailPresenter.setMessageId(selected.getMessageId());
-                        }
-                    }
-                });
+        view.getDemandTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                view.swapTables();
+//                eventBus.requestDemandConversations();
+                Window.alert("List whole conversation eventBus call : Empty now... TODO");
+            }
+        });
+        view.getBackToDemandsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.swapTables();
+            }
+        });
     }
 
     public void onInvokeMyDemands() {
@@ -73,24 +83,40 @@ public class MyDemandsPresenter extends
             detailPresenter.initDetailWrapper(view.getDetailSection(),
                     ViewType.EDITABLE);
         }
-        // TODO temporal
-        PopupPanel panel = new PopupPanel(true);
-        panel.getElement().setInnerText("No GET demands event call");
-        panel.show();
-        GWT.log("Demands are on the way - getDemands!");
-        eventBus.requestClientDemands();
+        // get client's demands conversations (with admin/suppliers)
+        // new
+
+        eventBus.requestDemandConversations();
+
+        // OLD
+//        GWT.log("Get Client's Demands");
+//        eventBus.requestClientDemands();
     }
 
-    public void onResponseClientDemands(ArrayList<MessageDetail> demandMessageList) {
-        List<MessageDetail> list = view.getDataProvider().getList();
+    // PARENT TABLE
+    public void onSetClientDemandConversations(ArrayList<ClientDemandMessageDetail> demandMessageList) {
+        List<ClientDemandMessageDetail> list = view.getDemandProvider().getList();
         list.clear();
-        for (MessageDetail m : demandMessageList) {
+        for (ClientDemandMessageDetail m : demandMessageList) {
             list.add(m);
         }
         GWT.log("DATA SIZE: " + list.size());
         refreshDisplays();
 
         eventBus.displayContent(view.getWidgetView());
+    }
+
+    // CHILD TABLE
+    public void onResponseClientDemands(ArrayList<MessageDetail> demandMessageList) {
+        // TODO need to be implemented according to type of messageDetail
+//        List<MessageDetail> list = view.getDemandProvider().getList();
+//        list.clear();
+//        for (MessageDetail m : demandMessageList) {
+//            list.add(m);
+//        }
+//        GWT.log("DATA SIZE: " + list.size());
+//        refreshDisplays();
+
     }
 
 //    public void onResponseClientDemands(ArrayList<FullDemandDetail> demands) {
@@ -107,7 +133,8 @@ public class MyDemandsPresenter extends
      * Refresh all displays.
      */
     public void refreshDisplays() {
-        view.getDataProvider().refresh();
+        view.getDemandProvider().refresh();
+        view.getConversationProvider().refresh();
     }
 
     public void onResponseDemandDetail(Widget widget) {

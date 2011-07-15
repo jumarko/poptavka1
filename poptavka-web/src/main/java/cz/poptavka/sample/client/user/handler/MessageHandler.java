@@ -13,6 +13,7 @@ import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -38,6 +39,22 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 eventBus.responseClientDemands(result);
             }
         });
+    }
+
+    public void onGetClientDemandConversations(Long userId, Long clientId) {
+        messageService.getListOfClientDemandMessages(userId, clientId,
+                new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
+
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
+                }
+
+                @Override
+                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
+                    eventBus.setClientDemandConversations(result);
+                }
+            });
     }
 
 

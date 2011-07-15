@@ -165,6 +165,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         eventBus.getClientDemands(user.getUserId(), 0);
     }
 
+    public void onRequestDemandConversations() {
+        eventBus.getClientDemandConversations(user.getUserId(), user.getClientId());
+    }
+
     public void onRequestPotentialDemands() {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             eventBus.getPotentialDemands(user.getUserId());

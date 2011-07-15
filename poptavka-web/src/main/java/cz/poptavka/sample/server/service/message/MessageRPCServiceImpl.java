@@ -80,6 +80,11 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         this.clientService = clientService;
     }
 
+    // TODO verify
+    /**
+     * if used somewhere. In the past (before 14.7.) used for MyDemands list of clients
+     * demands. Now it is maybe unused. MAYBE I'm wrong
+     */
     /**
      * Tato metoda ma zrejme vratit vsetky spravy (dotazy od dodavatelov a dotazy
      * operatora) tykajuce sa klientovych poptaviek?
@@ -152,6 +157,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             detail.setUnreadSubmessages((int) count);
             detail.setDemandTitle(message.getDemand().getTitle());
             detail.setDemandStatus(message.getDemand().getStatus().toString());
+            detail.setPrice(message.getDemand().getPrice());
             detail.setEndDate(message.getDemand().getEndDate());
             detail.setExpiryDate(message.getDemand().getValidTo());
             result.add(detail);

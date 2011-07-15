@@ -30,6 +30,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -311,6 +312,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void clearUserOnUnload();
 
     /** TEST CLIENT DEMANDS ON MESSAGE BASED SYSTEM **/
+    // START
     @Event(handlers = MessageHandler.class)
     void getClientDemands(Long userId, int fakeParameter);
 
@@ -320,7 +322,20 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DemandsLayoutPresenter.class)
     void toggleLoading();
 
+    @Event(handlers = UserPresenter.class)
+    void requestDemandConversations();
+
+    @Event(handlers = MessageHandler.class)
+    void getClientDemandConversations(Long userId, Long clientId);
+
+    @Event(handlers = MyDemandsPresenter.class)
+    void setClientDemandConversations(ArrayList<ClientDemandMessageDetail> result);
+
+    //END
+
     @Event(handlers = AdminLayoutPresenter.class)
     void initAdmin();
+
+
 
 }

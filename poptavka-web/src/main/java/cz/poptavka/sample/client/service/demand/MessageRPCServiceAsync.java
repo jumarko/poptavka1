@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -30,6 +31,9 @@ public interface MessageRPCServiceAsync {
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 
     void getClientDemands(long businessUserId, int fakeParam, AsyncCallback<ArrayList<MessageDetail>> callback);
+
+    void getListOfClientDemandMessages(long businessUserId, long clientId,
+            AsyncCallback<ArrayList<ClientDemandMessageDetail>> callback);
 
     void getPotentialDemands(long businessUserId, AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
 
