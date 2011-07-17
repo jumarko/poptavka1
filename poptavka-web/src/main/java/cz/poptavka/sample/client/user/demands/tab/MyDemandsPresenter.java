@@ -11,7 +11,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
@@ -48,7 +47,7 @@ public class MyDemandsPresenter extends
         // TODO maybe will be need type change
         SingleDemandConversationTable getConversationTable();
         ListDataProvider<MessageDetail> getConversationProvider();
-        MultiSelectionModel<MessageDetail> getConversationTableModel();
+        NoSelectionModel<MessageDetail> getConversationTableModel();
 
         SimplePanel getDetailSection();
 
@@ -68,10 +67,18 @@ public class MyDemandsPresenter extends
                 eventBus.requestDemandConversations(detail.getMessageId());
             }
         });
+        view.getConversationTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                MessageDetail detail = view.getConversationTableModel().getLastSelectedObject();
+                eventBus.requestSingleConversation(detail.getThreadRootId(), detail.getMessageId());
+            }
+        });
         view.getBackToDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 view.swapTables();
+                view.getConversationProvider().setList(new ArrayList<MessageDetail>());
             }
         });
     }

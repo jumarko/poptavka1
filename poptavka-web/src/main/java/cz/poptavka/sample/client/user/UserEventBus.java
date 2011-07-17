@@ -138,6 +138,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
     void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType);
 
+    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    void setSingleDemandConversation(ArrayList<MessageDetail> messageList);
+
     /**
      * Bubbling message to send to UserPresenter to get the user ID.
      *
@@ -337,13 +340,13 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = MyDemandsPresenter.class)
     void setDemandConversations(ArrayList<MessageDetail> conversations);
+
+    @Event(handlers = {MessageHandler.class, DetailWrapperPresenter.class })
+    void requestSingleConversation(long threadRootId, long messageId);
     //END
 
     @Event(handlers = AdminLayoutPresenter.class)
     void initAdmin();
-
-
-
 
 
 }

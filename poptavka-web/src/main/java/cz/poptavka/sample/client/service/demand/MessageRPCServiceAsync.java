@@ -37,6 +37,8 @@ public interface MessageRPCServiceAsync {
 
     void getClientDemandConversations(long threadRootId, AsyncCallback<ArrayList<MessageDetail>> callback);
 
+    void getConversationMessages(long threadRootId, long subRootId, AsyncCallback<ArrayList<MessageDetail>> callback);
+
     void getPotentialDemands(long businessUserId, AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
 
     void getOfferDemands(long businessUserId, AsyncCallback<ArrayList<OfferDemandMessage>> callback);

@@ -72,6 +72,19 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
+    public void onRequestSingleConversation(long threadRootId, long messageId) {
+        messageService.getConversationMessages(threadRootId, messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("MessageHandler: onRequestSingleConversation:\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<MessageDetail> result) {
+                eventBus.setSingleDemandConversation(result);
+            }
+        });
+    }
 
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
         // TODO NOT WORKING NOW

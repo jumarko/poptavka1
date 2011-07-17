@@ -393,4 +393,19 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
         return childrenList;
     }
+
+    public ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) {
+        Message root = messageService.getById(threadRootId);
+        Message subRoot = messageService.getById(subRootId);
+        List<Message> conversation = messageService.getAllDescendants(subRoot);
+
+        ArrayList<MessageDetail> result = new ArrayList<MessageDetail>();
+        // add root and subRoot message
+        result.add(MessageDetailImpl.createMessageDetail(root));
+        result.add(MessageDetailImpl.createMessageDetail(subRoot));
+        for (Message m : conversation) {
+            result.add(MessageDetailImpl.createMessageDetail(m));
+        }
+        return result;
+    }
 }

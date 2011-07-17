@@ -65,24 +65,19 @@ public class UserConversationPanel extends Composite {
         // last message is always stored for reply
         replyToMessage = messages.get(messages.size() - 1);
 
-        //local
-        boolean moreThanOneVisibleMessage = false;
+        GWT.log(" **** size: " + messages.size());
 
-        if (messages.size() > 1) {
-            messagePanel.add(new SimpleMessageWindow(messages.get(1), collapsed, MessageDisplayType.FIRST));
-            for (int i = 2; i < (messages.size() - 1); i++) {
-                messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
-                moreThanOneVisibleMessage = true;
-            }
-            if (moreThanOneVisibleMessage) {
-                messagePanel.add(new SimpleMessageWindow(replyToMessage, false, MessageDisplayType.LAST));
-            }
+        for (int i = 1; i < messages.size(); i++) {
+            messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
         }
 
         messageCount = messagePanel.getWidgetCount();
 
         if (messageCount == 1) {
             ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
+        } else {
+            ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
+            ((SimpleMessageWindow) messagePanel.getWidget(messageCount - 1)).setMessageStyle(MessageDisplayType.LAST);
         }
     }
 

@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.NoSelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -138,8 +137,8 @@ public class MyDemandsView extends Composite implements
     }
 
     @Override
-    public MultiSelectionModel<MessageDetail> getConversationTableModel() {
-        return (MultiSelectionModel<MessageDetail>) conversationTable.getSelectionModel();
+    public NoSelectionModel<MessageDetail> getConversationTableModel() {
+        return (NoSelectionModel<MessageDetail>) conversationTable.getSelectionModel();
     }
 
 }

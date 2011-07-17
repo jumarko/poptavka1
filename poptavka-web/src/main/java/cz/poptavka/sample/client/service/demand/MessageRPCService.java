@@ -29,6 +29,8 @@ public interface MessageRPCService extends RemoteService {
 
     ArrayList<MessageDetail> getClientDemandConversations(long threadRootId);
 
+    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId);
+
     ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId, long userMessageId);
