@@ -8,15 +8,18 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import cz.poptavka.sample.client.home.HomeEventBus;
 
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
+import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
-public class DisplaySuppliersHandler extends BaseEventHandler<DisplaySuppliersEventBus> {
+public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
@@ -38,29 +41,29 @@ public class DisplaySuppliersHandler extends BaseEventHandler<DisplaySuppliersEv
         demandService = service;
     }
 
-//    // *** GET LOCALITY
-//    // ***************************************************************************
-//    /**
-//     * Get all localities. Used for display in listBox localities.
-//     */
-//    public void onGetLocalities() {
-//        localityService.getLocalities(LocalityType.REGION,
-//                new AsyncCallback<ArrayList<LocalityDetail>>() {
-//
-//                    @Override
-//                    public void onSuccess(ArrayList<LocalityDetail> list) {
-//                        eventBus.setLocalityData(list);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable arg0) {
-//                        LOGGER.info("onFailureGetLocalities");
-//                    }
-//                });
-//    }
+    // *** GET LOCALITY
+    // ***************************************************************************
+    /**
+     * Get all localities. Used for display in listBox localities.
+     */
+    public void onGetLocalities() {
+        localityService.getLocalities(LocalityType.REGION,
+                new AsyncCallback<ArrayList<LocalityDetail>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<LocalityDetail> list) {
+                        eventBus.setLocalityData(list);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        LOGGER.info("onFailureGetLocalities");
+                    }
+                });
+    }
     // *** GET CATEGORIES
     // ***************************************************************************
-    public void onGetCategory(String category) {
+    public void onGetSubCategories(String category) {
         categoryService.getCategoryChildren(category, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -70,6 +73,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<DisplaySuppliersEv
 
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
+                LOGGER.info("Found subcategories: " + result.size());
                 eventBus.displaySubcategories(result);
             }
         });
@@ -84,7 +88,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<DisplaySuppliersEv
 
                     @Override
                     public void onSuccess(ArrayList<CategoryDetail> list) {
-                        eventBus.setCategoryData(list);
+                        eventBus.displaySubcategories(list);
                     }
 
                     @Override

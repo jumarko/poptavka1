@@ -7,21 +7,33 @@
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:style>
+       .Hyperlink {
+            display: inline;
+        }
+    </ui:style>   
 
-    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:north size="300">
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="split">
+        <g:north size="300" >
             <g:ScrollPanel>
                 <g:VerticalPanel>
-                    <g:Label>dsadsadasdasdasdasdasdasdsadas</g:Label>
-                    <g:Label ui:field="path" />
-                    <g:FlexTable ui:field="table" />
+                    <g:FlowPanel ui:field="path" />
+                    <g:HorizontalPanel ui:field="panel" />
                 </g:VerticalPanel>
             </g:ScrollPanel>
         </g:north>
-        <g:center>
+        <g:center >
             <g:ScrollPanel>
                 <g:HTMLPanel>
                     <table width="100%">
+                        <tr>
+                            <td>
+                                <g:HorizontalPanel>
+                                    <g:Label>Filter by locality: </g:Label>
+                                    <g:ListBox ui:field="localityList" />
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <c:CellList ui:field="list" />

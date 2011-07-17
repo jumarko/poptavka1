@@ -16,9 +16,11 @@ import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.demands.DemandsModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
-import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersModule;
+import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersHandler;
+import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
@@ -26,8 +28,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
-        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true),
-        @ChildModule(moduleClass = DisplaySuppliersModule.class, autoDisplay = false, async = true)
+        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true)//,
+//        @ChildModule(moduleClass = DisplaySuppliersModule.class, autoDisplay = false, async = true)
 })
 public interface HomeEventBus extends EventBus {
 
@@ -59,8 +61,11 @@ public interface HomeEventBus extends EventBus {
     @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();
 
-    @Event(modulesToLoad = DisplaySuppliersModule.class, historyConverter = HomeHistoryConverter.class)
+    @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atSuppliers();
+
+//    @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
+//    String createToken(String token);
 
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atRegisterSupplier();
@@ -156,4 +161,28 @@ public interface HomeEventBus extends EventBus {
     void loadingHide();
     /** NO METHODS AFTER THIS **/
 
+    /** Display Suppliers     */
+    //Category
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getSubCategories(String category);
+
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getCategories();
+
+    //Locality
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getLocalities();
+
+    //Display
+    @Event(handlers = DisplaySuppliersPresenter.class)
+    void displaySubcategories(ArrayList<CategoryDetail> list);
+
+    @Event(handlers = DisplaySuppliersPresenter.class)
+    void setLocalityData(ArrayList<LocalityDetail> list);
+
+    @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
+    void addToPath(CategoryDetail category);
+
+    @Event(handlers = DisplaySuppliersPresenter.class)
+    void removeFromPath(Long id);
 }

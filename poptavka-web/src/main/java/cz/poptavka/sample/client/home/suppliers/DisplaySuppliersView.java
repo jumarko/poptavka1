@@ -15,14 +15,14 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
-import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import java.util.ArrayList;
@@ -36,23 +36,33 @@ public class DisplaySuppliersView extends OverflowComposite
 
     interface DisplaySuppliersViewUiBinder extends UiBinder<Widget, DisplaySuppliersView> {
     }
-
     private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-
-    @UiField
-    FlexTable table;
     @UiField(provided = true)
     CellList list;
     @UiField(provided = true)
     SimplePager pager;
     @UiField
-    Label path;
+    HorizontalPanel panel;
+    @UiField
+    FlowPanel path;
+    @UiField
+    SplitLayoutPanel split;
+    @UiField
+    ListBox localityList;
+
+    private final SingleSelectionModel<CategoryDetail> selectionModel = new SingleSelectionModel<CategoryDetail>();
 
     public DisplaySuppliersView() {
         initCellList();
         initWidget(uiBinder.createAndBindUi(this));
+
         LOGGER.info("CreateView pre DisplaySuppliers");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        return localityList;
     }
 
     @Override
@@ -61,13 +71,19 @@ public class DisplaySuppliersView extends OverflowComposite
     }
 
     @Override
-    public Label getPath() {
+    public FlowPanel getPath() {
         return path;
     }
 
+    //removes last one
     @Override
-    public FlexTable getTable() {
-        return table;
+    public void removePath() {
+        path.remove(path.getWidgetCount() - 1);
+    }
+
+    @Override
+    public void addPath(Widget widget) {
+        path.add(widget);
     }
 
     @Override
@@ -79,8 +95,24 @@ public class DisplaySuppliersView extends OverflowComposite
     public SimplePager getPager() {
         return pager;
     }
+
+    @Override
+    public HorizontalPanel getPanel() {
+        return panel;
+    }
+
+    @Override
+    public SingleSelectionModel getSelectionModel() {
+        return selectionModel;
+    }
+
+    @Override
+    public SplitLayoutPanel getSplitter() {
+        return split;
+    }
     private static final List<Supplier> SUPPLIERS = Arrays.asList(
             new Supplier(), new Supplier(), new Supplier(), new Supplier());
+    private boolean root = true;
 
     private void initCellList() {
         // Use the cell in a CellList.
@@ -95,47 +127,44 @@ public class DisplaySuppliersView extends OverflowComposite
         pager.setDisplay(list);
     }
 
-    //TODO Martin - zistit ci je toto ok, alebo to radsej urobit pomocou cez horizontal
-    //panel, cellListami a abstractCell, ktora bude zobrazovat Logo (ak bude), a label
-    //Teraz je to cez FlexTable, kde cell je SimplePanel, ktory obsahuje Logo(ak je) a Label
-    //Hlavna otazka je, co so stylom, potom co jednoduchsie a rychlejsie
     @Override
-    public void setFlexTable(int columns, ArrayList<CategoryDetail> categories) {
-        table.clear();
-        int row = 0;
-        int col = 0;
-        StringBuilder text;
-        for (CategoryDetail category : categories) {
-            text = new StringBuilder();
-            if (category == null) {
-                continue;
-            }
-            if (col == columns) {
-                col = 0;
-                row++;
-            }
-            HorizontalPanel cellPanel = new HorizontalPanel();
-            Label id = new Label(Long.toString(category.getId()));
-            id.setTitle("abc");
-            id.setVisible(false);
-            cellPanel.add(id);
-            cellPanel.add(new Image(StyleResource.INSTANCE.images().normal()));
-            text.append(category.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-            text.append(" (");
-            text.append(category.getSuppliers());
-            text.append(")");
-            Label label = new Label(text.toString());
-//            label.setStylePrimaryName(DEBUG_ID_PREFIX);
-            cellPanel.add(label);
-            table.setWidget(row, col++, cellPanel);
+    public void displaySubCategories(int columns, ArrayList<CategoryDetail> categories) {
+        if (categories.isEmpty()) {
+            return;
         }
+        panel.clear();
+        int size = categories.size();
+        int subSize = 0;
+        int startIdx = 0;
+        if (size < columns) {
+            columns = size;
+        }
+        while (columns != 0) {
+            if (size % columns == 0) {
+                subSize = size / columns;
+            } else {
+                subSize = size / columns + 1;
+            }
+            CellList cellList = null;
+            if (root) {
+                cellList = new CellList<CategoryDetail>(new RootCategoryCell());
+            } else {
+                cellList = new CellList<CategoryDetail>(new SubCategoryCell());
+            }
+            cellList.setRowCount(subSize, true);
+            cellList.setSelectionModel(selectionModel);
+            cellList.setRowData(categories.subList(startIdx, startIdx + subSize));
+            panel.add(cellList);
+            startIdx += subSize;
+            size -= subSize;
+            columns--;
+        }
+        root = false;
     }
 }
 
 /**
- * A custom {@link Cell} used to render a {@link Contact}. We extend
- * {@link AbstractCell} because it provides reasonable implementations of
- * methods that work for most use cases.
+ * Supplier Cell
  */
 class SupplierCell extends AbstractCell<Supplier> {
 
@@ -174,8 +203,6 @@ class SupplierCell extends AbstractCell<Supplier> {
 //        if (value == null) {
 //            return;
 //        }
-
-        // Display the name in big letters.
         sb.appendHtmlConstant("<div><a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"> "
                 + "<img style=\"float: left; margin-right: 10px;padding: 0px; width: 80px;\" "
                 + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"  "
@@ -194,16 +221,6 @@ class SupplierCell extends AbstractCell<Supplier> {
 
         sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
                 + "&nbsp;&nbsp;-&nbsp; Minská 7/6, Martin, 036 01</span></div><br/>");
-        // Display the address in normal text.
-//        sb.appendHtmlConstant("<div style=\"padding-left:10px;\">");
-//        sb.appendEscaped("value.address");
-//        sb.appendHtmlConstant("</div>");
-
-        // Format that birthday and display it in light gray.
-//        sb.appendHtmlConstant("<div style=\"padding-left:10px;color:#aaa;\">");
-//        sb.append(SafeHtmlUtils.fromTrustedString("Born: "));
-//        sb.appendEscaped("dateFormat.format(value.birthday)");
-//        sb.appendHtmlConstant("</div>");
     }
 
     /**
@@ -217,67 +234,59 @@ class SupplierCell extends AbstractCell<Supplier> {
         Window.alert("You clicked " + value.getId());
     }
 }
-//
-///**
-// * A custom {@link Cell} used to render a {@link Contact}. We extend
-// * {@link AbstractCell} because it provides reasonable implementations of
-// * methods that work for most use cases.
-// */
-//class CategoryCell extends AbstractCell<CategoryDetail> {
-//
-//    public CategoryCell() {
-//        /*
-//         * Let the parent class know that our cell responds to click events and
-//         * keydown events.
-//         */
-//        super("click", "keydown");
-//    }
-//
-//    @Override
-//    public void onBrowserEvent(Context context, Element parent, CategoryDetail value,
-//            NativeEvent event, ValueUpdater<CategoryDetail> valueUpdater) {
-//        // Check that the value is not null.
-//        if (value == null) {
-//            return;
-//        }
-//
-//        // Call the super handler, which handlers the enter key.
-//        super.onBrowserEvent(context, parent, value, event, valueUpdater);
-//
-//        // On click, perform the same action that we perform on enter.
-//        if ("click".equals(event.getType())) {
-//            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
-//        }
-//    }
-//
-//    @Override
-//    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-//        /*
-//         * Always do a null check on the value. Cell widgets can pass null to
-//         * cells if the underlying data contains a null, or if the data arrives
-//         * out of order.
-//         */
-//        if (value == null) {
-//            return;
-//        }
-//
-//        // Display the name in big letters.
-//        sb.appendHtmlConstant("<div><span style=\"font-weight : bold;\"");
-//        sb.appendEscaped(value.getName() + " (");
-//        sb.appendHtmlConstant("</span>");
-//        sb.appendEscaped(value.getSuppliers() + ")");
+
+/**
+ * Root Category Cell .
+ */
+class RootCategoryCell extends AbstractCell<CategoryDetail> {
+
+    @Override
+    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
+        /*
+         * Always do a null check on the value. Cell widgets can pass null to
+         * cells if the underlying data contains a null, or if the data arrives
+         * out of order.
+         */
+        if (value == null) {
+            return;
+        }
+
+        StringBuilder text = new StringBuilder();
+
+        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
+        text.append(" (");
+        text.append(value.getSuppliers());
+        text.append(")");
+
+        sb.appendEscaped(text.toString());
 //        sb.appendHtmlConstant("</div>");
-//
-//    }
-//
-//    /**
-//     * By convention, cells that respond to user events should handle the enter
-//     * key. This provides a consistent user experience when users use keyboard
-//     * navigation in the widget.
-//     */
-//    @Override
-//    protected void onEnterKeyDown(Context context, Element parent,
-//            CategoryDetail value, NativeEvent event, ValueUpdater<CategoryDetail> valueUpdater) {
-//        Window.alert("You clicked " + value.getName());
-//    }
-//}
+    }
+}
+
+/**
+ * Sub Category Cell .
+ */
+class SubCategoryCell extends AbstractCell<CategoryDetail> {
+
+    @Override
+    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
+        /*
+         * Always do a null check on the value. Cell widgets can pass null to
+         * cells if the underlying data contains a null, or if the data arrives
+         * out of order.
+         */
+        if (value == null) {
+            return;
+        }
+
+        StringBuilder text = new StringBuilder();
+
+        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
+        text.append(" (");
+        text.append(value.getSuppliers());
+        text.append(")");
+
+        sb.appendEscaped(text.toString());
+//        sb.appendHtmlConstant("</div>");
+    }
+}
