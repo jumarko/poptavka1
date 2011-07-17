@@ -145,7 +145,26 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 (Object) 0L, (Object) listOfClientDemandMessages.get(threadRoot300));
     }
 
+    @Test
+    public void testGetDescendants() {
+        Message threadRoot = this.messageService.getById(1L);
+        List<Message> descendants =
+                this.messageService.getAllDescendants(threadRoot);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                3, descendants.size());
 
+        checkUserMessageExists(2L, descendants);
+        checkUserMessageExists(3L, descendants);
+        checkUserMessageExists(4L, descendants);
+
+        threadRoot = this.messageService.getById(5L);
+        descendants =
+                this.messageService.getAllDescendants(threadRoot);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                1, descendants.size());
+
+        checkUserMessageExists(6L, descendants);
+    }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**

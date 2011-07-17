@@ -92,4 +92,20 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      */
     Map<Message, Long> getListOfClientDemandMessages(User user);
 
+    /**
+     * Gets all the descendants (not just the children) of a given message
+     * @param message
+     * @return
+     */
+    List<Message> getAllDescendants(Message message);
+    /**
+     * Gets all the descendants (not just the children) of every item
+     * in the given list of messages
+     *
+     * @param messages
+     * @return
+     */
+    List<Message> getAllDescendants(List<Message> messages);
+
+
 }

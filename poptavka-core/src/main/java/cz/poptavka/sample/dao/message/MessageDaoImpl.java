@@ -135,6 +135,17 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return offerMessages;
     }
 
+    @Override
+    public List<Message> getAllDescendants(List<Message> messages) {
+        List<Message> result = new ArrayList();
+        for (Message message : messages) {
+            List<Message> children = message.getChildren();
+            result.addAll(children);
+            result.addAll(getAllDescendants(children));
+        }
+        return result;
+    }
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Build criterion which can be used for getting all messages of given user restricted by

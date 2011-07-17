@@ -83,4 +83,14 @@ public interface MessageDao extends GenericDao<Message> {
     List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser);
 
     Map<Message, Long> getListOfClientDemandMessages(User user);
+
+    /**
+     * Gets all the descendants (not just the children) of every item
+     * in the given list of messages
+     *
+     * @param messages
+     * @return
+     */
+    List<Message> getAllDescendants(List<Message> messages);
+
 }

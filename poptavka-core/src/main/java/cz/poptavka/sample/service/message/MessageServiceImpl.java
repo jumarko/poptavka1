@@ -7,6 +7,7 @@ import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Map;
@@ -82,8 +83,21 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
      * @param client
      * @return
      */
+    @Override
     public Map<Message, Long> getListOfClientDemandMessages(User user) {
         return getDao().getListOfClientDemandMessages(user);
     }
+
+    public List<Message> getAllDescendants(Message message) {
+        List<Message> messages = new ArrayList();
+        messages.add(message);
+        return getAllDescendants(messages);
+
+    }
+
+    public List<Message> getAllDescendants(List<Message> messages) {
+        return getDao().getAllDescendants(messages);
+    }
+
 
 }
