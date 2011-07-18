@@ -95,6 +95,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class)
     void setTabWidget(Widget tabBody);
 
+    @Event(handlers = UserPresenter.class)
+    void setTabAdminWidget(Widget tabBody);
+
     // for operator only
 //    @Event
 //    void invokeMyProblems();

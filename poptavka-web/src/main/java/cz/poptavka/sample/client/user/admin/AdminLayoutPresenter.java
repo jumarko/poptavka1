@@ -39,10 +39,10 @@ public class AdminLayoutPresenter         extends
     }
 
     public void onInitAdmin() {
+        GWT.log("som tu");
         eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
-        eventBus.setTabWidget(view.getWidgetView());
+        eventBus.setTabAdminWidget(view.getWidgetView());
         eventBus.fireMarkedEvent();
-
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
@@ -61,6 +61,7 @@ public class AdminLayoutPresenter         extends
 //            panel.center();
 //            eventBus.getPotentialDemands(user.getId());
         }
+
 
         eventBus.setTabWidget(view.getWidgetView());
         eventBus.fireMarkedEvent();

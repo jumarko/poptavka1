@@ -63,6 +63,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
         void setBody(Widget body);
 
+        void setBodyAdmin(Widget body);
+
         Widget getWidgetView();
     }
 
@@ -135,6 +137,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     public void onSetTabWidget(Widget tabBody) {
         view.setBody(tabBody);
+    }
+
+    public void onSetTabAdminWidget(Widget tabBody) {
+        view.setBodyAdmin(tabBody);
     }
 
     /** REQUESTs && RESPONSEs. **/

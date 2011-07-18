@@ -32,6 +32,10 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
         tabPanel.setWidget(body);
     }
 
+    public void setBodyAdmin(Widget body) {
+        adminPanel.setWidget(body);
+    }
+
     public Widget getWidgetView() {
         return this;
     }
