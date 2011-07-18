@@ -68,6 +68,23 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         return toSet(runNamedQuery("getSuppliersForCategories", params));
     }
 
+    @Override
+    public Set<Supplier> getSuppliers(Category[] categories, Locality[] localities, ResultCriteria resultCriteria) {
+        if (categories == null || categories.length == 0 || CollectionsHelper.containsOnlyNulls(categories)) {
+            return Collections.emptySet();
+        }
+        if (localities == null || localities.length == 0 || CollectionsHelper.containsOnlyNulls(localities)) {
+            return Collections.emptySet();
+        }
+
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
+                Category.class));
+        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
+                Category.class));
+        return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalities", params));
+    }
+
 
     /** {@inheritDoc} */
     public List<Map<String, Object>> getSuppliersCountForAllLocalities() {

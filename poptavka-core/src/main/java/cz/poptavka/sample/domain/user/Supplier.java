@@ -15,12 +15,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.List;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Excalibur
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "getSuppliersForCategoriesAndLocalities",
+                    query = "select supplierCategory.supplier"
+                        + " from SupplierCategory supplierCategory,"
+                        + " SupplierLocality supplierLocality"
+                        + " where supplierCategory.supplier ="
+                        + " supplierLocality.supplier"
+                        + " and supplierCategory.category.id in (:categoryIds)"
+                        + " and supplierLocality.locality.id in (:localityIds)")
+})
 @Audited
 public class Supplier extends BusinessUserRole {
 

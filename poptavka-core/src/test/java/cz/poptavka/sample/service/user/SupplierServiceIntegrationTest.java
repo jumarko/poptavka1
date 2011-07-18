@@ -98,6 +98,19 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
     }
 
     @Test
+    public void testGetSuppliersForCategoriesAndLocalities() {
+        String[] catArr1 = {"cat1", "cat2"};
+        String[] locArr1 = {"loc1", "loc2"};
+        checkSuppliersForCategoriesAndLocalities(2, catArr1,
+                locArr1);
+        String[] catArr2 = {"cat312"};
+        String[] locArr2 = {"loc21"};
+        checkSuppliersForCategoriesAndLocalities(1, catArr2,
+                locArr2);
+
+    }
+
+    @Test
     public void testGetSuppliersForAllCategories() {
         final Map<Category, Long> suppliersCountForAllCategories =
                 this.supplierService.getSuppliersCountForAllCategories();
@@ -263,5 +276,13 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(message,
                 expectedSuppliersCount,
                 suppliersCountForAllCategories.get(this.categoryService.getCategory(categoryCode)));
+    }
+
+    private void checkSuppliersForCategoriesAndLocalities(int expectedCount,
+            String[] categoryCodes, String[] localityCodes) {
+        final Set<Supplier> suppliers = this.supplierService.getSuppliers(null,
+                getCategories(categoryCodes), getLocalities(localityCodes));
+        Assert.assertNotNull(suppliers);
+        Assert.assertEquals(expectedCount, suppliers.size());
     }
 }

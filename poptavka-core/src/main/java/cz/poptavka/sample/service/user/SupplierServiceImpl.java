@@ -41,6 +41,15 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     }
 
     /** {@inheritDoc} */
+    @Override
+    public Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
+            Category[] categories, Locality[] localities) {
+        return this.getDao().getSuppliers(categories, localities,
+                resultCriteria);
+    }
+
+
+    /** {@inheritDoc} */
     public Map<Locality, Long> getSuppliersCountForAllLocalities() {
         final List<Map<String, Object>> suppliersCountForAllLocalities =
                 this.getDao().getSuppliersCountForAllLocalities();

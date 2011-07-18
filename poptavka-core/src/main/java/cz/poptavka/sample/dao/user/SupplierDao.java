@@ -73,6 +73,18 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      */
     Set<Supplier> getSuppliers(Category[] categories, ResultCriteria resultCriteria);
 
+    /**
+     * Load all suppliers associated to the given category (-ies) and
+     * category (-ies) - each must be associated to both - while applying
+     * additional criteria <code>resultCriteria</code> if they are specified.
+     *
+     * @param categories
+     * @param localities
+     * @param resultCriteria
+     * @return collection of suppliers that are related to the given localities and adher to <code>resultCriteria</code>
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
+     */
+    Set<Supplier> getSuppliers(Category[] categories, Locality[] localities, ResultCriteria resultCriteria);
 
     /**
      * Optmized method for loading suppliers count for all categories in one query!

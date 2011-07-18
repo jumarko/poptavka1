@@ -95,7 +95,18 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      * @return
      */
     Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Category... categories);
-
+    /**
+     * Gets all the supplier from given categories (including their
+     * subcategories) which are also associated to the given localities
+     * (all their sub-localities) which also meet the supplied criteria
+     *
+     * @param resultCriteria
+     * @param categories
+     * @param localities
+     * @return
+     */
+    Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
+            Category[] categories, Locality[] localities);
     /**
      * Highly optimized method for getting number of suppliers for all categories.
      *
