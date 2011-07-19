@@ -114,8 +114,8 @@ public class AdminOffersView extends Composite implements
     /**
      * @return the adminDemandDetail
      */
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
+    public SimplePanel getAdminOfferDetail() {
+        return adminOfferDetail;
     }
 
     interface AdministrationViewUiBinder extends UiBinder<Widget, AdminOffersView> {
@@ -138,7 +138,7 @@ public class AdminOffersView extends Composite implements
      * Detail of selected Demand.
      */
     @UiField
-    SimplePanel adminDemandDetail;
+    SimplePanel adminOfferDetail;
     /**
      * Data provider that will cell table with data.
      */
@@ -322,10 +322,4 @@ public class AdminOffersView extends Composite implements
             return item == null ? null : item.getMessageId();
         }
     };
-
-    @Override
-    public SimplePanel getAdminOfferDetail() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

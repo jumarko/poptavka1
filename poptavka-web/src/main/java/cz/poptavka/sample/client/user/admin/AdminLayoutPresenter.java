@@ -26,7 +26,7 @@ public class AdminLayoutPresenter         extends
 
         void setOperatorDemandsToken(String link);
 
-        void setAdminDemandsToken(String link);
+        void setAdminUsersToken(String link);
 
         void setAdminOffersToken(String link);
 
@@ -35,7 +35,8 @@ public class AdminLayoutPresenter         extends
     }
 
     public void bind() {
-        view.setOperatorDemandsToken(getTokenGenerator().invokeMyDemands());
+        view.setOperatorDemandsToken(getTokenGenerator().invokeAdministration());
+        view.setAdminOffersToken(getTokenGenerator().invokeAdminOffers());
     }
 
     public void onInitAdmin() {

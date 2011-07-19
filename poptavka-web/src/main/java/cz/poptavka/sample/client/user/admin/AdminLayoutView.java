@@ -32,7 +32,7 @@ public class AdminLayoutView extends Composite
     Hyperlink operatorDemandsLink;
 
     @UiField
-    Hyperlink adminDemandsLink;
+    Hyperlink adminUsersLink;
 
     @UiField
     Hyperlink adminOffersLink;
@@ -56,8 +56,8 @@ public class AdminLayoutView extends Composite
         operatorDemandsLink.setTargetHistoryToken(linkString);
     }
 
-    public void setAdminDemandsToken(String linkString) {
-        adminDemandsLink.setTargetHistoryToken(linkString);
+    public void setAdminUsersToken(String linkString) {
+        adminUsersLink.setTargetHistoryToken(linkString);
     }
 
     public void setAdminOffersToken(String linkString) {

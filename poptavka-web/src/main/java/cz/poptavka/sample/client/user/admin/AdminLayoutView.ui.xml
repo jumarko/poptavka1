@@ -10,14 +10,7 @@
                 <ul>
                     <li>
                         <g:Hyperlink ui:field="operatorDemandsLink">
-                            <ui:msg key="operatorDemands">Operator Demands</ui:msg>
-                        </g:Hyperlink>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <g:Hyperlink ui:field="adminDemandsLink">
-                            <ui:msg key="adminDemands">Admin Demands</ui:msg>
+                            <ui:msg key="operatorDemands">Admin Demands</ui:msg>
                         </g:Hyperlink>
                     </li>
                 </ul>
@@ -25,6 +18,13 @@
                     <li>
                         <g:Hyperlink ui:field="adminOffersLink">
                             <ui:msg key="adminOffers">Admin Offers</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <g:Hyperlink ui:field="adminUsersLink">
+                        	<ui:msg key="adminOffers">Admin Users</ui:msg>
                         </g:Hyperlink>
                     </li>
                 </ul>

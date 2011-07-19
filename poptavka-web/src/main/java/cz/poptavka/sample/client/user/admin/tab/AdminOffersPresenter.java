@@ -60,11 +60,11 @@ public class AdminOffersPresenter
     }
 
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
-    public void onInvokeAdministration() {
+    public void onInvokeAdminOffers() {
         // TODO ivlcek - ktoru event mam volat skor? Je v tom nejaky rozdiel?
 //        eventBus.getAllDemands();
-        eventBus.displayContent(view.getWidgetView());
-        eventBus.getAllDemands();
+        //eventBus.displayContent(view.getWidgetView());
+        //eventBus.getAllDemands();
     }
 
     public void onSetAllOffer(List<FullOfferDetail> offerDetails) {

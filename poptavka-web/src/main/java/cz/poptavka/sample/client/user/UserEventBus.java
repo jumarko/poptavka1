@@ -13,6 +13,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOfferInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdministrationPresenter;
 import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
@@ -257,18 +258,27 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class, DemandsOperatorPresenter.class,
-            AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            AdministrationPresenter.class, AdminOffersPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
     @Event(handlers = DemandsOperatorPresenter.class, activate = DemandsOperatorPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class, NewDemandPresenter.class,
-            AdministrationPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            AdministrationPresenter.class, AdminOffersPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokeDemandsOperator();
 
     @Event(handlers = AdministrationPresenter.class, activate = AdministrationPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class, NewDemandPresenter.class,
-            DemandsOperatorPresenter.class }, historyConverter = UserHistoryConverter.class)
+            DemandsOperatorPresenter.class, AdminOffersPresenter.class },
+            historyConverter = UserHistoryConverter.class)
     String invokeAdministration();
+
+    @Event(handlers = AdminOffersPresenter.class, activate = AdminOffersPresenter.class, deactivate = {
+            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class, NewDemandPresenter.class,
+            DemandsOperatorPresenter.class, AdministrationPresenter.class },
+            historyConverter = UserHistoryConverter.class)
+    String invokeAdminOffers();
 
     /** Navigation Events section END **/
 
