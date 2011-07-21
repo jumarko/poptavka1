@@ -130,6 +130,7 @@ public class DisplaySuppliersView extends OverflowComposite
     @Override
     public void displaySubCategories(int columns, ArrayList<CategoryDetail> categories) {
         if (categories.isEmpty()) {
+            panel.clear();
             return;
         }
         panel.clear();
@@ -164,7 +165,7 @@ public class DisplaySuppliersView extends OverflowComposite
 }
 
 /**
- * Supplier Cell
+ * Supplier Cell.
  */
 class SupplierCell extends AbstractCell<Supplier> {
 

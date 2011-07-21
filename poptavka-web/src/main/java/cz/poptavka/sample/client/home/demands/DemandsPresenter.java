@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -21,8 +22,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+import cz.poptavka.sample.client.home.HomeEventBus;
 
-import cz.poptavka.sample.client.home.demands.demand.DemandView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
@@ -34,12 +35,20 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
  *
  */
 @Presenter(view = DemandsView.class)
-public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsViewInterface, DemandsEventBus> {
+public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsViewInterface, HomeEventBus> {
 
     private static final Logger LOGGER = Logger.getLogger(DemandsPresenter.class.getName());
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface DemandsViewInterface {
+
+        void setDemand(FullDemandDetail demand);
+
+        void setRegisterSupplierToken(String token);
+
+        void setAttachmentToken(String token);
+
+        void setLoginToken(String token);
 
         Widget getWidgetView();
 
@@ -59,7 +68,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         Label getBannerLabel();
 
-        DemandView getDemandView();
+        HTMLPanel getDemandView();
 
         SingleSelectionModel<DemandDetail> getSelectionModel();
     }
@@ -141,6 +150,12 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
                 view.getPager().setPageSize(newPage);
             }
         });
+
+        view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
+
+//        view.setAttachmentToken(getTokenGenerator().atAttachement());
+
+//        view.setLoginToken(getTokenGenerator().atLogin());
     }
     private AsyncDataProvider dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
@@ -257,6 +272,6 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
     public void onSetDemand(DemandDetail demand) {
         view.getDemandView().setVisible(true);
-        view.getDemandView().setDemand((FullDemandDetail) demand);
+        view.setDemand((FullDemandDetail) demand);
     }
 }

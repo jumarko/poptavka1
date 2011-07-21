@@ -36,8 +36,8 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
             if (param.equals("root")) {
                 eventBus.atSuppliers();
             } else {
-                eventBus.getSubCategories(param);
                 eventBus.removeFromPath(Long.valueOf(param));
+                eventBus.getSubCategories(param);
             }
         }
         if (historyName.equals("atCreateDemand")) {
@@ -59,5 +59,4 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
         // TODO Auto-generated method stub
         return true;
     }
-
 }

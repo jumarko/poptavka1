@@ -6,12 +6,7 @@
     <!-- injecting style resources -->
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
-    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
-    <ui:style>
-       .Hyperlink {
-            display: inline;
-        }
-    </ui:style>   
+<!--    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />-->
 
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="split">
         <g:north size="300" >

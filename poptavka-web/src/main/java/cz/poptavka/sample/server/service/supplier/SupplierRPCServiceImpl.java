@@ -10,6 +10,7 @@ import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
@@ -28,7 +29,9 @@ import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.Collection;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
     /**
@@ -194,4 +197,31 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return categoryService.getById(Long.parseLong(id));
     }
 
+    public ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID, Long localityID) {
+        List<Category> categories = new ArrayList<Category>();
+        if (categoryID != null) {
+            categories = categoryService.getById(categoryID).getChildren();
+        }
+        List<Locality> localities = new ArrayList<Locality>();
+        if (localityID != null) {
+            localities = localityService.getById(localityID).getChildren();
+        }
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(start)
+                .maxResults(count)
+                .build();
+        //TODO Martin - need something like folows
+        //supplierService.getSuppliers(resultCriteria, categories, localities);
+        //if categories or localities are null or empty strings, don't filter for that case
+        return this.createSupplierDetailList(supplierService.getSuppliers(
+                resultCriteria, categories.toArray(new Category[categories.size()])));
+    }
+
+    private ArrayList<SupplierDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
+        ArrayList<SupplierDetail> supplierDetails = new ArrayList<SupplierDetail>();
+        for (Supplier supplier : suppliers) {
+            supplierDetails.add(new SupplierDetail(supplier));
+        }
+        return supplierDetails;
+    }
 }

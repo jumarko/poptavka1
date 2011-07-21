@@ -3,10 +3,10 @@ package cz.poptavka.sample.client.home.demands.demand;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.home.demands.DemandsEventBus;
+import cz.poptavka.sample.client.home.HomeEventBus;
 
 @Presenter(view = DemandView.class)
-public class DemandPresenter extends BasePresenter<DemandPresenter.DemandViewInterface, DemandsEventBus> {
+public class DemandPresenter extends BasePresenter<DemandPresenter.DemandViewInterface, HomeEventBus> {
 
     public interface DemandViewInterface {
 
@@ -26,9 +26,9 @@ public class DemandPresenter extends BasePresenter<DemandPresenter.DemandViewInt
         //view.setAttachmentToken(getTokenGenerator().atAttachment());
 
         //TODO - dorobit, ked sa bude vediet ako to ma vyzerat
-        //view.setLoginToken(getTokenGenerator().atLogin());
+//        view.setLoginToken(getTokenGenerator().));
 
-//        view.setRegisterToken(getTokenGenerator().atRegisterSupplier());
+        view.setRegisterToken(getTokenGenerator().atRegisterSupplier());
     }
 
 //    public void onAtRegisterSupplier() {

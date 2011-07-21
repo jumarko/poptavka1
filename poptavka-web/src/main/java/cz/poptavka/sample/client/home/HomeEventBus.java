@@ -7,14 +7,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.module.ChildModule;
-import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
-import cz.poptavka.sample.client.home.demands.DemandsModule;
+import cz.poptavka.sample.client.home.demands.DemandsHandler;
+import cz.poptavka.sample.client.home.demands.DemandsPresenter;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersHandler;
 import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersPresenter;
@@ -22,15 +21,13 @@ import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.Collection;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@ChildModules({
-        @ChildModule(moduleClass = DemandsModule.class, autoDisplay = false, async = true)//,
-//        @ChildModule(moduleClass = DisplaySuppliersModule.class, autoDisplay = false, async = true)
-})
 public interface HomeEventBus extends EventBus {
 
     /** init method  **/
@@ -58,8 +55,15 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atCreateDemand();
 
-    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
+//    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
+    @Event(handlers = DemandsPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();
+
+//    @Event(handlers = ????.class, historyConverter = HomeHistoryConverter.class)
+//    String atAttachement();
+
+//    @Event(handlers = ????, historyConverter = HomeHistoryConverter.class)
+//    String atLogin();
 
     @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atSuppliers();
@@ -161,23 +165,25 @@ public interface HomeEventBus extends EventBus {
     void loadingHide();
     /** NO METHODS AFTER THIS **/
 
-    /** Display Suppliers     */
+    /** DISPLAT SUPPLIERS */
     //Category
     @Event(handlers = DisplaySuppliersHandler.class)
     void getSubCategories(String category);
 
-    @Event(handlers = DisplaySuppliersHandler.class)
+    @Event(handlers = {DemandsHandler.class, DisplaySuppliersHandler.class })
+//    @Event(handlers = DisplaySuppliersHandler.class)//, passive = true)
     void getCategories();
 
     //Locality
-    @Event(handlers = DisplaySuppliersHandler.class)
+    @Event(handlers = {DemandsHandler.class, DisplaySuppliersHandler.class })
+//    @Event(handlers = DisplaySuppliersHandler.class)//, passive = true)
     void getLocalities();
 
     //Display
     @Event(handlers = DisplaySuppliersPresenter.class)
     void displaySubcategories(ArrayList<CategoryDetail> list);
 
-    @Event(handlers = DisplaySuppliersPresenter.class)
+    @Event(handlers = {DisplaySuppliersPresenter.class, DemandsPresenter.class })
     void setLocalityData(ArrayList<LocalityDetail> list);
 
     @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
@@ -185,4 +191,43 @@ public interface HomeEventBus extends EventBus {
 
     @Event(handlers = DisplaySuppliersPresenter.class)
     void removeFromPath(Long id);
+
+    //DISPLAY DEMANDS
+    //Demand
+    @Event(handlers = DemandsHandler.class)
+    void getDemands(int fromResult, int toResult);
+
+    @Event(handlers = DemandsHandler.class)
+    void getAllDemandsCount();
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemandsCountCategory(long id);
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemandsCountLocality(String code);
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemandsByCategories(int fromResult, int toResult, long id);
+
+    @Event(handlers = DemandsHandler.class)
+    void getDemandsByLocalities(int fromResult, int toResult, String id);
+
+    //Display
+    @Event(handlers = DemandsPresenter.class)
+    void setCategoryData(ArrayList<CategoryDetail> list);
+
+    @Event(handlers = DemandsPresenter.class)
+    void displayDemands(Collection<DemandDetail> result);
+
+    @Event(handlers = DemandsPresenter.class)
+    void setDemand(DemandDetail demand);
+
+    @Event(handlers = DemandsPresenter.class)
+    void createAsyncDataProvider();
+
+    @Event(handlers = DemandsPresenter.class)
+    void setResultSource(String resultSource);
+
+    @Event(handlers = DemandsPresenter.class)
+    void setResultCount(long resultCount);
 }

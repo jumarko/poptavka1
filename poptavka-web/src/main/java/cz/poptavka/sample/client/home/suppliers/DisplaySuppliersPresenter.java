@@ -70,9 +70,9 @@ public class DisplaySuppliersPresenter
                 eventBus.loadingShow(MSGS.loading());
                 CategoryDetail selected = (CategoryDetail) view.getSelectionModel().getSelectedObject();
                 //does it really need to be?
-                if (selected.getParentName().equals("") || selected.getParentName() == null) {
-                    root = true;
-                }
+//                if (selected.getParentName().equals("") || selected.getParentName() == null) {
+//                    root = true;
+//                }
                 if (selected != null) {
                     historyTokens.add(selected.getId());
                     eventBus.getSubCategories(Long.toString(selected.getId()));
@@ -93,18 +93,21 @@ public class DisplaySuppliersPresenter
     public void onAddToPath(CategoryDetail categoryDetail) {
         Hyperlink link = new Hyperlink(" -> " + categoryDetail.getName(),
                 "!public/addToPath?" + categoryDetail.getId());
+//        link.addStyleName("cz.poptavka.sample.client.resources.StyleResource.layout.homeMenu");
         view.addPath(link);
     }
 
     public void onAtSuppliers() {
         eventBus.loadingShow(MSGS.loading());
+        root = true;
+        //
         view.getSplitter().getWidget(1).setVisible(false);
         view.getSplitter().getWidget(2).setVisible(false);
-
+        view.getPath().setVisible(false);
+        //
         view.getPath().clear();
         historyTokens.clear();
-        view.getPath().setVisible(false);
-
+        //
         eventBus.getCategories();
         eventBus.getLocalities();
 
@@ -115,10 +118,6 @@ public class DisplaySuppliersPresenter
 
     public void onDisplaySubcategories(ArrayList<CategoryDetail> subcategories) {
         if (root) {
-            view.getSplitter().getWidget(1).setVisible(false);
-            view.getSplitter().getWidget(2).setVisible(false);
-            view.getPath().setVisible(false);
-            eventBus.setBodyWidget(view.getWidgetView());
             root = false;
         } else {
             view.getSplitter().getWidget(1).setVisible(true);
@@ -156,14 +155,13 @@ public class DisplaySuppliersPresenter
     }
 
     public void onRemoveFromPath(Long id) {
-        if (historyTokens.isEmpty()) {
-            return;
-        }
         int idx = historyTokens.indexOf(id);
-        for (int i = historyTokens.size(); i == 0; i--) {
+        for (int i = 0; i < historyTokens.size();) {
             if (i > idx) {
                 view.getPath().remove(i + 1);
                 historyTokens.remove(i);
+            } else {
+                i++;
             }
         }
     }

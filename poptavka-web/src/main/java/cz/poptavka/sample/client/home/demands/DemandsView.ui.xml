@@ -25,47 +25,101 @@
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:north size="300">
             <g:ScrollPanel>
-            <g:HTMLPanel>
-                
-                <table width="100%">
-                    
-                    <tr>
-                        <td>
-                            <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
-                                <g:Label styleName="{style.name}">
-                                    <ui:msg key="filter">Filter:</ui:msg>
-                                </g:Label>
-                                <g:ListBox ui:field="category" styleName="{style.list}" />
-                                <g:ListBox ui:field="locality" styleName="{style.list}" />
-                            </g:HorizontalPanel>                    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <g:ScrollPanel>
-                                <c:CellTable ui:field='cellTable' />
-                            </g:ScrollPanel>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center">
+                <g:HTMLPanel>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
+                                    <g:Label styleName="{style.name}">
+                                        <ui:msg key="filter">Filter:</ui:msg>
+                                    </g:Label>
+                                    <g:ListBox ui:field="category" styleName="{style.list}" />
+                                    <g:ListBox ui:field="locality" styleName="{style.list}" />
+                                </g:HorizontalPanel>                    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:ScrollPanel>
+                                    <c:CellTable ui:field='cellTable' />
+                                </g:ScrollPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
 <!--                            <c:SimplePager ui:field='pager' />-->
-                            <c:SimplePager ui:field='pager' />
-                            <g:ListBox ui:field='combo'/>
-                        </td>
-                    </tr>
+                                <c:SimplePager ui:field='pager' />
+                                <g:ListBox ui:field='combo'/>
+                            </td>
+                        </tr>
                 
-                </table>                        
+                    </table>                        
                     
-            </g:HTMLPanel>
+                </g:HTMLPanel>
             </g:ScrollPanel>
         </g:north>
         <g:center>
             <g:ScrollPanel>
                 <g:HTMLPanel>
                     <g:VerticalPanel>
-                        <d:DemandView ui:field="demandView"/>
+<!--                        <d:DemandView ui:field="demandView"/>-->
                         <g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
+                        <g:HTMLPanel ui:field="demandView">
+                        <table>
+                            <tr>
+                                <td width="200">
+                                    <g:Label>
+                                        <ui:msg key="demandDetail">Demand detail:</ui:msg>
+                                    </g:Label>
+                                </td>
+                                <td>
+                                    <g:Label text="Popis:" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <g:FlexTable ui:field="infoTable"/>
+                                </td>
+                                <td ROWSPAN="6">
+                                    <g:DecoratorPanel>
+                                        <g:Label ui:field="textArea"/>
+                                    </g:DecoratorPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <g:Hyperlink ui:field="linkAttachment" styleName='{res.layout.homeMenu}'>
+                                        <ui:msg key="getAttachment">Get attachment</ui:msg>
+                                    </g:Hyperlink>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <g:Hyperlink ui:field="linkLogin" styleName='{res.layout.homeMenu}'>
+                                        <ui:msg key="sign"> Sign </ui:msg>
+                                    </g:Hyperlink>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <g:Hyperlink ui:field="linkRegisterClient" styleName='{res.layout.homeMenu}'>
+                                        <!-- TODO Martin dorobit lokalizaciu-->
+                                        Register client
+                                    </g:Hyperlink>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <g:Hyperlink ui:field="linkRegisterSupplier" styleName='{res.layout.homeMenu}'>
+                                        <ui:msg key="register"> Register supplier </ui:msg>
+                                    </g:Hyperlink>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </table>
+                        </g:HTMLPanel>
                     </g:VerticalPanel>
                 </g:HTMLPanel>
             </g:ScrollPanel>

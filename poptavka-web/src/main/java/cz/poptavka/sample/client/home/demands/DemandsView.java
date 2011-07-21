@@ -6,7 +6,6 @@ import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import java.util.Date;
 
-import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -19,13 +18,15 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.client.home.demands.demand.DemandView;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
@@ -47,16 +48,38 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     @UiField
     ListBox category, locality;
     @UiField
-    DemandView demandView;
+    HTMLPanel demandView;
     @UiField
     Label bannerLabel;
     @UiField(provided = true)
     CellTable<DemandDetail> cellTable;
     @UiField(provided = true)
     SimplePager pager;
+
+    @UiField Hyperlink linkAttachment, linkLogin, linkRegisterClient, linkRegisterSupplier;
+    @UiField FlexTable infoTable;
+    @UiField Label textArea;
+
+    private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
     private AsyncDataProvider dataProvider;
-    LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
+
+    @Override
+    public void setRegisterSupplierToken(String token) {
+        linkRegisterSupplier.setTargetHistoryToken(token);
+    }
+
+    //TODO Martin dorobit register client
+
+    @Override
+    public void setAttachmentToken(String token) {
+        linkAttachment.setTargetHistoryToken(token);
+    }
+
+    @Override
+    public void setLoginToken(String token) {
+        linkLogin.setTargetHistoryToken(token);
+    }
 
     public DemandsView() {
         combo = new ListBox();
@@ -74,8 +97,8 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
 
     @Override
-    public DemandView getDemandView() {
-        return this.demandView;
+    public HTMLPanel getDemandView() {
+        return demandView;
     }
 
     @Override
@@ -141,19 +164,16 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      * Add the columns to the table.
      */
     private void initTableColumns() {
-        // Date of creation TODO Martin - opravit ak bude dostupny datum vlozenia
-        addColumn(new DateCell(DateTimeFormat.getFormat("MM.dd.yyyy")), bundle.createdDate(), 30, new GetValue<Date>() {
+        // Date of creation
+        // TODO Martin - opravit ak bude dostupny datum vlozenia
+        addColumn(new TextCell(), bundle.createdDate(), 30, new GetValue<String>() {
 
-            public Date getValue(FullDemandDetail fullDemandDetail) {
-                return fullDemandDetail.getEndDate();
-            }
-        });
-
-        // Time of creation TODO Martin - opravit ak bude dostupny cas vlozenia
-        addColumn(new DateCell(DateTimeFormat.getFormat("hh:mm")), bundle.createdTime(), 20, new GetValue<Date>() {
-
-            public Date getValue(FullDemandDetail fullDemandDetail) {
-                return fullDemandDetail.getEndDate();
+            public String getValue(FullDemandDetail fullDemandDetail) {
+                //TODO Martin dorobit rozdelenie casu a datumu podla niecoho
+                //if (...) {
+                //DateTimeFormat.getFormat("hh:mm").format(fullDemandDetail.getEndDate());
+                //}
+                return DateTimeFormat.getFormat("MM.dd.yyyy").format(fullDemandDetail.getEndDate());
             }
         });
 
@@ -302,5 +322,66 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         cellTable.addColumn(column, headerText);
         cellTable.setColumnWidth(column, width, Unit.PX);
         return column;
+    }
+
+    @Override
+    public void setDemand(FullDemandDetail demand) {
+        infoTable.clear();
+        textArea.setText("");
+
+        textArea.getElement().getStyle().setProperty("whiteSpace", "pre");
+        linkAttachment.setVisible(false);
+
+        int row = 0;
+
+        if (demand.getDescription() != null) {
+            textArea.setText(demand.getDescription());
+        }
+
+        if (demand.getPrice() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.title() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
+        }
+
+        if (demand.getPrice() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.price() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
+        }
+
+        if (demand.getEndDate() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.endDate() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
+        }
+
+        if (demand.getValidToDate() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
+        }
+
+        if (demand.getDemandType() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.type() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getDemandType()));
+        }
+
+        if (demand.getCategories() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.category() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()
+                    .substring(1, demand.getCategories().toString().length() - 1)));
+        }
+
+        if (demand.getLocalities() != null) {
+            infoTable.setWidget(row, 0, new Label(bundle.locality() + ":"));
+            infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()
+                    .substring(1, demand.getLocalities().toString().length() - 1)));
+        }
+
+        infoTable.setWidget(row, 0, new Label(bundle.offers() + ":"));
+        infoTable.setWidget(row++, 1, new Label(Integer.toString(demand.getMaxOffers())));
+
+        if (demand.getPrice() != null) {
+            infoTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));
+            infoTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
+            linkAttachment.setVisible(true);
+        }
     }
 }

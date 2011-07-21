@@ -10,12 +10,14 @@ import cz.poptavka.sample.client.service.demand.CategoryRPCService;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.CategoryService;
+import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
 
     private CategoryService categoryService;
+    private SupplierService supplierService;
     private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 
     @Autowired
@@ -28,6 +30,10 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         return createCategoryDetail(categoryService.getById(id));
     }
 
+    @Autowired
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
+    }
 //    @Override
 //    public CategoryDetail getCategory(String code) {
 //        return createCategoryDetail(categoryService.getCategory(code));
@@ -72,7 +78,8 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     private CategoryDetail createCategoryDetail(Category category) {
-        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, 0);
+        long suppliersCount = supplierService.getSuppliersCountQuick(category);
+        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
         // TODO uncomment, when implemented
 //        CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
 //              cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());

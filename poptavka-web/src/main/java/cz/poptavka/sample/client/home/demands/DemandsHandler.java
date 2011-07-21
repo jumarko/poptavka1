@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import cz.poptavka.sample.client.home.HomeEventBus;
 
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
@@ -22,7 +23,7 @@ import java.util.List;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
-public class DemandsHandler extends BaseEventHandler<DemandsEventBus> {
+public class DemandsHandler extends BaseEventHandler<HomeEventBus> {
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
