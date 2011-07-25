@@ -79,5 +79,11 @@ public class AdminLayoutView extends Composite
         }
     }
 
+    @Override
+    public SimplePanel getContentPanel() {
+        // TODO Auto-generated method stub
+        return contentPanel;
+    }
+
     // TODO Beho - clean up after devel
 }

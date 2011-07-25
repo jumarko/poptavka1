@@ -336,7 +336,7 @@ public interface UserEventBus extends EventBusWithLookup {
 //    @Event(handlers = MyDemandsPresenter.class)
 //    void responseClientDemands(ArrayList<MessageDetail> result);
 
-    @Event(handlers = DemandsLayoutPresenter.class)
+    @Event(handlers = { DemandsLayoutPresenter.class, AdminLayoutPresenter.class })
     void toggleLoading();
 
     @Event(handlers = UserPresenter.class)

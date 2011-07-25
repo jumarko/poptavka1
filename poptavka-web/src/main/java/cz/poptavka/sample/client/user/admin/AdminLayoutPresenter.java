@@ -2,12 +2,14 @@ package cz.poptavka.sample.client.user.admin;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
@@ -30,9 +32,13 @@ public class AdminLayoutPresenter         extends
 
         void setAdminOffersToken(String link);
 
+        SimplePanel getContentPanel();
+
 
 
     }
+
+    private LoadingDiv loading = null;
 
     public void bind() {
         view.setOperatorDemandsToken(getTokenGenerator().invokeAdministration());
@@ -41,7 +47,7 @@ public class AdminLayoutPresenter         extends
 
     public void onInitAdmin() {
         GWT.log("som tu");
-        eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
+        //eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
         eventBus.setTabAdminWidget(view.getWidgetView());
         eventBus.fireMarkedEvent();
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
@@ -71,6 +77,18 @@ public class AdminLayoutPresenter         extends
     }
 
     public void onDisplayContent(Widget contentWidget) {
+        onToggleLoading();
         view.setContent(contentWidget);
+    }
+
+    public void onToggleLoading() {
+        if (loading == null) {
+            GWT.log("  - loading created");
+            loading = new LoadingDiv(view.getContentPanel().getParent());
+        } else {
+            GWT.log("  - loading removed");
+            loading.getElement().removeFromParent();
+            loading = null;
+        }
     }
 }
