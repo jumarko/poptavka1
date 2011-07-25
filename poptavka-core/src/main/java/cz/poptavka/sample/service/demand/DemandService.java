@@ -183,4 +183,11 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     long getAllDemandsCount();
+
+    /**
+     * Gets the count of offers associated with the supplied demand
+     * @param demand
+     * @return
+     */
+    long getOfferCount(Demand demand);
 }

@@ -216,13 +216,16 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return this.getDao().getDemandsCountWithoutChildren(category);
     }
 
-    /**
-     * Returns the count of all demands in DB.
-     * @return
-     */
+    /** {@inheritDoc} */
     @Override
     public long getAllDemandsCount() {
         return this.getDao().getAllDemandsCount();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getOfferCount(Demand demand) {
+        return demand.getOffers().size();
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
