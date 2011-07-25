@@ -1,8 +1,6 @@
 package cz.poptavka.sample.shared.domain.message;
 
 import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.service.demand.DemandService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class OfferDemandMessageImpl extends PotentialDemandMessageImpl implements OfferDemandMessage {
 
@@ -13,17 +11,10 @@ public class OfferDemandMessageImpl extends PotentialDemandMessageImpl implement
     private int offerCount;
     private int maxOfferCount;
 
-    private static DemandService demandService;
-
-    @Autowired
-    public void setDemandService(DemandService demandService) {
-        OfferDemandMessageImpl.demandService = demandService;
-    }
-
     public static OfferDemandMessageImpl createMessageDetail(UserMessage message) {
         OfferDemandMessageImpl detail = new OfferDemandMessageImpl();
         detail = (OfferDemandMessageImpl) MessageDetailImpl.fillMessageDetail(detail, message.getMessage());
-        detail.setOfferCount((int) demandService.getOfferCount(message.getMessage().getDemand()));
+        detail.setOfferCount(message.getMessage().getDemand().getOffers().size());
         detail.setMaxOfferCount(message.getMessage().getDemand().getMaxSuppliers());
         return detail;
     }
