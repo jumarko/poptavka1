@@ -16,4 +16,11 @@ public interface SupplierRPCServiceAsync {
 
     void getSuplliers(int start, int count, Long categoryID, Long localityID,
             AsyncCallback<ArrayList<SupplierDetail>> callback);
+
+    void getSuplliers(int start, int count, Long categoryID,
+            AsyncCallback<ArrayList<SupplierDetail>> callback);
+
+    void getSuppliersCount(Long categoryID, AsyncCallback<Long> callback);
+
+    void getSuppliersCount(Long categoryID, Long localityID, AsyncCallback<Long> callback);
 }

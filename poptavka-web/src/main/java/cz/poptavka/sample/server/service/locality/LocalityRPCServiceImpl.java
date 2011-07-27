@@ -50,7 +50,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         ArrayList<LocalityDetail> localityDetails = new ArrayList<LocalityDetail>();
 
         for (Locality loc : localities) {
-            localityDetails.add(new LocalityDetail(loc.getName(), loc.getCode()));
+            localityDetails.add(new LocalityDetail(loc.getId(), loc.getName(), loc.getCode()));
         }
 
         return localityDetails;

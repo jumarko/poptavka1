@@ -20,6 +20,7 @@ import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -171,17 +172,34 @@ public interface HomeEventBus extends EventBus {
     void getSubCategories(String category);
 
     @Event(handlers = {DemandsHandler.class, DisplaySuppliersHandler.class })
-//    @Event(handlers = DisplaySuppliersHandler.class)//, passive = true)
     void getCategories();
 
     //Locality
     @Event(handlers = {DemandsHandler.class, DisplaySuppliersHandler.class })
-//    @Event(handlers = DisplaySuppliersHandler.class)//, passive = true)
     void getLocalities();
+
+    //Suppliers
+//    @Event(handlers = DisplaySuppliersPresenter.class)
+//    void getSuppliers(Long category, Long locality);
+
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getSuppliers2(int start, int count, Long category, Long locality);
+
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getSuppliers3(int start, int count, Long category);
+
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getSuppliersCount(Long category, Long locality);
+
+    @Event(handlers = DisplaySuppliersHandler.class)
+    void getSuppliersCountCategory(Long category);
 
     //Display
     @Event(handlers = DisplaySuppliersPresenter.class)
     void displaySubcategories(ArrayList<CategoryDetail> list);
+
+    @Event(handlers = DisplaySuppliersPresenter.class)
+    void displaySuppliers(ArrayList<SupplierDetail> list);
 
     @Event(handlers = {DisplaySuppliersPresenter.class, DemandsPresenter.class })
     void setLocalityData(ArrayList<LocalityDetail> list);
@@ -191,6 +209,12 @@ public interface HomeEventBus extends EventBus {
 
     @Event(handlers = DisplaySuppliersPresenter.class)
     void removeFromPath(Long id);
+
+    @Event(handlers = DisplaySuppliersPresenter.class)
+    void setCategoryID(Long categoryID);
+
+    @Event(handlers = DisplaySuppliersPresenter.class)
+    void createAsyncDataProviderSupplier(final long totalFound);
 
     //DISPLAY DEMANDS
     //Demand

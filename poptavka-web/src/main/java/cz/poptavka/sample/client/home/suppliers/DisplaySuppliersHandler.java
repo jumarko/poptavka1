@@ -9,13 +9,14 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.home.HomeEventBus;
-
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
@@ -24,6 +25,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
+    private SupplierRPCServiceAsync supplierService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
@@ -39,6 +41,11 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
     @Inject
     void setDemandService(DemandRPCServiceAsync service) {
         demandService = service;
+    }
+
+    @Inject
+    public void setSupplierService(SupplierRPCServiceAsync service) {
+        supplierService = service;
     }
 
     // *** GET LOCALITY
@@ -96,6 +103,69 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
                         LOGGER.info("onFailureCategory");
                     }
                 });
+    }
+
+    // *** GET CATEGORIES
+    // ***************************************************************************
+    public void onGetSuppliersCountCategory(Long category) {
+        supplierService.getSuppliersCount(category, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+//                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProviderSupplier(result);
+            }
+        });
+    }
+    public void onGetSuppliersCount(Long category, Long locality) {
+        supplierService.getSuppliersCount(category, locality, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+//                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProviderSupplier(result);
+            }
+        });
+    }
+
+    public void onGetSuppliers2(int start, int count, Long category, Long locality) {
+        supplierService.getSuplliers(start, count, category, locality, new AsyncCallback<ArrayList<SupplierDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<SupplierDetail> result) {
+                eventBus.displaySuppliers(result);
+            }
+        });
+    }
+
+    public void onGetSuppliers3(int start, int count, Long category) {
+        supplierService.getSuplliers(start, count, category, new AsyncCallback<ArrayList<SupplierDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<SupplierDetail> result) {
+                eventBus.displaySuppliers(result);
+            }
+        });
     }
 //    // *** GET DEMANDS
 //    // ***************************************************************************

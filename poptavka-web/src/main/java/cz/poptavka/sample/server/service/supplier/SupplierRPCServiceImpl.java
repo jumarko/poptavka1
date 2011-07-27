@@ -34,6 +34,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.Collection;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
+
     /**
      * Generated serialVersionUID.
      */
@@ -74,14 +75,11 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
-        final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(supplier.getCompanyName())
-                .taxId(supplier.getTaxId())
-                .identificationNumber(supplier.getIdentifiacationNumber())
-                .phone(supplier.getPhone())
-                .personFirstName(supplier.getFirstName())
-                .personLastName(supplier.getLastName())
-                //.description(supplier.getDescription());
+        final BusinessUserData businessUserData = new BusinessUserData.
+                Builder().companyName(supplier.getCompanyName())
+                .taxId(supplier.getTaxId()).identificationNumber(supplier.getIdentifiacationNumber())
+                .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
+                .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
@@ -90,8 +88,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         Address address = null;
 
         //get locality according to City Name
-        Locality cityLoc = (Locality) generalService.searchUnique(new Search(Locality.class)
-            .addFilterEqual("name", supplier.getAddress().getCityName()));
+        Locality cityLoc = (Locality) generalService.searchUnique(
+                new Search(Locality.class).addFilterEqual("name", supplier.getAddress().getCityName()));
 
         if (cityLoc != null) {
             address = new Address();
@@ -186,7 +184,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return convertToServiceDetails(services);
     }
 
- // TODO FIX this, it's not working nullPointerException.
+    // TODO FIX this, it's not working nullPointerException.
     public Locality getLocality(String code) {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
@@ -206,15 +204,52 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         if (localityID != null) {
             localities = localityService.getById(localityID).getChildren();
         }
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(start)
-                .maxResults(count)
-                .build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
         //TODO Martin - need something like folows
         //supplierService.getSuppliers(resultCriteria, categories, localities);
         //if categories or localities are null or empty strings, don't filter for that case
         return this.createSupplierDetailList(supplierService.getSuppliers(
-                resultCriteria, categories.toArray(new Category[categories.size()])));
+                resultCriteria,
+                categories.toArray(new Category[categories.size()]),
+                localities.toArray(new Locality[localities.size()])));
+    }
+
+    public ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID) {
+        List<Category> categories = new ArrayList<Category>();
+        if (categoryID != null) {
+            categories = categoryService.getById(categoryID).getChildren();
+        }
+
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+        return this.createSupplierDetailList(supplierService.getSuppliers(
+                resultCriteria,
+                categories.toArray(new Category[categories.size()])));
+    }
+
+    public Long getSuppliersCount(Long categoryID) {
+//        List<Category> categories = new ArrayList<Category>();
+//        if (categoryID != null) {
+//            categories = categoryService.getById(categoryID).getChildren();
+//        }
+        //TODO Martin - ak bude dostupne, odkomentovat
+//      return supplierService.getSuppliersCount(categories);
+        return supplierService.getSuppliersCountQuick(categoryService.getById(categoryID));
+//        return 100l;
+    }
+
+    public Long getSuppliersCount(Long categoryID, Long localityID) {
+        List<Category> categories = new ArrayList<Category>();
+        if (categoryID != null) {
+            categories = categoryService.getById(categoryID).getChildren();
+        }
+        List<Locality> localities = new ArrayList<Locality>();
+        if (localityID != null) {
+            localities = localityService.getById(localityID).getChildren();
+        }
+        //TODO Martin - ak bude dostupne, odkomentovat
+//        return supplierService.getSuppliersCount(categories, localities);
+//        return supplierService.getSuppliersCountCount(categories, localities);
+        return 100L;
     }
 
     private ArrayList<SupplierDetail> createSupplierDetailList(Collection<Supplier> suppliers) {

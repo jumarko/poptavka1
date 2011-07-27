@@ -17,4 +17,10 @@ public interface SupplierRPCService extends RemoteService {
     ArrayList<ServiceDetail> getSupplierServices();
 
     ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID, Long localityID);
+
+    ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID);
+
+    Long getSuppliersCount(Long categoryID);
+
+    Long getSuppliersCount(Long categoryID, Long localityID);
 }

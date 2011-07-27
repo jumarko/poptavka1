@@ -37,6 +37,7 @@
                         <tr>
                             <td>
                                 <c:SimplePager ui:field="pager" />
+                                <g:ListBox ui:field='pageSize'/>
                             </td>
                         </tr>
                     </table>                        

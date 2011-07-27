@@ -20,14 +20,13 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
-
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class DisplaySuppliersView extends OverflowComposite
         implements DisplaySuppliersPresenter.DisplaySuppliersViewInterface {
@@ -48,12 +47,23 @@ public class DisplaySuppliersView extends OverflowComposite
     FlowPanel path;
     @UiField
     SplitLayoutPanel split;
+    @UiField(provided = true)
+    ListBox pageSize;
     @UiField
     ListBox localityList;
 
     private final SingleSelectionModel<CategoryDetail> selectionModel = new SingleSelectionModel<CategoryDetail>();
+    private AsyncDataProvider dataProvider;
 
     public DisplaySuppliersView() {
+        pageSize = new ListBox();
+        pageSize.addItem("5");
+        pageSize.addItem("10");
+        pageSize.addItem("15");
+        pageSize.addItem("20");
+        pageSize.addItem("25");
+        pageSize.addItem("30");
+        pageSize.setSelectedIndex(2);
         initCellList();
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -61,8 +71,37 @@ public class DisplaySuppliersView extends OverflowComposite
     }
 
     @Override
+    public AsyncDataProvider<SupplierDetail> getDataProvider() {
+        return dataProvider;
+    }
+
+    @Override
+    public void setDataProvider(AsyncDataProvider<SupplierDetail> dataProvider) {
+        this.dataProvider = dataProvider;
+    }
+
+    @Override
+    public int getPageSize() {
+        return Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex()));
+    }
+
+    @Override
+    public ListBox getPageSizeCombo() {
+        return pageSize;
+    }
+
+    @Override
     public ListBox getLocalityList() {
         return localityList;
+    }
+
+    @Override
+    public Long getSelectedLocality() {
+        if (localityList.getSelectedIndex() == 0) {
+            return null;
+        } else {
+            return Long.valueOf(localityList.getValue(localityList.getSelectedIndex()));
+        }
     }
 
     @Override
@@ -110,8 +149,8 @@ public class DisplaySuppliersView extends OverflowComposite
     public SplitLayoutPanel getSplitter() {
         return split;
     }
-    private static final List<Supplier> SUPPLIERS = Arrays.asList(
-            new Supplier(), new Supplier(), new Supplier(), new Supplier());
+//    private static final List<Supplier> SUPPLIERS = Arrays.asList(
+//            new Supplier(), new Supplier(), new Supplier(), new Supplier());
     private boolean root = true;
 
     private void initCellList() {
@@ -119,11 +158,12 @@ public class DisplaySuppliersView extends OverflowComposite
         list = new CellList<Supplier>(new SupplierCell());
 
         // Push the data into the widget.
-        list.setRowData(0, SUPPLIERS);
+//        list.setRowData(0, SUPPLIERS);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+        pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
         pager.setDisplay(list);
     }
 

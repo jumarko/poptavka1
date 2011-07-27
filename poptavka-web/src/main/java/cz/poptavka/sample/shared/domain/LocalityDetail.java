@@ -19,15 +19,25 @@ public class LocalityDetail implements Serializable {
      */
     private static final long serialVersionUID = 8480517227278818048L;
 
+    private Long id;
     private String name;
     private String code;
 
     public LocalityDetail() {
     }
 
-    public LocalityDetail(String name, String code) {
+    public LocalityDetail(Long id, String name, String code) {
+        this.id = id;
         this.name = name;
         this.code = code;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
