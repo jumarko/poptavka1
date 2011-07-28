@@ -65,7 +65,7 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
                 Category.class));
-        return toSet(runNamedQuery("getSuppliersForCategories", params));
+        return toSet(runNamedQuery("getSuppliersForCategories", params, resultCriteria));
     }
 
     @Override
@@ -81,8 +81,8 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
                 Category.class));
         params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Category.class));
-        return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalities", params));
+                Locality.class));
+        return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalities", params, resultCriteria));
     }
 
 
@@ -99,6 +99,18 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
                 Locality.class));
         return (Long) runNamedQueryForSingleResult("getSuppliersCountForLocalities", params);
+    }
+
+    @Override
+    public long getSuppliersCount(Category[] categories, Locality[] localities, ResultCriteria resultCriteria) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
+                Locality.class));
+        params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
+                Category.class));
+        return (Long) runNamedQueryForSingleResult(
+                "getSuppliersCountForCategoriesAndLocalities", params,
+                resultCriteria);
     }
 
     @Override
@@ -129,7 +141,7 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
                 Locality.class));
-        return toSet(runNamedQuery("getSuppliersForLocalities", params));
+        return toSet(runNamedQuery("getSuppliersForLocalities", params, resultCriteria));
     }
 
 

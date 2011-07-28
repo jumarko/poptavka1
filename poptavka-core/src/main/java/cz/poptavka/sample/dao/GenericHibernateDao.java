@@ -456,15 +456,47 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     /**
      * {@inheritDoc}
      */
-    public Object runNamedQueryForSingleResult(String name, Map<String, Object> params) {
+    public List runNamedQuery(String name, Map<String, Object> params,
+            ResultCriteria resultCriteria) {
         Query query = getEntityManager().createNamedQuery(name);
         if (query == null) {
             throw new IllegalStateException("Query doesn't exist!");
         }
-        for (Map.Entry<String, Object> param : params.entrySet()) {
-            query.setParameter(param.getKey(), param.getValue());
+
+        if (params != null) {
+            for (Map.Entry<String, Object> param : params.entrySet()) {
+                query.setParameter(param.getKey(), param.getValue());
+            }
         }
-        final List<Object> resultList = query.getResultList();
+
+        return (applyResultCriteria(query, resultCriteria)).getResultList();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object runNamedQueryForSingleResult(String name, Map<String, Object> params) {
+        final List<Object> resultList = runNamedQuery(name, params);
+        final int count = resultList.size();
+        if (count == 0) {
+            return null;
+        }
+
+        if (count > 1) {
+            throw new NonUniqueResultException("there is only one code per " + getEntityClassSimpleName()
+                    + " permitted: count=" + count);
+        }
+
+        return resultList.get(0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object runNamedQueryForSingleResult(String name,
+            Map<String, Object> params, ResultCriteria resultCriteria) {
+        final List<Object> resultList = runNamedQuery(name, params, resultCriteria);
         final int count = resultList.size();
         if (count == 0) {
             return null;

@@ -119,6 +119,20 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
     /** {@inheritDoc} */
     @Override
+    public long getSuppliersCount(Category[] categories, Locality[] localities) {
+        return this.getDao().getSuppliersCount(categories, localities, null);
+    }
+
+   /** {@inheritDoc} */
+    @Override
+    public long getSuppliersCount(Category[] categories, Locality[] localities,
+            ResultCriteria resultCriteria) {
+        return this.getDao().getSuppliersCount(categories, localities,
+                resultCriteria);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public long getSuppliersCountQuick(Category category) {
         return this.getDao().getSuppliersCountQuick(category);
     }

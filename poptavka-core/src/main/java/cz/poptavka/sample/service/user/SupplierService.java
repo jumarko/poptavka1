@@ -126,7 +126,28 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     long getSuppliersCount(Category... categories);
 
+    /**
+     * Evaluate the number of suppliers associated to the given
+     * <code>category</code>(-ies) and <code>locality</code>(-ies)
+     * at the same time.
+     *
+     * @param categories
+     * @return number of suppliers related to the <code>category</code>(-ies).
+     */
+    long getSuppliersCount(Category[] categories, Locality[] localities);
 
+   /**
+    * Evaluate the number of suppliers associated to the given
+    * <code>category</code>(-ies) and <code>locality</code>(-ies)
+    * at the same time.
+    *
+    * @param categories
+    * @param localities
+    * @param resultCriteria
+    * @return
+    */
+    long getSuppliersCount(Category[] categories, Locality[] localities,
+            ResultCriteria resultCriteria);
     /**
      * Similar to the {@link #getSuppliersCount(cz.poptavka.sample.domain.demand.Category...)}
      * but restricted to the one category and with better performance.

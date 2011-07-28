@@ -31,6 +31,14 @@ import javax.persistence.NamedQuery;
                         + " where supplierCategory.supplier ="
                         + " supplierLocality.supplier"
                         + " and supplierCategory.category.id in (:categoryIds)"
+                        + " and supplierLocality.locality.id in (:localityIds)"),
+        @NamedQuery(name = "getSuppliersCountForCategoriesAndLocalities",
+                    query = "select count(supplierCategory.supplier)"
+                        + " from SupplierCategory supplierCategory,"
+                        + " SupplierLocality supplierLocality"
+                        + " where supplierCategory.supplier ="
+                        + " supplierLocality.supplier"
+                        + " and supplierCategory.category.id in (:categoryIds)"
                         + " and supplierLocality.locality.id in (:localityIds)")
 })
 @Audited

@@ -134,6 +134,17 @@ public interface GenericDao<T extends DomainObject> {
     List runNamedQuery(String name, Map<String, Object> params);
 
     /**
+     * Runs a named query with additional criteria
+     *
+     * @param name           of the query
+     * @param params         can be null. In that case no parameters are set.
+     * @param resultCriteria additional result criteria
+     * @return
+     */
+    List runNamedQuery(String name, Map<String, Object> params,
+            ResultCriteria resultCriteria);
+
+    /**
      * Runs named query which should return single result.
      *
      * @param name   of the query
@@ -141,6 +152,18 @@ public interface GenericDao<T extends DomainObject> {
      * @return
      */
     Object runNamedQueryForSingleResult(String name, Map<String, Object> params);
+
+    /**
+     * Runs named query which should return single result and applies additional
+     * criteria to it.
+     *
+     * @param name           of the query
+     * @param params
+     * @param resultCriteria
+     * @return
+     */
+    Object runNamedQueryForSingleResult(String name,
+            Map<String, Object> params, ResultCriteria resultCriteria);
 
     /**
      * Returns the type of the implemented Dao.

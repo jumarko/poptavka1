@@ -52,6 +52,24 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      */
     long getSuppliersCount(Locality... localities);
 
+    /**
+     * Evaluates the number of suppliers associated to the given
+     * <code>locality</code>(-ies) and <code>category</code>(-ies).
+     * <p>
+     * Use this method instead of {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)} if you want
+     * to retrieve only number of suppliers - this method is far more lightweight than usage of
+     * {@link #getSuppliers(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)}
+     *      .size().
+     *
+     * @param localities
+     * @return number of suppliers related to the <code>locality</code>(-ies).
+     */
+
+    long getSuppliersCount(Category[] categories, Locality[] localities,
+            ResultCriteria resultCriteria);
+
 
     long getSuppliersCountQuick(Locality locality);
 
