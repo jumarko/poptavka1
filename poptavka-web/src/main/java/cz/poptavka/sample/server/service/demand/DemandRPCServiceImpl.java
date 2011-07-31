@@ -109,6 +109,16 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new ArrayList<Locality>();
 
+    /**
+     * Dorobit komentar.
+     *
+     * TODO - skontrolovat ci si butbe musime predavat parametre ako Long clientId.
+     * BOlo by lepsie optimalizovat toto riesenie s vyuzitim GWT SPRING Security?
+     *
+     * @param detail
+     * @param cliendId
+     * @return
+     */
     @Override
     public FullDemandDetail createNewDemand(FullDemandDetail detail, Long cliendId) {
         final Demand demand = new Demand();
@@ -136,6 +146,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         demand.setCategories(categories);
 
+        // TODO Vojto - premenovat na demandFromDB
         Demand newDemand = demandService.create(demand);
         // TODO ivlcek - test sending demand to proper suppliers
         sendDemandToSuppliersTest(newDemand);
