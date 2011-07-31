@@ -5,6 +5,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +21,9 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 20.5.11
  */
+// This test is obsolete because original content of database has been deleted.
+// Must be ignored until some new data will are available.
+@Ignore
 public class HibernateFulltextSearchDbTest extends RealDbTest {
 
     @Autowired
