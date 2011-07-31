@@ -10,8 +10,8 @@ package cz.poptavka.sample.domain.message;
  * @author ivan.vlcek
  */
 public enum MessageContext {
-    /* Message for supplier with potential demand. */
-
+    /* Message for supplier with potential demand.
+    TODO Vojto rethink the contexts */
     POTENTIAL_SUPPLIERS_DEMAND(Integer.valueOf(1)),
     /* Message for client with potential offer. */
     POTENTIAL_CLIENTS_OFFER(Integer.valueOf(2)),

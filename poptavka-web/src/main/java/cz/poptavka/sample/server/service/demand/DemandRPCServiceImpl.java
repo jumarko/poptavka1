@@ -156,6 +156,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     /**
      * Method creates a message that is associated with created demand. Message
      * is sent to all suppliers that complies with the demand criteria
+     *
+     * TODO design some heuristic to choose suitable suppliers to whom the
+     * demand messages should be sent and possibly separate this heuristic
+     *
      * @param demand
      */
     // TODO should send messages as we're sending messages to display potential demands. Beho
@@ -173,10 +177,12 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         // Napriklad message.body moze byt prazdne = demand.description
         // message subject moze byt prazdne = demand.title
         Message message = new Message();
+        // TODO Vojto there should be some intro message for the user
         message.setBody(demand.getDescription() + " Description might be empty");
         message.setCreated(new Date());
         message.setDemand(demand);
         message.setLastModified(new Date());
+        /* TODO Vojto should be removed and put to the new sendMessage method */
         message.setMessageState(MessageState.SENT);
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
@@ -201,6 +207,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         message.setSubject(demand.getTitle());
         message.setThreadRoot(message);
         message = messageService.create(message);
+        /* TODO Vojto create a dedicated method for sending a message that
+         would handle UserMessage creation etc. */
         for (Supplier supplier : suppliers) {
             UserMessage userMessage = new UserMessage();
             userMessage.setIsRead(false);
