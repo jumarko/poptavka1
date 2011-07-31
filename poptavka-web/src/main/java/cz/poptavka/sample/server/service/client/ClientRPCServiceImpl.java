@@ -61,9 +61,9 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     /**
-     * Create new Client - person or company.
+     * Vytvorenie noveho klienta.
      *
-     * TODO: website assignation in backend
+     * TODO: website assignation in backend - WTF?
      */
     public UserDetail createNewClient(UserDetail clientDetail) {
         Client newClient = new Client();
@@ -89,6 +89,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setAddresses(addresses);
         /** Login & pwd information. **/
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
+        // TODO Vojto - skontrolovat ci je password sifrovany. ako sa uklada do DB?
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
         /** Set service for new client **/
         UserService userService = new UserService();
@@ -118,6 +119,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         System.out.println("Verification " + newClient.getVerification().toString());
         /** TODO ivlcek - email activation. **/
 
+        // TODO Vojto premenovat newClient na ClientFromDB aby sme mali jednotnu konvenciu
         newClient = clientService.create(newClient);
         return this.toUserDetail(newClient.getBusinessUser().getId(),
                 newClient.getBusinessUser().getBusinessUserRoles());
