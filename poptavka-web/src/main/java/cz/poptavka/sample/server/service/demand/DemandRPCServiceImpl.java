@@ -146,11 +146,11 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         demand.setCategories(categories);
 
-        // TODO Vojto - premenovat na demandFromDB
-        Demand newDemand = demandService.create(demand);
+        Demand newDemandFromDB = demandService.create(demand);
         // TODO ivlcek - test sending demand to proper suppliers
-        sendDemandToSuppliersTest(newDemand);
-        return (FullDemandDetail) FullDemandDetail.createDemandDetail(newDemand);
+        sendDemandToSuppliersTest(newDemandFromDB);
+        return (FullDemandDetail) FullDemandDetail.createDemandDetail(
+                newDemandFromDB);
     }
 
     /**

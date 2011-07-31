@@ -120,9 +120,9 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         /** TODO ivlcek - email activation. **/
 
         // TODO Vojto premenovat newClient na ClientFromDB aby sme mali jednotnu konvenciu
-        newClient = clientService.create(newClient);
-        return this.toUserDetail(newClient.getBusinessUser().getId(),
-                newClient.getBusinessUser().getBusinessUserRoles());
+        Client newClientFromDB = clientService.create(newClient);
+        return this.toUserDetail(newClientFromDB.getBusinessUser().getId(),
+                newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
     @Override
