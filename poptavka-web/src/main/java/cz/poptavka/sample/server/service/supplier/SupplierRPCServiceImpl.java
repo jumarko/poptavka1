@@ -70,8 +70,17 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         this.localityService = localityService;
     }
 
-    //TODO add description support
-    //TODO setService
+    /**
+     * Metoda vytvara uzivatela -> BusinessUsera -> rolu klienta a dodavatela pretoze
+     * kazdy dodavatel moze byt aj klient.
+     *
+     * TODO Vojto - Ak uz existuje Klient tj User a BusinessUser
+     * tak musime pridat kontrolu a vytvarat len rolu Dodavatela pre tohto existujuceho
+     * Usera v resp. BusinessUsera.
+     *
+     * @param supplier
+     * @return
+     */
     @Override
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
@@ -128,6 +137,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         UserService userServiceClient = new UserService();
         userServiceClient.setUser(newSupplier.getBusinessUser());
         userServiceClient.setStatus(Status.INACTIVE);
+        // TODO nacitanie hodnot z ciselnikov
         userServiceClient.setService(this.generalService.find(Service.class, 4L));
         us.add(userServiceClient);
 
@@ -153,22 +163,27 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         /** assign business role to the new supplier. **/
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
         /** registration process **/
+        // TODO - verification will be set after activation link has been received
         newSupplier.setVerification(Verification.UNVERIFIED);
 
         Supplier supplierFromDB = supplierService.create(newSupplier);
 
         /** Brand new supplier has automatically the role of a client as well. **/
+        // TODO VOjto - Client creation should be moved to one client block.
+        // SUpplier creation should be in Supplier block. Zgrupovat kod!
         Client client = new Client();
         client.setBusinessUser(supplierFromDB.getBusinessUser());
         client.getBusinessUser().getBusinessUserRoles().add(client);
         client.setVerification(Verification.UNVERIFIED);
 
+        // TODO Vojto remove this bullshit. It doesn't do anything
         if (clientService == null) {
             System.out.println("service is null");
         }
 
         clientService.create(client);
 
+        // TODO Beho+Vojto rework according to GWT Spring Security function.
         return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
                 supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
