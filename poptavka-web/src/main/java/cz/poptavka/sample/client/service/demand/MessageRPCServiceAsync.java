@@ -9,10 +9,10 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
 /**
@@ -26,7 +26,7 @@ public interface MessageRPCServiceAsync {
 
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
-    void sendOffer(OfferDetail demandOffer, AsyncCallback<OfferDetail> callback);
+    void sendOffer(OfferMessageDetail demandOffer, AsyncCallback<OfferMessageDetail> callback);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 

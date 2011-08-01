@@ -23,11 +23,11 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
 /**
  * Main presenter for User account.
@@ -203,9 +203,9 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         messageToSend.setSenderId(user.getUserId());
         eventBus.sendMessageToPotentialDemand(messageToSend);
     }
-    public void onBubbleOfferSending(OfferDetail offerToSend) {
+    public void onBubbleOfferSending(OfferMessageDetail offerToSend) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
-            offerToSend.getMessageDetail().setSenderId(user.getUserId());
+            offerToSend.setSenderId(user.getUserId());
             offerToSend.setSupplierId(user.getSupplierId());
             eventBus.sendDemandOffer(offerToSend);
         } else {

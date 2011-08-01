@@ -19,6 +19,8 @@ import cz.poptavka.sample.client.user.messages.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
@@ -99,12 +101,16 @@ public class DetailWrapperPresenter extends
             return;
         }
         if (type.equals(ViewType.POTENTIAL)) {
-            setPotentialViewReplyWidget();
+            // need demand id to know, to what demand are we replying to
+            // maybe more attributes will be needed to be passed, so I;m sending the whole object
+            // can be decreased after analysis
+            setPotentialViewReplyWidget(messageList.get(0));
         }
         view.getConversationPanel().setMessageList(messageList, true);
         toggleConversationLoading();
     }
 
+    // TODO merge with method above, the same method body + different options for different types
     public void onSetSingleDemandConversation(
             ArrayList<MessageDetail> messageList) {
         if (!type.equals(ViewType.EDITABLE)) {
@@ -186,10 +192,10 @@ public class DetailWrapperPresenter extends
 
     /**
      * SUPPLIER ONLY Creates reply window for creating Offer/Question message.
-     *
-     * @param demandId
+     * @param messageDetail
      */
-    public void setPotentialViewReplyWidget() {
+    // messageDetail is it necessary?
+    public void setPotentialViewReplyWidget(MessageDetail messageDetail) {
         if (potentialViewReplyWiget != null) {
             eventBus.removeHandler(potentialViewReplyWiget);
         }
@@ -211,12 +217,13 @@ public class DetailWrapperPresenter extends
                         messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                         eventBus.bubbleMessageSending(messageToSend);
                     } else {
-                        // TODO offer branch
-                        // OfferDetail offerToSend =
-                        // potentialViewReplyWiget.getOfferMessage();
-                        // offerToSend.setMessageDetail(view.getConversationPanel()
-                        // .updateSendingMessage(offerToSend.getMessageDetail()));
-                        // eventBus.bubbleOfferSending(offerToSend);
+                        // TODO finish sending of
+                        OfferMessageDetail offer = new OfferMessageDetailImpl();
+                        offer = (OfferMessageDetail) view.getConversationPanel().updateSendingMessage(offer);
+                        MessageDetail offerMessage = potentialViewReplyWiget.getCreatedMessage();
+                        offer.setBody(offerMessage.getBody());
+                        offer.setDemandId(offerMessage.getDemandId());
+                        eventBus.bubbleOfferSending(offer);
                     }
                 }
             }

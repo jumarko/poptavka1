@@ -10,10 +10,10 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
 /**
@@ -37,7 +37,7 @@ public interface MessageRPCService extends RemoteService {
 
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 
-    OfferDetail sendOffer(OfferDetail demandOffer);
+    OfferMessageDetail sendOffer(OfferMessageDetail demandOffer);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
 

@@ -34,6 +34,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -177,10 +178,10 @@ public interface UserEventBus extends EventBusWithLookup {
      *            message to be sent
      */
     @Event(handlers = UserPresenter.class)
-    void bubbleOfferSending(OfferDetail offerToSend);
+    void bubbleOfferSending(OfferMessageDetail offerToSend);
 
     @Event(handlers = MessageHandler.class)
-    void sendDemandOffer(OfferDetail offerToSend);
+    void sendDemandOffer(OfferMessageDetail offerToSend);
 
     @Event(handlers = MessageHandler.class)
     void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);

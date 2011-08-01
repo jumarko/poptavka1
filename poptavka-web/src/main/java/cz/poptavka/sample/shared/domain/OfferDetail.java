@@ -11,7 +11,7 @@ import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
-public class OfferDetail implements Serializable {
+public class OfferDetail extends MessageDetailImpl implements Serializable {
 
     /**
      * Generated serialVersionUID.

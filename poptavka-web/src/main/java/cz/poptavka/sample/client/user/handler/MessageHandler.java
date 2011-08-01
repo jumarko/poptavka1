@@ -16,6 +16,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -87,7 +88,6 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
-        // TODO NOT WORKING NOW
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
@@ -126,21 +126,21 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    public void onSendDemandOffer(OfferDetail offerToSend) {
+    public void onSendDemandOffer(OfferMessageDetail offerToSend) {
         GWT.log(" ** Offer demand ID: " + offerToSend.getDemandId());
-        messageService.sendOffer(offerToSend, new AsyncCallback<OfferDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                // TODO Auto-generated method stub
-                Window.alert(MessageHandler.class.getName() + " at onSendDemandOffer\n\n" + caught.getMessage());
-            }
-
-            @Override
-            public void onSuccess(OfferDetail result) {
-                Window.alert("Offer Success");
-                // eventBus.
-            }
-        });
+        Window.alert("* * * DEMAND OFFER CREATED * * *\n\n" + offerToSend.toString());
+//        messageService.sendOffer(offerToSend, new AsyncCallback<OfferMessageDetail>() {
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                // TODO Auto-generated method stub
+//                Window.alert(MessageHandler.class.getName() + " at onSendDemandOffer\n\n" + caught.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(OfferMessageDetail result) {
+//                Window.alert("Offer Success");
+//            }
+//        });
     }
 
     public void onRequestPotentialDemandReadStatusChange(ArrayList<Long> messagesId, boolean isRead) {

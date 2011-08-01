@@ -16,17 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.domain.offer.Offer;
-import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.user.BusinessUser;
-import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
@@ -35,12 +31,13 @@ import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
 
@@ -227,68 +224,68 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param offer
      * @return message
      */
-    public OfferDetail sendOffer(OfferDetail offer) {
-        Offer o = new Offer();
-        o.setCreated(new Date());
-        o.setDemand(this.generalService.find(Demand.class, offer.getDemandId()));
-        o.setFinishDate(offer.getFinishDate());
-        o.setPrice(offer.getPrice());
-        // TODO ivlcek - load DB object by code and not by id
-        o.setState(this.generalService.find(OfferState.class, 2L));
-        o.setSupplier(this.generalService.find(Supplier.class, offer.getSupplierId()));
-        o = this.generalService.save(o);
-
-        Message m = new Message();
-        MessageDetail messageDetailImpl = offer.getMessageDetail();
-        m.setBody(messageDetailImpl.getBody());
-        m.setCreated(new Date());
-        m.setLastModified(new Date());
-        m.setMessageState(MessageState.SENT);
-        // TODO ivlcek - how to set this next sibling?
-//        m.setNextSibling(null);
-        Message parentMessage = this.messageService.getById(messageDetailImpl.getThreadRootId());
-        m.setParent(parentMessage);
-        BusinessUser supplier = this.generalService.find(BusinessUser.class, messageDetailImpl.getSenderId());
-        m.setSender(supplier);
-        m.setSent(new Date());
-        m.setSubject(supplier.getBusinessUserData().getCompanyName());
-        // TODO ivlcek - threadRoot is loaded two times. See above
-        m.setThreadRoot(this.messageService.getById(messageDetailImpl.getThreadRootId()));
-        // set message roles
-        List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
-        // messageToUserRole
-        MessageUserRole messageToUserRole = new MessageUserRole();
-        messageToUserRole.setMessage(m);
-        User receiver = this.generalService.find(User.class, messageDetailImpl.getReceiverId());
-        messageToUserRole.setUser(receiver);
-        messageToUserRole.setType(MessageUserRoleType.TO);
-        messageToUserRole.setMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER);
-        messageUserRoles.add(messageToUserRole);
-        // messageFromUserRole
-        MessageUserRole messageFromUserRole = new MessageUserRole();
-        messageFromUserRole.setMessage(m);
-        messageFromUserRole.setType(MessageUserRoleType.SENDER);
-        messageFromUserRole.setMessageContext(MessageContext.POTENTIAL_OFFER_FROM_SUPPLIER);
-        messageFromUserRole.setUser(supplier);
-        messageUserRoles.add(messageFromUserRole);
-        m.setRoles(messageUserRoles);
-        // set the offer to message
-        m.setOffer(o);
-        m = this.messageService.create(m);
-        OfferDetail offerDetailPersisted = OfferDetail.generateOfferDetail(m);
-        // create UserMessage for Client receiving this message
-        UserMessage userMessage = new UserMessage();
-        userMessage.setIsRead(false);
-        userMessage.setIsStarred(false);
-        userMessage.setMessage(m);
-        userMessage.setUser(receiver);
-        generalService.save(userMessage);
-        // TODO set children for parent message - check if it is correct
-        parentMessage.getChildren().add(m);
-        parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
-        parentMessage = this.messageService.update(parentMessage);
-
-        return offerDetailPersisted;
+    public OfferMessageDetail sendOffer(OfferMessageDetail offer) {
+//        Offer o = new Offer();
+//        o.setCreated(new Date());
+//        o.setDemand(this.generalService.find(Demand.class, offer.getDemandId()));
+//        o.setFinishDate(offer.getEndDate());
+//        o.setPrice(offer.getPrice());
+//        // TODO ivlcek - load DB object by code and not by id
+//        o.setState(this.generalService.find(OfferState.class, 2L));
+//        o.setSupplier(this.generalService.find(Supplier.class, offer.getSupplierId()));
+//        o = this.generalService.save(o);
+//
+//        Message m = new Message();
+//        m.setBody(offer.getBody());
+//        m.setCreated(new Date());
+//        m.setLastModified(new Date());
+//        m.setMessageState(MessageState.SENT);
+//        // TODO ivlcek - how to set this next sibling?
+////        m.setNextSibling(null);
+//        Message parentMessage = this.messageService.getById(offer.getThreadRootId());
+//        m.setParent(parentMessage);
+//        BusinessUser supplier = this.generalService.find(BusinessUser.class, offer.getSenderId());
+//        m.setSender(supplier);
+//        m.setSent(new Date());
+//        m.setSubject(supplier.getBusinessUserData().getCompanyName());
+//        // TODO ivlcek - threadRoot is loaded two times. See above
+//        m.setThreadRoot(this.messageService.getById(offer.getThreadRootId()));
+//        // set message roles
+//        List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
+//        // messageToUserRole
+//        MessageUserRole messageToUserRole = new MessageUserRole();
+//        messageToUserRole.setMessage(m);
+//        User receiver = this.generalService.find(User.class, offer.getReceiverId());
+//        messageToUserRole.setUser(receiver);
+//        messageToUserRole.setType(MessageUserRoleType.TO);
+//        messageToUserRole.setMessageContext(MessageContext.POTENTIAL_CLIENTS_OFFER);
+//        messageUserRoles.add(messageToUserRole);
+//        // messageFromUserRole
+//        MessageUserRole messageFromUserRole = new MessageUserRole();
+//        messageFromUserRole.setMessage(m);
+//        messageFromUserRole.setType(MessageUserRoleType.SENDER);
+//        messageFromUserRole.setMessageContext(MessageContext.POTENTIAL_OFFER_FROM_SUPPLIER);
+//        messageFromUserRole.setUser(supplier);
+//        messageUserRoles.add(messageFromUserRole);
+//        m.setRoles(messageUserRoles);
+//        // set the offer to message
+//        m.setOffer(o);
+//        m = this.messageService.create(m);
+//        OfferDetail offerDetailPersisted = OfferDetail.generateOfferDetail(m);
+//        // create UserMessage for Client receiving this message
+//        UserMessage userMessage = new UserMessage();
+//        userMessage.setIsRead(false);
+//        userMessage.setIsStarred(false);
+//        userMessage.setMessage(m);
+//        userMessage.setUser(receiver);
+//        generalService.save(userMessage);
+//        // TODO set children for parent message - check if it is correct
+//        parentMessage.getChildren().add(m);
+//        parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
+//        parentMessage = this.messageService.update(parentMessage);
+//
+//        return offerDetailPersisted;
+        return new OfferMessageDetailImpl();
     }
 
     @Override
