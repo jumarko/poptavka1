@@ -56,7 +56,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Autowired
-    public void setLocalityService(LocalityService localirtService) {
+    public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
     }
 
@@ -67,7 +67,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public UserDetail createNewClient(UserDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
-        // TODO in builder crete setWebsite(String website)
         final BusinessUserData businessUserData = new BusinessUserData.Builder().
                 companyName(clientDetail.
                 getCompanyName()).
@@ -76,6 +75,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 phone(clientDetail.getPhone()).
                 identificationNumber(clientDetail.
                 getIdentifiacationNumber()).
+                // TODO in builder crete setWebsite(String website)
                 taxId(clientDetail.getTaxId()).build();
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
         /** Address. **/
@@ -115,8 +115,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
         newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
         newClient.setVerification(Verification.UNVERIFIED);
-//        newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
-        System.out.println("Verification " + newClient.getVerification().toString());
         /** TODO ivlcek - email activation. **/
 
         Client newClientFromDB = clientService.create(newClient);
@@ -152,8 +150,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     // TODO FIX this, it's not working nullPointerException.
     public Locality getLocality(String code) {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
-//        return localityService.getLocality(code);
-        return localityService.getById(10);
+        return localityService.getLocality(code);
     }
 
 }
