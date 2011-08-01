@@ -1,12 +1,6 @@
 package cz.poptavka.sample.server.service.supplier;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.googlecode.genericdao.search.Search;
-
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -31,7 +25,11 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
@@ -66,7 +64,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Autowired
-    public void setLocalityService(LocalityService localirtService) {
+    public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
     }
 
