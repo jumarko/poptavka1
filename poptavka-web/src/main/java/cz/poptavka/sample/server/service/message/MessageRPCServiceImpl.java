@@ -4,13 +4,6 @@
  */
 package cz.poptavka.sample.server.service.message;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -40,6 +33,12 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -355,6 +354,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     /**
      * CLIENT.
      * Returns messages for OffersView's table
+     *
+     * TODO: nacitat zoznam ponukovych sprav tak, aby pri kazdej sprave bolo jasne, ci je oznacena ako precitana alebo
+     * nie.
      */
     @Override
     public ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId) {
