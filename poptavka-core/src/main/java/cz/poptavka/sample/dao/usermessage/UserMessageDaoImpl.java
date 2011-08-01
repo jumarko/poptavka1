@@ -9,9 +9,11 @@ import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
-import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+
+import java.util.List;
 
 /**
  *
@@ -39,7 +41,10 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         final Criteria userMessageCriteria = getHibernateSession().createCriteria(UserMessage.class);
 //        userMessageCriteria.add(Restrictions.eq("message", messages));
         userMessageCriteria.add(Restrictions.eq("user", user));
-        userMessageCriteria.add(Restrictions.in("message", messages));
+        if (CollectionUtils.isNotEmpty(messages)) {
+            userMessageCriteria.add(Restrictions.in("message", messages));
+        }
+
 
 //        userMessageCriteria.setProjection(Projections.property("message"));
         return userMessageCriteria;
