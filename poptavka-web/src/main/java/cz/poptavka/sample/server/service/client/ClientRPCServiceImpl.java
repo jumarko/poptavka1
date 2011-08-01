@@ -63,11 +63,11 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     /**
      * Vytvorenie noveho klienta.
      *
-     * TODO: website assignation in backend - WTF?
      */
     public UserDetail createNewClient(UserDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
+        // TODO in builder crete setWebsite(String website)
         final BusinessUserData businessUserData = new BusinessUserData.Builder().
                 companyName(clientDetail.
                 getCompanyName()).
