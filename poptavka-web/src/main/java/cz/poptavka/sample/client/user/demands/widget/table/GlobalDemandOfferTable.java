@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.demands.widget.table;
 
-import java.math.BigDecimal;
 import java.util.Comparator;
 
 import com.google.gwt.cell.client.TextCell;
@@ -56,7 +55,7 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandMessage> {
         Column<OfferDemandMessage, String> titleColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
             public String getValue(OfferDemandMessage object) {
-                return object.getSubject() + " (" + object.getOfferCount() + "/" + object.getMaxOfferCount() + ")";
+                return object.getDemandTitle() + " (" + object.getOfferCount() + "/" + object.getMaxOfferCount() + ")";
             }
         });
 
@@ -65,7 +64,7 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandMessage> {
             @Override
             public String getValue(OfferDemandMessage object) {
                 // TODO add 'none' value into Localizable resources
-                return (object.getPrice().equals(BigDecimal.ZERO) ? msgs.notEntered() : object.getPrice().toString());
+                return (object.getPrice() == null ? msgs.notEntered() : object.getPrice().toString());
             }
         });
 
@@ -75,15 +74,25 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandMessage> {
         Column<OfferDemandMessage, String> endDateColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
             public String getValue(OfferDemandMessage object) {
-                return dateFormat.format(object.getEndDate());
+                // TODO Temporary null check, CANNOT be null
+                if (object.getEndDate() == null) {
+                    return "endDate NOT SET, BUT HAVE TO BE";
+                }
+//                return dateFormat.format(object.getEndDate());
+
+                return object.getEndDate().toString();
             }
         });
 
         // Demand sent Date column
-        Column<OfferDemandMessage, String> validToDateColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
+        Column<OfferDemandMessage, String> createdDateColumn = (new Column<OfferDemandMessage, String>(new TextCell()) {
             @Override
             public String getValue(OfferDemandMessage object) {
-                return dateFormat.format(object.getEndDate());
+                // TODO Temporary null check, CANNOT be null
+                if (object.getEndDate() == null) {
+                    return "endDate NOT SET, BUT HAVE TO BE";
+                }
+                return object.getValidToDate().toString();
             }
         });
 
@@ -110,7 +119,7 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandMessage> {
             }
         });
         endDateColumn.setSortable(true);
-        validToDateColumn.setSortable(true);
+        createdDateColumn.setSortable(true);
         Comparator<OfferDemandMessage> endComparator = new Comparator<OfferDemandMessage>() {
             @Override
             public int compare(OfferDemandMessage o1, OfferDemandMessage o2) {
@@ -124,13 +133,13 @@ public class GlobalDemandOfferTable extends CellTable<OfferDemandMessage> {
             }
         };
         sortHandler.setComparator(endDateColumn, endComparator);
-        sortHandler.setComparator(validToDateColumn, validComparator);
+        sortHandler.setComparator(createdDateColumn, validComparator);
 //         add columns into table
 //         this.addColumn(checkBoxColumn);
         this.addColumn(titleColumn, msgs.title());
         this.addColumn(priceColumn, msgs.price());
         this.addColumn(endDateColumn, msgs.endDate());
-        this.addColumn(validToDateColumn, msgs.expireDate());
+        this.addColumn(createdDateColumn, msgs.expireDate());
     }
 
     private static final ProvidesKey<OfferDemandMessage> KEY_PROVIDER = new ProvidesKey<OfferDemandMessage>() {

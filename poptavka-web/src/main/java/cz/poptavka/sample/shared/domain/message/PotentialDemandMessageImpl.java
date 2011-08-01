@@ -17,7 +17,10 @@ public class PotentialDemandMessageImpl extends MessageDetailImpl implements Ser
     private Date validToDate;
 
     public static PotentialDemandMessage createMessageDetail(UserMessage message) {
-        PotentialDemandMessage detail = new PotentialDemandMessageImpl();
+        return fillMessageDetail(new PotentialDemandMessageImpl(), message);
+    }
+
+    public static PotentialDemandMessage fillMessageDetail(PotentialDemandMessage detail, UserMessage message) {
         detail = (PotentialDemandMessage) MessageDetailImpl.fillMessageDetail(detail, message.getMessage());
         detail.setUserMessageId(message.getId());
         detail.setDemandId(message.getMessage().getDemand().getId());

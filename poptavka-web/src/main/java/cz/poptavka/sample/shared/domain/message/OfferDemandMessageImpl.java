@@ -10,10 +10,12 @@ public class OfferDemandMessageImpl extends PotentialDemandMessageImpl implement
     private static final long serialVersionUID = 2349565802701324033L;
     private int offerCount;
     private int maxOfferCount;
+    private String demandTitle;
 
-    public static OfferDemandMessageImpl createMessageDetail(UserMessage message) {
-        OfferDemandMessageImpl detail = new OfferDemandMessageImpl();
-        detail = (OfferDemandMessageImpl) MessageDetailImpl.fillMessageDetail(detail, message.getMessage());
+    public static OfferDemandMessage createMessageDetail(UserMessage message) {
+        OfferDemandMessage detail = new OfferDemandMessageImpl();
+        detail = (OfferDemandMessage) PotentialDemandMessageImpl.fillMessageDetail(detail, message);
+        detail.setDemandTitle(message.getMessage().getDemand().getTitle());
         detail.setOfferCount(message.getMessage().getDemand().getOffers().size());
         detail.setMaxOfferCount(message.getMessage().getDemand().getMaxSuppliers());
         return detail;
@@ -45,6 +47,16 @@ public class OfferDemandMessageImpl extends PotentialDemandMessageImpl implement
             + "Client Offer Demand Message:"
             + "\n offerCount=" + offerCount
             + "\n maxOfferCount=" + maxOfferCount;
+    }
+
+    @Override
+    public void setDemandTitle(String demandTitle) {
+        this.demandTitle = demandTitle;
+    }
+
+    @Override
+    public String getDemandTitle() {
+        return demandTitle;
     }
 
 }

@@ -185,7 +185,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        Window.alert("Error in UserHandler in method: onGetPotentialDemandsList"
+                        Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList"
                                 + caught.getMessage());
                     }
 
@@ -208,7 +208,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                Window.alert("UserHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
+                Window.alert("MessageHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
             }
 
             @Override

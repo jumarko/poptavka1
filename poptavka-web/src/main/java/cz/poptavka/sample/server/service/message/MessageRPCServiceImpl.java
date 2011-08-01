@@ -4,6 +4,15 @@
  */
 package cz.poptavka.sample.server.service.message;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -22,6 +31,7 @@ import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.common.TreeItemService;
+import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
@@ -33,14 +43,7 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  *
@@ -60,6 +63,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private UserMessageService userMessageService;
     private ClientService clientService;
     private TreeItemService treeItemService;
+    private DemandService demandService;
+
+    @Autowired
+    public void setDemandService(DemandService demandService) {
+        this.demandService = demandService;
+    }
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -346,6 +355,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
         for (UserMessage um : userMessages) {
             PotentialDemandMessage detail = PotentialDemandMessageImpl.createMessageDetail(um);
+
             potentailDemands.add(detail);
         }
         return potentailDemands;
@@ -353,7 +363,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     /**
      * CLIENT.
-     * Returns messages for OffersView's table
+     *
+     * Vrati zoznam ponukovych sprav.
      *
      * TODO: nacitat zoznam ponukovych sprav tak, aby pri kazdej sprave bolo jasne, ci je oznacena ako precitana alebo
      * nie.
@@ -378,9 +389,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         ArrayList<OfferDemandMessage> offerDemands = new ArrayList<OfferDemandMessage>();
         for (UserMessage m : userMessages) {
             OfferDemandMessage om = OfferDemandMessageImpl.createMessageDetail(m);
+            System.out.println("X X " + m.getMessage().getDemand().getEndDate());
             offerDemands.add(om);
         }
-
         return offerDemands;
     }
 

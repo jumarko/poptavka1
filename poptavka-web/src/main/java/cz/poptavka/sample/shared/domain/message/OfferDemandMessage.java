@@ -1,5 +1,6 @@
 package cz.poptavka.sample.shared.domain.message;
 
+
 public interface OfferDemandMessage extends PotentialDemandMessage {
 
     void setOfferCount(int offerCount);
@@ -7,4 +8,7 @@ public interface OfferDemandMessage extends PotentialDemandMessage {
 
     void setMaxOfferCount(int maxOfferCount);
     int getMaxOfferCount();
+
+    void setDemandTitle(String demandTitle);
+    String getDemandTitle();
 }
