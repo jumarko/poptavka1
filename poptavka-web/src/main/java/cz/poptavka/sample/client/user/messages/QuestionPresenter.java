@@ -29,6 +29,8 @@ public class QuestionPresenter extends LazyPresenter<QuestionPresenter.ReplyInte
 
         void setNormalStyle();
 
+        void setSendingStyle();
+
     }
 
     public void initReplyWindow(SimplePanel holder) {
@@ -40,6 +42,7 @@ public class QuestionPresenter extends LazyPresenter<QuestionPresenter.ReplyInte
     }
 
     public MessageDetail getCreatedMessage() {
+        view.setSendingStyle();
         return view.getCreatedMessage();
     }
 

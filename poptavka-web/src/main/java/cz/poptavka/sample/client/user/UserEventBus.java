@@ -153,10 +153,10 @@ public interface UserEventBus extends EventBusWithLookup {
      *            message to be sent
      */
     @Event(handlers = UserPresenter.class)
-    void bubbleMessageSending(MessageDetail messageToSend);
+    void bubbleMessageSending(MessageDetail messageToSend, ViewType viewType);
 
     @Event(handlers = MessageHandler.class)
-    void sendMessageToPotentialDemand(MessageDetail messageToSend);
+    void sendMessageToPotentialDemand(MessageDetail messageToSend, ViewType viewType);
 
     @Event(handlers = DetailWrapperPresenter.class)
     void addMessageToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);

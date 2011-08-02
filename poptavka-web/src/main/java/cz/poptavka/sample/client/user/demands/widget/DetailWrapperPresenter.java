@@ -131,8 +131,17 @@ public class DetailWrapperPresenter extends
         if (!wrapperhandlerType.equals(type)) {
             return;
         }
+        // display of newly added message and enabling response again
         view.getConversationPanel().addMessage(result);
-        potentialViewReplyWiget.enableResponse();
+        // SUP : potentialDemandsView
+        if (potentialViewReplyWiget != null) {
+            potentialViewReplyWiget.enableResponse();
+        }
+        // CLI : myDemandsView
+        if (myDemandsViewReplyWiget != null) {
+            myDemandsViewReplyWiget.enableResponse();
+        }
+
     }
 
     /**
@@ -215,7 +224,7 @@ public class DetailWrapperPresenter extends
                     if (potentialViewReplyWiget.hasResponseQuestion()) {
                         MessageDetail messageToSend = potentialViewReplyWiget.getCreatedMessage();
                         messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
-                        eventBus.bubbleMessageSending(messageToSend);
+                        eventBus.bubbleMessageSending(messageToSend, type);
                     } else {
                         // TODO finish sending of
                         OfferMessageDetail offer = new OfferMessageDetailImpl();
@@ -248,7 +257,7 @@ public class DetailWrapperPresenter extends
                     // distinguish what kind of message should be sent
                     MessageDetail messageToSend = myDemandsViewReplyWiget.getCreatedMessage();
                     messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
-                    eventBus.bubbleMessageSending(messageToSend);
+                    eventBus.bubbleMessageSending(messageToSend, type);
                 }
             }
         };

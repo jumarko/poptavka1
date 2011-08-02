@@ -109,7 +109,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 });
     }
 
-    public void onSendMessageToPotentialDemand(MessageDetail messageToSend) {
+    public void onSendMessageToPotentialDemand(MessageDetail messageToSend, final ViewType viewType) {
         messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
@@ -121,7 +121,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(MessageDetail result) {
-                eventBus.addMessageToPotentailDemandConversation(result, ViewType.POTENTIAL);
+                eventBus.addMessageToPotentailDemandConversation(result, viewType);
             }
         });
     }

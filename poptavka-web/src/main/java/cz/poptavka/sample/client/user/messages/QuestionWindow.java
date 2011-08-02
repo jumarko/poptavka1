@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.user.messages;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -69,7 +70,16 @@ public class QuestionWindow extends Composite implements QuestionPresenter.Reply
 
     @Override
     public void setNormalStyle() {
+        replyTextArea.getElement().getStyle().setDisplay(Display.BLOCK);
+        submitBtn.getElement().getStyle().setDisplay(Display.BLOCK);
         replyTextArea.setText("");
+    }
+
+    @Override
+    public void setSendingStyle() {
+        replyTextArea.getElement().getStyle().setDisplay(Display.NONE);
+        submitBtn.getElement().getStyle().setDisplay(Display.NONE);
+
     }
 
 }
