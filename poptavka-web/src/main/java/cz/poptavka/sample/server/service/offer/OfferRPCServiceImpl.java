@@ -83,6 +83,16 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         this.supplierSerivce = supplierSerivce;
     }
 
+    /**
+     * Metoda vrati vsetky klientove poptavky (poptavkove spravy), ktore obdrzali
+     * aspon jednu ponuku (ponukovu spravu) od nejakeho dodavatela. Tieto poptavkove
+     * spravy su reprezentovane detail objektom DemandMessageWithOffersDetail. Klient tieto
+     * poptavky vidi v svojom pohlade:
+     * MENU KLIENTA -> PONUKY (vid wireframes)
+     *
+     * @param clientId
+     * @return zoznam DemandMessageWithOffersDetail objektov
+     */
     @Override
     public ArrayList<OfferDemandDetail> getClientDemands(long clientId) {
         Client client = this.clientService.getById(clientId);

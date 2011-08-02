@@ -5,6 +5,8 @@
 package cz.poptavka.sample.shared.domain.demand;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -12,7 +14,7 @@ import java.io.Serializable;
  *
  * @author ivan.vlcek
  */
-public class OfferDemandDetail extends BaseDemandDetail implements Serializable {
+public class OfferDemandDetail implements Serializable {
 
     /**
      * Generated serialVersionUID.
@@ -20,6 +22,23 @@ public class OfferDemandDetail extends BaseDemandDetail implements Serializable 
     private static final long serialVersionUID = -927462467233123906L;
     private int numberOfOffers;
     private int maxOffers;
+
+    // refactoring
+    private long demandId;
+    // messageId = threadRoot
+    private long messageId;
+//    private long userMessageId;
+//    private boolean read;
+//    private boolean starred;
+    private Date endDate;
+    private Date validToDate;
+//
+    private String title;
+//    private String description;
+    private BigDecimal price;
+
+
+
 
     /**
      * @return the numberOfOffers
@@ -55,6 +74,90 @@ public class OfferDemandDetail extends BaseDemandDetail implements Serializable 
                 + ", numberOfOffers=" + numberOfOffers
                 + ", maxOffers=" + maxOffers
                 + "}";
+    }
+
+    /**
+     * @return the demandId
+     */
+    public long getDemandId() {
+        return demandId;
+    }
+
+    /**
+     * @param demandId the demandId to set
+     */
+    public void setDemandId(long demandId) {
+        this.demandId = demandId;
+    }
+
+    /**
+     * @return the messageId
+     */
+    public long getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * @param messageId the messageId to set
+     */
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    /**
+     * @return the validToDate
+     */
+    public Date getValidToDate() {
+        return validToDate;
+    }
+
+    /**
+     * @param validToDate the validToDate to set
+     */
+    public void setValidToDate(Date validToDate) {
+        this.validToDate = validToDate;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * @return the price
+     */
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
 }
