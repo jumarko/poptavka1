@@ -2,36 +2,72 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
 
     <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
         <g:west size="15">
             <g:HTMLPanel>
+                <div>
+                    Menu Client
+                    </div>
                 <ul>
                     <li>
-                        <g:Hyperlink ui:field="myDemandsLink">
-                            <ui:msg key="myDemands">My Demands</ui:msg>
+                        <g:Hyperlink ui:field="cliDemandsLink">
+                            <ui:msg key="myDemands">New Demands</ui:msg>
                         </g:Hyperlink>
                     </li>
                     <li>
-                        <g:Hyperlink ui:field="offersLink">
+                        <g:Hyperlink ui:field="cliOffersLink">
                             <ui:msg key="offers">Offers</ui:msg>
                         </g:Hyperlink>
                     </li>
                     <li>
-                        <g:Hyperlink ui:field="newDemandLink">
-                            <ui:msg key="createDemandLink">New Demand</ui:msg>
+                        <g:Hyperlink ui:field="cliAssignedDemandsLink">
+                            <ui:msg key="assignedDemands">Assigned Demands</ui:msg>
                         </g:Hyperlink>
                     </li>
                     <li>
-                        <g:Hyperlink ui:field="potentialDemandsLink">
-                            <ui:msg key="potentialDemands">Potential Demands</ui:msg>
+                        <g:Hyperlink ui:field="newDemandLink">
+                            <ui:msg key="createDemandLink">Create Demand</ui:msg>
                         </g:Hyperlink>
-                        <g:Button ui:field="potentDevelBtn">Reload Button</g:Button>
-                        <g:Button ui:field="develBtn">Test</g:Button>
-                        <hr />
                     </li>
-
+                    <li>
+                        <g:Hyperlink ui:field="allDemandsLink">
+                            <ui:msg key="allDemandsLink">All Demands</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                    <li>
+                        <g:Hyperlink ui:field="allSuppliersLink">
+                            <ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
+                <div ui:field="supMenu" style="display: none;">
+                    <div>
+                        Menu Supplier
+                </div>
+                    <ul>
+                        <li>
+                            <g:Hyperlink ui:field="supDemandsLink">
+                                <ui:msg key="potentialDemands">Potential Demands</ui:msg>
+                            </g:Hyperlink>
+                        </li>
+                        <li>
+                            <g:Hyperlink ui:field="supOffersLink">
+                                <ui:msg key="offers">Offers</ui:msg>
+                            </g:Hyperlink>
+                        </li>
+                        <li>
+                            <g:Hyperlink ui:field="supAssignedDemandsLink">
+                                <ui:msg key="assignedDemands">Assigned Demands</ui:msg>
+                            </g:Hyperlink>
+                        </li>
+                    </ul>
+                </div>
+                <hr />
+                Admin sekcia, ma byt presunute do Admin
+                <ul>
                     <li>
                         <g:Hyperlink ui:field="myDemandsOperatorLink">
                             <ui:msg key="myDemandsOperatorLink">My Demands - operator</ui:msg>
@@ -52,24 +88,24 @@
         </g:west>
         <g:center>
             <g:ScrollPanel>
-            <g:SimplePanel ui:field="contentPanel">
-                <g:HTML>
-                    <center>
-                        <h1>Welcome Screen</h1>
-                    </center>
-                    This is the initial page.
-                    <br />
-                    <br />
-                    <strong>Features:</strong>
-                    <ul>
-                        <li>feature</li>
-                        <li>feature</li>
-                        <li>feature</li>
-                        <li>feature</li>
-                        <li>feature</li>
-                    </ul>
-                </g:HTML>
-            </g:SimplePanel>
+                <g:SimplePanel ui:field="contentPanel">
+                    <g:HTML>
+                        <center>
+                            <h1>Welcome Screen</h1>
+                        </center>
+                        This is the initial page.
+                        <br />
+                        <br />
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>feature</li>
+                            <li>feature</li>
+                            <li>feature</li>
+                            <li>feature</li>
+                            <li>feature</li>
+                        </ul>
+                    </g:HTML>
+                </g:SimplePanel>
             </g:ScrollPanel>
         </g:center>
     </g:DockLayoutPanel>

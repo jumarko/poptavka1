@@ -1,10 +1,7 @@
 package cz.poptavka.sample.client.user.demands;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -57,12 +54,6 @@ public class DemandsLayoutPresenter
 
         SimplePanel getContentPanel();
 
-        // devel buttons
-        // TODO delete
-        Button getDevelButton();
-
-        Button getTestBtn();
-
     }
 
     // TODO clean up after development
@@ -77,25 +68,6 @@ public class DemandsLayoutPresenter
         view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
         view.setMyDemandsOperatorToken(getTokenGenerator().invokeDemandsOperator());
         view.setAdministrationToken(getTokenGenerator().invokeAdministration());
-        view.getDevelButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                if (develPresenter != null) {
-                    develPresenter.cleanDetailWrapperPresenterForDevelopment();
-                    eventBus.removeHandler(develPresenter);
-                }
-                develPresenter = eventBus.addHandler(PotentialDemandsPresenter.class);
-                develPresenter.onInvokePotentialDemands();
-//                eventBus.createLoadingPopup(String loadingMessage, Widget anchor)
-            }
-        });
-        view.getTestBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.toggleLoading();
-            }
-        });
     }
 
     public void init(UserDetail user) {

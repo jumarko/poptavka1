@@ -3,9 +3,10 @@ package cz.poptavka.sample.client.user.demands;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -29,14 +30,18 @@ public class DemandsLayoutView extends Composite
     @UiField
     SimplePanel contentPanel;
 
-    @UiField
-    Hyperlink myDemandsLink, offersLink, newDemandLink, potentialDemandsLink;
 
-    @UiField
-    Hyperlink myDemandsOperatorLink, myProblemsLink, administration;
+    // CLI menu
+    @UiField Hyperlink cliDemandsLink, cliOffersLink, cliAssignedDemandsLink,
+    newDemandLink, allDemandsLink, allSuppliersLink;
+    // SUP menu
+    @UiField Hyperlink supDemandsLink, supOffersLink, supAssignedDemandsLink;
+    // hidden or displayed according to the role
+    @UiField DivElement supMenu;
 
-    // TODO Beho - delete when potential demands are done
-    @UiField Button potentDevelBtn, develBtn;
+    // ADM menu & other
+    // TODO move to correct layout
+    @UiField Hyperlink myDemandsOperatorLink, myProblemsLink, administration;
 
     public DemandsLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -54,11 +59,11 @@ public class DemandsLayoutView extends Composite
     }
 
     public void setMyDemandsToken(String linkString) {
-        myDemandsLink.setTargetHistoryToken(linkString);
+        cliDemandsLink.setTargetHistoryToken(linkString);
     }
 
     public void setOffersToken(String linkString) {
-        offersLink.setTargetHistoryToken(linkString);
+        cliOffersLink.setTargetHistoryToken(linkString);
     }
 
     public void setNewDemandToken(String linkString) {
@@ -83,6 +88,7 @@ public class DemandsLayoutView extends Composite
         switch (role) {
             case SUPPLIER:
                     //cascade, include client below, because supplier is always client too
+                supMenu.getStyle().setDisplay(Display.BLOCK);
             case CLIENT:
 //                administration.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
 //                myDemandsOperatorLink.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
@@ -94,24 +100,11 @@ public class DemandsLayoutView extends Composite
 
     @Override
     public void setPotentialDemandsToken(String link) {
-        potentialDemandsLink.setTargetHistoryToken(link);
-    }
-
-    // TODO Beho - clean up after devel
-    @Override
-    public Button getDevelButton() {
-        return potentDevelBtn;
-    }
-
-    @Override
-    public Button getTestBtn() {
-        // TODO Auto-generated method stub
-        return develBtn;
+        supDemandsLink.setTargetHistoryToken(link);
     }
 
     @Override
     public SimplePanel getContentPanel() {
-        // TODO Auto-generated method stub
         return contentPanel;
     }
 }

@@ -270,6 +270,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     // TODO devel warning poput, in prod, you wont see others options
     private void accessDenied() {
+        eventBus.loadingHide();
         PopupPanel p = new PopupPanel(true);
         p.setWidget(new HTML("You cannot access this funcionality.<br />You are logged as user, "
                 + "who does not support this"));

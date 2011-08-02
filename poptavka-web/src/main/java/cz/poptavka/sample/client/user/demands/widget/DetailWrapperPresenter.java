@@ -102,7 +102,8 @@ public class DetailWrapperPresenter extends
         }
         if (type.equals(ViewType.POTENTIAL)) {
             // need demand id to know, to what demand are we replying to
-            // maybe more attributes will be needed to be passed, so I;m sending the whole object
+            // maybe more attributes will be needed to be passed, so I;m sending
+            // the whole object
             // can be decreased after analysis
             setPotentialViewReplyWidget(messageList.get(0));
         }
@@ -110,7 +111,8 @@ public class DetailWrapperPresenter extends
         toggleConversationLoading();
     }
 
-    // TODO merge with method above, the same method body + different options for different types
+    // TODO merge with method above, the same method body + different options
+    // for different types
     public void onSetSingleDemandConversation(
             ArrayList<MessageDetail> messageList) {
         if (!type.equals(ViewType.EDITABLE)) {
@@ -201,6 +203,7 @@ public class DetailWrapperPresenter extends
 
     /**
      * SUPPLIER ONLY Creates reply window for creating Offer/Question message.
+     *
      * @param messageDetail
      */
     // messageDetail is it necessary?
@@ -222,14 +225,19 @@ public class DetailWrapperPresenter extends
                 if (potentialViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
                     if (potentialViewReplyWiget.hasResponseQuestion()) {
-                        MessageDetail messageToSend = potentialViewReplyWiget.getCreatedMessage();
-                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+                        MessageDetail messageToSend = potentialViewReplyWiget
+                                .getCreatedMessage();
+                        messageToSend = view.getConversationPanel()
+                                .updateSendingMessage(messageToSend);
                         eventBus.bubbleMessageSending(messageToSend, type);
                     } else {
                         // TODO finish sending of
                         OfferMessageDetail offer = new OfferMessageDetailImpl();
-                        offer = (OfferMessageDetail) view.getConversationPanel().updateSendingMessage(offer);
-                        MessageDetail offerMessage = potentialViewReplyWiget.getCreatedMessage();
+                        offer = (OfferMessageDetail) view
+                                .getConversationPanel().updateSendingMessage(
+                                        offer);
+                        MessageDetail offerMessage = potentialViewReplyWiget
+                                .getCreatedMessage();
                         offer.setBody(offerMessage.getBody());
                         offer.setDemandId(offerMessage.getDemandId());
                         eventBus.bubbleOfferSending(offer);
@@ -245,7 +253,8 @@ public class DetailWrapperPresenter extends
         }
         myDemandsViewReplyWiget = eventBus.addHandler(QuestionPresenter.class);
         myDemandsViewReplyWiget.initReplyWindow(view.getReplyHolder());
-        myDemandsViewReplyWiget.addSubmitHandler(bindConversationReplyWindowAction());
+        myDemandsViewReplyWiget
+                .addSubmitHandler(bindConversationReplyWindowAction());
     }
 
     private ClickHandler bindConversationReplyWindowAction() {
@@ -255,8 +264,10 @@ public class DetailWrapperPresenter extends
                 // sending message only when valid
                 if (myDemandsViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
-                    MessageDetail messageToSend = myDemandsViewReplyWiget.getCreatedMessage();
-                    messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+                    MessageDetail messageToSend = myDemandsViewReplyWiget
+                            .getCreatedMessage();
+                    messageToSend = view.getConversationPanel()
+                            .updateSendingMessage(messageToSend);
                     eventBus.bubbleMessageSending(messageToSend, type);
                 }
             }
