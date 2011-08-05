@@ -16,7 +16,7 @@ import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
@@ -70,7 +70,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
     }
     // *** GET CATEGORIES
     // ***************************************************************************
-    public void onGetSubCategories(String category) {
+    public void onGetSubCategories(final String category) {
         categoryService.getCategoryChildren(category, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -81,7 +81,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
                 LOGGER.info("Found subcategories: " + result.size());
-                eventBus.displaySubcategories(result);
+                eventBus.displaySubcategories(result, category);
             }
         });
     }
@@ -95,7 +95,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
 
                     @Override
                     public void onSuccess(ArrayList<CategoryDetail> list) {
-                        eventBus.displaySubcategories(list);
+                        eventBus.displaySubcategories(list, null);
                     }
 
                     @Override
@@ -139,7 +139,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
     }
 
     public void onGetSuppliers2(int start, int count, Long category, Long locality) {
-        supplierService.getSuplliers(start, count, category, locality, new AsyncCallback<ArrayList<SupplierDetail>>() {
+        supplierService.getSuppliers(start, count, category, locality, new AsyncCallback<ArrayList<UserDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -147,14 +147,14 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
             }
 
             @Override
-            public void onSuccess(ArrayList<SupplierDetail> result) {
+            public void onSuccess(ArrayList<UserDetail> result) {
                 eventBus.displaySuppliers(result);
             }
         });
     }
 
     public void onGetSuppliers3(int start, int count, Long category) {
-        supplierService.getSuplliers(start, count, category, new AsyncCallback<ArrayList<SupplierDetail>>() {
+        supplierService.getSuppliers(start, count, category, new AsyncCallback<ArrayList<UserDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -162,7 +162,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
             }
 
             @Override
-            public void onSuccess(ArrayList<SupplierDetail> result) {
+            public void onSuccess(ArrayList<UserDetail> result) {
                 eventBus.displaySuppliers(result);
             }
         });

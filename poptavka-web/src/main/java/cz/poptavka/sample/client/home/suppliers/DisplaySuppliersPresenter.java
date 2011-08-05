@@ -27,6 +27,7 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -101,9 +102,7 @@ public class DisplaySuppliersPresenter
 
             @Override
             public void onChange(ChangeEvent event) {
-                //TODO Martin najdenych dodavatelov podla categorie filtruj aj podla zvolenej lokality
-                //TODO - 10 prerobit na view.get pocet v tabulke
-                eventBus.getSuppliers2(1, 10, lastUsedCategoryID, view.getSelectedLocality());
+                eventBus.getSuppliers2(1, view.getPageSize(), lastUsedCategoryID, view.getSelectedLocality());
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
@@ -192,7 +191,7 @@ public class DisplaySuppliersPresenter
         eventBus.setBodyWidget(view.getWidgetView());
     }
 
-    public void onDisplaySubcategories(ArrayList<CategoryDetail> subcategories) {
+    public void onDisplaySubcategories(ArrayList<CategoryDetail> subcategories, String category) {
         if (root) {
             root = false;
         } else {
@@ -201,6 +200,10 @@ public class DisplaySuppliersPresenter
             view.getPath().setVisible(true);
         }
         view.displaySubCategories(columns, subcategories);
+        if (category != null) {
+//            eventBus.getSuppliers3(0, view.getPageSize(), Long.valueOf(category));
+            eventBus.getSuppliersCountCategory(Long.valueOf(category));
+        }
         eventBus.loadingHide();
     }
     private List<Supplier> suppliers = Arrays.asList(
@@ -241,10 +244,9 @@ public class DisplaySuppliersPresenter
             }
         }
     }
-
+// Nemusi byt riesu asynchDataProvider nie??
 //    public void onGetSuppliers(Long category, Long locality) {
 //        LOGGER.info("GetSuppliers(long,long): '" + category + "' '" + locality + "'");
-//        //TODO martin - dorobit, vsetko podla view + asynch data provider.
 //        if (locality == null) {
 //            eventBus.getSuppliers3(1, view.getPageSize(), category);
 //        } else {
@@ -252,7 +254,7 @@ public class DisplaySuppliersPresenter
 //        }
 //    }
 
-    public void onDisplaySuppliers(ArrayList<SupplierDetail> list) {
+    public void onDisplaySuppliers(ArrayList<UserDetail> list) {
         view.getList().setRowData(start, list);
     }
 }

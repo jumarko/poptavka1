@@ -6,7 +6,6 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.shared.domain.ServiceDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 @RemoteServiceRelativePath("service/supplier")
@@ -16,9 +15,9 @@ public interface SupplierRPCService extends RemoteService {
 
     ArrayList<ServiceDetail> getSupplierServices();
 
-    ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID, Long localityID);
+    ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID, Long localityID);
 
-    ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID);
+    ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID);
 
     Long getSuppliersCount(Long categoryID);
 

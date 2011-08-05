@@ -23,9 +23,9 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
-import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
 
 public class DisplaySuppliersView extends OverflowComposite
@@ -51,7 +51,6 @@ public class DisplaySuppliersView extends OverflowComposite
     ListBox pageSize;
     @UiField
     ListBox localityList;
-
     private final SingleSelectionModel<CategoryDetail> selectionModel = new SingleSelectionModel<CategoryDetail>();
     private AsyncDataProvider dataProvider;
 
@@ -149,16 +148,11 @@ public class DisplaySuppliersView extends OverflowComposite
     public SplitLayoutPanel getSplitter() {
         return split;
     }
-//    private static final List<Supplier> SUPPLIERS = Arrays.asList(
-//            new Supplier(), new Supplier(), new Supplier(), new Supplier());
     private boolean root = true;
 
     private void initCellList() {
         // Use the cell in a CellList.
-        list = new CellList<Supplier>(new SupplierCell());
-
-        // Push the data into the widget.
-//        list.setRowData(0, SUPPLIERS);
+        list = new CellList<UserDetail>(new SupplierCell());
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -207,7 +201,7 @@ public class DisplaySuppliersView extends OverflowComposite
 /**
  * Supplier Cell.
  */
-class SupplierCell extends AbstractCell<Supplier> {
+class SupplierCell extends AbstractCell<UserDetail> {
 
     public SupplierCell() {
         /*
@@ -218,8 +212,8 @@ class SupplierCell extends AbstractCell<Supplier> {
     }
 
     @Override
-    public void onBrowserEvent(Context context, Element parent, Supplier value,
-            NativeEvent event, ValueUpdater<Supplier> valueUpdater) {
+    public void onBrowserEvent(Context context, Element parent, UserDetail value,
+            NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
         // Check that the value is not null.
         if (value == null) {
             return;
@@ -235,33 +229,52 @@ class SupplierCell extends AbstractCell<Supplier> {
     }
 
     @Override
-    public void render(Context context, Supplier value, SafeHtmlBuilder sb) {
+    public void render(Context context, UserDetail value, SafeHtmlBuilder sb) {
         /*
          * Always do a null check on the value. Cell widgets can pass null to
          * cells if the underlying data contains a null, or if the data arrives
          * out of order.
          */
-//        if (value == null) {
-//            return;
-//        }
+        if (value == null) {
+            return;
+        }
+
+        //TODO Martin Logo??
         sb.appendHtmlConstant("<div><a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"> "
                 + "<img style=\"float: left; margin-right: 10px;padding: 0px; width: 80px;\" "
                 + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"  "
                 + "alt=\"http://s-car.sk\"  > </a>");
 
-        sb.appendHtmlConstant("<a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"> "
-                + "<strong>1.) Ivan Genda, S-Car</strong> </a>");
-//        sb.appendHtmlConstant("</div>");
-        sb.appendHtmlConstant("<div style=\"width:800px;\"> Výroba autoplachiet "
-                + "na všetky druhy áut, markízy, stánky, prístrešky, bilboardy, "
-                + "výroba REKLÁM pomocou digitálnej plnej potlače. Elektrické a "
-                + "quartzové infra ohrievače.</div>");
 
-        sb.appendHtmlConstant("<A href=\"http://www.s-car.sk\" target=\"_blank\"  "
-                + " style=\"FONT-FAMILY: Arial, sans-serif; COLOR:green;\"> www.s-car.sk</A>");
+        //Company Name
+        if (value.getCompanyName() != null) {
+            sb.appendHtmlConstant("<a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"><strong>1.)");
+            sb.appendEscaped(value.getCompanyName());
+            sb.appendHtmlConstant("</strong> </a>");
+        }
 
-        sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
-                + "&nbsp;&nbsp;-&nbsp; Minská 7/6, Martin, 036 01</span></div><br/>");
+        //Company description
+        if (value.getSupplier().getDescription() != null) {
+            sb.appendHtmlConstant("<div style=\"width:800px;\">");
+            sb.appendEscaped(value.getSupplier().getDescription());
+            sb.appendHtmlConstant("</div>");
+        }
+
+        //Componay Website
+        if (value.getWebsite() != null) {
+            sb.appendHtmlConstant("<A href=\"http://www.s-car.sk\" target=\"_blank\"  "
+                    + " style=\"FONT-FAMILY: Arial, sans-serif; COLOR:green;\">");
+            sb.appendEscaped(value.getWebsite());
+            sb.appendHtmlConstant("</A>");
+        }
+
+        //Company address
+        if (value.getAddress() != null) {
+            sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
+                    + "&nbsp;&nbsp;-&nbsp;");
+            sb.appendEscaped(value.getAddress().toString());
+            sb.appendHtmlConstant("</span></div><br/>");
+        }
     }
 
     /**
@@ -271,8 +284,8 @@ class SupplierCell extends AbstractCell<Supplier> {
      */
     @Override
     protected void onEnterKeyDown(Context context, Element parent,
-            Supplier value, NativeEvent event, ValueUpdater<Supplier> valueUpdater) {
-        Window.alert("You clicked " + value.getId());
+            UserDetail value, NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
+        Window.alert("You clicked " + value.getSupplierId());
     }
 }
 

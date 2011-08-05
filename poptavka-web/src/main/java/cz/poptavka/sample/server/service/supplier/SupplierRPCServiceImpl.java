@@ -13,6 +13,7 @@ import cz.poptavka.sample.domain.settings.Notification;
 import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessUserData;
+import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.Verification;
@@ -25,10 +26,12 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
@@ -82,9 +85,9 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
-        final BusinessUserData businessUserData = new BusinessUserData.
-                Builder().companyName(supplier.getCompanyName())
-                .taxId(supplier.getTaxId()).identificationNumber(supplier.getIdentifiacationNumber())
+        final BusinessUserData businessUserData = new BusinessUserData.Builder()
+                .companyName(supplier.getCompanyName()).taxId(supplier.getTaxId())
+                .identificationNumber(supplier.getIdentifiacationNumber())
                 .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
                 .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
                 .build();
@@ -208,68 +211,154 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return categoryService.getById(Long.parseLong(id));
     }
 
-    public ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID, Long localityID) {
-        List<Category> categories = new ArrayList<Category>();
-        if (categoryID != null) {
-            categories = categoryService.getById(categoryID).getChildren();
-        }
-        List<Locality> localities = new ArrayList<Locality>();
-        if (localityID != null) {
-            localities = localityService.getById(localityID).getChildren();
-        }
+    @Override
+    public ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID, Long localityID) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
-        //TODO Martin - need something like folows
-        //supplierService.getSuppliers(resultCriteria, categories, localities);
-        //if categories or localities are null or empty strings, don't filter for that case
+
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria,
-                categories.toArray(new Category[categories.size()]),
-                localities.toArray(new Locality[localities.size()])));
+                this.getAllSubcategories(categoryID),
+                this.getAllSublocalities(Long.toString(localityID))));
     }
 
-    public ArrayList<SupplierDetail> getSuplliers(int start, int count, Long categoryID) {
-        List<Category> categories = new ArrayList<Category>();
-        if (categoryID != null) {
-            categories = categoryService.getById(categoryID).getChildren();
-        }
-
+    @Override
+    public ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria,
-                categories.toArray(new Category[categories.size()])));
+                this.getAllSubcategories(categoryID)));
     }
 
+    @Override
     public Long getSuppliersCount(Long categoryID) {
-//        List<Category> categories = new ArrayList<Category>();
-//        if (categoryID != null) {
-//            categories = categoryService.getById(categoryID).getChildren();
-//        }
-        //TODO Martin - ak bude dostupne, odkomentovat
-//      return supplierService.getSuppliersCount(categories);
         return supplierService.getSuppliersCountQuick(categoryService.getById(categoryID));
-//        return 100l;
     }
 
+    @Override
     public Long getSuppliersCount(Long categoryID, Long localityID) {
-        List<Category> categories = new ArrayList<Category>();
-        if (categoryID != null) {
-            categories = categoryService.getById(categoryID).getChildren();
-        }
-        List<Locality> localities = new ArrayList<Locality>();
-        if (localityID != null) {
-            localities = localityService.getById(localityID).getChildren();
-        }
-        //TODO Martin - ak bude dostupne, odkomentovat
-//        return supplierService.getSuppliersCount(categories, localities);
-//        return supplierService.getSuppliersCountCount(categories, localities);
-        return 100L;
+        return supplierService.getSuppliersCount(
+                this.getAllSubcategories(categoryID),
+                this.getAllSublocalities(Long.toString(localityID)));
     }
 
-    private ArrayList<SupplierDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
-        ArrayList<SupplierDetail> supplierDetails = new ArrayList<SupplierDetail>();
+    private ArrayList<UserDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
+        ArrayList<UserDetail> userDetails = new ArrayList<UserDetail>();
         for (Supplier supplier : suppliers) {
-            supplierDetails.add(new SupplierDetail(supplier));
+            userDetails.add(this.toUserDetail(supplier));
         }
-        return supplierDetails;
+        return userDetails;
+    }
+
+    protected UserDetail toUserDetail(Supplier supplier) {
+
+        UserDetail detail = new UserDetail();
+        detail.setUserId(supplier.getBusinessUser().getId());
+
+        // Set UserDetail according to his roles
+        for (BusinessUserRole role : supplier.getBusinessUser().getBusinessUserRoles()) {
+            if (role instanceof Client) {
+                Client clientRole = (Client) role;
+                detail.setClientId(clientRole.getId());
+                detail.addRole(Role.CLIENT);
+
+                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
+            }
+            if (role instanceof Supplier) {
+                Supplier supplierRole = (Supplier) role;
+                detail.setSupplierId(supplierRole.getId());
+                detail.addRole(Role.SUPPLIER);
+                SupplierDetail supplierDetail = new SupplierDetail();
+
+                // supplierServices
+                List<UserService> services = supplierRole.getBusinessUser().getUserServices();
+                for (UserService us : services) {
+                    supplierDetail.addService(us.getId().intValue());
+                }
+
+                // categories
+                ArrayList<String> categories = new ArrayList<String>();
+                List<Category> cats = supplierRole.getCategories();
+                for (Category cat : cats) {
+                    categories.add(cat.getId() + "");
+                }
+                supplierDetail.setCategories(categories);
+
+                // localities
+                ArrayList<String> localities = new ArrayList<String>();
+                List<Category> locs = supplierRole.getCategories();
+                for (Category loc : locs) {
+                    localities.add(loc.getId() + "");
+                }
+
+                // Other
+                detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
+                detail.setEmail(supplier.getBusinessUser().getEmail());
+                detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
+                detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
+                detail.setIdentifiacationNumber(supplier.getBusinessUser()
+                        .getBusinessUserData().getIdentificationNumber());
+//                detail.setPassword(supplier.getBusinessUser().getPassword());
+                detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
+                detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
+
+                supplierDetail.setLocalities(localities);
+
+                detail.setSupplier(supplierDetail);
+
+                detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
+            }
+        }
+
+        // TODO Beho fix this user ID
+//        System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
+        return detail;
+    }
+    private List<Category> categoriesHistory = new ArrayList<Category>();
+    private List<Locality> localitiesHistory = new LinkedList<Locality>();
+
+    private Category[] getAllSubcategories(long id) {
+
+        //if stored are not what i am looking for, retrieve new/actual
+        if (categoriesHistory.isEmpty() || categoriesHistory.get(0).getId() != id) {
+            //clear
+            categoriesHistory = new LinkedList<Category>();
+            //level 0
+            categoriesHistory.add(categoryService.getById(id));
+            //other levels
+            int i = 0;
+            List<Category> workingCatList;
+            while (categoriesHistory.size() != i) {
+                workingCatList = new LinkedList<Category>();
+                workingCatList = categoriesHistory.get(i++).getChildren();
+                if (workingCatList != null && workingCatList.size() > 0) {
+                    //and children categories
+                    categoriesHistory.addAll(workingCatList);
+                }
+            }
+        }
+        return categoriesHistory.toArray(new Category[categoriesHistory.size()]);
+    }
+
+    private Locality[] getAllSublocalities(String code) {
+        //if stored are not what i am looking for, retrieve new/actual
+        if (localitiesHistory.isEmpty() || !localitiesHistory.get(0).getCode().equals(code)) {
+            //clear
+            localitiesHistory = new LinkedList<Locality>();
+            //level 0
+            localitiesHistory.add(localityService.getLocality(code));
+            //other levels
+            int i = 0;
+            List<Locality> workingCatList;
+            while (localitiesHistory.size() != i) {
+                workingCatList = new LinkedList<Locality>();
+                workingCatList = localitiesHistory.get(i++).getChildren();
+                if (workingCatList != null && workingCatList.size() > 0) {
+                    //and children categories
+                    localitiesHistory.addAll(workingCatList);
+                }
+            }
+        }
+        return localitiesHistory.toArray(new Locality[localitiesHistory.size()]);
     }
 }

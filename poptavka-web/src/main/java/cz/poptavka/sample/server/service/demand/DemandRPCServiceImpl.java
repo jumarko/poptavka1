@@ -303,7 +303,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             List<Category> workingCatList;
             while (categoriesHistory.size() != i) {
                 workingCatList = new LinkedList<Category>();
-                workingCatList = categoryService.getById(categoriesHistory.get(i++).getId()).getChildren();
+                workingCatList = categoriesHistory.get(i++).getChildren();
                 if (workingCatList != null && workingCatList.size() > 0) {
                     //and children categories
                     categoriesHistory.addAll(workingCatList);
@@ -335,7 +335,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             List<Locality> workingCatList;
             while (localitiesHistory.size() != i) {
                 workingCatList = new LinkedList<Locality>();
-                workingCatList = localityService.getLocality(localitiesHistory.get(i++).getCode()).getChildren();
+                workingCatList = localitiesHistory.get(i++).getChildren();
                 if (workingCatList != null && workingCatList.size() > 0) {
                     //and children categories
                     localitiesHistory.addAll(workingCatList);

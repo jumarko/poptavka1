@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.shared.domain.ServiceDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 public interface SupplierRPCServiceAsync {
@@ -14,11 +13,11 @@ public interface SupplierRPCServiceAsync {
 
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 
-    void getSuplliers(int start, int count, Long categoryID, Long localityID,
-            AsyncCallback<ArrayList<SupplierDetail>> callback);
+    void getSuppliers(int start, int count, Long categoryID, Long localityID,
+            AsyncCallback<ArrayList<UserDetail>> callback);
 
-    void getSuplliers(int start, int count, Long categoryID,
-            AsyncCallback<ArrayList<SupplierDetail>> callback);
+    void getSuppliers(int start, int count, Long categoryID,
+            AsyncCallback<ArrayList<UserDetail>> callback);
 
     void getSuppliersCount(Long categoryID, AsyncCallback<Long> callback);
 

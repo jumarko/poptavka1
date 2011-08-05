@@ -1,9 +1,5 @@
 package cz.poptavka.sample.shared.domain;
 
-import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.demand.Category;
-import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -22,36 +18,8 @@ public class SupplierDetail implements Serializable {
     private ArrayList<String> localities;
     private ArrayList<String> categories;
     private ArrayList<Integer> services = new ArrayList<Integer>();
-    private UserDetail person = new UserDetail();
 
     public SupplierDetail() {
-    }
-
-    public SupplierDetail(Supplier supplier) {
-        //Supplier Detail
-        SupplierDetail supplierDetail = new SupplierDetail();
-        ArrayList<String> categoriesAsStrings = new ArrayList<String>();
-        for (Category category : supplier.getCategories()) {
-            categoriesAsStrings.add(category.getName());
-        }
-        supplierDetail.setCategories(categoriesAsStrings);
-
-        ArrayList<String> localitiesAsStrings = new ArrayList<String>();
-        for (Locality locality : supplier.getLocalities()) {
-            localitiesAsStrings.add(locality.getName());
-        }
-        supplierDetail.setLocalities(localitiesAsStrings);
-
-        supplierDetail.setCertified(supplier.isCertified());
-        supplierDetail.setOverallRating(supplier.getOveralRating());
-        supplierDetail.setSupplierId(supplier.getId());
-        //UserDetail
-        person.addRole(Role.SUPPLIER);
-        person.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
-//        person.setWebsite(supplier.getBusinessUser().);
-        //TODO Martin - miss folows
-        //supplierDetail.setDescription(description);
-        //supplierDetail.setServices(services);
     }
 
     public int getOverallRating() {
@@ -112,6 +80,4 @@ public class SupplierDetail implements Serializable {
     public Long getSupplierId() {
         return supplierId;
     }
-
-
 }

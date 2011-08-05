@@ -20,7 +20,6 @@ import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -196,10 +195,10 @@ public interface HomeEventBus extends EventBus {
 
     //Display
     @Event(handlers = DisplaySuppliersPresenter.class)
-    void displaySubcategories(ArrayList<CategoryDetail> list);
+    void displaySubcategories(ArrayList<CategoryDetail> list, String category);
 
     @Event(handlers = DisplaySuppliersPresenter.class)
-    void displaySuppliers(ArrayList<SupplierDetail> list);
+    void displaySuppliers(ArrayList<UserDetail> list);
 
     @Event(handlers = {DisplaySuppliersPresenter.class, DemandsPresenter.class })
     void setLocalityData(ArrayList<LocalityDetail> list);
