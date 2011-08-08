@@ -1,0 +1,89 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+    xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+    <!-- injecting style resources -->
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
+<!--    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />-->
+
+    <g:VerticalPanel>
+        <g:FlowPanel ui:field="path" />
+        <g:HorizontalPanel>
+            <c:CellList ui:field = "categoriesList" width="300px"/>
+            <!--<g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="split">
+                <g:west size="300" >-->
+            <g:ScrollPanel>
+                <g:HTMLPanel>
+                    <table width="600px">
+                        <tr>
+                            <td>
+                                <g:HorizontalPanel>
+                                    <g:Label>Filter by locality: </g:Label>
+                                    <g:ListBox ui:field="localityList" />
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <c:CellList ui:field="suppliersList" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <c:SimplePager ui:field="pager" />
+                                <g:ListBox ui:field='pageSize'/>
+                            </td>
+                        </tr>
+                    </table>                        
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+                <!--</g:west>
+                <g:center >
+                    <g:ScrollPanel>-->
+            <g:VerticalPanel>
+                <g:Label ui:field="reklama" >Reklama</g:Label>
+                <g:SimplePanel ui:field="detail">
+                    <g:HTMLPanel>
+                    <g:Label>Company name: </g:Label> 
+                    <g:Label ui:field="companyName"/>
+                    <g:Label>Business type: </g:Label>
+                    <g:Label ui:field="businessType"/>
+                    <g:Label>Identification number: </g:Label>
+                    <g:Label ui:field="identificationNumber"/>
+                    <g:Label>Overall rating: </g:Label>
+                    <g:Label ui:field="overallRating"/>
+                    <g:Label>Certified: </g:Label>
+                    <g:Label ui:field="certified"/>
+                    <g:Label>First name: </g:Label>
+                    <g:Label ui:field="firstName"/>
+                    <g:Label>Last name: </g:Label>
+                    <g:Label ui:field="lastName"/>
+                    <g:Label>Phone: </g:Label>
+                    <g:Label ui:field="phone"/>
+                    <g:Label>Email: </g:Label>
+                    <g:Label ui:field="email"/>
+                    <g:Label>Addresses: </g:Label>
+                    <g:Label ui:field="addresses"/>
+                    <g:Label>Description: </g:Label>
+                    <g:Label ui:field="description"/>
+                    <g:Label>Verification: </g:Label>
+                    <g:Label ui:field="verification"/>
+                    <g:Label>Localities: </g:Label>
+                    <g:Label ui:field="localities"/>
+                    <g:Label>Categories: </g:Label>
+                    <g:Label ui:field="categories"/>
+                    <g:Label>Services: </g:Label>
+                    <g:Label ui:field="services"/>
+                    <g:Label>BsuRoles: </g:Label>
+                    <g:Label ui:field="bsuRoles"/>
+                    </g:HTMLPanel>
+                </g:SimplePanel>
+            </g:VerticalPanel>
+                    <!--</g:ScrollPanel>
+                </g:center>
+            </g:SplitLayoutPanel>-->
+        </g:HorizontalPanel>
+    </g:VerticalPanel>
+</ui:UiBinder>

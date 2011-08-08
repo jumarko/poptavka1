@@ -51,11 +51,11 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public ArrayList<CategoryDetail> getCategoryChildren(String category) {
+    public ArrayList<CategoryDetail> getCategoryChildren(Long category) {
         System.out.println("Getting children categories");
         try {
             if (category != null) {
-                final Category cat = categoryService.getById(Long.valueOf(category));
+                final Category cat = categoryService.getById(category);
                 if (cat != null) {
                     return createCategoryDetailList(cat.getChildren());
                 }

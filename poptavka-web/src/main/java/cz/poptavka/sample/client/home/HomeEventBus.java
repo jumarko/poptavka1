@@ -15,8 +15,9 @@ import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.demands.DemandsHandler;
 import cz.poptavka.sample.client.home.demands.DemandsPresenter;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
-import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersHandler;
-import cz.poptavka.sample.client.home.suppliers.DisplaySuppliersPresenter;
+import cz.poptavka.sample.client.home.suppliers.SuppliersHandler;
+import cz.poptavka.sample.client.home.suppliers.RootPresenter;
+import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -65,10 +66,15 @@ public interface HomeEventBus extends EventBus {
 //    @Event(handlers = ????, historyConverter = HomeHistoryConverter.class)
 //    String atLogin();
 
-    @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
+    //Display root categories
+    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atSuppliers();
 
-//    @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
+    //Display subcategories, suppliers of selected category and detail of selected supplier
+    @Event(handlers = SuppliersPresenter.class)
+    void atDisplaySuppliers(Long categoryID);
+
+//    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
 //    String createToken(String token);
 
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
@@ -167,52 +173,55 @@ public interface HomeEventBus extends EventBus {
 
     /** DISPLAT SUPPLIERS */
     //Category
-    @Event(handlers = DisplaySuppliersHandler.class)
-    void getSubCategories(String category);
+    @Event(handlers = SuppliersHandler.class)
+    void getSubCategories(Long category);
 
-    @Event(handlers = {DemandsHandler.class, DisplaySuppliersHandler.class })
+    @Event(handlers = {DemandsHandler.class, SuppliersHandler.class })
     void getCategories();
 
     //Locality
-    @Event(handlers = {DemandsHandler.class, DisplaySuppliersHandler.class })
+    @Event(handlers = {DemandsHandler.class, SuppliersHandler.class })
     void getLocalities();
 
     //Suppliers
-//    @Event(handlers = DisplaySuppliersPresenter.class)
+//    @Event(handlers = RootPresenter.class)
 //    void getSuppliers(Long category, Long locality);
 
-    @Event(handlers = DisplaySuppliersHandler.class)
-    void getSuppliers2(int start, int count, Long category, Long locality);
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
 
-    @Event(handlers = DisplaySuppliersHandler.class)
-    void getSuppliers3(int start, int count, Long category);
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersByCategory(int start, int count, Long category);
 
-    @Event(handlers = DisplaySuppliersHandler.class)
-    void getSuppliersCount(Long category, Long locality);
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersCount(Long category, String locality);
 
-    @Event(handlers = DisplaySuppliersHandler.class)
-    void getSuppliersCountCategory(Long category);
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersCountByCategory(Long category);
 
     //Display
-    @Event(handlers = DisplaySuppliersPresenter.class)
-    void displaySubcategories(ArrayList<CategoryDetail> list, String category);
+    @Event(handlers = RootPresenter.class)
+    void displayRootcategories(ArrayList<CategoryDetail> list);
 
-    @Event(handlers = DisplaySuppliersPresenter.class)
+    @Event(handlers = SuppliersPresenter.class)
+    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
+
+    @Event(handlers = SuppliersPresenter.class)
     void displaySuppliers(ArrayList<UserDetail> list);
 
-    @Event(handlers = {DisplaySuppliersPresenter.class, DemandsPresenter.class })
+    @Event(handlers = {SuppliersPresenter.class, DemandsPresenter.class })
     void setLocalityData(ArrayList<LocalityDetail> list);
 
-    @Event(handlers = DisplaySuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
+    @Event(handlers = SuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
     void addToPath(CategoryDetail category);
 
-    @Event(handlers = DisplaySuppliersPresenter.class)
-    void removeFromPath(Long id);
+    @Event(handlers = SuppliersPresenter.class)
+    void removeFromPath(Long code);
 
-    @Event(handlers = DisplaySuppliersPresenter.class)
-    void setCategoryID(Long categoryID);
+    @Event(handlers = SuppliersPresenter.class)
+    void setCategoryID(Long categoryCode);
 
-    @Event(handlers = DisplaySuppliersPresenter.class)
+    @Event(handlers = SuppliersPresenter.class)
     void createAsyncDataProviderSupplier(final long totalFound);
 
     //DISPLAY DEMANDS

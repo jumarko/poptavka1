@@ -107,7 +107,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                     });
         } else {
             LOGGER.info(" --> child categories");
-            categoryService.getCategoryChildren(categoryId,
+            categoryService.getCategoryChildren(Long.valueOf(categoryId),
                     new AsyncCallback<ArrayList<CategoryDetail>>() {
                         @Override
                         public void onSuccess(ArrayList<CategoryDetail> list) {

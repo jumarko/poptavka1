@@ -212,13 +212,13 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID, Long localityID) {
+    public ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID, String localityCode) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria,
                 this.getAllSubcategories(categoryID),
-                this.getAllSublocalities(Long.toString(localityID))));
+                this.getAllSublocalities(localityCode)));
     }
 
     @Override
@@ -236,10 +236,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public Long getSuppliersCount(Long categoryID, Long localityID) {
+    public Long getSuppliersCount(Long categoryID, String localityCode) {
         return supplierService.getSuppliersCount(
                 this.getAllSubcategories(categoryID),
-                this.getAllSublocalities(Long.toString(localityID)));
+                this.getAllSublocalities(localityCode));
     }
 
     private ArrayList<UserDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
@@ -317,10 +317,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new LinkedList<Locality>();
 
-    private Category[] getAllSubcategories(long id) {
+    private Category[] getAllSubcategories(Long id) {
 
         //if stored are not what i am looking for, retrieve new/actual
-        if (categoriesHistory.isEmpty() || categoriesHistory.get(0).getId() != id) {
+        if (categoriesHistory.isEmpty() || !categoriesHistory.get(0).getCode().equals(id)) {
             //clear
             categoriesHistory = new LinkedList<Category>();
             //level 0

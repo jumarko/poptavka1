@@ -11,14 +11,13 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 @RemoteServiceRelativePath("service/category")
 public interface CategoryRPCService extends RemoteService {
 
-    // TODO is it used?
+    CategoryDetail getCategory(long id);
+
 //    CategoryDetail getCategory(String code);
 
     ArrayList<CategoryDetail> getCategories();
 
-    ArrayList<CategoryDetail> getCategoryChildren(String category);
-
-    CategoryDetail getCategory(long id);
+    ArrayList<CategoryDetail> getCategoryChildren(Long category);
 
     List<CategoryDetail> getAllRootCategories();
 }

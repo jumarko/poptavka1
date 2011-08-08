@@ -13,7 +13,7 @@ public interface SupplierRPCServiceAsync {
 
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 
-    void getSuppliers(int start, int count, Long categoryID, Long localityID,
+    void getSuppliers(int start, int count, Long categoryID, String localityCode,
             AsyncCallback<ArrayList<UserDetail>> callback);
 
     void getSuppliers(int start, int count, Long categoryID,
@@ -21,5 +21,5 @@ public interface SupplierRPCServiceAsync {
 
     void getSuppliersCount(Long categoryID, AsyncCallback<Long> callback);
 
-    void getSuppliersCount(Long categoryID, Long localityID, AsyncCallback<Long> callback);
+    void getSuppliersCount(Long categoryID, String localityCode, AsyncCallback<Long> callback);
 }

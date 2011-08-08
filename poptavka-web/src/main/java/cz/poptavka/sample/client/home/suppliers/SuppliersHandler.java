@@ -20,7 +20,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
-public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
+public class SuppliersHandler extends BaseEventHandler<HomeEventBus> {
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
@@ -70,7 +70,26 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
     }
     // *** GET CATEGORIES
     // ***************************************************************************
-    public void onGetSubCategories(final String category) {
+    /**
+     * Get all categories. Used for display in listBox categories.
+     */
+    public void onGetCategories() {
+        categoryService.getCategories(
+                new AsyncCallback<ArrayList<CategoryDetail>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<CategoryDetail> list) {
+                        eventBus.displayRootcategories(list);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable arg0) {
+                        LOGGER.info("onFailureCategory");
+                    }
+                });
+    }
+
+    public void onGetSubCategories(final Long category) {
         categoryService.getCategoryChildren(category, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -81,33 +100,14 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
                 LOGGER.info("Found subcategories: " + result.size());
-                eventBus.displaySubcategories(result, category);
+                eventBus.displaySubCategories(result, category);
             }
         });
     }
 
-    /**
-     * Get all categories. Used for display in listBox categories.
-     */
-    public void onGetCategories() {
-        categoryService.getCategories(
-                new AsyncCallback<ArrayList<CategoryDetail>>() {
-
-                    @Override
-                    public void onSuccess(ArrayList<CategoryDetail> list) {
-                        eventBus.displaySubcategories(list, null);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        LOGGER.info("onFailureCategory");
-                    }
-                });
-    }
-
     // *** GET CATEGORIES
     // ***************************************************************************
-    public void onGetSuppliersCountCategory(Long category) {
+    public void onGetSuppliersCountByCategory(Long category) {
         supplierService.getSuppliersCount(category, new AsyncCallback<Long>() {
 
             @Override
@@ -117,12 +117,11 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-//                eventBus.setResultCount(result);
                 eventBus.createAsyncDataProviderSupplier(result);
             }
         });
     }
-    public void onGetSuppliersCount(Long category, Long locality) {
+    public void onGetSuppliersCount(Long category, String locality) {
         supplierService.getSuppliersCount(category, locality, new AsyncCallback<Long>() {
 
             @Override
@@ -138,7 +137,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
         });
     }
 
-    public void onGetSuppliers2(int start, int count, Long category, Long locality) {
+    public void onGetSuppliersByCategoryLocality(int start, int count, Long category, String locality) {
         supplierService.getSuppliers(start, count, category, locality, new AsyncCallback<ArrayList<UserDetail>>() {
 
             @Override
@@ -153,7 +152,7 @@ public class DisplaySuppliersHandler extends BaseEventHandler<HomeEventBus> {
         });
     }
 
-    public void onGetSuppliers3(int start, int count, Long category) {
+    public void onGetSuppliersByCategory(int start, int count, Long category) {
         supplierService.getSuppliers(start, count, category, new AsyncCallback<ArrayList<UserDetail>>() {
 
             @Override

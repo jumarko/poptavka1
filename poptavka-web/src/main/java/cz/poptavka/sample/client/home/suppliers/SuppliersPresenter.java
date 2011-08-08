@@ -10,7 +10,6 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
@@ -23,23 +22,20 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.home.HomeEventBus;
 
-import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-@Presenter(view = DisplaySuppliersView.class)
-public class DisplaySuppliersPresenter
-        extends BasePresenter<DisplaySuppliersPresenter.DisplaySuppliersViewInterface, HomeEventBus> {
+@Presenter(view = SuppliersView.class)
+public class SuppliersPresenter
+        extends BasePresenter<SuppliersPresenter.SuppliersViewInterface, HomeEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    DisplaySuppliersPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    public interface DisplaySuppliersViewInterface { //extends LazyView {
+    public interface SuppliersViewInterface { //extends LazyView {
 
         ListBox getLocalityList();
 
@@ -47,7 +43,7 @@ public class DisplaySuppliersPresenter
 
         ListBox getPageSizeCombo();
 
-        Long getSelectedLocality();
+        String getSelectedLocality();
 
         AsyncDataProvider<SupplierDetail> getDataProvider();
 
@@ -59,42 +55,51 @@ public class DisplaySuppliersPresenter
 
         void removePath(); //removes last one
 
-        CellList getList();
+        CellList getSuppliersList();
 
         SimplePager getPager();
 
-        HorizontalPanel getPanel();
-
         Widget getWidgetView();
 
-        SingleSelectionModel getSelectionModel();
+        SingleSelectionModel getSelectionCategoryModel();
+
+        SingleSelectionModel getSelectionSupplierModel();
 
         SplitLayoutPanel getSplitter();
 
         void displaySubCategories(int columns, ArrayList<CategoryDetail> categories);
+
+        void displaySuppliersDetail(UserDetail userDetail);
     }
     private int columns = 4;
-    private Long lastUsedCategoryID = 0L;
+    private Long lastUsedCategoryID = null;
     private ArrayList<Long> historyTokens = new ArrayList<Long>();
 
     public void bind() {
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 eventBus.loadingShow(MSGS.loading());
-                CategoryDetail selected = (CategoryDetail) view.getSelectionModel().getSelectedObject();
-                //does it really need to be?
-//                if (selected.getParentName().equals("") || selected.getParentName() == null) {
-//                    root = true;
-//                }
+                CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
+
                 if (selected != null) {
-                    eventBus.getSuppliersCountCategory(selected.getId());
-                    eventBus.setCategoryID(Long.valueOf(selected.getId()));
+                    eventBus.setCategoryID(selected.getId());
                     historyTokens.add(selected.getId());
                     eventBus.addToPath(selected);
-                    eventBus.getSubCategories(Long.toString(selected.getId()));
-//                    eventBus.getSuppliers(Long.valueOf(selected.getId()), null);
+                    eventBus.getSubCategories(selected.getId());
+                }
+            }
+        });
+        view.getSelectionSupplierModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                eventBus.loadingShow(MSGS.loading());
+                UserDetail selected = (UserDetail) view.getSelectionSupplierModel().getSelectedObject();
+
+                if (selected != null) {
+                    view.displaySuppliersDetail(selected);
                 }
             }
         });
@@ -102,18 +107,19 @@ public class DisplaySuppliersPresenter
 
             @Override
             public void onChange(ChangeEvent event) {
-                eventBus.getSuppliers2(1, view.getPageSize(), lastUsedCategoryID, view.getSelectedLocality());
+                eventBus.getSuppliersByCategoryLocality(1, view.getPageSize(),
+                        lastUsedCategoryID, view.getSelectedLocality());
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                view.getList().setRowCount(0, true);
+                view.getSuppliersList().setRowCount(0, true);
 
                 int newPage = Integer.valueOf(view.getPageSize());
 
-                view.getList().setRowCount(newPage, true);
+                view.getSuppliersList().setRowCount(newPage, true);
 
                 int page = view.getPager().getPageStart() / view.getPager().getPageSize();
 
@@ -122,7 +128,6 @@ public class DisplaySuppliersPresenter
             }
         });
     }
-
     private AsyncDataProvider dataProvider = new AsyncDataProvider<SupplierDetail>() {
 
         @Override
@@ -131,7 +136,6 @@ public class DisplaySuppliersPresenter
             //will be implemented later, when allDemandsCount value will be retrieved
         }
     };
-
     private int start = 0;
 //    private long totalFound = 0;
 
@@ -144,46 +148,30 @@ public class DisplaySuppliersPresenter
                 display.setRowCount((int) totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                if (view.getSelectedLocality() == null) {
-                    eventBus.getSuppliers3(start, start + length, lastUsedCategoryID);
+                if (view.getLocalityList().getSelectedIndex() == 0) {
+                    eventBus.getSuppliersByCategory(start, start + length, lastUsedCategoryID);
                 } else {
-                    eventBus.getSuppliers2(start, start + length, lastUsedCategoryID, view.getSelectedLocality());
+                    eventBus.getSuppliersByCategoryLocality(start, start + length,
+                            lastUsedCategoryID, view.getSelectedLocality());
                 }
                 eventBus.loadingHide();
             }
         };
-        this.dataProvider.addDataDisplay(view.getList());
+        this.dataProvider.addDataDisplay(view.getSuppliersList());
     }
 
-//    public void onSetTotalFound(long count) {
-//        this.totalFound = count;
-//    }
-
-    public void onSetCategoryID(Long categoryID) {
-        this.lastUsedCategoryID = categoryID;
-    }
-
-//    private String category = "root";
-
-    public void onAddToPath(CategoryDetail categoryDetail) {
-        Hyperlink link = new Hyperlink(" -> " + categoryDetail.getName(),
-                "!public/addToPath?" + categoryDetail.getId());
-//        link.addStyleName("cz.poptavka.sample.client.resources.StyleResource.layout.homeMenu");
-        view.addPath(link);
-    }
-
-    public void onAtSuppliers() {
+    /**
+     * Called from suppliers display widget root by click on one of root category.
+     * Methods initialize Path, fills category list of Suppliers widget.
+     * @param category
+     */
+    public void onAtDisplaySuppliers(Long category) {
         eventBus.loadingShow(MSGS.loading());
-        root = true;
-        //
-        view.getSplitter().getWidget(1).setVisible(false);
-        view.getSplitter().getWidget(2).setVisible(false);
-        view.getPath().setVisible(false);
         //
         view.getPath().clear();
         historyTokens.clear();
         //
-        eventBus.getCategories();
+        eventBus.getSubCategories(category);
         eventBus.getLocalities();
 
         Hyperlink link = new Hyperlink("root", "!public/addToPath?root");
@@ -191,24 +179,24 @@ public class DisplaySuppliersPresenter
         eventBus.setBodyWidget(view.getWidgetView());
     }
 
-    public void onDisplaySubcategories(ArrayList<CategoryDetail> subcategories, String category) {
-        if (root) {
-            root = false;
-        } else {
-            view.getSplitter().getWidget(1).setVisible(true);
-            view.getSplitter().getWidget(2).setVisible(true);
-            view.getPath().setVisible(true);
-        }
+    /**
+     * Cares for displaying sub categories of chosen parent category and displaying suppliers for
+     * chosen selection of sub categories and parent category.
+     * @param subcategories
+     * @param parentCategory
+     */
+    public void onDisplaySubCategories(ArrayList<CategoryDetail> subcategories, Long parentCategory) {
         view.displaySubCategories(columns, subcategories);
-        if (category != null) {
-//            eventBus.getSuppliers3(0, view.getPageSize(), Long.valueOf(category));
-            eventBus.getSuppliersCountCategory(Long.valueOf(category));
+        lastUsedCategoryID = parentCategory;
+        if (parentCategory != null) {
+            eventBus.getSuppliersCountByCategory(parentCategory);
         }
         eventBus.loadingHide();
     }
-    private List<Supplier> suppliers = Arrays.asList(
-            new Supplier(), new Supplier(), new Supplier(), new Supplier());
-    private boolean root = true;
+
+    public void onDisplaySuppliers(ArrayList<UserDetail> list) {
+        view.getSuppliersList().setRowData(start, list);
+    }
 
     /**
      * Fills locality listBox with given list of localities.
@@ -233,6 +221,12 @@ public class DisplaySuppliersPresenter
         });
     }
 
+    public void onAddToPath(CategoryDetail categoryDetail) {
+        Hyperlink link = new Hyperlink(" -> " + categoryDetail.getName(),
+                "!public/addToPath?" + categoryDetail.getId());
+        view.addPath(link);
+    }
+
     public void onRemoveFromPath(Long id) {
         int idx = historyTokens.indexOf(id);
         for (int i = 0; i < historyTokens.size();) {
@@ -244,17 +238,8 @@ public class DisplaySuppliersPresenter
             }
         }
     }
-// Nemusi byt riesu asynchDataProvider nie??
-//    public void onGetSuppliers(Long category, Long locality) {
-//        LOGGER.info("GetSuppliers(long,long): '" + category + "' '" + locality + "'");
-//        if (locality == null) {
-//            eventBus.getSuppliers3(1, view.getPageSize(), category);
-//        } else {
-//            eventBus.getSuppliers2(1, view.getPageSize(), category, locality);
-//        }
-//    }
 
-    public void onDisplaySuppliers(ArrayList<UserDetail> list) {
-        view.getList().setRowData(start, list);
+    public void onSetCategoryID(Long categoryID) {
+        this.lastUsedCategoryID = categoryID;
     }
 }

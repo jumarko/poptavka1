@@ -1,12 +1,9 @@
 package cz.poptavka.sample.client.home.suppliers;
 
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.ValueUpdater;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -14,10 +11,10 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
@@ -28,33 +25,40 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
 
-public class DisplaySuppliersView extends OverflowComposite
-        implements DisplaySuppliersPresenter.DisplaySuppliersViewInterface {
+public class SuppliersView extends OverflowComposite
+        implements SuppliersPresenter.SuppliersViewInterface {
 
-    private static DisplaySuppliersViewUiBinder uiBinder = GWT.create(DisplaySuppliersViewUiBinder.class);
+    private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
 
-    interface DisplaySuppliersViewUiBinder extends UiBinder<Widget, DisplaySuppliersView> {
+    interface SuppliersViewUiBinder extends UiBinder<Widget, SuppliersView> {
     }
     private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     @UiField(provided = true)
-    CellList list;
+    CellList suppliersList, categoriesList;
     @UiField(provided = true)
     SimplePager pager;
     @UiField
-    HorizontalPanel panel;
-    @UiField
     FlowPanel path;
-    @UiField
-    SplitLayoutPanel split;
+//    @UiField
+//    SplitLayoutPanel split;
     @UiField(provided = true)
     ListBox pageSize;
     @UiField
     ListBox localityList;
-    private final SingleSelectionModel<CategoryDetail> selectionModel = new SingleSelectionModel<CategoryDetail>();
+    @UiField
+    Label overallRating, certified, description, verification, localities,
+    categories, services, bsuRoles, addresses, businessType, email, companyName,
+    identificationNumber, firstName, lastName, phone, reklama;
+    @UiField
+    SimplePanel detail;
+    private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
+            new SingleSelectionModel<CategoryDetail>();
+    private final SingleSelectionModel<CategoryDetail> selectionSupplierModel =
+            new SingleSelectionModel<CategoryDetail>();
     private AsyncDataProvider dataProvider;
 
-    public DisplaySuppliersView() {
+    public SuppliersView() {
         pageSize = new ListBox();
         pageSize.addItem("5");
         pageSize.addItem("10");
@@ -65,7 +69,9 @@ public class DisplaySuppliersView extends OverflowComposite
         pageSize.setSelectedIndex(2);
         initCellList();
         initWidget(uiBinder.createAndBindUi(this));
+        reklama.setVisible(true);
 
+        detail.setVisible(false);
         LOGGER.info("CreateView pre DisplaySuppliers");
     }
 
@@ -95,11 +101,11 @@ public class DisplaySuppliersView extends OverflowComposite
     }
 
     @Override
-    public Long getSelectedLocality() {
+    public String getSelectedLocality() {
         if (localityList.getSelectedIndex() == 0) {
             return null;
         } else {
-            return Long.valueOf(localityList.getValue(localityList.getSelectedIndex()));
+            return localityList.getValue(localityList.getSelectedIndex());
         }
     }
 
@@ -125,8 +131,8 @@ public class DisplaySuppliersView extends OverflowComposite
     }
 
     @Override
-    public CellList getList() {
-        return list;
+    public CellList getSuppliersList() {
+        return suppliersList;
     }
 
     @Override
@@ -135,66 +141,62 @@ public class DisplaySuppliersView extends OverflowComposite
     }
 
     @Override
-    public HorizontalPanel getPanel() {
-        return panel;
+    public SingleSelectionModel getSelectionCategoryModel() {
+        return selectionCategoryModel;
     }
 
     @Override
-    public SingleSelectionModel getSelectionModel() {
-        return selectionModel;
+    public SingleSelectionModel getSelectionSupplierModel() {
+        return selectionSupplierModel;
     }
 
     @Override
     public SplitLayoutPanel getSplitter() {
-        return split;
+        return null; //split;
     }
-    private boolean root = true;
 
     private void initCellList() {
         // Use the cell in a CellList.
-        list = new CellList<UserDetail>(new SupplierCell());
+        suppliersList = new CellList<UserDetail>(new SupplierCell());
+        suppliersList.setSelectionModel(selectionSupplierModel);
+        categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
+        categoriesList.setSelectionModel(selectionCategoryModel);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
-        pager.setDisplay(list);
+        pager.setDisplay(suppliersList);
     }
 
     @Override
-    public void displaySubCategories(int columns, ArrayList<CategoryDetail> categories) {
-        if (categories.isEmpty()) {
-            panel.clear();
-            return;
-        }
-        panel.clear();
-        int size = categories.size();
-        int subSize = 0;
-        int startIdx = 0;
-        if (size < columns) {
-            columns = size;
-        }
-        while (columns != 0) {
-            if (size % columns == 0) {
-                subSize = size / columns;
-            } else {
-                subSize = size / columns + 1;
-            }
-            CellList cellList = null;
-            if (root) {
-                cellList = new CellList<CategoryDetail>(new RootCategoryCell());
-            } else {
-                cellList = new CellList<CategoryDetail>(new SubCategoryCell());
-            }
-            cellList.setRowCount(subSize, true);
-            cellList.setSelectionModel(selectionModel);
-            cellList.setRowData(categories.subList(startIdx, startIdx + subSize));
-            panel.add(cellList);
-            startIdx += subSize;
-            size -= subSize;
-            columns--;
-        }
-        root = false;
+    public void displaySubCategories(int columns, ArrayList<CategoryDetail> subCategories) {
+        categoriesList.setRowCount(subCategories.size(), true);
+        categoriesList.setRowData(0, subCategories);
+    }
+
+    @Override
+    public void displaySuppliersDetail(UserDetail userDetail) {
+        reklama.setVisible(false);
+        detail.setVisible(true);
+
+        overallRating.setText(Integer.toString(userDetail.getSupplier().getOverallRating()));
+        certified.setText(Boolean.toString(userDetail.getSupplier().isCertified()));
+        description.setText(userDetail.getSupplier().getDescription());
+//    verification = userDetail.get
+        localities.setText(userDetail.getSupplier().getLocalities().toString());
+        categories.setText(userDetail.getSupplier().getCategories().toString());
+//    services = userDetail.getSupplier().
+//    bsuRoles = userDetail.getSupplier().
+        addresses.setText(userDetail.getAddress().toString());
+//    businessType = userDetail.get
+        email.setText(userDetail.getEmail());
+        companyName.setText(userDetail.getCompanyName());
+        identificationNumber.setText(userDetail.getIdentifiacationNumber());
+        firstName.setText(userDetail.getFirstName());
+        lastName.setText(userDetail.getLastName());
+        phone.setText(userDetail.getPhone());
+
     }
 }
 
@@ -208,25 +210,25 @@ class SupplierCell extends AbstractCell<UserDetail> {
          * Let the parent class know that our cell responds to click events and
          * keydown events.
          */
-        super("click", "keydown");
+//        super("click", "keydown");
     }
 
-    @Override
-    public void onBrowserEvent(Context context, Element parent, UserDetail value,
-            NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
-        // Check that the value is not null.
-        if (value == null) {
-            return;
-        }
-
-        // Call the super handler, which handlers the enter key.
-        super.onBrowserEvent(context, parent, value, event, valueUpdater);
-
-        // On click, perform the same action that we perform on enter.
-        if ("click".equals(event.getType())) {
-            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
-        }
-    }
+//    @Override
+//    public void onBrowserEvent(Context context, Element parent, UserDetail value,
+//            NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
+//        // Check that the value is not null.
+//        if (value == null) {
+//            return;
+//        }
+//
+//        // Call the super handler, which handlers the enter key.
+//        super.onBrowserEvent(context, parent, value, event, valueUpdater);
+//
+//        // On click, perform the same action that we perform on enter.
+//        if ("click".equals(event.getType())) {
+//            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
+//        }
+//    }
 
     @Override
     public void render(Context context, UserDetail value, SafeHtmlBuilder sb) {
@@ -241,14 +243,14 @@ class SupplierCell extends AbstractCell<UserDetail> {
 
         //TODO Martin Logo??
         sb.appendHtmlConstant("<div><a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"> "
-                + "<img style=\"float: left; margin-right: 10px;padding: 0px; width: 80px;\" "
+                + "<img style=\"float: left; margin-right: 10px;padding: 0px; width: 50px;\" "
                 + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"  "
                 + "alt=\"http://s-car.sk\"  > </a>");
 
 
         //Company Name
         if (value.getCompanyName() != null) {
-            sb.appendHtmlConstant("<a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"><strong>1.)");
+            sb.appendHtmlConstant("<a href=\"#\"><strong>1.)");
             sb.appendEscaped(value.getCompanyName());
             sb.appendHtmlConstant("</strong> </a>");
         }
@@ -282,39 +284,11 @@ class SupplierCell extends AbstractCell<UserDetail> {
      * key. This provides a consistent user experience when users use keyboard
      * navigation in the widget.
      */
-    @Override
-    protected void onEnterKeyDown(Context context, Element parent,
-            UserDetail value, NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
-        Window.alert("You clicked " + value.getSupplierId());
-    }
-}
-
-/**
- * Root Category Cell .
- */
-class RootCategoryCell extends AbstractCell<CategoryDetail> {
-
-    @Override
-    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
-
-        StringBuilder text = new StringBuilder();
-
-        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-        text.append(" (");
-        text.append(value.getSuppliers());
-        text.append(")");
-
-        sb.appendEscaped(text.toString());
-//        sb.appendHtmlConstant("</div>");
-    }
+//    @Override
+//    protected void onEnterKeyDown(Context context, Element parent,
+//            UserDetail value, NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
+//        Window.alert("You clicked " + value.getSupplierId());
+//    }
 }
 
 /**

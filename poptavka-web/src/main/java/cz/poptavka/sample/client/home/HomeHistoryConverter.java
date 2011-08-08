@@ -38,7 +38,7 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
             } else {
                 eventBus.setCategoryID(Long.valueOf(param));
                 eventBus.removeFromPath(Long.valueOf(param));
-                eventBus.getSubCategories(param);
+                eventBus.getSubCategories(Long.valueOf(param));
             }
         }
         if (historyName.equals("atCreateDemand")) {

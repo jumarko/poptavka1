@@ -17,6 +17,6 @@ public interface CategoryRPCServiceAsync {
 
     void getCategories(AsyncCallback<ArrayList<CategoryDetail>> callback);
 
-    void getCategoryChildren(String category,
+    void getCategoryChildren(Long category,
             AsyncCallback<ArrayList<CategoryDetail>> callback);
 }

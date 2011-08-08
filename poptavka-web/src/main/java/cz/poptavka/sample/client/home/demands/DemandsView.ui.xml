@@ -23,7 +23,7 @@
     </ui:style>
         
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:north size="300">
+        <g:west size="600">
             <g:ScrollPanel>
                 <g:HTMLPanel>
                     <table width="100%">
@@ -57,7 +57,7 @@
                     
                 </g:HTMLPanel>
             </g:ScrollPanel>
-        </g:north>
+        </g:west>
         <g:center>
             <g:ScrollPanel>
                 <g:HTMLPanel>
