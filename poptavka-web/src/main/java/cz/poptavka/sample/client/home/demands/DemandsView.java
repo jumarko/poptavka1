@@ -29,8 +29,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import java.util.Random;
 
 /**
@@ -52,7 +51,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     @UiField
     Label bannerLabel;
     @UiField(provided = true)
-    CellTable<DemandDetail> cellTable;
+    CellTable<DemandDetailForDisplayDemands> cellTable;
     @UiField(provided = true)
     SimplePager pager;
 
@@ -61,7 +60,8 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     @UiField Label textArea;
 
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private final SingleSelectionModel<DemandDetail> selectionModel = new SingleSelectionModel<DemandDetail>();
+    private final SingleSelectionModel<DemandDetailForDisplayDemands> selectionModel =
+            new SingleSelectionModel<DemandDetailForDisplayDemands>();
     private AsyncDataProvider dataProvider;
 
     @Override
@@ -117,17 +117,17 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
 
     @Override
-    public AsyncDataProvider<DemandDetail> getDataProvider() {
+    public AsyncDataProvider<DemandDetailForDisplayDemands> getDataProvider() {
         return dataProvider;
     }
 
     @Override
-    public void setDataProvider(AsyncDataProvider<DemandDetail> dataProvider) {
+    public void setDataProvider(AsyncDataProvider<DemandDetailForDisplayDemands> dataProvider) {
         this.dataProvider = dataProvider;
     }
 
     @Override
-    public CellTable<DemandDetail> getCellTable() {
+    public CellTable<DemandDetailForDisplayDemands> getCellTable() {
         return cellTable;
     }
 
@@ -146,7 +146,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      */
     private void initCellTable() {
         // Create a CellTable.
-        cellTable = new CellTable<DemandDetail>();
+        cellTable = new CellTable<DemandDetailForDisplayDemands>();
         cellTable.setWidth("100%", true);
         cellTable.setRowCount(Integer.valueOf(combo.getItemText(combo.getSelectedIndex())), true);
 
@@ -168,22 +168,22 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         // TODO Martin - opravit ak bude dostupny datum vlozenia
         addColumn(new TextCell(), bundle.createdDate(), 30, new GetValue<String>() {
 
-            public String getValue(FullDemandDetail fullDemandDetail) {
+            public String getValue(DemandDetailForDisplayDemands demandDetail) {
                 //TODO Martin dorobit rozdelenie casu a datumu podla niecoho
                 //if (...) {
-                //DateTimeFormat.getFormat("hh:mm").format(fullDemandDetail.getEndDate());
+                //DateTimeFormat.getFormat("hh:mm").format(demandDetail.getEndDate());
                 //}
-                return DateTimeFormat.getFormat("MM.dd.yyyy").format(fullDemandDetail.getEndDate());
+                return DateTimeFormat.getFormat("dd.MM.yyyy").format(demandDetail.getCreated());
             }
         });
 
         // Root category info
         addColumn(new TextCell(), bundle.category(), 40, new GetValue<String>() {
 
-            public String getValue(FullDemandDetail fullDemandDetail) {
-                if (fullDemandDetail.getCategories() != null
-                        && fullDemandDetail.getCategories().size() != 0) {
-                    return fullDemandDetail.getCategories().get(0);
+            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+                if (demandDetail.getCategories() != null
+                        && demandDetail.getCategories().size() != 0) {
+                    return demandDetail.getCategories().get(0);
                 } else {
                     return "";
                 }
@@ -193,18 +193,18 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         // Demand Info
         addColumn(new TextCell(), bundle.demand(), 100, new GetValue<String>() {
 
-            public String getValue(FullDemandDetail fullDemandDetail) {
-                return fullDemandDetail.getTitle();
+            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+                return demandDetail.getTitle();
             }
         });
 
         // Mesto
         addColumn(new TextCell(), bundle.locality(), 40, new GetValue<String>() {
 
-            public String getValue(FullDemandDetail fullDemandDetail) {
-                if (fullDemandDetail.getLocalities() != null
-                        && fullDemandDetail.getLocalities().size() != 0) {
-                    return fullDemandDetail.getLocalities().get(0);
+            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+                if (demandDetail.getLocalities() != null
+                        && demandDetail.getLocalities().size() != 0) {
+                    return demandDetail.getLocalities().get(0);
                 } else {
                     return "";
                 }
@@ -214,7 +214,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         // Urgencia
         addColumn(new ImageStatus(), bundle.urgency(), 40, new GetValue<Date>() {
 
-            public Date getValue(FullDemandDetail object) {
+            public Date getValue(DemandDetailForDisplayDemands object) {
                 return object.getEndDate();
             }
         });
@@ -222,14 +222,14 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
         // Cena
         addColumn(new TextCell(), bundle.price(), 30, new GetValue<String>() {
 
-            public String getValue(FullDemandDetail fullDemandDetail) {
-                return String.valueOf(fullDemandDetail.getPrice());
+            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+                return String.valueOf(demandDetail.getPrice());
             }
         });
     }
 
     @Override
-    public SingleSelectionModel<DemandDetail> getSelectionModel() {
+    public SingleSelectionModel<DemandDetailForDisplayDemands> getSelectionModel() {
         return selectionModel;
     }
 
@@ -256,7 +256,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
 
             long diffSec = value.getTime() - (new Date()).getTime();
             long diffDays = diffSec / (1000 * 60 * 60 * 24);
-            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
+//            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
 
             //TODO Martin - i18
             if ((int) diffDays <= 4) { //(0-4) velmi specha
@@ -295,7 +295,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      */
     private static interface GetValue<C> {
 
-        C getValue(FullDemandDetail contact);
+        C getValue(DemandDetailForDisplayDemands contact);
     }
 
     /**
@@ -310,13 +310,13 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
      * @param getter
      *            the value getter for the cell
      */
-    private <C> Column<DemandDetail, C> addColumn(Cell<C> cell,
+    private <C> Column<DemandDetailForDisplayDemands, C> addColumn(Cell<C> cell,
             String headerText, int width, final GetValue<C> getter) {
-        Column<DemandDetail, C> column = new Column<DemandDetail, C>(cell) {
+        Column<DemandDetailForDisplayDemands, C> column = new Column<DemandDetailForDisplayDemands, C>(cell) {
 
             @Override
-            public C getValue(DemandDetail object) {
-                return getter.getValue((FullDemandDetail) object);
+            public C getValue(DemandDetailForDisplayDemands demand) {
+                return getter.getValue(demand);
             }
         };
         cellTable.addColumn(column, headerText);
@@ -325,7 +325,7 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
     }
 
     @Override
-    public void setDemand(FullDemandDetail demand) {
+    public void setDemand(DemandDetailForDisplayDemands demand) {
         infoTable.clear();
         textArea.setText("");
 
@@ -353,9 +353,9 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
             infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
         }
 
-        if (demand.getValidToDate() != null) {
+        if (demand.getValidTo() != null) {
             infoTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
+            infoTable.setWidget(row++, 1, new Label(demand.getValidTo().toString()));
         }
 
         if (demand.getDemandType() != null) {
@@ -374,9 +374,6 @@ public class DemandsView extends OverflowComposite implements DemandsPresenter.D
             infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()
                     .substring(1, demand.getLocalities().toString().length() - 1)));
         }
-
-        infoTable.setWidget(row, 0, new Label(bundle.offers() + ":"));
-        infoTable.setWidget(row++, 1, new Label(Integer.toString(demand.getMaxOffers())));
 
         if (demand.getPrice() != null) {
             infoTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));

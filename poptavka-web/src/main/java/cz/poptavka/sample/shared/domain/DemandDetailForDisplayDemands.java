@@ -3,14 +3,11 @@ package cz.poptavka.sample.shared.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
-import cz.poptavka.sample.shared.domain.type.DemandDetailType;
+import java.math.BigDecimal;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
@@ -18,82 +15,75 @@ import cz.poptavka.sample.shared.domain.type.DemandDetailType;
  * @author Beho
  *
  */
-public class DemandDetailForDisplayDemands extends BaseDemandDetail implements Serializable, DemandDetail {
+public class DemandDetailForDisplayDemands implements Serializable {
+
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
 
     public enum DemandField {
+
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
-
+    private Long id;
     private ArrayList<String> localities;
     private ArrayList<String> categories;
-    private long clientId;
-    private int maxOffers;
     private int minRating;
+    private Date created;
+    private Date endDate;
+    private Date validTo;
+    private String title;
+    private String description;
+    private String type;
+    private String status;
+    private BigDecimal price;
 
-    private String demandType;
-    private String demandStatus;
-
-    /** for serialization. **/
     public DemandDetailForDisplayDemands() {
-        super();
-        setType(DemandDetailType.FULL);
     }
 
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
-     * @return DemandDetail
-     */
-    public static DemandDetail createDemandDetail(Demand demand) {
-        DemandDetailForDisplayDemands detail =
-                (DemandDetailForDisplayDemands) BaseDemandDetail
-                .fillDemandDetail(new DemandDetailForDisplayDemands(), demand);
-        detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
-        detail.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
-        //categories
-        ArrayList<String> catList = new ArrayList<String>();
-        for (Category cat : demand.getCategories()) {
-            catList.add(cat.getName());
+    public static DemandDetailForDisplayDemands createDetail(Date created, Demand demand) {
+        DemandDetailForDisplayDemands detail = new DemandDetailForDisplayDemands();
+        if (demand == null) {
+            return detail;
         }
-        detail.setCategories(catList);
-        //localities
-        ArrayList<String> locList = new ArrayList<String>();
-        for (Locality loc : demand.getLocalities()) {
-            locList.add(loc.getName());
+        demand.getId();
+        detail.setCreated(created);
+        detail.setEndDate(demand.getEndDate());
+        detail.setPrice(demand.getPrice());
+        detail.setTitle(demand.getTitle());
+        detail.setValidTo(demand.getValidTo());
+        detail.setDescription(demand.getDescription());
+        ArrayList<String> categories = new ArrayList<String>();
+        if (demand.getCategories() != null) {
+            for (Category category : demand.getCategories()) {
+                categories.add(category.getName());
+            }
         }
-        detail.setLocalities(locList);
-        detail.setDemandStatus(demand.getStatus().getValue());
-        detail.setDemandType(demand.getType().getType().getValue());
-        detail.setClientId(demand.getClient().getId());
+        ArrayList<String> localities = new ArrayList<String>();
+        if (demand.getLocalities() != null) {
+            for (Locality locality : demand.getLocalities()) {
+                localities.add(locality.getName());
+            }
+        }
+        detail.setCategories(categories);
+        detail.setCategories(localities);
+
+        if (demand.getStatus() != null) {
+            detail.setStatus(demand.getStatus().getValue());
+        }
+        if (demand.getType() != null) {
+            detail.setType(demand.getType().toString());
+        }
         return detail;
     }
 
-    public void setBasicInfo(HashMap<DemandField, Object> map) {
-        this.setTitle((String) map.get(DemandField.TITLE));
-        this.setDescription((String) map.get(DemandField.DESCRIPTION));
-        this.setPrice((String) map.get(DemandField.PRICE));
-        this.setEndDate((Date) map.get(DemandField.FINISH_DATE));
-        this.setValidToDate((Date) map.get(DemandField.VALID_TO_DATE));
+    public Long getId() {
+        return id;
     }
 
-    public void setAdvInfo(HashMap<DemandField, Object> map) {
-        this.maxOffers = (Integer) map.get(DemandField.MAX_OFFERS);
-        this.minRating = (Integer) map.get(DemandField.MIN_RATING);
-        this.demandType = (String) map.get(DemandField.DEMAND_TYPE);
-    }
-
-    //---------------------------- GETTERS AND SETTERS --------------------
-
-    public ArrayList<String> getLocalities() {
-        return localities;
-    }
-
-    public void setLocalities(ArrayList<String> localities) {
-        this.localities = localities;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public ArrayList<String> getCategories() {
@@ -104,20 +94,20 @@ public class DemandDetailForDisplayDemands extends BaseDemandDetail implements S
         this.categories = categories;
     }
 
-    public long getClientId() {
-        return clientId;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setClientId(long clientId) {
-        this.clientId = clientId;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
-    public int getMaxOffers() {
-        return maxOffers;
+    public ArrayList<String> getLocalities() {
+        return localities;
     }
 
-    public void setMaxOffers(int maxOffers) {
-        this.maxOffers = maxOffers;
+    public void setLocalities(ArrayList<String> localities) {
+        this.localities = localities;
     }
 
     public int getMinRating() {
@@ -128,32 +118,77 @@ public class DemandDetailForDisplayDemands extends BaseDemandDetail implements S
         this.minRating = minRating;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getDemandType() {
-        return demandType;
+        return type;
     }
 
-    public void setDemandType(String demandType) {
-        this.demandType = demandType;
+    public void setDemandType(String type) {
+        this.type = type;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
     @Override
     public String toString() {
         return "* FullDemandDetail:"
                 + "\n     localities="
                 + localities + "\n     categories="
                 + categories + "\n     clientId="
-                + clientId + "\n     maxOffers="
-                + maxOffers + "\n     minRating="
                 + minRating + "\n     demandType="
-                + demandType + "\n     demandStatus="
-                + demandStatus;
-    }
-
-    public String getDemandStatus() {
-        return demandStatus;
-    }
-
-    public void setDemandStatus(String demandStatus) {
-        this.demandStatus = demandStatus;
+                + type + "\n     demandStatus="
+                + status;
     }
 }

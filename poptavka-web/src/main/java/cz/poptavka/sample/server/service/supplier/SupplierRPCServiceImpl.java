@@ -320,7 +320,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private Category[] getAllSubcategories(Long id) {
 
         //if stored are not what i am looking for, retrieve new/actual
-        if (categoriesHistory.isEmpty() || !categoriesHistory.get(0).getCode().equals(id)) {
+        if (categoriesHistory.isEmpty() || !categoriesHistory.get(0).getId().equals(id)) {
             //clear
             categoriesHistory = new LinkedList<Category>();
             //level 0

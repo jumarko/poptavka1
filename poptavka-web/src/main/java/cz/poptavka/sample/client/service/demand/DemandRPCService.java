@@ -15,6 +15,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -39,19 +40,19 @@ public interface DemandRPCService extends RemoteService {
 
     Long getDemandsCountByLocality(String code);
 
-    List<DemandDetail> getDemands(ResultCriteria resultCriteria);
+    List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria);
 
-    List<DemandDetail> getDemands(Locality[] localities);
+    List<DemandDetailForDisplayDemands> getDemands(Locality[] localities);
 
-    List<DemandDetail> getDemands(Category[] categories);
+    List<DemandDetailForDisplayDemands> getDemands(Category[] categories);
 
-    List<DemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
+    List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Locality[] localities);
 
-    List<DemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories);
+    List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Category[] categories);
 
-    List<DemandDetail> getDemandsByCategory(int fromResult, int toResult, long id);
+    List<DemandDetailForDisplayDemands> getDemandsByCategory(int fromResult, int toResult, long id);
 
-    List<DemandDetail> getDemandsByLocality(int fromResult, int toResult, String code);
+    List<DemandDetailForDisplayDemands> getDemandsByLocality(int fromResult, int toResult, String code);
 
     ArrayList<DemandDetail> getClientDemands(long id);
 
@@ -68,6 +69,6 @@ public interface DemandRPCService extends RemoteService {
 
     Demand getWholeDemand(Long demandId);
 
-    List<DemandDetail> getDemands(int fromResult, int toResult);
+    List<DemandDetailForDisplayDemands> getDemands(int fromResult, int toResult);
 
 }

@@ -20,9 +20,9 @@ import cz.poptavka.sample.client.home.suppliers.RootPresenter;
 import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Collection;
 
@@ -249,10 +249,10 @@ public interface HomeEventBus extends EventBus {
     void setCategoryData(ArrayList<CategoryDetail> list);
 
     @Event(handlers = DemandsPresenter.class)
-    void displayDemands(Collection<DemandDetail> result);
+    void displayDemands(Collection<DemandDetailForDisplayDemands> result);
 
     @Event(handlers = DemandsPresenter.class)
-    void setDemand(DemandDetail demand);
+    void setDemand(DemandDetailForDisplayDemands demand);
 
     @Event(handlers = DemandsPresenter.class)
     void createAsyncDataProvider();

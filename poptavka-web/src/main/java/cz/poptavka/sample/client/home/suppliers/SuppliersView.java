@@ -12,9 +12,9 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
@@ -51,7 +51,7 @@ public class SuppliersView extends OverflowComposite
     categories, services, bsuRoles, addresses, businessType, email, companyName,
     identificationNumber, firstName, lastName, phone, reklama;
     @UiField
-    SimplePanel detail;
+    HTMLPanel detail;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>();
     private final SingleSelectionModel<CategoryDetail> selectionSupplierModel =

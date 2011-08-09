@@ -44,42 +44,170 @@
                     <g:ScrollPanel>-->
             <g:VerticalPanel>
                 <g:Label ui:field="reklama" >Reklama</g:Label>
-                <g:SimplePanel ui:field="detail">
-                    <g:HTMLPanel>
-                    <g:Label>Company name: </g:Label> 
-                    <g:Label ui:field="companyName"/>
-                    <g:Label>Business type: </g:Label>
-                    <g:Label ui:field="businessType"/>
-                    <g:Label>Identification number: </g:Label>
-                    <g:Label ui:field="identificationNumber"/>
-                    <g:Label>Overall rating: </g:Label>
-                    <g:Label ui:field="overallRating"/>
-                    <g:Label>Certified: </g:Label>
-                    <g:Label ui:field="certified"/>
-                    <g:Label>First name: </g:Label>
-                    <g:Label ui:field="firstName"/>
-                    <g:Label>Last name: </g:Label>
-                    <g:Label ui:field="lastName"/>
-                    <g:Label>Phone: </g:Label>
-                    <g:Label ui:field="phone"/>
-                    <g:Label>Email: </g:Label>
-                    <g:Label ui:field="email"/>
-                    <g:Label>Addresses: </g:Label>
-                    <g:Label ui:field="addresses"/>
-                    <g:Label>Description: </g:Label>
-                    <g:Label ui:field="description"/>
-                    <g:Label>Verification: </g:Label>
-                    <g:Label ui:field="verification"/>
-                    <g:Label>Localities: </g:Label>
-                    <g:Label ui:field="localities"/>
-                    <g:Label>Categories: </g:Label>
-                    <g:Label ui:field="categories"/>
-                    <g:Label>Services: </g:Label>
-                    <g:Label ui:field="services"/>
-                    <g:Label>BsuRoles: </g:Label>
-                    <g:Label ui:field="bsuRoles"/>
-                    </g:HTMLPanel>
-                </g:SimplePanel>
+                <g:HTMLPanel ui:field="detail">
+                    <table>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="comapanyName">Company name: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="companyName"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="type">Business type: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="businessType"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="identification">Identification number:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="identificationNumber"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="ranking">Overall rating:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="overallRating"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="certified">Certified: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="certified"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="firstName">First name:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="firstName"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="lastName">Last name: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="lastName"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="phone">Phone: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="phone"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="email">Email: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="email"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="addresses#">Addresses: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="addresses"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="description">Description: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="description"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="verification">Verification: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="verification"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="localities">Localities: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="localities"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="categories">Categories: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="categories"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="services">Services: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="services"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label>
+                                    <ui:msg key="bsuRoles">BsuRoles: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:Label ui:field="bsuRoles"/>
+                            </td>
+                        </tr>
+                    </table>
+                </g:HTMLPanel>
             </g:VerticalPanel>
                     <!--</g:ScrollPanel>
                 </g:center>
