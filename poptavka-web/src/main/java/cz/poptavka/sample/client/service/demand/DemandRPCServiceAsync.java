@@ -11,9 +11,9 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.type.ViewType;
 
 public interface DemandRPCServiceAsync {
 
@@ -60,6 +60,8 @@ public interface DemandRPCServiceAsync {
 
     void getDemands(int fromResult, int toResult, AsyncCallback<List<DemandDetailForDisplayDemands>> callback);
 
-    void getDemandDetail(Long demandId, ViewType typeOfDetail, AsyncCallback<DemandDetail> callback);
+    void getFullDemandDetail(Long demandId, AsyncCallback<FullDemandDetail> callback);
+
+    void getBaseDemandDetail(Long demandId, AsyncCallback<BaseDemandDetail> callback);
 
 }

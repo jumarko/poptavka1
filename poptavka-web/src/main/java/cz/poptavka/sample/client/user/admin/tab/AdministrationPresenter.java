@@ -76,13 +76,13 @@ public class AdministrationPresenter
 
         SimplePanel getAdminOfferDetail();
     }
-
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
     public void onInvokeAdministration() {
         // TODO ivlcek - ktoru event mam volat skor? Je v tom nejaky rozdiel?
 //        eventBus.getAllDemands();
         eventBus.displayContent(view.getWidgetView());
         eventBus.getAllDemands();
+
     }
 
     public void onSetAllDemands(List<DemandDetail> fullDemandDetails) {

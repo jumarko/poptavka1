@@ -1,6 +1,7 @@
 package cz.poptavka.sample.shared.domain.demand;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import cz.poptavka.sample.shared.domain.type.DemandDetailType;
  * @author Beho
  *
  */
-public class FullDemandDetail extends BaseDemandDetail implements Serializable, DemandDetail {
+public class FullDemandDetail implements Serializable {
     /**
      * Generated serialVersionUID.
      */
@@ -35,6 +36,23 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
     private String demandType;
     private String demandStatus;
 
+    private static final String HTML_UNREAD_START = "<strong>";
+    private static final String HTML_UNREAD_END = "</strong>";
+    private DemandDetailType detailType = DemandDetailType.BASE;
+
+    private long demandId;
+    // messageId = threadRoot
+    private long messageId;
+    private long userMessageId;
+    private boolean read;
+    private boolean starred;
+    private Date endDate;
+    private Date validToDate;
+
+    private String title;
+    private String description;
+    private BigDecimal price;
+
     /** for serialization. **/
     public FullDemandDetail() {
         super();
@@ -46,8 +64,14 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
      * @param demand
      * @return DemandDetail
      */
-    public static DemandDetail createDemandDetail(Demand demand) {
-        FullDemandDetail detail = (FullDemandDetail) BaseDemandDetail.fillDemandDetail(new FullDemandDetail(), demand);
+    public static FullDemandDetail createDemandDetail(Demand demand) {
+        FullDemandDetail detail = new FullDemandDetail();
+        detail.setDemandId(demand.getId());
+        detail.setTitle(demand.getTitle());
+        detail.setDescription(demand.getDescription());
+        detail.setPrice(demand.getPrice());
+        detail.setEndDate(demand.getEndDate());
+        detail.setValidToDate(demand.getValidTo());
         detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
         detail.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
         //categories
@@ -135,7 +159,18 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
     @Override
     public String toString() {
 
-        return super.toString()
+        return "\nGlobal Demand Detail Info"
+                + "\n- BaseDemandDetail:"
+                + "\n    demandId="
+                + demandId + "\n     title="
+                + title + "\n    Description="
+                + description + "\n  Price="
+                + price + "\n    endDate="
+                + endDate + "\n  validToDate="
+                + validToDate + "\n  isRead="
+                + read + "\n     isStarred="
+                + starred + "\n  detailType="
+                + detailType + "\n"
                 + "* FullDemandDetail:"
                 + "\n     localities="
                 + localities + "\n     categories="
@@ -153,5 +188,112 @@ public class FullDemandDetail extends BaseDemandDetail implements Serializable, 
 
     public void setDemandStatus(String demandStatus) {
         this.demandStatus = demandStatus;
+    }
+
+    public DemandDetailType getDetailType() {
+        return detailType;
+    }
+
+    public void setDetailType(DemandDetailType detailType) {
+        this.detailType = detailType;
+    }
+
+    public long getDemandId() {
+        return demandId;
+    }
+
+    public void setDemandId(long demandId) {
+        this.demandId = demandId;
+    }
+
+    public long getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
+    }
+
+    public long getUserMessageId() {
+        return userMessageId;
+    }
+
+    public void setUserMessageId(long userMessageId) {
+        this.userMessageId = userMessageId;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getValidToDate() {
+        return validToDate;
+    }
+
+    public void setValidToDate(Date validToDate) {
+        this.validToDate = validToDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setType(DemandDetailType detailType) {
+        this.detailType = detailType;
+    }
+
+    public void setPrice(String price) {
+        if (price.equals("") || price.equals("null")) {
+            this.price = null;
+        } else {
+            this.price = BigDecimal.valueOf(Long.valueOf(price));
+        }
+    }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public static String displayHtml(String trustedHtml, boolean isRead) {
+        if (isRead) {
+            return trustedHtml;
+        } else {
+            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
+        }
     }
 }

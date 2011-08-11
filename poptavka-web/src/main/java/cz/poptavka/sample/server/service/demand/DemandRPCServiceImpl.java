@@ -41,9 +41,7 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
  * @author Excalibur
@@ -257,8 +255,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public List<DemandDetail> getAllDemands() {
-        List<DemandDetail> fullDemandDetails = new ArrayList<DemandDetail>();
+    public List<FullDemandDetail> getAllDemands() {
+        List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (Demand demand : demandService.getAll()) {
             fullDemandDetails.add(FullDemandDetail.createDemandDetail(demand));
         }
@@ -267,11 +265,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public List<DemandDetailForDisplayDemands> getDemands(Locality... localities) {
+
         return this.createDemandDetailList(demandService.getDemands(localities));
     }
 
     @Override
     public List<DemandDetailForDisplayDemands> getDemands(Category... categories) {
+
         return this.createDemandDetailList(demandService.getDemands(categories));
     }
 
@@ -284,12 +284,11 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return this.createDemandDetailList(demandService.getAll(resultCriteria));
     }
 
-    @Override
     public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
+
         return this.createDemandDetailList(demandService.getDemands(resultCriteria, localities));
     }
 
-    @Override
     public List<DemandDetailForDisplayDemands> getDemandsByCategory(int fromResult, int toResult, long id) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
@@ -321,8 +320,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return categoriesHistory.toArray(new Category[categoriesHistory.size()]);
     }
 
-    @Override
     public List<DemandDetailForDisplayDemands> getDemandsByLocality(int fromResult, int toResult, String code) {
+
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(fromResult)
                 .maxResults(toResult)
@@ -354,7 +353,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public ArrayList<DemandDetail> getClientDemands(long id) {
+    public ArrayList<FullDemandDetail> getClientDemands(long id) {
         Client client = clientService.getById(id);
         return this.toDemandDetailList(client.getDemands());
     }
@@ -384,13 +383,14 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return fullDemandDetails;
     }
 
-    @Override
+
     public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Category[] categories) {
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -410,15 +410,17 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public DemandDetail getDemandDetail(Long demandId, ViewType typeOfDetail) {
-        switch (typeOfDetail) {
-            case EDITABLE:
-                return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
-            case POTENTIAL:
-                return BaseDemandDetail.createDemandDetail(this.demandService.getById(demandId));
-            default:
-                return null;
-        }
+    public FullDemandDetail getFullDemandDetail(Long demandId) {
+
+        return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+
+    }
+
+    @Override
+    public BaseDemandDetail getBaseDemandDetail(Long demandId) {
+
+        return BaseDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+
     }
 
     @Override

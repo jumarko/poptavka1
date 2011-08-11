@@ -29,6 +29,7 @@ import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
@@ -131,7 +132,10 @@ public interface UserEventBus extends EventBusWithLookup {
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setDemandDetail(DemandDetail detail, ViewType typeOfDetail);
+    void setFullDemandDetail(FullDemandDetail detail);
+
+    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    void setBaseDemandDetail(BaseDemandDetail detail);
 
     /** method for displaying conversation to selected demand. **/
     @Event(handlers = {UserPresenter.class, DetailWrapperPresenter.class })

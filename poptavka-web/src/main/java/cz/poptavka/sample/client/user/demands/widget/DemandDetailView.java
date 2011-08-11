@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 public class DemandDetailView extends Composite {
@@ -23,18 +22,14 @@ public class DemandDetailView extends Composite {
     @UiField ParagraphElement descArea;
     @UiField SpanElement typeSpan;
 
-    public DemandDetailView(DemandDetail demand) {
+    public DemandDetailView(FullDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
-        switch (demand.getType()) {
-            case BASE:
-                init((BaseDemandDetail) demand);
-                break;
-            case FULL:
-                init((BaseDemandDetail) demand);
-                break;
-            default:
-                break;
-        }
+        init((FullDemandDetail) demand);
+    }
+
+    public DemandDetailView(BaseDemandDetail demand) {
+        initWidget(uiBinder.createAndBindUi(this));
+        init((BaseDemandDetail) demand);
     }
 
     private void init(BaseDemandDetail demand) {

@@ -8,7 +8,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
 
 
-public class BaseDemandDetail implements Serializable, DemandDetail {
+public class BaseDemandDetail implements Serializable {
 
     /**
      *
@@ -39,11 +39,11 @@ public class BaseDemandDetail implements Serializable, DemandDetail {
      * @param demand
      * @return FullDemandDetail
      */
-    public static DemandDetail createDemandDetail(Demand demand) {
+    public static BaseDemandDetail createDemandDetail(Demand demand) {
         return fillDemandDetail(new BaseDemandDetail(), demand);
     }
 
-    public static DemandDetail fillDemandDetail(DemandDetail detail, Demand demand) {
+    public static BaseDemandDetail fillDemandDetail(BaseDemandDetail detail, Demand demand) {
         detail.setDemandId(demand.getId());
         detail.setTitle(demand.getTitle());
         detail.setDescription(demand.getDescription());
@@ -166,7 +166,6 @@ public class BaseDemandDetail implements Serializable, DemandDetail {
         this.detailType = detailType;
     }
 
-    @Override
     public DemandDetailType getType() {
         return detailType;
     }

@@ -27,7 +27,6 @@ import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 
@@ -49,8 +48,8 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
     }
 
 
-    protected ArrayList<DemandDetail> toDemandDetailList(List<Demand> list) {
-        ArrayList<DemandDetail> details = new ArrayList<DemandDetail>();
+    protected ArrayList<FullDemandDetail> toDemandDetailList(List<Demand> list) {
+        ArrayList<FullDemandDetail> details = new ArrayList<FullDemandDetail>();
         for (Demand demand : list) {
             details.add(FullDemandDetail.createDemandDetail(demand));
         }

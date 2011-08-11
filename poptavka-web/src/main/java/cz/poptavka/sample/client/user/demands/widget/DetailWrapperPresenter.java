@@ -17,7 +17,8 @@ import cz.poptavka.sample.client.user.messages.OfferWindowPresenter;
 import cz.poptavka.sample.client.user.messages.QuestionPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
@@ -69,15 +70,17 @@ public class DetailWrapperPresenter extends
      * @param typeOfDetail
      *            type of what detail section should handle this event
      */
-    public void onSetDemandDetail(DemandDetail detail, ViewType typeOfDetail) {
-        if (!typeOfDetail.equals(type)) {
-            return;
-        }
+    public void onSetFullDemandDetail(FullDemandDetail detail) {
         view.setDetail(new DemandDetailView(detail));
         // GUI visual event
         toggleDetailLoading();
     }
 
+    public void onSetBaseDemandDetail(BaseDemandDetail detail) {
+        view.setDetail(new DemandDetailView(detail));
+        // GUI visual event
+        toggleDetailLoading();
+    }
     /**
      * Loads conversation
      *

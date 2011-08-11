@@ -18,6 +18,7 @@ import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
@@ -114,17 +115,34 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
      * Get Detail according to demand id.
      */
     public void onGetDemandDetail(Long demandId, final ViewType typeOfDetail) {
-        demandService.getDemandDetail(demandId, typeOfDetail, new AsyncCallback<DemandDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert(caught.getMessage());
-            }
+        if (typeOfDetail.equals(ViewType.EDITABLE)) {
+            demandService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert(caught.getMessage());
+                }
 
-            @Override
-            public void onSuccess(DemandDetail result) {
-                eventBus.setDemandDetail(result, typeOfDetail);
-            }
-        });
+                @Override
+                public void onSuccess(FullDemandDetail result) {
+                    eventBus.setFullDemandDetail(result);
+                }
+            });
+        }
+
+        if (typeOfDetail.equals(ViewType.POTENTIAL)) {
+            demandService.getBaseDemandDetail(demandId, new AsyncCallback<BaseDemandDetail>() {
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert(caught.getMessage());
+                }
+
+                @Override
+                public void onSuccess(BaseDemandDetail result) {
+                    eventBus.setBaseDemandDetail(result);
+                }
+            });
+        }
+
     }
 
     public void onGetDemandOffers(long demandId, long threadRootId) {
