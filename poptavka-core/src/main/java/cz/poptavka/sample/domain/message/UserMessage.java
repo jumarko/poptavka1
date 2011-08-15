@@ -9,6 +9,8 @@ import cz.poptavka.sample.domain.user.User;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * Stores message attributes for a given user.
@@ -17,6 +19,29 @@ import javax.persistence.ManyToOne;
  *         Date 12.4.11
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "getUserMessageThreads",
+                query = "select userMessage.message "
+                        + " from UserMessage userMessage"
+                        + " where userMessage.user = :user"),
+
+        @NamedQuery(name = "getPotentialDemandConversation",
+                query = " select userMessage.message"
+                        + " from UserMessage userMessage"
+                        + " where "
+                        // either message itself is thread root or it has given thread root
+                        + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
+                        + "   and userMessage.user = :supplier and userMessage.message.offer is null"),
+
+        @NamedQuery(name = "getPotentialOfferConversation",
+                query = " select userMessage.message"
+                        + " from UserMessage userMessage"
+                        + " where "
+                        // either message itself is thread root or it has given thread root
+                        + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
+                        + "   and userMessage.user = :supplier and userMessage.message.offer is not null") }
+)
+
 public class UserMessage extends DomainObject {
     private boolean isRead;
     private boolean isStarred;

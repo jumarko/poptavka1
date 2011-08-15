@@ -22,10 +22,8 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
-import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
-import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
@@ -188,8 +186,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         message.setCreated(new Date());
         message.setDemand(demand);
         message.setLastModified(new Date());
-        /* TODO Vojto should be removed and put to the new sendMessage method */
-        message.setMessageState(MessageState.SENT);
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
@@ -201,28 +197,12 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
             messageUserRoles.add(messageUserRole);
         }
-        MessageUserRole messageUserRole = new MessageUserRole();
-        messageUserRole.setMessage(message);
-        messageUserRole.setType(MessageUserRoleType.SENDER);
-        messageUserRole.setMessageContext(MessageContext.NEW_CLIENTS_DEMAND);
-        messageUserRole.setUser(demand.getClient().getBusinessUser());
-        messageUserRoles.add(messageUserRole);
-        message.setRoles(messageUserRoles);
         message.setSender(demand.getClient().getBusinessUser());
-        message.setSent(new Date());
+
         message.setSubject(demand.getTitle());
         message.setThreadRoot(message);
         message = messageService.create(message);
-        /* TODO Vojto create a dedicated method for sending a message that
-         would handle UserMessage creation etc. */
-        for (Supplier supplier : suppliers) {
-            UserMessage userMessage = new UserMessage();
-            userMessage.setIsRead(false);
-            userMessage.setIsStarred(false);
-            userMessage.setMessage(message);
-            userMessage.setUser(supplier.getBusinessUser());
-            generalService.save(userMessage);
-        }
+        messageService.send(message);
     }
 
     /**

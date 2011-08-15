@@ -124,15 +124,15 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public UserDetail verifyClient(UserDetail clientDetail) {
-        final List<Client> peristedClient = this.clientService.searchByCriteria(
+        final List<Client> clientFromDB = this.clientService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
                 .withEmail(clientDetail.getEmail())
                 .withPassword(clientDetail.getPassword())
                 .build());
-        if (peristedClient.isEmpty()) {
+        if (clientFromDB.isEmpty()) {
             return new UserDetail();
         } else {
-            Client user = peristedClient.get(0);
+            Client user = clientFromDB.get(0);
             return toUserDetail(user.getBusinessUser().getId(), user.getBusinessUser().getBusinessUserRoles());
         }
     }

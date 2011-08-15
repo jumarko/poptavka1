@@ -107,5 +107,13 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      */
     List<Message> getAllDescendants(List<Message> messages);
 
+    /**
+     * Sends a message to the given recipients
+     * @param message
+     * @param to direct recipients
+     * @param cc carbon copy (to the attention of)
+     * @param bcc blind carbon copy
+     */
+    void send(Message message);
 
 }

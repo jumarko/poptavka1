@@ -4,10 +4,15 @@ import cz.poptavka.sample.dao.message.MessageDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.MessageState;
+import cz.poptavka.sample.domain.message.MessageUserRole;
+import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import java.util.ArrayList;
+import java.util.Date;
 
 import java.util.List;
 import java.util.Map;
@@ -17,9 +22,12 @@ import java.util.Map;
  *         Date: 4.5.11
  */
 public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> implements MessageService {
+    private GeneralService generalService;
 
-    public MessageServiceImpl(MessageDao messageDao) {
+    public MessageServiceImpl(MessageDao messageDao,
+            GeneralService generalService) {
         setDao(messageDao);
+        this.generalService = generalService;
     }
 
     @Override
@@ -95,8 +103,32 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     }
 
+    @Override
     public List<Message> getAllDescendants(List<Message> messages) {
         return getDao().getAllDescendants(messages);
+    }
+
+    @Override
+    public void send(Message message) {
+        if (message.getMessageState() != MessageState.COMPOSED) {
+            // throw new MessageCannotBeSentException
+        }
+        for (MessageUserRole role : message.getRoles()) {
+            if ((role.getType() == MessageUserRoleType.TO)
+                    || (role.getType() == MessageUserRoleType.CC)
+                    || (role.getType() == MessageUserRoleType.BCC)) {
+                // we got one of the recipients of the message
+                UserMessage userMessage = new UserMessage();
+                userMessage.setIsRead(false);
+                userMessage.setIsStarred(false);
+                userMessage.setMessage(message);
+                userMessage.setUser(role.getUser());
+                generalService.save(userMessage);
+            }
+        }
+        message.setMessageState(MessageState.SENT);
+        message.setLastModified(new Date());
+        message.setSent(new Date());
     }
 
 
