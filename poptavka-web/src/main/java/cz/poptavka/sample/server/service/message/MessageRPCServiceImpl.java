@@ -32,11 +32,8 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
@@ -104,7 +101,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param fakeParam - ignorovat
      * @return messageDetails je ArrayList, ktory obsahuje objekty MessageDetail
      */
-    public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) {
+    public ArrayList<MessageDetailImpl> getClientDemands(long businessUserId, int fakeParam) {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
                 businessUser,
@@ -112,10 +109,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 withMessageUserRoleType(MessageUserRoleType.SENDER).
                 withMessageContext(MessageContext.NEW_CLIENTS_DEMAND).
                 withResultCriteria(ResultCriteria.EMPTY_CRITERIA).build());
-        ArrayList<MessageDetail> details = new ArrayList<MessageDetail>();
+        ArrayList<MessageDetailImpl> details = new ArrayList<MessageDetailImpl>();
 
         for (Message m : messages) {
-            MessageDetail md = new MessageDetailImpl();
+            MessageDetailImpl md = new MessageDetailImpl();
             md.setMessageId(m.getId());
             md.setThreadRootId(md.getMessageId());
             md.setParentId(md.getMessageId());
@@ -172,7 +169,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param messageDetailImpl
      * @return message
      */
-    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) {
+    public MessageDetailImpl sendQueryToPotentialDemand(MessageDetailImpl messageDetailImpl) {
         Message m = new Message();
         m.setBody(messageDetailImpl.getBody());
         m.setCreated(new Date());
@@ -209,7 +206,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageUserRoles.add(messageFromUserRole);
         m.setRoles(messageUserRoles);
         // TODO set the id correctly, check it
-        MessageDetail messageDetailPersisted = MessageDetailImpl.createMessageDetail(this.messageService.create(m));
+        MessageDetailImpl messageDetailPersisted = MessageDetailImpl.createMessageDetail(this.messageService.create(m));
         // TODO set children for parent message - check if it is correct
         parentMessage.getChildren().add(m);
         parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
@@ -224,7 +221,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param offer
      * @return message
      */
-    public OfferMessageDetail sendOffer(OfferMessageDetail offer) {
+    public OfferMessageDetailImpl sendOffer(OfferMessageDetailImpl offer) {
 //        Offer o = new Offer();
 //        o.setCreated(new Date());
 //        o.setDemand(this.generalService.find(Demand.class, offer.getDemandId()));
@@ -290,7 +287,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     @Override
     // TODO call setMessageReadStatus in body
-    public ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(
+    public ArrayList<MessageDetailImpl> loadSuppliersPotentialDemandConversation(
             long threadId, long userId, long userMessageId) {
         Message threadRoot = messageService.getById(threadId);
 
@@ -299,19 +296,19 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
                 threadRoot, user);
-        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
+        ArrayList<MessageDetailImpl> messageDetailImpls = new ArrayList<MessageDetailImpl>();
         for (Message message : messages) {
             messageDetailImpls.add(MessageDetailImpl.createMessageDetail(message));
         }
         return messageDetailImpls;
     }
 
-    public ArrayList<MessageDetail> loadClientsPotentialOfferConversation(long threadId, long userId) {
+    public ArrayList<MessageDetailImpl> loadClientsPotentialOfferConversation(long threadId, long userId) {
         Message threadRoot = messageService.getById(threadId);
         User user = this.generalService.find(User.class, userId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialOfferConversation(
                 threadRoot, user);
-        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
+        ArrayList<MessageDetailImpl> messageDetailImpls = new ArrayList<MessageDetailImpl>();
         for (Message message : messages) {
             messageDetailImpls.add(MessageDetailImpl.createMessageDetail(message));
         }
@@ -367,7 +364,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * nie.
      */
     @Override
-    public ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId) {
+    public ArrayList<OfferDemandMessageImpl> getOfferDemands(long businessUserId) {
 
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
@@ -383,9 +380,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
         // fill list
 
-        ArrayList<OfferDemandMessage> offerDemands = new ArrayList<OfferDemandMessage>();
+        ArrayList<OfferDemandMessageImpl> offerDemands = new ArrayList<OfferDemandMessageImpl>();
         for (UserMessage m : userMessages) {
-            OfferDemandMessage om = OfferDemandMessageImpl.createMessageDetail(m);
+            OfferDemandMessageImpl om = OfferDemandMessageImpl.createMessageDetail(m);
             System.out.println("X X " + m.getMessage().getDemand().getEndDate());
             offerDemands.add(om);
         }
@@ -393,8 +390,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
     @Override
-    public ArrayList<MessageDetail> getClientDemandConversations(long threadRootId) {
-        ArrayList<MessageDetail> childrenList = new ArrayList<MessageDetail>();
+    public ArrayList<MessageDetailImpl> getClientDemandConversations(long threadRootId) {
+        ArrayList<MessageDetailImpl> childrenList = new ArrayList<MessageDetailImpl>();
 
         Message root = messageService.getById(threadRootId);
         List<Message> threads = root.getChildren();
@@ -404,12 +401,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return childrenList;
     }
 
-    public ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) {
+    public ArrayList<MessageDetailImpl> getConversationMessages(long threadRootId, long subRootId) {
         Message root = messageService.getById(threadRootId);
         Message subRoot = messageService.getById(subRootId);
         List<Message> conversation = messageService.getAllDescendants(subRoot);
 
-        ArrayList<MessageDetail> result = new ArrayList<MessageDetail>();
+        ArrayList<MessageDetailImpl> result = new ArrayList<MessageDetailImpl>();
         // add root and subRoot message
         result.add(MessageDetailImpl.createMessageDetail(root));
         result.add(MessageDetailImpl.createMessageDetail(subRoot));
@@ -418,4 +415,5 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
         return result;
     }
+
 }

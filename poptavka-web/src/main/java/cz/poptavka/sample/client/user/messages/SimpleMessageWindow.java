@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
 /**
  * Dummy message with no actions, just to display data.
@@ -49,7 +49,7 @@ public class SimpleMessageWindow extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public SimpleMessageWindow(MessageDetail message, boolean isCollapsed) {
+    public SimpleMessageWindow(MessageDetailImpl message, boolean isCollapsed) {
         this();
         setMessage(message);
         setCollapsed(isCollapsed);
@@ -63,12 +63,12 @@ public class SimpleMessageWindow extends Composite {
      * @param collapsed define if this newly created message should be collapsed
      * @param style if true, message is set as first, if false message is set as last!
      */
-    public SimpleMessageWindow(MessageDetail message, boolean collapsed, MessageDisplayType style) {
+    public SimpleMessageWindow(MessageDetailImpl message, boolean collapsed, MessageDisplayType style) {
         this(message, collapsed);
         setMessageStyle(style);
     }
 
-    public void setMessage(MessageDetail message) {
+    public void setMessage(MessageDetailImpl message) {
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
         // author
         tableColumns.getItem(0).setInnerText(message.getSubject());

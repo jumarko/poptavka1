@@ -19,9 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 
 /**
@@ -135,22 +133,9 @@ public class OfferQuestionWindow extends Composite implements OfferQuestionPrese
     }
 
     @Override
-    public MessageDetail getCreatedMessage() {
-        MessageDetail message = null;
-        if (selectedResponse.equals(RESPONSE_OFFER)) {
-            OfferMessageDetail offer = new OfferMessageDetailImpl();
-            Long price = null;
-            try {
-                price = Long.parseLong(priceBox.getValue());
-            } catch (Exception ex) {
-                price = 0L;
-            }
-            offer.setPrice(BigDecimal.valueOf(price));
-            offer.setEndDate(dateBox.getValue());
-            message = offer;
-        } else {
-            message = new MessageDetailImpl();
-        }
+    public MessageDetailImpl getCreatedMessage() {
+        MessageDetailImpl message = null;
+        message = new MessageDetailImpl();
         message.setBody(replyTextArea.getText());
         message.setDemandId(demandId);
         return message;
@@ -199,6 +184,21 @@ public class OfferQuestionWindow extends Composite implements OfferQuestionPrese
     @Override
     public void setResponseToQuestion() {
         selectedResponse = RESPONSE_QUESTION;
+    }
+
+    @Override
+    public OfferMessageDetailImpl getCreatedOfferMessage() {
+        OfferMessageDetailImpl offerMessageDetailImpl = new OfferMessageDetailImpl();
+        Long price = null;
+        try {
+            price = Long.parseLong(priceBox.getValue());
+        } catch (Exception ex) {
+            price = 0L;
+        }
+        offerMessageDetailImpl.setPrice(BigDecimal.valueOf(price));
+        offerMessageDetailImpl.setEndDate(dateBox.getValue());
+
+        return offerMessageDetailImpl;
     }
 
 }

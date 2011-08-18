@@ -8,7 +8,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 
 /**
  * Widget for potentail demands view. Enables supplier to send an offer or just ask question.
@@ -27,7 +28,9 @@ public class OfferQuestionPresenter extends LazyPresenter<OfferQuestionPresenter
 
         boolean isValid();
 
-        MessageDetail getCreatedMessage();
+        MessageDetailImpl getCreatedMessage();
+
+        OfferMessageDetailImpl getCreatedOfferMessage();
 
         void setSendingStyle();
 
@@ -49,7 +52,7 @@ public class OfferQuestionPresenter extends LazyPresenter<OfferQuestionPresenter
         view.addClickHandler(submitButtonHandler);
     }
 
-    public MessageDetail getCreatedMessage() {
+    public MessageDetailImpl getCreatedMessage() {
         view.setSendingStyle();
         return view.getCreatedMessage();
     }

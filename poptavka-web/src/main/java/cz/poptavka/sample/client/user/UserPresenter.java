@@ -26,8 +26,8 @@ import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
@@ -200,11 +200,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             accessDenied();
         }
     }
-    public void onBubbleMessageSending(MessageDetail messageToSend, ViewType viewType) {
+    public void onBubbleMessageSending(MessageDetailImpl messageToSend, ViewType viewType) {
         messageToSend.setSenderId(user.getUserId());
         eventBus.sendMessageToPotentialDemand(messageToSend, viewType);
     }
-    public void onBubbleOfferSending(OfferMessageDetail offerToSend) {
+    public void onBubbleOfferSending(OfferMessageDetailImpl offerToSend) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             offerToSend.setSenderId(user.getUserId());
             offerToSend.setSupplierId(user.getSupplierId());

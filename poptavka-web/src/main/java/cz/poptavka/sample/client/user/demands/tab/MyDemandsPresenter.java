@@ -22,7 +22,7 @@ import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandConversationTable;
 import cz.poptavka.sample.client.user.demands.widget.table.SingleDemandConversationTable;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = MyDemandsView.class, multiple = true)
@@ -46,8 +46,8 @@ public class MyDemandsPresenter extends
 
         // TODO maybe will be need type change
         SingleDemandConversationTable getConversationTable();
-        ListDataProvider<MessageDetail> getConversationProvider();
-        NoSelectionModel<MessageDetail> getConversationTableModel();
+        ListDataProvider<MessageDetailImpl> getConversationProvider();
+        NoSelectionModel<MessageDetailImpl> getConversationTableModel();
 
         SimplePanel getDetailSection();
 
@@ -70,7 +70,7 @@ public class MyDemandsPresenter extends
         view.getConversationTableModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                MessageDetail detail = view.getConversationTableModel().getLastSelectedObject();
+                MessageDetailImpl detail = view.getConversationTableModel().getLastSelectedObject();
                 eventBus.requestSingleConversation(detail.getThreadRootId(), detail.getMessageId());
             }
         });
@@ -78,7 +78,7 @@ public class MyDemandsPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 view.swapTables();
-                view.getConversationProvider().setList(new ArrayList<MessageDetail>());
+                view.getConversationProvider().setList(new ArrayList<MessageDetailImpl>());
             }
         });
     }
@@ -107,11 +107,11 @@ public class MyDemandsPresenter extends
     }
 
     // CHILD TABLE
-    public void onSetDemandConversations(ArrayList<MessageDetail> conversations) {
+    public void onSetDemandConversations(ArrayList<MessageDetailImpl> conversations) {
         // TODO need to be implemented according to type of messageDetail
-        List<MessageDetail> list = view.getConversationProvider().getList();
+        List<MessageDetailImpl> list = view.getConversationProvider().getList();
         list.clear();
-        for (MessageDetail m : conversations) {
+        for (MessageDetailImpl m : conversations) {
             list.add(m);
         }
         GWT.log("Conversation DATA SIZE: " + list.size());

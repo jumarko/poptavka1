@@ -9,7 +9,6 @@ import com.google.gwt.core.client.GWT;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
 
 public class FullOfferDetail implements Serializable {
@@ -25,7 +24,7 @@ public class FullOfferDetail implements Serializable {
     private long messageId;
     private long offerId;
     private String supplierName;
-    private MessageDetail messageDetail;
+    private MessageDetailImpl messageDetail;
     private String state;
 
     public static OfferDetail generateOfferDetail(Message message) {
@@ -121,14 +120,14 @@ public class FullOfferDetail implements Serializable {
     /**
      * @return the messageDetail
      */
-    public MessageDetail getMessageDetail() {
+    public MessageDetailImpl getMessageDetail() {
         return messageDetail;
     }
 
     /**
      * @param messageDetail the messageDetail to set
      */
-    public void setMessageDetail(MessageDetail messageDetailImpl) {
+    public void setMessageDetail(MessageDetailImpl messageDetailImpl) {
         this.messageDetail = messageDetailImpl;
     }
 

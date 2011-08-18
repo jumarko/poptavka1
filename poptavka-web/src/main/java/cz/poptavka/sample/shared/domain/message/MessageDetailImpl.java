@@ -14,7 +14,7 @@ import cz.poptavka.sample.shared.domain.type.MessageType;
  *
  * @author ivan.vlcek
  */
-public class MessageDetailImpl implements Serializable, MessageDetail {
+public class MessageDetailImpl implements Serializable {
 
     /**
      * Generated serialVersionUID.
@@ -34,11 +34,11 @@ public class MessageDetailImpl implements Serializable, MessageDetail {
     private long senderId;
     private long receiverId;
 
-    public static MessageDetail createMessageDetail(Message message) {
+    public static MessageDetailImpl createMessageDetail(Message message) {
         return fillMessageDetail(new MessageDetailImpl(), message);
     }
 
-    public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {
+    public static MessageDetailImpl fillMessageDetail(MessageDetailImpl detail, Message message) {
         detail.setMessageId(message.getId());
         detail.setBody(message.getBody());
         detail.setCreated(message.getCreated());
@@ -253,7 +253,6 @@ public class MessageDetailImpl implements Serializable, MessageDetail {
         return sb.toString();
     }
 
-    @Override
     public MessageType getMessageType() {
         return MessageType.CONVERSATION;
     }

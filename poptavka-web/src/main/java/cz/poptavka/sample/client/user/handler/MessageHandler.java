@@ -14,10 +14,10 @@ import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
-import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
@@ -30,14 +30,14 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // Beho: ??? needed ???
     public void onGetClientDemands(Long userId, int fakeParameter) {
-        messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<MessageDetail>>() {
+        messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<MessageDetailImpl>>() {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("MessageHandler: onGetClientDemands:\n\n" + caught.getMessage());
             }
 
             @Override
-            public void onSuccess(ArrayList<MessageDetail> result) {
+            public void onSuccess(ArrayList<MessageDetailImpl> result) {
 //                eventBus.responseClientDemands(result);
             }
         });
@@ -60,36 +60,37 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onRequestDemandConversations(long messageId) {
-        messageService.getClientDemandConversations(messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
+        messageService.getClientDemandConversations(messageId, new AsyncCallback<ArrayList<MessageDetailImpl>>() {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("MessageHandler: onRequestDemandConversations:\n\n" + caught.getMessage());
             }
 
             @Override
-            public void onSuccess(ArrayList<MessageDetail> conversations) {
+            public void onSuccess(ArrayList<MessageDetailImpl> conversations) {
                 eventBus.setDemandConversations(conversations);
             }
         });
     }
 
     public void onRequestSingleConversation(long threadRootId, long messageId) {
-        messageService.getConversationMessages(threadRootId, messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("MessageHandler: onRequestSingleConversation:\n\n" + caught.getMessage());
-            }
+        messageService.getConversationMessages(threadRootId, messageId,
+                new AsyncCallback<ArrayList<MessageDetailImpl>>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("MessageHandler: onRequestSingleConversation:\n\n" + caught.getMessage());
+                    }
 
-            @Override
-            public void onSuccess(ArrayList<MessageDetail> result) {
-                eventBus.setSingleDemandConversation(result);
-            }
-        });
+                    @Override
+                    public void onSuccess(ArrayList<MessageDetailImpl> result) {
+                        eventBus.setSingleDemandConversation(result);
+                    }
+                });
     }
 
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
+                new AsyncCallback<ArrayList<MessageDetailImpl>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -97,20 +98,20 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                     }
 
                     @Override
-                    public void onSuccess(ArrayList<MessageDetail> messageList) {
+                    public void onSuccess(ArrayList<MessageDetailImpl> messageList) {
                         GWT.log("Conversation size: " + messageList.size());
                         eventBus.setPotentialDemandConversation(messageList, ViewType.POTENTIAL);
                         // TODO delete
                         /** DEBUG INFO **/
-                        for (MessageDetail m : messageList) {
+                        for (MessageDetailImpl m : messageList) {
                             GWT.log(m.toString());
                         }
                     }
                 });
     }
 
-    public void onSendMessageToPotentialDemand(MessageDetail messageToSend, final ViewType viewType) {
-        messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
+    public void onSendMessageToPotentialDemand(MessageDetailImpl messageToSend, final ViewType viewType) {
+        messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetailImpl>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -120,13 +121,13 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(MessageDetail result) {
+            public void onSuccess(MessageDetailImpl result) {
                 eventBus.addMessageToPotentailDemandConversation(result, viewType);
             }
         });
     }
 
-    public void onSendDemandOffer(OfferMessageDetail offerToSend) {
+    public void onSendDemandOffer(OfferMessageDetailImpl offerToSend) {
         GWT.log(" ** Offer demand ID: " + offerToSend.getDemandId());
         Window.alert("* * * DEMAND OFFER CREATED * * *\n\n" + offerToSend.toString());
 //        messageService.sendOffer(offerToSend, new AsyncCallback<OfferMessageDetail>() {
@@ -182,7 +183,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      */
     public void onGetPotentialDemands(long businessUserId) {
         messageService.getPotentialDemands(businessUserId,
-                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
+                new AsyncCallback<ArrayList<PotentialDemandMessageImpl>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList"
@@ -191,7 +192,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onSuccess(
-                            ArrayList<PotentialDemandMessage> result) {
+                            ArrayList<PotentialDemandMessageImpl> result) {
                         GWT.log("Result size: " + result.size());
                         eventBus.responsePotentialDemands(result);
                     }
@@ -204,7 +205,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      * @param clientId
      */
     public void onGetClientDemandsWithOffers(Long businessUserId) {
-        messageService.getOfferDemands(businessUserId, new AsyncCallback<ArrayList<OfferDemandMessage>>() {
+        messageService.getOfferDemands(businessUserId, new AsyncCallback<ArrayList<OfferDemandMessageImpl>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -212,7 +213,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(ArrayList<OfferDemandMessage> result) {
+            public void onSuccess(ArrayList<OfferDemandMessageImpl> result) {
                 eventBus.responseClientDemandsWithOffers(result);
             }
         });
