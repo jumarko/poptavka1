@@ -38,19 +38,19 @@ public class DemandsLayoutPresenter
 
         void setContent(Widget contentWidget);
 
+        //menu client
         void setMyDemandsToken(String link);
 
         void setOffersToken(String link);
 
         void setNewDemandToken(String link);
 
+        void setAllDemandsToken(String linkString);
+
+        void setAllSuppliersToken(String linkString);
+
+        //menu supplier
         void setPotentialDemandsToken(String link);
-
-        void setMyDemandsOperatorToken(String linkString);
-
-        void setMyProblemsToken(String linkString);
-
-        void setAdministrationToken(String linkString);
 
         SimplePanel getContentPanel();
 
@@ -61,13 +61,15 @@ public class DemandsLayoutPresenter
     private LoadingDiv loading = null;
 
     public void bind() {
+        // MENU - CLIENT
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
-        view.setMyProblemsToken(getTokenGenerator().invokeMyProblems());
         view.setOffersToken(getTokenGenerator().invokeOffers());
         view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+        view.setAllDemandsToken(getTokenGenerator().invokeAtDemands());
+        view.setAllSuppliersToken(getTokenGenerator().invokeAtSuppliers());
+
+        //MENU - SUPPLIER
         view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
-        view.setMyDemandsOperatorToken(getTokenGenerator().invokeDemandsOperator());
-        view.setAdministrationToken(getTokenGenerator().invokeAdministration());
     }
 
     public void init(UserDetail user) {

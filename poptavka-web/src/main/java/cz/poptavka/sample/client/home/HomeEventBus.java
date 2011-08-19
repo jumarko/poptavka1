@@ -16,7 +16,6 @@ import cz.poptavka.sample.client.home.demands.DemandsHandler;
 import cz.poptavka.sample.client.home.demands.DemandsPresenter;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.suppliers.SuppliersHandler;
-import cz.poptavka.sample.client.home.suppliers.RootPresenter;
 import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -67,7 +66,7 @@ public interface HomeEventBus extends EventBus {
 //    String atLogin();
 
     //Display root categories
-    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
+    @Event(handlers = SuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atSuppliers();
 
     //Display subcategories, suppliers of selected category and detail of selected supplier
@@ -200,7 +199,7 @@ public interface HomeEventBus extends EventBus {
     void getSuppliersCountByCategory(Long category);
 
     //Display
-    @Event(handlers = RootPresenter.class)
+    @Event(handlers = SuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
     @Event(handlers = SuppliersPresenter.class)

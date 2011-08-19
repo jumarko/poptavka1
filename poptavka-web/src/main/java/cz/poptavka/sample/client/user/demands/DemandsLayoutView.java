@@ -39,9 +39,6 @@ public class DemandsLayoutView extends Composite
     // hidden or displayed according to the role
     @UiField DivElement supMenu;
 
-    // ADM menu & other
-    // TODO move to correct layout
-    @UiField Hyperlink myDemandsOperatorLink, myProblemsLink, administration;
 
     public DemandsLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -58,31 +55,33 @@ public class DemandsLayoutView extends Composite
         contentPanel.setWidget(contentWidget);
     }
 
+    @Override
     public void setMyDemandsToken(String linkString) {
         cliDemandsLink.setTargetHistoryToken(linkString);
     }
 
+    @Override
     public void setOffersToken(String linkString) {
         cliOffersLink.setTargetHistoryToken(linkString);
     }
 
+    @Override
     public void setNewDemandToken(String linkString) {
         newDemandLink.setTargetHistoryToken(linkString);
     }
 
-    public void setMyDemandsOperatorToken(String linkString) {
-        myDemandsOperatorLink.setTargetHistoryToken(linkString);
+    @Override
+    public void setAllDemandsToken(String linkString) {
+        allDemandsLink.setTargetHistoryToken(linkString);
     }
 
-    public void setMyProblemsToken(String linkString) {
-        myProblemsLink.setTargetHistoryToken(linkString);
-    }
-
-    public void setAdministrationToken(String linkString) {
-        administration.setTargetHistoryToken(linkString);
+    @Override
+    public void setAllSuppliersToken(String linkString) {
+        allSuppliersLink.setTargetHistoryToken(linkString);
     }
 
     /** toggle visible actions/buttons for current user decided by his role. **/
+    @Override
     public void setRoleInterface(Role role) {
         LOGGER.fine("Set User style for role " + role.toString());
         switch (role) {

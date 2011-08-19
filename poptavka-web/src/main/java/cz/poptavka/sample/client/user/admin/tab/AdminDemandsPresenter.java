@@ -20,24 +20,28 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
+import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
+//import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ivan.vlcek
  */
-@Presenter(view = AdministrationView.class)
-public class AdministrationPresenter
-        extends LazyPresenter<AdministrationPresenter.AdministrationInterface, UserEventBus>
+@Presenter(view = AdminDemandsView.class)//, multiple=true)
+public class AdminDemandsPresenter
+        //      extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, UserEventBus>
+        extends BasePresenter<AdminDemandsPresenter.AdminDemandsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
+
+    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -48,7 +52,8 @@ public class AdministrationPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdministrationInterface extends LazyView {
+    public interface AdminDemandsInterface { //extends LazyView {
+
         Widget getWidgetView();
 
 //        SimplePager getPager();
@@ -77,22 +82,22 @@ public class AdministrationPresenter
         SimplePanel getAdminOfferDetail();
     }
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
-    public void onInvokeAdministration() {
+
+    public void onInvokeAdminDemands() {
         // TODO ivlcek - ktoru event mam volat skor? Je v tom nejaky rozdiel?
 //        eventBus.getAllDemands();
-        eventBus.displayContent(view.getWidgetView());
         eventBus.getAllDemands();
-
+        eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onSetAllDemands(List<DemandDetail> fullDemandDetails) {
+    public void onSetAllDemands(List<FullDemandDetail> fullDemandDetails) {
         // Add the data to the data provider, which automatically pushes it to the widget.
         // TODO ivlcek - try to set list in for cycle. Maybe it depends on how you populate
         // data into ListProvider. DONE - it realy depends on how you set data to list provider
 //        view.getDataProvider().setList(demandDetails);
 
         List<FullDemandDetail> list = view.getDataProvider().getList();
-        for (DemandDetail d : fullDemandDetails) {
+        for (FullDemandDetail d : fullDemandDetails) {
             list.add((FullDemandDetail) d);
         }
 
@@ -124,8 +129,10 @@ public class AdministrationPresenter
     }
 
     @Override
-    public void bindView() {
+    public void bind() {
+//    public void bindView() {
         view.getClientIdColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 object.setClientId(Long.valueOf(value));
@@ -134,6 +141,7 @@ public class AdministrationPresenter
             }
         });
         view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (ClientDemandType clientDemandType : view.getDemandTypes()) {
@@ -146,6 +154,7 @@ public class AdministrationPresenter
             }
         });
         view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (DemandStatusType demandStatusType : view.getDemandStatuses()) {
@@ -158,6 +167,7 @@ public class AdministrationPresenter
             }
         });
         view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
+
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 object.setValidToDate(value);
@@ -166,6 +176,7 @@ public class AdministrationPresenter
             }
         });
         view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
+
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 object.setEndDate(value);
@@ -174,6 +185,7 @@ public class AdministrationPresenter
             }
         });
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
 //                contactForm.setContact(selectionModel.getSelectedObject());

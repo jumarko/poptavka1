@@ -9,22 +9,29 @@
             <g:HTMLPanel>
                 <ul>
                     <li>
-                        <g:Hyperlink ui:field="operatorDemandsLink">
-                            <ui:msg key="operatorDemands">Admin Demands</ui:msg>
+                        <g:Hyperlink ui:field="demandsLink">
+                            <ui:msg key="demands">Demands</ui:msg>
                         </g:Hyperlink>
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        <g:Hyperlink ui:field="adminOffersLink">
-                            <ui:msg key="adminOffers">Admin Offers</ui:msg>
+                        <g:Hyperlink ui:field="offersLink">
+                            <ui:msg key="offers">Offers</ui:msg>
                         </g:Hyperlink>
                     </li>
                 </ul>
                 <ul>
                     <li>
-                        <g:Hyperlink ui:field="adminUsersLink">
-                        	<ui:msg key="adminOffers">Admin Users</ui:msg>
+                        <g:Hyperlink ui:field="usersLink">
+                        	<ui:msg key="users">Users</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <g:Hyperlink ui:field="suppliersLink">
+                            <ui:msg key="suppliers">Suppliers</ui:msg>
                         </g:Hyperlink>
                     </li>
                 </ul>

@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.home.suppliers;
+package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.AbstractCell;
 import java.util.logging.Logger;
@@ -26,12 +26,12 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
 
-public class SuppliersView extends OverflowComposite
-        implements SuppliersPresenter.SuppliersViewInterface {
+public class AdminSuppliersView extends OverflowComposite
+        implements AdminSuppliersPresenter.SuppliersViewInterface {
 
     private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
 
-    interface SuppliersViewUiBinder extends UiBinder<Widget, SuppliersView> {
+    interface SuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
     }
     private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -61,7 +61,7 @@ public class SuppliersView extends OverflowComposite
             new SingleSelectionModel<CategoryDetail>();
     private AsyncDataProvider dataProvider;
 
-    public SuppliersView() {
+    public AdminSuppliersView() {
         pageSize = new ListBox();
         pageSize.addItem("5");
         pageSize.addItem("10");

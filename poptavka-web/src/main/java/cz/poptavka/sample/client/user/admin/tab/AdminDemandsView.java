@@ -47,10 +47,8 @@ import java.util.List;
  *
  * @author ivan.vlcek
  */
-public class AdministrationView extends Composite implements
-        AdministrationPresenter.AdministrationInterface {
-    private static AdministrationViewUiBinder uiBinder =
-            GWT.create(AdministrationViewUiBinder.class);
+public class AdminDemandsView extends Composite implements AdminDemandsPresenter.AdminDemandsInterface {
+    private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
 
     /**
      * @return the dataProvider
@@ -131,6 +129,7 @@ public class AdministrationView extends Composite implements
     /**
      * @return the selectionModel
      */
+    @Override
     public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
         return selectionModel;
     }
@@ -138,11 +137,12 @@ public class AdministrationView extends Composite implements
     /**
      * @return the adminDemandDetail
      */
+    @Override
     public SimplePanel getAdminDemandDetail() {
         return adminDemandDetail;
     }
 
-    interface AdministrationViewUiBinder extends UiBinder<Widget, AdministrationView> {
+    interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminDemandsView> {
     }
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
@@ -177,12 +177,16 @@ public class AdministrationView extends Composite implements
     private final ClientDemandType[] demandTypes = ClientDemandType.values();
     private final DemandStatusType[] demandStatuses = DemandStatusType.values();
 
-    @Override
-    public void createView() {
+    public AdminDemandsView() {
         initCellTable();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+//    @Override
+//    public void createView() {
+//        initCellTable();
+//        initWidget(uiBinder.createAndBindUi(this));
+//    }
     private void initCellTable() {
         // Create a CellTable.
         GWT.log("initCellTable initialized");

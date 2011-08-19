@@ -8,10 +8,13 @@ import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
+import cz.poptavka.sample.client.user.demands.tab.AllDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.AllSuppliersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
+import java.util.logging.Logger;
 
 /**
  * History Converter for Demands tab in user interface. Instances of view
@@ -29,18 +32,24 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 
     /*******************************************************************/
     /**           .DEVEL PRESENTER INITIALIZATION SECTION.               */
+    private static final Logger LOGGER = Logger
+            .getLogger(DemandsHistoryConverter.class.getName());
 
     private static final String DEMAND_MY = "invokeMyDemands";
     private static final String DEMAND_OFFERS = "invokeOffers";
     private static final String DEMAND_NEW = "invokeNewDemand";
     private static final String DEMANDS_POTENTIAL = "invokePotentialDemands";
     private static final String DEMANDS_OPERATOR = "invokeDemandsOperator";
+    private static final String DEMANDS_ALLDEMANDS = "invokeAtDemands";
+    private static final String DEMANDS_ALLSUPPLIERS = "invokeAtSuppliers";
 
     private MyDemandsPresenter myDemandPresenter = null;
     private OffersPresenter offersPresenter = null;
     private NewDemandPresenter newDemandPresenter = null;
     private PotentialDemandsPresenter potentialDemandsPresenter = null;
     private DemandsOperatorPresenter operatorPresenter = null;
+    private AllDemandsPresenter demandsPresenter = null;
+    private AllSuppliersPresenter suppliersPresenter = null;
 
     /**           DEVEL PRESENTER INITIALIZATION SECTION               */
     /*******************************************************************/
@@ -49,11 +58,13 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
         String cookie = Cookies.getCookie("user-presenter");
+        LOGGER.fine(" +++++++++ DEMANDS Name: " + historyName + "\nParam: " + param);
         if (cookie.equals("loaded")) {
 //            normal behaviour
 //            eventBus.dispatch(historyName);
 
             GWT.log("history name called: " + historyName);
+//            Window.alert("history name called: " + historyName);
             eventBus.toggleLoading();
 
             //devel behaviour
@@ -96,6 +107,22 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
                 }
                 operatorPresenter = eventBus.addHandler(DemandsOperatorPresenter.class);
                 operatorPresenter.onInvokeDemandsOperator();
+            }
+            if (historyName.equals(DEMANDS_ALLDEMANDS)) {
+                if (demandsPresenter != null) {
+//                    DemandsPresenter.cleanDetailWrapperPresenterForDevelopment();
+                    eventBus.removeHandler(demandsPresenter);
+                }
+                demandsPresenter = eventBus.addHandler(AllDemandsPresenter.class);
+                demandsPresenter.onInvokeAtDemands();
+            }
+            if (historyName.equals(DEMANDS_ALLSUPPLIERS)) {
+                if (suppliersPresenter != null) {
+//                    DemandsPresenter.cleanDetailWrapperPresenterForDevelopment();
+                    eventBus.removeHandler(suppliersPresenter);
+                }
+                suppliersPresenter = eventBus.addHandler(AllSuppliersPresenter.class);
+                suppliersPresenter.onInvokeAtSuppliers();
             }
 
         } else {

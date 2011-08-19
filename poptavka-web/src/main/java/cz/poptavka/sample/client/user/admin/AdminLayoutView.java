@@ -24,18 +24,12 @@ public class AdminLayoutView extends Composite
 
     private static final Logger LOGGER = Logger.getLogger(AdminLayoutView.class.getName());
 
-//    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField
     SimplePanel contentPanel;
 
     @UiField
-    Hyperlink operatorDemandsLink;
+    Hyperlink demandsLink, offersLink, usersLink, suppliersLink;
 
-    @UiField
-    Hyperlink adminUsersLink;
-
-    @UiField
-    Hyperlink adminOffersLink;
 
     public AdminLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -52,19 +46,28 @@ public class AdminLayoutView extends Composite
         contentPanel.setWidget(contentWidget);
     }
 
-    public void setOperatorDemandsToken(String linkString) {
-        operatorDemandsLink.setTargetHistoryToken(linkString);
+    @Override
+    public void setDemandsToken(String linkString) {
+        demandsLink.setTargetHistoryToken(linkString);
     }
 
-    public void setAdminUsersToken(String linkString) {
-        adminUsersLink.setTargetHistoryToken(linkString);
+    @Override
+    public void setUsersToken(String linkString) {
+        usersLink.setTargetHistoryToken(linkString);
     }
 
-    public void setAdminOffersToken(String linkString) {
-        adminOffersLink.setTargetHistoryToken(linkString);
+    @Override
+    public void setOffersToken(String linkString) {
+        offersLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setSuppliersToken(String linkString) {
+        suppliersLink.setTargetHistoryToken(linkString);
     }
 
     /** toggle visible actions/buttons for current user decided by his role. **/
+    @Override
     public void setRoleInterface(Role role) {
         LOGGER.fine("Set User style for role " + role.toString());
         switch (role) {
@@ -81,9 +84,6 @@ public class AdminLayoutView extends Composite
 
     @Override
     public SimplePanel getContentPanel() {
-        // TODO Auto-generated method stub
         return contentPanel;
     }
-
-    // TODO Beho - clean up after devel
 }

@@ -13,7 +13,7 @@ import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-@Presenter(view = AdminLayoutView.class)
+@Presenter(view = AdminLayoutView.class) //, multiple = true)
 public class AdminLayoutPresenter         extends
         BasePresenter<AdminLayoutPresenter.AdminLayoutInterface, UserEventBus> {
 
@@ -26,23 +26,24 @@ public class AdminLayoutPresenter         extends
 
         void setContent(Widget contentWidget);
 
-        void setOperatorDemandsToken(String link);
+        void setDemandsToken(String link);
 
-        void setAdminUsersToken(String link);
+        void setUsersToken(String link);
 
-        void setAdminOffersToken(String link);
+        void setOffersToken(String link);
+
+        void setSuppliersToken(String link);
 
         SimplePanel getContentPanel();
-
-
-
     }
 
     private LoadingDiv loading = null;
 
     public void bind() {
-        view.setOperatorDemandsToken(getTokenGenerator().invokeAdministration());
-        view.setAdminOffersToken(getTokenGenerator().invokeAdminOffers());
+        view.setDemandsToken(getTokenGenerator().invokeAdminDemands());
+        view.setOffersToken(getTokenGenerator().invokeAdminOffers());
+//        view.setUsersToken(getTokenGenerator().invokeAdminUsers());
+        view.setSuppliersToken(getTokenGenerator().invokeAdminSuppliers());
     }
 
     public void onInitAdmin() {
@@ -55,7 +56,6 @@ public class AdminLayoutPresenter         extends
 
     public void init(UserDetail user) {
         // hiding window for this is after succesfull Userhandler call
-        eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
         if (user.getRoleList().contains(Role.CLIENT)) {
             // TODO execute client specific demands init methods/calls
         }
@@ -76,8 +76,8 @@ public class AdminLayoutPresenter         extends
         eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
-    public void onDisplayContent(Widget contentWidget) {
-        onToggleLoading();
+    public void onDisplayAdminContent(Widget contentWidget) {
+//        onToggleLoading();
         view.setContent(contentWidget);
     }
 

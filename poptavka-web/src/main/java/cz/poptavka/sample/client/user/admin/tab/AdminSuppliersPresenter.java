@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.home.suppliers;
+package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import java.util.logging.Logger;
@@ -22,7 +22,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import cz.poptavka.sample.client.home.HomeEventBus;
+import cz.poptavka.sample.client.user.UserEventBus;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -30,9 +30,9 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
 
-@Presenter(view = SuppliersView.class)
-public class SuppliersPresenter
-        extends BasePresenter<SuppliersPresenter.SuppliersViewInterface, HomeEventBus> {
+@Presenter(view = AdminSuppliersView.class)//, multiple = true)
+public class AdminSuppliersPresenter
+        extends BasePresenter<AdminSuppliersPresenter.SuppliersViewInterface, UserEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    DisplaySuppliersPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -186,15 +186,16 @@ public class SuppliersPresenter
         this.dataProvider.addDataDisplay(view.getSuppliersList());
     }
 
-    public void onAtSuppliers() {
+    public void onInvokeAdminSuppliers() {
         eventBus.loadingShow(MSGS.loading());
 
-        view.getChildSection().setVisible(false);
-        view.getRootSection().setVisible(true);
+//        view.getChildSection().setVisible(false);
+//        view.getRootSection().setVisible(true);
 
         eventBus.getCategories();
 
-        eventBus.setBodyWidget(view.getWidgetView());
+        eventBus.displayAdminContent(view.getWidgetView());
+//        eventBus.setBodyWidget(view.getWidgetView());
     }
 
     /**
@@ -216,7 +217,8 @@ public class SuppliersPresenter
 
         Hyperlink link = new Hyperlink("root", "!public/addToPath?root");
         view.addPath(link);
-        eventBus.setBodyWidget(view.getWidgetView());
+        eventBus.displayContent(view.getWidgetView());
+//        eventBus.setBodyWidget(view.getWidgetView());
     }
 
     public void onDisplayRootcategories(ArrayList<CategoryDetail> rootCategories) {
