@@ -1,11 +1,11 @@
 package cz.poptavka.sample.shared.domain.message;
 
+import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.shared.domain.type.MessageType;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.shared.domain.type.MessageType;
 
 public class PotentialDemandMessageImpl implements Serializable, PotentialDemandMessage {
 
@@ -33,27 +33,27 @@ public class PotentialDemandMessageImpl implements Serializable, PotentialDemand
         return fillMessageDetail(new PotentialDemandMessageImpl(), message);
     }
 
-    public static PotentialDemandMessage fillMessageDetail(PotentialDemandMessage detail, UserMessage message) {
-        detail.setMessageId(message.getId());
-        detail.setBody(message.getMessage().getBody());
-        detail.setCreated(message.getMessage().getCreated());
+    public static PotentialDemandMessage fillMessageDetail(PotentialDemandMessage detail, UserMessage userMessage) {
+        detail.setMessageId(userMessage.getMessage().getId());
+        detail.setBody(userMessage.getMessage().getBody());
+        detail.setCreated(userMessage.getMessage().getCreated());
 //        m.setFirstBornId(serialVersionUID);
-        detail.setMessageState(message.getMessage().getMessageState().name());
+        detail.setMessageState(userMessage.getMessage().getMessageState().name());
 //        m.setNexSiblingId(serialVersionUID);
-        detail.setParentId(message.getMessage().getParent() == null ? detail.getThreadRootId()
-                : message.getMessage().getParent().getId());
+        detail.setParentId(userMessage.getMessage().getParent() == null ? detail.getThreadRootId()
+                : userMessage.getMessage().getParent().getId());
 //        m.setReceiverId();
-        detail.setSenderId(message.getMessage().getSender().getId());
-        detail.setSent(message.getMessage().getSent());
-        detail.setSubject(message.getMessage().getSubject());
-        detail.setThreadRootId(message.getMessage().getThreadRoot().getId());
-        detail.setUserMessageId(message.getId());
-        detail.setDemandId(message.getMessage().getDemand().getId());
-        detail.setPrice(message.getMessage().getDemand().getPrice());
-        detail.setRead(message.isIsRead());
-        detail.setStarred(message.isIsStarred());
-        detail.setEndDate(message.getMessage().getDemand().getEndDate());
-        detail.setValidToDate(message.getMessage().getDemand().getValidTo());
+        detail.setSenderId(userMessage.getMessage().getSender().getId());
+        detail.setSent(userMessage.getMessage().getSent());
+        detail.setSubject(userMessage.getMessage().getSubject());
+        detail.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
+        detail.setUserMessageId(userMessage.getId());
+        detail.setDemandId(userMessage.getMessage().getDemand().getId());
+        detail.setPrice(userMessage.getMessage().getDemand().getPrice());
+        detail.setRead(userMessage.isIsRead());
+        detail.setStarred(userMessage.isIsStarred());
+        detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
+        detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
         return detail;
     }
 
