@@ -8,9 +8,6 @@ package cz.poptavka.sample.exception;
  *         Date: 21.8.2011
  */
 public class MessageCannotBeSentException extends Exception {
-
-    private static final String MESSAGE_TEXT = "A message ";
-
     /**
      * Creates a new instance of <code>MessageCannotBeSentException</code> without detail message.
      */
