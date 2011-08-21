@@ -16,6 +16,7 @@ import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -30,6 +31,8 @@ import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -204,7 +207,11 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         message.setRoles(messageUserRoles);
 
         message = messageService.create(message);
-        messageService.send(message);
+        try {
+            messageService.send(message);
+        } catch (MessageCannotBeSentException ex) {
+            Logger.getLogger(DemandRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

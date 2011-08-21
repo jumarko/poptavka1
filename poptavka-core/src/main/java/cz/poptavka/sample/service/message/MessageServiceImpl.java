@@ -9,8 +9,10 @@ import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import cz.poptavka.sample.util.strings.ToStringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -109,14 +111,22 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     }
 
     @Override
-    public void send(Message message) {
+    public void send(Message message) throws MessageCannotBeSentException {
         if (message.getMessageState() != MessageState.COMPOSED) {
-            // throw new MessageCannotBeSentException
+            final StringBuilder sb = new StringBuilder();
+            sb.append("Message [id=").append(ToStringUtils.printId(message));
+            sb.append(" cannot be sent because it is NOT in a COMPOSED state.");
+            throw new MessageCannotBeSentException(sb.toString());
+        }
+        if ((message.getRoles() == null) || (message.getRoles().isEmpty())) {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("Message [id=").append(ToStringUtils.printId(message));
+            sb.append(" cannot be sent because there are no recipients set"
+                    + "in ROLES.");
+            sb.append("Roles: ").append(message.getRoles());
+            throw new MessageCannotBeSentException(sb.toString());
         }
 
-        // TODO: vojto -- CHECK!
-        // nasledujuci for cyklus vyhodi vynimku ak je message.getRoles() == null, skontrolovat, ci je to
-        // akceptovatelne chovanie alebo je lepsie to osetrit: if (message.getRoles() != null) ...
         for (MessageUserRole role : message.getRoles()) {
             if ((role.getType() == MessageUserRoleType.TO)
                     || (role.getType() == MessageUserRoleType.CC)

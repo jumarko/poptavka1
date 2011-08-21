@@ -6,6 +6,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GenericService;
 
 import java.util.List;
@@ -114,6 +115,6 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param cc carbon copy (to the attention of)
      * @param bcc blind carbon copy
      */
-    void send(Message message);
+    void send(Message message) throws MessageCannotBeSentException;
 
 }
