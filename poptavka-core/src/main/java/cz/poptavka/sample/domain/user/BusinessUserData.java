@@ -2,6 +2,7 @@ package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.domain.common.DomainObject;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,6 +29,9 @@ public class BusinessUserData extends DomainObject {
 
     @Column(length = 64)
     private String personLastName;
+
+    @NotAudited
+    private String description;
 
     @Column(length = 20)
     private String phone;
@@ -74,6 +78,14 @@ public class BusinessUserData extends DomainObject {
 
     public void setPersonLastName(String personLastName) {
         this.personLastName = personLastName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPhone() {
