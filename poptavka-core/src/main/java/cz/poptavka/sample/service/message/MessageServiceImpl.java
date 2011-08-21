@@ -11,9 +11,9 @@ import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
+
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.List;
 import java.util.Map;
 
@@ -113,6 +113,10 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         if (message.getMessageState() != MessageState.COMPOSED) {
             // throw new MessageCannotBeSentException
         }
+
+        // TODO: vojto -- CHECK!
+        // nasledujuci for cyklus vyhodi vynimku ak je message.getRoles() == null, skontrolovat, ci je to
+        // akceptovatelne chovanie alebo je lepsie to osetrit: if (message.getRoles() != null) ...
         for (MessageUserRole role : message.getRoles()) {
             if ((role.getType() == MessageUserRoleType.TO)
                     || (role.getType() == MessageUserRoleType.CC)

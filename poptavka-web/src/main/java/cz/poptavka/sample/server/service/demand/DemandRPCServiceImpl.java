@@ -4,16 +4,6 @@
  */
 package cz.poptavka.sample.server.service.demand;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -40,6 +30,15 @@ import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Excalibur
@@ -186,6 +185,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         message.setCreated(new Date());
         message.setDemand(demand);
         message.setLastModified(new Date());
+        message.setSender(demand.getClient().getBusinessUser());
+        message.setSubject(demand.getTitle());
+        message.setThreadRoot(message);
+
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
         List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
@@ -197,10 +200,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
             messageUserRoles.add(messageUserRole);
         }
-        message.setSender(demand.getClient().getBusinessUser());
+        // TODO ivan, beho, vojto - je nastavenie roli takto logicky spravne?!
+        message.setRoles(messageUserRoles);
 
-        message.setSubject(demand.getTitle());
-        message.setThreadRoot(message);
         message = messageService.create(message);
         messageService.send(message);
     }
