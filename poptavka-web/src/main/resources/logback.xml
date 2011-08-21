@@ -4,9 +4,9 @@
 
     <!-- Logging in file -->
     <appender name="RootFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>app-web.log</file>
+        <file>/var/logs/tomcat/poptavka/app-web.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <FileNamePattern>app-web.log.%i</FileNamePattern>
+            <FileNamePattern>/var/logs/tomcat/poptavka/app-web.log.%i</FileNamePattern>
             <MinIndex>1</MinIndex>
             <MaxIndex>1000</MaxIndex>
         </rollingPolicy>
