@@ -55,7 +55,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="companyName"/>
+                                    <g:TextBox ui:field="companyName"/>
                                 </td>
                             </tr>
                             <tr>
@@ -65,7 +65,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="businessType"/>
+                                    <g:TextBox ui:field="businessType"/>
                                 </td>
                             </tr>
                             <tr>
@@ -75,7 +75,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="identificationNumber"/>
+                                    <g:TextBox ui:field="identificationNumber"/>
                                 </td>
                             </tr>
                             <tr>
@@ -85,7 +85,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="overallRating"/>
+                                    <g:TextBox ui:field="overallRating"/>
                                 </td>
                             </tr>
                             <tr>
@@ -95,7 +95,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="certified"/>
+                                    <g:TextBox ui:field="certified"/>
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +105,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="firstName"/>
+                                    <g:TextBox ui:field="firstName"/>
                                 </td>
                             </tr>
                             <tr>
@@ -115,7 +115,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="lastName"/>
+                                    <g:TextBox ui:field="lastName"/>
                                 </td>
                             </tr>
                             <tr>
@@ -125,7 +125,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="phone"/>
+                                    <g:TextBox ui:field="phone"/>
                                 </td>
                             </tr>
                             <tr>
@@ -135,7 +135,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="email"/>
+                                    <g:TextBox ui:field="email"/>
                                 </td>
                             </tr>
                             <tr>
@@ -145,7 +145,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="addresses"/>
+                                    <g:TextBox ui:field="addresses"/>
                                 </td>
                             </tr>
                             <tr>
@@ -155,7 +155,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="description"/>
+                                    <g:TextArea ui:field="description"/>
                                 </td>
                             </tr>
                             <tr>
@@ -165,7 +165,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="verification"/>
+                                    <g:TextBox ui:field="verification"/>
                                 </td>
                             </tr>
                             <tr>
@@ -175,7 +175,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="localities"/>
+                                    <g:ListBox ui:field="localities"/>
                                 </td>
                             </tr>
                             <tr>
@@ -185,7 +185,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="categories"/>
+                                    <g:ListBox ui:field="categories"/>
                                 </td>
                             </tr>
                             <tr>
@@ -195,7 +195,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="services"/>
+                                    <g:TextBox ui:field="services"/>
                                 </td>
                             </tr>
                             <tr>
@@ -205,7 +205,7 @@
                                     </g:Label>
                                 </td>
                                 <td>
-                                    <g:Label ui:field="bsuRoles"/>
+                                    <g:TextBox ui:field="bsuRoles"/>
                                 </td>
                             </tr>
                         </table>

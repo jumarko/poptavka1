@@ -16,7 +16,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.presenter.BasePresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
@@ -26,7 +26,7 @@ import cz.poptavka.sample.shared.domain.type.OfferStateType;
 
 @Presenter(view = AdminOffersView.class)
 public class AdminOffersPresenter
-        extends LazyPresenter<AdminOffersPresenter.AdminOffersInterface, UserEventBus>
+        extends BasePresenter<AdminOffersPresenter.AdminOffersInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
@@ -63,7 +63,7 @@ public class AdminOffersPresenter
     public void onInvokeAdminOffers() {
         // TODO ivlcek - ktoru event mam volat skor? Je v tom nejaky rozdiel?
 //        eventBus.getAllDemands();
-        //eventBus.displayContent(view.getWidgetView());
+        eventBus.displayContent(view.getWidgetView());
         //eventBus.getAllDemands();
     }
 
@@ -82,6 +82,10 @@ public class AdminOffersPresenter
         refreshDisplays();
     }
 
+    public void onRefreshUpdatedOffer(FullOfferDetail demand) {
+//      view.getCellTable().setSize("10%", "10%");
+    }
+
     public void onRefreshUpdatedDemand(DemandDetail demand) {
 //        view.getCellTable().setSize("10%", "10%");
     }
@@ -98,7 +102,7 @@ public class AdminOffersPresenter
     }
 
     @Override
-    public void bindView() {
+    public void bind() {
         view.getSupplierIdColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, String>() {
             @Override
             public void update(int index, FullOfferDetail object, String value) {

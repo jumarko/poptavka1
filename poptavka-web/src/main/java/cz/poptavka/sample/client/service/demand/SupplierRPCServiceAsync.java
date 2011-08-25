@@ -3,9 +3,12 @@ package cz.poptavka.sample.client.service.demand;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import cz.poptavka.sample.domain.common.OrderType;
 
 import cz.poptavka.sample.shared.domain.ServiceDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.Map;
 
 public interface SupplierRPCServiceAsync {
 
@@ -14,12 +17,23 @@ public interface SupplierRPCServiceAsync {
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 
     void getSuppliers(int start, int count, Long categoryID, String localityCode,
-            AsyncCallback<ArrayList<UserDetail>> callback);
+            AsyncCallback<ArrayList<FullSupplierDetail>> callback);
 
     void getSuppliers(int start, int count, Long categoryID,
-            AsyncCallback<ArrayList<UserDetail>> callback);
+            AsyncCallback<ArrayList<FullSupplierDetail>> callback);
+
+    void getSuppliers(int start, int count,
+            AsyncCallback<ArrayList<FullSupplierDetail>> callback);
+
+    void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns,
+            AsyncCallback<ArrayList<FullSupplierDetail>> callback);
+
+    void getSuppliersCount(AsyncCallback<Integer> callback);
 
     void getSuppliersCount(Long categoryID, AsyncCallback<Long> callback);
 
     void getSuppliersCount(Long categoryID, String localityCode, AsyncCallback<Long> callback);
+
+    void updateSupplier(FullSupplierDetail supplierDetail,
+            AsyncCallback<FullSupplierDetail> callback);
 }

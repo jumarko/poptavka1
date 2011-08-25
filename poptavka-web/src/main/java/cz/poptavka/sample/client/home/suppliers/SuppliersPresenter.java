@@ -27,7 +27,7 @@ import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 
 @Presenter(view = SuppliersView.class)
@@ -82,7 +82,9 @@ public class SuppliersPresenter
 
         void displaySubCategories(int columns, ArrayList<CategoryDetail> categories);
 
-        void displaySuppliersDetail(UserDetail userDetail);
+        void displaySuppliersDetail(FullSupplierDetail userDetail);
+
+        void hideSuppliersDetail();
     }
     private int columns = 4;
     private Long lastUsedCategoryID = null;
@@ -98,7 +100,7 @@ public class SuppliersPresenter
                 CategoryDetail selected = (CategoryDetail) view.getSelectionRootModel().getSelectedObject();
 
                 if (selected != null) {
-                    eventBus.atDisplaySuppliers(selected.getId());
+                    eventBus.atDisplaySuppliers(selected);
                 }
             }
         });
@@ -110,6 +112,9 @@ public class SuppliersPresenter
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
+                    view.hideSuppliersDetail();
+                    view.getSelectionSupplierModel().setSelected(view.getSelectionSupplierModel()
+                            .getSelectedObject(), false);
                     eventBus.setCategoryID(selected.getId());
                     historyTokens.add(selected.getId());
                     eventBus.addToPath(selected);
@@ -122,7 +127,7 @@ public class SuppliersPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 eventBus.loadingShow(MSGS.loading());
-                UserDetail selected = (UserDetail) view.getSelectionSupplierModel().getSelectedObject();
+                FullSupplierDetail selected = (FullSupplierDetail) view.getSelectionSupplierModel().getSelectedObject();
 
                 if (selected != null) {
                     view.displaySuppliersDetail(selected);
@@ -133,6 +138,7 @@ public class SuppliersPresenter
 
             @Override
             public void onChange(ChangeEvent event) {
+//                view.getSuppliersList().setRowData(0, new ArrayList<FullSupplierDetail>());
                 eventBus.getSuppliersByCategoryLocality(1, view.getPageSize(),
                         lastUsedCategoryID, view.getSelectedLocality());
             }
@@ -202,7 +208,7 @@ public class SuppliersPresenter
      * Methods initialize Path, fills category list of Suppliers widget.
      * @param category
      */
-    public void onAtDisplaySuppliers(Long category) {
+    public void onAtDisplaySuppliers(CategoryDetail categoryDetail) {
         eventBus.loadingShow(MSGS.loading());
         //
         view.getChildSection().setVisible(true);
@@ -211,11 +217,12 @@ public class SuppliersPresenter
         view.getPath().clear();
         historyTokens.clear();
         //
-        eventBus.getSubCategories(category);
+        eventBus.getSubCategories(categoryDetail.getId());
         eventBus.getLocalities();
 
-        Hyperlink link = new Hyperlink("root", "!public/addToPath?root");
-        view.addPath(link);
+        view.addPath(new Hyperlink("root", "!public/addToPath?root"));
+        view.addPath(new Hyperlink(categoryDetail.getName(),
+                "!public/addToPath?" + Long.toString(categoryDetail.getId())));
         eventBus.setBodyWidget(view.getWidgetView());
     }
 
@@ -239,7 +246,10 @@ public class SuppliersPresenter
         eventBus.loadingHide();
     }
 
-    public void onDisplaySuppliers(ArrayList<UserDetail> list) {
+    public void onDisplaySuppliers(ArrayList<FullSupplierDetail> list) {
+        view.getSuppliersList().setRowCount(0, true);
+        view.getSuppliersList().setRowData(0, new ArrayList<FullSupplierDetail>());
+        view.getSuppliersList().redraw();
         view.getSuppliersList().setRowData(start, list);
     }
 
@@ -273,6 +283,7 @@ public class SuppliersPresenter
     }
 
     public void onRemoveFromPath(Long id) {
+//        view.getSuppliersList().setRowData(0, new ArrayList<FullSupplierDetail>());
         int idx = historyTokens.indexOf(id);
         for (int i = 0; i < historyTokens.size();) {
             if (i > idx) {

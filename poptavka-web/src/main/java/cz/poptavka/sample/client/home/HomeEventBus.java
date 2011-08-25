@@ -23,7 +23,8 @@ import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.Collection;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
+import java.util.List;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
@@ -71,7 +72,7 @@ public interface HomeEventBus extends EventBus {
 
     //Display subcategories, suppliers of selected category and detail of selected supplier
     @Event(handlers = SuppliersPresenter.class)
-    void atDisplaySuppliers(Long categoryID);
+    void atDisplaySuppliers(CategoryDetail categoryDetail);
 
 //    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
 //    String createToken(String token);
@@ -206,7 +207,7 @@ public interface HomeEventBus extends EventBus {
     void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
 
     @Event(handlers = SuppliersPresenter.class)
-    void displaySuppliers(ArrayList<UserDetail> list);
+    void displaySuppliers(ArrayList<FullSupplierDetail> list);
 
     @Event(handlers = {SuppliersPresenter.class, DemandsPresenter.class })
     void setLocalityData(ArrayList<LocalityDetail> list);
@@ -248,7 +249,7 @@ public interface HomeEventBus extends EventBus {
     void setCategoryData(ArrayList<CategoryDetail> list);
 
     @Event(handlers = DemandsPresenter.class)
-    void displayDemands(Collection<DemandDetailForDisplayDemands> result);
+    void displayDemands(List<DemandDetailForDisplayDemands> result);
 
     @Event(handlers = DemandsPresenter.class)
     void setDemand(DemandDetailForDisplayDemands demand);

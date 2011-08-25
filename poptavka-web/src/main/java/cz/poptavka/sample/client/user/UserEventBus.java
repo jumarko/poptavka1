@@ -17,6 +17,7 @@ import cz.poptavka.sample.client.user.admin.tab.AdminOfferInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminSupplierInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
 import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
@@ -27,16 +28,19 @@ import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.handler.AdminHandler;
 import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
 import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.DemandDetail;
@@ -49,6 +53,7 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 import java.util.Collection;
+import java.util.Map;
 
 @Events(startView = UserView.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -212,13 +217,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(forwardToParent = true)
     void setBodyHolderWidget(Widget body);
 
-    /** display child widget. **/
-    @Event(handlers = DemandsLayoutPresenter.class)
-    void displayContent(Widget contentWidget);
-
-    @Event(handlers = AdminLayoutPresenter.class)
-    void displayAdminContent(Widget contentWidget);
-
     /**********************************************************************************************
      ************ Navigation events section. /* Presenters do NOT listen to events when deactivated
      **********************************************************************************************
@@ -313,8 +311,8 @@ public interface UserEventBus extends EventBusWithLookup {
      * hacky later fire event Needed when refreshing in User Section - refresh not neededi in prod.
      */
 
-    /***********************************************************************************************
-     ***********************  USER SECTION (THE BASE) **********************************************
+    /**********************************************************************************************
+     ***********************  USER SECTION (THE BASE). ********************************************
      **********************************************************************************************/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
@@ -393,8 +391,11 @@ public interface UserEventBus extends EventBusWithLookup {
     void initAdmin();
 
     /**********************************************************************************************
-     ***********************  DEMANDS SECTION *****************************************************
+     ***********************  DEMANDS SECTION. ****************************************************
      **********************************************************************************************/
+
+    @Event(handlers = DemandsLayoutPresenter.class)
+    void displayContent(Widget contentWidget);
 
     /* ---------------- ALL SUPPLIERS ----------------->>>>>>> */
     //Category
@@ -426,7 +427,7 @@ public interface UserEventBus extends EventBusWithLookup {
 
     //Display
     @Event(handlers = AllSuppliersPresenter.class)
-    void atDisplaySuppliers(Long categoryID);
+    void atDisplaySuppliers(CategoryDetail categoryDetail);
 
     @Event(handlers = AllSuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
@@ -435,7 +436,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
 
     @Event(handlers = AllSuppliersPresenter.class)
-    void displaySuppliers(ArrayList<UserDetail> list);
+    void displayDemandTabSuppliers(ArrayList<FullSupplierDetail> list);
 
 //    @Event(handlers = {AllSuppliersPresenter.class, DemandsPresenter.class })
     @Event(handlers = AllSuppliersPresenter.class)
@@ -511,20 +512,14 @@ public interface UserEventBus extends EventBusWithLookup {
      ***********************  ADMIN SECTION *******************************************************
      **********************************************************************************************/
     /* ----------------- ADMIN DEMANDS -------------------->>>>>>>>> */
-    @Event(handlers = UserHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAllDemands();
 
-    @Event(handlers = UserHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateDemand(FullDemandDetail demand);
-
-    @Event(handlers = UserHandler.class)
-    void updateOffer(FullOfferDetail offer);
 
     @Event(handlers = AdminDemandsPresenter.class)
     void refreshUpdatedDemand(FullDemandDetail demand);
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void refreshUpdatedOffer(FullOfferDetail demand);
 
     @Event(handlers = AdminDemandsPresenter.class)
     void setAllDemands(List<DemandDetail> demands);
@@ -532,10 +527,51 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminDemandInfoPresenter.class)
     void showAdminDemandDetail(FullDemandDetail selectedObject);
 
+    @Event(handlers = AdminDemandsPresenter.class)
+    void responseAdminDemandDetail(Widget widget);
+
+    @Event(handlers = AdminLayoutPresenter.class)
+    void displayAdminContent(Widget contentWidget);
+    /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
+
+    /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
+    @Event(handlers = AdminHandler.class)
+    void getAdminTabSuppliersCount();
+
+    @Event(handlers = AdminHandler.class)
+    void getSuppliers(int start, int count);
+
+    @Event(handlers = AdminHandler.class)
+    void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
+
+    @Event(handlers = AdminSuppliersPresenter.class)
+    void createSuppliersAsyncDataProvider(final int count);
+
+    @Event(handlers = AdminSuppliersPresenter.class)
+    void displayAdminTabSuppliers(ArrayList<FullSupplierDetail> suppliers);
+
+    @Event(handlers = AdminHandler.class)
+    void updateSupplier(FullSupplierDetail supplier);
+
+    @Event(handlers = AdminSuppliersPresenter.class)
+    void refreshUpdatedSupplier(FullSupplierDetail supplier);
+
+    @Event(handlers = AdminSupplierInfoPresenter.class)
+    void showAdminSupplierDetail(FullSupplierDetail selectedObject);
+
+    @Event(handlers = AdminSuppliersPresenter.class)
+    void responseAdminSupplierDetail(Widget widget);
+
+    /* <<<<<<<<<<-------- ADMIN SUPPLIERS -------------------- */
+
+    /* ----------------- ADMIN OFFERS -------------------->>>>>>>>> */
+    @Event(handlers = AdminHandler.class)
+    void updateOffer(FullOfferDetail offer);
+
     @Event(handlers = AdminOfferInfoPresenter.class)
     void showAdminOfferDetail(FullOfferDetail selectedObject);
 
-    @Event(handlers = AdminDemandsPresenter.class)
-    void responseAdminDemandDetail(Widget widget);
-    /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
+    @Event(handlers = AdminOffersPresenter.class)
+    void refreshUpdatedOffer(FullOfferDetail supplier);
+    /* <<<<<<<<<<-------- ADMIN OFFERS -------------------- */
 }

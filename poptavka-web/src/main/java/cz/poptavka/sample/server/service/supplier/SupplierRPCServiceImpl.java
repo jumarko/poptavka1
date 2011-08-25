@@ -1,9 +1,11 @@
 package cz.poptavka.sample.server.service.supplier;
 
+import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
@@ -12,6 +14,7 @@ import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.settings.Notification;
 import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.settings.Period;
+import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
@@ -25,6 +28,7 @@ import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
@@ -86,9 +91,11 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(supplier.getCompanyName()).taxId(supplier.getTaxId())
+                .companyName(supplier.getCompanyName())
+                .taxId(supplier.getTaxId())
                 .identificationNumber(supplier.getIdentifiacationNumber())
-                .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
+                .phone(supplier.getPhone())
+                .personFirstName(supplier.getFirstName())
                 .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
@@ -212,7 +219,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID, String localityCode) {
+    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
@@ -222,12 +229,37 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<UserDetail> getSuppliers(int start, int count, Long categoryID) {
+    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria,
                 this.getAllSubcategories(categoryID)));
+    }
+
+    @Override
+    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count) {
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+
+        return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
+    }
+
+    @Override
+    public ArrayList<FullSupplierDetail> getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns) {
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(start)
+                .maxResults(count)
+                .orderByColumns(orderColumns)
+                .build();
+        return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
+    }
+
+    /**
+     * Get All suppliers count.
+     */
+    @Override
+    public Integer getSuppliersCount() {
+        return supplierService.getAll().size();
     }
 
     @Override
@@ -242,11 +274,69 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 this.getAllSublocalities(localityCode));
     }
 
-    private ArrayList<UserDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
-        ArrayList<UserDetail> userDetails = new ArrayList<UserDetail>();
-        for (Supplier supplier : suppliers) {
-            userDetails.add(this.toUserDetail(supplier));
+    /**
+     * Method updates supplier object in database.
+     *
+     * @param supplierDetail - updated supplierDetail from front end
+     * @return supplierDetail
+     */
+    @Override
+    public FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail) {
+        //Supplier
+        Supplier supplier = supplierService.getById(supplierDetail.getSupplierId());
+
+        supplier.getBusinessUser().getBusinessUserData().setCompanyName(supplierDetail.getCompanyName());
+        supplier.setOveralRating(supplierDetail.getOverallRating());
+//        supplier.getBusinessUser().getBusinessUserData().
+//        descriptionBox.setText(supplier.getDescription());
+        //Contact
+        supplier.getBusinessUser().getBusinessUserData().setPersonFirstName(supplierDetail.getFirstName());
+        supplier.getBusinessUser().getBusinessUserData().setPersonLastName(supplierDetail.getLastName());
+        supplier.getBusinessUser().setEmail(supplierDetail.getEmail());
+        supplier.getBusinessUser().getBusinessUserData().setPhone(supplierDetail.getPhone());
+        //Location - categories
+        List<Category> newCategories = new ArrayList<Category>();
+        for (Category category : supplier.getCategories()) {
+            if (supplierDetail.getCategories().containsKey(category.getId())) {
+                //add category - if there already is data, don't go to DB
+                newCategories.add(category);
+                //remove if added, the rest will be obtained from DB
+                supplierDetail.getCategories().remove(category.getId());
+            }
         }
+        for (Long id : supplierDetail.getCategories().keySet()) {
+            newCategories.add(categoryService.getById(id));
+        }
+        //Location - localities
+        List<Locality> newLocalities = new ArrayList<Locality>();
+        for (Locality locality : supplier.getLocalities()) {
+            if (supplierDetail.getLocalities().containsKey(locality.getCode())) {
+                newLocalities.add(locality);
+                supplierDetail.getLocalities().remove(locality.getCode());
+            }
+        }
+        for (String code : supplierDetail.getLocalities().keySet()) {
+            newLocalities.add(localityService.getLocality(code));
+        }
+        //Busines data
+        supplier.getBusinessUser().getBusinessUserData().setIdentificationNumber(
+                supplierDetail.getIdentificationNumber());
+        //TODO Martin - update aj tohto udaju?
+//        supplier.setId(supplierDetail.getSupplierId());
+        supplier.getBusinessUser().setBusinessType(BusinessType.valueOf(supplierDetail.getBusinessType()));
+        supplier.setCertified(supplierDetail.isCertified());
+        supplier.setVerification(Verification.valueOf(supplierDetail.getVerification()));
+
+        supplierService.update(supplier);
+        return supplierDetail;
+    }
+
+    private ArrayList<FullSupplierDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
+        ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
+        for (Supplier supplier : suppliers) {
+            userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplier));
+        }
+        GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
     }
 

@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.handler;
 
-
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -16,7 +15,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 
 @EventHandler
 public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
@@ -69,6 +68,7 @@ public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
     }
     // *** GET CATEGORIES
     // ***************************************************************************
+
     /**
      * Get all categories. Used for display in listBox categories.
      */
@@ -120,6 +120,7 @@ public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
             }
         });
     }
+
     public void onGetSuppliersCount(Long category, String locality) {
         supplierService.getSuppliersCount(category, locality, new AsyncCallback<Long>() {
 
@@ -137,22 +138,23 @@ public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetSuppliersByCategoryLocality(int start, int count, Long category, String locality) {
-        supplierService.getSuppliers(start, count, category, locality, new AsyncCallback<ArrayList<UserDetail>>() {
+        supplierService.getSuppliers(start, count, category, locality,
+                new AsyncCallback<ArrayList<FullSupplierDetail>>() {
 
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        throw new UnsupportedOperationException("Not supported yet.");
+                    }
 
-            @Override
-            public void onSuccess(ArrayList<UserDetail> result) {
-                eventBus.displaySuppliers(result);
-            }
-        });
+                    @Override
+                    public void onSuccess(ArrayList<FullSupplierDetail> result) {
+                        eventBus.displayAdminTabSuppliers(result);
+                    }
+                });
     }
 
     public void onGetSuppliersByCategory(int start, int count, Long category) {
-        supplierService.getSuppliers(start, count, category, new AsyncCallback<ArrayList<UserDetail>>() {
+        supplierService.getSuppliers(start, count, category, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -160,8 +162,8 @@ public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(ArrayList<UserDetail> result) {
-                eventBus.displaySuppliers(result);
+            public void onSuccess(ArrayList<FullSupplierDetail> result) {
+                eventBus.displayAdminTabSuppliers(result);
             }
         });
     }

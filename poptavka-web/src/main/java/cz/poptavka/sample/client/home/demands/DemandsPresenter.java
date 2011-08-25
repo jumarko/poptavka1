@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.home.demands;
 
 import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -156,14 +155,15 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
 //        view.setLoginToken(getTokenGenerator().atLogin());
     }
-    private AsyncDataProvider dataProvider = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
-
-        @Override
-        protected void onRangeChanged(HasData<DemandDetailForDisplayDemands> display) {
-            //just for initializing cellTable
-            //will be implemented later, when allDemandsCount value will be retrieved
-        }
-    };
+    private AsyncDataProvider dataProvider = null;
+//            = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
+//
+//        @Override
+//        protected void onRangeChanged(HasData<DemandDetailForDisplayDemands> display) {
+//            //just for initializing cellTable
+//            //will be implemented later, when allDemandsCount value will be retrieved
+//        }
+//    };
 
     public void onCreateAsyncDataProvider() {
         this.dataProvider = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
@@ -262,11 +262,8 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         });
     }
 
-    public void onDisplayDemands(Collection<DemandDetailForDisplayDemands> result) {
-
-        List<DemandDetailForDisplayDemands> list = new ArrayList<DemandDetailForDisplayDemands>(result);
-
-        dataProvider.updateRowData(start, list);
+    public void onDisplayDemands(List<DemandDetailForDisplayDemands> result) {
+        dataProvider.updateRowData(start, result);
     }
 
     public void onSetDemand(DemandDetailForDisplayDemands demand) {

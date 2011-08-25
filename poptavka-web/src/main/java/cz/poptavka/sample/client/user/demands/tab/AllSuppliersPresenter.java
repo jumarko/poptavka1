@@ -98,7 +98,7 @@ public class AllSuppliersPresenter
                 CategoryDetail selected = (CategoryDetail) view.getSelectionRootModel().getSelectedObject();
 
                 if (selected != null) {
-                    eventBus.atDisplaySuppliers(selected.getId());
+                    eventBus.atDisplaySuppliers(selected);
                 }
             }
         });
@@ -203,7 +203,7 @@ public class AllSuppliersPresenter
      * Methods initialize Path, fills category list of Suppliers widget.
      * @param category
      */
-    public void onAtDisplaySuppliers(Long category) {
+    public void onAtDisplaySuppliers(CategoryDetail categoryDetail) {
         eventBus.loadingShow(MSGS.loading());
         //
         view.getChildSection().setVisible(true);
@@ -212,11 +212,12 @@ public class AllSuppliersPresenter
         view.getPath().clear();
         historyTokens.clear();
         //
-        eventBus.getSubCategories(category);
+        eventBus.getSubCategories(categoryDetail.getId());
         eventBus.getLocalities();
 
-        Hyperlink link = new Hyperlink("root", "!public/addToPath?root");
-        view.addPath(link);
+        view.addPath(new Hyperlink("root", "!public/addToPath?root"));
+        view.addPath(new Hyperlink(categoryDetail.getName(),
+                "!public/addToPath?" + Long.toString(categoryDetail.getId())));
         eventBus.displayContent(view.getWidgetView());
 //        eventBus.setBodyWidget(view.getWidgetView());
     }
@@ -241,7 +242,7 @@ public class AllSuppliersPresenter
         eventBus.loadingHide();
     }
 
-    public void onDisplaySuppliers(ArrayList<UserDetail> list) {
+    public void onDisplayDemandTabSuppliers(ArrayList<UserDetail> list) {
         view.getSuppliersList().setRowData(start, list);
     }
 

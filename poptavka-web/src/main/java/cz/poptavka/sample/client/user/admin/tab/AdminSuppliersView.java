@@ -1,115 +1,140 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package cz.poptavka.sample.client.user.admin.tab;
 
-import com.google.gwt.cell.client.AbstractCell;
-import java.util.logging.Logger;
-
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SplitLayoutPanel;
+
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
-import cz.poptavka.sample.client.main.common.OverflowComposite;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
-import java.util.ArrayList;
+import cz.poptavka.sample.domain.user.BusinessType;
 
-public class AdminSuppliersView extends OverflowComposite
-        implements AdminSuppliersPresenter.SuppliersViewInterface {
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 
-    private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
 
-    interface SuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
-    }
-    private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+/**
+ *
+ * @author ivan.vlcek
+ */
+public class AdminSuppliersView extends Composite implements AdminSuppliersPresenter.AdminSuppliersInterface {
+    private static AdminSuppliersViewUiBinder uiBinder = GWT.create(AdminSuppliersViewUiBinder.class);
+
+    /**
+     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
+     */
     @UiField(provided = true)
-    CellList suppliersList, categoriesList;
+    CellTable<FullSupplierDetail> cellTable;
+    /**
+     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
+     */
     @UiField(provided = true)
     SimplePager pager;
+    /**
+     * The list of cells that are editable.
+     */
+//    private List<AbstractEditableCell<?, ?>> editableCells;
+    /**
+     * Detail of selected Supplier.
+     */
     @UiField
-    FlowPanel path;
-    @UiField
-    HorizontalPanel root;
-    @UiField(provided = true)
-    ListBox pageSize;
-    @UiField
-    ListBox localityList;
-    @UiField
-    Label overallRating, certified, description, verification, localities,
-    categories, services, bsuRoles, addresses, businessType, email, companyName,
-    identificationNumber, firstName, lastName, phone, reklama;
-    @UiField
-    HTMLPanel detail, child;
-    private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
-            new SingleSelectionModel<CategoryDetail>();
-    private final SingleSelectionModel<CategoryDetail> selectionSupplierModel =
-            new SingleSelectionModel<CategoryDetail>();
-    private final SingleSelectionModel<CategoryDetail> selectionRootModel =
-            new SingleSelectionModel<CategoryDetail>();
-    private AsyncDataProvider dataProvider;
+    SimplePanel adminSupplierDetail;
+    /**
+     * Data provider that will cell table with data.
+     */
+//    private AsyncDataProvider<FullSupplierDetail> dataProvider = null;
+    private SingleSelectionModel<FullSupplierDetail> selectionModel;
+    /** Editable Columns in CellTable. **/
+    private Column<FullSupplierDetail, String> supplierIdColumn;
+    private Column<FullSupplierDetail, String> supplierNameColumn;
+    private Column<FullSupplierDetail, String> supplierTypeColumn;
+    private Column<FullSupplierDetail, Boolean> certifiedColumn;
+    private Column<FullSupplierDetail, String> verificationColumn;
+    private Column<FullSupplierDetail, String> emailColumn;
+    private Column<FullSupplierDetail, String> phoneColumn;
+    private final BusinessType[] businessTypes = BusinessType.values();
 
-    public AdminSuppliersView() {
-        pageSize = new ListBox();
-        pageSize.addItem("5");
-        pageSize.addItem("10");
-        pageSize.addItem("15");
-        pageSize.addItem("20");
-        pageSize.addItem("25");
-        pageSize.addItem("30");
-        pageSize.setSelectedIndex(2);
-        initCellList();
-        initWidget(uiBinder.createAndBindUi(this));
-        reklama.setVisible(true);
+    /**
+     * @return the dataProvider
+     */
+//    @Override
+//    public AsyncDataProvider<FullSupplierDetail> getDataProvider() {
+////        ColumnSortEvent fire = ColumnSortEvent.fire(this, cellTable.getColumnSortList());
+////        cellTable.fireEvent(fire);
+//        return dataProvider;
+//    }
 
-        detail.setVisible(false);
-        LOGGER.info("CreateView pre DisplaySuppliers");
+    /**
+     * @return the clientIdColumn
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getSupplierIdColumn() {
+        return supplierIdColumn;
     }
 
+    /**
+     * @return the SupplierNameColumn
+     */
     @Override
-    public AsyncDataProvider<SupplierDetail> getDataProvider() {
-        return dataProvider;
+    public Column<FullSupplierDetail, String> getSupplierNameColumn() {
+        return supplierNameColumn;
     }
 
+    /**
+     * @return the SupplierTypeColumn
+     */
     @Override
-    public void setDataProvider(AsyncDataProvider<SupplierDetail> dataProvider) {
-        this.dataProvider = dataProvider;
+    public Column<FullSupplierDetail, String> getSupplierTypeColumn() {
+        return supplierTypeColumn;
     }
 
+    /**
+     * @return the SupplierTypeColumn
+     */
     @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex()));
+    public Column<FullSupplierDetail, Boolean> getCertifiedColumn() {
+        return certifiedColumn;
     }
 
+    /**
+     * @return the SupplierTypeColumn
+     */
     @Override
-    public ListBox getPageSizeCombo() {
-        return pageSize;
+    public Column<FullSupplierDetail, String> getVerificationColumn() {
+        return verificationColumn;
+    }
+    /**
+     * @return the SupplierTypeColumn
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getEmailColumn() {
+        return emailColumn;
     }
 
+    /**
+     * @return the SupplierTypeColumn
+     */
     @Override
-    public ListBox getLocalityList() {
-        return localityList;
-    }
-
-    @Override
-    public String getSelectedLocality() {
-        if (localityList.getSelectedIndex() == 0) {
-            return null;
-        } else {
-            return localityList.getValue(localityList.getSelectedIndex());
-        }
+    public Column<FullSupplierDetail, String> getPhoneColumn() {
+        return phoneColumn;
     }
 
     @Override
@@ -118,281 +143,270 @@ public class AdminSuppliersView extends OverflowComposite
     }
 
     @Override
-    public FlowPanel getPath() {
-        return path;
+    public CellTable<FullSupplierDetail> getCellTable() {
+        return cellTable;
     }
 
-    //removes last one
+    /**
+     * @return the SupplierTypes
+     */
     @Override
-    public void removePath() {
-        path.remove(path.getWidgetCount() - 1);
+    public BusinessType[] getBusinessTypes() {
+        return businessTypes;
     }
 
+    /**
+     * @return the selectionModel
+     */
     @Override
-    public void addPath(Widget widget) {
-        path.add(widget);
+    public SingleSelectionModel<FullSupplierDetail> getSelectionModel() {
+        return selectionModel;
     }
 
+    /**
+     * @return the adminSupplierDetail
+     */
     @Override
-    public CellList getSuppliersList() {
-        return suppliersList;
+    public SimplePanel getAdminSupplierDetail() {
+        return adminSupplierDetail;
     }
 
-    @Override
-    public SimplePager getPager() {
-        return pager;
+    interface AdminSuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
     }
 
-    @Override
-    public SingleSelectionModel getSelectionCategoryModel() {
-        return selectionCategoryModel;
+    public AdminSuppliersView() {
+        initCellTable();
+        initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
-    public SingleSelectionModel getSelectionSupplierModel() {
-        return selectionSupplierModel;
-    }
+//    @Override
+//    public void createView() {
+//        initCellTable();
+//        initWidget(uiBinder.createAndBindUi(this));
+//    }
+    private void initCellTable() {
+        // Create a CellTable.
+        GWT.log("Admin Suppliers initCellTable initialized");
+        // Set a key provider that provides a unique key for each contact. If key is
+        // used to identify contacts when fields (such as the name and address)
+        // change.
+        cellTable = new CellTable<FullSupplierDetail>(KEY_PROVIDER);
+        cellTable.setWidth("100%", true);
+//        cellTable.setRowCount(2, true);
 
-    @Override
-    public SplitLayoutPanel getSplitter() {
-        return null; //split;
-    }
+        // TODO ivlcek - premysliet kedy a kde sa ma vytvarat DataProvider
+        // Connect the table to the data provider.
+//        dataProvider.addDataDisplay(cellTable);
 
-    private void initCellList() {
-        // Use the cell in a CellList.
-        suppliersList = new CellList<UserDetail>(new SupplierCell());
-        suppliersList.setSelectionModel(selectionSupplierModel);
-        categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
-        categoriesList.setSelectionModel(selectionCategoryModel);
+        // TODO ivlcek - make it working without keyprovider
+        // Attach a column sort handler to the ListDataProvider to sort the list.
+
+//                dataProvider.getList());
+//        cellTable.addColumnSortHandler(sortHandler);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setPageSize(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())));
-        pager.setDisplay(suppliersList);
-    }
+        pager.setDisplay(cellTable);
+        // TODO ivlcek - nastavit pocet zaznamov v pagery na mensi pocet ako 15
+//        pager.setPageSize(5);
 
-    @Override
-    public void displaySubCategories(int columns, ArrayList<CategoryDetail> subCategories) {
-        categoriesList.setRowCount(subCategories.size(), true);
-        categoriesList.setRowData(0, subCategories);
-    }
+        // Add a selection model to handle user selection.
+//        final MultiSelectionModel<SupplierDetailForDisplaySuppliers> selectionModel =
+//        new MultiSelectionModel<SupplierDetailForDisplaySuppliers>(KEY_PROVIDER);
+        // Add a single selection model to handle user selection.
+        selectionModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
+        cellTable.setSelectionModel(getSelectionModel(),
+                DefaultSelectionEventManager.<FullSupplierDetail>createCheckboxManager());
 
-    @Override
-    public void displaySuppliersDetail(UserDetail userDetail) {
-        reklama.setVisible(false);
-        detail.setVisible(true);
-
-        overallRating.setText(Integer.toString(userDetail.getSupplier().getOverallRating()));
-        certified.setText(Boolean.toString(userDetail.getSupplier().isCertified()));
-        description.setText(userDetail.getSupplier().getDescription());
-//    verification = userDetail.get
-        localities.setText(userDetail.getSupplier().getLocalities().toString());
-        categories.setText(userDetail.getSupplier().getCategories().toString());
-//    services = userDetail.getSupplier().
-//    bsuRoles = userDetail.getSupplier().
-        addresses.setText(userDetail.getAddress().toString());
-//    businessType = userDetail.get
-        email.setText(userDetail.getEmail());
-        companyName.setText(userDetail.getCompanyName());
-        identificationNumber.setText(userDetail.getIdentifiacationNumber());
-        firstName.setText(userDetail.getFirstName());
-        lastName.setText(userDetail.getLastName());
-        phone.setText(userDetail.getPhone());
-
-    }
-
-    @Override
-    public HTMLPanel getChildSection() {
-        return child;
-    }
-
-    //************ ROOT SECTION ********************************************
-    @Override
-    public HorizontalPanel getRootSection() {
-        return root;
-    }
-
-    @Override
-    public SingleSelectionModel getSelectionRootModel() {
-        return selectionRootModel;
-    }
-
-    @Override
-    public void displayRootCategories(int columns, ArrayList<CategoryDetail> rootCategories) {
-        if (rootCategories.isEmpty()) {
-            root.clear();
-            return;
-        }
-        root.clear();
-        int size = rootCategories.size();
-        int subSize = 0;
-        int startIdx = 0;
-        if (size < columns) {
-            columns = size;
-        }
-        while (columns != 0) {
-            if (size % columns == 0) {
-                subSize = size / columns;
-            } else {
-                subSize = size / columns + 1;
-            }
-            CellList cellList = null;
-            cellList = new CellList<CategoryDetail>(new RootCategoryCell());
-            cellList.setRowCount(subSize, true);
-            cellList.setSelectionModel(selectionRootModel);
-            cellList.setRowData(rootCategories.subList(startIdx, startIdx + subSize));
-            root.add(cellList);
-            startIdx += subSize;
-            size -= subSize;
-            columns--;
-        }
-    }
-}
-
-/**
- * Supplier Cell.
- */
-class SupplierCell extends AbstractCell<UserDetail> {
-
-    public SupplierCell() {
-        /*
-         * Let the parent class know that our cell responds to click events and
-         * keydown events.
-         */
-//        super("click", "keydown");
-    }
-
-//    @Override
-//    public void onBrowserEvent(Context context, Element parent, UserDetail value,
-//            NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
-//        // Check that the value is not null.
-//        if (value == null) {
-//            return;
-//        }
-//
-//        // Call the super handler, which handlers the enter key.
-//        super.onBrowserEvent(context, parent, value, event, valueUpdater);
-//
-//        // On click, perform the same action that we perform on enter.
-//        if ("click".equals(event.getType())) {
-//            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
-//        }
-//    }
-
-    @Override
-    public void render(Context context, UserDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
-
-        //TODO Martin Logo??
-        sb.appendHtmlConstant("<div><a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"> "
-                + "<img style=\"float: left; margin-right: 10px;padding: 0px; width: 50px;\" "
-                + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"  "
-                + "alt=\"http://s-car.sk\"  > </a>");
-
-
-        //Company Name
-        if (value.getCompanyName() != null) {
-            sb.appendHtmlConstant("<a href=\"#\"><strong>1.)");
-            sb.appendEscaped(value.getCompanyName());
-            sb.appendHtmlConstant("</strong> </a>");
-        }
-
-        //Company description
-        if (value.getSupplier().getDescription() != null) {
-            sb.appendHtmlConstant("<div style=\"width:800px;\">");
-            sb.appendEscaped(value.getSupplier().getDescription());
-            sb.appendHtmlConstant("</div>");
-        }
-
-        //Componay Website
-        if (value.getWebsite() != null) {
-            sb.appendHtmlConstant("<A href=\"http://www.s-car.sk\" target=\"_blank\"  "
-                    + " style=\"FONT-FAMILY: Arial, sans-serif; COLOR:green;\">");
-            sb.appendEscaped(value.getWebsite());
-            sb.appendHtmlConstant("</A>");
-        }
-
-        //Company address
-        if (value.getAddress() != null) {
-            sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
-                    + "&nbsp;&nbsp;-&nbsp;");
-            sb.appendEscaped(value.getAddress().toString());
-            sb.appendHtmlConstant("</span></div><br/>");
-        }
+        // Initialize the columns.
+        initTableColumns(getSelectionModel());
     }
 
     /**
-     * By convention, cells that respond to user events should handle the enter
-     * key. This provides a consistent user experience when users use keyboard
-     * navigation in the widget.
+     * Add the columns to the table.
      */
-//    @Override
-//    protected void onEnterKeyDown(Context context, Element parent,
-//            UserDetail value, NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
-//        Window.alert("You clicked " + value.getSupplierId());
-//    }
-}
+    private void initTableColumns(final SelectionModel<FullSupplierDetail> selectionModel) {
 
-/**
- * Root Category Cell .
- */
-class RootCategoryCell extends AbstractCell<CategoryDetail> {
+        // Checkbox column. This table will uses a checkbox column for selection.
+        // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
+        // mouse selection.
+        Column<FullSupplierDetail, Boolean> checkColumn = new Column<FullSupplierDetail, Boolean>(
+                new CheckboxCell(true, false)) {
+            @Override
+            public Boolean getValue(FullSupplierDetail object) {
+                // Get the value from the selection model.
+                return selectionModel.isSelected(object);
+            }
+        };
+        cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
 
-    @Override
-    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
+        // Supplier ID.
+        supplierIdColumn = new Column<FullSupplierDetail, String>(new TextCell()) {
+            @Override
+            public String getValue(FullSupplierDetail object) {
+                return String.valueOf(object.getSupplierId());
+            }
+        };
+        supplierIdColumn.setSortable(true);
+//        sortHandler.setComparator(supplierIdColumn, new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return Long.valueOf(o1.getSupplierId()).compareTo(Long.valueOf(o2.getSupplierId()));
+//            }
+//        });
+        cellTable.addColumn(supplierIdColumn, "SID");
+        cellTable.setColumnWidth(supplierIdColumn, 50, Unit.PX);
 
-        StringBuilder text = new StringBuilder();
+        // Company name.
+        supplierNameColumn = new Column<FullSupplierDetail, String>(
+                new EditTextCell()) {
+            @Override
+            public String getValue(FullSupplierDetail object) {
+                return String.valueOf(object.getCompanyName());
+            }
+        };
+        getSupplierNameColumn().setSortable(true);
+//        sortHandler.setComparator(getSupplierNameColumn(), new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return (o1.getCompanyName()).compareToIgnoreCase(o2.getCompanyName());
+//            }
+//        });
+        cellTable.addColumn(getSupplierNameColumn(), "Name");
+        cellTable.setColumnWidth(getSupplierNameColumn(), 50, Unit.PX);
 
-        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-        text.append(" (");
-        text.append(value.getSuppliers());
-        text.append(")");
+        // SupplierType.
+        supplierTypeColumn = new Column<FullSupplierDetail, String>(
+                new EditTextCell()) {
+            @Override
+            public String getValue(FullSupplierDetail object) {
+                return object.getBusinessType();
+            }
+        };
+        getSupplierTypeColumn().setSortable(true);
+//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return o1.getBusinessType().compareToIgnoreCase(o2.getBusinessType());
+//            }
+//        });
+        cellTable.addColumn(supplierTypeColumn, "Type");
+        cellTable.setColumnWidth(supplierTypeColumn, 30, Unit.PX);
 
-        sb.appendEscaped(text.toString());
-//        sb.appendHtmlConstant("</div>");
+        // Certified.
+        certifiedColumn = new Column<FullSupplierDetail, Boolean>(
+                new CheckboxCell()) {
+            @Override
+            public Boolean getValue(FullSupplierDetail object) {
+                return object.isCertified();
+            }
+        };
+        getSupplierTypeColumn().setSortable(true);
+//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return Boolean.toString(o1.isCertified()).compareTo(Boolean.toString(o2.isCertified()));
+//            }
+//        });
+        cellTable.addColumn(certifiedColumn, "Certified");
+        cellTable.setColumnWidth(certifiedColumn, 20, Unit.PX);
+
+        // Verification.
+        verificationColumn = new Column<FullSupplierDetail, String>(
+                new EditTextCell()) {
+            @Override
+            public String getValue(FullSupplierDetail object) {
+                return object.getVerification();
+            }
+        };
+        getSupplierTypeColumn().setSortable(true);
+//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return o1.getVerification().compareToIgnoreCase(o2.getVerification());
+//            }
+//        });
+        cellTable.addColumn(verificationColumn, "Verified");
+        cellTable.setColumnWidth(verificationColumn, 20, Unit.PX);
+
+        // email.
+        emailColumn = new Column<FullSupplierDetail, String>(
+                new EditTextCell()) {
+            @Override
+            public String getValue(FullSupplierDetail object) {
+                return object.getEmail();
+            }
+        };
+        getSupplierTypeColumn().setSortable(true);
+//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return o1.getEmail().compareToIgnoreCase(o2.getEmail());
+//            }
+//        });
+        cellTable.addColumn(emailColumn, "Email");
+        cellTable.setColumnWidth(emailColumn, 30, Unit.PX);
+
+        // phone.
+        phoneColumn = new Column<FullSupplierDetail, String>(
+                new EditTextCell()) {
+            @Override
+            public String getValue(FullSupplierDetail object) {
+                return object.getPhone();
+            }
+        };
+        getSupplierTypeColumn().setSortable(true);
+//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
+//            @Override
+//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
+//                return o1.getPhone().compareToIgnoreCase(o2.getPhone());
+//            }
+//        });
+        cellTable.addColumn(phoneColumn, "Phone");
+        cellTable.setColumnWidth(phoneColumn, 30, Unit.PX);
     }
-}
 
-/**
- * Sub Category Cell .
- */
-class SubCategoryCell extends AbstractCell<CategoryDetail> {
-
-    @Override
-    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
-
-        StringBuilder text = new StringBuilder();
-
-        text.append(value.getName().replaceAll("-a-", " a ").replaceAll("-", ", "));
-        text.append(" (");
-        text.append(value.getSuppliers());
-        text.append(")");
-
-        sb.appendEscaped(text.toString());
-//        sb.appendHtmlConstant("</div>");
+    /**
+     * Get a cell value from a record.
+     *
+     * @param <C> the cell type
+     */
+    private static interface GetValue<C> {
+        C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
     }
+
+    /**
+     * Add a column with a header.
+     *
+     * @param <C> the cell type
+     * @param cell the cell used to render the column
+     * @param headerText the header string
+     * @param getter the value getter for the cell
+     */
+    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText,
+            final GetValue<C> getter, FieldUpdater<FullSupplierDetail, C> fieldUpdater) {
+        Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
+            @Override
+            public C getValue(FullSupplierDetail object) {
+                return getter.getValue(object);
+            }
+        };
+        column.setFieldUpdater(fieldUpdater);
+//        if (cell instanceof AbstractEditableCell<?, ?>) {
+//            editableCells.add((AbstractEditableCell<?, ?>) cell);
+//        }
+        cellTable.addColumn(column, headerText);
+        return column;
+    }
+    /**
+     * The key provider that provides the unique ID of a FullSupplierDetail.
+     */
+    private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
+        @Override
+        public Object getKey(FullSupplierDetail item) {
+            return item == null ? null : item.getSupplierId();
+        }
+    };
 }

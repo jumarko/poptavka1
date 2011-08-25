@@ -17,13 +17,16 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
+import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 
 public class SuppliersView extends OverflowComposite
@@ -46,11 +49,15 @@ public class SuppliersView extends OverflowComposite
     @UiField(provided = true)
     ListBox pageSize;
     @UiField
-    ListBox localityList;
+    ListBox localityList, localities, categories;
     @UiField
-    Label overallRating, certified, description, verification, localities,
-    categories, services, bsuRoles, addresses, businessType, email, companyName,
-    identificationNumber, firstName, lastName, phone, reklama;
+    Label reklama;
+    @UiField
+    TextBox overallRating, certified, verification,
+    services, bsuRoles, addresses, businessType, email, companyName,
+    identificationNumber, firstName, lastName, phone;
+    @UiField
+    TextArea description;
     @UiField
     HTMLPanel detail, child;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
@@ -63,13 +70,12 @@ public class SuppliersView extends OverflowComposite
 
     public SuppliersView() {
         pageSize = new ListBox();
-        pageSize.addItem("5");
         pageSize.addItem("10");
         pageSize.addItem("15");
         pageSize.addItem("20");
         pageSize.addItem("25");
         pageSize.addItem("30");
-        pageSize.setSelectedIndex(2);
+        pageSize.setSelectedIndex(3);
         initCellList();
         initWidget(uiBinder.createAndBindUi(this));
         reklama.setVisible(true);
@@ -160,7 +166,7 @@ public class SuppliersView extends OverflowComposite
 
     private void initCellList() {
         // Use the cell in a CellList.
-        suppliersList = new CellList<UserDetail>(new SupplierCell());
+        suppliersList = new CellList<FullSupplierDetail>(new SupplierCell());
         suppliersList.setSelectionModel(selectionSupplierModel);
         categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
         categoriesList.setSelectionModel(selectionCategoryModel);
@@ -179,27 +185,37 @@ public class SuppliersView extends OverflowComposite
     }
 
     @Override
-    public void displaySuppliersDetail(UserDetail userDetail) {
+    public void displaySuppliersDetail(FullSupplierDetail supplierDetail) {
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        overallRating.setText(Integer.toString(userDetail.getSupplier().getOverallRating()));
-        certified.setText(Boolean.toString(userDetail.getSupplier().isCertified()));
-        description.setText(userDetail.getSupplier().getDescription());
+        overallRating.setText(Integer.toString(supplierDetail.getOverallRating()));
+        certified.setText(Boolean.toString(supplierDetail.isCertified()));
+        description.setText(supplierDetail.getDescription());
 //    verification = userDetail.get
-        localities.setText(userDetail.getSupplier().getLocalities().toString());
-        categories.setText(userDetail.getSupplier().getCategories().toString());
+        for (String categoryName : supplierDetail.getLocalities().values()) {
+            localities.addItem(categoryName);
+        }
+        for (String localityName : supplierDetail.getCategories().values()) {
+            categories.addItem(localityName);
+        }
 //    services = userDetail.getSupplier().
 //    bsuRoles = userDetail.getSupplier().
-        addresses.setText(userDetail.getAddress().toString());
+//        addresses.setText(supplierDetail.Address().toString());
 //    businessType = userDetail.get
-        email.setText(userDetail.getEmail());
-        companyName.setText(userDetail.getCompanyName());
-        identificationNumber.setText(userDetail.getIdentifiacationNumber());
-        firstName.setText(userDetail.getFirstName());
-        lastName.setText(userDetail.getLastName());
-        phone.setText(userDetail.getPhone());
+        email.setText(supplierDetail.getEmail());
+        companyName.setText(supplierDetail.getCompanyName());
+        identificationNumber.setText(supplierDetail.getIdentificationNumber());
+        firstName.setText(supplierDetail.getFirstName());
+        lastName.setText(supplierDetail.getLastName());
+        phone.setText(supplierDetail.getPhone());
 
+    }
+
+    @Override
+    public void hideSuppliersDetail() {
+        reklama.setVisible(true);
+        detail.setVisible(false);
     }
 
     @Override
@@ -253,7 +269,7 @@ public class SuppliersView extends OverflowComposite
 /**
  * Supplier Cell.
  */
-class SupplierCell extends AbstractCell<UserDetail> {
+class SupplierCell extends AbstractCell<FullSupplierDetail> {
 
     public SupplierCell() {
         /*
@@ -279,9 +295,8 @@ class SupplierCell extends AbstractCell<UserDetail> {
 //            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
 //        }
 //    }
-
     @Override
-    public void render(Context context, UserDetail value, SafeHtmlBuilder sb) {
+    public void render(Context context, FullSupplierDetail value, SafeHtmlBuilder sb) {
         /*
          * Always do a null check on the value. Cell widgets can pass null to
          * cells if the underlying data contains a null, or if the data arrives
@@ -292,43 +307,42 @@ class SupplierCell extends AbstractCell<UserDetail> {
         }
 
         //TODO Martin Logo??
-        sb.appendHtmlConstant("<div><a href=\"http://firmy.sk/66161/ivan-genda-s-car/\"> "
-                + "<img style=\"float: left; margin-right: 10px;padding: 0px; width: 50px;\" "
-                + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"  "
-                + "alt=\"http://s-car.sk\"  > </a>");
+//        sb.appendHtmlConstant("<img style=\"float: left; margin-right: 10px;padding: 0px; width: 50px;\" "
+//                + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"/>");
 
 
         //Company Name
         if (value.getCompanyName() != null) {
-            sb.appendHtmlConstant("<a href=\"#\"><strong>1.)");
+            sb.appendHtmlConstant("<a href=\"#\"><strong>o ");
             sb.appendEscaped(value.getCompanyName());
             sb.appendHtmlConstant("</strong> </a>");
         }
 
         //Company description
-        if (value.getSupplier().getDescription() != null) {
-            sb.appendHtmlConstant("<div style=\"width:800px;\">");
-            sb.appendEscaped(value.getSupplier().getDescription());
-            sb.appendHtmlConstant("</div>");
+        if (value.getDescription() != null) {
+            sb.appendHtmlConstant("<span style=\"width:800px;\">");
+            sb.appendEscaped(value.getDescription());
+            sb.appendHtmlConstant("</span>");
         }
 
         //Componay Website
-        if (value.getWebsite() != null) {
-            sb.appendHtmlConstant("<A href=\"http://www.s-car.sk\" target=\"_blank\"  "
-                    + " style=\"FONT-FAMILY: Arial, sans-serif; COLOR:green;\">");
-            sb.appendEscaped(value.getWebsite());
-            sb.appendHtmlConstant("</A>");
-        }
+        //TODO Martin - nevedieme zaznam o webovej stranke????
+//        if (value.getWebsite() != null) {
+//            sb.appendHtmlConstant("<A href=\"http://www.s-car.sk\" target=\"_blank\"  "
+//                    + " style=\"FONT-FAMILY: Arial, sans-serif; COLOR:green;\">");
+//            sb.appendEscaped(value.getWebsite());
+//            sb.appendHtmlConstant("</A>");
+//        }
 
+        //TODO - Martin - napisat vsetky adresy?
         //Company address
-        if (value.getAddress() != null) {
+        for (AddressDetail detail : value.getAddresses()) {
             sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
                     + "&nbsp;&nbsp;-&nbsp;");
-            sb.appendEscaped(value.getAddress().toString());
-            sb.appendHtmlConstant("</span></div><br/>");
+            sb.appendEscaped(detail.toString());
+            sb.appendHtmlConstant("</span><br/>");
         }
     }
-
     /**
      * By convention, cells that respond to user events should handle the enter
      * key. This provides a consistent user experience when users use keyboard
