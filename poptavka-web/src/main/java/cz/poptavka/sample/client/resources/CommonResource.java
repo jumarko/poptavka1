@@ -29,4 +29,6 @@ public interface CommonResource extends CssResource {
     @ClassName("loading-popup")
     String loadingPopup();
 
+    @ClassName("hyperlink")
+    String hyperlinkInline();
 }

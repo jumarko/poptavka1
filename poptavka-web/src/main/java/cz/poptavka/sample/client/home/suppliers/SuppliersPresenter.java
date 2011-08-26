@@ -23,6 +23,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.home.HomeEventBus;
+import cz.poptavka.sample.client.resources.StyleResource;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -113,8 +114,8 @@ public class SuppliersPresenter
 
                 if (selected != null) {
                     view.hideSuppliersDetail();
-                    view.getSelectionSupplierModel().setSelected(view.getSelectionSupplierModel()
-                            .getSelectedObject(), false);
+                    view.getSelectionSupplierModel().setSelected(
+                            view.getSelectionSupplierModel().getSelectedObject(), false);
                     eventBus.setCategoryID(selected.getId());
                     historyTokens.add(selected.getId());
                     eventBus.addToPath(selected);
@@ -138,60 +139,69 @@ public class SuppliersPresenter
 
             @Override
             public void onChange(ChangeEvent event) {
+                view.hideSuppliersDetail();
 //                view.getSuppliersList().setRowData(0, new ArrayList<FullSupplierDetail>());
-                eventBus.getSuppliersByCategoryLocality(1, view.getPageSize(),
-                        lastUsedCategoryID, view.getSelectedLocality());
+//                eventBus.resetPager(totalFound);
+                eventBus.getSuppliersCountByCategoryLocality(lastUsedCategoryID, view.getSelectedLocality());
+//                eventBus.getSuppliersByCategoryLocality(1, view.getPageSize(),
+//                        lastUsedCategoryID, view.getSelectedLocality());
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                view.getSuppliersList().setRowCount(0, true);
-
-                int newPage = Integer.valueOf(view.getPageSize());
-
-                view.getSuppliersList().setRowCount(newPage, true);
-
-                int page = view.getPager().getPageStart() / view.getPager().getPageSize();
-
-                view.getPager().setPageStart(page * newPage);
-                view.getPager().setPageSize(newPage);
+//                view.getSuppliersList().setRowCount(0, true);
+//
+//                int newPage = view.getPageSize();
+//
+//                view.getSuppliersList().setRowCount(newPage, true);
+//
+                int page = view.getPager().getPageStart() / view.getPageSize();
+//
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
             }
         });
     }
+
+    public void onResetDisplaySuppliersPager(int totalFoundNew) {
+        this.totalFound = totalFoundNew;
+        view.getSuppliersList().setPageSize(0);
+
+        view.getPager().setPage(0);
+        if (!dataProviderInitialized) {
+            this.dataProvider.addDataDisplay(view.getSuppliersList());
+            dataProviderInitialized = true;
+        }
+    }
+    private int start = 0;
+    private int totalFound = 0;
+    private boolean dataProviderInitialized = false;
+//    public void onCreateAsyncDataProviderSupplier(final long totalFound) {
+//        this.start = 0;
     private AsyncDataProvider dataProvider = new AsyncDataProvider<SupplierDetail>() {
 
         @Override
         protected void onRangeChanged(HasData<SupplierDetail> display) {
-            //just for initializing cellTable
-            //will be implemented later, when allDemandsCount value will be retrieved
+            view.getSuppliersList().setPageSize(view.getPageSize());
+            display.setRowCount(totalFound);
+            if (totalFound == 0) {
+                return;
+            }
+            start = display.getVisibleRange().getStart();
+            int length = display.getVisibleRange().getLength();
+            if (view.getLocalityList().getSelectedIndex() == 0) {
+                eventBus.getSuppliersByCategory(start, start + length, lastUsedCategoryID);
+            } else {
+                eventBus.getSuppliersByCategoryLocality(start, start + length,
+                        lastUsedCategoryID, view.getSelectedLocality());
+            }
+            eventBus.loadingHide();
         }
     };
-    private int start = 0;
-//    private long totalFound = 0;
 
-    public void onCreateAsyncDataProviderSupplier(final long totalFound) {
-        this.start = 0;
-        this.dataProvider = new AsyncDataProvider<SupplierDetail>() {
-
-            @Override
-            protected void onRangeChanged(HasData<SupplierDetail> display) {
-                display.setRowCount((int) totalFound);
-                start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
-                if (view.getLocalityList().getSelectedIndex() == 0) {
-                    eventBus.getSuppliersByCategory(start, start + length, lastUsedCategoryID);
-                } else {
-                    eventBus.getSuppliersByCategoryLocality(start, start + length,
-                            lastUsedCategoryID, view.getSelectedLocality());
-                }
-                eventBus.loadingHide();
-            }
-        };
-        this.dataProvider.addDataDisplay(view.getSuppliersList());
-    }
-
+//    }
     public void onAtSuppliers() {
         eventBus.loadingShow(MSGS.loading());
 
@@ -247,8 +257,8 @@ public class SuppliersPresenter
     }
 
     public void onDisplaySuppliers(ArrayList<FullSupplierDetail> list) {
-        view.getSuppliersList().setRowCount(0, true);
-        view.getSuppliersList().setRowData(0, new ArrayList<FullSupplierDetail>());
+//        view.getSuppliersList().setRowCount(0, true);
+        view.getSuppliersList().setRowData(start, new ArrayList<FullSupplierDetail>());
         view.getSuppliersList().redraw();
         view.getSuppliersList().setRowData(start, list);
     }
@@ -267,8 +277,7 @@ public class SuppliersPresenter
             public void execute() {
                 box.addItem("All localities...");
                 for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(),
-                            String.valueOf(list.get(i).getId()));
+                    box.addItem(list.get(i).getName(), list.get(i).getCode());
                 }
                 box.setSelectedIndex(0);
                 LOGGER.info("Locality List filled");
@@ -279,6 +288,7 @@ public class SuppliersPresenter
     public void onAddToPath(CategoryDetail categoryDetail) {
         Hyperlink link = new Hyperlink(" -> " + categoryDetail.getName(),
                 "!public/addToPath?" + categoryDetail.getId());
+        link.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
         view.addPath(link);
     }
 

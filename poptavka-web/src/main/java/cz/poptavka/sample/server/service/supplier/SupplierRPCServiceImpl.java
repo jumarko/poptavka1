@@ -221,11 +221,12 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
-
+        Category[] categories = {categoryService.getById(categoryID)};
+        Locality[] localities = {localityService.getLocality(localityCode)};
         return this.createSupplierDetailList(supplierService.getSuppliers(
-                resultCriteria,
-                this.getAllSubcategories(categoryID),
-                this.getAllSublocalities(localityCode)));
+                resultCriteria, categories, localities));
+//                this.getAllSubcategories(categoryID),
+//                this.getAllSublocalities(localityCode)));
     }
 
     @Override
@@ -233,8 +234,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
-                resultCriteria,
-                this.getAllSubcategories(categoryID)));
+                resultCriteria, categoryService.getById(categoryID)));
+//                this.getAllSubcategories(categoryID)));
     }
 
     @Override
@@ -265,13 +266,17 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public Long getSuppliersCount(Long categoryID) {
         return supplierService.getSuppliersCountQuick(categoryService.getById(categoryID));
+//        return supplierService.getSuppliersCount(this.getAllSubcategories(categoryID));
     }
 
     @Override
     public Long getSuppliersCount(Long categoryID, String localityCode) {
         return supplierService.getSuppliersCount(
-                this.getAllSubcategories(categoryID),
-                this.getAllSublocalities(localityCode));
+                new Category[]{categoryService.getById(categoryID)},
+                new Locality[] {localityService.getLocality(localityCode)});
+//                this.getAllSubcategories(categoryID),
+//                this.getAllSublocalities(localityCode));
+//        return supplierService.getSuppliersCount(categoryID, localityCode);
     }
 
     /**
@@ -411,6 +416,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
         //if stored are not what i am looking for, retrieve new/actual
         if (categoriesHistory.isEmpty() || !categoriesHistory.get(0).getId().equals(id)) {
+            GWT.log("getting all categories");
             //clear
             categoriesHistory = new LinkedList<Category>();
             //level 0

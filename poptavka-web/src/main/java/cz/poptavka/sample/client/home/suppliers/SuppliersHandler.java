@@ -105,8 +105,23 @@ public class SuppliersHandler extends BaseEventHandler<HomeEventBus> {
         });
     }
 
-    // *** GET CATEGORIES
+    // *** GET SUPPLIERS COUNTS
     // ***************************************************************************
+    public void onGetSuppliersCountByCategoryLocality(Long category, String locality) {
+        supplierService.getSuppliersCount(category, locality, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+//                eventBus.createAsyncDataProviderSupplier(result);
+                eventBus.resetDisplaySuppliersPager(result.intValue());
+            }
+        });
+    }
     public void onGetSuppliersCountByCategory(Long category) {
         supplierService.getSuppliersCount(category, new AsyncCallback<Long>() {
 
@@ -117,7 +132,8 @@ public class SuppliersHandler extends BaseEventHandler<HomeEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAsyncDataProviderSupplier(result);
+//                eventBus.createAsyncDataProviderSupplier(result);
+                eventBus.resetDisplaySuppliersPager(result.intValue());
             }
         });
     }
@@ -133,7 +149,8 @@ public class SuppliersHandler extends BaseEventHandler<HomeEventBus> {
             @Override
             public void onSuccess(Long result) {
 //                eventBus.setResultCount(result);
-                eventBus.createAsyncDataProviderSupplier(result);
+//                eventBus.createAsyncDataProviderSupplier(result);
+                eventBus.resetDisplaySuppliersPager(result.intValue());
             }
         });
     }

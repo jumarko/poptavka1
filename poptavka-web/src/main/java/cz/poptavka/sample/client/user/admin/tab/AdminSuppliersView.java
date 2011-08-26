@@ -8,6 +8,7 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -27,8 +28,10 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.domain.user.BusinessType;
+import cz.poptavka.sample.domain.user.Verification;
 
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
+import java.util.ArrayList;
 
 
 /**
@@ -240,7 +243,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
             }
         };
         cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
+        cellTable.setColumnWidth(checkColumn, 15, Unit.PX);
 
         // Supplier ID.
         supplierIdColumn = new Column<FullSupplierDetail, String>(new TextCell()) {
@@ -257,7 +260,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //            }
 //        });
         cellTable.addColumn(supplierIdColumn, "SID");
-        cellTable.setColumnWidth(supplierIdColumn, 50, Unit.PX);
+        cellTable.setColumnWidth(supplierIdColumn, 20, Unit.PX);
 
         // Company name.
         supplierNameColumn = new Column<FullSupplierDetail, String>(
@@ -278,8 +281,12 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         cellTable.setColumnWidth(getSupplierNameColumn(), 50, Unit.PX);
 
         // SupplierType.
+        ArrayList<String> types = new ArrayList<String>();
+        for (BusinessType type : BusinessType.values()) {
+            types.add(type.getValue());
+        }
         supplierTypeColumn = new Column<FullSupplierDetail, String>(
-                new EditTextCell()) {
+                new SelectionCell(types)) {
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getBusinessType();
@@ -310,12 +317,16 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //                return Boolean.toString(o1.isCertified()).compareTo(Boolean.toString(o2.isCertified()));
 //            }
 //        });
-        cellTable.addColumn(certifiedColumn, "Certified");
-        cellTable.setColumnWidth(certifiedColumn, 20, Unit.PX);
+        cellTable.addColumn(certifiedColumn, "Cert.");
+        cellTable.setColumnWidth(certifiedColumn, 15, Unit.PX);
 
         // Verification.
+        ArrayList<String> verTypes  = new ArrayList<String>();
+        for (Verification type : Verification.values()) {
+            verTypes.add(type.name());
+        }
         verificationColumn = new Column<FullSupplierDetail, String>(
-                new EditTextCell()) {
+                new SelectionCell(verTypes)) {
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getVerification();
@@ -329,7 +340,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //            }
 //        });
         cellTable.addColumn(verificationColumn, "Verified");
-        cellTable.setColumnWidth(verificationColumn, 20, Unit.PX);
+        cellTable.setColumnWidth(verificationColumn, 30, Unit.PX);
 
         // email.
         emailColumn = new Column<FullSupplierDetail, String>(

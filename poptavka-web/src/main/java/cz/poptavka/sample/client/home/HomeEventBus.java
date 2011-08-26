@@ -199,6 +199,9 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = SuppliersHandler.class)
     void getSuppliersCountByCategory(Long category);
 
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersCountByCategoryLocality(Long category, String locality);
+
     //Display
     @Event(handlers = SuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
@@ -222,7 +225,7 @@ public interface HomeEventBus extends EventBus {
     void setCategoryID(Long categoryCode);
 
     @Event(handlers = SuppliersPresenter.class)
-    void createAsyncDataProviderSupplier(final long totalFound);
+    void resetDisplaySuppliersPager(int totalFoundNew);
 
     //DISPLAY DEMANDS
     //Demand
