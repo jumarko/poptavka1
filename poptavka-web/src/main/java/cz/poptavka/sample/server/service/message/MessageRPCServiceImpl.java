@@ -393,8 +393,23 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return offerDemands;
     }
 
+    /**
+     * Metoda vrati vsetky konverzacie (s dodavatelmi alebo operatorom) pre danu
+     * poptavku (poptavkovu spravu).
+     *
+     * Pohlad v ktorom sa RPC metoda pouziva vid Wireframe:
+     * UR -> Menu Klient -> Nove poptavky -> Konkretna poptavka
+     *
+     * Detail objekt musi vratit vsetky atributy, ktore su zobrazene na pohlade
+     * vo Wireframoch. Nebudem ich vypisovat
+     * TODO Vojto
+     *
+     * @param threadRootId
+     * @return
+     */
     @Override
     public ArrayList<MessageDetailImpl> getClientDemandConversations(long threadRootId) {
+        // TODO Vojto
         ArrayList<MessageDetailImpl> childrenList = new ArrayList<MessageDetailImpl>();
 
         Message root = messageService.getById(threadRootId);
