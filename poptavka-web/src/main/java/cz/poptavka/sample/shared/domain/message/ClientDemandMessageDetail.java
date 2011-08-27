@@ -20,6 +20,7 @@ public class ClientDemandMessageDetail implements Serializable {
     private long threadRoodId;
     private long demandId;
     private long senderId;
+    private int submessages;
     private int unreadSubmessages;
     // demand fields
     private String demandTitle;
@@ -99,6 +100,14 @@ public class ClientDemandMessageDetail implements Serializable {
      */
     public void setSenderId(long senderId) {
         this.senderId = senderId;
+    }
+
+    public int getSubmessages() {
+        return submessages;
+    }
+
+    public void setSubmessages(int submessages) {
+        this.submessages = submessages;
     }
 
     /**
