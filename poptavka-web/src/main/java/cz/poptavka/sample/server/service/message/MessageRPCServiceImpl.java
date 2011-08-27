@@ -145,7 +145,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * (vid metodu sendQueryToPotentialDemand)
      * - UserMessage.message = message.id (konkretna podsprava)
      * - UserMessage.user = businessUserId
-     * - UserMessage.isRead = false
      *
      * @param businessUserId - parameter z UI
      * @param clientId - parameter z UI
@@ -154,11 +153,16 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
-        Map<Message, Long> messagesAndCounts = this.messageService.getListOfClientDemandMessages(businessUser);
-        for (Entry<Message, Long> entry : messagesAndCounts.entrySet()) {
+        Map<Message, Long> submessageCounts = this.messageService
+                .getListOfClientDemandMessagesAll(businessUser);
+        Map<Message, Long> unreadSubmessageCounts = this.messageService
+                .getListOfClientDemandMessagesUnread(businessUser);
+        for (Entry<Message, Long> entry : submessageCounts.entrySet()) {
             Message message = entry.getKey();
             long count = entry.getValue();
-            result.add(ClientDemandMessageDetail.createDetail(message, count));
+            long unreadCount = unreadSubmessageCounts.get(entry.getKey());
+            result.add(ClientDemandMessageDetail.createDetail(message, count,
+                    unreadCount));
         }
         return result;
     }

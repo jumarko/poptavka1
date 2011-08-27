@@ -84,14 +84,28 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser);
 
     /**
-     * Loads all root messages related to <code>client</code>'s demands
-     * along with the number of unread messages that span from each of the root
-     * demand message.
+     * Gets all the demand messages of the given user along with the number of
+     * ALL the messages that span from the demand message (including the demand
+     * message itself)
      *
-     * @param client
-     * @return
+     * @param user
+     * @return a map keyed by the user's demand messages containing the number
+     * of ALL the messages spanning from the demand message (including the
+     * demand message itself)
      */
-    Map<Message, Long> getListOfClientDemandMessages(User user);
+    Map<Message, Long> getListOfClientDemandMessagesAll(User user);
+
+    /**
+     * Gets all the demand messages of the given user along with the number of
+     * UNREAD messages that span from the demand message (including the demand
+     * message itself)
+     *
+     * @param user
+     * @return a map keyed by the user's demand messages containing the number
+     * of UNREAD messages spanning from the demand message (including the
+     * demand message itself)
+     */
+    Map<Message, Long> getListOfClientDemandMessagesUnread(User user);
 
     /**
      * Gets all the descendants (not just the children) of a given message

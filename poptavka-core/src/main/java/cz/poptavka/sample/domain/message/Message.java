@@ -48,6 +48,15 @@ import org.hibernate.annotations.CascadeType;
                         + " and message.demand is not null"
                         + " and message.sender = :sender\n"),
 
+        @NamedQuery(name = "getListOfClientDemandMessagesSub",
+                query = "select message.id, count(subUserMessage.id)\n"
+                        + "from UserMessage as subUserMessage right join"
+                        + " subUserMessage.message as subMessage"
+                        + " right join subMessage.threadRoot as message\n"
+                        + "where subUserMessage.user = :user"
+                        + " and message.demand is not null"
+                        + " and message.sender = :sender\n"
+                        + "group by message.id"),
         @NamedQuery(name = "getListOfClientDemandMessagesUnreadSub",
                 query = "select message.id, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join"

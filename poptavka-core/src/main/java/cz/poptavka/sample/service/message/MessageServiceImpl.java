@@ -85,18 +85,18 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return getDao().getPotentialOfferConversation(threadRoot, supplierUser);
     }
 
-    /**
-     * Loads all root messages related to <code>client</code>'s demands
-     * along with the number of unread messages that span from each of the root
-     * demand message.
-     *
-     * @param client
-     * @return
-     */
+    /** {@inheritDoc} */
     @Override
-    public Map<Message, Long> getListOfClientDemandMessages(User user) {
-        return getDao().getListOfClientDemandMessages(user);
+    public Map<Message, Long> getListOfClientDemandMessagesAll(User user) {
+        return getDao().getListOfClientDemandMessagesAll(user);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Map<Message, Long> getListOfClientDemandMessagesUnread(User user) {
+        return getDao().getListOfClientDemandMessagesUnread(user);
+    }
+
 
     public List<Message> getAllDescendants(Message message) {
         List<Message> messages = new ArrayList();

@@ -89,13 +89,27 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         return runNamedQuery("getPotentialOfferConversation", queryParams);
     }
 
-    public Map<Message, Long> getListOfClientDemandMessages(User user) {
+    @Override
+    public Map<Message, Long> getListOfClientDemandMessagesAll(User user) {
+        return getListOfClientDemandMessagesHelper(user,
+                "getListOfClientDemandMessagesSub");
+    }
+
+    @Override
+    public Map<Message, Long> getListOfClientDemandMessagesUnread(User user) {
+        return getListOfClientDemandMessagesHelper(user,
+                "getListOfClientDemandMessagesUnreadSub");
+
+    }
+
+    public Map<Message, Long> getListOfClientDemandMessagesHelper(User user,
+            String queryName) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("sender", user);
         queryParams.put("user", user);
 
         List<Object[]> unread = runNamedQuery(
-                "getListOfClientDemandMessagesUnreadSub",
+                queryName,
                 queryParams);
         Map<Long, Long> unreadMap = new HashMap();
         for (Object[] entry : unread) {

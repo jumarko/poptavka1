@@ -29,13 +29,15 @@ public class ClientDemandMessageDetail implements Serializable {
     private Date expiryDate;
     private BigDecimal price;
 
-    public static ClientDemandMessageDetail createDetail(Message message, long unreadMessageCount) {
+    public static ClientDemandMessageDetail createDetail(Message message,
+            long submessageCount, long unreadSubmessageCount) {
         ClientDemandMessageDetail detail = new ClientDemandMessageDetail();
         detail.setMessageId(message.getId());
         detail.setThreadRoodId(message.getThreadRoot().getId());
         detail.setDemandId(message.getDemand().getId());
         detail.setSenderId(message.getSender().getId());
-        detail.setUnreadSubmessages((int) unreadMessageCount);
+        detail.setSubmessages((int) submessageCount);
+        detail.setUnreadSubmessages((int) unreadSubmessageCount);
         detail.setDemandTitle(message.getDemand().getTitle());
         detail.setDemandStatus(message.getDemand().getStatus().toString());
         detail.setPrice(message.getDemand().getPrice());
