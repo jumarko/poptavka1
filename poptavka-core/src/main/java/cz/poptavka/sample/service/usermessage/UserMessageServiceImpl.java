@@ -10,6 +10,7 @@ import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.user.BusinessUser;
+import cz.poptavka.sample.domain.user.User;
 
 
 import java.util.List;
@@ -29,5 +30,10 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public List<UserMessage> getUserMessages(List<Message> messages,
             BusinessUser businessUser, MessageFilter messageFilter) {
         return getDao().getUserMessages(messages, businessUser, messageFilter);
+    }
+
+    @Override
+    public UserMessage getUserMessage(Message message, User user) {
+        return getDao().getUserMessage(message, user);
     }
 }

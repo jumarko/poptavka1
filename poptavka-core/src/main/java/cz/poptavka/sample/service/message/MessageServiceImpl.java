@@ -12,6 +12,7 @@ import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 
 import java.util.ArrayList;
@@ -25,12 +26,63 @@ import java.util.Map;
  */
 public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> implements MessageService {
     private GeneralService generalService;
+    private UserMessageService userMessageService;
 
     public MessageServiceImpl(MessageDao messageDao,
-            GeneralService generalService) {
+            GeneralService generalService,
+            UserMessageService userMessageService) {
         setDao(messageDao);
         this.generalService = generalService;
+        this.userMessageService = userMessageService;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public Message newThreadRoot(User user) {
+        Message message = new Message();
+        message.setMessageState(MessageState.COMPOSED);
+        message.setCreated(new Date());
+        message.setLastModified(new Date());
+        message.setThreadRoot(message);
+
+        message.setSender(user);
+        this.create(message);
+
+        UserMessage userMessage = new UserMessage();
+        userMessage.setMessage(message);
+        userMessage.setUser(user);
+        userMessage.setIsRead(true);
+        userMessageService.create(userMessage);
+        return message;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Message newReply(Message inReplyTo, User user) {
+        Message message = this.newThreadRoot(user);
+        message.setParent(inReplyTo);
+        message.setThreadRoot(inReplyTo.getThreadRoot());
+        if (inReplyTo.getSubject() == null) {
+            message.setSubject("Re: ");
+        } else {
+            if (inReplyTo.getSubject().startsWith("Re:")
+                    || inReplyTo.getSubject().startsWith("RE:")) {
+                message.setSubject(inReplyTo.getSubject());
+            } else {
+                message.setSubject("Re: " + inReplyTo.getSubject());
+            }
+        }
+        MessageUserRole messageUserRole = new MessageUserRole();
+        messageUserRole.setMessage(message);
+        messageUserRole.setUser(inReplyTo.getSender());
+        messageUserRole.setType(MessageUserRoleType.TO);
+        List<MessageUserRole> messageUserRoles = new ArrayList();
+        messageUserRoles.add(messageUserRole);
+        message.setRoles(messageUserRoles);
+
+        return message;
+    }
+
 
     @Override
     public List<Message> getMessageThreads(User user, MessageFilter messageFilter) {
@@ -45,6 +97,11 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Override
     public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
         return getDao().getUserMessages(messages, messageFilter);
+    }
+
+    @Override
+    public Message getLastChild(Message parent) {
+        return getDao().getLastChild(parent);
     }
 
     /** {@inheritDoc} */
@@ -98,6 +155,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     }
 
 
+    @Override
     public List<Message> getAllDescendants(Message message) {
         List<Message> messages = new ArrayList();
         messages.add(message);
@@ -110,6 +168,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return getDao().getAllDescendants(messages);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void send(Message message) throws MessageCannotBeSentException {
         if (message.getMessageState() != MessageState.COMPOSED) {
@@ -143,6 +202,15 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         message.setMessageState(MessageState.SENT);
         message.setLastModified(new Date());
         message.setSent(new Date());
+        // placing the message in the tree structre
+        if (message.getParent() != null) {
+            Message parent = message.getParent();
+            if (parent.getFirstBorn() == null) {
+                parent.setFirstBorn(message);
+            } else {
+                this.getLastChild(parent).setNextSibling(message);
+            }
+        }
     }
 
 

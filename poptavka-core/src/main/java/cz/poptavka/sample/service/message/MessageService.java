@@ -19,6 +19,30 @@ import java.util.Map;
 public interface MessageService extends GenericService<Message, MessageDao> {
 
     /**
+     * Cretaes a new message which is a threadRoot of a new thread.
+     * It creates a <code>UserMessage</code> for the sneder so that they can
+     * see and work with the message.
+     *
+     * @param user The user who composes (and will send) the message
+     * @return the message, whose subject, body... should then be filled and
+     * which should then be sent
+     */
+    Message newThreadRoot(User user);
+    /**
+     * Creates a new message in a reply to a message provided. It constructs
+     * the subject from the original message's sbject by prefixing "Re: " to it
+     * (if it hasn't been done so before) It also sets the recipient to the
+     * sender of the original message
+     * It creates a <code>UserMessage</code> for the sneder so that they can
+     * see and work with the message.
+     *
+     * @param inReplyTo the message to which the new reply should be created
+     * @param user the sender of the reply
+     * @return the reply message to be completed and sent
+     */
+    Message newReply(Message inReplyTo, User user);
+
+    /**
      * Load all message threads' roots for specified <code>user</code>.
      * No default ordering is applied! (if <code>resultCriteria</code> is null or ordering is not specified by it).
      *
@@ -112,6 +136,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param message
      * @return
      */
+
     List<Message> getAllDescendants(Message message);
     /**
      * Gets all the descendants (not just the children) of every item
@@ -123,12 +148,23 @@ public interface MessageService extends GenericService<Message, MessageDao> {
     List<Message> getAllDescendants(List<Message> messages);
 
     /**
-     * Sends a message to the given recipients
+     * Sends a message to the recipients stored in the message.
+     * It creates <code>UserMessage</code>s for all the recipients enabling
+     * them to see the message.
+     * It also places the message properly within the message tree structure.
+     *
      * @param message
      * @param to direct recipients
      * @param cc carbon copy (to the attention of)
      * @param bcc blind carbon copy
      */
     void send(Message message) throws MessageCannotBeSentException;
+
+    /**
+     * Gets the child of the message that has been sent the last
+     * @param parent
+     * @return
+     */
+    Message getLastChild(Message parent);
 
 }

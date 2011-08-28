@@ -66,7 +66,15 @@ import org.hibernate.annotations.CascadeType;
                         + " and subUserMessage.user = :user"
                         + " and message.demand is not null"
                         + " and message.sender = :sender\n"
-                        + "group by message.id") }
+                        + "group by message.id"),
+        @NamedQuery(name = "getLastChild",
+                query = "select message\n"
+                        + "from Message as message\n"
+                        + "where message.parent = :parent"
+                        + " and message.sent is not null\n"
+                        + "order by message.sent desc\n"
+                        + "limit 1")
+}
 )
 
 /* @NamedQueries({

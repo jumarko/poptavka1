@@ -4,9 +4,15 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.MessageState;
+import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.usermessage.UserMessageService;
+import java.util.ArrayList;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
@@ -35,6 +41,9 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private GeneralService generalService;
+
+    @Autowired
+    private UserMessageService userMessageService;
 
     private User user;
 
@@ -189,6 +198,64 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         checkUserMessageExists(6L, descendants);
     }
 
+    @Test
+    public void testMessageLifeCycle() throws MessageCannotBeSentException {
+        final User user = this.generalService.find(User.class, 111111111L);
+        final User user2 = this.generalService.find(User.class, 111111112L);
+        long messageId = messageService.newThreadRoot(user).getId();
+        Message message = messageService.getById(messageId);
+        Assert.assertNotNull("Test message wasn't created.", message);
+
+        Assert.assertEquals("MessageState of a newly creted message"
+                + " should be COMPOSED, but was" + message.getMessageState()
+                + ".", MessageState.COMPOSED, message.getMessageState());
+
+        Assert.assertEquals("Incorrect sender set to newly created message.",
+                user, message.getSender());
+
+        testUserMessagePresent(message, user);
+        testUserMessageNull(message, user2);
+        message.setSubject("Hello");
+        message.setBody("Chtěl bych zadat poptávku na sexuální služby,"
+                + " ale nevím jak se to dělá.");
+        MessageUserRole messageUserRole = new MessageUserRole();
+        messageUserRole.setMessage(message);
+        messageUserRole.setUser(user2);
+        messageUserRole.setType(MessageUserRoleType.TO);
+        List<MessageUserRole> messageUserRoles = new ArrayList();
+        messageUserRoles.add(messageUserRole);
+        message.setRoles(messageUserRoles);
+        messageService.send(message);
+        Assert.assertEquals("MessageState of a message after sending"
+                + " should be SENT, but was" + message.getMessageState()
+                + ".", MessageState.SENT, message.getMessageState());
+        testUserMessagePresent(message, user2);
+
+        Message reply = messageService.newReply(message, user2);
+
+        testUserMessagePresent(reply, user2);
+        testUserMessageNull(reply, user);
+
+        Assert.assertEquals("MessageState of a newly creted reply"
+                + " should be COMPOSED, but was" + reply.getMessageState()
+                + ".", MessageState.COMPOSED, reply.getMessageState());
+
+        Assert.assertEquals("Reply subject incorrect.",
+                "Re: Hello", reply.getSubject());
+
+        Assert.assertEquals("Incorrect sender set to reply.",
+                user2, reply.getSender());
+
+        messageService.send(reply);
+
+        Assert.assertEquals("MessageState of a reply after sending"
+                + " should be SENT, but was" + reply.getMessageState()
+                + ".", MessageState.SENT, reply.getMessageState());
+
+        testUserMessagePresent(reply, user);
+
+    }
+
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**
      * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
@@ -206,5 +273,26 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                     }
                 }));
     }
+
+    private void testUserMessagePresent(Message message, User user) {
+        UserMessage userMessage = userMessageService.getUserMessage(message,
+                user);
+        Assert.assertNotNull("A proper UserMessage wasn't created.",
+                userMessage);
+
+        Assert.assertEquals("User of the UserMessage is improperly set.",
+                user, userMessage.getUser());
+        Assert.assertEquals("Message of the UserMessage is improperly set.",
+                message, userMessage.getMessage());
+
+    }
+
+    private void testUserMessageNull(Message message, User user) {
+        UserMessage userMessage = userMessageService.getUserMessage(message,
+                user);
+        Assert.assertNull("The UserMessage shouldn't have been created.",
+                userMessage);
+    }
+
 }
 

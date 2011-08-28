@@ -115,4 +115,10 @@ public interface MessageDao extends GenericDao<Message> {
      */
     List<Message> getAllDescendants(List<Message> messages);
 
+    /**
+     * Gets the child of the message that has been sent the last
+     * @param parent
+     * @return
+     */
+    Message getLastChild(Message parent);
 }

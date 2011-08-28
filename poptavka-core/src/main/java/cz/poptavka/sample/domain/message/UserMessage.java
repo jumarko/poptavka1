@@ -39,9 +39,13 @@ import javax.persistence.NamedQuery;
                         + " where "
                         // either message itself is thread root or it has given thread root
                         + " (userMessage.message = :threadRoot OR userMessage.message.threadRoot = :threadRoot)"
-                        + "   and userMessage.user = :supplier and userMessage.message.offer is not null") }
+                        + "   and userMessage.user = :supplier and userMessage.message.offer is not null"),
+        @NamedQuery(name = "getUserMesage",
+                query = " select userMessage"
+                        + " from UserMessage userMessage\n"
+                        + "where userMessage.user = :user"
+                        + " and userMessage.message = :message") }
 )
-
 public class UserMessage extends DomainObject {
     private boolean isRead;
     private boolean isStarred;
