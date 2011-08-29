@@ -249,6 +249,18 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(1, clientsByNamesBroken.size());
     }
 
+    //----------------------------------  TESTING COUNTS -----------------------
+
+    @Test
+    public void testGetCount() {
+        Assert.assertEquals("Locality count is incorrect.", 12,
+                this.localityService.getCount());
+        Assert.assertEquals("Category count is incorrect.", 17,
+                this.categoryService.getCount());
+        Assert.assertEquals("Demand count is incorrect.", 10,
+                this.demandService.getCount());
+    }
+
 
 
 

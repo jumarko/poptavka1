@@ -175,6 +175,13 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         return buildResultCriteria(entityCriteria, resultCriteria).list();
     }
 
+    @Transactional
+    public long getCount() {
+        Query query = getEntityManager().createQuery("select count(o) from "
+                + getPersistentClass().getName() + " as o");
+        return (Long) query.getResultList().get(0);
+    }
+
     /**
      * Apply (or in other words "add") <code>resultCriteria</code> on <code>entityCriteria</code>.
      * Result criteria can be empty.

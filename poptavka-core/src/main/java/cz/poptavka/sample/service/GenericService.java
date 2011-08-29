@@ -141,4 +141,9 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
      */
     List<T> findByExampleCustom(Example customExample, ResultCriteria resultCriteria);
 
+    /**
+     * Gets the count of all the records of the associated entity
+     * @return count of the records
+     */
+    long getCount();
 }

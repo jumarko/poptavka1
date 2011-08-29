@@ -207,6 +207,12 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
         Collections.sort(orderedDomainObjects, new GenericComparator(orderByProperties));
         return orderedDomainObjects;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getCount() {
+        return getDao().getCount();
+    }
 //
 //
 //    private void checkPropertyExists(DomainObject domainObject, String fieldName) {

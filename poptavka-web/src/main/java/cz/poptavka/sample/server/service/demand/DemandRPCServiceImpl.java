@@ -373,11 +373,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
 
+    @Override
     public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria) {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Category[] categories) {
 
         throw new UnsupportedOperationException("Not supported yet.");

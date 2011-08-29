@@ -46,6 +46,12 @@ public interface GenericDao<T extends DomainObject> {
     List<T> findAll(ResultCriteria resultCriteria);
 
     /**
+     * Gets the count of all the records of the associated entity
+     * @return count of the records
+     */
+    long getCount();
+
+    /**
      * Searches for the objects by their respective id's.
      * <p/>
      * This method follows it's common sense.
