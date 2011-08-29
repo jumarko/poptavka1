@@ -7,21 +7,36 @@
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
-    <!-- Spring configuration - start -->
+
+    <!-- Spring configuration - START -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:applicationContext.xml</param-value>
+        <param-value>
+            /WEB-INF/poptavka-security.xml
+            classpath*:applicationContext.xml
+        </param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <!-- Spring configuration - end -->
+    <!-- Spring configuration - END -->
 
     <!-- Enable escaping of form submission contents -->
     <context-param>
         <param-name>defaultHtmlEscape</param-name>
         <param-value>true</param-value>
     </context-param>
+
+     <!-- Spring Security - START -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- Spring Security - END -->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -121,7 +136,7 @@
         <url-pattern>/poptavka/service/user</url-pattern>
     </servlet-mapping>
 
-<!-- AJAX Crawlability filter - start -->
+<!-- AJAX Crawlability filter - START -->
     <filter>
         <filter-name>Crawlfilter</filter-name>
         <filter-class>cz.poptavka.sample.server.CrawlServlet</filter-class>
@@ -130,7 +145,7 @@
         <filter-name>Crawlfilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    <!-- AJAX Crawlability filter - end -->
+    <!-- AJAX Crawlability filter - END -->
 
 
     <session-config>
