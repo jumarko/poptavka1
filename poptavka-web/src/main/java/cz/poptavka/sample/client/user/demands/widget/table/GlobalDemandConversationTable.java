@@ -1,12 +1,19 @@
 package cz.poptavka.sample.client.user.demands.widget.table;
 
+import java.util.Random;
+
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.NoSelectionModel;
@@ -51,7 +58,6 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
         // return tableSelectionModel.isSelected(object);
         // }
         // };
-
         // Demand Title Column
         Column<ClientDemandMessageDetail, String> titleColumn
             = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
@@ -133,6 +139,12 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
 //        sortHandler.setComparator(validToDateColumn, validComparator);
 ////         add columns into table
 ////         this.addColumn(checkBoxColumn);
+        addColumn(new ImageStatus(), msgs.status(), 40, new GetValue<String>() {
+
+            public String getValue(ClientDemandMessageDetail object) {
+                return object.getDemandStatus();
+            }
+        });
         this.addColumn(titleColumn, msgs.title());
         this.addColumn(priceColumn, msgs.price());
         this.addColumn(endDateColumn, msgs.endDate());
@@ -149,6 +161,79 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
 
     public ListDataProvider<ClientDemandMessageDetail> getDataProvider() {
         return dataProvider;
+    }
+
+    private static class ImageStatus extends AbstractCell<String> {
+
+        private Random rnd = new Random();
+
+        @Override
+        public void render(Context context, String value, SafeHtmlBuilder sb) {
+            if (value == null) {
+                return;
+            }
+
+            String imageHtml = null;
+
+
+//            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
+
+            //TODO Martin - i18
+            if (value.equals("TEMPORARY")) { //(0-4) velmi specha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
+
+            } else if (value.equals("TEMPORARY1")) { //(5-8) specha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessUrgent()).getHTML();
+
+            } else if (value.equals("TEMPORARY2")) { //(9-12) nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().normal()).getHTML();
+
+            } else if (value.equals("TEMPORARY3")) { //(13-oo) vobec nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+            }
+            sb.appendHtmlConstant("<table>");
+            // Add the contact image.
+            sb.appendHtmlConstant("<tr><td>");
+            sb.appendHtmlConstant(imageHtml);
+            sb.appendHtmlConstant("</td></tr></table>");
+        }
+    }
+
+    /**
+     * Get a cell value from a record.
+     *
+     * @param <C>
+     *            the cell type
+     */
+    private static interface GetValue<C> {
+
+        C getValue(ClientDemandMessageDetail contact);
+    }
+
+    /**
+     * Add a column with a header.
+     *
+     * @param <C>
+     *            the cell type
+     * @param cell
+     *            the cell used to render the column
+     * @param headerText
+     *            the header string
+     * @param getter
+     *            the value getter for the cell
+     */
+    private <C> Column<ClientDemandMessageDetail, C> addColumn(Cell<C> cell,
+            String headerText, int width, final GetValue<C> getter) {
+        Column<ClientDemandMessageDetail, C> column = new Column<ClientDemandMessageDetail, C>(cell) {
+
+            @Override
+            public C getValue(ClientDemandMessageDetail demand) {
+                return getter.getValue(demand);
+            }
+        };
+        this.addColumn(column, headerText);
+        this.setColumnWidth(column, width, Unit.PX);
+        return column;
     }
 
 }

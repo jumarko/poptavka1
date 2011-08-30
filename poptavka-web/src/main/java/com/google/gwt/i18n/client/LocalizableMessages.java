@@ -12,6 +12,7 @@ public interface LocalizableMessages extends Messages {
     String emptyField();
     String footerDisplay();
     String footerHide();
+    String status();
 
     //offers view - buttons
     String answer();
