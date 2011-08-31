@@ -2,7 +2,6 @@ package cz.poptavka.sample.shared.domain.demand;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -10,6 +9,8 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
@@ -18,37 +19,36 @@ import cz.poptavka.sample.shared.domain.type.DemandDetailType;
  *
  */
 public class FullDemandDetail implements Serializable {
+
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
+    private final static Logger LOGGER = Logger.getLogger("    FullDemandDetail");
 
     public enum DemandField {
+
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
-
-    private ArrayList<String> localities;
-    private ArrayList<String> categories;
+    private Map<String, String> localities;
+    private Map<Long, String> categories;
     private long clientId;
     private int maxOffers;
     private int minRating;
-
     private String demandType;
     private String demandStatus;
-
     private static final String HTML_UNREAD_START = "<strong>";
     private static final String HTML_UNREAD_END = "</strong>";
     private DemandDetailType detailType = DemandDetailType.BASE;
-
     private long demandId;
     // messageId = threadRoot
     private long messageId;
     private long userMessageId;
     private boolean read;
     private boolean starred;
+    private Date created;
     private Date endDate;
     private Date validToDate;
-
     private String title;
     private String description;
     private BigDecimal price;
@@ -75,20 +75,26 @@ public class FullDemandDetail implements Serializable {
         detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
         detail.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
         //categories
-        ArrayList<String> catList = new ArrayList<String>();
+        Map<Long, String> catMap = new HashMap<Long, String>();
         for (Category cat : demand.getCategories()) {
-            catList.add(cat.getName());
+            catMap.put(cat.getId(), cat.getName());
         }
-        detail.setCategories(catList);
+        detail.setCategories(catMap);
         //localities
-        ArrayList<String> locList = new ArrayList<String>();
+        Map<String, String> locMap = new HashMap<String, String>();
         for (Locality loc : demand.getLocalities()) {
-            locList.add(loc.getName());
+            locMap.put(loc.getCode(), loc.getName());
         }
-        detail.setLocalities(locList);
+
+        detail.setLocalities(locMap);
         detail.setDemandStatus(demand.getStatus().getValue());
-        detail.setDemandType(demand.getType().getType().getValue());
+
+        if (demand.getType() != null) {
+            detail.setDemandType(demand.getType().getDescription());
+        }
+
         detail.setClientId(demand.getClient().getId());
+
         return detail;
     }
 
@@ -107,22 +113,61 @@ public class FullDemandDetail implements Serializable {
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
-
-    public ArrayList<String> getLocalities() {
-        return localities;
-    }
-
-    public void setLocalities(ArrayList<String> localities) {
-        this.localities = localities;
-    }
-
-    public ArrayList<String> getCategories() {
+    public Map<Long, String> getCategories() {
         return categories;
     }
 
-    public void setCategories(ArrayList<String> categories) {
+    public void setCategories(Map<Long, String> categories) {
         this.categories = categories;
     }
+
+    public void addCategory(Long id, String value) {
+        if (categories == null) {
+            categories = new HashMap<Long, String>();
+        }
+        categories.put(id, value);
+    }
+
+//    public void setCategories(CategorySelectorInterface categorySelector) {
+//        if (categories == null) {
+//            categories = new HashMap<Long, String>();
+//        }
+//        for (int i = 0; i < categorySelector.getSelectedList().getItemCount(); i++) {
+//            this.categories.put(Long.valueOf(
+//                    categorySelector.getSelectedList().getValue(i)),
+//                    //                    categorySelector.getSelectedCategoryCodes().get(i)),
+//                    categorySelector.getSelectedList().getItemText(i));
+//        }
+//        LOGGER.info("XXX: " + categories.toString());
+//    }
+    public Map<String, String> getLocalities() {
+        return localities;
+    }
+
+    public void setLocalities(Map<String, String> localities) {
+        if (localities != null) {
+            this.localities = localities;
+        }
+    }
+
+    public void addLocality(String code, String value) {
+        if (localities == null) {
+            localities = new HashMap<String, String>();
+        }
+        localities.put(code, value);
+    }
+//    public void setLocalities(LocalitySelectorInterface localitySelector) {
+//        if (localities == null) {
+//            localities = new HashMap<String, String>();
+//        }
+//        for (int i = 0; i < localitySelector.getSelectedList().getItemCount(); i++) {
+//            this.localities.put(
+////                    localitySelector.getSelectedLocalityCodes().get(i),
+//                    localitySelector.getSelectedList().getValue(i),
+//                    localitySelector.getSelectedList().getItemText(i));
+//        }
+//        LOGGER.info("XXX: "+localities.toString());
+//    }
 
     public long getClientId() {
         return clientId;
@@ -154,6 +199,14 @@ public class FullDemandDetail implements Serializable {
 
     public void setDemandType(String demandType) {
         this.demandType = demandType;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     @Override
@@ -274,17 +327,20 @@ public class FullDemandDetail implements Serializable {
         return price;
     }
 
-    public void setType(DemandDetailType detailType) {
-        this.detailType = detailType;
+    public void setType(DemandDetailType demandDetailType) {
+        this.detailType = demandDetailType;
     }
 
     public void setPrice(String price) {
-        if (price.equals("") || price.equals("null")) {
-            this.price = null;
-        } else {
-            this.price = BigDecimal.valueOf(Long.valueOf(price));
+        if (price != null) {
+            if (price.equals("") || price.equals("null")) {
+                this.price = null;
+            } else {
+                this.price = BigDecimal.valueOf(Long.valueOf(price));
+            }
         }
     }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }

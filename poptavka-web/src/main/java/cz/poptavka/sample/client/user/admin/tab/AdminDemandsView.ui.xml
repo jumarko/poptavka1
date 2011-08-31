@@ -17,7 +17,7 @@
     }
     </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:west size="650">
+        <g:west size="700">
             <g:ScrollPanel>
 
 <!--            <g:FlowPanel>-->
@@ -48,6 +48,7 @@
                             <tr>
                                 <td align='center'>
                                     <c:SimplePager ui:field='pager' />
+                                    <g:ListBox ui:field='pageSizeCombo'/>
                                 </td>
                             </tr>
                         </table>

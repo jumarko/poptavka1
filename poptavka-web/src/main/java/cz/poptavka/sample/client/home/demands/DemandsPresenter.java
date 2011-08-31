@@ -24,8 +24,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.home.HomeEventBus;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 /**
  *
@@ -40,7 +40,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
     public interface DemandsViewInterface {
 
-        void setDemand(DemandDetailForDisplayDemands demand);
+        void setDemand(FullDemandDetail demand);
 
         void setRegisterSupplierToken(String token);
 
@@ -54,13 +54,11 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         ListBox getLocalityList();
 
-        ListBox getCombo();
+        ListBox getPageSizeCombo();
 
-        AsyncDataProvider<DemandDetailForDisplayDemands> getDataProvider();
+        int getPageSize();
 
-        void setDataProvider(AsyncDataProvider<DemandDetailForDisplayDemands> dataProvider);
-
-        CellTable<DemandDetailForDisplayDemands> getCellTable();
+        CellTable<FullDemandDetail> getCellTable();
 
         SimplePager getPager();
 
@@ -68,7 +66,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
         HTMLPanel getDemandView();
 
-        SingleSelectionModel<DemandDetailForDisplayDemands> getSelectionModel();
+        SingleSelectionModel<FullDemandDetail> getSelectionModel();
     }
     private int start = 0;
     private String resultSource = "";
@@ -119,7 +117,7 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                DemandDetailForDisplayDemands selected = view.getSelectionModel().getSelectedObject();
+                FullDemandDetail selected = view.getSelectionModel().getSelectedObject();
                 if (selected != null) {
                     view.getBannerLabel().setVisible(false);
                     view.getDemandView().setVisible(true);
@@ -131,14 +129,14 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
             }
         });
 
-        view.getCombo().addChangeHandler(new ChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
                 view.getCellTable().setRowCount(0, true);
 
-                int newPage = Integer.valueOf(view.getCombo()
-                        .getItemText(view.getCombo().getSelectedIndex()));
+                int newPage = Integer.valueOf(view.getPageSizeCombo()
+                        .getItemText(view.getPageSizeCombo().getSelectedIndex()));
 
                 view.getCellTable().setRowCount(newPage, true);
 
@@ -156,20 +154,20 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
 //        view.setLoginToken(getTokenGenerator().atLogin());
     }
     private AsyncDataProvider dataProvider = null;
-//            = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
+//            = new AsyncDataProvider<FullDemandDetail>() {
 //
 //        @Override
-//        protected void onRangeChanged(HasData<DemandDetailForDisplayDemands> display) {
+//        protected void onRangeChanged(HasData<FullDemandDetail> display) {
 //            //just for initializing cellTable
 //            //will be implemented later, when allDemandsCount value will be retrieved
 //        }
 //    };
 
     public void onCreateAsyncDataProvider() {
-        this.dataProvider = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
+        this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
-            protected void onRangeChanged(HasData<DemandDetailForDisplayDemands> display) {
+            protected void onRangeChanged(HasData<FullDemandDetail> display) {
                 display.setRowCount((int) resultCount);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
@@ -262,11 +260,11 @@ public class DemandsPresenter extends BasePresenter<DemandsPresenter.DemandsView
         });
     }
 
-    public void onDisplayDemands(List<DemandDetailForDisplayDemands> result) {
+    public void onDisplayDemands(List<FullDemandDetail> result) {
         dataProvider.updateRowData(start, result);
     }
 
-    public void onSetDemand(DemandDetailForDisplayDemands demand) {
+    public void onSetDemand(FullDemandDetail demand) {
         view.getDemandView().setVisible(true);
         view.setDemand(demand);
     }

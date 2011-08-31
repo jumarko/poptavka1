@@ -12,18 +12,19 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.Map;
 
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {
 
-    FullDemandDetail updateDemand(FullDemandDetail newDemand);
+    FullDemandDetail updateDemand(FullDemandDetail newDemand, String updateWhat);
 
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId);
 
@@ -39,31 +40,19 @@ public interface DemandRPCService extends RemoteService {
 
     Long getDemandsCountByLocality(String code);
 
+    List<FullDemandDetail> getDemands(ResultCriteria resultCriteria);
 
-    List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria);
+    List<FullDemandDetail> getDemands(Locality[] localities);
 
+    List<FullDemandDetail> getDemands(Category[] categories);
 
-    List<DemandDetailForDisplayDemands> getDemands(Locality[] localities);
+    List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
 
+    List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories);
 
+    List<FullDemandDetail> getDemandsByCategory(int fromResult, int toResult, long id);
 
-    List<DemandDetailForDisplayDemands> getDemands(Category[] categories);
-
-
-
-    List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Locality[] localities);
-
-
-
-    List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Category[] categories);
-
-
-
-    List<DemandDetailForDisplayDemands> getDemandsByCategory(int fromResult, int toResult, long id);
-
-
-
-    List<DemandDetailForDisplayDemands> getDemandsByLocality(int fromResult, int toResult, String code);
+    List<FullDemandDetail> getDemandsByLocality(int fromResult, int toResult, String code);
 
     ArrayList<FullDemandDetail> getClientDemands(long id);
 
@@ -82,8 +71,7 @@ public interface DemandRPCService extends RemoteService {
 
     Demand getWholeDemand(Long demandId);
 
+    List<FullDemandDetail> getDemands(int fromResult, int toResult);
 
-    List<DemandDetailForDisplayDemands> getDemands(int fromResult, int toResult);
-
-
+    List<FullDemandDetail> getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
 }

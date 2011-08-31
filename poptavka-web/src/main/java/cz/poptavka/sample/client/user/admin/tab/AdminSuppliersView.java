@@ -21,6 +21,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -33,14 +34,16 @@ import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 
-
 /**
  *
  * @author ivan.vlcek
  */
 public class AdminSuppliersView extends Composite implements AdminSuppliersPresenter.AdminSuppliersInterface {
+
     private static AdminSuppliersViewUiBinder uiBinder = GWT.create(AdminSuppliersViewUiBinder.class);
 
+    interface AdminSuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
+    }
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
@@ -60,6 +63,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     @UiField
     SimplePanel adminSupplierDetail;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     /**
      * Data provider that will cell table with data.
      */
@@ -71,19 +76,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
-    private Column<FullSupplierDetail, String> emailColumn;
-    private Column<FullSupplierDetail, String> phoneColumn;
     private final BusinessType[] businessTypes = BusinessType.values();
-
-    /**
-     * @return the dataProvider
-     */
-//    @Override
-//    public AsyncDataProvider<FullSupplierDetail> getDataProvider() {
-////        ColumnSortEvent fire = ColumnSortEvent.fire(this, cellTable.getColumnSortList());
-////        cellTable.fireEvent(fire);
-//        return dataProvider;
-//    }
 
     /**
      * @return the clientIdColumn
@@ -124,21 +117,6 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     public Column<FullSupplierDetail, String> getVerificationColumn() {
         return verificationColumn;
     }
-    /**
-     * @return the SupplierTypeColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, String> getEmailColumn() {
-        return emailColumn;
-    }
-
-    /**
-     * @return the SupplierTypeColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, String> getPhoneColumn() {
-        return phoneColumn;
-    }
 
     @Override
     public Widget getWidgetView() {
@@ -148,6 +126,21 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     @Override
     public CellTable<FullSupplierDetail> getCellTable() {
         return cellTable;
+    }
+
+    @Override
+    public ListBox getPageSizeCombo() {
+        return pageSizeCombo;
+    }
+
+    @Override
+    public SimplePager getPager() {
+        return pager;
+    }
+
+    @Override
+    public int getPageSize() {
+        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
     /**
@@ -174,10 +167,14 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         return adminSupplierDetail;
     }
 
-    interface AdminSuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
-    }
-
     public AdminSuppliersView() {
+        pageSizeCombo = new ListBox();
+        pageSizeCombo.addItem("10");
+        pageSizeCombo.addItem("15");
+        pageSizeCombo.addItem("20");
+        pageSizeCombo.addItem("25");
+        pageSizeCombo.addItem("30");
+        pageSizeCombo.setSelectedIndex(3);
         initCellTable();
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -236,6 +233,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         // mouse selection.
         Column<FullSupplierDetail, Boolean> checkColumn = new Column<FullSupplierDetail, Boolean>(
                 new CheckboxCell(true, false)) {
+
             @Override
             public Boolean getValue(FullSupplierDetail object) {
                 // Get the value from the selection model.
@@ -247,6 +245,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
         // Supplier ID.
         supplierIdColumn = new Column<FullSupplierDetail, String>(new TextCell()) {
+
             @Override
             public String getValue(FullSupplierDetail object) {
                 return String.valueOf(object.getSupplierId());
@@ -260,11 +259,12 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //            }
 //        });
         cellTable.addColumn(supplierIdColumn, "SID");
-        cellTable.setColumnWidth(supplierIdColumn, 20, Unit.PX);
+        cellTable.setColumnWidth(supplierIdColumn, 30, Unit.PX);
 
         // Company name.
         supplierNameColumn = new Column<FullSupplierDetail, String>(
                 new EditTextCell()) {
+
             @Override
             public String getValue(FullSupplierDetail object) {
                 return String.valueOf(object.getCompanyName());
@@ -287,6 +287,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         }
         supplierTypeColumn = new Column<FullSupplierDetail, String>(
                 new SelectionCell(types)) {
+
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getBusinessType();
@@ -300,11 +301,12 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //            }
 //        });
         cellTable.addColumn(supplierTypeColumn, "Type");
-        cellTable.setColumnWidth(supplierTypeColumn, 30, Unit.PX);
+        cellTable.setColumnWidth(supplierTypeColumn, 50, Unit.PX);
 
         // Certified.
         certifiedColumn = new Column<FullSupplierDetail, Boolean>(
                 new CheckboxCell()) {
+
             @Override
             public Boolean getValue(FullSupplierDetail object) {
                 return object.isCertified();
@@ -321,12 +323,13 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         cellTable.setColumnWidth(certifiedColumn, 15, Unit.PX);
 
         // Verification.
-        ArrayList<String> verTypes  = new ArrayList<String>();
+        ArrayList<String> verTypes = new ArrayList<String>();
         for (Verification type : Verification.values()) {
             verTypes.add(type.name());
         }
         verificationColumn = new Column<FullSupplierDetail, String>(
                 new SelectionCell(verTypes)) {
+
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getVerification();
@@ -340,43 +343,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //            }
 //        });
         cellTable.addColumn(verificationColumn, "Verified");
-        cellTable.setColumnWidth(verificationColumn, 30, Unit.PX);
-
-        // email.
-        emailColumn = new Column<FullSupplierDetail, String>(
-                new EditTextCell()) {
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return object.getEmail();
-            }
-        };
-        getSupplierTypeColumn().setSortable(true);
-//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return o1.getEmail().compareToIgnoreCase(o2.getEmail());
-//            }
-//        });
-        cellTable.addColumn(emailColumn, "Email");
-        cellTable.setColumnWidth(emailColumn, 30, Unit.PX);
-
-        // phone.
-        phoneColumn = new Column<FullSupplierDetail, String>(
-                new EditTextCell()) {
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return object.getPhone();
-            }
-        };
-        getSupplierTypeColumn().setSortable(true);
-//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return o1.getPhone().compareToIgnoreCase(o2.getPhone());
-//            }
-//        });
-        cellTable.addColumn(phoneColumn, "Phone");
-        cellTable.setColumnWidth(phoneColumn, 30, Unit.PX);
+        cellTable.setColumnWidth(verificationColumn, 50, Unit.PX);
     }
 
     /**
@@ -385,6 +352,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * @param <C> the cell type
      */
     private static interface GetValue<C> {
+
         C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
     }
 
@@ -399,6 +367,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText,
             final GetValue<C> getter, FieldUpdater<FullSupplierDetail, C> fieldUpdater) {
         Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
+
             @Override
             public C getValue(FullSupplierDetail object) {
                 return getter.getValue(object);
@@ -415,6 +384,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * The key provider that provides the unique ID of a FullSupplierDetail.
      */
     private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
+
         @Override
         public Object getKey(FullSupplierDetail item) {
             return item == null ? null : item.getSupplierId();

@@ -29,13 +29,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <c:CellList ui:field="suppliersList" />
+                                    <c:CellTable ui:field="cellTable" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <c:SimplePager ui:field="pager" />
-                                    <g:ListBox ui:field='pageSize'/>
+                                    <g:ListBox ui:field='pageSizeCombo'/>
                                 </td>
                             </tr>
                         </table>                        
@@ -46,6 +46,7 @@
                     <g:ScrollPanel>-->
                 <g:VerticalPanel>
                     <g:Label ui:field="reklama" >Reklama</g:Label>
+                    <g:ScrollPanel>
                     <g:HTMLPanel ui:field="detail">
                         <table>
                             <tr>
@@ -210,6 +211,7 @@
                             </tr>
                         </table>
                     </g:HTMLPanel>
+                    </g:ScrollPanel>
                 </g:VerticalPanel>
                     <!--</g:ScrollPanel>
                 </g:center>

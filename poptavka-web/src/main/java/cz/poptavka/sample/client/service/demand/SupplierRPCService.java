@@ -32,5 +32,5 @@ public interface SupplierRPCService extends RemoteService {
 
     Long getSuppliersCount(Long categoryID, String localityCode);
 
-    FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail);
+    FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail, String updateWhat);
 }

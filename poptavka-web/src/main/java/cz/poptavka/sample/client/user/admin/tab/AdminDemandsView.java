@@ -26,6 +26,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
@@ -48,6 +49,7 @@ import java.util.List;
  * @author ivan.vlcek
  */
 public class AdminDemandsView extends Composite implements AdminDemandsPresenter.AdminDemandsInterface {
+
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
 
     /**
@@ -74,6 +76,14 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     @Override
     public Column<FullDemandDetail, String> getDemandTypeColumn() {
         return demandTypeColumn;
+    }
+
+    /**
+     * @return the demandTypeColumn
+     */
+    @Override
+    public Column<FullDemandDetail, String> getDemandTitleColumn() {
+        return demandTitleColumn;
     }
 
     @Override
@@ -154,6 +164,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      */
     @UiField(provided = true)
     SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     /**
      * The list of cells that are editable.
      */
@@ -171,6 +183,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     /** Editable Columns in CellTable. **/
     private Column<FullDemandDetail, String> clientIdColumn;
     private Column<FullDemandDetail, String> demandTypeColumn;
+    private Column<FullDemandDetail, String> demandTitleColumn;
     private Column<FullDemandDetail, String> demandStatusColumn;
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
@@ -178,6 +191,13 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private final DemandStatusType[] demandStatuses = DemandStatusType.values();
 
     public AdminDemandsView() {
+        pageSizeCombo = new ListBox();
+        pageSizeCombo.addItem("10");
+        pageSizeCombo.addItem("15");
+        pageSizeCombo.addItem("20");
+        pageSizeCombo.addItem("25");
+        pageSizeCombo.addItem("30");
+        pageSizeCombo.setSelectedIndex(3);
         initCellTable();
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -237,6 +257,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // mouse selection.
         Column<FullDemandDetail, Boolean> checkColumn = new Column<FullDemandDetail, Boolean>(
                 new CheckboxCell(true, false)) {
+
             @Override
             public Boolean getValue(FullDemandDetail object) {
                 // Get the value from the selection model.
@@ -248,6 +269,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
         // Demand ID.
         Column<FullDemandDetail, String> idColumn = new Column<FullDemandDetail, String>(new TextCell()) {
+
             @Override
             public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getDemandId());
@@ -255,6 +277,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         };
         idColumn.setSortable(true);
         sortHandler.setComparator(idColumn, new Comparator<FullDemandDetail>() {
+
             @Override
             public int compare(FullDemandDetail o1, FullDemandDetail o2) {
                 return Long.valueOf(o1.getDemandId()).compareTo(Long.valueOf(o2.getDemandId()));
@@ -266,6 +289,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // Clietn ID.
         clientIdColumn = new Column<FullDemandDetail, String>(
                 new EditTextCell()) {
+
             @Override
             public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getClientId());
@@ -273,6 +297,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         };
         getClientIdColumn().setSortable(true);
         sortHandler.setComparator(getClientIdColumn(), new Comparator<FullDemandDetail>() {
+
             @Override
             public int compare(FullDemandDetail o1, FullDemandDetail o2) {
                 return Long.valueOf(o1.getClientId()).compareTo(Long.valueOf(o2.getClientId()));
@@ -280,6 +305,18 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         });
         cellTable.addColumn(getClientIdColumn(), "CID");
         cellTable.setColumnWidth(getClientIdColumn(), 50, Unit.PX);
+
+        // DemandTitle
+        demandTitleColumn = new Column<FullDemandDetail, String>(
+                new EditTextCell()) {
+
+            @Override
+            public String getValue(FullDemandDetail object) {
+                return String.valueOf(object.getTitle());
+            }
+        };
+        cellTable.addColumn(demandTitleColumn, "Title");
+        cellTable.setColumnWidth(demandTitleColumn, 160, Unit.PX);
 
         // DemandType.
         List<String> demandTypeNames = new ArrayList<String>();
@@ -290,6 +327,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         SelectionCell demandTypeCell = new SelectionCell(demandTypeNames);
         demandTypeColumn = new Column<FullDemandDetail, String>(
                 demandTypeCell) {
+
             @Override
             public String getValue(FullDemandDetail object) {
                 // TODO ivlcek - localize message
@@ -297,7 +335,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
             }
         };
         cellTable.addColumn(demandTypeColumn, "Type");
-        cellTable.setColumnWidth(demandTypeColumn, 130, Unit.PX);
+        cellTable.setColumnWidth(demandTypeColumn, 100, Unit.PX);
 
         // DemandStatus.
         List<String> demandStatusNames = new ArrayList<String>();
@@ -308,6 +346,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         SelectionCell demandStatusCell = new SelectionCell(demandStatusNames);
         demandStatusColumn = new Column<FullDemandDetail, String>(
                 demandStatusCell) {
+
             @Override
             public String getValue(FullDemandDetail object) {
                 // TODO ivlcek - localize message
@@ -315,12 +354,13 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
             }
         };
         cellTable.addColumn(demandStatusColumn, "Status");
-        cellTable.setColumnWidth(demandStatusColumn, 160, Unit.PX);
+        cellTable.setColumnWidth(demandStatusColumn, 140, Unit.PX);
 
         // Demand expiration date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration",
                 new GetValue<Date>() {
+
                     @Override
                     public Date getValue(FullDemandDetail fullDemandDetail) {
                         return fullDemandDetail.getValidToDate();
@@ -330,6 +370,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // Demand end date.
         demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End",
                 new GetValue<Date>() {
+
                     @Override
                     public Date getValue(FullDemandDetail fullDemandDetail) {
                         return fullDemandDetail.getEndDate();
@@ -343,6 +384,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      * @param <C> the cell type
      */
     private static interface GetValue<C> {
+
         C getValue(FullDemandDetail fullDemandDetail);
     }
 
@@ -357,6 +399,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell, String headerText,
             final GetValue<C> getter, FieldUpdater<FullDemandDetail, C> fieldUpdater) {
         Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
+
             @Override
             public C getValue(FullDemandDetail object) {
                 return getter.getValue(object);
@@ -373,11 +416,27 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      * The key provider that provides the unique ID of a FullDemandDetail.
      */
     private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
+
         @Override
         public Object getKey(FullDemandDetail item) {
             return item == null ? null : item.getDemandId();
         }
     };
+
+    @Override
+    public SimplePager getPager() {
+        return pager;
+    }
+
+    @Override
+    public ListBox getPageSizeCombo() {
+        return pageSizeCombo;
+    }
+
+    @Override
+    public int getPageSize() {
+        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
+    }
 
     @Override
     public SimplePanel getAdminOfferDetail() {

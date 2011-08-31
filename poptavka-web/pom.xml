@@ -66,14 +66,17 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
+            <version>${org.springframework.security-version}</version>
         </dependency>
 
         <!-- Google Web Toolkit -->
@@ -333,6 +336,7 @@
     </build>
     <properties>
         <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+        <org.springframework.security-version>3.0.2.RELEASE</org.springframework.security-version>
         <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
         <runTarget>Poptavka.html</runTarget>
     </properties>

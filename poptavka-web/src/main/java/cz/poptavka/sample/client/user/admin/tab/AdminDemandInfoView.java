@@ -141,6 +141,7 @@ public class AdminDemandInfoView extends Composite implements
         });
     }
 
+    @Override
     public void setDemandDetail(FullDemandDetail contact) {
         this.demandInfo = contact;
         updateButton.setEnabled(contact != null);

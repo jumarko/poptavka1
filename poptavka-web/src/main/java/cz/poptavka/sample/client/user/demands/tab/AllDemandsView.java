@@ -29,7 +29,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Random;
 
 /**
@@ -51,17 +51,18 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
     @UiField
     Label bannerLabel;
     @UiField(provided = true)
-    CellTable<DemandDetailForDisplayDemands> cellTable;
+    CellTable<FullDemandDetail> cellTable;
     @UiField(provided = true)
     SimplePager pager;
-
-    @UiField Hyperlink linkAttachment, linkLogin, linkRegisterClient, linkRegisterSupplier;
-    @UiField FlexTable infoTable;
-    @UiField Label textArea;
-
+    @UiField
+    Hyperlink linkAttachment, linkLogin, linkRegisterClient, linkRegisterSupplier;
+    @UiField
+    FlexTable infoTable;
+    @UiField
+    Label textArea;
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
-    private final SingleSelectionModel<DemandDetailForDisplayDemands> selectionModel =
-            new SingleSelectionModel<DemandDetailForDisplayDemands>();
+    private final SingleSelectionModel<FullDemandDetail> selectionModel =
+            new SingleSelectionModel<FullDemandDetail>();
     private AsyncDataProvider dataProvider;
 
     @Override
@@ -70,7 +71,6 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
     }
 
     //TODO Martin dorobit register client
-
     @Override
     public void setAttachmentToken(String token) {
         linkAttachment.setTargetHistoryToken(token);
@@ -117,17 +117,17 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
     }
 
     @Override
-    public AsyncDataProvider<DemandDetailForDisplayDemands> getDataProvider() {
+    public AsyncDataProvider<FullDemandDetail> getDataProvider() {
         return dataProvider;
     }
 
     @Override
-    public void setDataProvider(AsyncDataProvider<DemandDetailForDisplayDemands> dataProvider) {
+    public void setDataProvider(AsyncDataProvider<FullDemandDetail> dataProvider) {
         this.dataProvider = dataProvider;
     }
 
     @Override
-    public CellTable<DemandDetailForDisplayDemands> getCellTable() {
+    public CellTable<FullDemandDetail> getCellTable() {
         return cellTable;
     }
 
@@ -146,7 +146,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
      */
     private void initCellTable() {
         // Create a CellTable.
-        cellTable = new CellTable<DemandDetailForDisplayDemands>();
+        cellTable = new CellTable<FullDemandDetail>();
         cellTable.setWidth("100%", true);
         cellTable.setRowCount(Integer.valueOf(combo.getItemText(combo.getSelectedIndex())), true);
 
@@ -168,7 +168,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
         // TODO Martin - opravit ak bude dostupny datum vlozenia
         addColumn(new TextCell(), bundle.createdDate(), 30, new GetValue<String>() {
 
-            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+            public String getValue(FullDemandDetail demandDetail) {
                 //TODO Martin dorobit rozdelenie casu a datumu podla niecoho
                 //if (...) {
                 //DateTimeFormat.getFormat("hh:mm").format(demandDetail.getEndDate());
@@ -180,20 +180,20 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
         // Root category info
         addColumn(new TextCell(), bundle.category(), 40, new GetValue<String>() {
 
-            public String getValue(DemandDetailForDisplayDemands demandDetail) {
-                if (demandDetail.getCategories() != null
-                        && demandDetail.getCategories().size() != 0) {
-                    return demandDetail.getCategories().get(0);
-                } else {
-                    return "";
-                }
+            public String getValue(FullDemandDetail demandDetail) {
+//                if (demandDetail.getCategories() != null
+//                        && demandDetail.getCategories().size() != 0) {
+//                    return demandDetail.getCategories().get(0);
+//                } else {
+                return "";
+//                }
             }
         });
 
         // Demand Info
         addColumn(new TextCell(), bundle.demand(), 100, new GetValue<String>() {
 
-            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+            public String getValue(FullDemandDetail demandDetail) {
                 return demandDetail.getTitle();
             }
         });
@@ -201,9 +201,9 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
         // Mesto
         addColumn(new TextCell(), bundle.locality(), 40, new GetValue<String>() {
 
-            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+            public String getValue(FullDemandDetail demandDetail) {
                 if (demandDetail.getLocalities() != null
-                        && demandDetail.getLocalities().size() != 0) {
+                        && !demandDetail.getLocalities().isEmpty()) {
                     return demandDetail.getLocalities().get(0);
                 } else {
                     return "";
@@ -214,7 +214,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
         // Urgencia
         addColumn(new ImageStatus(), bundle.urgency(), 40, new GetValue<Date>() {
 
-            public Date getValue(DemandDetailForDisplayDemands object) {
+            public Date getValue(FullDemandDetail object) {
                 return object.getEndDate();
             }
         });
@@ -222,14 +222,14 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
         // Cena
         addColumn(new TextCell(), bundle.price(), 30, new GetValue<String>() {
 
-            public String getValue(DemandDetailForDisplayDemands demandDetail) {
+            public String getValue(FullDemandDetail demandDetail) {
                 return String.valueOf(demandDetail.getPrice());
             }
         });
     }
 
     @Override
-    public SingleSelectionModel<DemandDetailForDisplayDemands> getSelectionModel() {
+    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
         return selectionModel;
     }
 
@@ -256,9 +256,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
 
             long diffSec = value.getTime() - (new Date()).getTime();
             long diffDays = diffSec / (1000 * 60 * 60 * 24);
-//            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
 
-            //TODO Martin - i18
             if ((int) diffDays <= 4) { //(0-4) velmi specha
                 text = "velmi specha";
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
@@ -295,7 +293,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
      */
     private static interface GetValue<C> {
 
-        C getValue(DemandDetailForDisplayDemands contact);
+        C getValue(FullDemandDetail contact);
     }
 
     /**
@@ -310,12 +308,12 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
      * @param getter
      *            the value getter for the cell
      */
-    private <C> Column<DemandDetailForDisplayDemands, C> addColumn(Cell<C> cell,
+    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell,
             String headerText, int width, final GetValue<C> getter) {
-        Column<DemandDetailForDisplayDemands, C> column = new Column<DemandDetailForDisplayDemands, C>(cell) {
+        Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
 
             @Override
-            public C getValue(DemandDetailForDisplayDemands demand) {
+            public C getValue(FullDemandDetail demand) {
                 return getter.getValue(demand);
             }
         };
@@ -325,7 +323,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
     }
 
     @Override
-    public void setDemand(DemandDetailForDisplayDemands demand) {
+    public void setDemand(FullDemandDetail demand) {
         infoTable.clear();
         textArea.setText("");
 
@@ -353,9 +351,9 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
             infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
         }
 
-        if (demand.getValidTo() != null) {
+        if (demand.getValidToDate() != null) {
             infoTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getValidTo().toString()));
+            infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
         }
 
         if (demand.getDemandType() != null) {
@@ -365,13 +363,15 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
 
         if (demand.getCategories() != null) {
             infoTable.setWidget(row, 0, new Label(bundle.category() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()
+            infoTable.setWidget(row++, 1,
+                    new Label(demand.getCategories().toString()
                     .substring(1, demand.getCategories().toString().length() - 1)));
         }
 
         if (demand.getLocalities() != null) {
             infoTable.setWidget(row, 0, new Label(bundle.locality() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()
+            infoTable.setWidget(row++, 1,
+                    new Label(demand.getLocalities().toString()
                     .substring(1, demand.getLocalities().toString().length() - 1)));
         }
 

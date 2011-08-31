@@ -49,7 +49,7 @@
                             <td align="center">
 <!--                            <c:SimplePager ui:field='pager' />-->
                                 <c:SimplePager ui:field='pager' />
-                                <g:ListBox ui:field='combo'/>
+                                <g:ListBox ui:field='pageSize'/>
                             </td>
                         </tr>
                 

@@ -16,7 +16,6 @@ import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import java.util.Map;
@@ -37,22 +36,55 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
     /**********************************************************************************************
      ***********************  DEMAND SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAllDemands() {
-        demandService.getAllDemands(new AsyncCallback<List<DemandDetail>>() {
+    public void onGetAdminDemandsCount() {
+        demandService.getAllDemandsCount(new AsyncCallback<Long>() {
 
             @Override
             public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
-            public void onSuccess(List<DemandDetail> result) {
-                eventBus.setAllDemands(result);
+            public void onSuccess(Long result) {
+                eventBus.createAdminDemandsAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onUpdateDemand(FullDemandDetail demand) {
-        demandService.updateDemand(demand, new AsyncCallback<FullDemandDetail>() {
+    public void onGetAdminDemands(int start, int count) {
+        demandService.getDemands(start, count, new AsyncCallback<List<FullDemandDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(List<FullDemandDetail> result) {
+                eventBus.displayAdminTabDemands(result);
+            }
+        });
+
+    }
+
+    public void onGetSortedDemands(int start, int count, Map<String, OrderType> orderColumns) {
+        demandService.getSortedDemands(start, count, orderColumns,
+                new AsyncCallback<List<FullDemandDetail>>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        throw new UnsupportedOperationException("Not supported yet.");
+                    }
+
+                    @Override
+                    public void onSuccess(List<FullDemandDetail> result) {
+                        eventBus.displayAdminTabDemands(result);
+                    }
+                });
+    }
+
+    public void onUpdateDemand(FullDemandDetail demand, String updateWhat) {
+        demandService.updateDemand(demand, updateWhat, new AsyncCallback<FullDemandDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -80,12 +112,12 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             @Override
             public void onSuccess(Integer result) {
                 LOGGER.info("Found: " + result);
-                eventBus.createSuppliersAsyncDataProvider(result);
+                eventBus.createAdminSuppliersAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetSuppliers(int start, int count) {
+    public void onGetAdminSuppliers(int start, int count) {
         supplierService.getSuppliers(start, count, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
 
             @Override
@@ -117,8 +149,8 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
                 });
     }
 
-    public void onUpdateSupplier(FullSupplierDetail supplierDetail) {
-        supplierService.updateSupplier(supplierDetail, new AsyncCallback<FullSupplierDetail>() {
+    public void onUpdateSupplier(FullSupplierDetail supplierDetail, String updateWhat) {
+        supplierService.updateSupplier(supplierDetail, updateWhat, new AsyncCallback<FullSupplierDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {

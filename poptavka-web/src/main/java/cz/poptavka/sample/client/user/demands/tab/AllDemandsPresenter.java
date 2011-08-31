@@ -25,8 +25,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.user.UserEventBus;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 /**
  *
@@ -41,7 +41,7 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
 
     public interface DemandsViewInterface {
 
-        void setDemand(DemandDetailForDisplayDemands demand);
+        void setDemand(FullDemandDetail demand);
 
         void setRegisterSupplierToken(String token);
 
@@ -57,11 +57,11 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
 
         ListBox getCombo();
 
-        AsyncDataProvider<DemandDetailForDisplayDemands> getDataProvider();
+        AsyncDataProvider<FullDemandDetail> getDataProvider();
 
-        void setDataProvider(AsyncDataProvider<DemandDetailForDisplayDemands> dataProvider);
+        void setDataProvider(AsyncDataProvider<FullDemandDetail> dataProvider);
 
-        CellTable<DemandDetailForDisplayDemands> getCellTable();
+        CellTable<FullDemandDetail> getCellTable();
 
         SimplePager getPager();
 
@@ -69,7 +69,7 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
 
         HTMLPanel getDemandView();
 
-        SingleSelectionModel<DemandDetailForDisplayDemands> getSelectionModel();
+        SingleSelectionModel<FullDemandDetail> getSelectionModel();
     }
     private int start = 0;
     private String resultSource = "";
@@ -120,7 +120,7 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                DemandDetailForDisplayDemands selected = view.getSelectionModel().getSelectedObject();
+                FullDemandDetail selected = view.getSelectionModel().getSelectedObject();
                 if (selected != null) {
                     view.getBannerLabel().setVisible(false);
                     view.getDemandView().setVisible(true);
@@ -156,20 +156,20 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
 
 //        view.setLoginToken(getTokenGenerator().atLogin());
     }
-    private AsyncDataProvider dataProvider = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
+    private AsyncDataProvider dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
         @Override
-        protected void onRangeChanged(HasData<DemandDetailForDisplayDemands> display) {
+        protected void onRangeChanged(HasData<FullDemandDetail> display) {
             //just for initializing cellTable
             //will be implemented later, when allDemandsCount value will be retrieved
         }
     };
 
     public void onCreateAsyncDataProvider() {
-        this.dataProvider = new AsyncDataProvider<DemandDetailForDisplayDemands>() {
+        this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
-            protected void onRangeChanged(HasData<DemandDetailForDisplayDemands> display) {
+            protected void onRangeChanged(HasData<FullDemandDetail> display) {
                 display.setRowCount((int) resultCount);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
@@ -263,14 +263,14 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
         });
     }
 
-    public void onDisplayDemands(Collection<DemandDetailForDisplayDemands> result) {
+    public void onDisplayDemands(Collection<FullDemandDetail> result) {
 
-        List<DemandDetailForDisplayDemands> list = new ArrayList<DemandDetailForDisplayDemands>(result);
+        List<FullDemandDetail> list = new ArrayList<FullDemandDetail>(result);
 
         dataProvider.updateRowData(start, list);
     }
 
-    public void onSetDemand(DemandDetailForDisplayDemands demand) {
+    public void onSetDemand(FullDemandDetail demand) {
         view.getDemandView().setVisible(true);
         view.setDemand(demand);
     }

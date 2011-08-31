@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FullSupplierDetail implements Serializable {
 
@@ -19,34 +20,26 @@ public class FullSupplierDetail implements Serializable {
     private long supplierId;
     private int overallRating = -1;
     private boolean certified = false;
-    private String description = "";
-    private String verification = "";
-    private HashMap<String, String> localities = new HashMap<String, String>(); //<code, name>
-    private HashMap<Long, String> categories = new HashMap<Long, String>();   //<id, name>
+    private String description;
+    private String verification;
+    private Map<String, String> localities; //<codes, value>
+    private Map<Long, String> categories;   //<ids, value>
     private ArrayList<Integer> services = new ArrayList<Integer>();
     private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-    private String businessType = "";
-    private String email = "";
-    private String companyName = "";
-    private String identificationNumber = "";
-    private String firstName = "";
-    private String lastName = "";
-    private String phone = "";
+    private String businessType;
+    private String email;
+    private String companyName;
+    private String identificationNumber;
+    private String firstName;
+    private String lastName;
+    private String phone;
+//    public static String[] supplierField = new String[]{
+//        "id", "companyName", "businessType", "certified", "verification"
+//    };
 
     public FullSupplierDetail() {
-        super();
     }
 
-//    public void createSupplierDetail(Supplier supplier) {
-//        supplierId = supplier.getId();
-//        overallRating = supplier.getOveralRating();
-//        certified = supplier.isCertified();
-//        verification = supplier.getVerification();
-////        services = supplier.getBusinessUser().getUserServices();
-//        addresses = supplier.getBusinessUser().getAddresses();
-//        email = supplier.getBusinessUser().getEmail();
-//        companyName = supplier.getBusinessUser().getBusinessUserData().getCompanyName();
-//    }
     public static FullSupplierDetail createFullSupplierDetail(Supplier supplier) {
         FullSupplierDetail detail = new FullSupplierDetail();
         detail.setSupplierId(supplier.getId());
@@ -59,15 +52,16 @@ public class FullSupplierDetail implements Serializable {
         if (supplier.getVerification() != null) {
             detail.setVerification(supplier.getVerification().name());
         }
-        if (supplier.getCategories() != null) {
-            for (Category category : supplier.getCategories()) {
-                detail.getCategories().put(category.getId(), category.getName());
-            }
+        //categories
+        Map<Long, String> catMap = new HashMap<Long, String>();
+        for (Category cat : supplier.getCategories()) {
+            catMap.put(cat.getId(), cat.getName());
         }
-        if (supplier.getLocalities() != null) {
-            for (Locality locality : supplier.getLocalities()) {
-                detail.getLocalities().put(locality.getCode(), locality.getName());
-            }
+        detail.setCategories(catMap);
+        //localities
+        Map<String, String> locMap = new HashMap<String, String>();
+        for (Locality loc : supplier.getLocalities()) {
+            locMap.put(loc.getCode(), loc.getName());
         }
         if (supplier.getBusinessUser() != null) {
             for (Address addr : supplier.getBusinessUser().getAddresses()) {
@@ -109,20 +103,28 @@ public class FullSupplierDetail implements Serializable {
         this.certified = certified;
     }
 
-    public HashMap<Long, String> getCategories() {
+    public Map<Long, String> getCategories() {
         return categories;
     }
 
-    public void setCategories(HashMap<Long, String> categories) {
+    public void setCategories(Map<Long, String> categories) {
         this.categories = categories;
     }
 
-    public HashMap<String, String> getLocalities() {
+    public Map<String, String> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(HashMap<String, String> localities) {
+    public void setLocalities(Map<String, String> localities) {
         this.localities = localities;
+    }
+
+    public long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getDescription() {
@@ -147,10 +149,6 @@ public class FullSupplierDetail implements Serializable {
 
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
-    }
-
-    public Long getSupplierId() {
-        return supplierId;
     }
 
     public List<AddressDetail> getAddresses() {

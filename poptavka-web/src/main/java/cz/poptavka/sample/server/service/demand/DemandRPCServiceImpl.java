@@ -6,6 +6,7 @@ package cz.poptavka.sample.server.service.demand;
 
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -27,7 +28,6 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
-import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -110,7 +111,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
-
     //Last computed categories and localities
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new ArrayList<Locality>();
@@ -141,13 +141,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
         /** localities **/
         List<Locality> locs = new ArrayList<Locality>();
-        for (String localityCode : detail.getLocalities()) {
+        for (String localityCode : detail.getLocalities().keySet()) {
             locs.add(getLocality(localityCode));
         }
         demand.setLocalities(locs);
         /** categories **/
         List<Category> categories = new ArrayList<Category>();
-        for (String categoryID : detail.getCategories()) {
+        for (Long categoryID : detail.getCategories().keySet()) {
             categories.add(getCategory(categoryID));
         }
         demand.setCategories(categories);
@@ -221,26 +221,64 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @return FullDemandDetail
      */
     @Override
-    public FullDemandDetail updateDemand(FullDemandDetail fullDemandDetail) {
+    public FullDemandDetail updateDemand(FullDemandDetail demandDetail, String updateWhat) {
         // TODO ivlcek - update entity by sa mal robit jednoduchsie ako toto?
-        Demand demand = demandService.getById(fullDemandDetail.getDemandId());
-//        demand.setCategories(null);
-        demand.setClient(clientService.getById(fullDemandDetail.getClientId()));
-//        demand.setDescription(null);
-        demand.setEndDate(fullDemandDetail.getEndDate());
-//        demand.setExcludedSuppliers(null);
-//        demand.setLocalities(null);
-        demand.setMaxSuppliers(Integer.valueOf(fullDemandDetail.getMaxOffers()));
-        demand.setMinRating(Integer.valueOf(fullDemandDetail.getMinRating()));
-//        demand.setOffers(null);
-//        demand.setOrigin(null);
-        demand.setPrice(fullDemandDetail.getPrice());
-        demand.setStatus(DemandStatus.valueOf(fullDemandDetail.getDemandStatus()));
-        demand.setTitle(fullDemandDetail.getTitle());
-        demand.setType(this.demandService.getDemandType(fullDemandDetail.getDemandType()));
-        demand.setValidTo(fullDemandDetail.getValidToDate());
+        Demand demand = demandService.getById(demandDetail.getDemandId());
+        // -- demand
+        if (updateWhat.equals("demand") || updateWhat.equals("all")) {
+            demand.setTitle(demandDetail.getTitle());
+            demand.setDescription(demandDetail.getDescription());
+            demand.setPrice(demandDetail.getPrice());
+            if (demandDetail.getDemandStatus() != null && !demandDetail.getDemandStatus().equals("")) {
+                demand.setStatus(DemandStatus.valueOf(demandDetail.getDemandStatus()));
+            }
+            //TODO Martin - nefunguje, preco? opravit, Preco sa to neda jednoduchsie vez DemandType.getValueOf(string);
+
+//            }if (demandDetail.getDemandType() != null && !demandDetail.getDemandType().equals("")) {
+//                demand.setType(demandService.getDemandType(demandDetail.getDemandType()));
+        }
+        // -- categories
+        if (updateWhat.equals("categories") || updateWhat.equals("all")) {
+            List<Category> newCategories = new ArrayList<Category>();
+            for (Category category : demand.getCategories()) {
+                if (demandDetail.getCategories().containsKey(category.getId())) {
+                    //add category - if there already is data, don't go to DB
+                    newCategories.add(category);
+                    //remove if added, the rest will be obtained from DB
+                    demandDetail.getCategories().remove(category.getId());
+                }
+            }
+            for (Long id : demandDetail.getCategories().keySet()) {
+                newCategories.add(categoryService.getById(id));
+            }
+        }
+        // -- localities
+        if (updateWhat.equals("categories") || updateWhat.equals("all")) {
+            List<Locality> newLocalities = new ArrayList<Locality>();
+            for (Locality locality : demand.getLocalities()) {
+                if (demandDetail.getLocalities().containsKey(locality.getCode())) {
+                    newLocalities.add(locality);
+                    demandDetail.getLocalities().remove(locality.getCode());
+                }
+            }
+            for (String code : demandDetail.getLocalities().keySet()) {
+                newLocalities.add(localityService.getLocality(code));
+            }
+
+        }
+        // -- rest
+        if (updateWhat.equals("other") || updateWhat.equals("all")) {
+            demand.setValidTo(demandDetail.getValidToDate());
+            demand.setEndDate(demandDetail.getEndDate());
+//            demand.setExcludedSuppliers(null);
+            demand.setMaxSuppliers(Integer.valueOf(demandDetail.getMaxOffers()));
+            demand.setMinRating(Integer.valueOf(demandDetail.getMinRating()));
+//            demand.setOffers(null);
+//            demand.setOrigin(null);
+        }
+
         demandService.update(demand);
-        return fullDemandDetail;
+        return demandDetail;
     }
 
     @Override
@@ -253,36 +291,41 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public List<DemandDetailForDisplayDemands> getDemands(Locality... localities) {
+    public List<FullDemandDetail> getSortedDemands(int start, int count, Map<String, OrderType> orderColumns) {
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(start).maxResults(count).orderByColumns(orderColumns).build();
+        return this.createDemandDetailList(demandService.getAll(resultCriteria));
+    }
+
+    @Override
+    public List<FullDemandDetail> getDemands(Locality... localities) {
 
         return this.createDemandDetailList(demandService.getDemands(localities));
     }
 
     @Override
-    public List<DemandDetailForDisplayDemands> getDemands(Category... categories) {
+    public List<FullDemandDetail> getDemands(Category... categories) {
 
         return this.createDemandDetailList(demandService.getDemands(categories));
     }
 
     @Override
-    public List<DemandDetailForDisplayDemands> getDemands(int fromResult, int toResult) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(fromResult)
-                .maxResults(toResult)
-                .build();
+    public List<FullDemandDetail> getDemands(int fromResult, int toResult) {
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
         return this.createDemandDetailList(demandService.getAll(resultCriteria));
     }
 
-    public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
+    @Override
+    public List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities) {
 
         return this.createDemandDetailList(demandService.getDemands(resultCriteria, localities));
     }
 
-    public List<DemandDetailForDisplayDemands> getDemandsByCategory(int fromResult, int toResult, long id) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(fromResult)
-                .maxResults(toResult)
-                .build();
+    @Override
+    public List<FullDemandDetail> getDemandsByCategory(int fromResult, int toResult, long id) {
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
 
         return this.createDemandDetailList(demandService.getDemands(resultCriteria, this.getAllSubcategories(id)));
     }
@@ -309,12 +352,11 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return categoriesHistory.toArray(new Category[categoriesHistory.size()]);
     }
 
-    public List<DemandDetailForDisplayDemands> getDemandsByLocality(int fromResult, int toResult, String code) {
+    @Override
+    public List<FullDemandDetail> getDemandsByLocality(int fromResult, int toResult, String code) {
 
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(fromResult)
-                .maxResults(toResult)
-                .build();
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
 
         return this.createDemandDetailList(demandService.getDemands(resultCriteria, this.getAllSublocalities(code)));
     }
@@ -362,25 +404,26 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return this.demandService.getById(demandId);
     }
 
-    private List<DemandDetailForDisplayDemands> createDemandDetailList(Collection<Demand> demands) {
-        List<DemandDetailForDisplayDemands> fullDemandDetails = new ArrayList<DemandDetailForDisplayDemands>();
+    private List<FullDemandDetail> createDemandDetailList(Collection<Demand> demands) {
+        List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (Demand demand : demands) {
             List<Number> revisions = auditService.getRevisions(Demand.class, demand.getId());
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            fullDemandDetails.add(DemandDetailForDisplayDemands.createDetail(createdDate, demand));
+            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand);
+            demandDetail.setCreated(createdDate);
+            fullDemandDetails.add(demandDetail);
         }
         return fullDemandDetails;
     }
 
-
     @Override
-    public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria) {
+    public List<FullDemandDetail> getDemands(ResultCriteria resultCriteria) {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public List<DemandDetailForDisplayDemands> getDemands(ResultCriteria resultCriteria, Category[] categories) {
+    public List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Category[] categories) {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -431,7 +474,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 //        return localityService.getById(10);
     }
 
-    public Category getCategory(String id) {
-        return categoryService.getById(Long.parseLong(id));
+    public Category getCategory(Long id) {
+        return categoryService.getById(id);
     }
 }

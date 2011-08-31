@@ -30,15 +30,15 @@ import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.HashMap;
+import java.util.Map;
 
 @Presenter(view = DemandCreationView.class)
 public class DemandCreationPresenter
-    extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, HomeEventBus> {
+        extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, HomeEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
-
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface CreationViewInterface extends LazyView {
 
@@ -57,6 +57,7 @@ public class DemandCreationPresenter
 
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
@@ -73,6 +74,7 @@ public class DemandCreationPresenter
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(LOGIN)) {
@@ -95,6 +97,7 @@ public class DemandCreationPresenter
         eventBus.setBodyWidget(view.getWidgetView());
 
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
             @Override
             public void execute() {
                 eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
@@ -123,18 +126,36 @@ public class DemandCreationPresenter
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
         FormDemandBasicInterface basicValues =
-            (FormDemandBasicInterface) view.getHolderPanel(BASIC).getWidget();
+                (FormDemandBasicInterface) view.getHolderPanel(BASIC).getWidget();
         CategorySelectorInterface categoryValues =
-            (CategorySelectorInterface) view.getHolderPanel(CATEGORY).getWidget();
+                (CategorySelectorInterface) view.getHolderPanel(CATEGORY).getWidget();
         LocalitySelectorInterface localityValues =
-            (LocalitySelectorInterface) view.getHolderPanel(LOCALITY).getWidget();
+                (LocalitySelectorInterface) view.getHolderPanel(LOCALITY).getWidget();
         FormDemandAdvViewInterface advValues =
-            (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
+                (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
 
         FullDemandDetail demand = new FullDemandDetail();
         demand.setBasicInfo(basicValues.getValues());
-        demand.setCategories(categoryValues.getSelectedCategoryCodes());
-        demand.setLocalities(localityValues.getSelectedLocalityCodes());
+
+        //localities
+        Map<String, String> localities = new HashMap<String, String>();
+        for (int i = 0; i < localityValues.getSelectedList().getItemCount(); i++) {
+            localities.put(
+                    localityValues.getSelectedList().getValue(i),
+                    localityValues.getSelectedList().getItemText(i));
+        }
+        demand.setLocalities(localities);
+
+        //categories
+        Map<Long, String> categories = new HashMap<Long, String>();
+        for (int i = 0; i < categoryValues.getSelectedList().getItemCount(); i++) {
+            categories.put(Long.valueOf(
+                    categoryValues.getSelectedList().getValue(i)),
+                    //                    categorySelector.getSelectedCategoryCodes().get(i)),
+                    categoryValues.getSelectedList().getItemText(i));
+        }
+        demand.setCategories(categories);
+
         demand.setAdvInfo(advValues.getValues());
 
         eventBus.createDemand(demand, client.getClientId());
@@ -154,7 +175,6 @@ public class DemandCreationPresenter
         view.getStatusLabel(LOGIN).setStyleState(StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
         view.getStatusLabel(LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
-
     private static final int BASIC = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;

@@ -26,6 +26,7 @@ import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
+import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -273,7 +274,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     public Long getSuppliersCount(Long categoryID, String localityCode) {
         return supplierService.getSuppliersCount(
                 new Category[]{categoryService.getById(categoryID)},
-                new Locality[] {localityService.getLocality(localityCode)});
+                new Locality[]{localityService.getLocality(localityCode)});
 //                this.getAllSubcategories(categoryID),
 //                this.getAllSublocalities(localityCode));
 //        return supplierService.getSuppliersCount(categoryID, localityCode);
@@ -283,54 +284,82 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * Method updates supplier object in database.
      *
      * @param supplierDetail - updated supplierDetail from front end
+     * @param updateWhat - define data to update. Values: supplier, categories, localities, address, userdata, all.
      * @return supplierDetail
      */
     @Override
-    public FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail) {
-        //Supplier
+    public FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail, String updateWhat) {
         Supplier supplier = supplierService.getById(supplierDetail.getSupplierId());
 
-        supplier.getBusinessUser().getBusinessUserData().setCompanyName(supplierDetail.getCompanyName());
-        supplier.setOveralRating(supplierDetail.getOverallRating());
+
+        if (updateWhat.equals("supplier") || updateWhat.equals("all")) {
+            //Supplier
+            if (supplierDetail.getOverallRating() == -1) {
+                supplier.setOveralRating(null);
+            } else {
+                supplier.setOveralRating(supplierDetail.getOverallRating());
+            }
+            supplier.setCertified(supplierDetail.isCertified());
+            supplier.setVerification(Verification.valueOf(supplierDetail.getVerification()));
+
+        }
+        // -- categories
+        if (updateWhat.equals("categories") || updateWhat.equals("all")) {
+            List<Category> newCategories = new ArrayList<Category>();
+            for (Category category : supplier.getCategories()) {
+                if (supplierDetail.getCategories().containsKey(category.getId())) {
+                    //add category - if there already is data, don't go to DB
+                    newCategories.add(category);
+                    //remove if added, the rest will be obtained from DB
+                    supplierDetail.getCategories().remove(category.getId());
+                }
+            }
+            for (Long id : supplierDetail.getCategories().keySet()) {
+                newCategories.add(categoryService.getById(id));
+            }
+        }
+        // -- localities
+        if (updateWhat.equals("categories") || updateWhat.equals("all")) {
+            List<Locality> newLocalities = new ArrayList<Locality>();
+            for (Locality locality : supplier.getLocalities()) {
+                if (supplierDetail.getLocalities().containsKey(locality.getCode())) {
+                    newLocalities.add(locality);
+                    supplierDetail.getLocalities().remove(locality.getCode());
+                }
+            }
+            for (String code : supplierDetail.getLocalities().keySet()) {
+                newLocalities.add(localityService.getLocality(code));
+            }
+
+        }
+        if (updateWhat.equals("address") || updateWhat.equals("all")) {
+            //TODO Martin - how to update addresses???
+            List<Address> newAddresses = new ArrayList<Address>();
+            for (AddressDetail addr : supplierDetail.getAddresses()) {
+//            Address address = new Address();
+//            supplier.getBusinessUser().getAddresses()
+            }
+        }
 //        supplier.getBusinessUser().getBusinessUserData().
 //        descriptionBox.setText(supplier.getDescription());
-        //Contact
-        supplier.getBusinessUser().getBusinessUserData().setPersonFirstName(supplierDetail.getFirstName());
-        supplier.getBusinessUser().getBusinessUserData().setPersonLastName(supplierDetail.getLastName());
-        supplier.getBusinessUser().setEmail(supplierDetail.getEmail());
-        supplier.getBusinessUser().getBusinessUserData().setPhone(supplierDetail.getPhone());
-        //Location - categories
-        List<Category> newCategories = new ArrayList<Category>();
-        for (Category category : supplier.getCategories()) {
-            if (supplierDetail.getCategories().containsKey(category.getId())) {
-                //add category - if there already is data, don't go to DB
-                newCategories.add(category);
-                //remove if added, the rest will be obtained from DB
-                supplierDetail.getCategories().remove(category.getId());
-            }
-        }
-        for (Long id : supplierDetail.getCategories().keySet()) {
-            newCategories.add(categoryService.getById(id));
-        }
-        //Location - localities
-        List<Locality> newLocalities = new ArrayList<Locality>();
-        for (Locality locality : supplier.getLocalities()) {
-            if (supplierDetail.getLocalities().containsKey(locality.getCode())) {
-                newLocalities.add(locality);
-                supplierDetail.getLocalities().remove(locality.getCode());
-            }
-        }
-        for (String code : supplierDetail.getLocalities().keySet()) {
-            newLocalities.add(localityService.getLocality(code));
-        }
+
         //Busines data
-        supplier.getBusinessUser().getBusinessUserData().setIdentificationNumber(
-                supplierDetail.getIdentificationNumber());
-        //TODO Martin - update aj tohto udaju?
-//        supplier.setId(supplierDetail.getSupplierId());
-        supplier.getBusinessUser().setBusinessType(BusinessType.valueOf(supplierDetail.getBusinessType()));
-        supplier.setCertified(supplierDetail.isCertified());
-        supplier.setVerification(Verification.valueOf(supplierDetail.getVerification()));
+        if (updateWhat.equals("userdata") || updateWhat.equals("all")) {
+            supplier.getBusinessUser().setEmail(supplierDetail.getEmail());
+
+            supplier.getBusinessUser().getBusinessUserData().setDescription(supplierDetail.getDescription());
+            if (supplierDetail.getBusinessType() != null && !supplierDetail.getBusinessType().equals("")) {
+                supplier.getBusinessUser().setBusinessType(BusinessType.valueOf(supplierDetail.getBusinessType()));
+            }
+            supplier.getBusinessUser().getBusinessUserData().setCompanyName(supplierDetail.getCompanyName());
+            supplier.getBusinessUser().getBusinessUserData().
+                    setIdentificationNumber(supplierDetail.getIdentificationNumber());
+
+            //-- Contact
+            supplier.getBusinessUser().getBusinessUserData().setPersonFirstName(supplierDetail.getFirstName());
+            supplier.getBusinessUser().getBusinessUserData().setPersonLastName(supplierDetail.getLastName());
+            supplier.getBusinessUser().getBusinessUserData().setPhone(supplierDetail.getPhone());
+        }
 
         supplierService.update(supplier);
         return supplierDetail;

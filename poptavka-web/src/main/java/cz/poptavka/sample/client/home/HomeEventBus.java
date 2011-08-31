@@ -19,7 +19,6 @@ import cz.poptavka.sample.client.home.suppliers.SuppliersHandler;
 import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.DemandDetailForDisplayDemands;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -252,10 +251,10 @@ public interface HomeEventBus extends EventBus {
     void setCategoryData(ArrayList<CategoryDetail> list);
 
     @Event(handlers = DemandsPresenter.class)
-    void displayDemands(List<DemandDetailForDisplayDemands> result);
+    void displayDemands(List<FullDemandDetail> result);
 
     @Event(handlers = DemandsPresenter.class)
-    void setDemand(DemandDetailForDisplayDemands demand);
+    void setDemand(FullDemandDetail demand);
 
     @Event(handlers = DemandsPresenter.class)
     void createAsyncDataProvider();

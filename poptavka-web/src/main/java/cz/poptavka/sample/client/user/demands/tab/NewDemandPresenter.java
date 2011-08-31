@@ -26,13 +26,15 @@ import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.HashMap;
+import java.util.Map;
 
 @Presenter(view = NewDemandView.class, multiple = true)
 public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDemandInterface, UserEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
-    private static final LocalizableMessages MSGS = GWT
-    .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+
     public interface NewDemandInterface extends LazyView {
 
         StackLayoutPanel getMainPanel();
@@ -46,8 +48,10 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
         Widget getWidgetView();
     }
 
+    @Override
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
@@ -64,6 +68,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(ADVANCED)) {
@@ -87,6 +92,7 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
         eventBus.displayContent(view.getWidgetView());
 
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
             @Override
             public void execute() {
                 eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
@@ -100,19 +106,35 @@ public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDema
 
         FullDemandDetail demand = new FullDemandDetail();
 
-        demand.setBasicInfo(((FormDemandBasicInterface)
-                view.getHolderPanel(BASIC).getWidget()).getValues());
-        demand.setCategories(((CategorySelectorInterface)
-                view.getHolderPanel(CATEGORY).getWidget()).getSelectedCategoryCodes());
-        demand.setLocalities(((LocalitySelectorInterface)
-                view.getHolderPanel(LOCALITY).getWidget()).getSelectedLocalityCodes());
-        demand.setAdvInfo(((FormDemandAdvViewInterface)
-                view.getHolderPanel(ADVANCED).getWidget()).getValues());
+        demand.setBasicInfo(((FormDemandBasicInterface) view.getHolderPanel(BASIC).getWidget()).getValues());
+        CategorySelectorInterface categoryValues =
+                (CategorySelectorInterface) view.getHolderPanel(CATEGORY).getWidget();
+        LocalitySelectorInterface localityValues =
+                (LocalitySelectorInterface) view.getHolderPanel(LOCALITY).getWidget();
+        demand.setAdvInfo(((FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget()).getValues());
+
+        //localities
+        Map<String, String> localities = new HashMap<String, String>();
+        for (int i = 0; i < localityValues.getSelectedList().getItemCount(); i++) {
+            localities.put(
+                    localityValues.getSelectedList().getValue(i),
+                    localityValues.getSelectedList().getItemText(i));
+        }
+        demand.setLocalities(localities);
+
+        //categories
+        Map<Long, String> categories = new HashMap<Long, String>();
+        for (int i = 0; i < categoryValues.getSelectedList().getItemCount(); i++) {
+            categories.put(Long.valueOf(
+                    categoryValues.getSelectedList().getValue(i)),
+                    //                    categorySelector.getSelectedCategoryCodes().get(i)),
+                    categoryValues.getSelectedList().getItemText(i));
+        }
+        demand.setCategories(categories);
 
         eventBus.requestClientId(demand);
         eventBus.loadingShow(MSGS.progressCreatingDemand());
     }
-
     private static final int BASIC = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;

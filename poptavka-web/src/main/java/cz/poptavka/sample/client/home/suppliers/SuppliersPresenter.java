@@ -7,7 +7,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -59,17 +60,13 @@ public class SuppliersPresenter
 
         String getSelectedLocality();
 
-        AsyncDataProvider<SupplierDetail> getDataProvider();
-
-        void setDataProvider(AsyncDataProvider<SupplierDetail> dataProvider);
-
         FlowPanel getPath();
 
         void addPath(Widget widget);
 
         void removePath(); //removes last one
 
-        CellList getSuppliersList();
+        CellTable getCellTable();
 
         SimplePager getPager();
 
@@ -86,6 +83,14 @@ public class SuppliersPresenter
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
         void hideSuppliersDetail();
+
+        Column<FullSupplierDetail, String> getSupplierNameColumn();
+
+        Column<FullSupplierDetail, String> getSupplierRatingColumn();
+
+        Column<FullSupplierDetail, String> getSupplierAddressColumn();
+
+        Column<FullSupplierDetail, String> getSupplierLocalityColumn();
     }
     private int columns = 4;
     private Long lastUsedCategoryID = null;
@@ -127,7 +132,6 @@ public class SuppliersPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                eventBus.loadingShow(MSGS.loading());
                 FullSupplierDetail selected = (FullSupplierDetail) view.getSelectionSupplierModel().getSelectedObject();
 
                 if (selected != null) {
@@ -151,14 +155,7 @@ public class SuppliersPresenter
 
             @Override
             public void onChange(ChangeEvent arg0) {
-//                view.getSuppliersList().setRowCount(0, true);
-//
-//                int newPage = view.getPageSize();
-//
-//                view.getSuppliersList().setRowCount(newPage, true);
-//
                 int page = view.getPager().getPageStart() / view.getPageSize();
-//
                 view.getPager().setPageStart(page * view.getPageSize());
                 view.getPager().setPageSize(view.getPageSize());
             }
@@ -167,11 +164,11 @@ public class SuppliersPresenter
 
     public void onResetDisplaySuppliersPager(int totalFoundNew) {
         this.totalFound = totalFoundNew;
-        view.getSuppliersList().setPageSize(0);
+        view.getCellTable().setPageSize(0);
 
         view.getPager().setPage(0);
         if (!dataProviderInitialized) {
-            this.dataProvider.addDataDisplay(view.getSuppliersList());
+            this.dataProvider.addDataDisplay(view.getCellTable());
             dataProviderInitialized = true;
         }
     }
@@ -184,7 +181,7 @@ public class SuppliersPresenter
 
         @Override
         protected void onRangeChanged(HasData<SupplierDetail> display) {
-            view.getSuppliersList().setPageSize(view.getPageSize());
+            view.getCellTable().setPageSize(view.getPageSize());
             display.setRowCount(totalFound);
             if (totalFound == 0) {
                 return;
@@ -258,9 +255,9 @@ public class SuppliersPresenter
 
     public void onDisplaySuppliers(ArrayList<FullSupplierDetail> list) {
 //        view.getSuppliersList().setRowCount(0, true);
-        view.getSuppliersList().setRowData(start, new ArrayList<FullSupplierDetail>());
-        view.getSuppliersList().redraw();
-        view.getSuppliersList().setRowData(start, list);
+        view.getCellTable().setRowData(start, new ArrayList<FullSupplierDetail>());
+        view.getCellTable().redraw();
+        view.getCellTable().setRowData(start, list);
     }
 
     /**
