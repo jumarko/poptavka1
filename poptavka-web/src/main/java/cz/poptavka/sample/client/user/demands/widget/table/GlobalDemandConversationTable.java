@@ -5,6 +5,7 @@ import java.util.Random;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -21,6 +22,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 
 public class GlobalDemandConversationTable extends CellTable<ClientDemandMessageDetail> {
@@ -179,16 +181,27 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
 //            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
 
             //TODO Martin - i18
-            if (value.equals("TEMPORARY")) { //(0-4) velmi specha
+            if (value.equals(DemandStatus.TEMPORARY.getValue())) { //(0-4) velmi specha
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
+                GWT.log("temporary");
 
-            } else if (value.equals("TEMPORARY1")) { //(5-8) specha
+            } else if (value.equals(DemandStatus.ACTIVE.getValue())) { //(5-8) specha
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessUrgent()).getHTML();
 
-            } else if (value.equals("TEMPORARY2")) { //(9-12) nespecha
+            } else if (value.equals(DemandStatus.ASSIGNED.getValue())) { //(9-12) nespecha
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().normal()).getHTML();
 
-            } else if (value.equals("TEMPORARY3")) { //(13-oo) vobec nespecha
+            } else if (value.equals(DemandStatus.CANCELED.getValue())) { //(13-oo) vobec nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+            } else if (value.equals(DemandStatus.CLOSED.getValue())) { //(13-oo) vobec nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+            } else if (value.equals(DemandStatus.FINISHED.getValue())) { //(13-oo) vobec nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+            } else if (value.equals(DemandStatus.INACTIVE.getValue())) { //(13-oo) vobec nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
+            } else if (value.equals(DemandStatus.NEW.getValue())) { //(13-oo) vobec nespecha
+                imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().newDemand()).getHTML();
+            } else if (value.equals(DemandStatus.TO_BE_CHECKED.getValue())) { //(13-oo) vobec nespecha
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
             }
             sb.appendHtmlConstant("<table>");

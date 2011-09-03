@@ -84,4 +84,10 @@ public interface Images extends ClientBundle {
 
     @Source("blueCyrcle.png")
     ImageResource lessNormal();
+
+    @Source("new.png")
+    ImageResource newDemand();
+
+    @Source("temporary.png")
+    ImageResource temporary();
 }
