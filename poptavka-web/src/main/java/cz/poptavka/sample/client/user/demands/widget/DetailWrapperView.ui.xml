@@ -4,11 +4,10 @@
     xmlns:d="urn:import:cz.poptavka.sample.client.user.messages">
     <ui:style>
         .overflow {
-            overflow: auto;
+            overflow: scroll;
         }
         .relative {
             position: relative;
-            min-height: 50px;
         }
     </ui:style>
     <g:HTMLPanel ui:field="container" styleName="{style.overflow}">

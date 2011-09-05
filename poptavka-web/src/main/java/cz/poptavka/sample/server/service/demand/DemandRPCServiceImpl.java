@@ -13,6 +13,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
+import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.user.Client;
@@ -207,6 +208,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         message.setRoles(messageUserRoles);
 
         message = messageService.create(message);
+        //TODO verify, if correct
+        //messageService.send throws MessageCannotBeSentException: Message [id=159 cannot be sent because it
+        //is NOT in a COMPOSED state. So I;m setting it manually _by_Beho
+        message.setMessageState(MessageState.COMPOSED);
         try {
             messageService.send(message);
         } catch (MessageCannotBeSentException ex) {

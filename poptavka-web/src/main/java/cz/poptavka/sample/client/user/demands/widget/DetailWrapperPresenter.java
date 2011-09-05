@@ -297,9 +297,11 @@ public class DetailWrapperPresenter extends
     public void toggleConversationLoading() {
         if (conversationLoader == null) {
             GWT.log("  - loading created");
+            view.getConversationPanel().getElement().setAttribute("style", "min-height: 50px");
             conversationLoader = new LoadingDiv(view.getConversationPanel());
         } else {
             GWT.log("  - loading removed");
+            view.getConversationPanel().getElement().removeAttribute("style");
             conversationLoader.getElement().removeFromParent();
             conversationLoader = null;
         }

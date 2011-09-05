@@ -8,7 +8,9 @@
             right: 0px;
             bottom: 0px;
             left: 0px;
+            height: 50px;
         }
+
         .loader {
             position: absolute;
             width: 100%;
@@ -17,8 +19,9 @@
         }
     </ui:style>
     <div ui:field="loading" class="{style.border}">
-        <div class="{style.border}" style="background-color: #000; opacity: 0.3; filter: alpha(opacity=30);">
+        <div class="{style.border}"
+            style="background-color: #000; opacity: 0.3; filter: alpha(opacity=30);">
         </div>
-        <div class="{style.border} {style.loader}" ></div>
+        <div class="{style.border} {style.loader}"></div>
     </div>
 </ui:UiBinder>

@@ -68,17 +68,19 @@ public class UserConversationPanel extends Composite {
 
         GWT.log(" **** size: " + messages.size());
 
-        for (int i = 1; i < messages.size(); i++) {
-            messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
+        if (messages.size() > 1) {
+            for (int i = 1; i < messages.size(); i++) {
+                messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
+            }
+            ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
+            ((SimpleMessageWindow) messagePanel.getWidget(messages.size() - 1))
+                .setMessageStyle(MessageDisplayType.LAST);
         }
 
         messageCount = messagePanel.getWidgetCount();
 
         if (messageCount == 1) {
             ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.BOTH);
-        } else {
-            ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
-            ((SimpleMessageWindow) messagePanel.getWidget(messageCount - 1)).setMessageStyle(MessageDisplayType.LAST);
         }
     }
 
