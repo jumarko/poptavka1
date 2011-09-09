@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands;
+package cz.poptavka.sample.client.user.demands.develmodule;
 
 import java.util.logging.Logger;
 
@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -16,15 +17,15 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public class DemandsLayoutView extends Composite
-    implements DemandsLayoutPresenter.DemandsLayoutInterface, StyleInterface {
+public class DemandModuleView extends Composite
+    implements DemandModulePresenter.DemandsLayoutInterface, StyleInterface {
 
     private static DemandsLayoutViewUiBinder uiBinder = GWT.create(DemandsLayoutViewUiBinder.class);
 
-    interface DemandsLayoutViewUiBinder extends UiBinder<Widget, DemandsLayoutView> {
+    interface DemandsLayoutViewUiBinder extends UiBinder<Widget, DemandModuleView> {
     }
 
-    private static final Logger LOGGER = Logger.getLogger(DemandsLayoutView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DemandModuleView.class.getName());
 
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField
@@ -39,8 +40,10 @@ public class DemandsLayoutView extends Composite
     // hidden or displayed according to the role
     @UiField DivElement supMenu;
 
+    //BEHO devel button, delete after work is done
+    @UiField Anchor develAnchor;
 
-    public DemandsLayoutView() {
+    public DemandModuleView() {
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -54,7 +57,7 @@ public class DemandsLayoutView extends Composite
     public void setContent(Widget contentWidget) {
         contentPanel.setWidget(contentWidget);
     }
-
+/**
     @Override
     public void setMyDemandsToken(String linkString) {
         cliDemandsLink.setTargetHistoryToken(linkString);
@@ -79,7 +82,7 @@ public class DemandsLayoutView extends Composite
     public void setAllSuppliersToken(String linkString) {
         allSuppliersLink.setTargetHistoryToken(linkString);
     }
-
+*/
     /** toggle visible actions/buttons for current user decided by his role. **/
     @Override
     public void setRoleInterface(Role role) {
@@ -96,14 +99,19 @@ public class DemandsLayoutView extends Composite
                 break;
         }
     }
-
+/**
     @Override
     public void setPotentialDemandsToken(String link) {
         supDemandsLink.setTargetHistoryToken(link);
     }
-
+*/
     @Override
     public SimplePanel getContentPanel() {
         return contentPanel;
+    }
+
+    @Override
+    public Anchor getDevelAnchor() {
+        return develAnchor;
     }
 }

@@ -22,7 +22,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
-import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
+import cz.poptavka.sample.client.user.demands.OldDemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -67,9 +67,14 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         void setBodyAdmin(Widget body);
 
         Widget getWidgetView();
+
+        //TODO
+        //Beho devel section, when completed. Put into normal code section
+        void setBodyDemand(Widget demandModule);
+
     }
 
-    private DemandsLayoutPresenter demandsLayoutPresenter = null;
+    private OldDemandsLayoutPresenter demandsLayoutPresenter = null;
 
     // TODO useless!!!!!
     // do NOT paste code, when you do NOT know, why is it there!!!!!
@@ -103,8 +108,12 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         if (demandsLayoutPresenter != null) {
             eventBus.removeHandler(demandsLayoutPresenter);
         }
-        demandsLayoutPresenter = eventBus.addHandler(DemandsLayoutPresenter.class);
+        demandsLayoutPresenter = eventBus.addHandler(OldDemandsLayoutPresenter.class);
         demandsLayoutPresenter.init(user);
+
+        Window.alert(view.getLayoutPanel().getWidget(0) + "");
+
+//        eventBus.initDemandModule(view.getLayoutPanel().getWidget(0));
 
         eventBus.setUserLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());

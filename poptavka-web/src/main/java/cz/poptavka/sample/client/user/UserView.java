@@ -16,7 +16,8 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     interface UserViewUiBinder extends UiBinder<Widget, UserView> { }
 
     @UiField TabLayoutPanel tabLayoutPanel;
-    @UiField SimplePanel tabPanel;
+    @UiField SimplePanel demandPanel;
+    @UiField SimplePanel oldTabPanel;
     @UiField SimplePanel adminPanel;
 
     public void createView() {
@@ -29,7 +30,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     }
 
     public void setBody(Widget body) {
-        tabPanel.setWidget(body);
+        oldTabPanel.setWidget(body);
     }
 
     public void setBodyAdmin(Widget body) {
@@ -43,6 +44,13 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     @Override
     public TabLayoutPanel getLayoutPanel() {
         return tabLayoutPanel;
+    }
+
+    //TODO
+    //Beho devel section, when completed. Put into normal code section
+    @Override
+    public void setBodyDemand(Widget demandModule) {
+        demandPanel.setWidget(demandModule);
     }
 
 }

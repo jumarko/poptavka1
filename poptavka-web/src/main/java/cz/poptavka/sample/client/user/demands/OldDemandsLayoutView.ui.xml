@@ -8,9 +8,10 @@
     <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
         <g:west size="15">
             <g:HTMLPanel>
+                <!-- Client submenu -->
                 <div>
                     Menu Client
-                    </div>
+                </div>
                 <ul>
                     <li>
                         <g:Hyperlink ui:field="cliDemandsLink">
@@ -43,10 +44,11 @@
                         </g:Hyperlink>
                     </li>
                 </ul>
+                <!-- Supplier submenu -->
                 <div ui:field="supMenu" style="display: none;">
                     <div>
                         Menu Supplier
-                </div>
+                    </div>
                     <ul>
                         <li>
                             <g:Hyperlink ui:field="supDemandsLink">
@@ -64,6 +66,10 @@
                             </g:Hyperlink>
                         </li>
                     </ul>
+                </div>
+                <!-- BEHO DEVEL SECTION -->
+                <div>
+                    <g:Anchor ui:field="develAnchor">Supp new demands</g:Anchor>
                 </div>
             </g:HTMLPanel>
         </g:west>

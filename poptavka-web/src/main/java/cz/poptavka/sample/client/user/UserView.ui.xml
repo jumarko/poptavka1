@@ -9,9 +9,17 @@
         barHeight="3">
         <g:tab>
             <g:header>
-                <ui:msg key='demands'>Demands</ui:msg>
+                <ui:msg key='demands'>Demand Module</ui:msg>
             </g:header>
-            <g:SimplePanel ui:field="tabPanel">
+            <g:SimplePanel ui:field="demandPanel">
+                <g:HTML>TEST</g:HTML>
+            </g:SimplePanel>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key='demands'>Old Demands</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="oldTabPanel">
                 <g:HTML>TEST</g:HTML>
             </g:SimplePanel>
         </g:tab>

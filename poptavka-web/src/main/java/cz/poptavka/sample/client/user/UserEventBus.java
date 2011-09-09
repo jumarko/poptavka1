@@ -1,26 +1,31 @@
 package cz.poptavka.sample.client.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.module.ChildModule;
+import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBusWithLookup;
-import cz.poptavka.sample.client.user.admin.AdminHistoryConverter;
 
+import cz.poptavka.sample.client.user.admin.AdminHistoryConverter;
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOfferInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSupplierInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersPresenter;
 import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
-import cz.poptavka.sample.client.user.demands.DemandsLayoutPresenter;
+import cz.poptavka.sample.client.user.demands.OldDemandsLayoutPresenter;
+import cz.poptavka.sample.client.user.demands.develmodule.DemandModule;
 import cz.poptavka.sample.client.user.demands.tab.AllDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.AllSuppliersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
@@ -39,7 +44,6 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -49,11 +53,20 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
-import java.util.Collection;
-import java.util.Map;
 
+/**
+ * Module loaded after user's log in.
+ * Default view is summary of his new messages, new demands for him.
+ *
+ * @author beho
+ *
+ */
 @Events(startView = UserView.class, module = UserModule.class)
+@ChildModules({
+    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false)
+    })
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBusWithLookup {
 
@@ -360,7 +373,7 @@ public interface UserEventBus extends EventBusWithLookup {
     // Beho: ??? needed ???
 //    @Event(handlers = MyDemandsPresenter.class)
 //    void responseClientDemands(ArrayList<MessageDetail> result);
-    @Event(handlers = {DemandsLayoutPresenter.class, AdminLayoutPresenter.class })
+    @Event(handlers = {OldDemandsLayoutPresenter.class, AdminLayoutPresenter.class })
     void toggleLoading();
 
     @Event(handlers = UserPresenter.class)
@@ -388,7 +401,7 @@ public interface UserEventBus extends EventBusWithLookup {
     /**********************************************************************************************
      ***********************  DEMANDS SECTION. ****************************************************
      **********************************************************************************************/
-    @Event(handlers = DemandsLayoutPresenter.class)
+    @Event(handlers = OldDemandsLayoutPresenter.class)
     void displayContent(Widget contentWidget);
 
     /* ---------------- ALL SUPPLIERS ----------------->>>>>>> */
@@ -572,4 +585,18 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminOffersPresenter.class)
     void refreshUpdatedOffer(FullOfferDetail supplier);
     /* <<<<<<<<<<-------- ADMIN OFFERS -------------------- */
+
+    /**
+     * **************** BEHO development corner ****************
+     *
+     * implements methods for Supplier new demands
+     *
+     */
+    //init demands module
+    @Event(modulesToLoad = DemandModule.class)
+    void initDemandModule();
+
+    /**
+     * ********************* End corner ************************
+     */
 }
