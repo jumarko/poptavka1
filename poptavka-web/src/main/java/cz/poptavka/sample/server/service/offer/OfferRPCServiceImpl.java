@@ -28,7 +28,7 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
 /**
@@ -136,7 +136,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
             OfferDetail o = new OfferDetail();
             Offer offer = message.getOffer();
             o.setOfferId(offer.getId());
-            o.setMessageDetail(MessageDetailImpl.createMessageDetail(message));
+            o.setMessageDetail(MessageDetail.createMessageDetail(message));
             // TODO zmenit LOng na maly long v setovacej metode
             o.setDemandId(Long.valueOf(demandId));
             // TODO ivlcek what is this?

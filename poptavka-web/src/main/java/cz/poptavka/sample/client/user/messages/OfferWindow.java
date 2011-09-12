@@ -17,7 +17,7 @@ import com.mvp4g.client.view.BaseCycleView;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 // TODO extend SimpleMessageWindow, if possible.
 public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.ActionMessageInterface {
@@ -54,7 +54,7 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
     }
 
 
-    public void setContent(MessageDetailImpl message, boolean collapsed) {
+    public void setContent(MessageDetail message, boolean collapsed) {
         setMessage(message);
 
         // set collapsed state
@@ -72,7 +72,7 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
      * @param style if true, message is set as first, if false message is set as last!
      */
 
-    public void setMessage(MessageDetailImpl message) {
+    public void setMessage(MessageDetail message) {
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
         // author
         tableColumns.getItem(0).setInnerText(message.getSubject());

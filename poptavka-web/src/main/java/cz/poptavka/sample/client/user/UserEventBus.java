@@ -48,10 +48,10 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.PotentialDemandMessageImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -98,7 +98,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void getPotentialDemands(long businessUserId);
 
     @Event(handlers = PotentialDemandsPresenter.class)
-    void responsePotentialDemands(ArrayList<PotentialDemandMessageImpl> potentialDemandsList);
+    void responsePotentialDemands(ArrayList<PotentialDemandMessage> potentialDemandsList);
 
     /** Offer demands GETTER/SETTER. **/
     // this same method could be called to MyDemandsPresenter
@@ -111,7 +111,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void getClientDemandsWithOffers(Long businessUserId);
 
     @Event(handlers = OffersPresenter.class)
-    void responseClientDemandsWithOffers(ArrayList<OfferDemandMessageImpl> result);
+    void responseClientDemandsWithOffers(ArrayList<OfferDemandMessage> result);
 
     /** Demand Offers GETTER/SETTER. **/
     @Event(handlers = UserHandler.class)
@@ -173,10 +173,10 @@ public interface UserEventBus extends EventBusWithLookup {
     void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setPotentialDemandConversation(ArrayList<MessageDetailImpl> messageList, ViewType wrapperhandlerType);
+    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
-    void setSingleDemandConversation(ArrayList<MessageDetailImpl> messageList);
+    void setSingleDemandConversation(ArrayList<MessageDetail> messageList);
 
     /**
      * Bubbling message to send to UserPresenter to get the user ID.
@@ -185,13 +185,13 @@ public interface UserEventBus extends EventBusWithLookup {
      *            message to be sent
      */
     @Event(handlers = UserPresenter.class)
-    void bubbleMessageSending(MessageDetailImpl messageToSend, ViewType viewType);
+    void bubbleMessageSending(MessageDetail messageToSend, ViewType viewType);
 
     @Event(handlers = MessageHandler.class)
-    void sendMessageToPotentialDemand(MessageDetailImpl messageToSend, ViewType viewType);
+    void sendMessageToPotentialDemand(MessageDetail messageToSend, ViewType viewType);
 
     @Event(handlers = DetailWrapperPresenter.class)
-    void addMessageToPotentailDemandConversation(MessageDetailImpl result, ViewType wrapperhandlerType);
+    void addMessageToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
 
     /** Offers message display & state change. **/
     @Event(handlers = DetailWrapperPresenter.class)
@@ -210,10 +210,10 @@ public interface UserEventBus extends EventBusWithLookup {
      *            message to be sent
      */
     @Event(handlers = UserPresenter.class)
-    void bubbleOfferSending(OfferMessageDetailImpl offerToSend);
+    void bubbleOfferSending(OfferMessageDetail offerToSend);
 
     @Event(handlers = MessageHandler.class)
-    void sendDemandOffer(OfferMessageDetailImpl offerToSend);
+    void sendDemandOffer(OfferMessageDetail offerToSend);
 
     @Event(handlers = MessageHandler.class)
     void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);
@@ -389,7 +389,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void requestDemandConversations(long messageId);
 
     @Event(handlers = MyDemandsPresenter.class)
-    void setDemandConversations(ArrayList<MessageDetailImpl> conversations);
+    void setDemandConversations(ArrayList<MessageDetail> conversations);
 
     @Event(handlers = {MessageHandler.class, DetailWrapperPresenter.class })
     void requestSingleConversation(long threadRootId, long messageId);
@@ -594,7 +594,7 @@ public interface UserEventBus extends EventBusWithLookup {
      */
     //init demands module
     @Event(modulesToLoad = DemandModule.class)
-    void initDemandModule();
+    void initDemandModule(SimplePanel panel);
 
     /**
      * ********************* End corner ************************

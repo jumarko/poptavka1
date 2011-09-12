@@ -19,8 +19,8 @@ import cz.poptavka.sample.client.user.messages.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
@@ -89,7 +89,7 @@ public class DetailWrapperPresenter extends
      */
     // TODO rename to SetDemandRelatedConversation
     public void onSetPotentialDemandConversation(
-            ArrayList<MessageDetailImpl> messageList, ViewType wrapperhandlerType) {
+            ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType) {
         // TODO test
         // TODO this should be enough, testing needed
         // if (!(!wrapperhandlerType.equals(type) || messageList == null)) {
@@ -116,7 +116,7 @@ public class DetailWrapperPresenter extends
     // TODO merge with method above, the same method body + different options
     // for different types
     public void onSetSingleDemandConversation(
-            ArrayList<MessageDetailImpl> messageList) {
+            ArrayList<MessageDetail> messageList) {
         if (!type.equals(ViewType.EDITABLE)) {
             return;
         }
@@ -130,7 +130,7 @@ public class DetailWrapperPresenter extends
         toggleConversationLoading();
     }
 
-    public void onAddMessageToPotentailDemandConversation(MessageDetailImpl result,
+    public void onAddMessageToPotentailDemandConversation(MessageDetail result,
             ViewType wrapperhandlerType) {
         if (!wrapperhandlerType.equals(type)) {
             return;
@@ -209,7 +209,7 @@ public class DetailWrapperPresenter extends
      * @param messageDetail
      */
     // messageDetail is it necessary?
-    public void setPotentialViewReplyWidget(MessageDetailImpl messageDetail) {
+    public void setPotentialViewReplyWidget(MessageDetail messageDetail) {
         if (potentialViewReplyWiget != null) {
             eventBus.removeHandler(potentialViewReplyWiget);
         }
@@ -227,18 +227,18 @@ public class DetailWrapperPresenter extends
                 if (potentialViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
                     if (potentialViewReplyWiget.hasResponseQuestion()) {
-                        MessageDetailImpl messageToSend = potentialViewReplyWiget
+                        MessageDetail messageToSend = potentialViewReplyWiget
                                 .getCreatedMessage();
                         messageToSend = view.getConversationPanel()
                                 .updateSendingMessage(messageToSend);
                         eventBus.bubbleMessageSending(messageToSend, type);
                     } else {
                         // TODO finish sending of
-                        OfferMessageDetailImpl offer = new OfferMessageDetailImpl();
-                        offer = (OfferMessageDetailImpl) view
+                        OfferMessageDetail offer = new OfferMessageDetail();
+                        offer = (OfferMessageDetail) view
                                 .getConversationPanel().updateSendingOfferMessage(
                                         offer);
-                        MessageDetailImpl offerMessage = potentialViewReplyWiget
+                        MessageDetail offerMessage = potentialViewReplyWiget
                                 .getCreatedMessage();
                         offer.setBody(offerMessage.getBody());
                         offer.setDemandId(offerMessage.getDemandId());
@@ -266,7 +266,7 @@ public class DetailWrapperPresenter extends
                 // sending message only when valid
                 if (myDemandsViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
-                    MessageDetailImpl messageToSend = myDemandsViewReplyWiget
+                    MessageDetail messageToSend = myDemandsViewReplyWiget
                             .getCreatedMessage();
                     messageToSend = view.getConversationPanel()
                             .updateSendingMessage(messageToSend);

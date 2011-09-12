@@ -16,6 +16,10 @@ import cz.poptavka.sample.domain.message.Message;
  */
 public class ClientDemandMessageDetail implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     private long messageId;
     private long threadRoodId;
     private long demandId;

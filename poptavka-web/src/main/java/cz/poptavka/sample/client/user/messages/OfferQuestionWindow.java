@@ -19,8 +19,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
 /**
  * Mixed widget for sending offer as well for asking questions
@@ -133,9 +133,9 @@ public class OfferQuestionWindow extends Composite implements OfferQuestionPrese
     }
 
     @Override
-    public MessageDetailImpl getCreatedMessage() {
-        MessageDetailImpl message = null;
-        message = new MessageDetailImpl();
+    public MessageDetail getCreatedMessage() {
+        MessageDetail message = null;
+        message = new MessageDetail();
         message.setBody(replyTextArea.getText());
         message.setDemandId(demandId);
         return message;
@@ -187,8 +187,8 @@ public class OfferQuestionWindow extends Composite implements OfferQuestionPrese
     }
 
     @Override
-    public OfferMessageDetailImpl getCreatedOfferMessage() {
-        OfferMessageDetailImpl offerMessageDetailImpl = new OfferMessageDetailImpl();
+    public OfferMessageDetail getCreatedOfferMessage() {
+        OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
         Long price = null;
         try {
             price = Long.parseLong(priceBox.getValue());

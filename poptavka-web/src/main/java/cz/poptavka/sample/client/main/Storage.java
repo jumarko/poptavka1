@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
+import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
  * Global controller for events such as loading and stuff like that.
@@ -39,6 +40,8 @@ public final class Storage {
 
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
+
+    private static UserDetail user;
 
     //getters for global final classes
     public LocalizableMessages getMessages() {
@@ -83,6 +86,14 @@ public final class Storage {
             loading.getElement().removeFromParent();
             loading = null;
         }
+    }
+
+    public static void setUser(UserDetail user) {
+        Storage.user = user;
+    }
+
+    public static UserDetail getUser() {
+        return user;
     }
 
 }

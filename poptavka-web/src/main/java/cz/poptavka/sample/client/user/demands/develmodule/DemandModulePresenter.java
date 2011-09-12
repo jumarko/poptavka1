@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.user.demands.develmodule;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,6 +9,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.demands.develmodule.s.list.SupplierListPresenter;
 
 /**
  * For every user - default tab
@@ -55,6 +55,9 @@ public class DemandModulePresenter
         SimplePanel getContentPanel();
     }
 
+    //devel attribute
+    private SupplierListPresenter supList = null;
+
     public void bind() {
         /**
         // MENU - CLIENT
@@ -72,17 +75,26 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                // TODO Auto-generated method stub
+                //devel code
+                if (supList != null) {
+                    eventBus.removeHandler(supList);
+                    supList = null;
+                    view.getContentPanel().remove(view.getContentPanel().getWidget());
+                }
+                supList = eventBus.addHandler(SupplierListPresenter.class);
+                supList.onInitSupplierList();
 
+                //production code
+//                eventBus.initSupplierList();
             }
         });
     }
 
     //TODO
     //later add UserDetail as parameter
-    public void onInitDemandModule() {
+    public void onInitDemandModule(SimplePanel panel) {
         // hiding window for this is after succesfull Userhandler call
-        Storage.get().showLoading(Storage.MSGS.progressDemandsLayoutInit());
+        Storage.showLoading(Storage.MSGS.progressDemandsLayoutInit());
 //        if (user.getRoleList().contains(Role.CLIENT)) {
             // TODO execute client specific demands init methods/calls
 //        }
@@ -96,18 +108,16 @@ public class DemandModulePresenter
 //            eventBus.getPotentialDemands(user.getId());
 //        }
 
-        Window.alert("DemandModule Initialized");
+        panel.setWidget(view.getWidgetView());
+        Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();
 //
 //        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
-    public void onDisplayContent(Widget contentWidget) {
-        Storage.toggleLoading(view.getContentPanel());
-        view.setContent(contentWidget);
+    public void onDisplayView(Widget content) {
+        view.setContent(content);
     }
-
-
 
 }

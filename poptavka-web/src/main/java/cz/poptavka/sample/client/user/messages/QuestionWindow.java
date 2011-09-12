@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 /**
  * Rip-off widget for sending asking/replying to questions (depends on point of view).
@@ -53,8 +53,8 @@ public class QuestionWindow extends Composite implements QuestionPresenter.Reply
     }
 
     @Override
-    public MessageDetailImpl getCreatedMessage() {
-        MessageDetailImpl message =  new MessageDetailImpl();
+    public MessageDetail getCreatedMessage() {
+        MessageDetail message =  new MessageDetail();
         message.setBody(replyTextArea.getText());
         message.setDemandId(demandId);
         return message;

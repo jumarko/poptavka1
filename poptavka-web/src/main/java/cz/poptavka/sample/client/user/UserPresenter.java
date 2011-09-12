@@ -15,19 +15,21 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
 import cz.poptavka.sample.client.user.demands.OldDemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
@@ -72,6 +74,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         //Beho devel section, when completed. Put into normal code section
         void setBodyDemand(Widget demandModule);
 
+        SimplePanel getDemandModulePanel();
     }
 
     private OldDemandsLayoutPresenter demandsLayoutPresenter = null;
@@ -99,8 +102,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     // setting of user
     // init of demandLayout tab
+    //TODO need revision and clean-up
     public void onSetUser(UserDetail userDetail) {
+        //this user detail will be probably moved into global storage class
         this.user = userDetail;
+        Storage.setUser(userDetail);
 
         showDevelUserInfoPopupThatShouldBedeletedAfter();
 
@@ -111,9 +117,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         demandsLayoutPresenter = eventBus.addHandler(OldDemandsLayoutPresenter.class);
         demandsLayoutPresenter.init(user);
 
-        Window.alert(view.getLayoutPanel().getWidget(0) + "");
-
-//        eventBus.initDemandModule(view.getLayoutPanel().getWidget(0));
+        eventBus.initDemandModule(view.getDemandModulePanel());
 
         eventBus.setUserLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
@@ -209,11 +213,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             accessDenied();
         }
     }
-    public void onBubbleMessageSending(MessageDetailImpl messageToSend, ViewType viewType) {
+    public void onBubbleMessageSending(MessageDetail messageToSend, ViewType viewType) {
         messageToSend.setSenderId(user.getUserId());
         eventBus.sendMessageToPotentialDemand(messageToSend, viewType);
     }
-    public void onBubbleOfferSending(OfferMessageDetailImpl offerToSend) {
+    public void onBubbleOfferSending(OfferMessageDetail offerToSend) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             offerToSend.setSenderId(user.getUserId());
             offerToSend.setSupplierId(user.getSupplierId());

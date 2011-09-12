@@ -1,10 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
-<ui:UiBinder 
+<ui:UiBinder
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
-  xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-  xmlns:d="urn:import:cz.poptavka.sample.client.home.demands.demand">
-      
+  xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+  <!-- xmlns:d="urn:import:cz.poptavka.sample.client.home.demands.demand"  -->
+
+
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
     <ui:style>
     .name {
@@ -21,7 +22,7 @@
       width: 100px;
     }
     </ui:style>
-        
+
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="600">
             <g:ScrollPanel>
@@ -35,7 +36,7 @@
                                     </g:Label>
                                     <g:ListBox ui:field="category" styleName="{style.list}" />
                                     <g:ListBox ui:field="locality" styleName="{style.list}" />
-                                </g:HorizontalPanel>                    
+                                </g:HorizontalPanel>
                             </td>
                         </tr>
                         <tr>
@@ -52,9 +53,9 @@
                                 <g:ListBox ui:field='pageSize'/>
                             </td>
                         </tr>
-                
-                    </table>                        
-                    
+
+                    </table>
+
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:west>

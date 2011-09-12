@@ -11,9 +11,9 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferDemandMessageImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 
 /**
@@ -23,24 +23,24 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 @RemoteServiceRelativePath("service/messages")
 public interface MessageRPCService extends RemoteService {
 
-    ArrayList<MessageDetailImpl> getClientDemands(long businessUserId, int fakeParam);
+    ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam);
 
     ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId);
 
-    ArrayList<MessageDetailImpl> getClientDemandConversations(long threadRootId);
+    ArrayList<MessageDetail> getClientDemandConversations(long threadRootId);
 
-    ArrayList<MessageDetailImpl> getConversationMessages(long threadRootId, long subRootId);
+    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId);
 
     ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
 
-    ArrayList<MessageDetailImpl> loadSuppliersPotentialDemandConversation(long threadId, long userId,
+    ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId,
             long userMessageId);
 
-    MessageDetailImpl sendQueryToPotentialDemand(MessageDetailImpl messageToSend);
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 
-    OfferMessageDetailImpl sendOffer(OfferMessageDetailImpl demandOffer);
+    OfferMessageDetail sendOffer(OfferMessageDetail demandOffer);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
 
-    ArrayList<OfferDemandMessageImpl> getOfferDemands(long businessUserId);
+    ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId);
 }

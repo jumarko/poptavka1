@@ -90,4 +90,13 @@ public interface Images extends ClientBundle {
 
     @Source("temporary.png")
     ImageResource temporary();
+
+    @Source("time.png")
+    ImageResource time();
+
+    @Source("time-ok.png")
+    ImageResource timeOk();
+
+    @Source("time-short.png")
+    ImageResource timeShort();
 }

@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
-import cz.poptavka.sample.shared.domain.message.MessageDetailImpl;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetailImpl;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
 /**
  * SimpleMessageWindow holder, enabling features:
@@ -47,7 +47,7 @@ public class UserConversationPanel extends Composite {
     ClickHandler deleteHandler = null;
 
     private int messageCount = 0;
-    private MessageDetailImpl replyToMessage;
+    private MessageDetail replyToMessage;
 
     public UserConversationPanel() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -59,7 +59,7 @@ public class UserConversationPanel extends Composite {
      *
      * @param messages list of messages to be displayed
      */
-    public void setMessageList(ArrayList<MessageDetailImpl> messages, boolean collapsed) {
+    public void setMessageList(ArrayList<MessageDetail> messages, boolean collapsed) {
         messagePanel.clear();
 
         // Last message is visible, when there are more messages
@@ -84,7 +84,7 @@ public class UserConversationPanel extends Composite {
         }
     }
 
-    public void addMessage(MessageDetailImpl lastMessage) {
+    public void addMessage(MessageDetail lastMessage) {
         MessageDisplayType newLastMessage = MessageDisplayType.BOTH;
         if (messageCount > 0) {
             SimpleMessageWindow last = (SimpleMessageWindow) messagePanel.getWidget(messageCount - 1);
@@ -114,7 +114,7 @@ public class UserConversationPanel extends Composite {
      * @param MessageDetail message being sent
      * @return updated message
      */
-    public OfferMessageDetailImpl updateSendingOfferMessage(OfferMessageDetailImpl messageDetail) {
+    public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
@@ -128,7 +128,7 @@ public class UserConversationPanel extends Composite {
      * @param MessageDetail message being sent
      * @return updated message
      */
-    public MessageDetailImpl updateSendingMessage(MessageDetailImpl messageDetail) {
+    public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());

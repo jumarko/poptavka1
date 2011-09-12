@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.service.demand;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -12,13 +13,11 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.Map;
 
 public interface DemandRPCServiceAsync {
 
-    void getAllDemands(AsyncCallback<List<DemandDetail>> callback);
+    void getAllDemands(AsyncCallback<List<FullDemandDetail>> callback);
 
     void getAllDemandsCount(AsyncCallback<Long> callback);
 

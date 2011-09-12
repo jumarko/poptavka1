@@ -9,7 +9,10 @@
         barHeight="3">
         <g:tab>
             <g:header>
-                <ui:msg key='demands'>Demand Module</ui:msg>
+                <!--
+                 <ui:msg key='demands'>Demand Module</ui:msg>
+                 -->
+                 Demand Module
             </g:header>
             <g:SimplePanel ui:field="demandPanel">
                 <g:HTML>TEST</g:HTML>
@@ -46,7 +49,7 @@
                 <ui:msg key='contacts'>Contacts</ui:msg>
             </g:header>
             <g:HTML>
-                <h1>Contacts tab</h1>
+                <h1>Contacts megatab</h1>
             </g:HTML>
         </g:tab>
          <g:tab>

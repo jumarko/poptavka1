@@ -1,74 +1,246 @@
 package cz.poptavka.sample.shared.domain.message;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
+public class OfferDemandMessage implements Serializable {
 
-public interface OfferDemandMessage extends PotentialDemandMessage {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2349565802701324033L;
+    private int offerCount;
+    private int maxOfferCount;
+    private String demandTitle;
+    private long userMessageId;
+    private BigDecimal price;
+    private boolean read;
+    private boolean starred;
+    private Date endDate;
+    private Date validToDate;
+    private long messageId;
+    private long threadRootId;
+    private long parentId;
+//    private long firstBornId;
+//    private long nexSiblingId;
+    private long demandId;
+    private String subject;
+    private String body;
+    private String messageState;
+    private Date created;
+    private Date sent;
+    private long senderId;
+    private long receiverId;
 
-    void setOfferCount(int offerCount);
-    int getOfferCount();
+    public static OfferDemandMessage createMessageDetail(UserMessage message) {
+        OfferDemandMessage detail = new OfferDemandMessage();
+        detail.setMessageId(message.getId());
+        detail.setBody(message.getMessage().getBody());
+        detail.setCreated(message.getMessage().getCreated());
+//        m.setFirstBornId(serialVersionUID);
+        detail.setMessageState(message.getMessage().getMessageState().name());
+//        m.setNexSiblingId(serialVersionUID);
+        detail.setParentId(message.getMessage().getParent() == null ? detail.getThreadRootId()
+                : message.getMessage().getParent().getId());
+//        m.setReceiverId();
+        detail.setSenderId(message.getMessage().getSender().getId());
+        detail.setSent(message.getMessage().getSent());
+        detail.setSubject(message.getMessage().getSubject());
+        detail.setThreadRootId(message.getMessage().getThreadRoot().getId());
+        detail.setUserMessageId(message.getId());
+        detail.setDemandId(message.getMessage().getDemand().getId());
+        detail.setPrice(message.getMessage().getDemand().getPrice());
+        detail.setRead(message.isIsRead());
+        detail.setStarred(message.isIsStarred());
+        detail.setEndDate(message.getMessage().getDemand().getEndDate());
+        detail.setValidToDate(message.getMessage().getDemand().getValidTo());
+        detail.setDemandTitle(message.getMessage().getDemand().getTitle());
+        detail.setOfferCount(message.getMessage().getDemand().getOffers().size());
+        detail.setMaxOfferCount(message.getMessage().getDemand().getMaxSuppliers());
+        return detail;
+    }
 
-    void setMaxOfferCount(int maxOfferCount);
-    int getMaxOfferCount();
+    public void setOfferCount(int offerCount) {
+        this.offerCount = offerCount;
+    }
 
-    void setDemandTitle(String demandTitle);
-    String getDemandTitle();
+    public int getOfferCount() {
+        return offerCount;
+    }
 
-    void setPrice(BigDecimal price);
-    BigDecimal getPrice();
+    public void setMaxOfferCount(int maxOfferCount) {
+        this.maxOfferCount = maxOfferCount;
+    }
 
-    void setRead(boolean read);
-    boolean isRead();
+    public int getMaxOfferCount() {
+        return maxOfferCount;
+    }
 
-    void setStarred(boolean starred);
-    boolean isStarred();
+    public String toString() {
+        return super.toString()
+            + "Client Offer Demand Message:"
+            + "\n offerCount=" + offerCount
+            + "\n maxOfferCount=" + maxOfferCount;
+    }
 
-    void setEndDate(Date endDate);
-    Date getEndDate();
+    public void setDemandTitle(String demandTitle) {
+        this.demandTitle = demandTitle;
+    }
 
-    void setValidToDate(Date validTo);
-    Date getValidToDate();
+    public String getDemandTitle() {
+        return demandTitle;
+    }
 
-    void setUserMessageId(Long userMessageId);
-    Long getUserMessageId();
+    public long getUserMessageId() {
+        return userMessageId;
+    }
 
-    void setMessageId(long messageId);
-    long getMessageId();
+    public void setUserMessageId(long userMessageId) {
+        this.userMessageId = userMessageId;
+    }
 
-    void setThreadRootId(long threadRootId);
-    long getThreadRootId();
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-    void setParentId(long parentId);
-    long getParentId();
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-    void setDemandId(long demandId);
-    long getDemandId();
+    public boolean isRead() {
+        return read;
+    }
 
-    void setSubject(String subject);
-    String getSubject();
+    public void setRead(boolean read) {
+        this.read = read;
+    }
 
-    void setBody(String body);
-    String getBody();
+    public boolean isStarred() {
+        return starred;
+    }
 
-    void setMessageState(String messageState);
-    String getMessageState();
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
 
-    void setCreated(Date created);
-    Date getCreated();
+    public Date getEndDate() {
+        return endDate;
+    }
 
-    void setSent(Date sent);
-    Date getSent();
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-    void setSenderId(long senderId);
-    long getSenderId();
+    public Date getValidToDate() {
+        return validToDate;
+    }
 
-    void setReceiverId(long receiverId);
-    long getReceiverId();
+    public void setValidToDate(Date validToDate) {
+        this.validToDate = validToDate;
+    }
 
-    String toString();
+    public long getMessageId() {
+        return messageId;
+    }
 
-    MessageType getMessageType();
+    public void setMessageId(long messageId) {
+        this.messageId = messageId;
+    }
+
+    public long getThreadRootId() {
+        return threadRootId;
+    }
+
+    public void setThreadRootId(long threadRootId) {
+        this.threadRootId = threadRootId;
+    }
+
+    public long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
+    }
+
+    public long getDemandId() {
+        return demandId;
+    }
+
+    public void setDemandId(long demandId) {
+        this.demandId = demandId;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public String getMessageState() {
+        return messageState;
+    }
+
+    public void setMessageState(String messageState) {
+        this.messageState = messageState;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getSent() {
+        return sent;
+    }
+
+    public void setSent(Date sent) {
+        this.sent = sent;
+    }
+
+    public long getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
+    }
+
+    public long getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(long receiverId) {
+        this.receiverId = receiverId;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public void setUserMessageId(Long userMessageId) {
+        this.userMessageId = userMessageId;
+    }
+
+    public MessageType getMessageType() {
+        return MessageType.OFFER;
+    }
+
 }

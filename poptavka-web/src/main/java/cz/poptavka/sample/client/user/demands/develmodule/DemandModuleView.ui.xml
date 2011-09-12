@@ -45,7 +45,7 @@
                     </li>
                 </ul>
                 <!-- Supplier submenu -->
-                <div ui:field="supMenu" style="display: none;">
+                <div ui:field="supMenu" style="display: block;">
                     <div>
                         Menu Supplier
                     </div>
@@ -75,7 +75,7 @@
         </g:west>
         <g:center>
             <g:ScrollPanel>
-                <g:SimplePanel ui:field="contentPanel">
+                <g:SimplePanel ui:field="contentPanel" >
                     <g:HTML>
                         <center>
                             <h1>Welcome Screen</h1>

@@ -53,4 +53,9 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
         demandPanel.setWidget(demandModule);
     }
 
+    @Override
+    public SimplePanel getDemandModulePanel() {
+        return demandPanel;
+    }
+
 }
