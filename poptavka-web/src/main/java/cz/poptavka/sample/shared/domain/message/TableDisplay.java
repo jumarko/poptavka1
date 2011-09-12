@@ -11,6 +11,8 @@ public interface TableDisplay {
 
     boolean isStarred();
 
+    void setStarred(boolean value);
+
     Date getCreated();
 
     Date getEndDate();

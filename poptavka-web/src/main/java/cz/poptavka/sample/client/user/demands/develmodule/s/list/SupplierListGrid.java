@@ -1,5 +1,8 @@
 package cz.poptavka.sample.client.user.demands.develmodule.s.list;
 
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
@@ -11,6 +14,8 @@ import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.demands.widget.table.ColumnFactory;
+import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+import cz.poptavka.sample.shared.domain.message.TableDisplay;
 
 public class SupplierListGrid<T> extends DataGrid<T> {
 
@@ -46,14 +51,40 @@ public class SupplierListGrid<T> extends DataGrid<T> {
     public void initTableColumns(final SelectionModel<T> selectionModel) {
 
         ColumnFactory<T> factory = new ColumnFactory<T>();
-//        this.addColumn(factory.createCheckboxColumn((SelectionModel<T>) this.getSelectionModel()),
-//                SafeHtmlUtils.fromSafeConstant("<br/>"));
-//        this.setColumnWidth(getColumn(0), 40, Unit.PX);
-        this.addColumn(factory.createStarColumn(), SafeHtmlUtils.fromSafeConstant("<br/>"));
-//        this.setColumnWidth(getColumn(1), 40, Unit.PX);
+        this.addColumn(factory.createCheckboxColumn((SelectionModel<T>) this.getSelectionModel()),
+                SafeHtmlUtils.fromSafeConstant("<br/>"));
+        this.setColumnWidth(getColumn(0), 40, Unit.PX);
+        Column<T, ImageResource> col = factory.createStarColumn();
+        this.addColumn(col, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        col.setFieldUpdater(new FieldUpdater<T, ImageResource>() {
 
-        Column<T, String> col = factory.createTitleColumn(sortHandler, true);
-        this.addColumn(col, Storage.MSGS.title());
+            @Override
+            public void update(int index, T object, ImageResource value) {
+                TableDisplay obj = (TableDisplay) object;
+                obj.setStarred(!obj.isStarred());
+            }
+        });
+        this.setColumnWidth(getColumn(1), 40, Unit.PX);
+
+        Column<T, String> titleCol = factory.createTitleColumn(sortHandler, true);
+        this.addColumn(titleCol, Storage.MSGS.title());
+//        addColumn(new TextCell(), "S", new GetValue<ImageResource>() {
+//
+//            @Override
+//            public ImageResource getValue(PotentialDemandMessage object) {
+//                TableDisplay obj = (TableDisplay) object;
+//                if (obj.isStarred()) {
+//                    return Storage.RSCS.images().starGold();
+//                } else {
+//                    return Storage.RSCS.images().starSilver();
+//                }
+//            }
+//        }, null);
+
+     // ClickableTextCell.
+//        this.addColumn(new TextCell(), "T");
+
+
         /**
       // Checkbox column. This table will uses a checkbox column for selection.
       // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
@@ -145,54 +176,12 @@ public class SupplierListGrid<T> extends DataGrid<T> {
           }
         }
       };
-      dataGrid.addColumn(ageColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(constants
-          .cwDataGridColumnAge())), ageFooter);
-      dataGrid.setColumnWidth(ageColumn, 7, Unit.EM);
-
-      // Category.
-      final Category[] categories = ContactDatabase.get().queryCategories();
-      List<String> categoryNames = new ArrayList<String>();
-      for (Category category : categories) {
-        categoryNames.add(category.getDisplayName());
-      }
-      SelectionCell categoryCell = new SelectionCell(categoryNames);
-      Column<ContactInfo, String> categoryColumn = new Column<ContactInfo, String>(categoryCell) {
-        @Override
-        public String getValue(ContactInfo object) {
-          return object.getCategory().getDisplayName();
-        }
-      };
-      dataGrid.addColumn(categoryColumn, constants.cwDataGridColumnCategory());
-      categoryColumn.setFieldUpdater(new FieldUpdater<ContactInfo, String>() {
-        public void update(int index, ContactInfo object, String value) {
-          for (Category category : categories) {
-            if (category.getDisplayName().equals(value)) {
-              object.setCategory(category);
-            }
-          }
-          ContactDatabase.get().refreshDisplays();
-        }
-      });
-      dataGrid.setColumnWidth(categoryColumn, 130, Unit.PX);
-
-      // Address.
-      Column<ContactInfo, String> addressColumn = new Column<ContactInfo, String>(new TextCell()) {
-        @Override
-        public String getValue(ContactInfo object) {
-          return object.getAddress();
-        }
-      };
-      addressColumn.setSortable(true);
-      sortHandler.setComparator(addressColumn, new Comparator<ContactInfo>() {
-        public int compare(ContactInfo o1, ContactInfo o2) {
-          return o1.getAddress().compareTo(o2.getAddress());
-        }
-      });
-      dataGrid.addColumn(addressColumn, constants.cwDataGridColumnAddress());
-      dataGrid.setColumnWidth(addressColumn, 60, Unit.PCT);
-      */
+*/
     }
 
+    private interface GetValue<C> {
+        C getValue(PotentialDemandMessage object);
+    }
 
 
 }

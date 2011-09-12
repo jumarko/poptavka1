@@ -1,0 +1,60 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+    xmlns:s="urn:import:cz.poptavka.sample.client.user.demands.develmodule.s.list">
+
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
+
+    <ui:style>
+
+    </ui:style>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:east size="500">
+            <g:HTMLPanel>
+                <div>
+                    Detail <strong>Panel</strong>
+                </div>
+            </g:HTMLPanel>
+        </g:east>
+        <g:center>
+            <g:DockLayoutPanel unit="EM">
+                <g:north size="5">
+                    <g:HTMLPanel>
+                    <div>
+                        <g:Button>
+                            Read
+                    </g:Button>
+                        <g:Button>
+                            Unread
+                    </g:Button>
+                        <g:Button>
+                            Star
+                    </g:Button>
+                        <g:Button>
+                            Unstar
+                    </g:Button>
+                    </div>
+                    </g:HTMLPanel>
+                </g:north>
+                <g:center>
+                    <s:SupplierListGrid ui:field="demandGrid" />
+                </g:center>
+                 <g:south size="3">
+                      <g:HTMLPanel>
+                    <table
+                      style="width:100%">
+                      <tr>
+                        <td
+                          align='center'>
+                          <c:SimplePager
+                            ui:field='pager' />
+                        </td>
+                      </tr>
+                    </table>
+                  </g:HTMLPanel>
+                </g:south>
+            </g:DockLayoutPanel>
+        </g:center>
+    </g:SplitLayoutPanel>
+</ui:UiBinder>
