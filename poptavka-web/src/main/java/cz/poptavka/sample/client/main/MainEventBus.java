@@ -9,6 +9,7 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
 import com.mvp4g.client.annotation.module.ChildModule;
@@ -34,10 +35,13 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 public interface MainEventBus extends EventBus {
 
     /**
+     * Start method is initialized only once when the root module is first
+     * initialized.
      * Init method for layout and history initialization. Layout initialization
      * contains menu injection.
      * To inject more widgets, update onStart() method of MainPresenter
      */
+    @Start
     @InitHistory
     @Event(handlers = MainPresenter.class)
     void start();

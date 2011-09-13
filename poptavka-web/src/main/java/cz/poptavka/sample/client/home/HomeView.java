@@ -2,8 +2,10 @@ package cz.poptavka.sample.client.home;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.UListElement;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -34,6 +36,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField Hyperlink linkDisplayDemands;
     @UiField Hyperlink linkDisplaySuppliers;
     @UiField Hyperlink linkRegisterSupplier;
+    @UiField Button demands;
 
     @UiField SimplePanel contentHolder;
 
@@ -122,6 +125,11 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @Override
     public void setRegisterSupplierToken(String token) {
         linkRegisterSupplier.setTargetHistoryToken(token);
+    }
+
+    @Override
+    public HasClickHandlers getDemandsButton() {
+        return demands;
     }
 
 }

@@ -306,6 +306,8 @@
                     <extraJvmArgs>-Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m</extraJvmArgs>
                     <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
                     <runTarget>Poptavka.html</runTarget>
+                    <compileReport>true</compileReport>
+                    <logLevel>DEBUG</logLevel>
                 </configuration>
             </plugin>
 
@@ -353,4 +355,20 @@
         <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
         <runTarget>Poptavka.html</runTarget>
     </properties>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>2.3.0-1</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>compile-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

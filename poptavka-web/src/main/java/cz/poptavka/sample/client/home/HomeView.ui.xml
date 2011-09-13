@@ -34,6 +34,11 @@
                         <ui:msg key="registerSupplier">Register Supplier</ui:msg>
                     </g:Hyperlink>
                 </li>
+                <li>
+                    <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>
+                        <ui:msg key="demands">Demands</ui:msg>
+                    </g:Button>
+                </li>
             </ul>
         </div>
         <!-- menu END -->

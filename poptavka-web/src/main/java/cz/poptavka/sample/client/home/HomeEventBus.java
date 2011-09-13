@@ -7,6 +7,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.module.ChildModule;
+import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
@@ -18,6 +20,7 @@ import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.suppliers.SuppliersHandler;
 import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
+import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -28,6 +31,9 @@ import java.util.List;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
+@ChildModules({
+    @ChildModule (moduleClass = HomeDemandsModule.class, async = true, autoDisplay = false)
+})
 public interface HomeEventBus extends EventBus {
 
     /** init method  **/
@@ -56,8 +62,14 @@ public interface HomeEventBus extends EventBus {
     String atCreateDemand();
 
 //    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
+//    @Event(modulesToLoad = HomeDemandsModule.class, historyConverter = HomeHistoryConverter.class)
+//    String atDemands();
+
     @Event(handlers = DemandsPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atDemands();
+
+    @Event(modulesToLoad = HomeDemandsModule.class)
+    void goToHomeDemands();
 
 //    @Event(handlers = ????.class, historyConverter = HomeHistoryConverter.class)
 //    String atAttachement();
