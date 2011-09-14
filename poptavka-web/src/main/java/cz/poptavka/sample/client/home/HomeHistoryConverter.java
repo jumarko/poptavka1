@@ -44,9 +44,9 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
         if (historyName.equals("atCreateDemand")) {
             eventBus.atCreateDemand();
         }
-        if (historyName.equals("atDemands")) {
-            eventBus.atDemands();
-        }
+//        if (historyName.equals("atDemands")) {
+//            eventBus.atDemands();
+//        }
         if (historyName.equals("atSuppliers")) {
             eventBus.atSuppliers();
         }

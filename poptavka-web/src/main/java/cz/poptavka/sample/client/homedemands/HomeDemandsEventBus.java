@@ -102,38 +102,7 @@ public interface HomeDemandsEventBus extends EventBus {
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);
 
-//    @Event(handlers = HomeDemandsPresenter.class, historyConverter = HomeDemandsHistoryConverter.class)
-//    String atDemands();
-
     @Event(handlers = HomeDemandsPresenter.class)
     void goToHomeDemands();
 
-    /** init method  **/
-//    @Event(forwardToParent = true, historyConverter = HomeDemandsHistoryConverter.class)
-//    String atHome();
-
-    /** init method. **/
-//    @Event(forwardToParent = true, historyConverter = HomeDemandsHistoryConverter.class)
-//    void displayMenu();
-
-    /** navigation events  */
-//    @Event(forwardToParent = true, historyConverter = HomeDemandsHistoryConverter.class)
-//    String atCreateDemand();
-
-    //Display root categories
-//    @Event(forwardToParent = true, historyConverter = HomeDemandsHistoryConverter.class)
-//    String atSuppliers();
-
-    //Display subcategories, suppliers of selected category and detail of selected supplier
-//    @Event(forwardToParent = true)
-//    void atDisplaySuppliers(CategoryDetail categoryDetail);
-
-//    @Event(forwardToParent = true)
-//    void removeFromPath(Long code);
-//
-//    @Event(forwardToParent = true)
-//    void setCategoryID(Long categoryCode);
-//
-//    @Event(forwardToParent = true)
-//    void getSubCategories(Long category);
 }

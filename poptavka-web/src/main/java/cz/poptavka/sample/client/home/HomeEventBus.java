@@ -14,8 +14,6 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
-import cz.poptavka.sample.client.home.demands.DemandsHandler;
-import cz.poptavka.sample.client.home.demands.DemandsPresenter;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
 import cz.poptavka.sample.client.home.suppliers.SuppliersHandler;
 import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
@@ -26,7 +24,6 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
-import java.util.List;
 
 
 @Events(startView = HomeView.class, module = HomeModule.class)
@@ -60,13 +57,6 @@ public interface HomeEventBus extends EventBus {
     /** navigation events  */
     @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atCreateDemand();
-
-//    @Event(modulesToLoad = DemandsModule.class, historyConverter = HomeHistoryConverter.class)
-//    @Event(modulesToLoad = HomeDemandsModule.class, historyConverter = HomeHistoryConverter.class)
-//    String atDemands();
-
-    @Event(handlers = DemandsPresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atDemands();
 
     @Event(modulesToLoad = HomeDemandsModule.class)
     void goToHomeDemands();
@@ -187,11 +177,11 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = SuppliersHandler.class)
     void getSubCategories(Long category);
 
-    @Event(handlers = {DemandsHandler.class, SuppliersHandler.class })
+    @Event(handlers = SuppliersHandler.class)
     void getCategories();
 
     //Locality
-    @Event(handlers = {DemandsHandler.class, SuppliersHandler.class })
+    @Event(handlers = SuppliersHandler.class)
     void getLocalities();
 
     //Suppliers
@@ -223,7 +213,7 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = SuppliersPresenter.class)
     void displaySuppliers(ArrayList<FullSupplierDetail> list);
 
-    @Event(handlers = {SuppliersPresenter.class, DemandsPresenter.class })
+    @Event(handlers = SuppliersPresenter.class)
     void setLocalityData(ArrayList<LocalityDetail> list);
 
     @Event(handlers = SuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
@@ -239,41 +229,5 @@ public interface HomeEventBus extends EventBus {
     void resetDisplaySuppliersPager(int totalFoundNew);
 
     //DISPLAY DEMANDS
-    //Demand
-    @Event(handlers = DemandsHandler.class)
-    void getDemands(int fromResult, int toResult);
 
-    @Event(handlers = DemandsHandler.class)
-    void getAllDemandsCount();
-
-    @Event(handlers = DemandsHandler.class)
-    void getDemandsCountCategory(long id);
-
-    @Event(handlers = DemandsHandler.class)
-    void getDemandsCountLocality(String code);
-
-    @Event(handlers = DemandsHandler.class)
-    void getDemandsByCategories(int fromResult, int toResult, long id);
-
-    @Event(handlers = DemandsHandler.class)
-    void getDemandsByLocalities(int fromResult, int toResult, String id);
-
-    //Display
-    @Event(handlers = DemandsPresenter.class)
-    void setCategoryData(ArrayList<CategoryDetail> list);
-
-    @Event(handlers = DemandsPresenter.class)
-    void displayDemands(List<FullDemandDetail> result);
-
-    @Event(handlers = DemandsPresenter.class)
-    void setDemand(FullDemandDetail demand);
-
-    @Event(handlers = DemandsPresenter.class)
-    void createAsyncDataProvider();
-
-    @Event(handlers = DemandsPresenter.class)
-    void setResultSource(String resultSource);
-
-    @Event(handlers = DemandsPresenter.class)
-    void setResultCount(long resultCount);
 }

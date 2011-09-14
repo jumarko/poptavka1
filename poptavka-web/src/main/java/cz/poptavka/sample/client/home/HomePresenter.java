@@ -44,7 +44,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         view.setCreateDemandToken(getTokenGenerator().atCreateDemand());
 
-        view.setDisplayDemandsToken(getTokenGenerator().atDemands());
+//        view.setDisplayDemandsToken(getTokenGenerator().atDemands());
 
         view.setDisplaySuppliersToken(getTokenGenerator().atSuppliers());
 
