@@ -29,7 +29,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <c:CellTable ui:field="cellTable" />
+                                    <c:DataGrid ui:field="dataGrid" />
                                 </td>
                             </tr>
                             <tr>

@@ -13,8 +13,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -47,7 +47,7 @@ public class SuppliersView extends OverflowComposite
     @UiField(provided = true)
     CellList categoriesList;
     @UiField(provided = true)
-    CellTable cellTable;
+    DataGrid dataGrid;
     @UiField(provided = true)
     SimplePager pager;
     @UiField
@@ -82,8 +82,7 @@ public class SuppliersView extends OverflowComposite
         pageSizeCombo.addItem("25");
         pageSizeCombo.addItem("30");
         pageSizeCombo.setSelectedIndex(0);
-//        initCellList();
-        initCellTable();
+        initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
         path.setStyleName(StyleResource.INSTANCE.common().hyperlinkInline());
         reklama.setVisible(true);
@@ -138,8 +137,8 @@ public class SuppliersView extends OverflowComposite
     }
 
     @Override
-    public CellTable getCellTable() {
-        return cellTable;
+    public DataGrid getDataGrid() {
+        return dataGrid;
     }
 
     @Override
@@ -160,20 +159,6 @@ public class SuppliersView extends OverflowComposite
     @Override
     public SplitLayoutPanel getSplitter() {
         return null; //split;
-    }
-
-    private void initCellList() {
-        // Use the cell in a CellList.
-        cellTable = new CellTable<FullSupplierDetail>();
-        cellTable.setSelectionModel(selectionSupplierModel);
-        categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
-        categoriesList.setSelectionModel(selectionCategoryModel);
-
-        // Create a Pager to control the table.
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-//        pager.setPageSize(Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex())));
-        pager.setDisplay(cellTable);
     }
 
     @Override
@@ -270,45 +255,25 @@ public class SuppliersView extends OverflowComposite
         }
     }
 
-    private void initCellTable() {
+    private void initDataGrid() {
         categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
         categoriesList.setSelectionModel(selectionCategoryModel);
-        // Create a CellTable.
-        GWT.log("Admin Suppliers initCellTable initialized");
+        // Create a DataGrid.
+        GWT.log("Admin Suppliers initDataGrid initialized");
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        cellTable = new CellTable<FullSupplierDetail>();
+        dataGrid = new DataGrid<FullSupplierDetail>();
         selectionSupplierModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
-        cellTable.setSelectionModel(selectionSupplierModel);
-//        cellTable = new CellTable<FullSupplierDetail>(KEY_PROVIDER);
-        cellTable.setWidth("100%", true);
-//        cellTable.setRowCount(2, true);
+        dataGrid.setSelectionModel(selectionSupplierModel);
 
-        // TODO ivlcek - premysliet kedy a kde sa ma vytvarat DataProvider
-        // Connect the table to the data provider.
-//        dataProvider.addDataDisplay(cellTable);
-
-        // TODO ivlcek - make it working without keyprovider
-        // Attach a column sort handler to the ListDataProvider to sort the list.
-
-//                dataProvider.getList());
-//        cellTable.addColumnSortHandler(sortHandler);
+        dataGrid.setMinimumTableWidth(400, Unit.PX);
+        dataGrid.setHeight("300px");
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(cellTable);
-        // TODO ivlcek - nastavit pocet zaznamov v pagery na mensi pocet ako 15
-//        pager.setPageSize(5);
-
-        // Add a selection model to handle user selection.
-//        final MultiSelectionModel<SupplierDetailForDisplaySuppliers> selectionModel =
-//        new MultiSelectionModel<SupplierDetailForDisplaySuppliers>(KEY_PROVIDER);
-        // Add a single selection model to handle user selection.
-
-//        cellTable.setSelectionModel(getSelectionSupplierModel(),
-//                DefaultSelectionEventManager.<FullSupplierDetail>createCheckboxManager());
+        pager.setDisplay(dataGrid);
 
         // Initialize the columns.
         initTableColumns(getSelectionSupplierModel());
@@ -352,9 +317,9 @@ public class SuppliersView extends OverflowComposite
                 return object.getCompanyName();
             }
         };
-        getSupplierNameColumn().setSortable(true);
-        cellTable.addColumn(getSupplierNameColumn(), "Name");
-        cellTable.setColumnWidth(getSupplierNameColumn(), 100, Unit.PX);
+//        getSupplierNameColumn().setSortable(true);
+        dataGrid.addColumn(getSupplierNameColumn(), "Name");
+        dataGrid.setColumnWidth(getSupplierNameColumn(), 100, Unit.PX);
 
         // SupplierRating.
         supplierRatingColumn = new Column<FullSupplierDetail, String>(
@@ -370,8 +335,8 @@ public class SuppliersView extends OverflowComposite
             }
         };
         getSupplierRatingColumn().setSortable(true);
-        cellTable.addColumn(supplierRatingColumn, "Rate");
-        cellTable.setColumnWidth(supplierRatingColumn, 30, Unit.PX);
+        dataGrid.addColumn(supplierRatingColumn, "Rate");
+        dataGrid.setColumnWidth(supplierRatingColumn, 30, Unit.PX);
 
         // Address.
         supplierAddressColumn = new Column<FullSupplierDetail, String>(
@@ -389,8 +354,8 @@ public class SuppliersView extends OverflowComposite
             }
         };
 //        getSupplierAddressColumn().setSortable(true);
-        cellTable.addColumn(supplierAddressColumn, "Address");
-        cellTable.setColumnWidth(supplierAddressColumn, 60, Unit.PX);
+        dataGrid.addColumn(supplierAddressColumn, "Address");
+        dataGrid.setColumnWidth(supplierAddressColumn, 60, Unit.PX);
 
         // Locality.
         supplierLocalityColumn = new Column<FullSupplierDetail, String>(
@@ -413,8 +378,8 @@ public class SuppliersView extends OverflowComposite
         };
         //Nemusi byt, je tam filtrovanie na zaklade lokalit
 //        getSupplierTypeColumn().setSortable(true);
-        cellTable.addColumn(supplierLocalityColumn, "Locality");
-        cellTable.setColumnWidth(supplierLocalityColumn, 50, Unit.PX);
+        dataGrid.addColumn(supplierLocalityColumn, "Locality");
+        dataGrid.setColumnWidth(supplierLocalityColumn, 50, Unit.PX);
     }
 
     /**
@@ -448,7 +413,7 @@ public class SuppliersView extends OverflowComposite
 //        if (cell instanceof AbstractEditableCell<?, ?>) {
 //            editableCells.add((AbstractEditableCell<?, ?>) cell);
 //        }
-        cellTable.addColumn(column, headerText);
+        dataGrid.addColumn(column, headerText);
         return column;
     }
     /**
@@ -461,95 +426,6 @@ public class SuppliersView extends OverflowComposite
             return item == null ? null : item.getSupplierId();
         }
     };
-}
-
-/**
- * Supplier Cell.
- */
-class SupplierCell extends AbstractCell<FullSupplierDetail> {
-
-    public SupplierCell() {
-        /*
-         * Let the parent class know that our cell responds to click events and
-         * keydown events.
-         */
-//        super("click", "keydown");
-    }
-
-//    @Override
-//    public void onBrowserEvent(Context context, Element parent, UserDetail value,
-//            NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
-//        // Check that the value is not null.
-//        if (value == null) {
-//            return;
-//        }
-//
-//        // Call the super handler, which handlers the enter key.
-//        super.onBrowserEvent(context, parent, value, event, valueUpdater);
-//
-//        // On click, perform the same action that we perform on enter.
-//        if ("click".equals(event.getType())) {
-//            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
-//        }
-//    }
-    @Override
-    public void render(Context context, FullSupplierDetail value, SafeHtmlBuilder sb) {
-        /*
-         * Always do a null check on the value. Cell widgets can pass null to
-         * cells if the underlying data contains a null, or if the data arrives
-         * out of order.
-         */
-        if (value == null) {
-            return;
-        }
-
-        //TODO Martin Logo??
-//        sb.appendHtmlConstant("<img style=\"float: left; margin-right: 10px;padding: 0px; width: 50px;\" "
-//                + "src=\"http://mattkendrick.com/wp-content/uploads/2009/07/w3schools.jpg\"/>");
-
-
-        //Company Name
-        if (value.getCompanyName() != null) {
-            sb.appendHtmlConstant("<a href=\"#\"><strong>");
-            sb.appendEscaped(value.getCompanyName());
-            sb.appendHtmlConstant("</strong> </a>");
-        }
-
-        //Company description
-        if (value.getDescription() != null) {
-            sb.appendHtmlConstant("<span style=\"width:800px;\">");
-            sb.appendEscaped(value.getDescription());
-            sb.appendHtmlConstant("</span>");
-        }
-
-        //Componay Website
-        //TODO Martin - nevedieme zaznam o webovej stranke????
-//        if (value.getWebsite() != null) {
-//            sb.appendHtmlConstant("<A href=\"http://www.s-car.sk\" target=\"_blank\"  "
-//                    + " style=\"FONT-FAMILY: Arial, sans-serif; COLOR:green;\">");
-//            sb.appendEscaped(value.getWebsite());
-//            sb.appendHtmlConstant("</A>");
-//        }
-
-        //TODO - Martin - napisat vsetky adresy?
-        //Company address
-        for (AddressDetail detail : value.getAddresses()) {
-            sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
-                    + "&nbsp;&nbsp;-&nbsp;");
-            sb.appendEscaped(detail.toString());
-            sb.appendHtmlConstant("</span><br/>");
-        }
-    }
-    /**
-     * By convention, cells that respond to user events should handle the enter
-     * key. This provides a consistent user experience when users use keyboard
-     * navigation in the widget.
-     */
-//    @Override
-//    protected void onEnterKeyDown(Context context, Element parent,
-//            UserDetail value, NativeEvent event, ValueUpdater<UserDetail> valueUpdater) {
-//        Window.alert("You clicked " + value.getSupplierId());
-//    }
 }
 
 /**

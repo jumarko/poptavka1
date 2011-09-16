@@ -7,8 +7,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -66,7 +66,7 @@ public class SuppliersPresenter
 
         void removePath(); //removes last one
 
-        CellTable getCellTable();
+        DataGrid getDataGrid();
 
         SimplePager getPager();
 
@@ -164,11 +164,11 @@ public class SuppliersPresenter
 
     public void onResetDisplaySuppliersPager(int totalFoundNew) {
         this.totalFound = totalFoundNew;
-        view.getCellTable().setPageSize(0);
+        view.getDataGrid().setPageSize(0);
 
         view.getPager().setPage(0);
         if (!dataProviderInitialized) {
-            this.dataProvider.addDataDisplay(view.getCellTable());
+            this.dataProvider.addDataDisplay(view.getDataGrid());
             dataProviderInitialized = true;
         }
     }
@@ -181,7 +181,7 @@ public class SuppliersPresenter
 
         @Override
         protected void onRangeChanged(HasData<SupplierDetail> display) {
-            view.getCellTable().setPageSize(view.getPageSize());
+            view.getDataGrid().setPageSize(view.getPageSize());
             display.setRowCount(totalFound);
             if (totalFound == 0) {
                 return;
@@ -255,9 +255,9 @@ public class SuppliersPresenter
 
     public void onDisplaySuppliers(ArrayList<FullSupplierDetail> list) {
 //        view.getSuppliersList().setRowCount(0, true);
-        view.getCellTable().setRowData(start, new ArrayList<FullSupplierDetail>());
-        view.getCellTable().redraw();
-        view.getCellTable().setRowData(start, list);
+        view.getDataGrid().setRowData(start, new ArrayList<FullSupplierDetail>());
+        view.getDataGrid().redraw();
+        view.getDataGrid().setRowData(start, list);
     }
 
     /**
