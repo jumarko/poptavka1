@@ -45,12 +45,12 @@ public class DemandDetailView extends Composite {
 
         textArea.getElement().getStyle().setProperty("whiteSpace", "pre");
         int row = 0;
-
+        detailTable.setWidget(row, 0, new Label(bundle.commonInfo() + ":"));
         if (demand.getDescription() != null) {
             textArea.setText(demand.getDescription());
         }
 
-        if (demand.getPrice() != null) {
+        if (demand.getTitle() != null) {
             detailTable.setWidget(row, 0, new Label(bundle.title() + ":"));
             detailTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
         }
@@ -91,8 +91,15 @@ public class DemandDetailView extends Composite {
 
         if (demand.getPrice() != null) {
             detailTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));
-            detailTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
+            detailTable.setWidget(row, 1, new Label(demand.getPrice().toString()));
         }
+        detailTable.setWidget(row++, 0, new Label(bundle.maxOffers() + ":"));
+        detailTable.setWidget(row, 1, new Label(new Integer(demand.getMaxOffers()).toString()));
+        detailTable.setWidget(row++, 0, new Label(bundle.minRating() + ":"));
+        detailTable.setWidget(row, 1, new Label(new Integer(demand.getMinRating()).toString()));
+        detailTable.setWidget(row++, 0, new Label(bundle.excludedSuppliers() + ":"));
+        detailTable.setWidget(row, 1, new Label(demand.getExcludedSuppliers().toString()
+                .substring(1, demand.getLocalities().toString().length() - 1)));
     }
 
     public void setDemanDetail(FullDemandDetail detail) {

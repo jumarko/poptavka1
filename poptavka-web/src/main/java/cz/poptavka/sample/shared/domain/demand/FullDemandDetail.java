@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
@@ -52,6 +54,7 @@ public class FullDemandDetail implements Serializable {
     private String title;
     private String description;
     private BigDecimal price;
+    private List<Supplier> excludedSuppliers;
 
 
     /** for serialization. **/
@@ -95,6 +98,7 @@ public class FullDemandDetail implements Serializable {
         }
 
         detail.setClientId(demand.getClient().getId());
+        detail.setExcludedSuppliers(demand.getExcludedSuppliers());
 
         return detail;
     }
@@ -344,6 +348,14 @@ public class FullDemandDetail implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<Supplier> getExcludedSuppliers() {
+        return excludedSuppliers;
+    }
+
+    public void setExcludedSuppliers(List<Supplier> excludedSuppliers) {
+        this.excludedSuppliers = excludedSuppliers;
     }
 
     public static String displayHtml(String trustedHtml, boolean isRead) {

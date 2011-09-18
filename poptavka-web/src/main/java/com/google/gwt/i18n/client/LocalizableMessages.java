@@ -91,4 +91,8 @@ public interface LocalizableMessages extends Messages {
     String createdDate();
     String createdTime();
     String urgency();
+    String commonInfo();
+    String minRating();
+    String maxOffers();
+    String excludedSuppliers();
 }
