@@ -1,12 +1,12 @@
 package cz.poptavka.sample.client.user.demands.widget;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.dom.client.ParagraphElement;
-import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
@@ -18,9 +18,13 @@ public class DemandDetailView extends Composite {
     interface DemandDetailViewUiBinder extends UiBinder<Widget, DemandDetailView> {
     }
 
-    @UiField HeadingElement titleHeader;
-    @UiField ParagraphElement descArea;
-    @UiField SpanElement typeSpan;
+    @UiField FlexTable detailTable;
+    @UiField Label textArea;
+    private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
+
+    public DemandDetailView() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
 
     public DemandDetailView(FullDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -33,15 +37,66 @@ public class DemandDetailView extends Composite {
     }
 
     private void init(BaseDemandDetail demand) {
-        titleHeader.setInnerText(demand.getTitle());
-        descArea.setInnerHTML(demand.getDescription());
-        typeSpan.setInnerHTML("Base Demand Detail");
     }
 
     private void init(FullDemandDetail demand) {
-        titleHeader.setInnerText(demand.getTitle());
-        descArea.setInnerHTML(demand.getDescription());
-        typeSpan.setInnerHTML("Base Demand Detail");
+        detailTable.clear();
+        textArea.setText("");
+
+        textArea.getElement().getStyle().setProperty("whiteSpace", "pre");
+        int row = 0;
+
+        if (demand.getDescription() != null) {
+            textArea.setText(demand.getDescription());
+        }
+
+        if (demand.getPrice() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.title() + ":"));
+            detailTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
+        }
+
+        if (demand.getPrice() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.price() + ":"));
+            detailTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
+        }
+
+        if (demand.getEndDate() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.endDate() + ":"));
+            detailTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
+        }
+
+        if (demand.getValidToDate() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
+            detailTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
+        }
+
+        if (demand.getDemandType() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.type() + ":"));
+            detailTable.setWidget(row++, 1, new Label(demand.getDemandType()));
+        }
+
+        if (demand.getCategories() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.category() + ":"));
+            detailTable.setWidget(row++, 1,
+                    new Label(demand.getCategories().toString()
+                    .substring(1, demand.getCategories().toString().length() - 1)));
+        }
+
+        if (demand.getLocalities() != null) {
+            detailTable.setWidget(row, 0, new Label(bundle.locality() + ":"));
+            detailTable.setWidget(row++, 1,
+                    new Label(demand.getLocalities().toString()
+                    .substring(1, demand.getLocalities().toString().length() - 1)));
+        }
+
+        if (demand.getPrice() != null) {
+            detailTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));
+            detailTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
+        }
+    }
+
+    public void setDemanDetail(FullDemandDetail detail) {
+        this.init(detail);
     }
 
 }

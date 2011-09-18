@@ -53,6 +53,7 @@ public class FullDemandDetail implements Serializable {
     private String description;
     private BigDecimal price;
 
+
     /** for serialization. **/
     public FullDemandDetail() {
         super();

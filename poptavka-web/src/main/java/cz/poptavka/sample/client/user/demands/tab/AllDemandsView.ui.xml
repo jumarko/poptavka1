@@ -3,7 +3,7 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-  xmlns:d="urn:import:cz.poptavka.sample.client.home.demands.demand">
+  xmlns:d="urn:import:cz.poptavka.sample.client.user.demands.widget">
       
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
     <ui:style>
@@ -78,12 +78,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <g:FlexTable ui:field="infoTable"/>
-                                </td>
-                                <td ROWSPAN="6">
-                                    <g:DecoratorPanel>
-                                        <g:Label ui:field="textArea"/>
-                                    </g:DecoratorPanel>
+                                    <d:DemandDetailView ui:field="demandDetail"/>
                                 </td>
                             </tr>
                             <tr>

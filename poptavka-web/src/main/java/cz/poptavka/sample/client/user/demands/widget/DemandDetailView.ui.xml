@@ -8,11 +8,7 @@
         }
     </ui:style>
     <g:HTMLPanel>
-        <h2 ui:field='titleHeader'></h2>
-        <div>
-            Description:
-            <p ui:field='descArea'></p>
-        </div>
-        <span class="{style.important}" ui:field="typeSpan" />
+		<g:FlexTable ui:field="detailTable"/>
+		<g:Label ui:field="textArea"/>
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -1,16 +1,16 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
+import java.util.Date;
+import java.util.Random;
+
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import java.util.Date;
-
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -18,7 +18,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -29,8 +28,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.Random;
 
 /**
  *
@@ -57,9 +56,7 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
     @UiField
     Hyperlink linkAttachment, linkLogin, linkRegisterClient, linkRegisterSupplier;
     @UiField
-    FlexTable infoTable;
-    @UiField
-    Label textArea;
+    DemandDetailView demandDetail;
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private final SingleSelectionModel<FullDemandDetail> selectionModel =
             new SingleSelectionModel<FullDemandDetail>();
@@ -324,61 +321,6 @@ public class AllDemandsView extends OverflowComposite implements AllDemandsPrese
 
     @Override
     public void setDemand(FullDemandDetail demand) {
-        infoTable.clear();
-        textArea.setText("");
-
-        textArea.getElement().getStyle().setProperty("whiteSpace", "pre");
-        linkAttachment.setVisible(false);
-
-        int row = 0;
-
-        if (demand.getDescription() != null) {
-            textArea.setText(demand.getDescription());
-        }
-
-        if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.title() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
-        }
-
-        if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.price() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
-        }
-
-        if (demand.getEndDate() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.endDate() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
-        }
-
-        if (demand.getValidToDate() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
-        }
-
-        if (demand.getDemandType() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.type() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getDemandType()));
-        }
-
-        if (demand.getCategories() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.category() + ":"));
-            infoTable.setWidget(row++, 1,
-                    new Label(demand.getCategories().toString()
-                    .substring(1, demand.getCategories().toString().length() - 1)));
-        }
-
-        if (demand.getLocalities() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.locality() + ":"));
-            infoTable.setWidget(row++, 1,
-                    new Label(demand.getLocalities().toString()
-                    .substring(1, demand.getLocalities().toString().length() - 1)));
-        }
-
-        if (demand.getPrice() != null) {
-            infoTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));
-            infoTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
-            linkAttachment.setVisible(true);
-        }
+        demandDetail.setDemanDetail(demand);
     }
 }

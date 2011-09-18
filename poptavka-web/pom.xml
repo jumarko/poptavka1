@@ -307,7 +307,7 @@
                     <hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
                     <runTarget>Poptavka.html</runTarget>
                     <compileReport>true</compileReport>
-                    <logLevel>DEBUG</logLevel>
+                    <logLevel>INFO</logLevel>
                 </configuration>
             </plugin>
 
