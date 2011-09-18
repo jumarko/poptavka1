@@ -4,9 +4,9 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -27,6 +27,8 @@ public class AdminSupplierInfoPresenter
 
         void setSupplierDetail(FullSupplierDetail contact);
 
+        FullSupplierDetail getUpdatedSupplierDetail();
+
         Button getUpdateBtn();
     }
 
@@ -42,7 +44,8 @@ public class AdminSupplierInfoPresenter
         view.getUpdateBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                GWT.log("demand updated");
+                eventBus.addSuppliersToCommit(view.getUpdatedSupplierDetail(), "all");
+                Window.alert("Demand updated");
             }
         });
     }

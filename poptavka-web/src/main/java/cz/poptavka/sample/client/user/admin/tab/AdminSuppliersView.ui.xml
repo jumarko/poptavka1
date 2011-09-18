@@ -18,7 +18,6 @@
     </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="650">
-            <g:ScrollPanel>
 
 <!--            <g:FlowPanel>-->
 <!--                <g:HorizontalPanel>
@@ -35,29 +34,36 @@
                         <ui:msg key="accept">Accept</ui:msg>
                     </g:Button>
                 </g:HorizontalPanel>-->
-                <g:DecoratorPanel>
-                    <g:HTMLPanel>
-                        <table cellspacing='0' cellpadding='0'>
-                            <tr>
-                                <td valign='top'>
-                                    <g:ScrollPanel>
-                                        <c:CellTable addStyleNames='{style.cellTable}' pageSize='15' ui:field='cellTable' />
-                                    </g:ScrollPanel>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align='center'>
+            <g:DecoratorPanel>
+                <g:HTMLPanel>
+                    <table cellspacing='0' cellpadding='0'>
+                        <tr>
+                            <td valign='top'>
+                                <g:ScrollPanel>
+                                    <c:DataGrid addStyleNames='{style.cellTable}' pageSize='15' ui:field='dataGrid' />
+                                </g:ScrollPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align='center'>
+                                <g:HorizontalPanel>
                                     <c:SimplePager ui:field='pager' />
                                     <g:ListBox ui:field='pageSizeCombo'/>
-                                </td>
-                            </tr>
-                        </table>
+                                </g:HorizontalPanel>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td  align='left'>
+                                <g:Button ui:field="commit">Commit changes</g:Button>
+                            </td>
+                        </tr>
+                    </table>
 
-                    </g:HTMLPanel>
-                </g:DecoratorPanel>
+                </g:HTMLPanel>
+            </g:DecoratorPanel>
 
 <!--            </g:FlowPanel>-->
-            </g:ScrollPanel>
         </g:west>
         <g:center>
             <g:SimplePanel ui:field="adminSupplierDetail"></g:SimplePanel>

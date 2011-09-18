@@ -11,6 +11,7 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
+import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageState;
@@ -237,10 +238,11 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             if (demandDetail.getDemandStatus() != null && !demandDetail.getDemandStatus().equals("")) {
                 demand.setStatus(DemandStatus.valueOf(demandDetail.getDemandStatus()));
             }
-            //TODO Martin - nefunguje, preco? opravit, Preco sa to neda jednoduchsie vez DemandType.getValueOf(string);
 
-//            }if (demandDetail.getDemandType() != null && !demandDetail.getDemandType().equals("")) {
-//                demand.setType(demandService.getDemandType(demandDetail.getDemandType()));
+            if (demandDetail.getDemandType() != null && !demandDetail.getDemandType().equals("")) {
+                demand.setType(demandService.getDemandType(
+                        DemandType.Type.fromValue(demandDetail.getDemandType()).getValue()));
+            }
         }
         // -- categories
         if (updateWhat.equals("categories") || updateWhat.equals("all")) {

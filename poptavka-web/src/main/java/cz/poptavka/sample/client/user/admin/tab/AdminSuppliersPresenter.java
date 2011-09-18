@@ -4,20 +4,23 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import java.util.List;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,6 +51,8 @@ public class AdminSuppliersPresenter
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("    AdminSuppliersPresenter");
+    private Map<Long, FullSupplierDetail> dataToUpdate = new HashMap<Long, FullSupplierDetail>();
+    private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
@@ -64,7 +69,7 @@ public class AdminSuppliersPresenter
         Widget getWidgetView();
 
 //        SimplePager getPager();
-        CellTable<FullSupplierDetail> getCellTable();
+        DataGrid<FullSupplierDetail> getDataGrid();
 
 //        AsyncDataProvider<FullSupplierDetail> getDataProvider();
         Column<FullSupplierDetail, String> getSupplierIdColumn();
@@ -87,6 +92,8 @@ public class AdminSuppliersPresenter
 
         int getPageSize();
 
+        Button getCommitBtn();
+
         ListBox getPageSizeCombo();
     }
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
@@ -100,7 +107,6 @@ public class AdminSuppliersPresenter
         LOGGER.info("list: " + suppliers.size());
         dataProvider.updateRowData(start, suppliers);
     }
-
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
 
@@ -117,15 +123,14 @@ public class AdminSuppliersPresenter
                 eventBus.loadingHide();
             }
         };
-        this.dataProvider.addDataDisplay(view.getCellTable());
+        this.dataProvider.addDataDisplay(view.getDataGrid());
         createAsyncSortHandler();
     }
-
     private AsyncHandler sortHandler = null;
 
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
-        sortHandler = new AsyncHandler(view.getCellTable()) {
+        sortHandler = new AsyncHandler(view.getDataGrid()) {
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
@@ -138,7 +143,7 @@ public class AdminSuppliersPresenter
                 if (column == null) {
                     return;
                 }
-                int idx = view.getCellTable().getColumnIndex(column);
+                int idx = view.getDataGrid().getColumnIndex(column);
 
                 LOGGER.info("Column IDX: " + idx + " orderType: " + orderType);
 //                LOGGER.info("Column NAME: " + FullSupplierDetail.supplierField[idx - 1]);
@@ -147,11 +152,11 @@ public class AdminSuppliersPresenter
                 eventBus.getSortedSuppliers(start, view.getPageSize(), orderColumns);
             }
         };
-        view.getCellTable().addColumnSortHandler(sortHandler);
+        view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onRefreshUpdatedSupplier(FullSupplierDetail supplier) {
-//        view.getCellTable().setSize("10%", "10%");
+//        view.getDataGrid().setSize("10%", "10%");
     }
 
     public void onResponseAdminSupplierDetail(Widget widget) {
@@ -172,7 +177,7 @@ public class AdminSuppliersPresenter
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 object.setCompanyName(value);
-                eventBus.updateSupplier(object, "userdata");
+                eventBus.addSuppliersToCommit(object, "userdata");
             }
         });
         view.getSupplierTypeColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
@@ -180,7 +185,7 @@ public class AdminSuppliersPresenter
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 object.setBusinessType(value);
-                eventBus.updateSupplier(object, "userdata");
+                eventBus.addSuppliersToCommit(object, "userdata");
 //                refreshDisplays();
             }
         });
@@ -189,7 +194,7 @@ public class AdminSuppliersPresenter
             @Override
             public void update(int index, FullSupplierDetail object, Boolean value) {
                 object.setCertified(value);
-                eventBus.updateSupplier(object, "supplier");
+                eventBus.addSuppliersToCommit(object, "supplier");
 //                refreshDisplays();
             }
         });
@@ -198,7 +203,7 @@ public class AdminSuppliersPresenter
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 object.setVerification(value);
-                eventBus.updateSupplier(object, "supplier");
+                eventBus.addSuppliersToCommit(object, "supplier");
 //                refreshDisplays();
             }
         });
@@ -206,7 +211,13 @@ public class AdminSuppliersPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                eventBus.showAdminSupplierDetail(view.getSelectionModel().getSelectedObject());
+                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject())) {
+                    eventBus.showAdminSupplierDetail(dataToUpdate.get(
+                            view.getSelectionModel().getSelectedObject().getSupplierId()));
+                } else {
+                    eventBus.showAdminSupplierDetail(view.getSelectionModel().getSelectedObject());
+                }
+
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
@@ -218,5 +229,25 @@ public class AdminSuppliersPresenter
                 view.getPager().setPageSize(view.getPageSize());
             }
         });
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.loadingShow("Commiting");
+                for (Long idx : dataToUpdate.keySet()) {
+                    eventBus.updateSupplier(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                }
+                eventBus.loadingHide();
+                dataToUpdate.clear();
+                metadataToUpdate.clear();
+            }
+        });
+    }
+
+    public void onAddSuppliersToCommit(FullSupplierDetail data, String dataType) {
+        dataToUpdate.remove(data.getSupplierId());
+        metadataToUpdate.remove(data.getSupplierId());
+        dataToUpdate.put(data.getSupplierId(), data);
+        metadataToUpdate.put(data.getSupplierId(), dataType);
     }
 }

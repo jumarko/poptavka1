@@ -19,12 +19,13 @@ import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -52,13 +53,16 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
 
+    @UiField
+    Button commit;
+
     /**
      * @return the dataProvider
      */
     @Override
     public ListDataProvider<FullDemandDetail> getDataProvider() {
-//        ColumnSortEvent fire = ColumnSortEvent.fire(this, cellTable.getColumnSortList());
-//        cellTable.fireEvent(fire);
+//        ColumnSortEvent fire = ColumnSortEvent.fire(this, dataGrid.getColumnSortList());
+//        dataGrid.fireEvent(fire);
         return dataProvider;
     }
 
@@ -92,8 +96,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     }
 
     @Override
-    public CellTable<FullDemandDetail> getCellTable() {
-        return cellTable;
+    public DataGrid<FullDemandDetail> getDataGrid() {
+        return dataGrid;
     }
 
     /**
@@ -158,7 +162,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
     @UiField(provided = true)
-    CellTable<FullDemandDetail> cellTable;
+    DataGrid<FullDemandDetail> dataGrid;
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
@@ -180,7 +184,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      */
     private ListDataProvider<FullDemandDetail> dataProvider = new ListDataProvider<FullDemandDetail>();
     private SingleSelectionModel<FullDemandDetail> selectionModel;
-    /** Editable Columns in CellTable. **/
+    /** Editable Columns in dataGrid. **/
     private Column<FullDemandDetail, String> clientIdColumn;
     private Column<FullDemandDetail, String> demandTypeColumn;
     private Column<FullDemandDetail, String> demandTitleColumn;
@@ -197,40 +201,42 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         pageSizeCombo.addItem("20");
         pageSizeCombo.addItem("25");
         pageSizeCombo.addItem("30");
-        pageSizeCombo.setSelectedIndex(3);
-        initCellTable();
+        pageSizeCombo.setSelectedIndex(1);
+        initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
 //    @Override
 //    public void createView() {
-//        initCellTable();
+//        initDataGrid();
 //        initWidget(uiBinder.createAndBindUi(this));
 //    }
-    private void initCellTable() {
-        // Create a CellTable.
-        GWT.log("initCellTable initialized");
+    private void initDataGrid() {
+        // Create a dataGrid.
+        GWT.log("initDataGrid initialized");
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        cellTable = new CellTable<FullDemandDetail>(KEY_PROVIDER);
-        cellTable.setWidth("100%", true);
-//        cellTable.setRowCount(2, true);
+        dataGrid = new DataGrid<FullDemandDetail>(KEY_PROVIDER);
+        dataGrid.setPageSize(this.getPageSize());
+        dataGrid.setWidth("700px");
+        dataGrid.setHeight("500px");
+//        dataGrid.setRowCount(2, true);
 
         // TODO ivlcek - premysliet kedy a kde sa ma vytvarat DataProvider
         // Connect the table to the data provider.
-        dataProvider.addDataDisplay(cellTable);
+        dataProvider.addDataDisplay(dataGrid);
 
         // TODO ivlcek - make it working without keyprovider
         // Attach a column sort handler to the ListDataProvider to sort the list.
         ListHandler<FullDemandDetail> sortHandler = new ListHandler<FullDemandDetail>(
                 dataProvider.getList());
-        cellTable.addColumnSortHandler(sortHandler);
+        dataGrid.addColumnSortHandler(sortHandler);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(cellTable);
+        pager.setDisplay(dataGrid);
         // TODO ivlcek - nastavit pocet zaznamov v pagery na mensi pocet ako 15
 //        pager.setPageSize(5);
 
@@ -239,7 +245,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 //        new MultiSelectionModel<FullDemandDetail>(KEY_PROVIDER);
         // Add a single selection model to handle user selection.
         selectionModel = new SingleSelectionModel<FullDemandDetail>(KEY_PROVIDER);
-        cellTable.setSelectionModel(getSelectionModel(),
+        dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<FullDemandDetail>createCheckboxManager());
 
         // Initialize the columns.
@@ -253,7 +259,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
             ListHandler<FullDemandDetail> sortHandler) {
 
         // Checkbox column. This table will uses a checkbox column for selection.
-        // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
+        // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
         // mouse selection.
         Column<FullDemandDetail, Boolean> checkColumn = new Column<FullDemandDetail, Boolean>(
                 new CheckboxCell(true, false)) {
@@ -264,8 +270,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return selectionModel.isSelected(object);
             }
         };
-        cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        cellTable.setColumnWidth(checkColumn, 40, Unit.PX);
+        dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        dataGrid.setColumnWidth(checkColumn, 40, Unit.PX);
 
         // Demand ID.
         Column<FullDemandDetail, String> idColumn = new Column<FullDemandDetail, String>(new TextCell()) {
@@ -283,8 +289,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return Long.valueOf(o1.getDemandId()).compareTo(Long.valueOf(o2.getDemandId()));
             }
         });
-        cellTable.addColumn(idColumn, "DID");
-        cellTable.setColumnWidth(idColumn, 50, Unit.PX);
+        dataGrid.addColumn(idColumn, "DID");
+        dataGrid.setColumnWidth(idColumn, 50, Unit.PX);
 
         // Clietn ID.
         clientIdColumn = new Column<FullDemandDetail, String>(
@@ -303,8 +309,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return Long.valueOf(o1.getClientId()).compareTo(Long.valueOf(o2.getClientId()));
             }
         });
-        cellTable.addColumn(getClientIdColumn(), "CID");
-        cellTable.setColumnWidth(getClientIdColumn(), 50, Unit.PX);
+        dataGrid.addColumn(getClientIdColumn(), "CID");
+        dataGrid.setColumnWidth(getClientIdColumn(), 50, Unit.PX);
 
         // DemandTitle
         demandTitleColumn = new Column<FullDemandDetail, String>(
@@ -315,8 +321,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return String.valueOf(object.getTitle());
             }
         };
-        cellTable.addColumn(demandTitleColumn, "Title");
-        cellTable.setColumnWidth(demandTitleColumn, 160, Unit.PX);
+        dataGrid.addColumn(demandTitleColumn, "Title");
+        dataGrid.setColumnWidth(demandTitleColumn, 160, Unit.PX);
 
         // DemandType.
         List<String> demandTypeNames = new ArrayList<String>();
@@ -334,8 +340,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return object.getDemandType();
             }
         };
-        cellTable.addColumn(demandTypeColumn, "Type");
-        cellTable.setColumnWidth(demandTypeColumn, 100, Unit.PX);
+        dataGrid.addColumn(demandTypeColumn, "Type");
+        dataGrid.setColumnWidth(demandTypeColumn, 100, Unit.PX);
 
         // DemandStatus.
         List<String> demandStatusNames = new ArrayList<String>();
@@ -353,8 +359,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return object.getDemandStatus();
             }
         };
-        cellTable.addColumn(demandStatusColumn, "Status");
-        cellTable.setColumnWidth(demandStatusColumn, 140, Unit.PX);
+        dataGrid.addColumn(demandStatusColumn, "Status");
+        dataGrid.setColumnWidth(demandStatusColumn, 140, Unit.PX);
 
         // Demand expiration date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
@@ -409,7 +415,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 //        if (cell instanceof AbstractEditableCell<?, ?>) {
 //            editableCells.add((AbstractEditableCell<?, ?>) cell);
 //        }
-        cellTable.addColumn(column, headerText);
+        dataGrid.addColumn(column, headerText);
         return column;
     }
     /**
@@ -436,6 +442,11 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
+    }
+
+    @Override
+    public Button getCommitBtn() {
+        return commit;
     }
 
     @Override

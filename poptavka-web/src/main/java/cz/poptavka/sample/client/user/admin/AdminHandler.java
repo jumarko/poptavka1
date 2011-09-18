@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.handler;
+package cz.poptavka.sample.client.user.admin;
 
 import java.util.ArrayList;
 import java.util.List;

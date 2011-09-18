@@ -10,15 +10,19 @@ import java.util.List;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -52,6 +56,8 @@ public class AdminDemandsPresenter
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
+    private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
@@ -68,7 +74,7 @@ public class AdminDemandsPresenter
         Widget getWidgetView();
 
 //        SimplePager getPager();
-        CellTable<FullDemandDetail> getCellTable();
+        DataGrid<FullDemandDetail> getDataGrid();
 
         ListDataProvider<FullDemandDetail> getDataProvider();
 
@@ -98,6 +104,8 @@ public class AdminDemandsPresenter
 
         int getPageSize();
 
+        Button getCommitBtn();
+
         ListBox getPageSizeCombo();
     }
     private AsyncDataProvider dataProvider = null;
@@ -116,15 +124,14 @@ public class AdminDemandsPresenter
                 eventBus.loadingHide();
             }
         };
-        this.dataProvider.addDataDisplay(view.getCellTable());
+        this.dataProvider.addDataDisplay(view.getDataGrid());
         createAsyncSortHandler();
     }
-
     private AsyncHandler sortHandler = null;
 
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
-        sortHandler = new AsyncHandler(view.getCellTable()) {
+        sortHandler = new AsyncHandler(view.getDataGrid()) {
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
@@ -137,7 +144,7 @@ public class AdminDemandsPresenter
                 if (column == null) {
                     return;
                 }
-                int idx = view.getCellTable().getColumnIndex(column);
+                int idx = view.getDataGrid().getColumnIndex(column);
 
                 LOGGER.info("Column IDX: " + idx + " orderType: " + orderType);
 //                LOGGER.info("Column NAME: " + FullDemandDetail.SupplierField[idx - 1]);
@@ -146,7 +153,7 @@ public class AdminDemandsPresenter
                 eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
             }
         };
-        view.getCellTable().addColumnSortHandler(sortHandler);
+        view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminDemands() {
@@ -161,11 +168,11 @@ public class AdminDemandsPresenter
     }
 
     public void onRefreshUpdatedDemand(FullDemandDetail demand) {
-//        view.getCellTable().setSize("10%", "10%");
+//        view.getDataGrid().setSize("10%", "10%");
     }
 
     public void onRefreshUpdatedOffer(FullOfferDetail demand) {
-//      view.getCellTable().setSize("10%", "10%");
+//      view.getDataGrid().setSize("10%", "10%");
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -190,7 +197,7 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 object.setTitle(value);
-                eventBus.updateDemand(object, "demand");
+                eventBus.addDemandToCommit(object, "demand", "table");
 //                refreshDisplays(); TODO - Martin - musi byt refresh?
             }
         });
@@ -199,9 +206,9 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (ClientDemandType clientDemandType : view.getDemandTypes()) {
-                    if (clientDemandType.name().equals(value)) {
+                    if (clientDemandType.getValue().equals(value)) {
                         object.setDemandType(clientDemandType.name());
-                        eventBus.updateDemand(object, "demand");
+                        eventBus.addDemandToCommit(object, "demand", "table");
                     }
                 }
 //                refreshDisplays();
@@ -211,10 +218,10 @@ public class AdminDemandsPresenter
 
             @Override
             public void update(int index, FullDemandDetail object, String value) {
-                for (DemandStatusType demandStatusType : view.getDemandStatuses()) {
-                    if (demandStatusType.name().equals(value)) {
-                        object.setDemandType(demandStatusType.name());
-                        eventBus.updateDemand(object, "demand");
+                for (DemandStatusType demandStatusType : DemandStatusType.values()) {
+                    if (demandStatusType.getValue().equals(value)) {
+                        object.setDemandStatus(demandStatusType.name());
+                        eventBus.addDemandToCommit(object, "demand", "table");
                     }
                 }
 //                refreshDisplays();
@@ -225,7 +232,7 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 object.setValidToDate(value);
-                eventBus.updateDemand(object, "other");
+                eventBus.addDemandToCommit(object, "other", "table");
 //                refreshDisplays();
             }
         });
@@ -234,7 +241,7 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 object.setEndDate(value);
-                eventBus.updateDemand(object, "other");
+                eventBus.addDemandToCommit(object, "other", "table");
 //                refreshDisplays();
             }
         });
@@ -245,8 +252,13 @@ public class AdminDemandsPresenter
 //                contactForm.setContact(selectionModel.getSelectedObject());
 //                eventBus.displayContent(view.getWidgetView());
 //                eventBus.getAllDemands();
-                eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
-
+                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject())) {
+                    eventBus.showAdminDemandDetail(dataToUpdate.get(
+                            view.getSelectionModel().getSelectedObject().getDemandId()));
+                } else {
+                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
+                }
+                eventBus.setDetailDisplayed(true);
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
@@ -258,5 +270,44 @@ public class AdminDemandsPresenter
                 view.getPager().setPageSize(view.getPageSize());
             }
         });
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Window.confirm("Realy commit changes?")) {
+                    eventBus.loadingShow("Commiting");
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateDemand(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                    }
+                    eventBus.loadingHide();
+                    dataToUpdate.clear();
+                    metadataToUpdate.clear();
+                    Window.alert("Demand updated");
+                }
+            }
+        });
+    }
+    private Boolean detailDisplayed = false;
+
+    public void onAddDemandToCommit(FullDemandDetail data, String dataType, String source) {
+        dataToUpdate.remove(data.getDemandId());
+        metadataToUpdate.remove(data.getDemandId());
+        dataToUpdate.put(data.getDemandId(), data);
+        metadataToUpdate.put(data.getDemandId(), dataType);
+        if (detailDisplayed) {
+            eventBus.showAdminDemandDetail(data);
+        }
+        if (source.equals("detail")) {
+            List<FullDemandDetail> list = view.getDataGrid().getVisibleItems();
+            int idx = list.indexOf(data);
+            list.remove(idx);
+            list.add(idx, data);
+            dataProvider.updateRowData(start, list);
+            view.getDataGrid().redraw();
+        }
+    }
+
+    public void onSetDetailDisplayed(Boolean displayed) {
+        detailDisplayed = displayed;
     }
 }

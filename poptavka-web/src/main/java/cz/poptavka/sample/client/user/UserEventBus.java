@@ -33,7 +33,7 @@ import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
-import cz.poptavka.sample.client.user.handler.AdminHandler;
+import cz.poptavka.sample.client.user.admin.AdminHandler;
 import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
@@ -543,6 +543,12 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminLayoutPresenter.class)
     void displayAdminContent(Widget contentWidget);
+
+    @Event(handlers = AdminDemandsPresenter.class)
+    void addDemandToCommit(FullDemandDetail data, String dataType, String source);
+
+    @Event(handlers = AdminDemandsPresenter.class)
+    void setDetailDisplayed(Boolean displayed);
     /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
 
     /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
@@ -572,6 +578,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void responseAdminSupplierDetail(Widget widget);
+
+    @Event(handlers = AdminSuppliersPresenter.class)
+    void addSuppliersToCommit(FullSupplierDetail data, String dataType);
 
     /* <<<<<<<<<<-------- ADMIN SUPPLIERS -------------------- */
 

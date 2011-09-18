@@ -5,8 +5,6 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -27,9 +25,9 @@ import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 public class AdminSupplierInfoView extends Composite implements
         AdminSupplierInfoPresenter.AdminSupplierInfoInterface {
 
-    private static AdminSupplierInfoViewUiBinder uiBinder = GWT.create(AdminSupplierInfoViewUiBinder.class);
+    private static AdminsupplierInfoViewUiBinder uiBinder = GWT.create(AdminsupplierInfoViewUiBinder.class);
 
-    interface AdminSupplierInfoViewUiBinder extends
+    interface AdminsupplierInfoViewUiBinder extends
             UiBinder<Widget, AdminSupplierInfoView> {
     }
     // Supplier detail input fields
@@ -40,7 +38,6 @@ public class AdminSupplierInfoView extends Composite implements
     overalRating, identifNumber, supplierID, businessType, certified;
     @UiField
     ListBox categories, localities;
-
     // Supplier detail button fields
     @UiField
     Button categoryButton;
@@ -50,7 +47,6 @@ public class AdminSupplierInfoView extends Composite implements
     Button createButton;
     @UiField
     Button updateButton;
-
     private FullSupplierDetail supplierInfo;
 
     @Override
@@ -66,60 +62,34 @@ public class AdminSupplierInfoView extends Composite implements
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-        initSupplierInfoForm();
+        initsupplierInfoForm();
     }
 
-    private void initSupplierInfoForm() {
+    public FullSupplierDetail getUpdatedSupplierDetail() {
+        if (supplierInfo == null) {
+            return null;
+        }
+        // Update the detail object.
+        supplierInfo.setCompanyName(companyName.getText());
+        supplierInfo.setDescription(descriptionBox.getText());
+        supplierInfo.setFirstName(firstName.getText());
+        supplierInfo.setLastName(lastName.getText());
+        supplierInfo.setEmail(email.getText());
+        supplierInfo.setPhone(phone.getText());
+        supplierInfo.setVerification(verification.getText());
+        supplierInfo.setOverallRating(Integer.valueOf(overalRating.getText()));
+        supplierInfo.setIdentificationNumber(identifNumber.getText());
+        supplierInfo.setBusinessType(businessType.getText());
+        supplierInfo.setCertified(Boolean.valueOf(businessType.getText()));
+
+        return supplierInfo;
+    }
+
+    private void initsupplierInfoForm() {
         // initWidget(uiBinder.createAndBindUi(this));
 
         // Initialize the contact to null.
         setSupplierDetail(null);
-
-        // Handle events.
-        updateButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-//                if (SupplierInfo == null) {
-//                    return;
-//                }
-//                boolean t = priceBox.getText() == null;
-//                if (t) {
-//                    GWT.log("d" + t + "max offer");
-//                }
-//                GWT.log("d" + t + "max offer");
-//                GWT.log("d" + priceBox.getText().equals("") + "price ");
-//
-//                // Update the contact.
-//                SupplierInfo.setTitle(companyName.getText());
-//                SupplierInfo.setDescription(descriptionBox.getText());
-//                SupplierInfo.setPrice(priceBox.getText());
-//                SupplierInfo.setEndDate(endDateBox.getValue());
-//                SupplierInfo.setValidToDate(expirationBox.getValue());
-//                SupplierInfo.setClientId(Long.valueOf(clientID.getText()));
-//                SupplierInfo.setMaxOffers(Integer.valueOf(maxOffers.getValue()));
-//                SupplierInfo.setMinRating(Integer.valueOf(overalRating.getValue()));
-                // SupplierInfo.setSupplierType(SupplierType.getValue());
-
-                // Update the views.
-                // TODO this must be called within Presenter
-                // ContactDatabase.get().refreshDisplays();
-            }
-        });
-        createButton.addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-//                SupplierInfo = new FullSupplierDetail();
-//                SupplierInfo.setTitle(companyName.getText());
-//                SupplierInfo.setDescription(descriptionBox.getText());
-//                SupplierInfo.setClientId(Long.valueOf(clientID.getText()));
-//                SupplierInfo.setValidToDate(expirationBox.getValue());
-//                // enter new Supplier into DB if it is good feature for Admin
-//                // ContactDatabase.get().addContact(SupplierInfo);
-//                setSupplierDetail(SupplierInfo);
-            }
-        });
     }
 
     public void setSupplierDetail(FullSupplierDetail supplier) {

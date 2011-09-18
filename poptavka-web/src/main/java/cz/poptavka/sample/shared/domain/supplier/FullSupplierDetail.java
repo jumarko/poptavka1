@@ -222,4 +222,26 @@ public class FullSupplierDetail implements Serializable {
     public void setVerification(String verification) {
         this.verification = verification;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final FullSupplierDetail other = (FullSupplierDetail) obj;
+        if (this.supplierId != other.supplierId) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + (int) (this.supplierId ^ (this.supplierId >>> 32));
+        return hash;
+    }
 }

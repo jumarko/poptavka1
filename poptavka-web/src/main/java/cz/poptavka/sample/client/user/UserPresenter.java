@@ -41,7 +41,7 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 @Presenter(view = UserView.class)
 public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface, UserEventBus> {
 
-    protected static final int ADMIN_SECTION = 4;
+    protected static final int ADMIN_SECTION = 5;
 
     @Override
     public void bindView() {

@@ -365,4 +365,26 @@ public class FullDemandDetail implements Serializable {
             return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final FullDemandDetail other = (FullDemandDetail) obj;
+        if (this.demandId != other.demandId) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + (int) (this.demandId ^ (this.demandId >>> 32));
+        return hash;
+    }
 }

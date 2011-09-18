@@ -15,11 +15,12 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -48,7 +49,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
     @UiField(provided = true)
-    CellTable<FullSupplierDetail> cellTable;
+    DataGrid<FullSupplierDetail> dataGrid;
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
      */
@@ -65,12 +66,13 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     SimplePanel adminSupplierDetail;
     @UiField(provided = true)
     ListBox pageSizeCombo;
+    @UiField Button commit;
     /**
      * Data provider that will cell table with data.
      */
 //    private AsyncDataProvider<FullSupplierDetail> dataProvider = null;
     private SingleSelectionModel<FullSupplierDetail> selectionModel;
-    /** Editable Columns in CellTable. **/
+    /** Editable Columns in dataGrid. **/
     private Column<FullSupplierDetail, String> supplierIdColumn;
     private Column<FullSupplierDetail, String> supplierNameColumn;
     private Column<FullSupplierDetail, String> supplierTypeColumn;
@@ -124,8 +126,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     }
 
     @Override
-    public CellTable<FullSupplierDetail> getCellTable() {
-        return cellTable;
+    public DataGrid<FullSupplierDetail> getDataGrid() {
+        return dataGrid;
     }
 
     @Override
@@ -141,6 +143,11 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
+    }
+
+    @Override
+    public Button getCommitBtn() {
+        return commit;
     }
 
     /**
@@ -175,39 +182,41 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         pageSizeCombo.addItem("25");
         pageSizeCombo.addItem("30");
         pageSizeCombo.setSelectedIndex(3);
-        initCellTable();
+        initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
 //    @Override
 //    public void createView() {
-//        initCellTable();
+//        initDataGrid();
 //        initWidget(uiBinder.createAndBindUi(this));
 //    }
-    private void initCellTable() {
-        // Create a CellTable.
-        GWT.log("Admin Suppliers initCellTable initialized");
+    private void initDataGrid() {
+        // Create a dataGrid.
+        GWT.log("Admin Suppliers initDataGrid initialized");
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        cellTable = new CellTable<FullSupplierDetail>(KEY_PROVIDER);
-        cellTable.setWidth("100%", true);
-//        cellTable.setRowCount(2, true);
+        dataGrid = new DataGrid<FullSupplierDetail>(KEY_PROVIDER);
+        dataGrid.setWidth("700px");
+        dataGrid.setHeight("500px");
+//        dataGrid.set`
+//        dataGrid.setRowCount(2, true);
 
         // TODO ivlcek - premysliet kedy a kde sa ma vytvarat DataProvider
         // Connect the table to the data provider.
-//        dataProvider.addDataDisplay(cellTable);
+//        dataProvider.addDataDisplay(dataGrid);
 
         // TODO ivlcek - make it working without keyprovider
         // Attach a column sort handler to the ListDataProvider to sort the list.
 
 //                dataProvider.getList());
-//        cellTable.addColumnSortHandler(sortHandler);
+//        dataGrid.addColumnSortHandler(sortHandler);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(cellTable);
+        pager.setDisplay(dataGrid);
         // TODO ivlcek - nastavit pocet zaznamov v pagery na mensi pocet ako 15
 //        pager.setPageSize(5);
 
@@ -216,7 +225,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //        new MultiSelectionModel<SupplierDetailForDisplaySuppliers>(KEY_PROVIDER);
         // Add a single selection model to handle user selection.
         selectionModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
-        cellTable.setSelectionModel(getSelectionModel(),
+        dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<FullSupplierDetail>createCheckboxManager());
 
         // Initialize the columns.
@@ -229,7 +238,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private void initTableColumns(final SelectionModel<FullSupplierDetail> selectionModel) {
 
         // Checkbox column. This table will uses a checkbox column for selection.
-        // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
+        // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
         // mouse selection.
         Column<FullSupplierDetail, Boolean> checkColumn = new Column<FullSupplierDetail, Boolean>(
                 new CheckboxCell(true, false)) {
@@ -240,8 +249,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
                 return selectionModel.isSelected(object);
             }
         };
-        cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        cellTable.setColumnWidth(checkColumn, 15, Unit.PX);
+        dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        dataGrid.setColumnWidth(checkColumn, 15, Unit.PX);
 
         // Supplier ID.
         supplierIdColumn = new Column<FullSupplierDetail, String>(new TextCell()) {
@@ -258,8 +267,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //                return Long.valueOf(o1.getSupplierId()).compareTo(Long.valueOf(o2.getSupplierId()));
 //            }
 //        });
-        cellTable.addColumn(supplierIdColumn, "SID");
-        cellTable.setColumnWidth(supplierIdColumn, 30, Unit.PX);
+        dataGrid.addColumn(supplierIdColumn, "SID");
+        dataGrid.setColumnWidth(supplierIdColumn, 30, Unit.PX);
 
         // Company name.
         supplierNameColumn = new Column<FullSupplierDetail, String>(
@@ -277,8 +286,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //                return (o1.getCompanyName()).compareToIgnoreCase(o2.getCompanyName());
 //            }
 //        });
-        cellTable.addColumn(getSupplierNameColumn(), "Name");
-        cellTable.setColumnWidth(getSupplierNameColumn(), 50, Unit.PX);
+        dataGrid.addColumn(getSupplierNameColumn(), "Name");
+        dataGrid.setColumnWidth(getSupplierNameColumn(), 50, Unit.PX);
 
         // SupplierType.
         ArrayList<String> types = new ArrayList<String>();
@@ -300,8 +309,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //                return o1.getBusinessType().compareToIgnoreCase(o2.getBusinessType());
 //            }
 //        });
-        cellTable.addColumn(supplierTypeColumn, "Type");
-        cellTable.setColumnWidth(supplierTypeColumn, 50, Unit.PX);
+        dataGrid.addColumn(supplierTypeColumn, "Type");
+        dataGrid.setColumnWidth(supplierTypeColumn, 50, Unit.PX);
 
         // Certified.
         certifiedColumn = new Column<FullSupplierDetail, Boolean>(
@@ -319,8 +328,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //                return Boolean.toString(o1.isCertified()).compareTo(Boolean.toString(o2.isCertified()));
 //            }
 //        });
-        cellTable.addColumn(certifiedColumn, "Cert.");
-        cellTable.setColumnWidth(certifiedColumn, 15, Unit.PX);
+        dataGrid.addColumn(certifiedColumn, "Cert.");
+        dataGrid.setColumnWidth(certifiedColumn, 15, Unit.PX);
 
         // Verification.
         ArrayList<String> verTypes = new ArrayList<String>();
@@ -342,8 +351,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //                return o1.getVerification().compareToIgnoreCase(o2.getVerification());
 //            }
 //        });
-        cellTable.addColumn(verificationColumn, "Verified");
-        cellTable.setColumnWidth(verificationColumn, 50, Unit.PX);
+        dataGrid.addColumn(verificationColumn, "Verified");
+        dataGrid.setColumnWidth(verificationColumn, 50, Unit.PX);
     }
 
     /**
@@ -377,7 +386,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 //        if (cell instanceof AbstractEditableCell<?, ?>) {
 //            editableCells.add((AbstractEditableCell<?, ?>) cell);
 //        }
-        cellTable.addColumn(column, headerText);
+        dataGrid.addColumn(column, headerText);
         return column;
     }
     /**
