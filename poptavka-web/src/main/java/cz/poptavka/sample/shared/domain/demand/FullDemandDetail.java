@@ -12,7 +12,9 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
+import java.util.ArrayList;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
@@ -54,7 +56,7 @@ public class FullDemandDetail implements Serializable {
     private String title;
     private String description;
     private BigDecimal price;
-    private List<Supplier> excludedSuppliers;
+    private List<FullSupplierDetail> excludedSuppliers;
 
 
     /** for serialization. **/
@@ -98,7 +100,12 @@ public class FullDemandDetail implements Serializable {
         }
 
         detail.setClientId(demand.getClient().getId());
-        detail.setExcludedSuppliers(demand.getExcludedSuppliers());
+
+        List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
+        for (Supplier supplier : demand.getExcludedSuppliers()) {
+            excludedSuppliers.add(FullSupplierDetail.createFullSupplierDetail(supplier));
+        }
+        detail.setExcludedSuppliers(excludedSuppliers);
 
         return detail;
     }
@@ -350,11 +357,11 @@ public class FullDemandDetail implements Serializable {
         this.price = price;
     }
 
-    public List<Supplier> getExcludedSuppliers() {
+    public List<FullSupplierDetail> getExcludedSuppliers() {
         return excludedSuppliers;
     }
 
-    public void setExcludedSuppliers(List<Supplier> excludedSuppliers) {
+    public void setExcludedSuppliers(List<FullSupplierDetail> excludedSuppliers) {
         this.excludedSuppliers = excludedSuppliers;
     }
 
