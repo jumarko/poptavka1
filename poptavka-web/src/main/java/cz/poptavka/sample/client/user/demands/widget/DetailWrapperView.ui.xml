@@ -21,7 +21,8 @@
                 </center>
             </g:HTML>
         </g:SimplePanel>
+        <g:StackLayoutPanel ui:field="stackConversationPanel" unit='EM' visible="false"/>
         <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
-        <g:SimplePanel ui:field="replyHolder" />
+       	<g:SimplePanel ui:field="replyHolder" />
     </g:HTMLPanel>
 </ui:UiBinder>

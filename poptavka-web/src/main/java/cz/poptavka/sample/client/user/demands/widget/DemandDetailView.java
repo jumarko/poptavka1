@@ -99,7 +99,7 @@ public class DemandDetailView extends Composite {
         detailTable.setWidget(row, 1, new Label(new Integer(demand.getMinRating()).toString()));
         detailTable.setWidget(row++, 0, new Label(bundle.excludedSuppliers() + ":"));
         detailTable.setWidget(row, 1, new Label(demand.getExcludedSuppliers().toString()
-                .substring(1, demand.getLocalities().toString().length() - 1)));
+                .substring(1, demand.getExcludedSuppliers().toString().length() - 1)));
     }
 
     public void setDemanDetail(FullDemandDetail detail) {

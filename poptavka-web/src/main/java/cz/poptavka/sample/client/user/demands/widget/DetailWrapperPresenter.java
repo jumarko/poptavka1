@@ -6,6 +6,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -37,6 +38,8 @@ public class DetailWrapperPresenter extends
         UserConversationPanel getConversationPanel();
 
         SimplePanel getReplyHolder();
+
+        StackLayoutPanel getStackConversationPanel();
     }
 
     private ViewType type;
@@ -126,6 +129,8 @@ public class DetailWrapperPresenter extends
         if (type.equals(ViewType.EDITABLE)) {
             setMyDemandsViewReplyWidget();
         }
+        view.getStackConversationPanel().setVisible(true);
+        GWT.log("Visible stackLayouPanel:" + view.getStackConversationPanel().isVisible());
         view.getConversationPanel().setMessageList(messageList, true);
         toggleConversationLoading();
     }
