@@ -51,7 +51,6 @@ public class HomeDemandsPresenter extends
 //        void setAttachmentToken(String token);
 //
 //        void setLoginToken(String token);
-
         Widget getWidgetView();
 
         ListBox getCategoryList();
@@ -72,6 +71,7 @@ public class HomeDemandsPresenter extends
 
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
     }
+
     private int start = 0;
     private String resultSource = "";
     private long resultCount = 0;
@@ -139,8 +139,8 @@ public class HomeDemandsPresenter extends
             public void onChange(ChangeEvent arg0) {
                 view.getCellTable().setRowCount(0, true);
 
-                int newPage = Integer.valueOf(view.getPageSizeCombo()
-                        .getItemText(view.getPageSizeCombo().getSelectedIndex()));
+                int newPage = Integer.valueOf(view.getPageSizeCombo().
+                        getItemText(view.getPageSizeCombo().getSelectedIndex()));
 
                 view.getCellTable().setRowCount(newPage, true);
 
@@ -213,7 +213,6 @@ public class HomeDemandsPresenter extends
 //
 //        eventBus.setBodyWidget(view.getWidgetView());
 //    }
-
     public void onGoToHomeDemands() {
 
         eventBus.getAllDemandsCount();
@@ -222,7 +221,8 @@ public class HomeDemandsPresenter extends
 
         eventBus.getLocalities();
 
-        eventBus.setBodyWidget(view.getWidgetView());
+        // TODO praso - I have used autodispaly = true so this mthod shouldn't be necessary anymore
+//        eventBus.setBodyWidget(view.getWidgetView());
     }
 
     /**
@@ -282,5 +282,10 @@ public class HomeDemandsPresenter extends
 
     public void onStart() {
         // TODO co mozeme spustat v tejto metode?
+    }
+
+    public void onForward() {
+        // TODO praso - here we can mark menu button as currently selected
+//eventBus.selectCompanyMenu();
     }
 }

@@ -29,7 +29,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Events(startView = MainView.class, historyOnStart = true)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
-    @ChildModule(moduleClass = HomeModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = HomeModule.class, async = false, autoDisplay = false),
     @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false)
     })
 public interface MainEventBus extends EventBus {

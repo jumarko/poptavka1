@@ -6,10 +6,10 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -29,6 +29,14 @@ public interface HomeDemandsEventBus extends EventBus {
     @Start
     @Event(handlers = HomeDemandsPresenter.class)
     void start();
+
+    /*
+     * Forward event is called only if it is configured here. It there is nothing to carry out
+     * in this method we should remove forward event to save the number of method invocations
+     */
+    @Forward
+    @Event(handlers = HomeDemandsPresenter.class)
+    void forward();
 
     /** Popup methods for shoving, changing text and hiding,
      * for letting user know, that application is still working.
@@ -52,7 +60,6 @@ public interface HomeDemandsEventBus extends EventBus {
 
 //    @Event(forwardToParent = true)
 //    String atRegisterSupplier();
-
     //Demand
     @Event(handlers = HomeDemandsHandler.class)
     void getDemands(int fromResult, int toResult);
@@ -80,9 +87,8 @@ public interface HomeDemandsEventBus extends EventBus {
      *
      * @param content
      */
-    @Event(forwardToParent = true)
-    void setBodyWidget(Widget content);
-
+//    @Event(forwardToParent = true)
+//    void setBodyWidget(Widget content);
     @Event(handlers = HomeDemandsPresenter.class)
     void setLocalityData(ArrayList<LocalityDetail> list);
 
@@ -104,5 +110,4 @@ public interface HomeDemandsEventBus extends EventBus {
 
     @Event(handlers = HomeDemandsPresenter.class)
     void goToHomeDemands();
-
 }

@@ -34,7 +34,7 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
         if (historyName.equals("addToPath")) {
             eventBus.loadingShow(MSGS.loading());
             if (param.equals("root")) {
-                eventBus.atSuppliers();
+                eventBus.goToHomeSuppliers();
             } else {
                 eventBus.setCategoryID(Long.valueOf(param));
                 eventBus.removeFromPath(Long.valueOf(param));
@@ -47,9 +47,9 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 //        if (historyName.equals("atDemands")) {
 //            eventBus.atDemands();
 //        }
-        if (historyName.equals("atSuppliers")) {
-            eventBus.atSuppliers();
-        }
+//        if (historyName.equals("atSuppliers")) {
+//            eventBus.atSuppliers();
+//        }
         if (historyName.equals("atRegisterSupplier")) {
             eventBus.atRegisterSupplier();
         }
