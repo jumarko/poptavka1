@@ -38,6 +38,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField Hyperlink linkRegisterSupplier;
     @UiField Button demands;
     @UiField Button suppliers;
+    @UiField Button createSupplier;
 
     @UiField SimplePanel contentHolder;
 
@@ -113,20 +114,20 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         linkHome.setTargetHistoryToken(token);
     }
 
-    @Override
-    public void setDisplayDemandsToken(String token) {
-        linkDisplayDemands.setTargetHistoryToken(token);
-    }
+//    @Override
+//    public void setDisplayDemandsToken(String token) {
+//        linkDisplayDemands.setTargetHistoryToken(token);
+//    }
 
 //    @Override
 //    public void setDisplaySuppliersToken(String token) {
 //        linkDisplaySuppliers.setTargetHistoryToken(token);
 //    }
 
-    @Override
-    public void setRegisterSupplierToken(String token) {
-        linkRegisterSupplier.setTargetHistoryToken(token);
-    }
+//    @Override
+//    public void setRegisterSupplierToken(String token) {
+//        linkRegisterSupplier.setTargetHistoryToken(token);
+//    }
 
     @Override
     public HasClickHandlers getDemandsButton() {
@@ -138,4 +139,8 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
         return suppliers;
     }
 
+    @Override
+    public HasClickHandlers getCreateSupplierButton() {
+        return createSupplier;
+    }
 }

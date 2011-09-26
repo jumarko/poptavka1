@@ -23,10 +23,9 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         void setCreateDemandToken(String token);
 
-        void setDisplayDemandsToken(String token);
-
+//        void setDisplayDemandsToken(String token);
 //        void setDisplaySuppliersToken(String token);
-        void setRegisterSupplierToken(String token);
+//        void setRegisterSupplierToken(String token);
 
         Widget getWidgetView();
 
@@ -35,6 +34,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         HasClickHandlers getDemandsButton();
 
         HasClickHandlers getSuppliersButton();
+        HasClickHandlers getCreateSupplierButton();
     }
 
     private DemandCreationPresenter demandCreation;
@@ -50,7 +50,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
 //        view.setDisplaySuppliersToken(getTokenGenerator().atSuppliers());
 
-        view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
+//        view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
 
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
@@ -62,6 +62,12 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeSuppliers();
+            }
+        });
+        view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateSupplier();
             }
         });
     }

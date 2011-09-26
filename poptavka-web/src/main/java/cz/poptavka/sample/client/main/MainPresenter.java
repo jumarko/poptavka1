@@ -18,8 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
-import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
@@ -54,8 +52,8 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     private LocalitySelectorPresenter localitySelector = null;
     private FormDemandBasicPresenter demandBasicForm = null;
     private FormDemandAdvPresenter demandAdvForm = null;
-    private SupplierServicePresenter supplierService = null;
-    private SupplierInfoPresenter supplierInfo = null;
+//    private SupplierServicePresenter supplierService = null;
+//    private SupplierInfoPresenter supplierInfo = null;
 
     private LoginPopupPresenter login;
 
@@ -224,21 +222,21 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         demandAdvForm.initDemandAdvForm(holderWidget);
     }
 
-    public void onInitServiceForm(SimplePanel serviceHolder) {
-        if (supplierService != null) {
-            eventBus.removeHandler(supplierService);
-        }
-        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
-        supplierService.initServiceForm(serviceHolder);
-    }
-
-    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
-        if (supplierInfo != null) {
-            eventBus.removeHandler(supplierInfo);
-        }
-        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
-        supplierInfo.onInitSupplierForm(supplierInfoHolder);
-    }
+//    public void onInitServiceForm(SimplePanel serviceHolder) {
+//        if (supplierService != null) {
+//            eventBus.removeHandler(supplierService);
+//        }
+//        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
+//        supplierService.initServiceForm(serviceHolder);
+//    }
+//
+//    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
+//        if (supplierInfo != null) {
+//            eventBus.removeHandler(supplierInfo);
+//        }
+//        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
+//        supplierInfo.onInitSupplierForm(supplierInfoHolder);
+//    }
 
     public void onInitLoginWindow() {
         login = eventBus.addHandler(LoginPopupPresenter.class);

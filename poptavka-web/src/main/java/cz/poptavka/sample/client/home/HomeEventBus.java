@@ -20,7 +20,7 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
-import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
+import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
@@ -32,7 +32,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
     @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true)
+    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true)
 })
 public interface HomeEventBus extends EventBus {
 
@@ -61,8 +62,12 @@ public interface HomeEventBus extends EventBus {
 
 //    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
 //    String createToken(String token);
-    @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atRegisterSupplier();
+//    @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
+//    String atRegisterSupplier();
+
+    @Event(modulesToLoad = SupplierCreationModule.class)
+    void goToCreateSupplier();
+
 
     /**************************************************************************/
     /* Parent events. */
@@ -104,11 +109,11 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initDemandAdvForm(SimplePanel holderWidget);
 
-    @Event(forwardToParent = true)
-    void initServiceForm(SimplePanel serviceHolder);
-
-    @Event(forwardToParent = true)
-    void initSupplierForm(SimplePanel supplierInfoHolder);
+//    @Event(forwardToParent = true)
+//    void initServiceForm(SimplePanel serviceHolder);
+//
+//    @Event(forwardToParent = true)
+//    void initSupplierForm(SimplePanel supplierInfoHolder);
 
     /** main module calls - Handler calls
      * TODO praso - I don't like this. Rework it!
@@ -134,7 +139,10 @@ public interface HomeEventBus extends EventBus {
      * TODO praso - rename this method to changeBody()
      * @param content
      */
-    @DisplayChildModuleView({ HomeSuppliersModule.class, HomeDemandsModule.class })
+    @DisplayChildModuleView({
+        HomeSuppliersModule.class,
+        HomeDemandsModule.class,
+        SupplierCreationModule.class })
     @Event(handlers = HomePresenter.class)
     void setBodyWidget(Widget content);
 
@@ -188,10 +196,6 @@ public interface HomeEventBus extends EventBus {
 
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
-
-    /** Supplier registration. **/
-    @Event(handlers = HomeHandler.class)
-    void registerSupplier(UserDetail newSupplier);
 
     /* Business events handled by Handlers. */
 }

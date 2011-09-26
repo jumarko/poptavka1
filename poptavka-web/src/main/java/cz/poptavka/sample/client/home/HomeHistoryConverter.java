@@ -53,9 +53,9 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 //        if (historyName.equals("atSuppliers")) {
 //            eventBus.atSuppliers();
 //        }
-        if (historyName.equals("atRegisterSupplier")) {
-            eventBus.atRegisterSupplier();
-        }
+//        if (historyName.equals("atRegisterSupplier")) {
+//            eventBus.atRegisterSupplier();
+//        }
     }
 
     @Override

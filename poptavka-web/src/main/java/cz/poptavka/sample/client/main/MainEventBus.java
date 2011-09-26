@@ -17,7 +17,7 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.HomeModule;
-import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
+//import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
@@ -70,7 +70,7 @@ public interface MainEventBus extends EventBus {
     void atCreateDemand();
 
     @Event(modulesToLoad = HomeModule.class)
-    void atRegisterSupplier();
+    void goToCreateSupplier();
 
     /**
      * Sets widget to View's body section. Body section can hold one widget only.
@@ -125,17 +125,18 @@ public interface MainEventBus extends EventBus {
     void getChildLocalities(int localityType, String locCode);
 
     /** Supplier registration **/
-    @Event(handlers = MainPresenter.class)
-    void initServiceForm(SimplePanel serviceHolder);
+//    @Event(handlers = MainPresenter.class)
+//    void initServiceForm(SimplePanel serviceHolder);
+//
+//    @Event(handlers = MainPresenter.class)
+//    void initSupplierForm(SimplePanel supplierInfoHolder);
 
-    @Event(handlers = MainPresenter.class)
-    void initSupplierForm(SimplePanel supplierInfoHolder);
-
+    // TODO praso - this should be moved to HomeModule. I don't see reason to have it in RootModule
     @Event(handlers = MainHandler.class)
     void checkFreeEmail(String value);
 
-    @Event(handlers = SupplierInfoPresenter.class,
-            modulesToLoad = HomeModule.class)
+//    @Event(handlers = SupplierInfoPresenter.class,
+    @Event(modulesToLoad = HomeModule.class)
     void checkFreeEmailResponse(Boolean result);
 
     /** NO EDITING AFTER THIS LINE

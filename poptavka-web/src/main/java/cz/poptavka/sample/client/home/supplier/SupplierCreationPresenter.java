@@ -20,9 +20,9 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
+import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
@@ -36,12 +36,10 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
-    extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, HomeEventBus> {
+        extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    SupplierCreationPresenter");
-
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface CreationViewInterface extends LazyView {
 
@@ -72,6 +70,7 @@ public class SupplierCreationPresenter
 
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 int eventItem = event.getItem();
@@ -85,6 +84,7 @@ public class SupplierCreationPresenter
             }
         });
         view.getRegisterButton().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(SERVICE)) {
@@ -96,11 +96,25 @@ public class SupplierCreationPresenter
             }
         });
         view.getConditionLink().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent arg0) {
                 view.showConditions();
             }
         });
+    }
+
+    public void onStart() {
+        // TODO praso
+    }
+
+    public void onForward() {
+        // TODO praso - switch css to selected menu button.
+        //eventBus.selectCompanyMenu();
+    }
+
+    public void onGoToCreateSupplier() {
+        this.onAtRegisterSupplier();
     }
 
     /**
@@ -109,8 +123,7 @@ public class SupplierCreationPresenter
      */
     public void onAtRegisterSupplier() {
         LOGGER.info("Initializing Supplier Registration Widget ... ");
-
-        eventBus.setBodyWidget(view.getWidgetView());
+//        eventBus.setBodyWidget(view.getWidgetView());
         //init parts
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
@@ -120,8 +133,6 @@ public class SupplierCreationPresenter
         eventBus.initLocalityWidget(view.getLocalityHolder());
         LOGGER.info(" -> init Service Form supplierService");
         initServices();
-
-
     }
 
     private void registerSupplier() {
@@ -139,7 +150,6 @@ public class SupplierCreationPresenter
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
     }
-
     private static final int INFO = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;
@@ -148,17 +158,17 @@ public class SupplierCreationPresenter
     private boolean canContinue(int step) {
         if (step == INFO) {
             ProvidesValidate widget =
-                (ProvidesValidate) view.getSupplierInfoHolder().getWidget();
+                    (ProvidesValidate) view.getSupplierInfoHolder().getWidget();
             return widget.isValid();
         }
         if (step == CATEGORY) {
             ProvidesValidate widget =
-                (ProvidesValidate) view.getCategoryHolder().getWidget();
+                    (ProvidesValidate) view.getCategoryHolder().getWidget();
             return widget.isValid();
         }
         if (step == LOCALITY) {
             ProvidesValidate widget =
-                (ProvidesValidate) view.getLocalityHolder().getWidget();
+                    (ProvidesValidate) view.getLocalityHolder().getWidget();
             return widget.isValid();
         }
         if (step == SERVICE) {
@@ -167,22 +177,22 @@ public class SupplierCreationPresenter
         //can't reach
         return false;
     }
-
     @Inject
-    private SupplierRPCServiceAsync supplierService = null;
+    private SupplierRPCServiceAsync supplierRpcService = null;
 
     public void setService(SupplierRPCServiceAsync service) {
-        this.supplierService = service;
+        this.supplierRpcService = service;
     }
 
     private void initServices() {
-        supplierService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
+        supplierRpcService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
+
             @Override
             public void onFailure(Throwable arg0) {
                 // TODO create some good explanation with contact formular
                 SimpleIconLabel errorMsg =
-                    new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
-                            + "supplierService table initialization");
+                        new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
+                        + "supplierService table initialization");
                 errorMsg.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
                 view.getServiceHolder().setWidget(errorMsg);
             }
@@ -196,5 +206,22 @@ public class SupplierCreationPresenter
             }
         });
     }
+    private SupplierServicePresenter supplierService = null;
+    private SupplierInfoPresenter supplierInfo = null;
 
+    public void onInitServiceForm(SimplePanel serviceHolder) {
+        if (supplierService != null) {
+            eventBus.removeHandler(supplierService);
+        }
+        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
+        supplierService.initServiceForm(serviceHolder);
+    }
+
+    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
+        if (supplierInfo != null) {
+            eventBus.removeHandler(supplierInfo);
+        }
+        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
+        supplierInfo.onInitSupplierForm(supplierInfoHolder);
+    }
 }
