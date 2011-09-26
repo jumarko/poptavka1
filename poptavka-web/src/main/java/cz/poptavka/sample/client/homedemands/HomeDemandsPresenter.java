@@ -45,12 +45,12 @@ public class HomeDemandsPresenter extends
     public interface HomeDemandsViewInterface {
 
         void setDemand(FullDemandDetail demand);
-
 //        void setRegisterSupplierToken(String token);
 //
 //        void setAttachmentToken(String token);
 //
 //        void setLoginToken(String token);
+
         Widget getWidgetView();
 
         ListBox getCategoryList();
@@ -78,7 +78,7 @@ public class HomeDemandsPresenter extends
 
     //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
     /**
-     * Bind objects and theirs action handlers.
+     * Bind objects and their action handlers.
      */
     @Override
     public void bind() {
@@ -151,12 +151,12 @@ public class HomeDemandsPresenter extends
             }
         });
 
-        // TODO Martin - link na registraciu dodavatela nesmie byt vygenerovany token ale normalny
-        // button s clickHandlerom.
+        // TODO Martin - link na registraciu dodavatela nesmie byt vygenerovany
+        // token ale normalny button s ClickHandlerom. Hyperlink nepodporuje
+        // linkovanie medzi asnchronnymi modulami. Pouzivajte Hyperlink len v
+        // v ramci modulu!!!
 //        view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
-
 //        view.setAttachmentToken(getTokenGenerator().atAttachement());
-
 //        view.setLoginToken(getTokenGenerator().atLogin());
     }
     private AsyncDataProvider dataProvider = null;
@@ -168,6 +168,23 @@ public class HomeDemandsPresenter extends
 //            //will be implemented later, when allDemandsCount value will be retrieved
 //        }
 //    };
+
+    public void onStart() {
+        // TODO praso - probably history initialization will be here
+    }
+
+    public void onForward() {
+        // TODO praso - here we can switch css for selected menu button
+        //eventBus.selectHomeDemandsMenuButton();
+    }
+
+    public void onGoToHomeDemands() {
+        eventBus.getAllDemandsCount();
+        eventBus.getCategories();
+        eventBus.getLocalities();
+        // TODO praso - I have used autodispaly = true so this method shouldn't be necessary anymore
+//        eventBus.setBodyWidget(view.getWidgetView());
+    }
 
     public void onCreateAsyncDataProvider() {
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
@@ -201,28 +218,6 @@ public class HomeDemandsPresenter extends
 
     public void onSetResultCount(long count) {
         this.resultCount = count;
-    }
-
-//    public void onAtDemands() {
-//
-//        eventBus.getAllDemandsCount();
-//
-//        eventBus.getCategories();
-//
-//        eventBus.getLocalities();
-//
-//        eventBus.setBodyWidget(view.getWidgetView());
-//    }
-    public void onGoToHomeDemands() {
-
-        eventBus.getAllDemandsCount();
-
-        eventBus.getCategories();
-
-        eventBus.getLocalities();
-
-        // TODO praso - I have used autodispaly = true so this mthod shouldn't be necessary anymore
-//        eventBus.setBodyWidget(view.getWidgetView());
     }
 
     /**
@@ -278,14 +273,5 @@ public class HomeDemandsPresenter extends
     public void onSetDemand(FullDemandDetail demand) {
         view.getDemandView().setVisible(true);
         view.setDemand(demand);
-    }
-
-    public void onStart() {
-        // TODO co mozeme spustat v tejto metode?
-    }
-
-    public void onForward() {
-        // TODO praso - here we can mark menu button as currently selected
-//eventBus.selectCompanyMenu();
     }
 }

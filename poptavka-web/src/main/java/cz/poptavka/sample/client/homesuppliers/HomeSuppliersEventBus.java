@@ -1,6 +1,8 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * HomeSuppliersEventBus servers all events for module HomeSuppliersModule.
+ *
+ * Specification:
+ * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis dodavatelov
  */
 package cz.poptavka.sample.client.homesuppliers;
 
@@ -27,54 +29,42 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = SuppliersPresenter.class)
     void start();
 
-    /* navigation events */
-    /*
+    /**
      * Forward event is called only if it is configured here. It there is nothing to carry out
-     * in this method we should remove forward event to save the number of method invocations
+     * in this method we should remove forward event to save the number of method invocations.
      */
     @Forward
     @Event(handlers = SuppliersPresenter.class)
     void forward();
 
+    /* Navigation events. */
+    /**
+     * The only entry point to this module due to code-splitting and exclusive fragment.
+     */
     @Event(handlers = SuppliersPresenter.class)
     void goToHomeSuppliers();
 
-    //Display root categories
+    /**
+     * Display root categories.
+     */
     @Event(handlers = SuppliersPresenter.class)
     void atSuppliers();
 
-    //Display subcategories, suppliers of selected category and detail of selected supplier
+    /**
+     * Display sub-categories, suppliers of selected category and detail of selected supplier.
+     */
     @Event(handlers = SuppliersPresenter.class)
     void atDisplaySuppliers(CategoryDetail categoryDetail);
 
-    /* Business events */
-    //Category
-    @Event(handlers = SuppliersHandler.class)
-    void getSubCategories(Long category);
+    /* Parent events. */
+    @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
 
-    @Event(handlers = SuppliersHandler.class)
-    void getCategories();
+    @Event(forwardToParent = true)
+    void loadingHide();
 
-    //Locality
-    @Event(handlers = SuppliersHandler.class)
-    void getLocalities();
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategory(int start, int count, Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCount(Long category, String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCountByCategory(Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCountByCategoryLocality(Long category, String locality);
-
-    //Display
+    /* Business events. */
+    /* Business events handled by Presenters. */
     @Event(handlers = SuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
@@ -99,10 +89,28 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = SuppliersPresenter.class)
     void resetDisplaySuppliersPager(int totalFoundNew);
 
-    /* Events from parent */
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
+    /* Business events handled by Handlers. */
+    @Event(handlers = SuppliersHandler.class)
+    void getSubCategories(Long category);
 
-    @Event(forwardToParent = true)
-    void loadingHide();
+    @Event(handlers = SuppliersHandler.class)
+    void getCategories();
+
+    @Event(handlers = SuppliersHandler.class)
+    void getLocalities();
+
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
+
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersByCategory(int start, int count, Long category);
+
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersCount(Long category, String locality);
+
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersCountByCategory(Long category);
+
+    @Event(handlers = SuppliersHandler.class)
+    void getSuppliersCountByCategoryLocality(Long category, String locality);
 }

@@ -35,11 +35,14 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
             eventBus.loadingShow(MSGS.loading());
             if (param.equals("root")) {
                 eventBus.goToHomeSuppliers();
-            } else {
-                eventBus.setCategoryID(Long.valueOf(param));
-                eventBus.removeFromPath(Long.valueOf(param));
-                eventBus.getSubCategories(Long.valueOf(param));
             }
+//            else {
+                // TODO praso - add history management for homeSuppliers. I will
+                // comment Martin's methods for now
+//                eventBus.setCategoryID(Long.valueOf(param));
+//                eventBus.removeFromPath(Long.valueOf(param));
+//                eventBus.getSubCategories(Long.valueOf(param));
+//            }
         }
         if (historyName.equals("atCreateDemand")) {
             eventBus.atCreateDemand();

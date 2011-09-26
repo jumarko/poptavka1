@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
@@ -20,16 +21,12 @@ import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationPresenter;
-import cz.poptavka.sample.client.home.suppliers.SuppliersHandler;
-import cz.poptavka.sample.client.home.suppliers.SuppliersPresenter;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -43,59 +40,58 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomePresenter.class)
     void start();
 
-    /** init method  **/
+    @Forward
+    @Event(handlers = HomePresenter.class)
+    void forward();
+
+    /**************************************************************************/
+    /* Navigation events. */
     @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
     String atHome();
 
-    /** init method. **/
-    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
-    void displayMenu();
-
-    /** Display HomeView - parent Widget for public section. **/
-    @Event(forwardToParent = true)
-    void setBodyHolderWidget(Widget body);
-
-    /**
-     * Assign widget to selected part and automatically removes previous widget. Optionally can remove widgets from
-     * others anchors
-     * TODO praso - rename this method to changeBody()
-     * @param content
-     */
-    @DisplayChildModuleView({ HomeSuppliersModule.class, HomeDemandsModule.class })
-    @Event(handlers = HomePresenter.class)
-    void setBodyWidget(Widget content);
-
-    /** navigation events.  */
-    @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atCreateDemand();
+    @Event(modulesToLoad = HomeSuppliersModule.class)
+    void goToHomeSuppliers();
 
     @Event(modulesToLoad = HomeDemandsModule.class)
     void goToHomeDemands();
 
-//    @Event(handlers = ????.class, historyConverter = HomeHistoryConverter.class)
-//    String atAttachement();
-//    @Event(handlers = ????, historyConverter = HomeHistoryConverter.class)
-//    String atLogin();
-    // moved do HomeSuppliersModule
-    //Display root categories
-//    @Event(handlers = SuppliersPresenter.class)
-//    String atSuppliers();
-
-    /* Navigation event that initiates HomeSuppliersModule. */
-    @Event(modulesToLoad = HomeSuppliersModule.class)
-    void goToHomeSuppliers();
-
-    // moved do HomeSuppliersModule
-    //Display subcategories, suppliers of selected category and detail of selected supplier
-    @Event(handlers = SuppliersPresenter.class)
-    void atDisplaySuppliers(CategoryDetail categoryDetail);
+    // TODO praso - will be replaced by separate module.
+    @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
+    String atCreateDemand();
 
 //    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
 //    String createToken(String token);
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
     String atRegisterSupplier();
 
-    /** main module calls - common widgets */
+    /**************************************************************************/
+    /* Parent events. */
+    /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */
+    /**
+     * Display HomeView - parent Widget for public section.
+     */
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(Widget body);
+
+    /**
+     * Method for setting public UI layout.
+     */
+    @Event(forwardToParent = true)
+    void setPublicLayout();
+
+    /**
+     * Popup methods for shoving, changing text and hiding,
+     * for letting user know, that application is still working.
+     * Every Child Module HAVE TO implement this method calls.
+     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
+     */
+    @Event(forwardToParent = true)
+    void loadingShow(String loadingMessage);
+
+    @Event(forwardToParent = true)
+    void loadingHide();
+
+    /* main module calls - common widgets */
     @Event(forwardToParent = true)
     void initDemandBasicForm(SimplePanel holderWidget);
 
@@ -114,7 +110,9 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initSupplierForm(SimplePanel supplierInfoHolder);
 
-    /** main module calls - Handler calls */
+    /** main module calls - Handler calls
+     * TODO praso - I don't like this. Rework it!
+     */
     @Event(forwardToParent = true)
     void createDemand(FullDemandDetail newDemand, Long clientId);
 
@@ -124,7 +122,35 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void checkFreeEmail(String value);
 
-    /** demand creation related events **/
+    /**************************************************************************/
+    /* Business events. */
+    /* Business events handled by Presenters. */
+    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
+    void displayMenu();
+
+    /**
+     * Assign widget to selected part and automatically removes previous widget. Optionally can remove widgets from
+     * others anchors
+     * TODO praso - rename this method to changeBody()
+     * @param content
+     */
+    @DisplayChildModuleView({ HomeSuppliersModule.class, HomeDemandsModule.class })
+    @Event(handlers = HomePresenter.class)
+    void setBodyWidget(Widget content);
+
+    @LoadChildModuleError
+    @Event(handlers = HomePresenter.class)
+    void errorOnLoad(Throwable reason);
+
+    @BeforeLoadChildModule
+    @Event(handlers = HomePresenter.class)
+    void beforeLoad();
+
+    @AfterLoadChildModule
+    @Event(handlers = HomePresenter.class)
+    void afterLoad();
+
+    /** demand creation related events. **/
     @Event(handlers = FormLoginPresenter.class)
     void initLoginForm(SimplePanel holderWidget);
 
@@ -153,7 +179,7 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = DemandCreationPresenter.class)
     void loginError();
 
-    /** Home category display widget and related call */
+    /** Home category display widget and related call. */
     @Event(handlers = CategoryDisplayPresenter.class)
     void initCategoryDisplay(SimplePanel holderWidget);
 
@@ -163,95 +189,9 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
-    /** Supplier registration **/
+    /** Supplier registration. **/
     @Event(handlers = HomeHandler.class)
     void registerSupplier(UserDetail newSupplier);
 
-    /** Common method calls **/
-    /** DO NOT EDIT **/
-    /** Method for setting public UI layout. */
-    @Event(forwardToParent = true)
-    void setPublicLayout();
-
-    /** Popup methods for shoving, changing text and hiding,
-     * for letting user know, that application is still working.
-     * Every Child Module HAVE TO implement this method calls.
-     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
-     */
-    @Event(forwardToParent = true)
-    void loadingShow(String loadingMessage);
-
-    @Event(forwardToParent = true)
-    void loadingHide();
-
-    /** NO METHODS AFTER THIS **/
-    /** DISPLAT SUPPLIERS */
-    //Category
-    @Event(handlers = SuppliersHandler.class)
-    void getSubCategories(Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getCategories();
-
-    //Locality
-    @Event(handlers = SuppliersHandler.class)
-    void getLocalities();
-
-    //Suppliers - wil be moved to HomeSuppliersModule
-//    @Event(handlers = RootPresenter.class)
-//    void getSuppliers(Long category, Long locality);
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategory(int start, int count, Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCount(Long category, String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCountByCategory(Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCountByCategoryLocality(Long category, String locality);
-
-    //Display
-    @Event(handlers = SuppliersPresenter.class)
-    void displayRootcategories(ArrayList<CategoryDetail> list);
-
-    @Event(handlers = SuppliersPresenter.class)
-    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
-
-    @Event(handlers = SuppliersPresenter.class)
-    void displaySuppliers(ArrayList<FullSupplierDetail> list);
-
-    @Event(handlers = SuppliersPresenter.class)
-    void setLocalityData(ArrayList<LocalityDetail> list);
-
-    @Event(handlers = SuppliersPresenter.class, historyConverter = HomeHistoryConverter.class)
-    void addToPath(CategoryDetail category);
-
-    @Event(handlers = SuppliersPresenter.class)
-    void removeFromPath(Long code);
-
-    @Event(handlers = SuppliersPresenter.class)
-    void setCategoryID(Long categoryCode);
-
-    @Event(handlers = SuppliersPresenter.class)
-    void resetDisplaySuppliersPager(int totalFoundNew);
-
-    //DISPLAY DEMANDS - was moved to homedemands package
-
-    /* Business events */
-    @LoadChildModuleError
-    @Event(handlers = HomePresenter.class)
-    void errorOnLoad(Throwable reason);
-
-    @BeforeLoadChildModule
-    @Event(handlers = HomePresenter.class)
-    void beforeLoad();
-
-    @AfterLoadChildModule
-    @Event(handlers = HomePresenter.class)
-    void afterLoad();
+    /* Business events handled by Handlers. */
 }

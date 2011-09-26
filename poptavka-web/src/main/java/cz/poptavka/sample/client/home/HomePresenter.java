@@ -66,20 +66,27 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         });
     }
 
+    public void onStart() {
+        // for now do nothing...
+    }
+
+    public void onForward() {
+        // for now do nothing...
+    }
+
     public void onAtHome() {
         LOGGER.info("INIT Home Widget");
         onDisplayMenu();
         // TODO initial homepage widget compilation
+    }
 
+    public void onSetBodyWidget(Widget content) {
+        view.setBody(content);
     }
 
     public void onDisplayMenu() {
         eventBus.setPublicLayout();
         eventBus.setBodyHolderWidget(view.getWidgetView());
-    }
-
-    public void onSetBodyWidget(Widget content) {
-        view.setBody(content);
     }
 
     /* Business events for child modules loading */
@@ -96,9 +103,5 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     public void onAfterLoad() {
         // TODO praso -  hide wait loop
 //view.setWaitVisible( false );
-    }
-
-    public void onStart() {
-        // for now do nothing...
     }
 }

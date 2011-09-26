@@ -162,43 +162,15 @@ public class SuppliersPresenter
         });
     }
 
-    public void onResetDisplaySuppliersPager(int totalFoundNew) {
-        this.totalFound = totalFoundNew;
-        view.getDataGrid().setPageSize(0);
-
-        view.getPager().setPage(0);
-        if (!dataProviderInitialized) {
-            this.dataProvider.addDataDisplay(view.getDataGrid());
-            dataProviderInitialized = true;
-        }
+    public void onStart() {
+        // TODO praso
     }
-    private int start = 0;
-    private int totalFound = 0;
-    private boolean dataProviderInitialized = false;
-//    public void onCreateAsyncDataProviderSupplier(final long totalFound) {
-//        this.start = 0;
-    private AsyncDataProvider dataProvider = new AsyncDataProvider<SupplierDetail>() {
 
-        @Override
-        protected void onRangeChanged(HasData<SupplierDetail> display) {
-            view.getDataGrid().setPageSize(view.getPageSize());
-            display.setRowCount(totalFound);
-            if (totalFound == 0) {
-                return;
-            }
-            start = display.getVisibleRange().getStart();
-            int length = display.getVisibleRange().getLength();
-            if (view.getLocalityList().getSelectedIndex() == 0) {
-                eventBus.getSuppliersByCategory(start, start + length, lastUsedCategoryID);
-            } else {
-                eventBus.getSuppliersByCategoryLocality(start, start + length,
-                        lastUsedCategoryID, view.getSelectedLocality());
-            }
-            eventBus.loadingHide();
-        }
-    };
+    public void onForward() {
+        // TODO praso - switch css to selected menu button.
+        //eventBus.selectCompanyMenu();
+    }
 
-//    }
     public void onGoToHomeSuppliers() {
         eventBus.atSuppliers();
     }
@@ -237,6 +209,42 @@ public class SuppliersPresenter
 // TODO praso - it shouldn't be necessary to call setBodyWidget since we use autodisplay feature
 //        eventBus.setBodyWidget(view.getWidgetView());
     }
+
+    public void onResetDisplaySuppliersPager(int totalFoundNew) {
+        this.totalFound = totalFoundNew;
+        view.getDataGrid().setPageSize(0);
+
+        view.getPager().setPage(0);
+        if (!dataProviderInitialized) {
+            this.dataProvider.addDataDisplay(view.getDataGrid());
+            dataProviderInitialized = true;
+        }
+    }
+    private int start = 0;
+    private int totalFound = 0;
+    private boolean dataProviderInitialized = false;
+//    public void onCreateAsyncDataProviderSupplier(final long totalFound) {
+//        this.start = 0;
+    private AsyncDataProvider dataProvider = new AsyncDataProvider<SupplierDetail>() {
+
+        @Override
+        protected void onRangeChanged(HasData<SupplierDetail> display) {
+            view.getDataGrid().setPageSize(view.getPageSize());
+            display.setRowCount(totalFound);
+            if (totalFound == 0) {
+                return;
+            }
+            start = display.getVisibleRange().getStart();
+            int length = display.getVisibleRange().getLength();
+            if (view.getLocalityList().getSelectedIndex() == 0) {
+                eventBus.getSuppliersByCategory(start, start + length, lastUsedCategoryID);
+            } else {
+                eventBus.getSuppliersByCategoryLocality(start, start + length,
+                        lastUsedCategoryID, view.getSelectedLocality());
+            }
+            eventBus.loadingHide();
+        }
+    };
 
     public void onDisplayRootcategories(ArrayList<CategoryDetail> rootCategories) {
         view.displayRootCategories(COLUMNS, rootCategories);
@@ -309,14 +317,5 @@ public class SuppliersPresenter
 
     public void onSetCategoryID(Long categoryID) {
         this.lastUsedCategoryID = categoryID;
-    }
-
-    public void onForward() {
-        // TODO praso - here we can mark menu button as currently selected
-//eventBus.selectCompanyMenu();
-    }
-
-    public void onStart() {
-        // TODO co mozeme spustat v tejto metode?
     }
 }

@@ -26,69 +26,40 @@ import java.util.List;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeDemandsEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
     @Start
     @Event(handlers = HomeDemandsPresenter.class)
     void start();
 
-    /*
+    /**
      * Forward event is called only if it is configured here. It there is nothing to carry out
-     * in this method we should remove forward event to save the number of method invocations
+     * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
      */
     @Forward
     @Event(handlers = HomeDemandsPresenter.class)
     void forward();
 
-    /** Popup methods for shoving, changing text and hiding,
-     * for letting user know, that application is still working.
-     * Every Child Module HAVE TO implement this method calls.
-     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
+    /* Navigation events. */
+    /**
+     * The only entry point to this module due to code-splitting and exclusive fragment.
      */
+    @Event(handlers = HomeDemandsPresenter.class)
+    void goToHomeDemands();
+
+    /* Parent events. */
+    /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getAllDemandsCount();
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCountCategory(long id);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCountLocality(String code);
-
-    @Event(handlers = HomeDemandsPresenter.class)
-    void setDemand(FullDemandDetail demand);
-
-//    @Event(forwardToParent = true)
-//    String atRegisterSupplier();
-    //Demand
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemands(int fromResult, int toResult);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsByCategories(int fromResult, int toResult, long id);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsByLocalities(int fromResult, int toResult, String id);
 
     @Event(forwardToParent = true)
     void loadingHide();
 
-    /** NO METHODS AFTER THIS **/
-    @Event(handlers = HomeDemandsHandler.class)
-    void getCategories();
-
-    //Locality
-    @Event(handlers = HomeDemandsHandler.class)
-    void getLocalities();
-
-    /**
-     * Assign widget to selected part and automatically removes previous widget. Optionally can remove widgets from
-     * others anchors
-     *
-     * @param content
-     */
-//    @Event(forwardToParent = true)
-//    void setBodyWidget(Widget content);
+    /* Business events. */
+    /* Business events handled by Presenters. */
     @Event(handlers = HomeDemandsPresenter.class)
     void setLocalityData(ArrayList<LocalityDetail> list);
 
@@ -109,5 +80,30 @@ public interface HomeDemandsEventBus extends EventBus {
     void displayDemands(List<FullDemandDetail> result);
 
     @Event(handlers = HomeDemandsPresenter.class)
-    void goToHomeDemands();
+    void setDemand(FullDemandDetail demand);
+
+    /* Business events handled by Handlers. */
+    @Event(handlers = HomeDemandsHandler.class)
+    void getAllDemandsCount();
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getDemandsCountCategory(long id);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getDemandsCountLocality(String code);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getDemands(int fromResult, int toResult);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getDemandsByCategories(int fromResult, int toResult, long id);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getDemandsByLocalities(int fromResult, int toResult, String id);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getCategories();
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getLocalities();
 }
