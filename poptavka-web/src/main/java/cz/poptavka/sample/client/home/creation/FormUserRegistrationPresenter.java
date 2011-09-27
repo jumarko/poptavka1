@@ -18,14 +18,13 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = FormUserRegistrationView.class)
 public class FormUserRegistrationPresenter extends
-    LazyPresenter<FormUserRegistrationPresenter.FormRegistrationInterface, HomeEventBus> {
+    LazyPresenter<FormUserRegistrationPresenter.FormRegistrationInterface, DemandCreationEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
@@ -129,7 +128,7 @@ public class FormUserRegistrationPresenter extends
         }
     }
 
-    /** Visualization methods **/
+    /** Visualization methods. **/
     private void initVisualMailCheck(String value) {
         // TODO change to global status changer eventBus call
         view.getMailStatus().setState(State.LOAD_24);

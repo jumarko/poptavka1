@@ -49,6 +49,11 @@
                         <ui:msg key="createSupplier">createSupplier</ui:msg>
                     </g:Button>
                 </li>
+                <li>
+                    <g:Button ui:field="createDemand" styleName='{res.layout.homeMenu}'>
+                        <ui:msg key="createDemand">createDemand</ui:msg>
+                    </g:Button>
+                </li>
             </ul>
         </div>
         <!-- menu END -->

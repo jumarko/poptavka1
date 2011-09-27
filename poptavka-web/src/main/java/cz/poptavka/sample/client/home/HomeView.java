@@ -39,6 +39,7 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField Button demands;
     @UiField Button suppliers;
     @UiField Button createSupplier;
+    @UiField Button createDemand;
 
     @UiField SimplePanel contentHolder;
 
@@ -142,5 +143,10 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @Override
     public HasClickHandlers getCreateSupplierButton() {
         return createSupplier;
+    }
+
+    @Override
+    public HasClickHandlers getCreateDemandButton() {
+        return createDemand;
     }
 }

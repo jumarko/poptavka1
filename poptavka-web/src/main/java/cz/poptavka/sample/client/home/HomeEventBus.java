@@ -16,24 +16,21 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
+import cz.poptavka.sample.client.home.creation.DemandCreationModule;
 
-import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
-import cz.poptavka.sample.client.home.creation.FormLoginPresenter;
-import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
     @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true)
+    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true)
 })
 public interface HomeEventBus extends EventBus {
 
@@ -57,8 +54,8 @@ public interface HomeEventBus extends EventBus {
     void goToHomeDemands();
 
     // TODO praso - will be replaced by separate module.
-    @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
-    String atCreateDemand();
+//    @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
+//    String atCreateDemand();
 
 //    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
 //    String createToken(String token);
@@ -68,6 +65,8 @@ public interface HomeEventBus extends EventBus {
     @Event(modulesToLoad = SupplierCreationModule.class)
     void goToCreateSupplier();
 
+    @Event(modulesToLoad = DemandCreationModule.class)
+    void goToCreateDemand();
 
     /**************************************************************************/
     /* Parent events. */
@@ -96,9 +95,9 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void loadingHide();
 
-    /* main module calls - common widgets */
-    @Event(forwardToParent = true)
-    void initDemandBasicForm(SimplePanel holderWidget);
+//    /* main module calls - common widgets */
+//    @Event(forwardToParent = true)
+//    void initDemandBasicForm(SimplePanel holderWidget);
 
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget);
@@ -106,8 +105,8 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel holderWidget);
 
-    @Event(forwardToParent = true)
-    void initDemandAdvForm(SimplePanel holderWidget);
+//    @Event(forwardToParent = true)
+//    void initDemandAdvForm(SimplePanel holderWidget);
 
 //    @Event(forwardToParent = true)
 //    void initServiceForm(SimplePanel serviceHolder);
@@ -118,14 +117,14 @@ public interface HomeEventBus extends EventBus {
     /** main module calls - Handler calls
      * TODO praso - I don't like this. Rework it!
      */
-    @Event(forwardToParent = true)
-    void createDemand(FullDemandDetail newDemand, Long clientId);
+//    @Event(forwardToParent = true)
+//    void createDemand(FullDemandDetail newDemand, Long clientId);
 
     @Event(forwardToParent = true)
     void getRootCategories();
 
-    @Event(forwardToParent = true)
-    void checkFreeEmail(String value);
+//    @Event(forwardToParent = true)
+//    void checkFreeEmail(String value);
 
     /**************************************************************************/
     /* Business events. */
@@ -142,6 +141,7 @@ public interface HomeEventBus extends EventBus {
     @DisplayChildModuleView({
         HomeSuppliersModule.class,
         HomeDemandsModule.class,
+        DemandCreationModule.class,
         SupplierCreationModule.class })
     @Event(handlers = HomePresenter.class)
     void setBodyWidget(Widget content);
@@ -159,33 +159,34 @@ public interface HomeEventBus extends EventBus {
     void afterLoad();
 
     /** demand creation related events. **/
-    @Event(handlers = FormLoginPresenter.class)
-    void initLoginForm(SimplePanel holderWidget);
+//    @Event(handlers = FormLoginPresenter.class)
+//    void initLoginForm(SimplePanel holderWidget);
 
-    @Event(handlers = DemandCreationPresenter.class)
-    void toggleLoginRegistration();
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void toggleLoginRegistration();
 
-    @Event(handlers = FormUserRegistrationPresenter.class, passive = true)
-    void checkFreeEmailResponse(Boolean result);
+    // TODO praso - this should be moved somewhere else. Bud I don't know where :)
+//    @Event(handlers = FormUserRegistrationPresenter.class, passive = true)
+//    void checkFreeEmailResponse(Boolean result);
 //    void checkFreeEmailResponse();
 
-    @Event(handlers = FormUserRegistrationPresenter.class)
-    void initRegistrationForm(SimplePanel holderWidget);
+//    @Event(handlers = FormUserRegistrationPresenter.class)
+//    void initRegistrationForm(SimplePanel holderWidget);
     //logic flow order representing registering client and then creating his demand
 
-    @Event(handlers = HomeHandler.class)
-    void registerNewClient(UserDetail newClient);
+//    @Event(handlers = HomeHandler.class)
+//    void registerNewClient(UserDetail newClient);
 
-    @Event(handlers = DemandCreationPresenter.class)
-    void prepareNewDemandForNewClient(UserDetail client);
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void prepareNewDemandForNewClient(UserDetail client);
 
     //alternative way of loging - verifying
-    @Event(handlers = HomeHandler.class)
-    void verifyExistingClient(UserDetail client);
+//    @Event(handlers = HomeHandler.class)
+//    void verifyExistingClient(UserDetail client);
     //error output
 
-    @Event(handlers = DemandCreationPresenter.class)
-    void loginError();
+//    @Event(handlers = DemandCreationPresenter.class)
+//    void loginError();
 
     /** Home category display widget and related call. */
     @Event(handlers = CategoryDisplayPresenter.class)

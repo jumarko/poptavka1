@@ -3,7 +3,6 @@ package cz.poptavka.sample.client.main;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -124,48 +123,49 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         LOGGER.info("ending category service call");
     }
 
-    /**
-     * Creates new demand.
-     *
-     * @param detail
-     *            front-end entity of demand
-     * @param clientId
-     *            client id
-     */
+    // TODO remove these methods.
+//    /**
+//     * Creates new demand.
+//     *
+//     * @param detail
+//     *            front-end entity of demand
+//     * @param clientId
+//     *            client id
+//     */
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
-        GWT.log("Am I here?");
-        demandService.createNewDemand(detail, clientId,
-                new AsyncCallback<FullDemandDetail>() {
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        eventBus.loadingHide();
-                        Window.alert(arg0.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(FullDemandDetail result) {
-                        // signal event
-                        eventBus.loadingHide();
-                        // TODO forward to user/atAccount
-//                        eventBus.addNewDemand(result);
-                    }
-                });
-        LOGGER.info("submitting new demand");
+//        GWT.log("Am I here?");
+//        demandService.createNewDemand(detail, clientId,
+//                new AsyncCallback<FullDemandDetail>() {
+//                    @Override
+//                    public void onFailure(Throwable arg0) {
+//                        eventBus.loadingHide();
+//                        Window.alert(arg0.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(FullDemandDetail result) {
+//                        // signal event
+//                        eventBus.loadingHide();
+//                        // TODO forward to user/atAccount
+////                        eventBus.addNewDemand(result);
+//                    }
+//                });
+//        LOGGER.info("submitting new demand");
     }
 
-    public void onCheckFreeEmail(String email) {
-        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
-            @Override
-            public void onFailure(Throwable arg0) {
-            }
-
-            @Override
-            public void onSuccess(Boolean result) {
-                LOGGER.fine("result of compare " + result);
-                eventBus.checkFreeEmailResponse(result);
-                // eventBus.checkFreeEmailResponse();
-            }
-        });
-    }
+//    public void onCheckFreeEmail(String email) {
+//        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+//            @Override
+//            public void onFailure(Throwable arg0) {
+//            }
+//
+//            @Override
+//            public void onSuccess(Boolean result) {
+//                LOGGER.fine("result of compare " + result);
+//                eventBus.checkFreeEmailResponse(result);
+//                // eventBus.checkFreeEmailResponse();
+//            }
+//        });
+//    }
 
 }

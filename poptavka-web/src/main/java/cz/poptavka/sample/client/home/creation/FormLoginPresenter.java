@@ -11,12 +11,11 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = FormLoginView.class)
-public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLoginInterface, HomeEventBus> {
+public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLoginInterface, DemandCreationEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 

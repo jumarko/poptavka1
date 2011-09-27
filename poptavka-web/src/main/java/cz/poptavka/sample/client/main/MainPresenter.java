@@ -207,19 +207,19 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     }
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
-        if (demandBasicForm != null) {
-            eventBus.removeHandler(demandBasicForm);
-        }
-        demandBasicForm = eventBus.addHandler(FormDemandBasicPresenter.class);
-        demandBasicForm.initDemandBasicForm(holderWidget);
+//        if (demandBasicForm != null) {
+//            eventBus.removeHandler(demandBasicForm);
+//        }
+//        demandBasicForm = eventBus.addHandler(FormDemandBasicPresenter.class);
+//        demandBasicForm.initDemandBasicForm(holderWidget);
     }
-
+//
     public void onInitDemandAdvForm(SimplePanel holderWidget) {
-        if (demandAdvForm != null) {
-            eventBus.removeHandler(demandAdvForm);
-        }
-        demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
-        demandAdvForm.initDemandAdvForm(holderWidget);
+//        if (demandAdvForm != null) {
+//            eventBus.removeHandler(demandAdvForm);
+//        }
+//        demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
+//        demandAdvForm.initDemandAdvForm(holderWidget);
     }
 
 //    public void onInitServiceForm(SimplePanel serviceHolder) {

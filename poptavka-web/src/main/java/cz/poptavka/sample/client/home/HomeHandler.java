@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.home;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -11,10 +10,9 @@ import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
- * Handler for RPC calls for localities & categories
+ * Handler for RPC calls for localities & categories.
  *
  * @author Beho
  *
@@ -53,60 +51,65 @@ public class HomeHandler extends BaseEventHandler<HomeEventBus> {
 //    void setSupplierRPCService(SupplierRPCServiceAsync service) {
 //        supplierService = service;
 //    }
-    /**
-     * Verify identity of user, if exists in the system.
-     * If so, new demand is created.
-     *
-     * @param client existing user detail
-     */
-    public void onVerifyExistingClient(UserDetail client) {
-        LOGGER.fine("verify start");
-        clientService.verifyClient(client, new AsyncCallback<UserDetail>() {
 
-            @Override
-            public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
-            }
 
-            @Override
-            public void onSuccess(UserDetail client) {
-                LOGGER.fine("verify result");
-                if (client == null) {
-                    eventBus.loadingHide();
-                    eventBus.loginError();
-                    return;
-                }
-                if (client.getClientId() != -1) {
-                    eventBus.prepareNewDemandForNewClient(client);
-                } else {
-                    eventBus.loadingHide();
-                    eventBus.loginError();
-                }
-            }
-        });
-    }
+    // TODO praso moved to DemandCreationHandler
+//    /**
+//     * Verify identity of user, if exists in the system.
+//     * If so, new demand is created.
+//     *
+//     * @param client existing user detail
+//     */
+//    public void onVerifyExistingClient(UserDetail client) {
+//        LOGGER.fine("verify start");
+//        clientService.verifyClient(client, new AsyncCallback<UserDetail>() {
+//
+//            @Override
+//            public void onFailure(Throwable arg0) {
+//                // TODO Auto-generated method stub
+//            }
+//
+//            @Override
+//            public void onSuccess(UserDetail client) {
+//                LOGGER.fine("verify result");
+//                if (client == null) {
+//                    eventBus.loadingHide();
+//                    eventBus.loginError();
+//                    return;
+//                }
+//                if (client.getClientId() != -1) {
+//                    eventBus.prepareNewDemandForNewClient(client);
+//                } else {
+//                    eventBus.loadingHide();
+//                    eventBus.loginError();
+//                }
+//            }
+//        });
+//    }
 
-    /**
-     * Method registers new client and afterwards creates new demand.
-     *
-     * @param client newly created client
-     */
-    public void onRegisterNewClient(UserDetail client) {
-        clientService.createNewClient(client, new AsyncCallback<UserDetail>() {
 
-            @Override
-            public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onSuccess(UserDetail client) {
-                if (client.getClientId() != -1) {
-                    eventBus.prepareNewDemandForNewClient(client);
-                }
-            }
-        });
-    }
+    // TODO praso - moved to demandcreationhandler
+//    /**
+//     * Method registers new client and afterwards creates new demand.
+//     *
+//     * @param client newly created client
+//     */
+//    public void onRegisterNewClient(UserDetail client) {
+//        clientService.createNewClient(client, new AsyncCallback<UserDetail>() {
+//
+//            @Override
+//            public void onFailure(Throwable arg0) {
+//                // TODO Auto-generated method stub
+//            }
+//
+//            @Override
+//            public void onSuccess(UserDetail client) {
+//                if (client.getClientId() != -1) {
+//                    eventBus.prepareNewDemandForNewClient(client);
+//                }
+//            }
+//        });
+//    }
 //    public void onRegisterSupplier(UserDetail newSupplier) {
 //        supplierService.createNewSupplier(newSupplier, new AsyncCallback<UserDetail>() {
 //            @Override

@@ -18,12 +18,13 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.home.HomeEventBus;
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter.FormRegistrationInterface;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandAdvPresenter.FormDemandAdvViewInterface;
+import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter;
 import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter.FormDemandBasicInterface;
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
@@ -35,10 +36,15 @@ import java.util.Map;
 
 @Presenter(view = DemandCreationView.class)
 public class DemandCreationPresenter
-        extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, HomeEventBus> {
+        extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+
+    // TODO praso - All this presenters should be moved into this particular
+    // module otherwise they will fall in left-over fragment
+    private FormDemandBasicPresenter demandBasicForm = null;
+    private FormDemandAdvPresenter demandAdvForm = null;
 
     public interface CreationViewInterface extends LazyView {
 
@@ -85,6 +91,20 @@ public class DemandCreationPresenter
 
     }
 
+    public void onStart() {
+        // TODO praso
+    }
+
+    public void onForward() {
+        // TODO praso - switch css to selected menu button.
+        //eventBus.selectCompanyMenu();
+    }
+
+    public void onGoToCreateDemand() {
+        this.onAtCreateDemand();
+    }
+
+
     /**
      * Init method call. TODO decide when other parts should be built.
      */
@@ -94,12 +114,14 @@ public class DemandCreationPresenter
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
         eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
 
-        eventBus.setBodyWidget(view.getWidgetView());
+//        eventBus.setBodyWidget(view.getWidgetView());
 
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
             @Override
             public void execute() {
+                //TODO praso - these methods are currently in presenter itself and there is
+                // no need to call them via eventbus.
                 eventBus.initLocalityWidget(view.getHolderPanel(LOCALITY));
                 eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
                 eventBus.initLoginForm(view.getHolderPanel(LOGIN));
@@ -186,4 +208,21 @@ public class DemandCreationPresenter
         LOGGER.fine(widget.getClass().getName());
         return widget.isValid();
     }
+
+    public void onInitDemandBasicForm(SimplePanel holderWidget) {
+        if (demandBasicForm != null) {
+            eventBus.removeHandler(demandBasicForm);
+        }
+        demandBasicForm = eventBus.addHandler(FormDemandBasicPresenter.class);
+        demandBasicForm.initDemandBasicForm(holderWidget);
+    }
+
+    public void onInitDemandAdvForm(SimplePanel holderWidget) {
+        if (demandAdvForm != null) {
+            eventBus.removeHandler(demandAdvForm);
+        }
+        demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
+        demandAdvForm.initDemandAdvForm(holderWidget);
+    }
+
 }

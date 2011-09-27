@@ -46,7 +46,7 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void start();
 
-    /** Login popup display **/
+    /** Login popup display. **/
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
@@ -67,7 +67,7 @@ public interface MainEventBus extends EventBus {
 //    void addNewDemand(FullDemandDetail result);
 
     @Event(modulesToLoad = HomeModule.class)
-    void atCreateDemand();
+    void goToCreateDemand();
 
     @Event(modulesToLoad = HomeModule.class)
     void goToCreateSupplier();
@@ -88,7 +88,7 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void afterLoad();
 
-    /** Demand Creation common method calls */
+    /** Demand Creation common method calls. */
     @Event(handlers = MainPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
 
@@ -98,7 +98,7 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainHandler.class)
     void createDemand(FullDemandDetail detail, Long clientId);
 
-    /** CategorySelection section **/
+    /** CategorySelection section. **/
     @Event(handlers = MainPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget);
 
@@ -111,7 +111,7 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainHandler.class)
     void getChildListCategories(int newListPosition, String categoryId);
 
-    /** LocalitySelector section **/
+    /** LocalitySelector section. **/
     @Event(handlers = MainPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget);
 
@@ -131,13 +131,13 @@ public interface MainEventBus extends EventBus {
 //    @Event(handlers = MainPresenter.class)
 //    void initSupplierForm(SimplePanel supplierInfoHolder);
 
-    // TODO praso - this should be moved to HomeModule. I don't see reason to have it in RootModule
-    @Event(handlers = MainHandler.class)
-    void checkFreeEmail(String value);
-
-//    @Event(handlers = SupplierInfoPresenter.class,
-    @Event(modulesToLoad = HomeModule.class)
-    void checkFreeEmailResponse(Boolean result);
+//    // TODO praso - this should be moved to HomeModule. I don't see reason to have it in RootModule
+//    @Event(handlers = MainHandler.class)
+//    void checkFreeEmail(String value);
+//
+////    @Event(handlers = SupplierInfoPresenter.class,
+//    @Event(modulesToLoad = HomeModule.class)
+//    void checkFreeEmailResponse(Boolean result);
 
     /** NO EDITING AFTER THIS LINE
      * Every Child Module HAVE TO implement this method calls.

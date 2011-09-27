@@ -44,9 +44,9 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 //                eventBus.getSubCategories(Long.valueOf(param));
 //            }
         }
-        if (historyName.equals("atCreateDemand")) {
-            eventBus.atCreateDemand();
-        }
+//        if (historyName.equals("atCreateDemand")) {
+//            eventBus.atCreateDemand();
+//        }
 //        if (historyName.equals("atDemands")) {
 //            eventBus.atDemands();
 //        }

@@ -35,6 +35,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
         HasClickHandlers getSuppliersButton();
         HasClickHandlers getCreateSupplierButton();
+        HasClickHandlers getCreateDemandButton();
     }
 
     private DemandCreationPresenter demandCreation;
@@ -42,7 +43,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     public void bindView() {
         view.setHomeToken(getTokenGenerator().atHome());
 
-        view.setCreateDemandToken(getTokenGenerator().atCreateDemand());
+//        view.setCreateDemandToken(getTokenGenerator().atCreateDemand());
 // TODO praso - remove TokenGenerator that doesn't support linking between async modules.
 // normal buttons with HasClickHandler are used bellow in bind method
 
@@ -68,6 +69,12 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateSupplier();
+            }
+        });
+        view.getCreateDemandButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateDemand();
             }
         });
     }
