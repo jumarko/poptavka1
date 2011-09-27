@@ -4,12 +4,10 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
-import com.google.gwt.cell.client.AbstractEditableCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -21,19 +19,17 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -41,7 +37,6 @@ import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -52,27 +47,10 @@ import java.util.List;
 public class AdminDemandsView extends Composite implements AdminDemandsPresenter.AdminDemandsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-
     @UiField
-    Button commit;
-
-    /**
-     * @return the dataProvider
-     */
-    @Override
-    public ListDataProvider<FullDemandDetail> getDataProvider() {
-//        ColumnSortEvent fire = ColumnSortEvent.fire(this, dataGrid.getColumnSortList());
-//        dataGrid.fireEvent(fire);
-        return dataProvider;
-    }
-
-    /**
-     * @return the clientIdColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getClientIdColumn() {
-        return clientIdColumn;
-    }
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
 
     /**
      * @return the demandTypeColumn
@@ -88,32 +66,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     @Override
     public Column<FullDemandDetail, String> getDemandTitleColumn() {
         return demandTitleColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<FullDemandDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the demandTypes
-     */
-    @Override
-    public ClientDemandType[] getDemandTypes() {
-        return demandTypes;
-    }
-
-    /**
-     * @return the demandStatuses
-     */
-    @Override
-    public DemandStatusType[] getDemandStatuses() {
-        return demandStatuses;
     }
 
     /**
@@ -138,6 +90,16 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     @Override
     public Column<FullDemandDetail, Date> getDemandEndColumn() {
         return demandEndColumn;
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    @Override
+    public DataGrid<FullDemandDetail> getDataGrid() {
+        return dataGrid;
     }
 
     /**
@@ -171,10 +133,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     @UiField(provided = true)
     ListBox pageSizeCombo;
     /**
-     * The list of cells that are editable.
-     */
-    private List<AbstractEditableCell<?, ?>> editableCells;
-    /**
      * Detail of selected Demand.
      */
     @UiField
@@ -182,17 +140,13 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     /**
      * Data provider that will cell table with data.
      */
-    private ListDataProvider<FullDemandDetail> dataProvider = new ListDataProvider<FullDemandDetail>();
     private SingleSelectionModel<FullDemandDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
-    private Column<FullDemandDetail, String> clientIdColumn;
     private Column<FullDemandDetail, String> demandTypeColumn;
     private Column<FullDemandDetail, String> demandTitleColumn;
     private Column<FullDemandDetail, String> demandStatusColumn;
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
-    private final ClientDemandType[] demandTypes = ClientDemandType.values();
-    private final DemandStatusType[] demandStatuses = DemandStatusType.values();
 
     public AdminDemandsView() {
         pageSizeCombo = new ListBox();
@@ -204,6 +158,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         pageSizeCombo.setSelectedIndex(1);
         initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
+        changesLabel.setText("0");
     }
 
 //    @Override
@@ -221,167 +176,111 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
-//        dataGrid.setRowCount(2, true);
-
-        // TODO ivlcek - premysliet kedy a kde sa ma vytvarat DataProvider
-        // Connect the table to the data provider.
-        dataProvider.addDataDisplay(dataGrid);
-
-        // TODO ivlcek - make it working without keyprovider
-        // Attach a column sort handler to the ListDataProvider to sort the list.
-        ListHandler<FullDemandDetail> sortHandler = new ListHandler<FullDemandDetail>(
-                dataProvider.getList());
-        dataGrid.addColumnSortHandler(sortHandler);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-        // TODO ivlcek - nastavit pocet zaznamov v pagery na mensi pocet ako 15
-//        pager.setPageSize(5);
 
-        // Add a selection model to handle user selection.
-//        final MultiSelectionModel<FullDemandDetail> selectionModel =
-//        new MultiSelectionModel<FullDemandDetail>(KEY_PROVIDER);
-        // Add a single selection model to handle user selection.
         selectionModel = new SingleSelectionModel<FullDemandDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<FullDemandDetail>createCheckboxManager());
 
         // Initialize the columns.
-        initTableColumns(getSelectionModel(), sortHandler);
+        initTableColumns();
     }
 
     /**
      * Add the columns to the table.
      */
-    private void initTableColumns(final SelectionModel<FullDemandDetail> selectionModel,
-            ListHandler<FullDemandDetail> sortHandler) {
+    private void initTableColumns() {
 
         // Checkbox column. This table will uses a checkbox column for selection.
         // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
         // mouse selection.
-        Column<FullDemandDetail, Boolean> checkColumn = new Column<FullDemandDetail, Boolean>(
-                new CheckboxCell(true, false)) {
+        addColumn(new CheckboxCell(true, false), "<br/>", 40, new GetValue<Boolean>() {
 
             @Override
             public Boolean getValue(FullDemandDetail object) {
                 // Get the value from the selection model.
                 return selectionModel.isSelected(object);
             }
-        };
-        dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        dataGrid.setColumnWidth(checkColumn, 40, Unit.PX);
+        });
 
         // Demand ID.
-        Column<FullDemandDetail, String> idColumn = new Column<FullDemandDetail, String>(new TextCell()) {
+        addColumn(new TextCell(), "DID", 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getDemandId());
             }
-        };
-        idColumn.setSortable(true);
-        sortHandler.setComparator(idColumn, new Comparator<FullDemandDetail>() {
-
-            @Override
-            public int compare(FullDemandDetail o1, FullDemandDetail o2) {
-                return Long.valueOf(o1.getDemandId()).compareTo(Long.valueOf(o2.getDemandId()));
-            }
         });
-        dataGrid.addColumn(idColumn, "DID");
-        dataGrid.setColumnWidth(idColumn, 50, Unit.PX);
 
         // Clietn ID.
-        clientIdColumn = new Column<FullDemandDetail, String>(
-                new EditTextCell()) {
+        addColumn(new EditTextCell(), "CID", 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getClientId());
             }
-        };
-        getClientIdColumn().setSortable(true);
-        sortHandler.setComparator(getClientIdColumn(), new Comparator<FullDemandDetail>() {
-
-            @Override
-            public int compare(FullDemandDetail o1, FullDemandDetail o2) {
-                return Long.valueOf(o1.getClientId()).compareTo(Long.valueOf(o2.getClientId()));
-            }
         });
-        dataGrid.addColumn(getClientIdColumn(), "CID");
-        dataGrid.setColumnWidth(getClientIdColumn(), 50, Unit.PX);
 
         // DemandTitle
-        demandTitleColumn = new Column<FullDemandDetail, String>(
-                new EditTextCell()) {
+        demandTitleColumn = addColumn(new EditTextCell(), "Title", 160, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
                 return String.valueOf(object.getTitle());
             }
-        };
-        dataGrid.addColumn(demandTitleColumn, "Title");
-        dataGrid.setColumnWidth(demandTitleColumn, 160, Unit.PX);
+        });
 
         // DemandType.
         List<String> demandTypeNames = new ArrayList<String>();
-        for (ClientDemandType clientDemandType : demandTypes) {
+        for (ClientDemandType clientDemandType : ClientDemandType.values()) {
             // TODO ivlcek - add Localizable name of ClientDemandType enum
             demandTypeNames.add(clientDemandType.getValue());
         }
-        SelectionCell demandTypeCell = new SelectionCell(demandTypeNames);
-        demandTypeColumn = new Column<FullDemandDetail, String>(
-                demandTypeCell) {
+        demandTypeColumn = addColumn(new SelectionCell(demandTypeNames), "Type", 100, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
-                // TODO ivlcek - localize message
                 return object.getDemandType();
             }
-        };
-        dataGrid.addColumn(demandTypeColumn, "Type");
-        dataGrid.setColumnWidth(demandTypeColumn, 100, Unit.PX);
+        });
 
         // DemandStatus.
         List<String> demandStatusNames = new ArrayList<String>();
-        for (DemandStatusType demandStatusType : demandStatuses) {
-            // TODO ivlcek - add Localizable name of ClientDemandType enum
+        for (DemandStatusType demandStatusType : DemandStatusType.values()) {
             demandStatusNames.add(demandStatusType.getValue());
         }
-        SelectionCell demandStatusCell = new SelectionCell(demandStatusNames);
-        demandStatusColumn = new Column<FullDemandDetail, String>(
-                demandStatusCell) {
+        demandStatusColumn = addColumn(new SelectionCell(demandStatusNames), "Status", 140, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
-                // TODO ivlcek - localize message
                 return object.getDemandStatus();
             }
-        };
-        dataGrid.addColumn(demandStatusColumn, "Status");
-        dataGrid.setColumnWidth(demandStatusColumn, 140, Unit.PX);
+        });
 
         // Demand expiration date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration",
+        demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration", 40,
                 new GetValue<Date>() {
 
                     @Override
                     public Date getValue(FullDemandDetail fullDemandDetail) {
                         return fullDemandDetail.getValidToDate();
                     }
-                }, null);
+                });
 
         // Demand end date.
-        demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End",
+        demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End", 40,
                 new GetValue<Date>() {
 
                     @Override
                     public Date getValue(FullDemandDetail fullDemandDetail) {
                         return fullDemandDetail.getEndDate();
                     }
-                }, null);
+                });
     }
 
     /**
@@ -402,8 +301,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell, String headerText,
-            final GetValue<C> getter, FieldUpdater<FullDemandDetail, C> fieldUpdater) {
+    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+            final GetValue<C> getter) {
         Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
 
             @Override
@@ -411,11 +310,13 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 return getter.getValue(object);
             }
         };
-        column.setFieldUpdater(fieldUpdater);
-//        if (cell instanceof AbstractEditableCell<?, ?>) {
-//            editableCells.add((AbstractEditableCell<?, ?>) cell);
-//        }
-        dataGrid.addColumn(column, headerText);
+        if (headerText.endsWith("<br/>")) {
+            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        } else {
+            column.setSortable(true);
+            dataGrid.addColumn(column, headerText);
+        }
+        dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
     /**
@@ -450,8 +351,17 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     }
 
     @Override
-    public SimplePanel getAdminOfferDetail() {
-        // TODO Auto-generated method stub
-        return null;
+    public Button getRollbackBtn() {
+        return rollback;
+    }
+
+    @Override
+    public Button getRefreshBtn() {
+        return refresh;
+    }
+
+    @Override
+    public Label getChangesLabel() {
+        return changesLabel;
     }
 }

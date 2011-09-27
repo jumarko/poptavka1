@@ -3,6 +3,7 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+  xmlns:lsv="cz.poptavka.sample.client.main.common.locality"
   ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
   ui:generateLocales='default'>
 
@@ -52,18 +53,26 @@
                         </tr>
                         <tr>
                             <td  align='left'>
-                                <g:Button ui:field="commit">Commit changes</g:Button>
+                                <g:HorizontalPanel>
+                                    <g:Button ui:field="refresh">Refresh</g:Button>
+                                    <g:Button ui:field="commit">Commit changes</g:Button>
+                                    <g:Button ui:field="rollback">Rollback changes</g:Button>
+                                    <g:Label>Demands changed: </g:Label>
+                                    <g:Label ui:field="changesLabel"></g:Label>
+                                </g:HorizontalPanel>
                             </td>
                         </tr>
                     </table>
-
+                    <lsv:LocalitySelectorView/>
                 </g:HTMLPanel>
             </g:DecoratorPanel>
 
 <!--            </g:FlowPanel>-->
         </g:west>
         <g:center>
-            <g:SimplePanel ui:field="adminDemandDetail"></g:SimplePanel>
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="adminDemandDetail"></g:SimplePanel>
+            </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>
 </ui:UiBinder>

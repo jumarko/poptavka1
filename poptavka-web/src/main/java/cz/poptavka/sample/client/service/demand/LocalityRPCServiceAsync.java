@@ -16,4 +16,8 @@ public interface LocalityRPCServiceAsync {
     void getLocalities(String locCode, AsyncCallback<ArrayList<LocalityDetail>> callback);
 
     void getLocality(long id, AsyncCallback<Locality> callback);
+
+    void getAllRootLocalities(AsyncCallback<ArrayList<LocalityDetail>> callback);
+
+    void getSubLocalities(String locCode, AsyncCallback<ArrayList<LocalityDetail>> callback);
 }

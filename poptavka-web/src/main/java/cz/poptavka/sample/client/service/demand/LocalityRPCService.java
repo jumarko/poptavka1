@@ -30,4 +30,8 @@ public interface LocalityRPCService extends RemoteService {
     ArrayList<LocalityDetail> getLocalities(String locCode);
 
     Locality getLocality(long id);
+
+    ArrayList<LocalityDetail> getAllRootLocalities();
+
+    ArrayList<LocalityDetail> getSubLocalities(String locCode);
 }

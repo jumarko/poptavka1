@@ -26,7 +26,7 @@ public class AdminOfferInfoPresenter
     public void onShowAdminOfferDetail(FullOfferDetail selectedObject) {
 //        eventBus.displayContent(view.getWidgetView());
         view.setOfferDetail(selectedObject);
-        eventBus.responseAdminOfferDetail(view.getWidgetView());
+//        eventBus.responseAdminOfferDetail(view.getWidgetView());
 
     }
 

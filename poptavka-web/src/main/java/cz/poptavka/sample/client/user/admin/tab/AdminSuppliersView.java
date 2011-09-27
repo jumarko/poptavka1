@@ -7,7 +7,6 @@ package cz.poptavka.sample.client.user.admin.tab;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -27,7 +26,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.Verification;
@@ -70,23 +68,12 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     /**
      * Data provider that will cell table with data.
      */
-//    private AsyncDataProvider<FullSupplierDetail> dataProvider = null;
     private SingleSelectionModel<FullSupplierDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
-    private Column<FullSupplierDetail, String> supplierIdColumn;
     private Column<FullSupplierDetail, String> supplierNameColumn;
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
-    private final BusinessType[] businessTypes = BusinessType.values();
-
-    /**
-     * @return the clientIdColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierIdColumn() {
-        return supplierIdColumn;
-    }
 
     /**
      * @return the SupplierNameColumn
@@ -151,14 +138,6 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     }
 
     /**
-     * @return the SupplierTypes
-     */
-    @Override
-    public BusinessType[] getBusinessTypes() {
-        return businessTypes;
-    }
-
-    /**
      * @return the selectionModel
      */
     @Override
@@ -181,7 +160,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         pageSizeCombo.addItem("20");
         pageSizeCombo.addItem("25");
         pageSizeCombo.addItem("30");
-        pageSizeCombo.setSelectedIndex(3);
+        pageSizeCombo.setSelectedIndex(2);
         initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -198,161 +177,93 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         // used to identify contacts when fields (such as the name and address)
         // change.
         dataGrid = new DataGrid<FullSupplierDetail>(KEY_PROVIDER);
+        dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
-//        dataGrid.set`
-//        dataGrid.setRowCount(2, true);
-
-        // TODO ivlcek - premysliet kedy a kde sa ma vytvarat DataProvider
-        // Connect the table to the data provider.
-//        dataProvider.addDataDisplay(dataGrid);
-
-        // TODO ivlcek - make it working without keyprovider
-        // Attach a column sort handler to the ListDataProvider to sort the list.
-
-//                dataProvider.getList());
-//        dataGrid.addColumnSortHandler(sortHandler);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-        // TODO ivlcek - nastavit pocet zaznamov v pagery na mensi pocet ako 15
-//        pager.setPageSize(5);
 
         // Add a selection model to handle user selection.
-//        final MultiSelectionModel<SupplierDetailForDisplaySuppliers> selectionModel =
-//        new MultiSelectionModel<SupplierDetailForDisplaySuppliers>(KEY_PROVIDER);
-        // Add a single selection model to handle user selection.
         selectionModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<FullSupplierDetail>createCheckboxManager());
 
         // Initialize the columns.
-        initTableColumns(getSelectionModel());
+        initGridColumns();
     }
 
     /**
      * Add the columns to the table.
      */
-    private void initTableColumns(final SelectionModel<FullSupplierDetail> selectionModel) {
+    private void initGridColumns() {
 
         // Checkbox column. This table will uses a checkbox column for selection.
         // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
         // mouse selection.
-        Column<FullSupplierDetail, Boolean> checkColumn = new Column<FullSupplierDetail, Boolean>(
-                new CheckboxCell(true, false)) {
+        addColumn(new CheckboxCell(true, false), "", 15, new GetValue<Boolean>() {
 
             @Override
             public Boolean getValue(FullSupplierDetail object) {
                 // Get the value from the selection model.
                 return selectionModel.isSelected(object);
             }
-        };
-        dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        dataGrid.setColumnWidth(checkColumn, 15, Unit.PX);
+        });
 
         // Supplier ID.
-        supplierIdColumn = new Column<FullSupplierDetail, String>(new TextCell()) {
+        addColumn(new TextCell(), "SID", 30, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
                 return String.valueOf(object.getSupplierId());
             }
-        };
-        supplierIdColumn.setSortable(true);
-//        sortHandler.setComparator(supplierIdColumn, new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return Long.valueOf(o1.getSupplierId()).compareTo(Long.valueOf(o2.getSupplierId()));
-//            }
-//        });
-        dataGrid.addColumn(supplierIdColumn, "SID");
-        dataGrid.setColumnWidth(supplierIdColumn, 30, Unit.PX);
+        });
 
         // Company name.
-        supplierNameColumn = new Column<FullSupplierDetail, String>(
-                new EditTextCell()) {
+        supplierNameColumn = addColumn(new EditTextCell(), "Name", 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
                 return String.valueOf(object.getCompanyName());
             }
-        };
-        getSupplierNameColumn().setSortable(true);
-//        sortHandler.setComparator(getSupplierNameColumn(), new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return (o1.getCompanyName()).compareToIgnoreCase(o2.getCompanyName());
-//            }
-//        });
-        dataGrid.addColumn(getSupplierNameColumn(), "Name");
-        dataGrid.setColumnWidth(getSupplierNameColumn(), 50, Unit.PX);
+        });
 
         // SupplierType.
         ArrayList<String> types = new ArrayList<String>();
         for (BusinessType type : BusinessType.values()) {
             types.add(type.getValue());
         }
-        supplierTypeColumn = new Column<FullSupplierDetail, String>(
-                new SelectionCell(types)) {
+        supplierTypeColumn = addColumn(new SelectionCell(types), "Type", 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getBusinessType();
             }
-        };
-        getSupplierTypeColumn().setSortable(true);
-//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return o1.getBusinessType().compareToIgnoreCase(o2.getBusinessType());
-//            }
-//        });
-        dataGrid.addColumn(supplierTypeColumn, "Type");
-        dataGrid.setColumnWidth(supplierTypeColumn, 50, Unit.PX);
+        });
 
         // Certified.
-        certifiedColumn = new Column<FullSupplierDetail, Boolean>(
-                new CheckboxCell()) {
+        certifiedColumn = addColumn(new CheckboxCell(), "Cert.", 15, new GetValue<Boolean>() {
 
             @Override
             public Boolean getValue(FullSupplierDetail object) {
                 return object.isCertified();
             }
-        };
-        getSupplierTypeColumn().setSortable(true);
-//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return Boolean.toString(o1.isCertified()).compareTo(Boolean.toString(o2.isCertified()));
-//            }
-//        });
-        dataGrid.addColumn(certifiedColumn, "Cert.");
-        dataGrid.setColumnWidth(certifiedColumn, 15, Unit.PX);
+        });
 
         // Verification.
         ArrayList<String> verTypes = new ArrayList<String>();
         for (Verification type : Verification.values()) {
             verTypes.add(type.name());
         }
-        verificationColumn = new Column<FullSupplierDetail, String>(
-                new SelectionCell(verTypes)) {
+        verificationColumn = addColumn(new SelectionCell(verTypes), "Verified", 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getVerification();
             }
-        };
-        getSupplierTypeColumn().setSortable(true);
-//        sortHandler.setComparator(getSupplierTypeColumn(), new Comparator<FullSupplierDetail>() {
-//            @Override
-//            public int compare(FullSupplierDetail o1, FullSupplierDetail o2) {
-//                return o1.getVerification().compareToIgnoreCase(o2.getVerification());
-//            }
-//        });
-        dataGrid.addColumn(verificationColumn, "Verified");
-        dataGrid.setColumnWidth(verificationColumn, 50, Unit.PX);
+        });
     }
 
     /**
@@ -373,8 +284,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText,
-            final GetValue<C> getter, FieldUpdater<FullSupplierDetail, C> fieldUpdater) {
+    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+            final GetValue<C> getter) {
         Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
 
             @Override
@@ -382,11 +293,12 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
                 return getter.getValue(object);
             }
         };
-        column.setFieldUpdater(fieldUpdater);
-//        if (cell instanceof AbstractEditableCell<?, ?>) {
-//            editableCells.add((AbstractEditableCell<?, ?>) cell);
-//        }
-        dataGrid.addColumn(column, headerText);
+        if (headerText.endsWith("<br/>")) {
+            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        } else {
+            dataGrid.addColumn(column, headerText);
+        }
+        dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
     /**

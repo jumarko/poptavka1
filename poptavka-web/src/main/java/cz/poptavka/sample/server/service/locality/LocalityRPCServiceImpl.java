@@ -61,4 +61,13 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         return localityService.getById(id);
     }
 
+    @Override
+    public ArrayList<LocalityDetail> getAllRootLocalities() {
+        return createLocalityDetails(localityService.getLocalities(LocalityType.DISTRICT));
+    }
+
+    @Override
+    public ArrayList<LocalityDetail> getSubLocalities(String locCode) {
+        return createLocalityDetails(localityService.getLocality(locCode).getChildren());
+    }
 }

@@ -11,9 +11,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -36,34 +38,23 @@ public class AdminDemandInfoView extends Composite implements
     }
     // demand detail input fields
     @UiField
-    TextArea titleBox;
+    TextArea titleBox, descriptionBox;
     @UiField
-    TextArea descriptionBox;
+    DateBox endDateBox, expirationBox;
     @UiField
-    TextBox priceBox;
+    TextBox priceBox, clientID, maxOffers, minRating;
     @UiField
-    DateBox endDateBox;
+    ListBox demandStatus, demandType, editCatList1,
+    editLocList1, editLocList2, categoryList, localityList;
     @UiField
-    DateBox expirationBox;
+    Button editCatBtn, editLocBtn, createButton, updateButton,
+    finnishCatBtn, finnishLocBtn, backCatBtn, backLocBtn,
+    rootCatBtn, rootLocBtn;
     @UiField
-    TextBox clientID;
+    VerticalPanel editCatPanel, editLocPanel;
     @UiField
-    TextBox maxOffers;
-    @UiField
-    TextBox minRating;
-    @UiField
-    ListBox demandType;
-    @UiField
-    ListBox demandStatus;
-    // demand detail button fields
-    @UiField
-    Button categoryButton;
-    @UiField
-    Button localityButton;
-    @UiField
-    Button createButton;
-    @UiField
-    Button updateButton;
+    Label catPath, locPath;
+
     private FullDemandDetail demandInfo;
 
     @Override
@@ -77,8 +68,97 @@ public class AdminDemandInfoView extends Composite implements
     }
 
     @Override
-    public void createView() {
+    public Button getEditCatBtn() {
+        return editCatBtn;
+    }
+
+    @Override
+    public Button getEditLocBtn() {
+        return editLocBtn;
+    }
+
+    @Override
+    public Button getFinnishCatBtn() {
+        return finnishCatBtn;
+    }
+
+    @Override
+    public Button getFinnishLocBtn() {
+        return finnishLocBtn;
+    }
+
+    @Override
+    public ListBox getEditCatList1() {
+        return editCatList1;
+    }
+
+    @Override
+    public ListBox getEditLocList1() {
+        return editLocList1;
+    }
+
+    @Override
+    public ListBox getEditLocList2() {
+        return editLocList2;
+    }
+
+    @Override
+    public Button getBackCatBtn() {
+        return backCatBtn;
+    }
+
+    @Override
+    public Button getBackLocBtn() {
+        return backLocBtn;
+    }
+
+    @Override
+    public Button getRootCatBtn() {
+        return rootCatBtn;
+    }
+
+    @Override
+    public Button getRootLocBtn() {
+        return rootLocBtn;
+    }
+
+    @Override
+    public VerticalPanel getEditCatPanel() {
+        return editCatPanel;
+    }
+
+    @Override
+    public VerticalPanel getEditLocPanel() {
+        return editLocPanel;
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        return categoryList;
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        return localityList;
+    }
+
+    @Override
+    public Label getCatPath() {
+        return catPath;
+    }
+
+    @Override
+    public Label getLocPath() {
+        return locPath;
+    }
+
+    public AdminDemandInfoView() {
+//        categoryList = new CellList<String>(new TextCell());
+//        localityList = new CellList<String>(new TextCell());
         initWidget(uiBinder.createAndBindUi(this));
+        editCatPanel.setVisible(false);
+        editLocPanel.setVisible(false);
+        editCatList1.setEnabled(false);
         initDemandInfoForm();
     }
 
@@ -165,8 +245,17 @@ public class AdminDemandInfoView extends Composite implements
             }
             demandStatus.setSelectedIndex(j);
 
-//            demandInfo.setLocalities(contact.getLocalities());
-//            demandInfo.setCategories(contact.getCategories());
+            if (contact.getCategories() != null) {
+                for (String cat : contact.getCategories().values()) {
+                    categoryList.addItem(cat);
+                }
+            }
+
+            if (contact.getLocalities() != null) {
+                for (String loc : contact.getLocalities().values()) {
+                    localityList.addItem(loc);
+                }
+            }
         }
     }
 }

@@ -16,6 +16,12 @@ public class AddressDetail implements Serializable {
     public AddressDetail() {
     }
 
+    public AddressDetail(AddressDetail address) {
+        this.cityName = address.getCityName();
+        this.street = address.getStreet();
+        this.zipCode = address.getZipCode();
+    }
+
     public AddressDetail(Address address) {
         if (address == null) {
             return;

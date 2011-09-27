@@ -34,7 +34,6 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.user.UserEventBus;
 //import cz.poptavka.sample.shared.domain.demand.DemandDetail;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,11 +67,7 @@ public class AdminSuppliersPresenter
 
         Widget getWidgetView();
 
-//        SimplePager getPager();
         DataGrid<FullSupplierDetail> getDataGrid();
-
-//        AsyncDataProvider<FullSupplierDetail> getDataProvider();
-        Column<FullSupplierDetail, String> getSupplierIdColumn();
 
         Column<FullSupplierDetail, String> getSupplierNameColumn();
 
@@ -81,8 +76,6 @@ public class AdminSuppliersPresenter
         Column<FullSupplierDetail, Boolean> getCertifiedColumn();
 
         Column<FullSupplierDetail, String> getVerificationColumn();
-
-        BusinessType[] getBusinessTypes();
 
         SingleSelectionModel<FullSupplierDetail> getSelectionModel();
 
@@ -155,20 +148,10 @@ public class AdminSuppliersPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onRefreshUpdatedSupplier(FullSupplierDetail supplier) {
-//        view.getDataGrid().setSize("10%", "10%");
-    }
-
     public void onResponseAdminSupplierDetail(Widget widget) {
         view.getAdminSupplierDetail().setWidget(widget);
     }
 
-    /**
-     * Refresh all displays.
-     */
-//    public void refreshDisplays() {
-//        view.getDataProvider().refresh();
-//    }
     @Override
     public void bind() {
 //    public void bindView() {
@@ -195,7 +178,6 @@ public class AdminSuppliersPresenter
             public void update(int index, FullSupplierDetail object, Boolean value) {
                 object.setCertified(value);
                 eventBus.addSuppliersToCommit(object, "supplier");
-//                refreshDisplays();
             }
         });
         view.getVerificationColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
@@ -204,14 +186,13 @@ public class AdminSuppliersPresenter
             public void update(int index, FullSupplierDetail object, String value) {
                 object.setVerification(value);
                 eventBus.addSuppliersToCommit(object, "supplier");
-//                refreshDisplays();
             }
         });
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject())) {
+                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getSupplierId())) {
                     eventBus.showAdminSupplierDetail(dataToUpdate.get(
                             view.getSelectionModel().getSelectedObject().getSupplierId()));
                 } else {

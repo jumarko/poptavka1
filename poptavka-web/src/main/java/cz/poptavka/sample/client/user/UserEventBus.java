@@ -16,7 +16,6 @@ import com.mvp4g.client.event.EventBusWithLookup;
 
 import cz.poptavka.sample.client.user.admin.AdminHistoryConverter;
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOfferInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
@@ -34,6 +33,8 @@ import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.admin.AdminHandler;
+import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
@@ -217,9 +218,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = MessageHandler.class)
     void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void responseAdminOfferDetail(Widget widget);
 
     /** Call to UserPresenter **/
     /**
@@ -532,9 +530,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminDemandsPresenter.class)
     void displayAdminTabDemands(List<FullDemandDetail> demands);
 
-    @Event(handlers = AdminDemandsPresenter.class)
-    void refreshUpdatedDemand(FullDemandDetail demand);
-
     @Event(handlers = AdminDemandInfoPresenter.class)
     void showAdminDemandDetail(FullDemandDetail selectedObject);
 
@@ -549,6 +544,43 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminDemandsPresenter.class)
     void setDetailDisplayed(Boolean displayed);
+
+    @Event(handlers = AdminDemandsPresenter.class)
+    void changeGridData(FullDemandDetail data, List<FullDemandDetail> dataList);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void displayAdminTabDemandsLoop(List<FullDemandDetail> list);
+
+    //---- DemandsInfo
+    @Event(handlers = AdminDemandsHandler.class)
+    void getAdminRootCategories();
+
+    @Event(handlers = AdminDemandsHandler.class)
+    void getAdminSubCategories(final int list, Long catId);
+
+    @Event(handlers = AdminDemandsHandler.class)
+    void getAdminParentCategories(Long catId);
+
+    @Event(handlers = AdminDemandsHandler.class)
+    void getAdminRootLocalities();
+
+    @Event(handlers = AdminDemandsHandler.class)
+    void getAdminSubLocalities(final int list, String locCode);
+
+    @Event(handlers = AdminDemandsHandler.class)
+    void getAdminParentLocalities(String locCode);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void displayAdminCategories(int listNumber, List<CategoryDetail> list);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void displayAdminLocalities(int listNumber, List<LocalityDetail> list);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void doBackCategories(List<CategoryDetail> list);
+
+    @Event(handlers = AdminDemandInfoPresenter.class)
+    void doBackLocalities(List<LocalityDetail> list);
     /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
 
     /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
@@ -569,9 +601,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updateSupplier(FullSupplierDetail supplier, String updateWhat);
-
-    @Event(handlers = AdminSuppliersPresenter.class)
-    void refreshUpdatedSupplier(FullSupplierDetail supplier);
 
     @Event(handlers = AdminSupplierInfoPresenter.class)
     void showAdminSupplierDetail(FullSupplierDetail selectedObject);

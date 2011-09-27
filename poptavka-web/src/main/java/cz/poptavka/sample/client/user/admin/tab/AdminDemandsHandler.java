@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.admin;
+package cz.poptavka.sample.client.user.admin.tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +10,21 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
+import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import java.util.Map;
 import java.util.logging.Logger;
 
 @EventHandler
-public class AdminHandler extends BaseEventHandler<UserEventBus> {
+public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
     @Inject
     private DemandRPCServiceAsync demandService = null;
@@ -30,6 +32,11 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
     private OfferRPCServiceAsync offerService = null;
     @Inject
     private SupplierRPCServiceAsync supplierService = null;
+    @Inject
+    private CategoryRPCServiceAsync categoryService = null;
+    @Inject
+    private LocalityRPCServiceAsync localityService = null;
+
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private final static Logger LOGGER = Logger.getLogger("    UserHandler");
 
@@ -98,76 +105,11 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    /***********************************************************************************************
-     ***********************  SUPPLIER SECTION. ****************************************************
-     **********************************************************************************************/
-    public void onGetAdminTabSuppliersCount() {
-        supplierService.getSuppliersCount(new AsyncCallback<Integer>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(Integer result) {
-                LOGGER.info("Found: " + result);
-                eventBus.createAdminSuppliersAsyncDataProvider(result);
-            }
-        });
-    }
-
-    public void onGetAdminSuppliers(int start, int count) {
-        supplierService.getSuppliers(start, count, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<FullSupplierDetail> result) {
-                LOGGER.info("Found: " + result.size());
-                eventBus.displayAdminTabSuppliers(result);
-            }
-        });
-    }
-
-    public void onGetSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns) {
-        supplierService.getSortedSuppliers(start, count, orderColumns,
-                new AsyncCallback<ArrayList<FullSupplierDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
-                    @Override
-                    public void onSuccess(ArrayList<FullSupplierDetail> result) {
-                        eventBus.displayAdminTabSuppliers(result);
-                    }
-                });
-    }
-
-    public void onUpdateSupplier(FullSupplierDetail supplierDetail, String updateWhat) {
-        supplierService.updateSupplier(supplierDetail, updateWhat, new AsyncCallback<FullSupplierDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(FullSupplierDetail result) {
-            }
-        });
-    }
-
     /**********************************************************************************************
-     ***********************  OFFER SECTION. ******************************************************
+     ***********************  CATEGORY SECTION. *****************************************************
      **********************************************************************************************/
-    public void onUpdateOffer(FullOfferDetail offer) {
-        offerService.updateOffer(offer, new AsyncCallback<FullOfferDetail>() {
+    public void onGetAdminRootCategories() {
+        categoryService.getAllRootCategories(new AsyncCallback<List<CategoryDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -175,8 +117,83 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(FullOfferDetail result) {
-                eventBus.refreshUpdatedOffer(result);
+            public void onSuccess(List<CategoryDetail> result) {
+                eventBus.displayAdminCategories(1, result);
+            }
+        });
+    }
+
+    public void onGetAdminSubCategories(final int list, Long catId) {
+        categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<CategoryDetail> result) {
+                eventBus.displayAdminCategories(list, result);
+            }
+        });
+    }
+    public void onGetAdminParentCategories(Long catId) {
+        categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<CategoryDetail> result) {
+                eventBus.doBackCategories(result);
+            }
+        });
+    }
+    /**********************************************************************************************
+     ***********************  CATEGORY SECTION. *****************************************************
+     **********************************************************************************************/
+    public void onGetAdminRootLocalities() {
+        localityService.getAllRootLocalities(new AsyncCallback<ArrayList<LocalityDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<LocalityDetail> result) {
+                eventBus.displayAdminLocalities(1, result);
+            }
+        });
+    }
+
+    public void onGetAdminSubLocalities(final int list, String locCode) {
+        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<LocalityDetail> result) {
+                eventBus.displayAdminLocalities(list, result);
+            }
+        });
+    }
+    public void onGetAdminParentLocalities(String locCode) {
+        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<LocalityDetail> result) {
+                eventBus.doBackLocalities(result);
             }
         });
     }
