@@ -58,7 +58,7 @@
                 <entry key="hibernate.search.default.directory_provider" value="${fulltext.directory_provider}"/>
                 <entry key="hibernate.search.default.indexBase" value="${fulltext.indexbase}"/>
                 <!-- TODO set up common fulltext search analyzer "caseAccentInsensitiveAnalyzer"
-                to avoid neccessity of referencing this analyzer from all domain objects that want to participate in full-text search. -->
+                to avoid necessity of referencing this analyzer from all domain objects that want to participate in full-text search. -->
                 <!--<entry key="hibernate.search.analyzer" value="cz.poptavka.sample.domain.common.DomainObject#caseAccentInsensitiveAnalyzer"/>-->
             </map>
         </property>

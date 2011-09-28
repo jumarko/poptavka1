@@ -33,7 +33,6 @@ import java.util.List;
 @Entity
 public class Invoice extends DomainObject {
 
-    // TODO martinka -- fill in with attributes
     /**
      * "Number" of invoice - this must be unique code.
      * <p>

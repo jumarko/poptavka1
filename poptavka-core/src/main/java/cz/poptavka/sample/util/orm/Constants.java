@@ -8,7 +8,6 @@ package cz.poptavka.sample.util.orm;
  */
 public final class Constants {
     public static final int ENUM_FIELD_LENGTH = 64;
-    // TODO nemozeme mat pre niektore Enumy kratsie dlzky?
     public static final int ENUM_SHORTINT_FIELD_LENGTH = 2;
 
     private Constants() {

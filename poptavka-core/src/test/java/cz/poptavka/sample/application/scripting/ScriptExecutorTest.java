@@ -15,7 +15,7 @@ import java.io.IOException;
  * <p>To make this test run it is neccessary to have "JsScript.js" file in current directory.
  * Make sure that this file has also been copied into the target/... directory.
  *
- * TODO: this is incomplete test, but at least it checks if no exception is thrown within script code
+ * <strong>this is incomplete test, but at least it checks if no exception is thrown within script code</strong>
  * that uses Spring application context to retrieve bean for getting some data from DB!
  *
  * @author Juraj Martinka

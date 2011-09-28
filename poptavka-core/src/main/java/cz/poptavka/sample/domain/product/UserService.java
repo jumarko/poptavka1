@@ -20,7 +20,6 @@ import javax.persistence.ManyToOne;
 @Entity
 public class UserService extends DomainObject {
 
-    // TODO martinka -- fill in with attributes
     @ManyToOne
     private Service service;
 
