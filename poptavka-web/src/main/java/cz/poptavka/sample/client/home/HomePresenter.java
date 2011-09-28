@@ -15,7 +15,7 @@ import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger("  HomePresenter");
+    private static final Logger LOGGER = Logger.getLogger("HomePresenter");
 
     public interface HomeInterface extends LazyView {
 

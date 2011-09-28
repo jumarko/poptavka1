@@ -157,6 +157,8 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param to direct recipients
      * @param cc carbon copy (to the attention of)
      * @param bcc blind carbon copy
+     *
+     * @throws MessageCannotBeSentException if Message is not in COMPOSED state or message.roles are empty
      */
     void send(Message message) throws MessageCannotBeSentException;
 

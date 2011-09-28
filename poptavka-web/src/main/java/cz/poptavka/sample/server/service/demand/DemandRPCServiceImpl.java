@@ -207,12 +207,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
         // TODO ivan, beho, vojto - je nastavenie roli takto logicky spravne?!
         message.setRoles(messageUserRoles);
+        message.setMessageState(MessageState.COMPOSED);
 
         message = messageService.create(message);
         //TODO verify, if correct
-        //messageService.send throws MessageCannotBeSentException: Message [id=159 cannot be sent because it
-        //is NOT in a COMPOSED state. So I;m setting it manually _by_Beho
-        message.setMessageState(MessageState.COMPOSED);
         try {
             messageService.send(message);
         } catch (MessageCannotBeSentException ex) {
