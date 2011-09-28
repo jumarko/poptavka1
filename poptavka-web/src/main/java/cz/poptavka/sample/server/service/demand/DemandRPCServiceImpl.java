@@ -174,7 +174,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     //
     private void sendDemandToSuppliersTest(Demand demand) {
         // TODO Refaktorovat celu metody s Jurajom a presunut do nejakeho JOBu
-        Set<Supplier> suppliers = new HashSet<Supplier>();
+        final Set<Supplier> suppliers = new HashSet<Supplier>();
         suppliers.addAll(supplierService.getSuppliers(demand.getCategories().
                 toArray(new Category[demand.getCategories().size()])));
         suppliers.addAll(supplierService.getSuppliers(demand.getLocalities().
@@ -196,7 +196,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
-        List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
+        final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
         for (Supplier supplierRole : suppliers) {
             MessageUserRole messageUserRole = new MessageUserRole();
             messageUserRole.setMessage(message);
@@ -205,8 +205,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
             messageUserRoles.add(messageUserRole);
         }
-        // TODO ivan, beho, vojto - je nastavenie roli takto logicky spravne?!
         message.setRoles(messageUserRoles);
+
         message.setMessageState(MessageState.COMPOSED);
 
         message = messageService.create(message);
