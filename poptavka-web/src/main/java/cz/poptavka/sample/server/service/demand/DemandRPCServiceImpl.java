@@ -343,11 +343,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             //level 0
             categoriesHistory.add(categoryService.getById(id));
             //other levels
-            int i = 0;
-            List<Category> workingCatList;
-            while (categoriesHistory.size() != i) {
-                workingCatList = new LinkedList<Category>();
-                workingCatList = categoriesHistory.get(i++).getChildren();
+            for (int i = 0; i < categoriesHistory.size(); i++) {
+                final List<Category> workingCatList = categoriesHistory.get(i).getChildren();
                 if (workingCatList != null && workingCatList.size() > 0) {
                     //and children categories
                     categoriesHistory.addAll(workingCatList);
