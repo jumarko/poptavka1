@@ -66,33 +66,7 @@ public class FullDemandDetail implements Serializable {
     }
 
     public FullDemandDetail(FullDemandDetail demand) {
-        demandId = demand.getDemandId();
-        title = demand.getTitle();
-        description = demand.getDescription();
-        price = demand.getPrice();
-        endDate = demand.getEndDate();
-        validToDate = demand.getValidToDate();
-        maxOffers = demand.getMaxOffers();
-        minRating = demand.getMinRating();
-        //categories
-        categories = new HashMap<Long, String>();
-        for (Long catId : demand.getCategories().keySet()) {
-            categories.put(catId, demand.getCategories().get(catId));
-        }
-        //localities
-        localities = new HashMap<String, String>();
-        for (String locCode : demand.getLocalities().keySet()) {
-            localities.put(locCode, demand.getLocalities().get(locCode));
-        }
-
-        demandStatus = demand.getDemandStatus();
-        demandType = demand.getDemandType();
-        clientId = demand.getClientId();
-
-        excludedSuppliers = new ArrayList<FullSupplierDetail>();
-        for (FullSupplierDetail supplier : demand.getExcludedSuppliers()) {
-            excludedSuppliers.add(new FullSupplierDetail(supplier));
-        }
+        this.updateWholeDemand(demand);
     }
 
     /**
@@ -155,6 +129,36 @@ public class FullDemandDetail implements Serializable {
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
+    public void updateWholeDemand(FullDemandDetail demand) {
+        demandId = demand.getDemandId();
+        title = demand.getTitle();
+        description = demand.getDescription();
+        price = demand.getPrice();
+        endDate = demand.getEndDate();
+        validToDate = demand.getValidToDate();
+        maxOffers = demand.getMaxOffers();
+        minRating = demand.getMinRating();
+        //categories
+        categories = new HashMap<Long, String>();
+        for (Long catId : demand.getCategories().keySet()) {
+            categories.put(catId, demand.getCategories().get(catId));
+        }
+        //localities
+        localities = new HashMap<String, String>();
+        for (String locCode : demand.getLocalities().keySet()) {
+            localities.put(locCode, demand.getLocalities().get(locCode));
+        }
+
+        demandStatus = demand.getDemandStatus();
+        demandType = demand.getDemandType();
+        clientId = demand.getClientId();
+
+        excludedSuppliers = new ArrayList<FullSupplierDetail>();
+        for (FullSupplierDetail supplier : demand.getExcludedSuppliers()) {
+            excludedSuppliers.add(new FullSupplierDetail(supplier));
+        }
+    }
+
     public Map<Long, String> getCategories() {
         return categories;
     }

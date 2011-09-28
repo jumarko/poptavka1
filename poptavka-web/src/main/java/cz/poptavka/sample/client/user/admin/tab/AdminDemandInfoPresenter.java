@@ -59,11 +59,9 @@ public class AdminDemandInfoPresenter
 
         Button getRootLocBtn();
 
-        ListBox getEditCatList1();
+        ListBox getEditCatList();
 
-        ListBox getEditLocList1();
-
-        ListBox getEditLocList2();
+        ListBox getEditLocList();
 
         ListBox getCategoryList();
 
@@ -97,8 +95,8 @@ public class AdminDemandInfoPresenter
             @Override
             public void onClick(ClickEvent event) {
                 categoryHistory.clear();
-                view.getEditCatList1().clear();
-                view.getEditCatList1().setEnabled(true);
+                view.getEditCatList().clear();
+                view.getEditCatList().setEnabled(true);
                 view.getBackCatBtn().setEnabled(false);
                 categoryHistory.add(new String[]{"root", "root"});
                 view.getEditCatPanel().setVisible(true);
@@ -109,6 +107,10 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
+                localityHistory.clear();
+                view.getEditLocList().clear();
+                view.getEditLocList().setEnabled(true);
+                view.getBackLocBtn().setEnabled(false);
                 localityHistory.add(new String[]{"root", "root"});
                 view.getEditLocPanel().setVisible(true);
                 eventBus.getAdminRootLocalities();
@@ -118,7 +120,7 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                view.getEditCatList1().setEnabled(false);
+                view.getEditCatList().setEnabled(false);
                 view.getEditCatPanel().setVisible(false);
             }
         });
@@ -126,6 +128,7 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
+                view.getEditLocList().setEnabled(false);
                 view.getEditLocPanel().setVisible(false);
             }
         });
@@ -145,40 +148,34 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.getAdminParentLocalities(view.getEditLocList1().getValue(0));
+                int size = localityHistory.size();
+                if (size < 2) {
+                    return;
+                }
+                localityHistory.remove(size - 1);
+                eventBus.getAdminParentLocalities(localityHistory.get(size - 2)[0]);
             }
         });
-        view.getEditCatList1().addClickHandler(new ClickHandler() {
+        view.getEditCatList().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                int idx = view.getEditCatList1().getSelectedIndex();
+                int idx = view.getEditCatList().getSelectedIndex();
                 categoryHistory.add(new String[]{
-                    view.getEditCatList1().getValue(idx),
-                    view.getEditCatList1().getItemText(idx)});
-                eventBus.getAdminSubCategories(1, Long.parseLong(view.getEditCatList1().getValue(idx)));
+                    view.getEditCatList().getValue(idx),
+                    view.getEditCatList().getItemText(idx)});
+                eventBus.getAdminSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
             }
         });
-        view.getEditLocList1().addClickHandler(new ClickHandler() {
+        view.getEditLocList().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                int idx = view.getEditLocList1().getSelectedIndex();
+                int idx = view.getEditLocList().getSelectedIndex();
                 localityHistory.add(new String[]{
-                    view.getEditLocList1().getValue(idx),
-                    view.getEditLocList1().getItemText(idx)});
-                eventBus.getAdminSubCategories(1, Long.parseLong(view.getEditLocList1().getValue(idx)));
-            }
-        });
-        view.getEditLocList2().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                int idx = view.getEditLocList2().getSelectedIndex();
-                localityHistory.add(new String[]{
-                    view.getEditLocList2().getValue(idx),
-                    view.getEditLocList2().getItemText(idx)});
-                eventBus.getAdminSubCategories(2, Long.parseLong(view.getEditLocList2().getValue(idx)));
+                    view.getEditLocList().getValue(idx),
+                    view.getEditLocList().getItemText(idx)});
+                eventBus.getAdminSubLocalities(view.getEditLocList().getValue(idx));
             }
         });
         view.getCategoryList().addClickHandler(new ClickHandler() {
@@ -199,7 +196,7 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                view.getEditCatList1().clear();
+                view.getEditCatList().clear();
                 view.getCatPath().setText("");
                 eventBus.getAdminRootCategories();
             }
@@ -208,8 +205,7 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                view.getEditLocList1().clear();
-                view.getEditLocList2().clear();
+                view.getEditLocList().clear();
                 view.getLocPath().setText("");
                 eventBus.getAdminRootLocalities();
             }
@@ -223,7 +219,7 @@ public class AdminDemandInfoPresenter
     private List<String[]> localityHistory = new ArrayList<String[]>();
     private Boolean alreadyAdded = false;
 
-    public void onDisplayAdminCategories(int listNumber, List<CategoryDetail> list) {
+    public void onDisplayAdminCategories(List<CategoryDetail> list) {
         if (list.isEmpty()) {
             String[] data = categoryHistory.get(categoryHistory.size() - 1);
             view.getCategoryList().addItem(data[1], data[0]);
@@ -232,67 +228,54 @@ public class AdminDemandInfoPresenter
             }
             alreadyAdded = true;
         } else {
-            view.getEditCatList1().clear();
+            view.getEditCatList().clear();
             for (CategoryDetail cat : list) {
-                view.getEditCatList1().addItem(cat.getName(), Long.toString(cat.getId()));
+                view.getEditCatList().addItem(cat.getName(), Long.toString(cat.getId()));
             }
         }
         if (categoryHistory.size() > 1) {
             view.getBackCatBtn().setEnabled(true);
         }
-        this.updatePath();
+        this.updateCategoryPath();
     }
 
-    public void onDisplayAdminLocalities(int listNumber, List<LocalityDetail> list) {
-//        if (list.isEmpty()) {
-//            view.getLocalityList().addItem(lastLocClicked[1], lastLocClicked[0]);
-//            return;
-//        }
-//
-//        if (listNumber == 1) {
-//            for (CategoryDetail cat : list) {
-//                view.getEditCatList1().addItem(cat.getName(), Long.toString(cat.getId()));
-//            }
-//        } else {
-//            if (view.getEditCatList2().getItemCount() == 0) {
-//                view.getEditCatList2().clear();
-//                for (CategoryDetail cat : list) {
-//                    view.getEditCatList2().addItem(cat.getName(), Long.toString(cat.getId()));
-//                }
-//            } else {
-//                view.getEditCatList1().clear();
-//                for (int i = 0; i < view.getEditCatList2().getItemCount(); i++) {
-//                    view.getEditCatList1().addItem(
-//                            view.getEditCatList2().getItemText(i), view.getEditCatList2().getValue(i));
-//                }
-//                view.getEditCatList2().clear();
-//                for (CategoryDetail cat : list) {
-//                    view.getEditCatList2().addItem(cat.getName(), Long.toString(cat.getId()));
-//                }
-//            }
-//        }
+    public void onDisplayAdminLocalities(List<LocalityDetail> list) {
+        if (list.isEmpty()) {
+            String[] data = localityHistory.get(localityHistory.size() - 1);
+            view.getLocalityList().addItem(data[1], data[0]);
+            if (alreadyAdded) {
+                localityHistory.remove(localityHistory.size() - 2);
+            }
+            alreadyAdded = true;
+        } else {
+            view.getEditLocList().clear();
+            for (LocalityDetail loc : list) {
+                view.getEditLocList().addItem(loc.getName(), Long.toString(loc.getId()));
+            }
+        }
+        if (categoryHistory.size() > 1) {
+            view.getBackCatBtn().setEnabled(true);
+        }
+        this.updateLocalityPath();
     }
 
     public void onDoBackCategories(List<CategoryDetail> list) {
-        view.getEditCatList1().clear();
+        view.getEditCatList().clear();
         for (CategoryDetail cat : list) {
-            view.getEditCatList1().addItem(cat.getName(), Long.toString(cat.getId()));
+            view.getEditCatList().addItem(cat.getName(), Long.toString(cat.getId()));
         }
-        this.updatePath();
+        this.updateCategoryPath();
     }
 
     public void onDoBackLocalities(List<LocalityDetail> list) {
-        view.getEditLocList2().clear();
-
-        for (int i = 0; i < view.getEditLocList1().getItemCount(); i++) {
-            view.getEditLocList2().addItem(view.getEditLocList1().getItemText(i), view.getEditLocList1().getValue(i));
-        }
+        view.getEditLocList().clear();
         for (LocalityDetail loc : list) {
-            view.getEditLocList1().addItem(loc.getName(), loc.getCode());
+            view.getEditLocList().addItem(loc.getName(), Long.toString(loc.getId()));
         }
+        this.updateLocalityPath();
     }
 
-    private void updatePath() {
+    private void updateCategoryPath() {
         StringBuilder strBld = new StringBuilder();
         for (String[] str : categoryHistory) {
             strBld.append(str[1]);
@@ -300,5 +283,15 @@ public class AdminDemandInfoPresenter
         }
         strBld.delete(strBld.length() - 4, strBld.length());
         view.getCatPath().setText(strBld.toString());
+    }
+
+    private void updateLocalityPath() {
+        StringBuilder strBld = new StringBuilder();
+        for (String[] str : localityHistory) {
+            strBld.append(str[1]);
+            strBld.append(" -> ");
+        }
+        strBld.delete(strBld.length() - 4, strBld.length());
+        view.getLocPath().setText(strBld.toString());
     }
 }

@@ -44,8 +44,8 @@ public class AdminDemandInfoView extends Composite implements
     @UiField
     TextBox priceBox, clientID, maxOffers, minRating;
     @UiField
-    ListBox demandStatus, demandType, editCatList1,
-    editLocList1, editLocList2, categoryList, localityList;
+    ListBox demandStatus, demandType, editCatList,
+    editLocList, categoryList, localityList;
     @UiField
     Button editCatBtn, editLocBtn, createButton, updateButton,
     finnishCatBtn, finnishLocBtn, backCatBtn, backLocBtn,
@@ -54,7 +54,6 @@ public class AdminDemandInfoView extends Composite implements
     VerticalPanel editCatPanel, editLocPanel;
     @UiField
     Label catPath, locPath;
-
     private FullDemandDetail demandInfo;
 
     @Override
@@ -88,18 +87,13 @@ public class AdminDemandInfoView extends Composite implements
     }
 
     @Override
-    public ListBox getEditCatList1() {
-        return editCatList1;
+    public ListBox getEditCatList() {
+        return editCatList;
     }
 
     @Override
-    public ListBox getEditLocList1() {
-        return editLocList1;
-    }
-
-    @Override
-    public ListBox getEditLocList2() {
-        return editLocList2;
+    public ListBox getEditLocList() {
+        return editLocList;
     }
 
     @Override
@@ -153,12 +147,11 @@ public class AdminDemandInfoView extends Composite implements
     }
 
     public AdminDemandInfoView() {
-//        categoryList = new CellList<String>(new TextCell());
-//        localityList = new CellList<String>(new TextCell());
         initWidget(uiBinder.createAndBindUi(this));
         editCatPanel.setVisible(false);
         editLocPanel.setVisible(false);
-        editCatList1.setEnabled(false);
+        editCatList.setEnabled(false);
+        editLocList.setEnabled(false);
         initDemandInfoForm();
     }
 
@@ -245,12 +238,14 @@ public class AdminDemandInfoView extends Composite implements
             }
             demandStatus.setSelectedIndex(j);
 
+            categoryList.clear();
             if (contact.getCategories() != null) {
                 for (String cat : contact.getCategories().values()) {
                     categoryList.addItem(cat);
                 }
-            }
 
+            }
+            localityList.clear();
             if (contact.getLocalities() != null) {
                 for (String loc : contact.getLocalities().values()) {
                     localityList.addItem(loc);

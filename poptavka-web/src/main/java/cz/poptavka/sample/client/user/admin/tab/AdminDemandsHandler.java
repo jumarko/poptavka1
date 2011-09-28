@@ -118,12 +118,12 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(List<CategoryDetail> result) {
-                eventBus.displayAdminCategories(1, result);
+                eventBus.displayAdminCategories(result);
             }
         });
     }
 
-    public void onGetAdminSubCategories(final int list, Long catId) {
+    public void onGetAdminSubCategories(Long catId) {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -133,7 +133,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
-                eventBus.displayAdminCategories(list, result);
+                eventBus.displayAdminCategories(result);
             }
         });
     }
@@ -164,12 +164,12 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<LocalityDetail> result) {
-                eventBus.displayAdminLocalities(1, result);
+                eventBus.displayAdminLocalities(result);
             }
         });
     }
 
-    public void onGetAdminSubLocalities(final int list, String locCode) {
+    public void onGetAdminSubLocalities(String locCode) {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
 
             @Override
@@ -179,7 +179,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<LocalityDetail> result) {
-                eventBus.displayAdminLocalities(list, result);
+                eventBus.displayAdminLocalities(result);
             }
         });
     }

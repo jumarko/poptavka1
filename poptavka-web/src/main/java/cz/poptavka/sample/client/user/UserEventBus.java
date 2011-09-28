@@ -545,9 +545,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminDemandsPresenter.class)
     void setDetailDisplayed(Boolean displayed);
 
-    @Event(handlers = AdminDemandsPresenter.class)
-    void changeGridData(FullDemandDetail data, List<FullDemandDetail> dataList);
-
     @Event(handlers = AdminDemandInfoPresenter.class)
     void displayAdminTabDemandsLoop(List<FullDemandDetail> list);
 
@@ -556,7 +553,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void getAdminRootCategories();
 
     @Event(handlers = AdminDemandsHandler.class)
-    void getAdminSubCategories(final int list, Long catId);
+    void getAdminSubCategories(Long catId);
 
     @Event(handlers = AdminDemandsHandler.class)
     void getAdminParentCategories(Long catId);
@@ -565,16 +562,16 @@ public interface UserEventBus extends EventBusWithLookup {
     void getAdminRootLocalities();
 
     @Event(handlers = AdminDemandsHandler.class)
-    void getAdminSubLocalities(final int list, String locCode);
+    void getAdminSubLocalities(String locCode);
 
     @Event(handlers = AdminDemandsHandler.class)
     void getAdminParentLocalities(String locCode);
 
     @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminCategories(int listNumber, List<CategoryDetail> list);
+    void displayAdminCategories(List<CategoryDetail> list);
 
     @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminLocalities(int listNumber, List<LocalityDetail> list);
+    void displayAdminLocalities(List<LocalityDetail> list);
 
     @Event(handlers = AdminDemandInfoPresenter.class)
     void doBackCategories(List<CategoryDetail> list);

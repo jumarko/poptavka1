@@ -38,31 +38,7 @@ public class FullSupplierDetail implements Serializable {
     }
 
     public FullSupplierDetail(FullSupplierDetail supplier) {
-        supplierId = supplier.getSupplierId();
-        overallRating = supplier.getOverallRating();
-        certified = supplier.isCertified();
-        verification = supplier.getVerification();
-        //categories
-        categories = new HashMap<Long, String>();
-        for (Long catId : supplier.getCategories().keySet()) {
-            categories.put(catId, supplier.getCategories().get(catId));
-        }
-        //localities
-        localities = new HashMap<String, String>();
-        for (String locCode : supplier.getLocalities().keySet()) {
-            localities.put(locCode, supplier.getLocalities().get(locCode));
-        }
-        for (AddressDetail addr : supplier.getAddresses()) {
-            addresses.add(new AddressDetail(addr));
-        }
-        email = supplier.getEmail();
-        description = supplier.getDescription();
-        businessType = supplier.getBusinessType();
-        companyName = supplier.getCompanyName();
-        identificationNumber = supplier.getIdentificationNumber();
-        firstName = supplier.getFirstName();
-        lastName = supplier.getLastName();
-        phone = supplier.getPhone();
+        this.updateWholeSupplier(supplier);
     }
 
     public static FullSupplierDetail createFullSupplierDetail(Supplier supplier) {
@@ -110,6 +86,34 @@ public class FullSupplierDetail implements Serializable {
             }
         }
         return detail;
+    }
+
+    public void updateWholeSupplier(FullSupplierDetail supplier) {
+        supplierId = supplier.getSupplierId();
+        overallRating = supplier.getOverallRating();
+        certified = supplier.isCertified();
+        verification = supplier.getVerification();
+        //categories
+        categories = new HashMap<Long, String>();
+        for (Long catId : supplier.getCategories().keySet()) {
+            categories.put(catId, supplier.getCategories().get(catId));
+        }
+        //localities
+        localities = new HashMap<String, String>();
+        for (String locCode : supplier.getLocalities().keySet()) {
+            localities.put(locCode, supplier.getLocalities().get(locCode));
+        }
+        for (AddressDetail addr : supplier.getAddresses()) {
+            addresses.add(new AddressDetail(addr));
+        }
+        email = supplier.getEmail();
+        description = supplier.getDescription();
+        businessType = supplier.getBusinessType();
+        companyName = supplier.getCompanyName();
+        identificationNumber = supplier.getIdentificationNumber();
+        firstName = supplier.getFirstName();
+        lastName = supplier.getLastName();
+        phone = supplier.getPhone();
     }
 
     public int getOverallRating() {

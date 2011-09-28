@@ -144,7 +144,7 @@
                             <g:VerticalPanel ui:field = "editCatPanel">
                                 <g:Label ui:field="catPath"/>
                                 <g:HorizontalPanel>
-                                    <g:ListBox ui:field = "editCatList1" visibleItemCount='10' width = '330' />
+                                    <g:ListBox ui:field = "editCatList" visibleItemCount='10' width = '330' />
                                 </g:HorizontalPanel>
                                 <g:HorizontalPanel>
                                     <g:Button ui:field = "rootCatBtn">Root</g:Button>
@@ -163,7 +163,7 @@
                     <tr>
                         <td colspan="2" align='right'>
                             <g:VerticalPanel>
-                                <g:ListBox ui:field = "localityList" visibleItemCount='5'/>
+                                <g:ListBox ui:field = "localityList" visibleItemCount='5' width = '330'/>
                                 <g:Button ui:field='editLocBtn'>
                                     <ui:msg key='demandLocalityList'>Edit</ui:msg>
                                 </g:Button>
@@ -175,8 +175,7 @@
                             <g:VerticalPanel ui:field="editLocPanel">
                                 <g:Label ui:field="locPath"/>
                                 <g:HorizontalPanel>
-                                    <g:ListBox ui:field = "editLocList1" visibleItemCount='10' width = '150'/>
-                                    <g:ListBox ui:field = "editLocList2" visibleItemCount='10' width = '150'/>
+                                    <g:ListBox ui:field = "editLocList" visibleItemCount='10' width = '330'/>
                                 </g:HorizontalPanel>
                                 <g:HorizontalPanel>
                                     <g:Button ui:field = "rootLocBtn">Root</g:Button>

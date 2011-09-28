@@ -39,7 +39,6 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -161,11 +160,9 @@ public class AdminDemandsPresenter
     }
 
     public void onDisplayAdminTabDemands(List<FullDemandDetail> demands) {
-//        dataGridListOriginal.clear();
-//        for(FullDemandDetail detail : demands ) {
-//         dataGridListOriginal.add(new FullDemandDetail(detail));
-//        }
         dataProvider.updateRowData(start, demands);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -274,6 +271,7 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateDemand(dataToUpdate.get(idx), metadataToUpdate.get(idx));
@@ -292,11 +290,14 @@ public class AdminDemandsPresenter
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
                 metadataToUpdate.clear();
+                view.getDataGrid().setFocus(true);
+                int idx = 0;
                 for (FullDemandDetail data : originalData.values()) {
-                    LOGGER.info("data: " + data.toString() + " list: "
-                            + view.getDataGrid().getVisibleItems().toString());
-                    eventBus.changeGridData(data, view.getDataGrid().getVisibleItems());
+                    idx = view.getDataGrid().getVisibleItems().indexOf(data);
+                    view.getDataGrid().getVisibleItem(idx).updateWholeDemand(data);
                 }
+                view.getDataGrid().flush();
+                view.getDataGrid().redraw();
                 Window.alert(view.getChangesLabel().getText() + " changes rolledback.");
                 view.getChangesLabel().setText("0");
                 originalData.clear();
@@ -306,18 +307,21 @@ public class AdminDemandsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                dataProvider.updateRowCount(0, true);
-                dataProvider = null;
-                eventBus.getAdminDemandsCount();
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminDemandsCount();
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
+                }
             }
         });
     }
     private Boolean detailDisplayed = false;
-//    private List<FullDemandDetail> dataGridListOriginal = new ArrayList<FullDemandDetail>();
 
     public void onAddDemandToCommit(FullDemandDetail data, String dataType, String source) {
-//        view.getSelectionModel().setSelected(data, true);
-
         dataToUpdate.remove(data.getDemandId());
         metadataToUpdate.remove(data.getDemandId());
         dataToUpdate.put(data.getDemandId(), data);
@@ -325,29 +329,12 @@ public class AdminDemandsPresenter
         if (detailDisplayed) {
             eventBus.showAdminDemandDetail(data);
         }
-        if (source.equals("detail")) {
-//            List<FullDemandDetail> list = new ArrayList<FullDemandDetail>(dataGridListOriginal);
-//            List<FullDemandDetail> list = new ArrayList<FullDemandDetail>(view.getDataGrid().getVisibleItems());
-////            List<FullDemandDetail> list = view.getDataGrid().getVisibleItems();
-//            int idx = list.indexOf(data);
-//            list.remove(idx);
-//            list.add(idx, data);
-////            dataProvider.updateRowData(start, list);
-//            view.getDataGrid().redraw();
-            LOGGER.info("data: " + data.toString() + " list: " + view.getDataGrid().getVisibleItems().toString());
-            eventBus.changeGridData(data, view.getDataGrid().getVisibleItems());
-        }
+//        view.getDataGrid().getVisibleItem(
+//                view.getDataGrid().getVisibleItems().indexOf(data))
+//                .updateWholeDemand(data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-    }
-
-    public void onChangeGridData(FullDemandDetail data, List<FullDemandDetail> dataList) {
-        List<FullDemandDetail> list = new ArrayList<FullDemandDetail>(dataList);
-        int idx = list.indexOf(data);
-        list.remove(idx);
-        list.add(idx, data);
-//        eventBus.displayAdminTabDemandsLoop(list);
-
-        dataProvider.updateRowData(start, list);
+//        view.getDataGrid().setFocus(true);
+        view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
 
