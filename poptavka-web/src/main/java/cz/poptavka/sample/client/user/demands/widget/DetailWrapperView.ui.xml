@@ -1,7 +1,9 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:e="urn:import:cz.poptavka.sample.client.user.demands.widget"
     xmlns:d="urn:import:cz.poptavka.sample.client.user.messages">
+    
     <ui:style>
         .overflow {
             overflow: scroll;
@@ -23,6 +25,7 @@
         </g:SimplePanel>
         <g:StackLayoutPanel ui:field="stackConversationPanel" unit='EM' visible="false"/>
         <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
+        <e:DemandDetailView ui:field="demandDetail"/>
        	<g:SimplePanel ui:field="replyHolder" />
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -40,6 +40,8 @@ public class DetailWrapperPresenter extends
         SimplePanel getReplyHolder();
 
         StackLayoutPanel getStackConversationPanel();
+
+        DemandDetailView getDemandDetail();
     }
 
     private ViewType type;
@@ -75,6 +77,7 @@ public class DetailWrapperPresenter extends
     public void onSetFullDemandDetail(FullDemandDetail detail) {
         view.setDetail(new DemandDetailView(detail));
         // GUI visual event
+        view.getDemandDetail().setDemanDetail(detail);
         toggleDetailLoading();
     }
 

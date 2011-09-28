@@ -27,6 +27,7 @@ public class DetailWrapperView extends Composite
     @UiField UserConversationPanel conversationPanel;
     @UiField SimplePanel replyHolder;
     @UiField StackLayoutPanel stackConversationPanel;
+    @UiField DemandDetailView demandDetail;
 
     @Override
     public void createView() {
@@ -42,7 +43,7 @@ public class DetailWrapperView extends Composite
         Widget mailHeader2 = createHeaderWidget(
                 "Pokus2");
         stackConversationPanel.add(conversationPanel, mailHeader, 4);
-        stackConversationPanel.add(createMailItem(), mailHeader1, 4);
+        stackConversationPanel.add(demandDetail, mailHeader1, 4);
         stackConversationPanel.add(createMailItem(), mailHeader2, 4);
     }
 
@@ -125,6 +126,10 @@ public class DetailWrapperView extends Composite
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
         sb.appendEscaped(" ").appendEscaped(label);
         root.addItem(sb.toSafeHtml());
+    }
+
+    public DemandDetailView getDemandDetail() {
+        return demandDetail;
     }
 
 }

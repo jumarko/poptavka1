@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
+import cz.poptavka.sample.client.user.demands.widget.SupplierDetailView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -48,11 +49,12 @@ public class AllSuppliersView extends OverflowComposite
     @UiField
     ListBox localityList;
     @UiField
-    Label overallRating, certified, description, verification, localities,
-    categories, services, bsuRoles, addresses, businessType, email, companyName,
-    identificationNumber, firstName, lastName, phone, reklama;
+    Label reklama;
     @UiField
     HTMLPanel detail, child;
+    @UiField
+    SupplierDetailView supplierDetail;
+
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>();
     private final SingleSelectionModel<CategoryDetail> selectionSupplierModel =
@@ -183,22 +185,7 @@ public class AllSuppliersView extends OverflowComposite
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        overallRating.setText(Integer.toString(userDetail.getSupplier().getOverallRating()));
-        certified.setText(Boolean.toString(userDetail.getSupplier().isCertified()));
-        description.setText(userDetail.getSupplier().getDescription());
-//    verification = userDetail.get
-        localities.setText(userDetail.getSupplier().getLocalities().toString());
-        categories.setText(userDetail.getSupplier().getCategories().toString());
-//    services = userDetail.getSupplier().
-//    bsuRoles = userDetail.getSupplier().
-        addresses.setText(userDetail.getAddress().toString());
-//    businessType = userDetail.get
-        email.setText(userDetail.getEmail());
-        companyName.setText(userDetail.getCompanyName());
-        identificationNumber.setText(userDetail.getIdentifiacationNumber());
-        firstName.setText(userDetail.getFirstName());
-        lastName.setText(userDetail.getLastName());
-        phone.setText(userDetail.getPhone());
+        supplierDetail.displaySuppliersDetail(userDetail);
 
     }
 
