@@ -5,9 +5,11 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -42,6 +44,7 @@ public class OldDemandsLayoutView extends Composite
 
     //BEHO devel button, delete after work is done
     @UiField Anchor develAnchor;
+    @UiField Button createDemand;
 
     public OldDemandsLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -71,6 +74,11 @@ public class OldDemandsLayoutView extends Composite
     @Override
     public void setNewDemandToken(String linkString) {
         newDemandLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public HasClickHandlers getCreateDemandButton() {
+        return createDemand;
     }
 
     @Override

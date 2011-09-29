@@ -34,6 +34,11 @@
                         </g:Hyperlink>
                     </li>
                     <li>
+                        <g:Button ui:field="createDemand">
+                            <ui:msg key="createDemand">createDemand</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
                         <g:Hyperlink ui:field="allDemandsLink">
                             <ui:msg key="allDemandsLink">All Demands</ui:msg>
                         </g:Hyperlink>

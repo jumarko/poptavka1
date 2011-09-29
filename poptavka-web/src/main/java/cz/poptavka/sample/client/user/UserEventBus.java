@@ -27,7 +27,7 @@ import cz.poptavka.sample.client.user.demands.develmodule.DemandModule;
 import cz.poptavka.sample.client.user.demands.tab.AllDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.AllSuppliersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
+//import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
@@ -234,7 +234,7 @@ public interface UserEventBus extends EventBusWithLookup {
      **********************************************************************************************
      *     ----------------------- DEMANDS SECTION ----------------------------      */
     @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, NewDemandPresenter.class, PotentialDemandsPresenter.class,
+            OffersPresenter.class, PotentialDemandsPresenter.class,
             DemandsOperatorPresenter.class, AdminDemandsPresenter.class, AdminSuppliersPresenter.class,
             AdminOffersPresenter.class, AllDemandsPresenter.class, AllSuppliersPresenter.class },
     historyConverter = DemandsHistoryConverter.class)
@@ -248,43 +248,43 @@ public interface UserEventBus extends EventBusWithLookup {
     String invokeMyProblems();
 
     @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
-            MyDemandsPresenter.class, NewDemandPresenter.class, PotentialDemandsPresenter.class,
+            MyDemandsPresenter.class, PotentialDemandsPresenter.class,
             DemandsOperatorPresenter.class, AdminDemandsPresenter.class, AdminOffersPresenter.class,
             AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
     historyConverter = DemandsHistoryConverter.class)
     String invokeOffers();
 
-    @Event(handlers = NewDemandPresenter.class, activate = NewDemandPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            DemandsOperatorPresenter.class, AdminDemandsPresenter.class, AdminOffersPresenter.class,
-            AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
-    String invokeNewDemand();
+//    @Event(handlers = NewDemandPresenter.class, activate = NewDemandPresenter.class, deactivate = {
+//            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
+//            DemandsOperatorPresenter.class, AdminDemandsPresenter.class, AdminOffersPresenter.class,
+//            AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
+//    historyConverter = DemandsHistoryConverter.class)
+//    String invokeNewDemand();
 
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, NewDemandPresenter.class,
-            DemandsOperatorPresenter.class, AdminDemandsPresenter.class, AdminOffersPresenter.class,
+            OffersPresenter.class, MyDemandsPresenter.class, DemandsOperatorPresenter.class,
+            AdminDemandsPresenter.class, AdminOffersPresenter.class,
             AdminSuppliersPresenter.class, AllDemandsPresenter.class, AllSuppliersPresenter.class },
     historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
     @Event(handlers = DemandsOperatorPresenter.class, activate = DemandsOperatorPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            NewDemandPresenter.class, AdminDemandsPresenter.class, AdminOffersPresenter.class,
+            AdminDemandsPresenter.class, AdminOffersPresenter.class,
             AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
     historyConverter = DemandsHistoryConverter.class)
     String invokeDemandsOperator();
 
     @Event(handlers = AllDemandsPresenter.class, activate = AllDemandsPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            NewDemandPresenter.class, DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
+            DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
             AllSuppliersPresenter.class, AdminOffersPresenter.class, AdminSuppliersPresenter.class },
     historyConverter = DemandsHistoryConverter.class)
     String invokeAtDemands();
 
     @Event(handlers = AllSuppliersPresenter.class, activate = AllSuppliersPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            NewDemandPresenter.class, DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
+            DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
             AllDemandsPresenter.class, AdminOffersPresenter.class, AdminSuppliersPresenter.class },
     historyConverter = DemandsHistoryConverter.class)
     String invokeAtSuppliers();
@@ -293,14 +293,14 @@ public interface UserEventBus extends EventBusWithLookup {
 //    @Event(handlers = AdminDemandsPresenter.class, historyConverter = AdminHistoryConverter.class)
     @Event(handlers = AdminDemandsPresenter.class, activate = AdminDemandsPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            NewDemandPresenter.class, DemandsOperatorPresenter.class, AdminSuppliersPresenter.class,
+            DemandsOperatorPresenter.class, AdminSuppliersPresenter.class,
             AllDemandsPresenter.class, AdminOffersPresenter.class, AllSuppliersPresenter.class },
     historyConverter = AdminHistoryConverter.class)
     String invokeAdminDemands();
 
     @Event(handlers = AdminOffersPresenter.class, activate = AdminOffersPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            NewDemandPresenter.class, DemandsOperatorPresenter.class, AdminSuppliersPresenter.class,
+            DemandsOperatorPresenter.class, AdminSuppliersPresenter.class,
             AllDemandsPresenter.class, AdminDemandsPresenter.class, AllSuppliersPresenter.class },
             historyConverter = AdminHistoryConverter.class)
     String invokeAdminOffers();
@@ -308,7 +308,7 @@ public interface UserEventBus extends EventBusWithLookup {
 //    @Event(handlers = AdminSuppliersPresenter.class, historyConverter = AdminHistoryConverter.class)
     @Event(handlers = AdminSuppliersPresenter.class, activate = AdminSuppliersPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            NewDemandPresenter.class, DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
+            DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
             AllDemandsPresenter.class, AdminOffersPresenter.class, AllSuppliersPresenter.class },
     historyConverter = AdminHistoryConverter.class)
     String invokeAdminSuppliers();
@@ -681,6 +681,9 @@ public interface UserEventBus extends EventBusWithLookup {
     //init demands module
     @Event(modulesToLoad = DemandModule.class)
     void initDemandModule(SimplePanel panel);
+
+    @Event(forwardToParent = true)
+    void goToCreateDemand();
 
     /**
      * ********************* End corner ************************

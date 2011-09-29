@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.demands;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -59,6 +60,7 @@ public class OldDemandsLayoutPresenter
 
         //beho devel section
         Anchor getDevelAnchor();
+        HasClickHandlers getCreateDemandButton();
 
     }
 
@@ -70,7 +72,8 @@ public class OldDemandsLayoutPresenter
         // MENU - CLIENT
         view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
         view.setOffersToken(getTokenGenerator().invokeOffers());
-        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+        // TODO praso - temporarily commetnted for the prupose of trying to fix the navigation linking between modules
+        //        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
         view.setAllDemandsToken(getTokenGenerator().invokeAtDemands());
         view.setAllSuppliersToken(getTokenGenerator().invokeAtSuppliers());
 
@@ -86,6 +89,15 @@ public class OldDemandsLayoutPresenter
 
             }
         });
+
+        // TODO praso - test linking to DemandCreationModule
+        view.getCreateDemandButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateDemand();
+            }
+        });
+
     }
 
     public void init(UserDetail user) {

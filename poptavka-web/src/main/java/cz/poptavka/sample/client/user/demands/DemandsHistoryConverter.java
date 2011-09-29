@@ -11,7 +11,7 @@ import cz.poptavka.sample.client.user.admin.tab.DemandsOperatorPresenter;
 import cz.poptavka.sample.client.user.demands.tab.AllDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.AllSuppliersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
+//import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import java.util.logging.Logger;
@@ -45,7 +45,7 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 
     private MyDemandsPresenter myDemandPresenter = null;
     private OffersPresenter offersPresenter = null;
-    private NewDemandPresenter newDemandPresenter = null;
+//    private NewDemandPresenter newDemandPresenter = null;
     private PotentialDemandsPresenter potentialDemandsPresenter = null;
     private DemandsOperatorPresenter operatorPresenter = null;
     private AllDemandsPresenter demandsPresenter = null;
@@ -85,13 +85,13 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
                 offersPresenter = eventBus.addHandler(OffersPresenter.class);
                 offersPresenter.onInvokeOffers();
             }
-            if (historyName.equals(DEMAND_NEW)) {
-                if (newDemandPresenter != null) {
-                    eventBus.removeHandler(newDemandPresenter);
-                }
-                newDemandPresenter = eventBus.addHandler(NewDemandPresenter.class);
-                newDemandPresenter.onInvokeNewDemand();
-            }
+//            if (historyName.equals(DEMAND_NEW)) {
+//                if (newDemandPresenter != null) {
+//                    eventBus.removeHandler(newDemandPresenter);
+//                }
+//                newDemandPresenter = eventBus.addHandler(NewDemandPresenter.class);
+//                newDemandPresenter.onInvokeNewDemand();
+//            }
             if (historyName.equals(DEMANDS_POTENTIAL)) {
                 if (potentialDemandsPresenter != null) {
                     potentialDemandsPresenter.cleanDetailWrapperPresenterForDevelopment();

@@ -66,8 +66,9 @@ public interface MainEventBus extends EventBus {
 //    @Event(modulesToLoad = UserModule.class, passive = true)
 //    void addNewDemand(FullDemandDetail result);
 
-    @Event(modulesToLoad = HomeModule.class)
-    void goToCreateDemand();
+    // TODO praso - where did thismetod come from? Figure out.
+//    @Event(modulesToLoad = HomeModule.class)
+//    void goToCreateDemand();
 
     @Event(modulesToLoad = HomeModule.class)
     void goToCreateSupplier();
@@ -176,5 +177,10 @@ public interface MainEventBus extends EventBus {
 
     @Event(modulesToLoad = UserModule.class, passive = true)
     void clearUserOnUnload();
+
+
+    // Navigation event
+    @Event(modulesToLoad = HomeModule.class)
+    void goToCreateDemand();
 
 }
