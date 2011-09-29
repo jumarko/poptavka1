@@ -5,8 +5,8 @@ import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.UserSearchCriteria;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /**
- * TODO: this test must be implemented correctly by complete test methods.
  *
  * @author Juraj Martinka
  *         Date: 20.12.10

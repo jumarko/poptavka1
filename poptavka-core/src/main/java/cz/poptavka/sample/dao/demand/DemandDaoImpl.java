@@ -5,12 +5,13 @@
 
 package cz.poptavka.sample.dao.demand;
 
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.common.TreeItemDao;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
 
 import javax.persistence.Query;
@@ -129,6 +130,14 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("category", category);
         return (Long) runNamedQueryForSingleResult("getDemandsCountForCategoryWithoutChildren", params);
+    }
+
+
+    @Override
+    public List<Demand> getAllNewDemands(ResultCriteria resultCriteria) {
+        final Demand newDemandExample = new Demand();
+        newDemandExample.setStatus(DemandStatus.NEW);
+        return findByExample(newDemandExample);
     }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------

@@ -190,4 +190,16 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     long getOfferCount(Demand demand);
+
+
+    /**
+     * Send given demand to potential suppliers.
+     * @param demand
+     */
+    void sendDemandToSuppliers(Demand demand);
+
+    /**
+     * Send all new demands to potential suppliers.
+     */
+    void sendDemandsToSuppliers();
 }

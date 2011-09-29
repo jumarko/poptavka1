@@ -109,7 +109,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Transactional(readOnly = true)
     public Set<Demand> getDemands(final ResultCriteria resultCriteria, final Locality... localities) {
         final ResultProvider<Demand> demandProvider = new ResultProvider<Demand>(resultCriteria) {
-
             @Override
             public Collection<Demand> getResult() {
                 return DemandServiceImpl.this.getDao().getDemands(localities, getResultCriteria());
@@ -228,6 +227,20 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return demand.getOffers().size();
     }
 
+    @Override
+    public void sendDemandToSuppliers(Demand demand) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void sendDemandsToSuppliers() {
+        final List<Demand> allNewDemands = this.getDao().getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
+        for (Demand newDemand : allNewDemands) {
+            sendDemandToSuppliers(newDemand);
+        }
+    }
+
+
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
@@ -255,4 +268,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
             }
         }
     }
+
+
+
 }
