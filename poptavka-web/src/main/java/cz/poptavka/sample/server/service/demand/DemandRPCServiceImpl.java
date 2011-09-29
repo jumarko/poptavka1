@@ -210,7 +210,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         message.setMessageState(MessageState.COMPOSED);
 
         message = messageService.create(message);
-        //TODO verify, if correct
         try {
             messageService.send(message);
         } catch (MessageCannotBeSentException ex) {

@@ -92,6 +92,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     /**
      * if used somewhere. In the past (before 14.7.) used for MyDemands list of clients
      * demands. Now it is maybe unused. MAYBE I'm wrong
+     * -- USED in MessageHandler#onGetClientDemands
      */
     /**
      * Tato metoda ma zrejme vratit vsetky spravy (dotazy od dodavatelov a dotazy
