@@ -63,11 +63,8 @@
                             </td>
                         </tr>
                     </table>
-                    <lsv:LocalitySelectorView/>
                 </g:HTMLPanel>
             </g:DecoratorPanel>
-
-<!--            </g:FlowPanel>-->
         </g:west>
         <g:center>
             <g:ScrollPanel>

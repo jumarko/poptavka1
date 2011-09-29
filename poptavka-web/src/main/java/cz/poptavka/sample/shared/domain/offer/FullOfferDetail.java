@@ -12,6 +12,7 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 public class FullOfferDetail implements Serializable {
+
     /**
      * Generated serialVersionUID.
      */
@@ -19,15 +20,41 @@ public class FullOfferDetail implements Serializable {
     private BigDecimal price;
     // TODO remove dipslpayed
     private boolean isRead;
+    private Date created;
     private Date finishDate;
     private long supplierId;
     private long messageId;
     private long offerId;
+    private long demandId;
     private String supplierName;
     private MessageDetail messageDetail;
     private String state;
 
-    public static OfferDetail generateOfferDetail(Message message) {
+    public static FullOfferDetail crateOfferDetail(Offer offer) {
+        FullOfferDetail detail = new FullOfferDetail();
+        if (offer == null) {
+            return detail;
+        }
+
+        detail.setOfferId(offer.getId());
+        if (offer.getDemand() != null) {
+            detail.setDemandId(offer.getDemand().getId());
+        }
+        if (offer.getSupplier() != null) {
+            detail.setSupplierId(offer.getSupplier().getId());
+        }
+
+        if (offer.getState() != null) {
+            detail.setState(offer.getState().getDescription());
+        }
+        detail.setFinishDate(offer.getFinishDate());
+        detail.setPrice(offer.getPrice());
+
+        GWT.log("OFFER ID: " + offer.getId() + ", OFFER DETAIL ID: " + detail.getOfferId());
+        return detail;
+    }
+
+    public static OfferDetail crateOfferDetail(Message message) {
         MessageDetail m = new MessageDetail();
         m.setMessageId(message.getId());
         m.setBody(message.getBody());
@@ -60,6 +87,24 @@ public class FullOfferDetail implements Serializable {
     public FullOfferDetail() {
     }
 
+    public FullOfferDetail(FullOfferDetail detail) {
+        this.updateWholeOffer(detail);
+    }
+
+    public void updateWholeOffer(FullOfferDetail detail) {
+        if (detail == null) {
+            return;
+        }
+
+        offerId = detail.getOfferId();
+        demandId = detail.getDemandId();
+        supplierId = detail.getSupplierId();
+
+        state = detail.getState();
+        finishDate = detail.getFinishDate();
+        price = detail.getPrice();
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -74,11 +119,13 @@ public class FullOfferDetail implements Serializable {
     }
 
     public void setDemandId(Long demandId) {
-        this.getMessageDetail().setDemandId(demandId);
+//        this.getMessageDetail().setDemandId(demandId);
+        this.demandId = demandId;
     }
 
     public long getDemandId() {
-        return this.getMessageDetail().getDemandId();
+//        return this.getMessageDetail().getDemandId();
+        return demandId;
     }
 
     public String getPriceString() {
@@ -95,6 +142,14 @@ public class FullOfferDetail implements Serializable {
 
     public Date getFinishDate() {
         return finishDate;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public void setFinishDate(Date finishDate) {

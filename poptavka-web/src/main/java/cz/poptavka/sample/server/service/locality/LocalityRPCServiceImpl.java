@@ -63,7 +63,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<LocalityDetail> getAllRootLocalities() {
-        return createLocalityDetails(localityService.getLocalities(LocalityType.DISTRICT));
+        return createLocalityDetails(localityService.getLocalities(LocalityType.REGION));
     }
 
     @Override

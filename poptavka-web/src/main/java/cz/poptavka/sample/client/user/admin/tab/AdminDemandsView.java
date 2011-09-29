@@ -176,6 +176,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
+        dataGrid.setEmptyTableWidget(new Label("No data available."));
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -217,7 +218,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         });
 
         // Clietn ID.
-        addColumn(new EditTextCell(), "CID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "CID", 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {

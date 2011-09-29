@@ -16,9 +16,9 @@
       margin-bottom: 4px;
     }
     </ui:style>
-    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+<!--    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="650">
-            <g:ScrollPanel>
+            <g:ScrollPanel>-->
 
 <!--            <g:FlowPanel>-->
 <!--                <g:HorizontalPanel>
@@ -40,28 +40,39 @@
                         <table cellspacing='0' cellpadding='0'>
                             <tr>
                                 <td valign='top'>
-                                    <g:ScrollPanel>
-                                        <c:CellTable addStyleNames='{style.cellTable}' pageSize='15' ui:field='cellTable' />
-                                    </g:ScrollPanel>
+                                    <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
                                 </td>
                             </tr>
                             <tr>
                                 <td align='center'>
-                                    <c:SimplePager ui:field='pager' />
+                                    <g:HorizontalPanel>
+                                        <c:SimplePager ui:field='pager' />
+                                        <g:ListBox ui:field='pageSizeCombo'/>
+                                    </g:HorizontalPanel>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  align='left'>
+                                    <g:HorizontalPanel>
+                                        <g:Button ui:field="refresh">Refresh</g:Button>
+                                        <g:Button ui:field="commit">Commit changes</g:Button>
+                                        <g:Button ui:field="rollback">Rollback changes</g:Button>
+                                        <g:Label>Demands changed: </g:Label>
+                                        <g:Label ui:field="changesLabel"></g:Label>
+                                    </g:HorizontalPanel>
                                 </td>
                             </tr>
                         </table>
-
                     </g:HTMLPanel>
                 </g:DecoratorPanel>
 
 <!--            </g:FlowPanel>-->
-            </g:ScrollPanel>
+<!--            </g:ScrollPanel>
         </g:west>
         <g:center>
             <g:SimplePanel ui:field="adminOfferDetail"></g:SimplePanel>
         </g:center>
-    </g:SplitLayoutPanel>
+    </g:SplitLayoutPanel>-->
 </ui:UiBinder>
 
 

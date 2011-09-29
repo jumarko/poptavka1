@@ -180,7 +180,7 @@ public class AdminDemandsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setTitle(value);
-                    eventBus.addDemandToCommit(object, "demand", "table");
+                    eventBus.addDemandToCommit(object, "demand");
                 }
             }
         });
@@ -195,7 +195,7 @@ public class AdminDemandsPresenter
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
                             object.setDemandType(clientDemandType.name());
-                            eventBus.addDemandToCommit(object, "demand", "table");
+                            eventBus.addDemandToCommit(object, "demand");
                         }
                     }
                 }
@@ -212,7 +212,7 @@ public class AdminDemandsPresenter
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
                             object.setDemandStatus(demandStatusType.name());
-                            eventBus.addDemandToCommit(object, "demand", "table");
+                            eventBus.addDemandToCommit(object, "demand");
                         }
                     }
                 }
@@ -227,7 +227,7 @@ public class AdminDemandsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setValidToDate(value);
-                    eventBus.addDemandToCommit(object, "other", "table");
+                    eventBus.addDemandToCommit(object, "other");
                 }
             }
         });
@@ -240,7 +240,7 @@ public class AdminDemandsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setEndDate(value);
-                    eventBus.addDemandToCommit(object, "other", "table");
+                    eventBus.addDemandToCommit(object, "other");
                 }
             }
         });
@@ -254,7 +254,7 @@ public class AdminDemandsPresenter
                 } else {
                     eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
                 }
-                eventBus.setDetailDisplayed(true);
+                eventBus.setDetailDisplayedDemand(true);
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
@@ -321,24 +321,25 @@ public class AdminDemandsPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(FullDemandDetail data, String dataType, String source) {
-        dataToUpdate.remove(data.getDemandId());
-        metadataToUpdate.remove(data.getDemandId());
-        dataToUpdate.put(data.getDemandId(), data);
-        metadataToUpdate.put(data.getDemandId(), dataType);
+    public void onAddDemandToCommit(FullDemandDetail data, String dataType) {
+        //TODO Martin - otestovat, alebo celkom zrusit cistocne auktualizovanie
+        if (metadataToUpdate.containsKey(data.getDemandId())) {
+            dataToUpdate.remove(data.getDemandId());
+            metadataToUpdate.remove(data.getDemandId());
+            metadataToUpdate.put(data.getDemandId(), "all");
+        } else {
+            dataToUpdate.put(data.getDemandId(), data);
+            metadataToUpdate.put(data.getDemandId(), dataType);
+        }
         if (detailDisplayed) {
             eventBus.showAdminDemandDetail(data);
         }
-//        view.getDataGrid().getVisibleItem(
-//                view.getDataGrid().getVisibleItems().indexOf(data))
-//                .updateWholeDemand(data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-//        view.getDataGrid().setFocus(true);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
 
-    public void onSetDetailDisplayed(Boolean displayed) {
+    public void onSetDetailDisplayedDemand(Boolean displayed) {
         detailDisplayed = displayed;
     }
 }

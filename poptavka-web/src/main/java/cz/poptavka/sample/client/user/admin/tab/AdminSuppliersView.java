@@ -21,6 +21,7 @@ import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -64,7 +65,10 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     SimplePanel adminSupplierDetail;
     @UiField(provided = true)
     ListBox pageSizeCombo;
-    @UiField Button commit;
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     /**
      * Data provider that will cell table with data.
      */
@@ -137,6 +141,21 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         return commit;
     }
 
+    @Override
+    public Button getRollbackBtn() {
+        return rollback;
+    }
+
+    @Override
+    public Button getRefreshBtn() {
+        return refresh;
+    }
+
+    @Override
+    public Label getChangesLabel() {
+        return changesLabel;
+    }
+
     /**
      * @return the selectionModel
      */
@@ -160,9 +179,10 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         pageSizeCombo.addItem("20");
         pageSizeCombo.addItem("25");
         pageSizeCombo.addItem("30");
-        pageSizeCombo.setSelectedIndex(2);
+        pageSizeCombo.setSelectedIndex(1);
         initDataGrid();
         initWidget(uiBinder.createAndBindUi(this));
+        changesLabel.setText("0");
     }
 
 //    @Override
@@ -180,6 +200,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
+        dataGrid.setEmptyTableWidget(new Label("No data available."));
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -203,7 +224,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         // Checkbox column. This table will uses a checkbox column for selection.
         // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
         // mouse selection.
-        addColumn(new CheckboxCell(true, false), "", 15, new GetValue<Boolean>() {
+        addColumn(new CheckboxCell(true, false), "<br/>", 15, new GetValue<Boolean>() {
 
             @Override
             public Boolean getValue(FullSupplierDetail object) {

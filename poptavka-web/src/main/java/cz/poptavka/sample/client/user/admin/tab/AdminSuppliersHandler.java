@@ -9,21 +9,21 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.Map;
 
 @EventHandler
-public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
+public class AdminSuppliersHandler extends BaseEventHandler<UserEventBus> {
 
     @Inject
-    private DemandRPCServiceAsync demandService = null;
+    private SupplierRPCServiceAsync supplierService = null;
     @Inject
     private CategoryRPCServiceAsync categoryService = null;
     @Inject
@@ -32,8 +32,8 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
     /**********************************************************************************************
      ***********************  DEMAND SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminDemandsCount() {
-        demandService.getAllDemandsCount(new AsyncCallback<Long>() {
+    public void onGetAdminSuppliersCount() {
+        supplierService.getSuppliersCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -41,14 +41,14 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
-                eventBus.createAdminDemandsAsyncDataProvider(result.intValue());
+            public void onSuccess(Integer result) {
+                eventBus.createAdminSuppliersAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminDemands(int start, int count) {
-        demandService.getDemands(start, count, new AsyncCallback<List<FullDemandDetail>>() {
+    public void onGetAdminSuppliers(int start, int count) {
+        supplierService.getSuppliers(start, count, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -56,16 +56,16 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(List<FullDemandDetail> result) {
-                eventBus.displayAdminTabDemands(result);
+            public void onSuccess(ArrayList<FullSupplierDetail> result) {
+                eventBus.displayAdminTabSuppliers(result);
             }
         });
 
     }
 
-    public void onGetSortedDemands(int start, int count, Map<String, OrderType> orderColumns) {
-        demandService.getSortedDemands(start, count, orderColumns,
-                new AsyncCallback<List<FullDemandDetail>>() {
+    public void onGetSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns) {
+        supplierService.getSortedSuppliers(start, count, orderColumns,
+                new AsyncCallback<ArrayList<FullSupplierDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -73,14 +73,14 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
                     }
 
                     @Override
-                    public void onSuccess(List<FullDemandDetail> result) {
-                        eventBus.displayAdminTabDemands(result);
+                    public void onSuccess(ArrayList<FullSupplierDetail> result) {
+                        eventBus.displayAdminTabSuppliers(result);
                     }
                 });
     }
 
-    public void onUpdateDemand(FullDemandDetail demand, String updateWhat) {
-        demandService.updateDemand(demand, updateWhat, new AsyncCallback<FullDemandDetail>() {
+    public void onUpdateDemand(FullSupplierDetail supplier, String updateWhat) {
+        supplierService.updateSupplier(supplier, updateWhat, new AsyncCallback<FullSupplierDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -88,7 +88,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(FullDemandDetail result) {
+            public void onSuccess(FullSupplierDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
             }
         });
@@ -97,7 +97,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
     /**********************************************************************************************
      ***********************  CATEGORY SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminDemandRootCategories() {
+    public void onGetAdminSupplierRootCategories() {
         categoryService.getAllRootCategories(new AsyncCallback<List<CategoryDetail>>() {
 
             @Override
@@ -107,12 +107,12 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(List<CategoryDetail> result) {
-                eventBus.displayAdminDemandCategories(result);
+                eventBus.displayAdminSupplierCategories(result);
             }
         });
     }
 
-    public void onGetAdminDemandSubCategories(Long catId) {
+    public void onGetAdminSupplierSubCategories(Long catId) {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -122,12 +122,12 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
-                eventBus.displayAdminDemandCategories(result);
+                eventBus.displayAdminSupplierCategories(result);
             }
         });
     }
 
-    public void onGetAdminDemandParentCategories(Long catId) {
+    public void onGetAdminSupplierParentCategories(Long catId) {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -137,7 +137,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
-                eventBus.doBackDemandCategories(result);
+                eventBus.doBackSupplierCategories(result);
             }
         });
     }
@@ -145,7 +145,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
     /**********************************************************************************************
      ***********************  LOCALITY SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminDemandRootLocalities() {
+    public void onGetAdminSupplierRootLocalities() {
         localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
 
             @Override
@@ -160,7 +160,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    public void onGetAdminDemandSubLocalities(String locCode) {
+    public void onGetAdminSupplierSubLocalities(String locCode) {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
 
             @Override
@@ -170,12 +170,12 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<LocalityDetail> result) {
-                eventBus.displayAdminDemandLocalities(result);
+                eventBus.displayAdminSupplierLocalities(result);
             }
         });
     }
 
-    public void onGetAdminDemandParentLocalities(String locCode) {
+    public void onGetAdminSupplierParentLocalities(String locCode) {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
 
             @Override
@@ -185,7 +185,7 @@ public class AdminDemandsHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<LocalityDetail> result) {
-                eventBus.doBackDemandLocalities(result);
+                eventBus.doBackSupplierLocalities(result);
             }
         });
     }

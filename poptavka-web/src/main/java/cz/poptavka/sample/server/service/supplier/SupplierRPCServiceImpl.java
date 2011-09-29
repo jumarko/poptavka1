@@ -261,7 +261,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     public Integer getSuppliersCount() {
-        return supplierService.getAll().size();
+        return (int) supplierService.getCount();
     }
 
     @Override

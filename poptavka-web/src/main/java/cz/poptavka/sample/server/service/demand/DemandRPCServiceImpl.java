@@ -431,6 +431,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public Long getAllDemandsCount() {
+        //TODO Martin - lepsie .getCount() ?
         return demandService.getAllDemandsCount();
     }
 

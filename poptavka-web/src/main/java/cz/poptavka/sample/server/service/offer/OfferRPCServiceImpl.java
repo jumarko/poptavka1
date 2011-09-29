@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.OfferRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
@@ -20,6 +22,7 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.audit.AuditService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.offer.OfferService;
@@ -30,6 +33,9 @@ import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 /**
  *
@@ -47,7 +53,13 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     private ClientService clientService;
     private UserMessageService userMessageService;
     private OfferService offerService;
-    private SupplierService supplierSerivce;
+    private SupplierService supplierService;
+    private AuditService auditService;
+
+    @Autowired
+    public void setAuditService(AuditService auditService) {
+        this.auditService = auditService;
+    }
 
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
@@ -79,8 +91,8 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         this.clientService = clientService;
     }
 
-    public void setSupplierSerivce(SupplierService supplierSerivce) {
-        this.supplierSerivce = supplierSerivce;
+    public void setSupplierService(SupplierService supplierService) {
+        this.supplierService = supplierService;
     }
 
     /**
@@ -173,13 +185,46 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     @Override
     public FullOfferDetail updateOffer(FullOfferDetail newOffer) {
         Offer offer = offerService.getById(newOffer.getOfferId());
-        //      demand.setCategories(null);
-        offer.setSupplier(supplierSerivce.getById(newOffer.getSupplierId()));
-        //      demand.setDescription(null);
+
+        OfferState state = offerService.getOfferState(newOffer.getState());
+        if (state != null) {
+            offer.setState(state);
+        }
+        offer.setPrice(newOffer.getPrice());
         offer.setFinishDate(newOffer.getFinishDate());
-        //      demand.setExcludedSuppliers(null);
-        //      demand.setLocalities(null);
+
         offerService.update(offer);
         return newOffer;
+    }
+
+    @Override
+    public Long getAllOffersCount() {
+        return offerService.getCount();
+    }
+
+    @Override
+    public List<FullOfferDetail> getOffers(int fromResult, int toResult) {
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
+        return this.createOfferDetailList(offerService.getAll(resultCriteria));
+    }
+
+    @Override
+    public List<FullOfferDetail> getSortedOffers(int start, int count, Map<String, OrderType> orderColumns) {
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(start).maxResults(count).orderByColumns(orderColumns).build();
+        return this.createOfferDetailList(offerService.getAll(resultCriteria));
+    }
+
+    private List<FullOfferDetail> createOfferDetailList(Collection<Offer> offers) {
+        List<FullOfferDetail> fullOfferDetail = new ArrayList<FullOfferDetail>();
+        for (Offer offer : offers) {
+            List<Number> revisions = auditService.getRevisions(Demand.class, offer.getId());
+            Date createdDate = auditService.getRevisionDate(revisions.get(0));
+            FullOfferDetail offerDetail = FullOfferDetail.crateOfferDetail(offer);
+            offerDetail.setCreated(createdDate);
+            fullOfferDetail.add(offerDetail);
+        }
+        return fullOfferDetail;
     }
 }

@@ -86,7 +86,7 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.addDemandToCommit(view.getUpdatedDemandDetail(), "all", "detail");
+                eventBus.addDemandToCommit(view.getUpdatedDemandDetail(), "all");
                 Window.alert("Demand updated");
             }
         });
@@ -100,7 +100,7 @@ public class AdminDemandInfoPresenter
                 view.getBackCatBtn().setEnabled(false);
                 categoryHistory.add(new String[]{"root", "root"});
                 view.getEditCatPanel().setVisible(true);
-                eventBus.getAdminRootCategories();
+                eventBus.getAdminDemandRootCategories();
             }
         });
         view.getEditLocBtn().addClickHandler(new ClickHandler() {
@@ -113,7 +113,7 @@ public class AdminDemandInfoPresenter
                 view.getBackLocBtn().setEnabled(false);
                 localityHistory.add(new String[]{"root", "root"});
                 view.getEditLocPanel().setVisible(true);
-                eventBus.getAdminRootLocalities();
+                eventBus.getAdminDemandRootLocalities();
             }
         });
         view.getFinnishCatBtn().addClickHandler(new ClickHandler() {
@@ -141,7 +141,7 @@ public class AdminDemandInfoPresenter
                     return;
                 }
                 categoryHistory.remove(size - 1);
-                eventBus.getAdminParentCategories(Long.parseLong(categoryHistory.get(size - 2)[0]));
+                eventBus.getAdminDemandParentCategories(Long.parseLong(categoryHistory.get(size - 2)[0]));
             }
         });
         view.getBackLocBtn().addClickHandler(new ClickHandler() {
@@ -153,7 +153,7 @@ public class AdminDemandInfoPresenter
                     return;
                 }
                 localityHistory.remove(size - 1);
-                eventBus.getAdminParentLocalities(localityHistory.get(size - 2)[0]);
+                eventBus.getAdminDemandParentLocalities(localityHistory.get(size - 2)[0]);
             }
         });
         view.getEditCatList().addClickHandler(new ClickHandler() {
@@ -164,7 +164,7 @@ public class AdminDemandInfoPresenter
                 categoryHistory.add(new String[]{
                     view.getEditCatList().getValue(idx),
                     view.getEditCatList().getItemText(idx)});
-                eventBus.getAdminSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
+                eventBus.getAdminDemandSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
             }
         });
         view.getEditLocList().addClickHandler(new ClickHandler() {
@@ -175,7 +175,7 @@ public class AdminDemandInfoPresenter
                 localityHistory.add(new String[]{
                     view.getEditLocList().getValue(idx),
                     view.getEditLocList().getItemText(idx)});
-                eventBus.getAdminSubLocalities(view.getEditLocList().getValue(idx));
+                eventBus.getAdminDemandSubLocalities(view.getEditLocList().getValue(idx));
             }
         });
         view.getCategoryList().addClickHandler(new ClickHandler() {
@@ -198,7 +198,7 @@ public class AdminDemandInfoPresenter
             public void onClick(ClickEvent event) {
                 view.getEditCatList().clear();
                 view.getCatPath().setText("");
-                eventBus.getAdminRootCategories();
+                eventBus.getAdminDemandRootCategories();
             }
         });
         view.getRootLocBtn().addClickHandler(new ClickHandler() {
@@ -207,7 +207,7 @@ public class AdminDemandInfoPresenter
             public void onClick(ClickEvent event) {
                 view.getEditLocList().clear();
                 view.getLocPath().setText("");
-                eventBus.getAdminRootLocalities();
+                eventBus.getAdminDemandRootLocalities();
             }
         });
     }
@@ -219,7 +219,7 @@ public class AdminDemandInfoPresenter
     private List<String[]> localityHistory = new ArrayList<String[]>();
     private Boolean alreadyAdded = false;
 
-    public void onDisplayAdminCategories(List<CategoryDetail> list) {
+    public void onDisplayAdminDemandCategories(List<CategoryDetail> list) {
         if (list.isEmpty()) {
             String[] data = categoryHistory.get(categoryHistory.size() - 1);
             view.getCategoryList().addItem(data[1], data[0]);
@@ -239,7 +239,7 @@ public class AdminDemandInfoPresenter
         this.updateCategoryPath();
     }
 
-    public void onDisplayAdminLocalities(List<LocalityDetail> list) {
+    public void onDisplayAdminDemandLocalities(List<LocalityDetail> list) {
         if (list.isEmpty()) {
             String[] data = localityHistory.get(localityHistory.size() - 1);
             view.getLocalityList().addItem(data[1], data[0]);
@@ -250,7 +250,7 @@ public class AdminDemandInfoPresenter
         } else {
             view.getEditLocList().clear();
             for (LocalityDetail loc : list) {
-                view.getEditLocList().addItem(loc.getName(), Long.toString(loc.getId()));
+                view.getEditLocList().addItem(loc.getName(), loc.getCode());
             }
         }
         if (categoryHistory.size() > 1) {
@@ -259,7 +259,7 @@ public class AdminDemandInfoPresenter
         this.updateLocalityPath();
     }
 
-    public void onDoBackCategories(List<CategoryDetail> list) {
+    public void onDoBackDemandCategories(List<CategoryDetail> list) {
         view.getEditCatList().clear();
         for (CategoryDetail cat : list) {
             view.getEditCatList().addItem(cat.getName(), Long.toString(cat.getId()));
@@ -267,7 +267,7 @@ public class AdminDemandInfoPresenter
         this.updateCategoryPath();
     }
 
-    public void onDoBackLocalities(List<LocalityDetail> list) {
+    public void onDoBackDemandLocalities(List<LocalityDetail> list) {
         view.getEditLocList().clear();
         for (LocalityDetail loc : list) {
             view.getEditLocList().addItem(loc.getName(), Long.toString(loc.getId()));

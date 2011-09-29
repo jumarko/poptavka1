@@ -39,9 +39,7 @@
                     <table cellspacing='0' cellpadding='0'>
                         <tr>
                             <td valign='top'>
-                                <g:ScrollPanel>
-                                    <c:DataGrid addStyleNames='{style.cellTable}' pageSize='15' ui:field='dataGrid' />
-                                </g:ScrollPanel>
+                                <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
                             </td>
                         </tr>
                         <tr>
@@ -50,23 +48,27 @@
                                     <c:SimplePager ui:field='pager' />
                                     <g:ListBox ui:field='pageSizeCombo'/>
                                 </g:HorizontalPanel>
-                                
                             </td>
                         </tr>
                         <tr>
                             <td  align='left'>
-                                <g:Button ui:field="commit">Commit changes</g:Button>
+                                <g:HorizontalPanel>
+                                    <g:Button ui:field="refresh">Refresh</g:Button>
+                                    <g:Button ui:field="commit">Commit changes</g:Button>
+                                    <g:Button ui:field="rollback">Rollback changes</g:Button>
+                                    <g:Label>Demands changed: </g:Label>
+                                    <g:Label ui:field="changesLabel"></g:Label>
+                                </g:HorizontalPanel>
                             </td>
                         </tr>
                     </table>
-
                 </g:HTMLPanel>
             </g:DecoratorPanel>
-
-<!--            </g:FlowPanel>-->
         </g:west>
         <g:center>
-            <g:SimplePanel ui:field="adminSupplierDetail"></g:SimplePanel>
+            <g:ScrollPanel>
+                <g:SimplePanel ui:field="adminSupplierDetail"></g:SimplePanel>
+            </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>
 </ui:UiBinder>

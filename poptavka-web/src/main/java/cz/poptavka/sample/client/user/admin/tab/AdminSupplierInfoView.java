@@ -8,12 +8,17 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.domain.user.BusinessType;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 //import cz.poptavka.sample.shared.domain.type.ClientSupplierType;
 //import cz.poptavka.sample.shared.domain.type.SupplierStatusType;
@@ -34,19 +39,20 @@ public class AdminSupplierInfoView extends Composite implements
     @UiField
     TextArea descriptionBox;
     @UiField
-    TextBox companyName, firstName, lastName, email, phone, verification,
-    overalRating, identifNumber, supplierID, businessType, certified;
+    TextBox companyName, firstName, lastName, email, phone, overalRating, identifNumber, supplierID;
     @UiField
-    ListBox categories, localities;
+    CheckBox certified;
+    @UiField
+    ListBox editCatList, editLocList, categoryList, localityList, businessType, verification;
     // Supplier detail button fields
     @UiField
-    Button categoryButton;
+    Button editCatBtn, editLocBtn, createButton, updateButton,
+    finnishCatBtn, finnishLocBtn, backCatBtn, backLocBtn,
+    rootCatBtn, rootLocBtn;
     @UiField
-    Button localityButton;
+    VerticalPanel editCatPanel, editLocPanel;
     @UiField
-    Button createButton;
-    @UiField
-    Button updateButton;
+    Label catPath, locPath;
     private FullSupplierDetail supplierInfo;
 
     @Override
@@ -57,6 +63,86 @@ public class AdminSupplierInfoView extends Composite implements
     @Override
     public Button getUpdateBtn() {
         return updateButton;
+    }
+
+    @Override
+    public Button getEditCatBtn() {
+        return editCatBtn;
+    }
+
+    @Override
+    public Button getEditLocBtn() {
+        return editLocBtn;
+    }
+
+    @Override
+    public Button getFinnishCatBtn() {
+        return finnishCatBtn;
+    }
+
+    @Override
+    public Button getFinnishLocBtn() {
+        return finnishLocBtn;
+    }
+
+    @Override
+    public ListBox getEditCatList() {
+        return editCatList;
+    }
+
+    @Override
+    public ListBox getEditLocList() {
+        return editLocList;
+    }
+
+    @Override
+    public Button getBackCatBtn() {
+        return backCatBtn;
+    }
+
+    @Override
+    public Button getBackLocBtn() {
+        return backLocBtn;
+    }
+
+    @Override
+    public Button getRootCatBtn() {
+        return rootCatBtn;
+    }
+
+    @Override
+    public Button getRootLocBtn() {
+        return rootLocBtn;
+    }
+
+    @Override
+    public VerticalPanel getEditCatPanel() {
+        return editCatPanel;
+    }
+
+    @Override
+    public VerticalPanel getEditLocPanel() {
+        return editLocPanel;
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        return categoryList;
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        return localityList;
+    }
+
+    @Override
+    public Label getCatPath() {
+        return catPath;
+    }
+
+    @Override
+    public Label getLocPath() {
+        return locPath;
     }
 
     @Override
@@ -76,11 +162,11 @@ public class AdminSupplierInfoView extends Composite implements
         supplierInfo.setLastName(lastName.getText());
         supplierInfo.setEmail(email.getText());
         supplierInfo.setPhone(phone.getText());
-        supplierInfo.setVerification(verification.getText());
+        supplierInfo.setVerification(verification.getItemText(verification.getSelectedIndex()));
         supplierInfo.setOverallRating(Integer.valueOf(overalRating.getText()));
         supplierInfo.setIdentificationNumber(identifNumber.getText());
-        supplierInfo.setBusinessType(businessType.getText());
-        supplierInfo.setCertified(Boolean.valueOf(businessType.getText()));
+        supplierInfo.setBusinessType(businessType.getItemText(businessType.getSelectedIndex()));
+        supplierInfo.setCertified(certified.getValue());
 
         return supplierInfo;
     }
@@ -105,19 +191,55 @@ public class AdminSupplierInfoView extends Composite implements
             lastName.setText(supplier.getLastName());
             email.setText(supplier.getEmail());
             phone.setText(supplier.getPhone());
-            //Location
-            for (String category : supplier.getCategories().values()) {
-                categories.addItem(category);
-            }
-            for (String locality : supplier.getLocalities().values()) {
-                localities.addItem(locality);
-            }
+
             //Busines data
             identifNumber.setText(supplier.getIdentificationNumber());
             supplierID.setText(Long.toString(supplier.getSupplierId()));
-            businessType.setText(supplier.getBusinessType());
-            certified.setText(Boolean.toString(supplier.isCertified()));
-            verification.setText(supplier.getVerification());
+            // BusinessType settings
+            // Add the types to the status box.
+            int i = 0;
+            int j = 0;
+            businessType.clear();
+            for (BusinessType type : BusinessType.values()) {
+                businessType.addItem(type.getValue());
+                if (supplier.getBusinessType() != null
+                        && supplier.getBusinessType().equalsIgnoreCase(type.getValue())) {
+                    j = i;
+                }
+                i++;
+            }
+            businessType.setSelectedIndex(j);
+
+            certified.setValue(supplier.isCertified());
+            // Verification.
+            i = 0;
+            j = 0;
+            verification.clear();
+            for (Verification type : Verification.values()) {
+                verification.addItem(type.name());
+                if (supplier.getVerification() != null
+                        && supplier.getVerification().equalsIgnoreCase(type.name())) {
+                    j = i;
+                }
+                i++;
+            }
+            verification.setSelectedIndex(j);
+
+            //Category
+            categoryList.clear();
+            if (supplier.getCategories() != null) {
+                for (String cat : supplier.getCategories().values()) {
+                    categoryList.addItem(cat);
+                }
+
+            }
+            //Locality
+            localityList.clear();
+            if (supplier.getLocalities() != null) {
+                for (String loc : supplier.getLocalities().values()) {
+                    localityList.addItem(loc);
+                }
+            }
         }
     }
 }

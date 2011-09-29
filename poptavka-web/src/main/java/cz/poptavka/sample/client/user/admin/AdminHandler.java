@@ -17,7 +17,6 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -159,24 +158,6 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(FullSupplierDetail result) {
-            }
-        });
-    }
-
-    /**********************************************************************************************
-     ***********************  OFFER SECTION. ******************************************************
-     **********************************************************************************************/
-    public void onUpdateOffer(FullOfferDetail offer) {
-        offerService.updateOffer(offer, new AsyncCallback<FullOfferDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(FullOfferDetail result) {
-                eventBus.refreshUpdatedOffer(result);
             }
         });
     }
