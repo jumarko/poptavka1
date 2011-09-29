@@ -1,7 +1,8 @@
 package cz.poptavka.sample.domain.settings;
 
-import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.register.Register;
 import cz.poptavka.sample.util.orm.Constants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +13,7 @@ import javax.persistence.Enumerated;
  *         Date: 11.4.11
  */
 @Entity
-public class Notification extends DomainObject {
+public class Notification extends Register {
 
     private String name;
 

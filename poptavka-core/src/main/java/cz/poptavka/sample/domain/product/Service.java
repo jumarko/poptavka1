@@ -1,13 +1,13 @@
 package cz.poptavka.sample.domain.product;
 
-import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.register.Register;
 import cz.poptavka.sample.util.orm.Constants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.math.BigDecimal;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.math.BigDecimal;
 
 /**
  * Represents a "product" that is offer to the some kind of {@link cz.poptavka.sample.domain.user.BusinessUser}.
@@ -25,7 +25,7 @@ import javax.persistence.Enumerated;
  *         Date: 30.1.11
  */
 @Entity
-public class Service extends DomainObject {
+public class Service extends Register {
 
     @Column(length = 64)
     private String title;
