@@ -4,6 +4,8 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.util.orm.Constants;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +20,11 @@ import javax.persistence.ManyToOne;
  *         Date: 29.1.11
  */
 @Entity
+@Audited
 public class UserService extends DomainObject {
 
     @ManyToOne
+    @NotAudited
     private Service service;
 
     @ManyToOne
