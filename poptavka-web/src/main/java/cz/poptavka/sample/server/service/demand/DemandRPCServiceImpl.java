@@ -12,14 +12,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
-import cz.poptavka.sample.domain.message.Message;
-import cz.poptavka.sample.domain.message.MessageContext;
-import cz.poptavka.sample.domain.message.MessageState;
-import cz.poptavka.sample.domain.message.MessageUserRole;
-import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -33,18 +26,14 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Excalibur
@@ -173,48 +162,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     // TODO should send messages as we're sending messages to display potential demands. Beho
     //
     private void sendDemandToSuppliersTest(Demand demand) {
-        // TODO Refaktorovat celu metody s Jurajom a presunut do nejakeho JOBu
-        final Set<Supplier> suppliers = new HashSet<Supplier>();
-        suppliers.addAll(supplierService.getSuppliers(demand.getCategories().
-                toArray(new Category[demand.getCategories().size()])));
-        suppliers.addAll(supplierService.getSuppliers(demand.getLocalities().
-                toArray(new Locality[demand.getLocalities().size()])));
 
-        // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
-        // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
-        // Napriklad message.body moze byt prazdne = demand.description
-        // message subject moze byt prazdne = demand.title
-        Message message = new Message();
-        // TODO Vojto there should be some intro message for the user
-        message.setBody(demand.getDescription() + " Description might be empty");
-        message.setCreated(new Date());
-        message.setDemand(demand);
-        message.setLastModified(new Date());
-        message.setSender(demand.getClient().getBusinessUser());
-        message.setSubject(demand.getTitle());
-        message.setThreadRoot(message);
-
-        // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
-        // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
-        final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
-        for (Supplier supplierRole : suppliers) {
-            MessageUserRole messageUserRole = new MessageUserRole();
-            messageUserRole.setMessage(message);
-            messageUserRole.setUser(supplierRole.getBusinessUser());
-            messageUserRole.setType(MessageUserRoleType.TO);
-            messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-            messageUserRoles.add(messageUserRole);
-        }
-        message.setRoles(messageUserRoles);
-
-        message.setMessageState(MessageState.COMPOSED);
-
-        message = messageService.create(message);
-        try {
-            messageService.send(message);
-        } catch (MessageCannotBeSentException ex) {
-            Logger.getLogger(DemandRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // send message and handle exception if any
+//        this.demandService.sendDemandToSuppliers(demand);
     }
 
     /**

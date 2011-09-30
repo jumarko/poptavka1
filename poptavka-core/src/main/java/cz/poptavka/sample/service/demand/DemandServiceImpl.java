@@ -13,17 +13,29 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandType;
+import cz.poptavka.sample.domain.demand.PotentialSupplier;
+import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.MessageContext;
+import cz.poptavka.sample.domain.message.MessageState;
+import cz.poptavka.sample.domain.message.MessageUserRole;
+import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.ResultProvider;
+import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -37,9 +49,13 @@ import java.util.Set;
  */
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DemandServiceImpl.class);
+
     private ClientService clientService;
     private SupplierService supplierService;
     private RegisterService registerService;
+    private MessageService messageService;
+    private SuppliersSelection suppliersSelection;
 
     public DemandServiceImpl(DemandDao demandDao) {
         setDao(demandDao);
@@ -228,15 +244,60 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     @Override
-    public void sendDemandToSuppliers(Demand demand) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void sendDemandToSuppliers(Demand demand) throws MessageCannotBeSentException {
+
+        final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
+
+        // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
+        // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
+        // Napriklad message.body moze byt prazdne = demand.description
+        // message subject moze byt prazdne = demand.title
+        Message message = new Message();
+        // TODO Vojto there should be some intro message for the user
+        message.setBody(demand.getDescription() + " Description might be empty");
+        message.setCreated(new Date());
+        message.setDemand(demand);
+        message.setLastModified(new Date());
+        message.setSender(demand.getClient().getBusinessUser());
+        message.setSubject(demand.getTitle());
+        message.setThreadRoot(message);
+
+        // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
+        // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
+        final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
+        for (PotentialSupplier potentialSupplier : potentialSuppliers) {
+            MessageUserRole messageUserRole = new MessageUserRole();
+            messageUserRole.setMessage(message);
+            messageUserRole.setUser(potentialSupplier.getSupplier().getBusinessUser());
+            messageUserRole.setType(MessageUserRoleType.TO);
+            messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+            messageUserRoles.add(messageUserRole);
+        }
+
+        message.setRoles(messageUserRoles);
+
+        message.setMessageState(MessageState.COMPOSED);
+
+        message = messageService.create(message);
+
+        messageService.send(message);
     }
 
     @Override
     public void sendDemandsToSuppliers() {
+
+        // TODO seperate to standalone JOB
+
+        // TODO try to parallelling this task
+
+
         final List<Demand> allNewDemands = this.getDao().getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
         for (Demand newDemand : allNewDemands) {
-            sendDemandToSuppliers(newDemand);
+            try {
+                sendDemandToSuppliers(newDemand);
+            } catch (MessageCannotBeSentException e) {
+                LOGGER.error("An error occured while trying to send message to suppliers for demand " + newDemand, e);
+            }
         }
     }
 
@@ -252,6 +313,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     public void setRegisterService(RegisterService registerService) {
         this.registerService = registerService;
+    }
+
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    public void setSuppliersSelection(SuppliersSelection suppliersSelection) {
+        this.suppliersSelection = suppliersSelection;
     }
 
     //---------------------------------------------- HELPER METHODS ----------------------------------------------------

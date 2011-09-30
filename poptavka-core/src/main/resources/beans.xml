@@ -70,6 +70,12 @@
         <property name="clientService" ref="clientService" />
         <property name="supplierService" ref="supplierService" />
         <property name="registerService" ref="registerService" />
+        <property name="messageService" ref="messageService" />
+        <property name="suppliersSelection" ref="demandSelection" />
+    </bean>
+
+    <bean id="demandSelection" class="cz.poptavka.sample.service.demand.NaiveSuppliersSelection">
+        <property name="supplierService" ref="supplierService" />
     </bean>
 
 
@@ -130,6 +136,7 @@
         <constructor-arg ref="messageTemplate" />
         <constructor-arg ref="processCrawledDemandsService" />
     </bean>
+
     <!-- Temporary disable processing of incoming crawled demands until more suitable strategy
         for communication with crawler is implemented. -->
     <!--<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer"-->
