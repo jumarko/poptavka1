@@ -15,21 +15,17 @@ import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 public class AdminLayoutView extends Composite
-    implements AdminLayoutPresenter.AdminLayoutInterface, StyleInterface {
+        implements AdminLayoutPresenter.AdminLayoutInterface, StyleInterface {
 
     private static AdminLayoutViewUiBinder uiBinder = GWT.create(AdminLayoutViewUiBinder.class);
 
     interface AdminLayoutViewUiBinder extends UiBinder<Widget, AdminLayoutView> {
     }
-
     private static final Logger LOGGER = Logger.getLogger(AdminLayoutView.class.getName());
-
     @UiField
     SimplePanel contentPanel;
-
     @UiField
-    Hyperlink demandsLink, offersLink, usersLink, suppliersLink;
-
+    Hyperlink demandsLink, offersLink, usersLink, suppliersLink, demandOriginLink;
 
     public AdminLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -66,13 +62,18 @@ public class AdminLayoutView extends Composite
         suppliersLink.setTargetHistoryToken(linkString);
     }
 
+    @Override
+    public void setDemandOriginToken(String linkString) {
+        demandOriginLink.setTargetHistoryToken(linkString);
+    }
+
     /** toggle visible actions/buttons for current user decided by his role. **/
     @Override
     public void setRoleInterface(Role role) {
         LOGGER.fine("Set User style for role " + role.toString());
         switch (role) {
             case SUPPLIER:
-                    //cascade, include client below, because supplier is always client too
+            //cascade, include client below, because supplier is always client too
             case CLIENT:
 //                administration.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());
 //                myDemandsOperatorLink.setStyleName(StyleResource.INSTANCE.common().elemHiddenOn());

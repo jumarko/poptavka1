@@ -18,6 +18,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandOriginDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Map;
 
@@ -74,4 +75,12 @@ public interface DemandRPCService extends RemoteService {
     List<FullDemandDetail> getDemands(int fromResult, int toResult);
 
     List<FullDemandDetail> getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
+
+    List<DemandOriginDetail> getDemandOrigins();
+
+    void insertDemandOrigin(DemandOriginDetail detail);
+
+    void updateDemandOrigin(DemandOriginDetail detail);
+
+    void deleteDemandOrigin(Long demandTypeID);
 }

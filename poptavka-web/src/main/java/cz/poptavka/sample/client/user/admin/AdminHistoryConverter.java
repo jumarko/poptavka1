@@ -18,6 +18,7 @@ public class AdminHistoryConverter implements HistoryConverter<UserEventBus> {
     private static final String DEMANDS = "invokeAdminDemands";
     private static final String SUPPLIERS = "invokeAdminSuppliers";
     private static final String OFFERS = "invokeAdminOffers";
+    private static final String DEMANDORIGIN = "invokeAdminDemandOrigin";
 //    private static final String USERS = "invokeAdminUsers";
     private AdminSuppliersPresenter adminSuppliersPresenter = null;
     private AdminDemandsPresenter adminDemandsPresenter = null;
@@ -42,6 +43,10 @@ public class AdminHistoryConverter implements HistoryConverter<UserEventBus> {
 
         if (historyName.equals(SUPPLIERS)) {
             eventBus.invokeAdminSuppliers();
+        }
+
+        if (historyName.equals(DEMANDORIGIN)) {
+            eventBus.invokeAdminDemandOrigin();
         }
     }
 

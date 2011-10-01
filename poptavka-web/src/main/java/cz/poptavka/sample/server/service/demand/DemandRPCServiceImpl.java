@@ -10,6 +10,7 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
@@ -25,6 +26,7 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandOriginDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -428,5 +430,29 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     public Category getCategory(Long id) {
         return categoryService.getById(id);
+    }
+
+    @Override
+    public List<DemandOriginDetail> getDemandOrigins() {
+        List<DemandOriginDetail> fullDemandDetails = new ArrayList<DemandOriginDetail>();
+        for (DemandOrigin demandOrigin : demandService.getDemandOrigins()) {
+            fullDemandDetails.add(DemandOriginDetail.createDemandOriginDetail(demandOrigin));
+        }
+        return fullDemandDetails;
+    }
+
+    @Override
+    public void insertDemandOrigin(DemandOriginDetail detail) {
+//        demandService.
+    }
+
+    @Override
+    public void updateDemandOrigin(DemandOriginDetail detail) {
+//        demandService.
+    }
+
+    @Override
+    public void deleteDemandOrigin(Long demandTypeID) {
+//        demandService.
     }
 }

@@ -14,11 +14,9 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 @Presenter(view = AdminLayoutView.class) //, multiple = true)
-public class AdminLayoutPresenter         extends
-        BasePresenter<AdminLayoutPresenter.AdminLayoutInterface, UserEventBus> {
+public class AdminLayoutPresenter extends BasePresenter<AdminLayoutPresenter.AdminLayoutInterface, UserEventBus> {
 
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface AdminLayoutInterface {
 
@@ -34,9 +32,10 @@ public class AdminLayoutPresenter         extends
 
         void setSuppliersToken(String link);
 
+        void setDemandOriginToken(String linkString);
+
         SimplePanel getContentPanel();
     }
-
     private LoadingDiv loading = null;
 
     public void bind() {
@@ -44,6 +43,7 @@ public class AdminLayoutPresenter         extends
         view.setOffersToken(getTokenGenerator().invokeAdminOffers());
 //        view.setUsersToken(getTokenGenerator().invokeAdminUsers());
         view.setSuppliersToken(getTokenGenerator().invokeAdminSuppliers());
+        view.setDemandOriginToken(getTokenGenerator().invokeAdminDemandOrigin());
     }
 
     public void onInitAdmin() {

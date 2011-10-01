@@ -19,22 +19,6 @@
     </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="700">
-
-<!--            <g:FlowPanel>-->
-<!--                <g:HorizontalPanel>
-                    <g:HTML>
-                        <ui:msg key="offers">Offers</ui:msg>
-                    </g:HTML>
-                    <g:Button ui:field='answerBtn' enabled="false">
-                        <ui:msg key="answer">Answer</ui:msg>
-                    </g:Button>
-                    <g:Button ui:field='refuseBtn' enabled="false">
-                        <ui:msg key="refuse">Refuse</ui:msg>
-                    </g:Button>
-                    <g:Button ui:field='acceptBtn' enabled="false">
-                        <ui:msg key="accept">Accept</ui:msg>
-                    </g:Button>
-                </g:HorizontalPanel>-->
             <g:DecoratorPanel>
                 <g:HTMLPanel>
                     <table cellspacing='0' cellpadding='0'>

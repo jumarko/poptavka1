@@ -33,6 +33,8 @@ import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.admin.AdminHandler;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminDemandOriginHandler;
+import cz.poptavka.sample.client.user.admin.tab.AdminDemandOriginPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandsHandler;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersHandler;
 import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersHandler;
@@ -48,6 +50,7 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
+import cz.poptavka.sample.shared.domain.demand.DemandOriginDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -68,12 +71,12 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 @Events(startView = UserView.class, module = UserModule.class)
 @ChildModules({
     @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false)
-    })
+})
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBusWithLookup {
 
     /** init method. **/
-    @Event(handlers = { UserPresenter.class }, historyConverter = UserHistoryConverter.class)
+    @Event(handlers = {UserPresenter.class }, historyConverter = UserHistoryConverter.class)
     String atAccount();
 
     /** getter for UserDetail. **/
@@ -260,7 +263,6 @@ public interface UserEventBus extends EventBusWithLookup {
 //            AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
 //    historyConverter = DemandsHistoryConverter.class)
 //    String invokeNewDemand();
-
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, DemandsOperatorPresenter.class,
             AdminDemandsPresenter.class, AdminOffersPresenter.class,
@@ -302,7 +304,7 @@ public interface UserEventBus extends EventBusWithLookup {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
             DemandsOperatorPresenter.class, AdminSuppliersPresenter.class,
             AllDemandsPresenter.class, AdminDemandsPresenter.class, AllSuppliersPresenter.class },
-            historyConverter = AdminHistoryConverter.class)
+    historyConverter = AdminHistoryConverter.class)
     String invokeAdminOffers();
 
 //    @Event(handlers = AdminSuppliersPresenter.class, historyConverter = AdminHistoryConverter.class)
@@ -312,6 +314,9 @@ public interface UserEventBus extends EventBusWithLookup {
             AllDemandsPresenter.class, AdminOffersPresenter.class, AllSuppliersPresenter.class },
     historyConverter = AdminHistoryConverter.class)
     String invokeAdminSuppliers();
+
+    @Event(handlers = AdminDemandOriginPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminDemandOrigin();
 
     //TODO Martin - dorobit ?
 //    @Event(handlers = AllSuppliersPresenter.class, historyConverter = AdminHistoryConverter.class)
@@ -672,6 +677,26 @@ public interface UserEventBus extends EventBusWithLookup {
     void addOfferToCommit(FullOfferDetail data);
     /* <<<<<<<<<<-------- ADMIN OFFERS -------------------- */
 
+    /* ----------------- ADMIN DEMAND TYPE -------------------->>>>>>>>> */
+    @Event(handlers = AdminDemandOriginHandler.class)
+    void getAdmiDemandTypes();
+
+    @Event(handlers = AdminDemandOriginPresenter.class)
+    void addDemandTypeToCommit(DemandOriginDetail detail);
+
+    @Event(handlers = AdminDemandOriginHandler.class)
+    void insertDemandType(DemandOriginDetail detail);
+
+    @Event(handlers = AdminDemandOriginHandler.class)
+    void updateDemandType(DemandOriginDetail detail);
+
+    @Event(handlers = AdminDemandOriginHandler.class)
+    void deleteDemandType(Long detailId);
+
+    @Event(handlers = AdminDemandOriginPresenter.class)
+    void createAdminDemandTypeDataProvider(List<DemandOriginDetail> list);
+    /* <<<<<<<<<<-------- ADMIN DEMAND TYPE -------------------- */
+
     /**
      * **************** BEHO development corner ****************
      *
@@ -684,7 +709,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(forwardToParent = true)
     void goToCreateDemand();
-
     /**
      * ********************* End corner ************************
      */

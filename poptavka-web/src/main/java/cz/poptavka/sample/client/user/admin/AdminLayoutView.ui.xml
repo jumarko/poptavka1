@@ -16,6 +16,13 @@
                 </ul>
                 <ul>
                     <li>
+                        <g:Hyperlink ui:field="suppliersLink">
+                            <ui:msg key="suppliers">Suppliers</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
                         <g:Hyperlink ui:field="offersLink">
                             <ui:msg key="offers">Offers</ui:msg>
                         </g:Hyperlink>
@@ -24,39 +31,47 @@
                 <ul>
                     <li>
                         <g:Hyperlink ui:field="usersLink">
-                        	<ui:msg key="users">Users</ui:msg>
+                            <ui:msg key="users">Users</ui:msg>
                         </g:Hyperlink>
                     </li>
                 </ul>
+<!--                ciselniky-->
                 <ul>
-                    <li>
-                        <g:Hyperlink ui:field="suppliersLink">
-                            <ui:msg key="suppliers">Suppliers</ui:msg>
-                        </g:Hyperlink>
-                    </li>
+                    <li>Locality</li>
+                </ul>
+                <ul>
+                    <li>Category</li>
+                </ul>
+                <ul>
+                    <g:Hyperlink ui:field="demandOriginLink">
+                        <li>DemandOrigin</li>
+                    </g:Hyperlink>
+                </ul>
+                <ul>
+                    <li>Notification</li>
                 </ul>
             </g:HTMLPanel>
         </g:west>
         <g:center>
             <g:ScrollPanel>
-            <g:SimplePanel ui:field="contentPanel">
-                <g:HTML>
-                    <center>
-                        <h1>Welcome Screen</h1>
-                    </center>
+                <g:SimplePanel ui:field="contentPanel">
+                    <g:HTML>
+                        <center>
+                            <h1>Welcome Screen</h1>
+                        </center>
                     This is the initial page.
-                    <br />
-                    <br />
-                    <strong>Features:</strong>
-                    <ul>
-                        <li>feature</li>
-                        <li>feature</li>
-                        <li>feature</li>
-                        <li>feature</li>
-                        <li>feature</li>
-                    </ul>
-                </g:HTML>
-            </g:SimplePanel>
+                        <br />
+                        <br />
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>feature</li>
+                            <li>feature</li>
+                            <li>feature</li>
+                            <li>feature</li>
+                            <li>feature</li>
+                        </ul>
+                    </g:HTML>
+                </g:SimplePanel>
             </g:ScrollPanel>
         </g:center>
     </g:DockLayoutPanel>
