@@ -11,4 +11,9 @@ import javax.persistence.Entity;
 @Entity
 @Audited
 public class Partner extends BusinessUserRole {
+
+    @Override
+    public String toString() {
+        return "Partner:" + super.toString();
+    }
 }

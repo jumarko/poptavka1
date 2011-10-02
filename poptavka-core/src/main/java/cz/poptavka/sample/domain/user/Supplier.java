@@ -14,9 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import java.util.List;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import java.util.List;
 
 /**
  *
@@ -99,5 +99,11 @@ public class Supplier extends BusinessUserRole {
 
     public void setOveralRating(Integer overalRating) {
         this.overalRating = overalRating;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Supplier:" + super.toString();
     }
 }
