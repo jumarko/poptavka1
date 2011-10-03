@@ -43,4 +43,13 @@ public class PotentialSupplier {
     public int getRating() {
         return rating;
     }
+
+
+    @Override
+    public String toString() {
+        return "PotentialSupplier{"
+                + "supplier=" + supplier.getId()
+                + ", rating=" + rating
+                + '}';
+    }
 }
