@@ -20,9 +20,9 @@ public class SupplierDetailView extends Composite {
     }
 
     @UiField
-    Label overallRating, certified, description, verification, localities,
-    categories, services, bsuRoles, addresses, businessType, email, companyName,
-    identificationNumber, firstName, lastName, phone;
+    Label overallRating, description, localities,
+    categories, email, companyName, taxId, identificationNumber, firstName,
+    lastName, phone, website, street, city, zipCode, websiteContactPerson;
     @UiField
     HTMLPanel detail;
 
@@ -39,16 +39,8 @@ public class SupplierDetailView extends Composite {
         return overallRating;
     }
 
-    public Label getCertified() {
-        return certified;
-    }
-
     public Label getDescription() {
         return description;
-    }
-
-    public Label getVerification() {
-        return verification;
     }
 
     public Label getLocalities() {
@@ -57,22 +49,6 @@ public class SupplierDetailView extends Composite {
 
     public Label getCategories() {
         return categories;
-    }
-
-    public Label getServices() {
-        return services;
-    }
-
-    public Label getBsuRoles() {
-        return bsuRoles;
-    }
-
-    public Label getAddresses() {
-        return addresses;
-    }
-
-    public Label getBusinessType() {
-        return businessType;
     }
 
     public Label getEmail() {
@@ -104,18 +80,60 @@ public class SupplierDetailView extends Composite {
     }
 
 
+    public Label getWebsite() {
+        return website;
+    }
+
+
+    public static SupplierDetailViewUiBinder getUiBinder() {
+        return uiBinder;
+    }
+
+
+    public Label getStreet() {
+        return street;
+    }
+
+
+    public Label getCity() {
+        return city;
+    }
+
+
+    public Label getZipCode() {
+        return zipCode;
+    }
+
+
+    public Label getWebsiteContactPerson() {
+        return websiteContactPerson;
+    }
+
+
+    public Label getTaxId() {
+        return taxId;
+    }
+
+
     public void displaySuppliersDetail(UserDetail userDetail) {
         detail.setVisible(true);
 
-        overallRating.setText(Integer.toString(userDetail.getSupplier().getOverallRating()));
-        certified.setText(Boolean.toString(userDetail.getSupplier().isCertified()));
         description.setText(userDetail.getSupplier().getDescription());
 //    verification = userDetail.get
-        localities.setText(userDetail.getSupplier().getLocalities().toString());
-        categories.setText(userDetail.getSupplier().getCategories().toString());
+        StringBuilder localitiesBuilder = new StringBuilder();
+        for (String s : userDetail.getSupplier().getLocalities()) {
+            localitiesBuilder.append(s);
+            localitiesBuilder.append("\n");
+        }
+        localities.setText(localitiesBuilder.toString());
+        StringBuilder categoriesBuilder = new StringBuilder();
+        for (String s : userDetail.getSupplier().getCategories()) {
+            categoriesBuilder.append(s);
+            categoriesBuilder.append("\n");
+        }
+        categories.setText(categoriesBuilder.toString());
 //    services = userDetail.getSupplier().
 //    bsuRoles = userDetail.getSupplier().
-        addresses.setText(userDetail.getAddress().toString());
 //    businessType = userDetail.get
         email.setText(userDetail.getEmail());
         companyName.setText(userDetail.getCompanyName());
@@ -123,6 +141,12 @@ public class SupplierDetailView extends Composite {
         firstName.setText(userDetail.getFirstName());
         lastName.setText(userDetail.getLastName());
         phone.setText(userDetail.getPhone());
+        website.setText(userDetail.getWebsite());
+        street.setText(userDetail.getAddress().getStreet());
+        city.setText(userDetail.getAddress().getCityName());
+        zipCode.setText(userDetail.getAddress().getZipCode());
+        websiteContactPerson.setText(userDetail.getWebsite());
+        taxId.setText(userDetail.getTaxId());
 
     }
 

@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import java.util.List;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -110,6 +111,9 @@ public class AdminSuppliersPresenter
 
     public void onDisplayAdminTabSuppliers(List<FullSupplierDetail> suppliers) {
         LOGGER.info("list: " + suppliers.size());
+        if (suppliers == null) {
+            GWT.log("suppliers are null");
+        }
         dataProvider.updateRowData(start, suppliers);
     }
     private AsyncDataProvider dataProvider = null;

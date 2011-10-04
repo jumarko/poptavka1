@@ -11,31 +11,18 @@
 			<tr>
 				<td width="200">
 					<g:Label>
+						<ui:msg key="commonInfo">Common info: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
 						<ui:msg key="comapanyName">Company name: </ui:msg>
 					</g:Label>
 				</td>
 				<td>
 					<g:Label ui:field="companyName" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="type">Business type: </ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="businessType" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="identification">Identification number:</ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="identificationNumber" />
 				</td>
 			</tr>
 			<tr>
@@ -51,14 +38,82 @@
 			<tr>
 				<td>
 					<g:Label>
-						<ui:msg key="certified">Certified: </ui:msg>
+						<ui:msg key="website">Website:</ui:msg>
 					</g:Label>
 				</td>
 				<td>
-					<g:Label ui:field="certified" />
+					<g:Label ui:field="website" />
 				</td>
 			</tr>
 			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="address">Address: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="street">Street: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="street" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="city">City: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="city" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="zipCode">Zip code: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="zipCode" />
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="categories">Categories: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label ui:field="categories" />
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="localities">Localities: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label ui:field="localities" />
+				</td>
+			</tr>
+			<tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="contactPerson">Contact person: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
 				<td>
 					<g:Label>
 						<ui:msg key="firstName">First name:</ui:msg>
@@ -101,11 +156,38 @@
 			<tr>
 				<td>
 					<g:Label>
-						<ui:msg key="addresses#">Addresses: </ui:msg>
+						<ui:msg key="website">Website:</ui:msg>
 					</g:Label>
 				</td>
 				<td>
-					<g:Label ui:field="addresses" />
+					<g:Label ui:field="websiteContactPerson" />
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="invoiceDetail">Invoice detail: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="taxId">Tax number:</ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="taxId" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="identification">Identification number:</ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="identificationNumber" />
 				</td>
 			</tr>
 			<tr>
@@ -116,56 +198,6 @@
 				</td>
 				<td>
 					<g:Label ui:field="description" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="verification">Verification: </ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="verification" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="localities">Localities: </ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="localities" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="categories">Categories: </ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="categories" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="services">Services: </ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="services" />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<g:Label>
-						<ui:msg key="bsuRoles">BsuRoles: </ui:msg>
-					</g:Label>
-				</td>
-				<td>
-					<g:Label ui:field="bsuRoles" />
 				</td>
 			</tr>
 		</table>
