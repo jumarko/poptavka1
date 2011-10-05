@@ -105,7 +105,7 @@ public class AdminSuppliersPresenter
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
 
     public void onInvokeAdminSuppliers() {
-        eventBus.getAdminTabSuppliersCount();
+        eventBus.getAdminSuppliersCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 

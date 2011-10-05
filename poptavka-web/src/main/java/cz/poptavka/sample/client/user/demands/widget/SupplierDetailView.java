@@ -134,20 +134,20 @@ public class SupplierDetailView extends Composite {
         categories.setText(categoriesBuilder.toString());
 //    services = userDetail.getSupplier().
 //    bsuRoles = userDetail.getSupplier().
+
 //    businessType = userDetail.get
         email.setText(userDetail.getEmail());
         companyName.setText(userDetail.getCompanyName());
-        identificationNumber.setText(userDetail.getIdentifiacationNumber());
+        identificationNumber.setText(userDetail.getIdentificationNumber());
         firstName.setText(userDetail.getFirstName());
         lastName.setText(userDetail.getLastName());
         phone.setText(userDetail.getPhone());
         website.setText(userDetail.getWebsite());
-        street.setText(userDetail.getAddress().getStreet());
-        city.setText(userDetail.getAddress().getCityName());
-        zipCode.setText(userDetail.getAddress().getZipCode());
+        street.setText(userDetail.getAddresses().get(0).getStreet());
+        city.setText(userDetail.getAddresses().get(0).getCityName());
+        zipCode.setText(userDetail.getAddresses().get(0).getZipCode());
         websiteContactPerson.setText(userDetail.getWebsite());
         taxId.setText(userDetail.getTaxId());
 
     }
-
 }

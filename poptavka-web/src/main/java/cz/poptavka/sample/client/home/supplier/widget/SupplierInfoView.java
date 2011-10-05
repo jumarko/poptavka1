@@ -18,34 +18,49 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.List;
 
 public class SupplierInfoView extends Composite
-    implements SupplierInfoPresenter.SupplierInfoInterface, ProvidesValidate {
+        implements SupplierInfoPresenter.SupplierInfoInterface, ProvidesValidate {
 
     private static FormUserRegistrationUiBinder uiBinder = GWT.create(FormUserRegistrationUiBinder.class);
 
     interface FormUserRegistrationUiBinder extends UiBinder<Widget, SupplierInfoView> {
     }
     private ArrayList<TextBox> widgets = new ArrayList<TextBox>();
-
     private static final int MIN_SIZE = 10;
-
-    @UiField TextBox companyNameBox;
-    @UiField TextBox companyIdBox;
-    @UiField TextBox companyTaxBox;
-    @UiField TextBox websiteBox;
-    @UiField TextBox streetBox;
-    @UiField TextBox cityBox;
-    @UiField TextBox zipBox;
-    @UiField TextBox nameBox;
-    @UiField TextBox surnameBox;
-    @UiField TextBox phoneBox;
-    @UiField TextBox mailBox;
-    @UiField PasswordTextBox passBox, passConfirmBox;
-    @UiField StatusIconLabel mailStatus;
-    @UiField StatusIconLabel pwdStatus;
-    @UiField StatusIconLabel pwdCheckStatus;
-    @UiField TextArea richText;
+    @UiField
+    TextBox companyNameBox;
+    @UiField
+    TextBox companyIdBox;
+    @UiField
+    TextBox companyTaxBox;
+    @UiField
+    TextBox websiteBox;
+    @UiField
+    TextBox streetBox;
+    @UiField
+    TextBox cityBox;
+    @UiField
+    TextBox zipBox;
+    @UiField
+    TextBox nameBox;
+    @UiField
+    TextBox surnameBox;
+    @UiField
+    TextBox phoneBox;
+    @UiField
+    TextBox mailBox;
+    @UiField
+    PasswordTextBox passBox, passConfirmBox;
+    @UiField
+    StatusIconLabel mailStatus;
+    @UiField
+    StatusIconLabel pwdStatus;
+    @UiField
+    StatusIconLabel pwdCheckStatus;
+    @UiField
+    TextArea richText;
     private boolean mailFlag = false;
     private boolean passFlag = false;
     private boolean passLength = false;
@@ -96,7 +111,7 @@ public class SupplierInfoView extends Composite
         UserDetail supplier = new UserDetail(mailBox.getText(), passBox.getText());
 
         supplier.setCompanyName(companyNameBox.getText());
-        supplier.setIdentifiacationNumber(companyIdBox.getText());
+        supplier.setIdentificationNumber(companyIdBox.getText());
         supplier.setTaxId(companyTaxBox.getText());
 
         supplier.setFirstName(nameBox.getText());
@@ -109,7 +124,9 @@ public class SupplierInfoView extends Composite
         address.setStreet(streetBox.getText());
         address.setZipCode(zipBox.getText());
 
-        supplier.setAddress(address);
+        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+        addresses.add(address);
+        supplier.setAddresses(addresses);
 
         return supplier;
     }
@@ -149,7 +166,7 @@ public class SupplierInfoView extends Composite
         UserDetail user = new UserDetail(mailBox.getText(), passBox.getText());
 
         user.setCompanyName(companyNameBox.getText());
-        user.setIdentifiacationNumber(companyIdBox.getText());
+        user.setIdentificationNumber(companyIdBox.getText());
         user.setTaxId(companyTaxBox.getText());
         SupplierDetail supplier = new SupplierDetail();
         supplier.setDescription(richText.getValue());
@@ -160,7 +177,10 @@ public class SupplierInfoView extends Composite
         address.setCityName(cityBox.getText());
         address.setStreet(streetBox.getText());
         address.setZipCode(zipBox.getText());
-        user.setAddress(address);
+
+        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+        addresses.add(address);
+        user.setAddresses(addresses);
 
         return user;
     }
@@ -179,5 +199,4 @@ public class SupplierInfoView extends Composite
     public void setPasswordLengthFlag(boolean flag) {
         this.passLength = flag;
     }
-
 }

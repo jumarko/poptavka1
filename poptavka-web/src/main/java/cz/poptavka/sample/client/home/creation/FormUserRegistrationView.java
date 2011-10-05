@@ -18,6 +18,7 @@ import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.List;
 
 public class FormUserRegistrationView extends Composite
     implements FormUserRegistrationPresenter.FormRegistrationInterface, ProvidesValidate {
@@ -115,7 +116,7 @@ public class FormUserRegistrationView extends Composite
         UserDetail client = new UserDetail(mailBox.getText(), passBox.getText());
 
         client.setCompanyName(companyNameBox.getText());
-        client.setIdentifiacationNumber(companyIdBox.getText());
+        client.setIdentificationNumber(companyIdBox.getText());
         client.setTaxId(companyTaxBox.getText());
 
         client.setFirstName(nameBox.getText());
@@ -128,7 +129,9 @@ public class FormUserRegistrationView extends Composite
         address.setStreet(streetBox.getText());
         address.setZipCode(zipBox.getText());
 
-        client.setAddress(address);
+        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+        addresses.add(address);
+        client.setAddresses(addresses);
 
         return client;
     }

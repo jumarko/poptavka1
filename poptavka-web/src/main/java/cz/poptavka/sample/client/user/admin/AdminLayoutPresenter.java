@@ -13,7 +13,7 @@ import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-@Presenter(view = AdminLayoutView.class) //, multiple = true)
+@Presenter(view = AdminLayoutView.class)
 public class AdminLayoutPresenter extends BasePresenter<AdminLayoutPresenter.AdminLayoutInterface, UserEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -26,13 +26,29 @@ public class AdminLayoutPresenter extends BasePresenter<AdminLayoutPresenter.Adm
 
         void setDemandsToken(String link);
 
-        void setUsersToken(String link);
+        void setClientsToken(String link);
 
         void setOffersToken(String link);
 
         void setSuppliersToken(String link);
 
-        void setDemandOriginToken(String linkString);
+        void setAccessRoleToken(String linkString);
+
+        void setEmailActivationToken(String linkString);
+
+        void setInvoiceToken(String linkString);
+
+        void setMessageToken(String linkString);
+
+        void setOurPaymentDetailsToken(String linkString);
+
+        void setPaymentMethodToken(String linkString);
+
+        void setPermissionToken(String linkString);
+
+        void setPreferenceToken(String linkString);
+
+        void setProblemToken(String linkString);
 
         SimplePanel getContentPanel();
     }
@@ -40,10 +56,18 @@ public class AdminLayoutPresenter extends BasePresenter<AdminLayoutPresenter.Adm
 
     public void bind() {
         view.setDemandsToken(getTokenGenerator().invokeAdminDemands());
-        view.setOffersToken(getTokenGenerator().invokeAdminOffers());
-//        view.setUsersToken(getTokenGenerator().invokeAdminUsers());
+        view.setClientsToken(getTokenGenerator().invokeAdminClients());
         view.setSuppliersToken(getTokenGenerator().invokeAdminSuppliers());
-        view.setDemandOriginToken(getTokenGenerator().invokeAdminDemandOrigin());
+        view.setOffersToken(getTokenGenerator().invokeAdminOffers());
+        view.setAccessRoleToken(getTokenGenerator().invokeAdminAccessRoles());
+        view.setEmailActivationToken(getTokenGenerator().invokeAdminEmailActivations());
+        view.setInvoiceToken(getTokenGenerator().invokeAdminInvoices());
+        view.setMessageToken(getTokenGenerator().invokeAdminMessages());
+        view.setOurPaymentDetailsToken(getTokenGenerator().invokeAdminOurPaymentDetails());
+        view.setPaymentMethodToken(getTokenGenerator().invokeAdminPaymentMethods());
+        view.setPermissionToken(getTokenGenerator().invokeAdminPermissions());
+        view.setPreferenceToken(getTokenGenerator().invokeAdminPreferences());
+        view.setProblemToken(getTokenGenerator().invokeAdminProblems());
     }
 
     public void onInitAdmin() {

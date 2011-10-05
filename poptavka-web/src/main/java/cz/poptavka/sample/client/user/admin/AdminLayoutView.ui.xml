@@ -16,6 +16,13 @@
                 </ul>
                 <ul>
                     <li>
+                        <g:Hyperlink ui:field="clientsLink">
+                            <ui:msg key="users">Clients</ui:msg>
+                        </g:Hyperlink>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
                         <g:Hyperlink ui:field="suppliersLink">
                             <ui:msg key="suppliers">Suppliers</ui:msg>
                         </g:Hyperlink>
@@ -28,27 +35,33 @@
                         </g:Hyperlink>
                     </li>
                 </ul>
+                
                 <ul>
-                    <li>
-                        <g:Hyperlink ui:field="usersLink">
-                            <ui:msg key="users">Users</ui:msg>
-                        </g:Hyperlink>
-                    </li>
-                </ul>
-<!--                ciselniky-->
-                <ul>
-                    <li>Locality</li>
+                    <li><g:Hyperlink ui:field="accessRolesLink">AccessRole</g:Hyperlink></li>
                 </ul>
                 <ul>
-                    <li>Category</li>
+                    <li><g:Hyperlink ui:field="emailActivationsLink">EmailActivation</g:Hyperlink></li>
                 </ul>
                 <ul>
-                    <g:Hyperlink ui:field="demandOriginLink">
-                        <li>DemandOrigin</li>
-                    </g:Hyperlink>
+                    <li><g:Hyperlink ui:field="invoicesLink">Invoice</g:Hyperlink></li>
                 </ul>
                 <ul>
-                    <li>Notification</li>
+                    <li><g:Hyperlink ui:field="messagesLink">Message</g:Hyperlink></li>
+                </ul>
+                <ul>
+                    <li><g:Hyperlink ui:field="ourPaymentDetailsLink">OurPaymentDetails</g:Hyperlink></li>
+                </ul>
+                <ul>
+                    <li><g:Hyperlink ui:field="paymentMethodsLink">PaymentMethod</g:Hyperlink></li>
+                </ul>
+                <ul>
+                    <li><g:Hyperlink ui:field="permissionsLink">Permission</g:Hyperlink></li>
+                </ul>
+                <ul>
+                    <li><g:Hyperlink ui:field="preferencesLink">Preference</g:Hyperlink></li>
+                </ul>
+                <ul>
+                    <li><g:Hyperlink ui:field="problemsLink">Problem</g:Hyperlink></li>
                 </ul>
             </g:HTMLPanel>
         </g:west>

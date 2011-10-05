@@ -94,7 +94,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
                 .companyName(supplier.getCompanyName())
                 .taxId(supplier.getTaxId())
-                .identificationNumber(supplier.getIdentifiacationNumber())
+                .identificationNumber(supplier.getIdentificationNumber())
                 .phone(supplier.getPhone())
                 .personFirstName(supplier.getFirstName())
                 .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
@@ -103,20 +103,21 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
         newSupplier.getBusinessUser().setPassword(supplier.getPassword());
         /** address **/
-        Address address = null;
-
         //get locality according to City Name
-        Locality cityLoc = (Locality) generalService.searchUnique(
-                new Search(Locality.class).addFilterEqual("name", supplier.getAddress().getCityName()));
-
-        if (cityLoc != null) {
-            address = new Address();
-            address.setCity(cityLoc);
-            address.setStreet(supplier.getAddress().getStreet());
-            address.setZipCode(supplier.getAddress().getZipCode());
-        }
         List<Address> addresses = new ArrayList<Address>();
-        addresses.add(address);
+        for (AddressDetail detail : supplier.getAddresses()) {
+            Locality cityLoc = (Locality) generalService.searchUnique(
+                    new Search(Locality.class).addFilterEqual("name", detail.getCityName()));
+
+            if (cityLoc != null) {
+                Address address = new Address();
+                address.setCity(cityLoc);
+                address.setStreet(detail.getStreet());
+                address.setZipCode(detail.getZipCode());
+                addresses.add(address);
+            }
+        }
+
         newSupplier.getBusinessUser().setAddresses(addresses);
         /** localities **/
         List<Locality> locs = new ArrayList<Locality>();
@@ -420,7 +421,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 detail.setEmail(supplier.getBusinessUser().getEmail());
                 detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
                 detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
-                detail.setIdentifiacationNumber(supplier.getBusinessUser()
+                detail.setIdentificationNumber(supplier.getBusinessUser()
                         .getBusinessUserData().getIdentificationNumber());
 //                detail.setPassword(supplier.getBusinessUser().getPassword());
                 detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());

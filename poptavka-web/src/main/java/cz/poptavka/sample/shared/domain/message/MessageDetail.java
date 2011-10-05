@@ -29,10 +29,18 @@ public class MessageDetail implements Serializable {
     private String subject;
     private String body;
     private String messageState;
+    private String messageType;
     private Date created;
     private Date sent;
     private long senderId;
     private long receiverId;
+
+    public MessageDetail() {
+    }
+
+    public MessageDetail(MessageDetail detail) {
+        this.updateWholeMessage(detail);
+    }
 
     public static MessageDetail createMessageDetail(Message message) {
         return fillMessageDetail(new MessageDetail(), message);
@@ -44,6 +52,7 @@ public class MessageDetail implements Serializable {
         detail.setCreated(message.getCreated());
 //        m.setFirstBornId(serialVersionUID);
         detail.setMessageState(message.getMessageState().name());
+        detail.setMessageType(MessageType.CONVERSATION.name());
 //        m.setNexSiblingId(serialVersionUID);
         detail.setParentId(message.getParent() == null ? detail.getThreadRootId() : message.getParent().getId());
 //        m.setReceiverId();
@@ -54,6 +63,22 @@ public class MessageDetail implements Serializable {
         return detail;
     }
 
+    //---------------------------- GETTERS AND SETTERS --------------------
+    public void updateWholeMessage(MessageDetail detail) {
+        messageId = detail.getMessageId();
+        threadRootId = detail.getThreadRootId();
+        parentId = detail.getParentId();
+        demandId = detail.getDemandId();
+        subject = detail.getSubject();
+        body = detail.getBody();
+        messageState = detail.getMessageState();
+        messageType = detail.getMessageType();
+        created = detail.getCreated();
+        sent = detail.getSent();
+        senderId = detail.getSenderId();
+        receiverId = detail.getReceiverId();
+    }
+
     public long getMessageId() {
         return messageId;
     }
@@ -61,7 +86,6 @@ public class MessageDetail implements Serializable {
     public void setMessageId(long id) {
         this.messageId = id;
     }
-
 
     /**
      * Return the root message representing one communication thread. Still the same, child messages inherit this
@@ -126,7 +150,6 @@ public class MessageDetail implements Serializable {
 //    public void setNexSiblingId(long nexSiblingId) {
 //        this.nexSiblingId = nexSiblingId;
 //    }
-
     public long getDemandId() {
         return demandId;
     }
@@ -175,6 +198,14 @@ public class MessageDetail implements Serializable {
      */
     public void setMessageState(String messageState) {
         this.messageState = messageState;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 
     /**
@@ -252,9 +283,7 @@ public class MessageDetail implements Serializable {
         sb.append("\nReceiverID: " + receiverId);
         return sb.toString();
     }
-
-    public MessageType getMessageType() {
-        return MessageType.CONVERSATION;
-    }
-
+    //    public MessageType getMessageType() {
+    //        return MessageType.CONVERSATION;
+    //    }
 }

@@ -25,7 +25,10 @@ public class AdminLayoutView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Hyperlink demandsLink, offersLink, usersLink, suppliersLink, demandOriginLink;
+    Hyperlink demandsLink, offersLink, clientsLink, suppliersLink,
+    accessRolesLink, emailActivationsLink, invoicesLink, messagesLink,
+    ourPaymentDetailsLink, paymentMethodsLink, permissionsLink,
+    preferencesLink, problemsLink;
 
     public AdminLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -48,8 +51,8 @@ public class AdminLayoutView extends Composite
     }
 
     @Override
-    public void setUsersToken(String linkString) {
-        usersLink.setTargetHistoryToken(linkString);
+    public void setClientsToken(String linkString) {
+        clientsLink.setTargetHistoryToken(linkString);
     }
 
     @Override
@@ -63,8 +66,48 @@ public class AdminLayoutView extends Composite
     }
 
     @Override
-    public void setDemandOriginToken(String linkString) {
-        demandOriginLink.setTargetHistoryToken(linkString);
+    public void setAccessRoleToken(String linkString) {
+        accessRolesLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setEmailActivationToken(String linkString) {
+        emailActivationsLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setInvoiceToken(String linkString) {
+        invoicesLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setMessageToken(String linkString) {
+        messagesLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setOurPaymentDetailsToken(String linkString) {
+        ourPaymentDetailsLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setPaymentMethodToken(String linkString) {
+        paymentMethodsLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setPermissionToken(String linkString) {
+        permissionsLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setPreferenceToken(String linkString) {
+        preferencesLink.setTargetHistoryToken(linkString);
+    }
+
+    @Override
+    public void setProblemToken(String linkString) {
+        problemsLink.setTargetHistoryToken(linkString);
     }
 
     /** toggle visible actions/buttons for current user decided by his role. **/

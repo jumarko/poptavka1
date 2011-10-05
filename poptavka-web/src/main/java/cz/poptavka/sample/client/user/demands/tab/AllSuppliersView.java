@@ -22,6 +22,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.user.demands.widget.SupplierDetailView;
+import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -54,7 +55,6 @@ public class AllSuppliersView extends OverflowComposite
     HTMLPanel detail, child;
     @UiField
     SupplierDetailView supplierDetail;
-
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>();
     private final SingleSelectionModel<CategoryDetail> selectionSupplierModel =
@@ -266,7 +266,6 @@ class SupplierCell extends AbstractCell<UserDetail> {
 //            this.onEnterKeyDown(context, parent, value, event, valueUpdater);
 //        }
 //    }
-
     @Override
     public void render(Context context, UserDetail value, SafeHtmlBuilder sb) {
         /*
@@ -308,14 +307,18 @@ class SupplierCell extends AbstractCell<UserDetail> {
         }
 
         //Company address
-        if (value.getAddress() != null) {
-            sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
-                    + "&nbsp;&nbsp;-&nbsp;");
-            sb.appendEscaped(value.getAddress().toString());
-            sb.appendHtmlConstant("</span></div><br/>");
+        int i = 1;
+        sb.appendHtmlConstant("<span style=\"FONT-FAMILY: Arial, sans-serif; COLOR:gray;\"> "
+                + "&nbsp;&nbsp;-&nbsp;");
+        for (AddressDetail addr : value.getAddresses()) {
+            sb.appendEscaped(addr.toString());
+            if (i < value.getAddresses().size()) {
+                sb.appendEscaped(", ");
+            }
+            i++;
         }
+        sb.appendHtmlConstant("</span></div><br/>");
     }
-
     /**
      * By convention, cells that respond to user events should handle the enter
      * key. This provides a consistent user experience when users use keyboard

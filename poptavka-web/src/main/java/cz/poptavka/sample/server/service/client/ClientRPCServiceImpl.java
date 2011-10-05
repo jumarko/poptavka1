@@ -1,5 +1,6 @@
 package cz.poptavka.sample.server.service.client;
 
+import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.product.Service;
 import cz.poptavka.sample.domain.product.UserService;
@@ -27,7 +30,11 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
+import cz.poptavka.sample.shared.domain.AddressDetail;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.Collection;
+import java.util.Map;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -43,6 +50,13 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
         return null;
+    }
+
+    @Override
+    public ArrayList<ClientDetail> getClients(int start, int count) {
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+
+        return this.createClientDetailList(clientService.getAll(resultCriteria));
     }
 
     @Autowired
@@ -67,25 +81,26 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public UserDetail createNewClient(UserDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
-        final BusinessUserData businessUserData = new BusinessUserData.Builder().
-                companyName(clientDetail.
-                getCompanyName()).
+        final BusinessUserData businessUserData = new BusinessUserData
+                .Builder()
+                .companyName(clientDetail.getCompanyName()).
                 personFirstName(clientDetail.getFirstName()).
                 personLastName(clientDetail.getLastName()).
                 phone(clientDetail.getPhone()).
-                identificationNumber(clientDetail.
-                getIdentifiacationNumber()).
+                identificationNumber(clientDetail.getIdentificationNumber()).
                 // TODO in builder crete setWebsite(String website)
                 taxId(clientDetail.getTaxId()).build();
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
         /** Address. **/
-        Locality city = this.getLocality(clientDetail.getAddress().getCityName());
-        Address address = new Address();
-        address.setCity(city);
-        address.setStreet(clientDetail.getAddress().getStreet());
-        address.setZipCode(clientDetail.getAddress().getZipCode());
         List<Address> addresses = new ArrayList<Address>();
-        addresses.add(address);
+        for (AddressDetail detail : clientDetail.getAddresses()) {
+            Locality city = this.getLocality(detail.getCityName());
+            Address address = new Address();
+            address.setCity(city);
+            address.setStreet(detail.getStreet());
+            address.setZipCode(detail.getZipCode());
+            addresses.add(address);
+        }
         newClient.getBusinessUser().setAddresses(addresses);
         /** Login & pwd information. **/
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
@@ -116,7 +131,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
         newClient.setVerification(Verification.UNVERIFIED);
         /** TODO ivlcek - email activation. **/
-
         Client newClientFromDB = clientService.create(newClient);
         return this.toUserDetail(newClientFromDB.getBusinessUser().getId(),
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
@@ -153,4 +167,81 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         return localityService.getLocality(code);
     }
 
+    /**
+     * Get All clients count.
+     */
+    @Override
+    public Integer getClientsCount() {
+        return (int) clientService.getCount();
+    }
+
+    /**
+     * Method updates client object in database.
+     *
+     * @param clientDetail - updated supplierDetail from front end
+     * @param updateWhat - define data to update. Values: supplier, categories, localities, address, userdata, all.
+     * @return clientDetail
+     */
+    @Override
+    public ClientDetail updateClient(ClientDetail detail, String updateWhat) {
+        Client client = clientService.getById(detail.getId());
+
+
+        if (updateWhat.equals("other") || updateWhat.equals("all")) {
+            //Client
+            if (detail.getOveralRating() == -1) {
+                client.setOveralRating(null);
+            } else {
+                client.setOveralRating(detail.getOveralRating());
+            }
+            client.setVerification(Verification.valueOf(detail.getVerification()));
+
+        }
+
+        if (updateWhat.equals("address") || updateWhat.equals("all")) {
+            //TODO Martin - how to update addresses???
+            List<Address> newAddresses = new ArrayList<Address>();
+            for (AddressDetail addr : detail.getUserDetail().getAddresses()) {
+//            Address address = new Address();
+//            supplier.getBusinessUser().getAddresses()
+            }
+        }
+
+        //Busines data
+        if (updateWhat.equals("userdata") || updateWhat.equals("all")) {
+            client.getBusinessUser().setEmail(detail.getUserDetail().getEmail());
+
+            client.getBusinessUser().getBusinessUserData().setDescription(detail.getUserDetail().getDescription());
+            client.getBusinessUser().getBusinessUserData().setCompanyName(detail.getUserDetail().getCompanyName());
+            client.getBusinessUser().getBusinessUserData().
+                    setIdentificationNumber(detail.getUserDetail().getIdentificationNumber());
+
+            //-- Contact
+            client.getBusinessUser().getBusinessUserData().setPersonFirstName(detail.getUserDetail().getFirstName());
+            client.getBusinessUser().getBusinessUserData().setPersonLastName(detail.getUserDetail().getLastName());
+            client.getBusinessUser().getBusinessUserData().setPhone(detail.getUserDetail().getPhone());
+        }
+
+        clientService.update(client);
+        return detail;
+    }
+
+    @Override
+    public ArrayList<ClientDetail> getSortedClients(int start, int count, Map<String, OrderType> orderColumns) {
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(start)
+                .maxResults(count)
+                .orderByColumns(orderColumns)
+                .build();
+        return this.createClientDetailList(clientService.getAll(resultCriteria));
+    }
+
+    private ArrayList<ClientDetail> createClientDetailList(Collection<Client> clients) {
+        ArrayList<ClientDetail> clientDetails = new ArrayList<ClientDetail>();
+        for (Client client : clients) {
+            clientDetails.add(ClientDetail.createClientDetail(client));
+        }
+        GWT.log("clientDetailList created: " + clientDetails.size());
+        return clientDetails;
+    }
 }

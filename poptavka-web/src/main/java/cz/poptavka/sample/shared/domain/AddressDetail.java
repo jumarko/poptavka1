@@ -22,12 +22,10 @@ public class AddressDetail implements Serializable {
         this.zipCode = address.getZipCode();
     }
 
-    public AddressDetail(Address address) {
-        if (address == null) {
-            return;
-        }
+    public static AddressDetail createAddressDetail(Address address) {
+        AddressDetail detail = new AddressDetail();
         if (address.getCity() != null) {
-            this.cityName = address.getCity().getName();
+            detail.setCityName(address.getCity().getName());
         }
         if (address.getStreet() != null) {
             StringBuilder fullStreet = new StringBuilder(address.getStreet());
@@ -39,8 +37,9 @@ public class AddressDetail implements Serializable {
                 fullStreet.append(address.getHouseNum());
             }
         }
-        this.street = address.getStreet();
-        this.zipCode = address.getZipCode();
+        detail.setStreet(address.getStreet());
+        detail.setZipCode(address.getZipCode());
+        return detail;
     }
 
     public String getCityName() {

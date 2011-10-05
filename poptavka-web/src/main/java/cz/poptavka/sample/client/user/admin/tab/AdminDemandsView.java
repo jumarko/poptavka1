@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  *
- * @author ivan.vlcek
+ * @author ivan.vlcek, edited by Martin Slavkovsky
  */
 public class AdminDemandsView extends Composite implements AdminDemandsPresenter.AdminDemandsInterface {
 
@@ -161,11 +161,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         changesLabel.setText("0");
     }
 
-//    @Override
-//    public void createView() {
-//        initDataGrid();
-//        initWidget(uiBinder.createAndBindUi(this));
-//    }
     private void initDataGrid() {
         // Create a dataGrid.
         GWT.log("initDataGrid initialized");

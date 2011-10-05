@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-
+import java.util.Map;
 
 @RemoteServiceRelativePath("service/cs")
 public interface ClientRPCService extends RemoteService {
+
     ArrayList<UserDetail> getAllClients();
+
+    ArrayList<ClientDetail> getClients(int start, int count);
 
     UserDetail createNewClient(UserDetail clientDetail);
 
@@ -18,4 +23,9 @@ public interface ClientRPCService extends RemoteService {
 
     boolean checkFreeEmail(String email);
 
+    Integer getClientsCount();
+
+    ClientDetail updateClient(ClientDetail supplierDetail, String updateWhat);
+
+    ArrayList<ClientDetail> getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
 }

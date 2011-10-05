@@ -1,7 +1,13 @@
 package cz.poptavka.sample.shared.domain;
 
+import cz.poptavka.sample.domain.address.Address;
+import cz.poptavka.sample.domain.user.BusinessUser;
+import cz.poptavka.sample.domain.user.BusinessUserRole;
+import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Supplier;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * represents all types of system users
@@ -16,16 +22,14 @@ public class UserDetail implements Serializable {
     private static final long serialVersionUID = 6224665779446848218L;
 
     public enum Role {
+
         CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
     }
-
     /** Instances of roles. **/
     private SupplierDetail supplier = null;
     //others
-
     /** List of roles. **/
     private ArrayList<Role> roleList = new ArrayList<Role>();
-
     private Long userId;
     private Long clientId = -1L;
     private Long supplierId = -1L;
@@ -34,14 +38,14 @@ public class UserDetail implements Serializable {
     private String firstName;
     private String lastName;
     private String phone;
-    private String identifiacationNumber;
-    private String companyName = null;
-    private String taxId = null;
+    private String identificationNumber;
+    private String companyName;
+    private String description;
+    private String taxId;
     private String website;
-    private AddressDetail address;
+    private List<AddressDetail> addresses;
     // TODO check if used, otherwise delete
     private ArrayList<String> demandsId = new ArrayList<String>();
-
     private boolean verified = false;
 
     public UserDetail() {
@@ -50,6 +54,38 @@ public class UserDetail implements Serializable {
     public UserDetail(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public static UserDetail createUserDetail(BusinessUser user) {
+        UserDetail detail = new UserDetail();
+        detail.setUserId(user.getId());
+        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+        for (Address addr : user.getAddresses()) {
+            addresses.add(AddressDetail.createAddressDetail(addr));
+        }
+        detail.setAddresses(addresses);
+        for (BusinessUserRole role : user.getBusinessUserRoles()) {
+            if (role instanceof Client) {
+                detail.setClientId(role.getId());
+                detail.getRoleList().add(Role.CLIENT);
+            }
+            if (role instanceof Supplier) {
+                detail.setSupplierId(role.getId());
+                detail.getRoleList().add(Role.SUPPLIER);
+            }
+        }
+        if (user.getBusinessUserData() != null) {
+            detail.setCompanyName(user.getBusinessUserData().getCompanyName());
+            detail.setDescription(user.getBusinessUserData().getDescription());
+            detail.setFirstName(user.getBusinessUserData().getPersonFirstName());
+            detail.setLastName(user.getBusinessUserData().getPersonLastName());
+            detail.setIdentificationNumber(user.getBusinessUserData().getIdentificationNumber());
+            detail.setPhone(user.getBusinessUserData().getPhone());
+        }
+        detail.setPassword(user.getPassword());
+        detail.setEmail(user.getEmail());
+
+        return detail;
     }
 
     public Long getUserId() {
@@ -100,12 +136,12 @@ public class UserDetail implements Serializable {
         this.phone = phone;
     }
 
-    public String getIdentifiacationNumber() {
-        return identifiacationNumber;
+    public String getIdentificationNumber() {
+        return identificationNumber;
     }
 
-    public void setIdentifiacationNumber(String identifiacationNumber) {
-        this.identifiacationNumber = identifiacationNumber;
+    public void setIdentificationNumber(String identifiacationNumber) {
+        this.identificationNumber = identifiacationNumber;
     }
 
     public String getCompanyName() {
@@ -132,12 +168,12 @@ public class UserDetail implements Serializable {
         this.website = website;
     }
 
-    public AddressDetail getAddress() {
-        return address;
+    public List<AddressDetail> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(AddressDetail address) {
-        this.address = address;
+    public void setAddresses(List<AddressDetail> addresses) {
+        this.addresses = addresses;
     }
 
     public ArrayList<String> getDemandsId() {
@@ -196,4 +232,11 @@ public class UserDetail implements Serializable {
         this.verified = verified;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

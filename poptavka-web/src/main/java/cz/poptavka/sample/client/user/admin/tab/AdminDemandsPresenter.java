@@ -46,11 +46,10 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ivan.vlcek
+ * @author ivan.vlcek, edited by Martin Slavkovsky
  */
-@Presenter(view = AdminDemandsView.class)//, multiple=true)
+@Presenter(view = AdminDemandsView.class)
 public class AdminDemandsPresenter
-        //      extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, UserEventBus>
         extends BasePresenter<AdminDemandsPresenter.AdminDemandsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
@@ -69,7 +68,7 @@ public class AdminDemandsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminDemandsInterface { //extends LazyView {
+    public interface AdminDemandsInterface {
 
         Widget getWidgetView();
 
@@ -103,8 +102,15 @@ public class AdminDemandsPresenter
 
         ListBox getPageSizeCombo();
     }
+
     private AsyncDataProvider dataProvider = null;
+    private AsyncHandler sortHandler = null;
+    //list of grid columns, used to sort them. First must by blank (checkbox in table)
+    private final String[] columnNames = new String[]{
+        "", "id", "client", "title", "type", "status", "validTo", "endDate"
+    };
     private int start = 0;
+    private List<String> gridColumns = Arrays.asList(columnNames);
 
     public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -122,12 +128,6 @@ public class AdminDemandsPresenter
         this.dataProvider.addDataDisplay(view.getDataGrid());
         createAsyncSortHandler();
     }
-    private AsyncHandler sortHandler = null;
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "", "id", "client", "title", "type", "status", "validTo", "endDate"
-    };
-    private List<String> gridColumns = Arrays.asList(columnNames);
 
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?

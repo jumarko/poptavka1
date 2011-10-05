@@ -79,7 +79,7 @@ public class AdminSuppliersHandler extends BaseEventHandler<UserEventBus> {
                 });
     }
 
-    public void onUpdateDemand(FullSupplierDetail supplier, String updateWhat) {
+    public void onUpdateSupplier(FullSupplierDetail supplier, String updateWhat) {
         supplierService.updateSupplier(supplier, updateWhat, new AsyncCallback<FullSupplierDetail>() {
 
             @Override

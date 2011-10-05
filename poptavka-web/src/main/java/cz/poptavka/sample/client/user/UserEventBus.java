@@ -32,11 +32,23 @@ import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.client.user.admin.AdminHandler;
+import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminClientInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminClientsHandler;
+import cz.poptavka.sample.client.user.admin.tab.AdminClientsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandOriginHandler;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandOriginPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandsHandler;
+import cz.poptavka.sample.client.user.admin.tab.AdminEmailActivationsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminInvoicesPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminMessagesPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersHandler;
+import cz.poptavka.sample.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminPaymentMethodsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminPermissionsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminPreferencesPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminProblemsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
@@ -46,6 +58,7 @@ import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -315,8 +328,35 @@ public interface UserEventBus extends EventBusWithLookup {
     historyConverter = AdminHistoryConverter.class)
     String invokeAdminSuppliers();
 
-    @Event(handlers = AdminDemandOriginPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminDemandOrigin();
+    @Event(handlers = AdminClientsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminClients();
+
+    @Event(handlers = AdminAccessRolesPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminAccessRoles();
+
+    @Event(handlers = AdminEmailActivationsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminEmailActivations();
+
+    @Event(handlers = AdminInvoicesPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminInvoices();
+
+    @Event(handlers = AdminMessagesPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminMessages();
+
+    @Event(handlers = AdminOurPaymentDetailsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminOurPaymentDetails();
+
+    @Event(handlers = AdminPaymentMethodsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminPaymentMethods();
+
+    @Event(handlers = AdminPermissionsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminPermissions();
+
+    @Event(handlers = AdminPreferencesPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminPreferences();
+
+    @Event(handlers = AdminProblemsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    String invokeAdminProblems();
 
     //TODO Martin - dorobit ?
 //    @Event(handlers = AllSuppliersPresenter.class, historyConverter = AdminHistoryConverter.class)
@@ -591,22 +631,22 @@ public interface UserEventBus extends EventBusWithLookup {
     /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
 
     /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
-    @Event(handlers = AdminHandler.class)
-    void getAdminTabSuppliersCount();
+    @Event(handlers = AdminSuppliersHandler.class)
+    void getAdminSuppliersCount();
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void createAdminSuppliersAsyncDataProvider(final int totalFound);
 
-    @Event(handlers = AdminHandler.class)
+    @Event(handlers = AdminSuppliersHandler.class)
     void getAdminSuppliers(int start, int count);
 
-    @Event(handlers = AdminHandler.class)
+    @Event(handlers = AdminSuppliersHandler.class)
     void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void displayAdminTabSuppliers(ArrayList<FullSupplierDetail> suppliers);
 
-    @Event(handlers = AdminHandler.class)
+    @Event(handlers = AdminSuppliersHandler.class)
     void updateSupplier(FullSupplierDetail supplier, String updateWhat);
 
     @Event(handlers = AdminSupplierInfoPresenter.class)
@@ -621,7 +661,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminSuppliersPresenter.class)
     void setDetailDisplayedSupplier(Boolean displayed);
 
-    //---- DemandsInfo
+    //---- SuppliersInfo
     @Event(handlers = AdminSuppliersHandler.class)
     void getAdminSupplierRootCategories();
 
@@ -697,8 +737,34 @@ public interface UserEventBus extends EventBusWithLookup {
     void createAdminDemandTypeDataProvider(List<DemandOriginDetail> list);
     /* <<<<<<<<<<-------- ADMIN DEMAND TYPE -------------------- */
 
+    /* ----------------- ADMIN CLIENT TYPE -------------------->>>>>>>>> */
+    @Event(handlers = AdminClientInfoPresenter.class)
+    void showAdminClientDetail(ClientDetail clientDetail);
+
+    @Event(handlers = AdminClientsPresenter.class)
+    void setDetailDisplayedClient(Boolean value);
+
+    @Event(handlers = AdminClientsPresenter.class)
+    void addClientToCommit(ClientDetail clientDetail, String whatPart);
+
+    @Event(handlers = AdminClientsHandler.class)
+    void getAdminClientsCount();
+
+    @Event(handlers = AdminClientsHandler.class)
+    void getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
+
+    @Event(handlers = AdminClientsHandler.class)
+    void getAdminClients(int start, int count);
+
+    @Event(handlers = AdminClientsPresenter.class)
+    void createAdminClientsAsyncDataProvider(final int totalFound);
+
+    @Event(handlers = AdminClientsPresenter.class)
+    void displayAdminTabClients(List<ClientDetail> clients);
+    /* <<<<<<<<<<-------- ADMIN CLIENT TYPE -------------------- */
+
     /**
-     * **************** BEHO development corner ****************
+     * **************** BEHO development corner. ****************
      *
      * implements methods for Supplier new demands
      *
