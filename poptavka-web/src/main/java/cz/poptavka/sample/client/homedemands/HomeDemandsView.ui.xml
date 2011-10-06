@@ -43,7 +43,7 @@ Uncomment this for XHTML entities
                         <tr>
                             <td>
                                 <g:ScrollPanel>
-                                    <c:CellTable ui:field='cellTable' />
+                                    <c:DataGrid ui:field='dataGrid' />
                                 </g:ScrollPanel>
                             </td>
                         </tr>

@@ -108,7 +108,7 @@ public class AdminInvoicesPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminInvoicesAsyncDataProvider(final int totalFound) {
         this.start = 0;
         dataProvider = new AsyncDataProvider<InvoiceDetail>() {
 
@@ -117,7 +117,7 @@ public class AdminInvoicesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getAdminInvoices(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -144,19 +144,19 @@ public class AdminInvoicesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedInvoices(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminInvoices() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminInvoicesCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<InvoiceDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabInvoices(List<InvoiceDetail> invoices) {
+        dataProvider.updateRowData(start, invoices);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
@@ -176,7 +176,7 @@ public class AdminInvoicesPresenter
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
                     object.setInvoiceNumber(value);
-//                    eventBus.addInvoiceToCommit(object);
+                    eventBus.addInvoiceToCommit(object);
                 }
             }
         });
@@ -189,7 +189,7 @@ public class AdminInvoicesPresenter
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
                     object.setVariableSymbol(value);
-//                    eventBus.addInvoiceToCommit(object);
+                    eventBus.addInvoiceToCommit(object);
                 }
             }
         });
@@ -202,7 +202,7 @@ public class AdminInvoicesPresenter
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
                     object.setTotalPrice(BigDecimal.valueOf(Long.valueOf(value)));
-//                    eventBus.addInvoiceToCommit(object);
+                    eventBus.addInvoiceToCommit(object);
                 }
             }
         });
@@ -215,7 +215,7 @@ public class AdminInvoicesPresenter
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
 //                    object.setPaymentMethod(value);
-//                    eventBus.addInvoiceToCommit(object);
+                    eventBus.addInvoiceToCommit(object);
                 }
             }
         });
@@ -249,7 +249,7 @@ public class AdminInvoicesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updateInvoice(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                        eventBus.updateInvoice(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
@@ -287,7 +287,7 @@ public class AdminInvoicesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminInvoicesCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -296,7 +296,7 @@ public class AdminInvoicesPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(InvoiceDetail data, String dataType) {
+    public void onAddInvoiceToCommit(InvoiceDetail data) {
         //TODO Martin - otestovat, alebo celkom zrusit cistocne auktualizovanie
         if (metadataToUpdate.containsKey(data.getId())) {
             dataToUpdate.remove(data.getId());
@@ -304,7 +304,7 @@ public class AdminInvoicesPresenter
             metadataToUpdate.put(data.getId(), "all");
         } else {
             dataToUpdate.put(data.getId(), data);
-            metadataToUpdate.put(data.getId(), dataType);
+//            metadataToUpdate.put(data.getId(), dataType);
         }
         if (detailDisplayed) {
 //            eventBus.showAdminDemandDetail(data);
@@ -314,7 +314,7 @@ public class AdminInvoicesPresenter
         view.getDataGrid().redraw();
     }
 
-    public void onSetDetailDisplayedDemand(Boolean displayed) {
+    public void onSetDetailDisplayedInvoices(Boolean displayed) {
         detailDisplayed = displayed;
     }
 }

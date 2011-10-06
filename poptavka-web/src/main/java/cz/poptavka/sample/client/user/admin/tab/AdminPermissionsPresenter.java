@@ -101,7 +101,7 @@ public class AdminPermissionsPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminPermissionAsyncDataProvider(final int totalFound) {
         this.start = 0;
         dataProvider = new AsyncDataProvider<PermissionDetail>() {
 
@@ -110,7 +110,7 @@ public class AdminPermissionsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getAdminPermissions(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -137,19 +137,19 @@ public class AdminPermissionsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedPermissions(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminPermissions() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminPermissionsCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<PermissionDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabPermissions(List<PermissionDetail> permissions) {
+        dataProvider.updateRowData(start, permissions);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
@@ -169,7 +169,7 @@ public class AdminPermissionsPresenter
                         originalData.put(object.getId(), new PermissionDetail(object));
                     }
                     object.setName(value);
-//                    eventBus.addPermissionToCommit(object);
+                    eventBus.addPermissionToCommit(object);
                 }
             }
         });
@@ -182,7 +182,7 @@ public class AdminPermissionsPresenter
                         originalData.put(object.getId(), new PermissionDetail(object));
                     }
                     object.setDescription(value);
-//                    eventBus.addPermissionToCommit(object);
+                    eventBus.addPermissionToCommit(object);
                 }
             }
         });
@@ -209,7 +209,7 @@ public class AdminPermissionsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updatePermission(dataToUpdate.get(idx));
+                        eventBus.updatePermission(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
@@ -245,7 +245,7 @@ public class AdminPermissionsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminPermissionsCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -254,7 +254,7 @@ public class AdminPermissionsPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(PermissionDetail data, String dataType) {
+    public void onAddPermissionToCommit(PermissionDetail data) {
         dataToUpdate.remove(data.getId());
         dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
@@ -262,7 +262,7 @@ public class AdminPermissionsPresenter
         view.getDataGrid().redraw();
     }
 
-    public void onSetDetailDisplayedDemand(Boolean displayed) {
+    public void onSetDetailDisplayedPermission(Boolean displayed) {
         detailDisplayed = displayed;
     }
 }

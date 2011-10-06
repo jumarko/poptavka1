@@ -52,7 +52,6 @@ public class AdminClientsPresenter
 
     private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
     private Map<Long, ClientDetail> dataToUpdate = new HashMap<Long, ClientDetail>();
-    private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
     private Map<Long, ClientDetail> originalData = new HashMap<Long, ClientDetail>();
 
     @Override
@@ -174,7 +173,7 @@ public class AdminClientsPresenter
                         originalData.put(object.getId(), new ClientDetail(object));
                     }
                     object.getUserDetail().setCompanyName(value);
-                    eventBus.addClientToCommit(object, "userData");
+                    eventBus.addClientToCommit(object);
                 }
             }
         });
@@ -187,7 +186,7 @@ public class AdminClientsPresenter
                         originalData.put(object.getId(), new ClientDetail(object));
                     }
                     object.getUserDetail().setFirstName(value);
-                    eventBus.addClientToCommit(object, "userData");
+                    eventBus.addClientToCommit(object);
                 }
             }
         });
@@ -200,7 +199,7 @@ public class AdminClientsPresenter
                         originalData.put(object.getId(), new ClientDetail(object));
                     }
                     object.getUserDetail().setLastName(value);
-                    eventBus.addClientToCommit(object, "userData");
+                    eventBus.addClientToCommit(object);
                 }
             }
         });
@@ -213,7 +212,7 @@ public class AdminClientsPresenter
                         originalData.put(object.getId(), new ClientDetail(object));
                     }
                     object.setOveralRating(Integer.valueOf(value));
-                    eventBus.addClientToCommit(object, "userData");
+                    eventBus.addClientToCommit(object);
                 }
             }
         });
@@ -247,11 +246,10 @@ public class AdminClientsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updateClient(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                        eventBus.updateClient(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
-                    metadataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");
                 }
@@ -262,7 +260,6 @@ public class AdminClientsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
-                metadataToUpdate.clear();
                 view.getDataGrid().setFocus(true);
                 int idx = 0;
                 for (ClientDetail data : originalData.values()) {
@@ -294,16 +291,9 @@ public class AdminClientsPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddClientToCommit(ClientDetail data, String dataType) {
-        //TODO Martin - otestovat, alebo celkom zrusit cistocne auktualizovanie
-        if (metadataToUpdate.containsKey(data.getId())) {
-            dataToUpdate.remove(data.getId());
-            metadataToUpdate.remove(data.getId());
-            metadataToUpdate.put(data.getId(), "all");
-        } else {
-            dataToUpdate.put(data.getId(), data);
-            metadataToUpdate.put(data.getId(), dataType);
-        }
+    public void onAddClientToCommit(ClientDetail data) {
+        dataToUpdate.remove(data.getId());
+        dataToUpdate.put(data.getId(), data);
         if (detailDisplayed) {
             eventBus.showAdminClientDetail(data);
         }

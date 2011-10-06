@@ -57,7 +57,6 @@ public class AdminSuppliersPresenter
 
     private final static Logger LOGGER = Logger.getLogger("    AdminSuppliersPresenter");
     private Map<Long, FullSupplierDetail> dataToUpdate = new HashMap<Long, FullSupplierDetail>();
-    private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
     private Map<Long, FullSupplierDetail> originalData = new HashMap<Long, FullSupplierDetail>();
 
     @Override
@@ -183,7 +182,7 @@ public class AdminSuppliersPresenter
                     }
                 }
                 object.setCompanyName(value);
-                eventBus.addSupplierToCommit(object, "userdata");
+                eventBus.addSupplierToCommit(object);
             }
         });
         view.getSupplierTypeColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
@@ -197,7 +196,7 @@ public class AdminSuppliersPresenter
                                 originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
                             }
                             object.setBusinessType(value);
-                            eventBus.addSupplierToCommit(object, "userdata");
+                            eventBus.addSupplierToCommit(object);
                         }
                     }
                 }
@@ -212,7 +211,7 @@ public class AdminSuppliersPresenter
                         originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
                     }
                     object.setCertified(value);
-                    eventBus.addSupplierToCommit(object, "supplier");
+                    eventBus.addSupplierToCommit(object);
                 }
             }
         });
@@ -226,7 +225,7 @@ public class AdminSuppliersPresenter
                             originalData.put(object.getSupplierId(), new FullSupplierDetail(object));
                         }
                         object.setVerification(value);
-                        eventBus.addSupplierToCommit(object, "supplier");
+                        eventBus.addSupplierToCommit(object);
                     }
                 }
             }
@@ -261,11 +260,10 @@ public class AdminSuppliersPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateSupplier(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                        eventBus.updateSupplier(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
-                    metadataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");
                 }
@@ -276,7 +274,6 @@ public class AdminSuppliersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
-                metadataToUpdate.clear();
                 view.getDataGrid().setFocus(true);
                 int idx = 0;
                 for (FullSupplierDetail data : originalData.values()) {
@@ -308,15 +305,9 @@ public class AdminSuppliersPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddSupplierToCommit(FullSupplierDetail data, String dataType) {
-        if (metadataToUpdate.containsKey(data.getSupplierId())) {
-            dataToUpdate.remove(data.getSupplierId());
-            metadataToUpdate.remove(data.getSupplierId());
-            metadataToUpdate.put(data.getSupplierId(), "all");
-        } else {
-            dataToUpdate.put(data.getSupplierId(), data);
-            metadataToUpdate.put(data.getSupplierId(), dataType);
-        }
+    public void onAddSupplierToCommit(FullSupplierDetail data) {
+        dataToUpdate.remove(data.getSupplierId());
+        dataToUpdate.put(data.getSupplierId(), data);
         if (detailDisplayed) {
             eventBus.showAdminSupplierDetail(data);
         }

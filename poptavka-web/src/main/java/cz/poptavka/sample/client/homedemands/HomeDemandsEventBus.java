@@ -82,6 +82,9 @@ public interface HomeDemandsEventBus extends EventBus {
     @Event(handlers = HomeDemandsPresenter.class)
     void setDemand(FullDemandDetail demand);
 
+    @Event(handlers = HomeDemandsPresenter.class)
+    void filter();
+
     /* Business events handled by Handlers. */
     @Event(handlers = HomeDemandsHandler.class)
     void getAllDemandsCount();
@@ -93,13 +96,19 @@ public interface HomeDemandsEventBus extends EventBus {
     void getDemandsCountLocality(String code);
 
     @Event(handlers = HomeDemandsHandler.class)
+    void getDemandsCountCategoryLocality(long id, String code);
+
+    @Event(handlers = HomeDemandsHandler.class)
     void getDemands(int fromResult, int toResult);
 
     @Event(handlers = HomeDemandsHandler.class)
     void getDemandsByCategories(int fromResult, int toResult, long id);
 
     @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsByLocalities(int fromResult, int toResult, String id);
+    void getDemandsByLocalities(int fromResult, int toResult, String code);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
 
     @Event(handlers = HomeDemandsHandler.class)
     void getCategories();

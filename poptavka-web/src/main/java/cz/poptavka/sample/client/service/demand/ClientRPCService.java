@@ -25,7 +25,7 @@ public interface ClientRPCService extends RemoteService {
 
     Integer getClientsCount();
 
-    ClientDetail updateClient(ClientDetail supplierDetail, String updateWhat);
+    ClientDetail updateClient(ClientDetail supplierDetail);
 
     ArrayList<ClientDetail> getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
 }

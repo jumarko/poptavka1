@@ -36,6 +36,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.shared.domain.PaymentDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
@@ -55,7 +56,6 @@ public class AdminOurPaymentDetailsPresenter
 
     private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
     private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
-    private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
     private Map<Long, FullDemandDetail> originalData = new HashMap<Long, FullDemandDetail>();
 
     @Override
@@ -112,7 +112,7 @@ public class AdminOurPaymentDetailsPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminOurPaymentDetailAsyncDataProvider(final int totalFound) {
         this.start = 0;
         dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
@@ -121,7 +121,7 @@ public class AdminOurPaymentDetailsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getAdminOurPaymentDetails(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -148,19 +148,19 @@ public class AdminOurPaymentDetailsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedOurPaymentDetails(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminOurPaymentDetails() {
-        eventBus.getAdminDemandsCount();
+//        eventBus.getAdminDemandsOurPaymentDetails();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<FullDemandDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabOurPaymentDetails(List<PaymentDetail> paymentDetailList) {
+        dataProvider.updateRowData(start, paymentDetailList);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
@@ -180,7 +180,7 @@ public class AdminOurPaymentDetailsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setTitle(value);
-                    eventBus.addDemandToCommit(object, "demand");
+//                    eventBus.addOurPaymentDetailToCommit(object, "demand");
                 }
             }
         });
@@ -195,7 +195,7 @@ public class AdminOurPaymentDetailsPresenter
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
                             object.setDemandType(clientDemandType.name());
-                            eventBus.addDemandToCommit(object, "demand");
+//                            eventBus.addOurPaymentDetailToCommit(object, "demand");
                         }
                     }
                 }
@@ -212,7 +212,7 @@ public class AdminOurPaymentDetailsPresenter
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
                             object.setDemandStatus(demandStatusType.name());
-                            eventBus.addDemandToCommit(object, "demand");
+//                            eventBus.addOurPaymentDetailToCommit(object, "demand");
                         }
                     }
                 }
@@ -227,7 +227,7 @@ public class AdminOurPaymentDetailsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setValidToDate(value);
-                    eventBus.addDemandToCommit(object, "other");
+//                    eventBus.addOurPaymentDetailToCommit(Commit(object, "other");
                 }
             }
         });
@@ -240,7 +240,7 @@ public class AdminOurPaymentDetailsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setEndDate(value);
-                    eventBus.addDemandToCommit(object, "other");
+//                    eventBus.addOurPaymentDetailToCommit(object, "other");
                 }
             }
         });
@@ -274,11 +274,10 @@ public class AdminOurPaymentDetailsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateDemand(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                        eventBus.updateDemand(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
-                    metadataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");
                 }
@@ -289,7 +288,6 @@ public class AdminOurPaymentDetailsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
-                metadataToUpdate.clear();
                 view.getDataGrid().setFocus(true);
                 int idx = 0;
                 for (FullDemandDetail data : originalData.values()) {
@@ -321,22 +319,22 @@ public class AdminOurPaymentDetailsPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(FullDemandDetail data, String dataType) {
+    public void onAddOurPaymentDetailToCommit(PaymentDetail data) {
         //TODO Martin - otestovat, alebo celkom zrusit cistocne auktualizovanie
-        if (metadataToUpdate.containsKey(data.getDemandId())) {
-            dataToUpdate.remove(data.getDemandId());
-            metadataToUpdate.remove(data.getDemandId());
-            metadataToUpdate.put(data.getDemandId(), "all");
-        } else {
-            dataToUpdate.put(data.getDemandId(), data);
-            metadataToUpdate.put(data.getDemandId(), dataType);
-        }
-        if (detailDisplayed) {
-            eventBus.showAdminDemandDetail(data);
-        }
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
+//        if (metadataToUpdate.containsKey(data.getDemandId())) {
+//            dataToUpdate.remove(data.getDemandId());
+//            metadataToUpdate.remove(data.getDemandId());
+//            metadataToUpdate.put(data.getDemandId(), "all");
+//        } else {
+//            dataToUpdate.put(data.getDemandId(), data);
+//            metadataToUpdate.put(data.getDemandId(), dataType);
+//        }
+//        if (detailDisplayed) {
+//            eventBus.showAdminDemandDetail(data);
+//        }
+//        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
+//        view.getDataGrid().flush();
+//        view.getDataGrid().redraw();
     }
 
     public void onSetDetailDisplayedDemand(Boolean displayed) {

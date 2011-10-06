@@ -55,7 +55,6 @@ public class AdminDemandsPresenter
 
     private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
     private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
-    private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
     private Map<Long, FullDemandDetail> originalData = new HashMap<Long, FullDemandDetail>();
 
     @Override
@@ -102,7 +101,6 @@ public class AdminDemandsPresenter
 
         ListBox getPageSizeCombo();
     }
-
     private AsyncDataProvider dataProvider = null;
     private AsyncHandler sortHandler = null;
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
@@ -180,7 +178,7 @@ public class AdminDemandsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setTitle(value);
-                    eventBus.addDemandToCommit(object, "demand");
+                    eventBus.addDemandToCommit(object);
                 }
             }
         });
@@ -195,7 +193,7 @@ public class AdminDemandsPresenter
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
                             object.setDemandType(clientDemandType.name());
-                            eventBus.addDemandToCommit(object, "demand");
+                            eventBus.addDemandToCommit(object);
                         }
                     }
                 }
@@ -212,7 +210,7 @@ public class AdminDemandsPresenter
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
                             object.setDemandStatus(demandStatusType.name());
-                            eventBus.addDemandToCommit(object, "demand");
+                            eventBus.addDemandToCommit(object);
                         }
                     }
                 }
@@ -227,7 +225,7 @@ public class AdminDemandsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setValidToDate(value);
-                    eventBus.addDemandToCommit(object, "other");
+                    eventBus.addDemandToCommit(object);
                 }
             }
         });
@@ -240,7 +238,7 @@ public class AdminDemandsPresenter
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
                     object.setEndDate(value);
-                    eventBus.addDemandToCommit(object, "other");
+                    eventBus.addDemandToCommit(object);
                 }
             }
         });
@@ -274,11 +272,10 @@ public class AdminDemandsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateDemand(dataToUpdate.get(idx), metadataToUpdate.get(idx));
+                        eventBus.updateDemand(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
-                    metadataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");
                 }
@@ -289,7 +286,6 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
-                metadataToUpdate.clear();
                 view.getDataGrid().setFocus(true);
                 int idx = 0;
                 for (FullDemandDetail data : originalData.values()) {
@@ -321,16 +317,9 @@ public class AdminDemandsPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(FullDemandDetail data, String dataType) {
-        //TODO Martin - otestovat, alebo celkom zrusit cistocne auktualizovanie
-        if (metadataToUpdate.containsKey(data.getDemandId())) {
-            dataToUpdate.remove(data.getDemandId());
-            metadataToUpdate.remove(data.getDemandId());
-            metadataToUpdate.put(data.getDemandId(), "all");
-        } else {
-            dataToUpdate.put(data.getDemandId(), data);
-            metadataToUpdate.put(data.getDemandId(), dataType);
-        }
+    public void onAddDemandToCommit(FullDemandDetail data) {
+        dataToUpdate.remove(data.getDemandId());
+        dataToUpdate.put(data.getDemandId(), data);
         if (detailDisplayed) {
             eventBus.showAdminDemandDetail(data);
         }

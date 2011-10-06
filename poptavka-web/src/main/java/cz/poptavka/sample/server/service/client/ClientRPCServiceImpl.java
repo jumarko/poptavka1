@@ -81,8 +81,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public UserDetail createNewClient(UserDetail clientDetail) {
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
-        final BusinessUserData businessUserData = new BusinessUserData
-                .Builder()
+        final BusinessUserData businessUserData = new BusinessUserData.Builder()
                 .companyName(clientDetail.getCompanyName()).
                 personFirstName(clientDetail.getFirstName()).
                 personLastName(clientDetail.getLastName()).
@@ -139,7 +138,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Override
     public UserDetail verifyClient(UserDetail clientDetail) {
         final List<Client> clientFromDB = this.clientService.searchByCriteria(
-                UserSearchCriteria.Builder.userSearchCriteria()
+                UserSearchCriteria.Builder
+                .userSearchCriteria()
                 .withEmail(clientDetail.getEmail())
                 .withPassword(clientDetail.getPassword())
                 .build());
@@ -183,44 +183,36 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @return clientDetail
      */
     @Override
-    public ClientDetail updateClient(ClientDetail detail, String updateWhat) {
+    public ClientDetail updateClient(ClientDetail detail) {
         Client client = clientService.getById(detail.getId());
 
-
-        if (updateWhat.equals("other") || updateWhat.equals("all")) {
-            //Client
-            if (detail.getOveralRating() == -1) {
-                client.setOveralRating(null);
-            } else {
-                client.setOveralRating(detail.getOveralRating());
-            }
-            client.setVerification(Verification.valueOf(detail.getVerification()));
-
+        //Client
+        if (detail.getOveralRating() == -1) {
+            client.setOveralRating(null);
+        } else {
+            client.setOveralRating(detail.getOveralRating());
         }
+        client.setVerification(Verification.valueOf(detail.getVerification()));
 
-        if (updateWhat.equals("address") || updateWhat.equals("all")) {
-            //TODO Martin - how to update addresses???
-            List<Address> newAddresses = new ArrayList<Address>();
-            for (AddressDetail addr : detail.getUserDetail().getAddresses()) {
+        //TODO Martin - how to update addresses???
+        List<Address> newAddresses = new ArrayList<Address>();
+        for (AddressDetail addr : detail.getUserDetail().getAddresses()) {
 //            Address address = new Address();
 //            supplier.getBusinessUser().getAddresses()
-            }
         }
 
         //Busines data
-        if (updateWhat.equals("userdata") || updateWhat.equals("all")) {
-            client.getBusinessUser().setEmail(detail.getUserDetail().getEmail());
+        client.getBusinessUser().setEmail(detail.getUserDetail().getEmail());
 
-            client.getBusinessUser().getBusinessUserData().setDescription(detail.getUserDetail().getDescription());
-            client.getBusinessUser().getBusinessUserData().setCompanyName(detail.getUserDetail().getCompanyName());
-            client.getBusinessUser().getBusinessUserData().
-                    setIdentificationNumber(detail.getUserDetail().getIdentificationNumber());
+        client.getBusinessUser().getBusinessUserData().setDescription(detail.getUserDetail().getDescription());
+        client.getBusinessUser().getBusinessUserData().setCompanyName(detail.getUserDetail().getCompanyName());
+        client.getBusinessUser().getBusinessUserData().
+                setIdentificationNumber(detail.getUserDetail().getIdentificationNumber());
 
-            //-- Contact
-            client.getBusinessUser().getBusinessUserData().setPersonFirstName(detail.getUserDetail().getFirstName());
-            client.getBusinessUser().getBusinessUserData().setPersonLastName(detail.getUserDetail().getLastName());
-            client.getBusinessUser().getBusinessUserData().setPhone(detail.getUserDetail().getPhone());
-        }
+        //-- Contact
+        client.getBusinessUser().getBusinessUserData().setPersonFirstName(detail.getUserDetail().getFirstName());
+        client.getBusinessUser().getBusinessUserData().setPersonLastName(detail.getUserDetail().getLastName());
+        client.getBusinessUser().getBusinessUserData().setPhone(detail.getUserDetail().getPhone());
 
         clientService.update(client);
         return detail;
@@ -229,8 +221,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Override
     public ArrayList<ClientDetail> getSortedClients(int start, int count, Map<String, OrderType> orderColumns) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(start)
-                .maxResults(count)
+                .firstResult(start).maxResults(count)
                 .orderByColumns(orderColumns)
                 .build();
         return this.createClientDetailList(clientService.getAll(resultCriteria));

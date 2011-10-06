@@ -18,14 +18,13 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandOriginDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Map;
 
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {
 
-    FullDemandDetail updateDemand(FullDemandDetail newDemand, String updateWhat);
+    FullDemandDetail updateDemand(FullDemandDetail newDemand);
 
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId);
 
@@ -55,6 +54,8 @@ public interface DemandRPCService extends RemoteService {
 
     List<FullDemandDetail> getDemandsByLocality(int fromResult, int toResult, String code);
 
+    List<FullDemandDetail> getDemandsByCategoryLocality(int fromResult, int toResult, long id, String code);
+
     ArrayList<FullDemandDetail> getClientDemands(long id);
 
     ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
@@ -75,12 +76,4 @@ public interface DemandRPCService extends RemoteService {
     List<FullDemandDetail> getDemands(int fromResult, int toResult);
 
     List<FullDemandDetail> getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
-
-    List<DemandOriginDetail> getDemandOrigins();
-
-    void insertDemandOrigin(DemandOriginDetail detail);
-
-    void updateDemandOrigin(DemandOriginDetail detail);
-
-    void deleteDemandOrigin(Long demandTypeID);
 }

@@ -100,7 +100,7 @@ public class AdminAccessRolesPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminAccessRoleAsyncDataProvider(final int totalFound) {
         this.start = 0;
         dataProvider = new AsyncDataProvider<AccessRoleDetail>() {
 
@@ -109,7 +109,7 @@ public class AdminAccessRolesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getAdminAccessRoles(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -136,19 +136,19 @@ public class AdminAccessRolesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedAccessRoles(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminAccessRoles() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminAccessRolesCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<AccessRoleDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabAccessRoles(List<AccessRoleDetail> accessRoles) {
+        dataProvider.updateRowData(start, accessRoles);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
@@ -164,7 +164,7 @@ public class AdminAccessRolesPresenter
                         originalData.put(object.getId(), new AccessRoleDetail(object));
                     }
                     object.setName(value);
-//                    eventBus.addAccessRoleToCommit(object);
+                    eventBus.addAccessRoleToCommit(object);
                 }
             }
         });
@@ -177,7 +177,7 @@ public class AdminAccessRolesPresenter
                         originalData.put(object.getId(), new AccessRoleDetail(object));
                     }
                     object.setName(value);
-//                    eventBus.addAccessRoleToCommit(object);
+                    eventBus.addAccessRoleToCommit(object);
                 }
             }
         });
@@ -230,7 +230,7 @@ public class AdminAccessRolesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updateAccessRole(dataToUpdate.get(idx));
+                        eventBus.updateAccessRole(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
@@ -266,7 +266,7 @@ public class AdminAccessRolesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminAccessRolesCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -274,7 +274,7 @@ public class AdminAccessRolesPresenter
         });
     }
 
-    public void onAddAccessRoleToCommit(AccessRoleDetail data, String dataType) {
+    public void onAddAccessRoleToCommit(AccessRoleDetail data) {
         dataToUpdate.remove(data.getId());
         dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));

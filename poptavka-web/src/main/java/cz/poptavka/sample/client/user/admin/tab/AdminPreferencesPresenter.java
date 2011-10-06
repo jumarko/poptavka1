@@ -101,7 +101,7 @@ public class AdminPreferencesPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminPreferenceAsyncDataProvider(final int totalFound) {
         this.start = 0;
         dataProvider = new AsyncDataProvider<PreferenceDetail>() {
 
@@ -110,7 +110,7 @@ public class AdminPreferencesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getAdminPreferences(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -137,19 +137,19 @@ public class AdminPreferencesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedPreferences(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminPreferences() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminPreferencesCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<PreferenceDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabPreferences(List<PreferenceDetail> preferences) {
+        dataProvider.updateRowData(start, preferences);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
@@ -169,7 +169,7 @@ public class AdminPreferencesPresenter
                         originalData.put(object.getId(), new PreferenceDetail(object));
                     }
                     object.setValue(value);
-//                    eventBus.addPreferencesToCommit(object);
+                    eventBus.addPreferenceToCommit(object);
                 }
             }
         });
@@ -182,7 +182,7 @@ public class AdminPreferencesPresenter
                         originalData.put(object.getId(), new PreferenceDetail(object));
                     }
                     object.setDescription(value);
-//                    eventBus.addPreferencesToCommit(object);
+                    eventBus.addPreferenceToCommit(object);
                 }
             }
         });
@@ -209,7 +209,7 @@ public class AdminPreferencesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updatePreferences(dataToUpdate.get(idx));
+                        eventBus.updatePreference(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
@@ -245,7 +245,7 @@ public class AdminPreferencesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminPreferencesCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -254,7 +254,7 @@ public class AdminPreferencesPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(PreferenceDetail data, String dataType) {
+    public void onAddPreferenceToCommit(PreferenceDetail data) {
         dataToUpdate.remove(data.getId());
         dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));

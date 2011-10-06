@@ -33,7 +33,7 @@ public class AdminInvoiceInfoPresenter
         Button getUpdateBtn();
     }
 
-    public void onShowAdminDemandDetail(InvoiceDetail selectedObject) {
+    public void onShowAdminInvoicesDetail(InvoiceDetail selectedObject) {
 //        eventBus.displayContent(view.getWidgetView());
         view.setInvoiceDetail(selectedObject);
         eventBus.responseAdminDemandDetail(view.getWidgetView());

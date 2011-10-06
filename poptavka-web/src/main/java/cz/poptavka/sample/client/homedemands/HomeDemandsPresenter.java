@@ -13,7 +13,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -36,8 +36,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
  * @author praso
  */
 @Presenter(view = HomeDemandsView.class)
-public class HomeDemandsPresenter extends
-        BasePresenter<HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
+public class HomeDemandsPresenter extends BasePresenter<
+        HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
 
     private static final Logger LOGGER = Logger.getLogger(HomeDemandsPresenter.class.getName());
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -61,7 +61,7 @@ public class HomeDemandsPresenter extends
 
         int getPageSize();
 
-        CellTable<FullDemandDetail> getCellTable();
+        DataGrid<FullDemandDetail> getDataGrid();
 
         SimplePager getPager();
 
@@ -71,10 +71,6 @@ public class HomeDemandsPresenter extends
 
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
     }
-
-    private int start = 0;
-    private String resultSource = "";
-    private long resultCount = 0;
 
     //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
     /**
@@ -86,38 +82,20 @@ public class HomeDemandsPresenter extends
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                eventBus.loadingShow(MSGS.loading());
-                view.getDemandView().setVisible(false);
-                view.getBannerLabel().setVisible(true);
-                view.getLocalityList().setSelectedIndex(0);
-                if (view.getCategoryList().getSelectedIndex() == 0) {
-                    eventBus.getAllDemandsCount();
-                } else {
-                    eventBus.getDemandsCountCategory(Long.valueOf(view.getCategoryList().getValue(
-                            view.getCategoryList().getSelectedIndex())));
-                }
+                eventBus.filter();
             }
         });
         view.getLocalityList().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                eventBus.loadingShow(MSGS.loading());
-                view.getDemandView().setVisible(false);
-                view.getBannerLabel().setVisible(true);
-                view.getCategoryList().setSelectedIndex(0);
-                if (view.getLocalityList().getSelectedIndex() == 0) {
-                    eventBus.getAllDemandsCount();
-                } else {
-                    eventBus.getDemandsCountLocality(view.getLocalityList().getValue(
-                            view.getLocalityList().getSelectedIndex()));
-                }
+                eventBus.filter();
             }
         });
         //TODO Martin - kombinacia filtrovanie locality a sucasne categories?
 
         // Add a selection model to handle user selection.
-        view.getCellTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
@@ -137,12 +115,12 @@ public class HomeDemandsPresenter extends
 
             @Override
             public void onChange(ChangeEvent arg0) {
-                view.getCellTable().setRowCount(0, true);
+                view.getDataGrid().setRowCount(0, true);
 
                 int newPage = Integer.valueOf(view.getPageSizeCombo().
                         getItemText(view.getPageSizeCombo().getSelectedIndex()));
 
-                view.getCellTable().setRowCount(newPage, true);
+                view.getDataGrid().setRowCount(newPage, true);
 
                 int page = view.getPager().getPageStart() / view.getPager().getPageSize();
 
@@ -150,16 +128,34 @@ public class HomeDemandsPresenter extends
                 view.getPager().setPageSize(newPage);
             }
         });
-
-        // TODO Martin - link na registraciu dodavatela nesmie byt vygenerovany
-        // token ale normalny button s ClickHandlerom. Hyperlink nepodporuje
-        // linkovanie medzi asnchronnymi modulami. Pouzivajte Hyperlink len v
-        // v ramci modulu!!!
-//        view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
-//        view.setAttachmentToken(getTokenGenerator().atAttachement());
-//        view.setLoginToken(getTokenGenerator().atLogin());
     }
-    private AsyncDataProvider dataProvider = null;
+
+    public void onFilter() {
+        eventBus.loadingShow(MSGS.loading());
+        view.getDemandView().setVisible(false);
+        view.getBannerLabel().setVisible(true);
+        if (view.getLocalityList().getSelectedIndex() == 0) {
+            if (view.getCategoryList().getSelectedIndex() == 0) {
+                eventBus.getAllDemandsCount();
+            } else {
+                eventBus.getDemandsCountCategory(Long.valueOf(view.getCategoryList().getValue(
+                        view.getCategoryList().getSelectedIndex())));
+            }
+        } else {
+            if (view.getCategoryList().getSelectedIndex() == 0) {
+                if (view.getCategoryList().getSelectedIndex() == 0) {
+                    eventBus.getDemandsCountLocality(view.getLocalityList().getValue(
+                            view.getLocalityList().getSelectedIndex()));
+                } else {
+//                            eventBus.getDemandsCountCategoryLocality(view.getLocalityList().getValue(
+//                                    view.getLocalityList().getSelectedIndex()),
+//                                    Long.valueOf(view.getCategoryList().getValue(
+//                                    view.getCategoryList().getSelectedIndex())));
+                }
+            }
+        }
+    }
+
 //            = new AsyncDataProvider<FullDemandDetail>() {
 //
 //        @Override
@@ -168,7 +164,6 @@ public class HomeDemandsPresenter extends
 //            //will be implemented later, when allDemandsCount value will be retrieved
 //        }
 //    };
-
     public void onStart() {
         // TODO praso - probably history initialization will be here
     }
@@ -185,6 +180,10 @@ public class HomeDemandsPresenter extends
         // TODO praso - I have used autodispaly = true so this method shouldn't be necessary anymore
 //        eventBus.setBodyWidget(view.getWidgetView());
     }
+    private AsyncDataProvider dataProvider = null;
+    private int start = 0;
+    private String resultSource = "";
+    private long resultCount = 0;
 
     public void onCreateAsyncDataProvider() {
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
@@ -205,11 +204,17 @@ public class HomeDemandsPresenter extends
                     eventBus.getDemandsByLocalities(start, start + length,
                             view.getLocalityList().getValue(
                             view.getLocalityList().getSelectedIndex()));
+                } else if (resultSource.equals("categoryLocality")) {
+//                    eventBus.getDemandsByCategoriesLocalities(start, start + length,
+//                            Long.valueOf(view.getCategoryList().getValue(
+//                            view.getCategoryList().getSelectedIndex())),
+//                            view.getLocalityList().getValue(
+//                            view.getLocalityList().getSelectedIndex()));
                 }
                 eventBus.loadingHide();
             }
         };
-        this.dataProvider.addDataDisplay(view.getCellTable());
+        this.dataProvider.addDataDisplay(view.getDataGrid());
     }
 
     public void onSetResultSource(String source) {

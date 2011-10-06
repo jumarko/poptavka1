@@ -86,7 +86,7 @@ public class AdminDemandInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.addDemandToCommit(view.getUpdatedDemandDetail(), "all");
+                eventBus.addDemandToCommit(view.getUpdatedDemandDetail());
                 Window.alert("Demand updated");
             }
         });

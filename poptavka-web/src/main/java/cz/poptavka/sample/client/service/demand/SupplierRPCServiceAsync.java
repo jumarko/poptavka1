@@ -34,6 +34,6 @@ public interface SupplierRPCServiceAsync {
 
     void getSuppliersCount(Long categoryID, String localityCode, AsyncCallback<Long> callback);
 
-    void updateSupplier(FullSupplierDetail supplierDetail, String updateWhat,
+    void updateSupplier(FullSupplierDetail supplierDetail,
             AsyncCallback<FullSupplierDetail> callback);
 }

@@ -24,7 +24,7 @@ public interface ClientRPCServiceAsync {
 
     void getClientsCount(AsyncCallback<Integer> callback);
 
-    void updateClient(ClientDetail supplierDetail, String updateWhat,
+    void updateClient(ClientDetail supplierDetail,
             AsyncCallback<ClientDetail> callback);
 
     void getSortedClients(int start, int count, Map<String, OrderType> orderColumns,

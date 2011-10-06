@@ -10,7 +10,6 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
@@ -26,7 +25,6 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandOriginDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -164,7 +162,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     // TODO should send messages as we're sending messages to display potential demands. Beho
     //
     private void sendDemandToSuppliersTest(Demand demand) {
-
         // send message and handle exception if any
 //        this.demandService.sendDemandToSuppliers(demand);
     }
@@ -176,62 +173,54 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @return FullDemandDetail
      */
     @Override
-    public FullDemandDetail updateDemand(FullDemandDetail demandDetail, String updateWhat) {
+    public FullDemandDetail updateDemand(FullDemandDetail demandDetail) {
         // TODO ivlcek - update entity by sa mal robit jednoduchsie ako toto?
         Demand demand = demandService.getById(demandDetail.getDemandId());
         // -- demand
-        if (updateWhat.equals("demand") || updateWhat.equals("all")) {
-            demand.setTitle(demandDetail.getTitle());
-            demand.setDescription(demandDetail.getDescription());
-            demand.setPrice(demandDetail.getPrice());
-            if (demandDetail.getDemandStatus() != null && !demandDetail.getDemandStatus().equals("")) {
-                demand.setStatus(DemandStatus.valueOf(demandDetail.getDemandStatus()));
-            }
+        demand.setTitle(demandDetail.getTitle());
+        demand.setDescription(demandDetail.getDescription());
+        demand.setPrice(demandDetail.getPrice());
+        if (demandDetail.getDemandStatus() != null && !demandDetail.getDemandStatus().equals("")) {
+            demand.setStatus(DemandStatus.valueOf(demandDetail.getDemandStatus()));
+        }
 
-            if (demandDetail.getDemandType() != null && !demandDetail.getDemandType().equals("")) {
-                demand.setType(demandService.getDemandType(
-                        DemandType.Type.fromValue(demandDetail.getDemandType()).getValue()));
-            }
+        if (demandDetail.getDemandType() != null && !demandDetail.getDemandType().equals("")) {
+            demand.setType(demandService.getDemandType(
+                    DemandType.Type.fromValue(demandDetail.getDemandType()).getValue()));
         }
         // -- categories
-        if (updateWhat.equals("categories") || updateWhat.equals("all")) {
-            List<Category> newCategories = new ArrayList<Category>();
-            for (Category category : demand.getCategories()) {
-                if (demandDetail.getCategories().containsKey(category.getId())) {
-                    //add category - if there already is data, don't go to DB
-                    newCategories.add(category);
-                    //remove if added, the rest will be obtained from DB
-                    demandDetail.getCategories().remove(category.getId());
-                }
+        List<Category> newCategories = new ArrayList<Category>();
+        for (Category category : demand.getCategories()) {
+            if (demandDetail.getCategories().containsKey(category.getId())) {
+                //add category - if there already is data, don't go to DB
+                newCategories.add(category);
+                //remove if added, the rest will be obtained from DB
+                demandDetail.getCategories().remove(category.getId());
             }
-            for (Long id : demandDetail.getCategories().keySet()) {
-                newCategories.add(categoryService.getById(id));
-            }
+        }
+        for (Long id : demandDetail.getCategories().keySet()) {
+            newCategories.add(categoryService.getById(id));
         }
         // -- localities
-        if (updateWhat.equals("categories") || updateWhat.equals("all")) {
-            List<Locality> newLocalities = new ArrayList<Locality>();
-            for (Locality locality : demand.getLocalities()) {
-                if (demandDetail.getLocalities().containsKey(locality.getCode())) {
-                    newLocalities.add(locality);
-                    demandDetail.getLocalities().remove(locality.getCode());
-                }
+        List<Locality> newLocalities = new ArrayList<Locality>();
+        for (Locality locality : demand.getLocalities()) {
+            if (demandDetail.getLocalities().containsKey(locality.getCode())) {
+                newLocalities.add(locality);
+                demandDetail.getLocalities().remove(locality.getCode());
             }
-            for (String code : demandDetail.getLocalities().keySet()) {
-                newLocalities.add(localityService.getLocality(code));
-            }
-
         }
+        for (String code : demandDetail.getLocalities().keySet()) {
+            newLocalities.add(localityService.getLocality(code));
+        }
+
         // -- rest
-        if (updateWhat.equals("other") || updateWhat.equals("all")) {
-            demand.setValidTo(demandDetail.getValidToDate());
-            demand.setEndDate(demandDetail.getEndDate());
+        demand.setValidTo(demandDetail.getValidToDate());
+        demand.setEndDate(demandDetail.getEndDate());
 //            demand.setExcludedSuppliers(null);
-            demand.setMaxSuppliers(Integer.valueOf(demandDetail.getMaxOffers()));
-            demand.setMinRating(Integer.valueOf(demandDetail.getMinRating()));
+        demand.setMaxSuppliers(Integer.valueOf(demandDetail.getMaxOffers()));
+        demand.setMinRating(Integer.valueOf(demandDetail.getMinRating()));
 //            demand.setOffers(null);
 //            demand.setOrigin(null);
-        }
 
         demandService.update(demand);
         return demandDetail;
@@ -312,6 +301,27 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                 new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
 
         return this.createDemandDetailList(demandService.getDemands(resultCriteria, this.getAllSublocalities(code)));
+    }
+
+    @Override
+    public List<FullDemandDetail> getDemandsByCategoryLocality(int fromResult, int toResult, long id, String code) {
+
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
+
+        List<FullDemandDetail> catList = this.createDemandDetailList(demandService
+                .getDemands(resultCriteria, this.getAllSubcategories(id)));
+        List<FullDemandDetail> locList = this.createDemandDetailList(demandService
+                .getDemands(resultCriteria, this.getAllSublocalities(code)));
+
+        for (int i = catList.size() - 1; i > -1; --i) {
+            FullDemandDetail str = catList.get(i);
+            if (!locList.remove(str)) {
+                catList.remove(str);
+            }
+        }
+        return catList;
+
     }
 
     private Locality[] getAllSublocalities(String code) {
@@ -430,29 +440,5 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     public Category getCategory(Long id) {
         return categoryService.getById(id);
-    }
-
-    @Override
-    public List<DemandOriginDetail> getDemandOrigins() {
-        List<DemandOriginDetail> fullDemandDetails = new ArrayList<DemandOriginDetail>();
-        for (DemandOrigin demandOrigin : demandService.getDemandOrigins()) {
-            fullDemandDetails.add(DemandOriginDetail.createDemandOriginDetail(demandOrigin));
-        }
-        return fullDemandDetails;
-    }
-
-    @Override
-    public void insertDemandOrigin(DemandOriginDetail detail) {
-//        demandService.
-    }
-
-    @Override
-    public void updateDemandOrigin(DemandOriginDetail detail) {
-//        demandService.
-    }
-
-    @Override
-    public void deleteDemandOrigin(Long demandTypeID) {
-//        demandService.
     }
 }

@@ -86,7 +86,7 @@ public class AdminSupplierInfoPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.addSupplierToCommit(view.getUpdatedSupplierDetail(), "all");
+                eventBus.addSupplierToCommit(view.getUpdatedSupplierDetail());
                 Window.alert("Supplier updated");
             }
         });

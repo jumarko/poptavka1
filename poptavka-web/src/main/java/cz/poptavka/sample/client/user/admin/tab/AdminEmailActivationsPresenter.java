@@ -102,7 +102,7 @@ public class AdminEmailActivationsPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminEmailsActivationAsyncDataProvider(final int totalFound) {
         this.start = 0;
         dataProvider = new AsyncDataProvider<EmailActivationDetail>() {
 
@@ -111,7 +111,7 @@ public class AdminEmailActivationsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getAdminEmailsActivation(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -139,18 +139,18 @@ public class AdminEmailActivationsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedEmailsActivation(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminEmailActivations() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminEmailsActivationCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<EmailActivationDetail> demands) {
+    public void onDisplayAdminTabEmailsActivation(List<EmailActivationDetail> demands) {
         dataProvider.updateRowData(start, demands);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
@@ -171,7 +171,7 @@ public class AdminEmailActivationsPresenter
                         originalData.put(object.getId(), new EmailActivationDetail(object));
                     }
                     object.setActivationLink(value);
-//                    eventBus.addEmailActivationToCommit(object);
+                    eventBus.addEmailActivationToCommit(object);
                 }
             }
         });
@@ -184,7 +184,7 @@ public class AdminEmailActivationsPresenter
                         originalData.put(object.getId(), new EmailActivationDetail(object));
                     }
                     object.setTimeout(value);
-//                    eventBus.addEmailActivationToCommit(object);
+                    eventBus.addEmailActivationToCommit(object);
                 }
             }
         });
@@ -211,7 +211,7 @@ public class AdminEmailActivationsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updateEmailActivation(dataToUpdate.get(idx));
+                        eventBus.updateEmailActivation(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();
@@ -247,7 +247,7 @@ public class AdminEmailActivationsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminEmailsActivationCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -255,7 +255,7 @@ public class AdminEmailActivationsPresenter
         });
     }
 
-    public void onAddDemandToCommit(EmailActivationDetail data, String dataType) {
+    public void onAddEmailActivationToCommit(EmailActivationDetail data) {
         dataToUpdate.remove(data.getId());
         dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));

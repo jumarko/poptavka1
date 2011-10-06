@@ -13,7 +13,6 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
-import cz.poptavka.sample.shared.domain.demand.DemandOriginDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 public interface DemandRPCServiceAsync {
@@ -48,6 +47,9 @@ public interface DemandRPCServiceAsync {
     void getDemandsByLocality(int fromResult, int toResult, String code,
             AsyncCallback<List<FullDemandDetail>> callback);
 
+    void getDemandsByCategoryLocality(int fromResult, int toResult,
+            long id, String code, AsyncCallback<List<FullDemandDetail>> callback);
+
     void getDemands(ResultCriteria resultCriteria, Locality[] localities,
             AsyncCallback<List<FullDemandDetail>> callback);
 
@@ -55,7 +57,7 @@ public interface DemandRPCServiceAsync {
 
     void getDemandOffers(ArrayList<Long> idList, AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
 
-    void updateDemand(FullDemandDetail demand, String updateWhat, AsyncCallback<FullDemandDetail> asyncCallback);
+    void updateDemand(FullDemandDetail demand, AsyncCallback<FullDemandDetail> asyncCallback);
 
     void getWholeDemand(Long demandId, AsyncCallback<Demand> callback);
 
@@ -67,12 +69,4 @@ public interface DemandRPCServiceAsync {
 
     void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullDemandDetail>> callback);
-
-    void getDemandOrigins(AsyncCallback<List<DemandOriginDetail>> callback);
-
-    void insertDemandOrigin(DemandOriginDetail detail, AsyncCallback<List<DemandOriginDetail>> callback);
-
-    void updateDemandOrigin(DemandOriginDetail detail, AsyncCallback<List<DemandOriginDetail>> callback);
-
-    void deleteDemandOrigin(Long demandTypeID, AsyncCallback<List<DemandOriginDetail>> callback);
 }
