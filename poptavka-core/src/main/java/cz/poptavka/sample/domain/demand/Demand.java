@@ -58,8 +58,6 @@ public class Demand extends DomainObject {
 
     /** Fields that are available for full-text search. */
     public static final String[] DEMAND_FULLTEXT_FIELDS = new String[] {"title" , "description"};
-    /** Default number of max count of suppliers to which the demand is sent. */
-    private static final Integer DEFAULT_MAX_SUPPLIERS = Integer.valueOf(50);
 
     @Column(length = 100, nullable = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -145,7 +143,7 @@ public class Demand extends DomainObject {
      * send to the client from suppliers.
      *
      * The maximum number of suppliers that can participate in this demand. */
-    private Integer maxSuppliers = DEFAULT_MAX_SUPPLIERS;
+    private Integer maxSuppliers;
 
     /** Demand rating, that means evalution from supplier and client as well. */
     @OneToOne(fetch = FetchType.LAZY)

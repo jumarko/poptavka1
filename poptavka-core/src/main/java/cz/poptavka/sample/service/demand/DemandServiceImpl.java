@@ -51,6 +51,9 @@ import java.util.Set;
  */
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
+    /** Default number of max count of suppliers to which the demand is sent. */
+    private static final Integer DEFAULT_MAX_SUPPLIERS = Integer.valueOf(50);
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DemandServiceImpl.class);
 
     private ClientService clientService;
@@ -248,6 +251,8 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     public void sendDemandToSuppliers(Demand demand) throws MessageCannotBeSentException {
 
+        fillDefaultValues(demand);
+
         // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
         // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
         // Napriklad message.body moze byt prazdne = demand.description
@@ -282,6 +287,12 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         message = messageService.create(message);
 
         messageService.send(message);
+    }
+
+    private void fillDefaultValues(Demand demand) {
+        if (demand.getMaxSuppliers() == null) {
+            demand.setMaxSuppliers(DEFAULT_MAX_SUPPLIERS);
+        }
     }
 
     @Override
