@@ -5,9 +5,22 @@
 
 package cz.poptavka.sample.domain.demand;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.DomainObject;
+import cz.poptavka.sample.domain.offer.Offer;
+import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.strings.ToStringUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,30 +32,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.search.annotations.Boost;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-
-import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.domain.offer.Offer;
-import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.util.orm.Constants;
-import cz.poptavka.sample.util.strings.ToStringUtils;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The core domain class which represents demand entered by client.
@@ -60,6 +58,8 @@ public class Demand extends DomainObject {
 
     /** Fields that are available for full-text search. */
     public static final String[] DEMAND_FULLTEXT_FIELDS = new String[] {"title" , "description"};
+    /** Default number of max count of suppliers to which the demand is sent. */
+    private static final Integer DEFAULT_MAX_SUPPLIERS = Integer.valueOf(50);
 
     @Column(length = 100, nullable = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
@@ -145,7 +145,7 @@ public class Demand extends DomainObject {
      * send to the client from suppliers.
      *
      * The maximum number of suppliers that can participate in this demand. */
-    private Integer maxSuppliers;
+    private Integer maxSuppliers = DEFAULT_MAX_SUPPLIERS;
 
     /** Demand rating, that means evalution from supplier and client as well. */
     @OneToOne(fetch = FetchType.LAZY)

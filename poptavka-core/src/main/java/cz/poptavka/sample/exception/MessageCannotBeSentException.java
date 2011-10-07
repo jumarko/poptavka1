@@ -7,7 +7,7 @@ package cz.poptavka.sample.exception;
  * @author Vojtech Hubr
  *         Date: 21.8.2011
  */
-public class MessageCannotBeSentException extends Exception {
+public class MessageCannotBeSentException extends RuntimeException {
     /**
      * Creates a new instance of <code>MessageCannotBeSentException</code> without detail message.
      */

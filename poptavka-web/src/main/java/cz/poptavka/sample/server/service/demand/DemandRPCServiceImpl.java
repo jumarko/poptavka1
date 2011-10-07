@@ -13,6 +13,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -26,6 +27,7 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ import java.util.Map;
  * @author Excalibur
  */
 public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements DemandRPCService {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandRPCServiceImpl.class);
+
 
     /**
      * generated serialVersonUID.
@@ -123,7 +128,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setDescription(detail.getDescription());
         demand.setType(this.demandService.getDemandType(detail.getDemandType()));
         demand.setPrice(detail.getPrice());
-        demand.setMaxSuppliers(detail.getMaxOffers());
+        // if max suppliers has not been specified, default value is used. @See Demand#DEFAULT_MAX_SUPPLIERS
+        if (maxOffersSpecified(detail)) {
+            demand.setMaxSuppliers(detail.getMaxOffers());
+        }
         demand.setMinRating(detail.getMinRating());
         demand.setStatus(DemandStatus.TEMPORARY);
         demand.setEndDate(detail.getEndDate());
@@ -150,6 +158,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                 newDemandFromDB);
     }
 
+    private boolean maxOffersSpecified(FullDemandDetail detail) {
+        return detail.getMaxOffers() > 0;
+    }
+
     /**
      * Method creates a message that is associated with created demand. Message
      * is sent to all suppliers that complies with the demand criteria
@@ -163,7 +175,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     //
     private void sendDemandToSuppliersTest(Demand demand) {
         // send message and handle exception if any
-//        this.demandService.sendDemandToSuppliers(demand);
+        try {
+            this.demandService.sendDemandToSuppliers(demand);
+        } catch (MessageCannotBeSentException e) {
+            LOGGER.error("Demand " + demand + " has not been sent to suppliers. "
+                    + "The next try will be made by regular job.");
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     /**

@@ -124,6 +124,10 @@
         <property name="supplierService" ref="supplierService" />
     </bean>
 
+    <bean id="demandsToSuppliersSender" class="cz.poptavka.sample.service.jobs.DemandsToSuppliersSender">
+        <property name="demandService" ref="demandService" />
+    </bean>
+
     <!-- Other -->
     <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>
 

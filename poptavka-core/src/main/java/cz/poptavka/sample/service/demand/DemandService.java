@@ -204,4 +204,9 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * Send all new demands to potential suppliers.
      */
     void sendDemandsToSuppliers();
+
+
+    /** @see DemandDao#getAllNewDemands(cz.poptavka.sample.domain.common.ResultCriteria) */
+    List<Demand> getAllNewDemands();
+
 }

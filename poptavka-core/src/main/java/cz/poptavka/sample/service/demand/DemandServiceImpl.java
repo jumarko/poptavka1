@@ -246,8 +246,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     public void sendDemandToSuppliers(Demand demand) throws MessageCannotBeSentException {
 
-        final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
-
         // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
         // drzitelom objektu demand, ktoru ukazeme dodavatelom na vypise potencialne demandy
         // Napriklad message.body moze byt prazdne = demand.description
@@ -264,6 +262,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
+        final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
         final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
         for (PotentialSupplier potentialSupplier : potentialSuppliers) {
             MessageUserRole messageUserRole = new MessageUserRole();
@@ -291,7 +290,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         // TODO try to parallelling this task
 
 
-        final List<Demand> allNewDemands = this.getDao().getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
+        final List<Demand> allNewDemands = getAllNewDemands();
         for (Demand newDemand : allNewDemands) {
             try {
                 sendDemandToSuppliers(newDemand);
@@ -299,6 +298,10 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
                 LOGGER.error("An error occured while trying to send message to suppliers for demand " + newDemand, e);
             }
         }
+    }
+
+    public List<Demand> getAllNewDemands() {
+        return getDao().getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
     }
 
 
