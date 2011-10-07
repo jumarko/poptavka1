@@ -2,17 +2,22 @@ package cz.poptavka.sample.service.user;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
+import cz.poptavka.sample.dao.user.SupplierFilter;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -214,6 +219,25 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertNotNull(persistedSupplier.get(0).getId());
         // check if certification has been changed correctly
         Assert.assertEquals(!isCertified, persistedSupplier.get(0).isCertified());
+    }
+
+
+    @Test
+    public void testGetSuppliersByCategoryAndLocality() {
+        final List<Locality> locality1 = Arrays.asList(this.localityService.getById(1));
+        final List<Category> category3 = Arrays.asList(this.categoryService.getById(4));
+
+        final SupplierFilter supplierFilter = SupplierFilter.SupplierFilterBuilder.supplierFilter()
+                .withCategories(category3)
+                .withLocalities(locality1)
+                .build();
+        final Collection<Supplier> suppliersByCategoriesAndLocalities =
+                this.supplierService.getSuppliers(supplierFilter, ResultCriteria.EMPTY_CRITERIA);
+
+        Assert.assertThat(suppliersByCategoriesAndLocalities.size(), Is.is(1));
+        Assert.assertThat("Incorrect supplier found.",
+                suppliersByCategoriesAndLocalities.iterator().next().getId(), Is.is(11L));
+
     }
 
 

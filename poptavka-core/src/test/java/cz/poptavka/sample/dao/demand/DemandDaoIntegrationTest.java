@@ -8,7 +8,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,8 +29,7 @@ public class DemandDaoIntegrationTest extends DBUnitBaseTest {
     @Autowired
     private DemandDao demandDao;
 
-    // TODO jumar fix this test!!!
-    @Ignore
+
     @Test
     public void testGetAllNewDemands() {
         final List<Demand> allNewDemands = this.demandDao.getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);

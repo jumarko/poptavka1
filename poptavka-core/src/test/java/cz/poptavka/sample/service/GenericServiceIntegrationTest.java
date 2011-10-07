@@ -19,7 +19,6 @@ import org.apache.commons.collections.Predicate;
 import org.hibernate.criterion.Example;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -98,8 +97,6 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
     }
 
-    // TODO fix it!
-    @Ignore
     @Test
     public void findDemandByExample() {
         checkDemandsByStatus(DemandStatus.NEW, 6);
