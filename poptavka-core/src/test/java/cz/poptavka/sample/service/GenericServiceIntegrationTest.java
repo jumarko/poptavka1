@@ -63,8 +63,6 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
 
     //----------------------------------  METHODS FOR TESTING findByExample() method -----------------------------------
-    // TODO fix it!
-    @Ignore
     @Test
     public void findLocalityByExample() {
         final List<Locality> localityByCode = this.localityService.findByExample(new Locality("loc111", null));
@@ -100,6 +98,8 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
     }
 
+    // TODO fix it!
+    @Ignore
     @Test
     public void findDemandByExample() {
         checkDemandsByStatus(DemandStatus.NEW, 6);
