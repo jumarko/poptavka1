@@ -26,7 +26,7 @@ public final class MessageFilter {
         // use builder instead
     }
 
-    //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
+    //---------------------------------- GETTERS -----------------------------------------------------------
 
     public MessageUserRoleType getMessageUserRoleType() {
         return messageUserRoleType;

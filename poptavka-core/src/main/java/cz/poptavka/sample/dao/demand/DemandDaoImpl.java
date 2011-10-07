@@ -13,6 +13,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.util.collection.CollectionsHelper;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.persistence.Query;
 import java.util.Arrays;
@@ -138,6 +139,23 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Demand newDemandExample = new Demand();
         newDemandExample.setStatus(DemandStatus.NEW);
         return findByExample(newDemandExample);
+    }
+
+
+    @Override
+    public Set<Demand> getDemands(DemandFilter demandFilter, ResultCriteria resultCriteria) {
+        if (CollectionUtils.isEmpty(demandFilter.getDemandCategories())
+                && CollectionUtils.isEmpty(demandFilter.getDemandLocalities())) {
+            return Collections.emptySet();
+        }
+
+        // TODO implement this if neccessary
+//        Query query = getEntityManager().createNamedQuery("getDemandsForCategories");
+//        query.setParameter("categoriesIds",
+//                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class));
+//
+//        return toSet(applyResultCriteria(query, resultCriteria).getResultList());
+        return Collections.emptySet();
     }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------

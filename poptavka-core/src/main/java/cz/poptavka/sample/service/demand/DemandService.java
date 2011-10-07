@@ -6,6 +6,7 @@
 package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.dao.demand.DemandDao;
+import cz.poptavka.sample.dao.demand.DemandFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
@@ -15,6 +16,7 @@ import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GenericService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -186,7 +188,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
     long getAllDemandsCount();
 
     /**
-     * Gets the count of offers associated with the supplied demand
+     * Gets the count of offers associated with the supplied demand.
      * @param demand
      * @return
      */
@@ -208,5 +210,9 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
 
     /** @see DemandDao#getAllNewDemands(cz.poptavka.sample.domain.common.ResultCriteria) */
     List<Demand> getAllNewDemands();
+
+
+    /** Find all demands which satisfy given <code>demandFilter</code> and <code>resultCriteria</code>.  */
+    Collection<Demand> getDemands(DemandFilter demandFilter, ResultCriteria resultCriteria);
 
 }

@@ -2,6 +2,7 @@ package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
+import cz.poptavka.sample.dao.demand.DemandFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
@@ -17,6 +18,7 @@ import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.util.date.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -396,6 +398,26 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
+
+    @Test
+    public void testGetDemandsByCategoryAndLocality() {
+        final List<Locality> locality11 = Arrays.asList(this.localityService.getById(3));
+        final List<Category> category11 = Arrays.asList(this.categoryService.getById(5));
+
+        final DemandFilter demandFilter = DemandFilter.DemandFilterBuilder.demandFilter()
+                .withCategories(category11)
+                .withLocalities(locality11)
+                .build();
+        final Collection<Demand> demandsByCategoriesAndLocalities =
+                this.demandService.getDemands(demandFilter, ResultCriteria.EMPTY_CRITERIA);
+
+        Assert.assertThat(demandsByCategoriesAndLocalities.size(), Is.is(2));
+        checkDemandExists(demandsByCategoriesAndLocalities, 5);
+        checkDemandExists(demandsByCategoriesAndLocalities, 6);
+
+    }
+
+
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     private void checkDemandTypeExists(final String demandTypeCode, final List<DemandType> demandTypes) {
@@ -416,8 +438,8 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         }));
     }
 
-    private void checkDemandExists(Collection<Demand> loc2Demands, final long demandId) {
-        Assert.assertTrue(CollectionUtils.exists(loc2Demands, new Predicate() {
+    private void checkDemandExists(Collection<Demand> demands, final long demandId) {
+        Assert.assertTrue(CollectionUtils.exists(demands, new Predicate() {
             @Override
             public boolean evaluate(Object object) {
                 return demandId == ((Demand) object).getId();

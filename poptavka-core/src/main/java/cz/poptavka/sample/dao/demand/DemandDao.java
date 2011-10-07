@@ -157,4 +157,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @param resultCriteria
      */
     List<Demand> getAllNewDemands(ResultCriteria resultCriteria);
+
+
+    Set<Demand> getDemands(DemandFilter demandFilter, ResultCriteria resultCriteria);
 }
