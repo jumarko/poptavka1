@@ -6,7 +6,6 @@
 package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.dao.demand.DemandDao;
-import cz.poptavka.sample.dao.demand.DemandFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
@@ -16,7 +15,6 @@ import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GenericService;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -212,7 +210,27 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
     List<Demand> getAllNewDemands();
 
 
-    /** Find all demands which satisfy given <code>demandFilter</code> and <code>resultCriteria</code>.  */
-    Collection<Demand> getDemands(DemandFilter demandFilter, ResultCriteria resultCriteria);
+    /**
+     * Gets all the demands from given categories (including their
+     * subcategories) which are also associated to the given localities
+     * (all their sub-localities) which also meet the supplied criteria
+     *
+     * @param resultCriteria
+     * @param categories
+     * @param localities
+     * @return
+     */
+    Set<Demand> getDemands(ResultCriteria resultCriteria,
+            Category[] categories, Locality[] localities);
+
+    /**
+     * Evaluate the number of demands associated to the given
+     * <code>category</code>(-ies) and <code>locality</code>(-ies)
+     * at the same time.
+     *
+     * @param categories
+     * @return number of demands related to the <code>category</code>(-ies).
+     */
+    long getDemandsCount(Category[] categories, Locality[] localities);
 
 }

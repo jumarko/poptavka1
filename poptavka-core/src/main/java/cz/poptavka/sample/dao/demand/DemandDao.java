@@ -144,6 +144,8 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     long getDemandsCountWithoutChildren(Category category);
 
+
+
     /**
      * Returns the count of all demands in DB.
      * @return
@@ -159,5 +161,35 @@ public interface DemandDao extends GenericDao<Demand> {
     List<Demand> getAllNewDemands(ResultCriteria resultCriteria);
 
 
-    Set<Demand> getDemands(DemandFilter demandFilter, ResultCriteria resultCriteria);
+    /**
+     * Load all demands associated to the given category (-ies) and
+     * category (-ies) - each must be associated to both - while applying
+     * additional criteria <code>resultCriteria</code> if they are specified.
+     *
+     * @param categories
+     * @param localities
+     * @param resultCriteria
+     * @return collection of demands that are related to the given localities and adher to <code>resultCriteria</code>
+     * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
+     */
+    Set<Demand> getDemands(Category[] categories, Locality[] localities, ResultCriteria resultCriteria);
+
+
+     /**
+     * Evaluates the number of demands associated to the given
+     * <code>locality</code>(-ies) and <code>category</code>(-ies).
+     * <p>
+     * Use this method instead of {@link #getDemands(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)} if you want
+     * to retrieve only number of suppliers - this method is far more lightweight than usage of
+     * {@link #getDemands(cz.poptavka.sample.domain.address.Locality[],
+     * cz.poptavka.sample.domain.common.ResultCriteria)}
+     *      .size().
+     *
+     * @param localities
+     * @return number of suppliers related to the <code>locality</code>(-ies).
+     */
+
+    long getDemandsCount(Category[] categories, Locality[] localities,
+            ResultCriteria resultCriteria);
 }

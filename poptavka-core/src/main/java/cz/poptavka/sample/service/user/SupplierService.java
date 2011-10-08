@@ -1,13 +1,11 @@
 package cz.poptavka.sample.service.user;
 
 import cz.poptavka.sample.dao.user.SupplierDao;
-import cz.poptavka.sample.dao.user.SupplierFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -165,7 +163,4 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      *  getSuppliersCountWithoutChildren(cz.poptavka.sample.domain.demand.Category)
      */
     long getSuppliersCountWithoutChildren(Category category);
-
-    /** Find all suppliers which satisfy given <code>demandFilter</code> and <code>resultCriteria</code>.  */
-    Collection<Supplier> getSuppliers(SupplierFilter supplierFilter, ResultCriteria resultCriteria);
 }

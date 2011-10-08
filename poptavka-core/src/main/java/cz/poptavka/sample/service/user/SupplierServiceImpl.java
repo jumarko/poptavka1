@@ -1,19 +1,14 @@
 package cz.poptavka.sample.service.user;
 
-import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import cz.poptavka.sample.dao.user.SupplierDao;
-import cz.poptavka.sample.dao.user.SupplierFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
-import org.apache.commons.collections.CollectionUtils;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,28 +169,6 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     public long getSuppliersCountWithoutChildren(Category category) {
         return this.getDao().getSuppliersCountWithoutChildren(category);
-    }
-
-
-    @Override
-    public Collection<Supplier> getSuppliers(SupplierFilter supplierFilter, ResultCriteria resultCriteria) {
-
-        Preconditions.checkNotNull(supplierFilter);
-        final Set<Supplier> demandsForCategories = getSuppliers(resultCriteria, supplierFilter.getDemandCategories()
-                .toArray(new Category[supplierFilter.getDemandCategories().size()]));
-        final Set<Supplier> demandsForLocalities = getSuppliers(resultCriteria, supplierFilter.getDemandLocalities()
-                .toArray(new Locality[supplierFilter.getDemandLocalities().size()]));
-
-        switch (supplierFilter.getFilterOperator()) {
-            case AND:
-                return CollectionUtils.intersection(demandsForCategories, demandsForLocalities);
-            case OR:
-                return CollectionUtils.union(demandsForCategories, demandsForLocalities);
-            default:
-                return Collections.emptySet();
-        }
-
-        // TODO check existing implementaion and if necessary implement new method in dao to get better performance
     }
 
 }

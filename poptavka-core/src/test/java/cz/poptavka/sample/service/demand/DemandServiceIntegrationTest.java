@@ -2,7 +2,6 @@ package cz.poptavka.sample.service.demand;
 
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
-import cz.poptavka.sample.dao.demand.DemandFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
@@ -399,22 +398,35 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
 
 
+
     @Test
     public void testGetDemandsByCategoryAndLocality() {
-        final List<Locality> locality11 = Arrays.asList(this.localityService.getById(3));
-        final List<Category> category11 = Arrays.asList(this.categoryService.getById(5));
+        final Locality locality11 = this.localityService.getById(3);
+        final Category category11 = this.categoryService.getById(5);
 
-        final DemandFilter demandFilter = DemandFilter.DemandFilterBuilder.demandFilter()
-                .withCategories(category11)
-                .withLocalities(locality11)
-                .build();
+
         final Collection<Demand> demandsByCategoriesAndLocalities =
-                this.demandService.getDemands(demandFilter, ResultCriteria.EMPTY_CRITERIA);
+                this.demandService.getDemands(
+                        ResultCriteria.EMPTY_CRITERIA,
+                        new Category[]{category11},
+                        new Locality[]{locality11});
 
         Assert.assertThat(demandsByCategoriesAndLocalities.size(), Is.is(2));
         checkDemandExists(demandsByCategoriesAndLocalities, 5);
         checkDemandExists(demandsByCategoriesAndLocalities, 6);
 
+    }
+
+    @Test
+    public void testGetDemandsCountByCategoryAndLocality() {
+        final Locality locality11 = this.localityService.getById(3);
+        final Category category11 = this.categoryService.getById(5);
+
+
+        final long demandsCount =
+                this.demandService.getDemandsCount(new Category[]{category11}, new Locality[]{locality11});
+
+        Assert.assertThat(demandsCount, Is.is(2L));
     }
 
 

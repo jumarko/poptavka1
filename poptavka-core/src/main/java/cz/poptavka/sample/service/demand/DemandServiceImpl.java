@@ -7,7 +7,6 @@ package cz.poptavka.sample.service.demand;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import cz.poptavka.sample.dao.demand.DemandDao;
-import cz.poptavka.sample.dao.demand.DemandFilter;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
@@ -36,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -298,9 +296,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     public void sendDemandsToSuppliers() {
 
-        // TODO seperate to standalone JOB
-
-        // TODO try to parallelling this task - maybe in Scala? :)
+        // TODO try to parallelling this task - maybe in Scala? or Gpars http://gpars.codehaus.org/Parallelizer :)
 
 
         final List<Demand> allNewDemands = getAllNewDemands();
@@ -317,34 +313,15 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return getDao().getAllNewDemands(ResultCriteria.EMPTY_CRITERIA);
     }
 
+
     @Override
-    public Collection<Demand> getDemands(DemandFilter demandFilter, ResultCriteria resultCriteria) {
+    public Set<Demand> getDemands(ResultCriteria resultCriteria, Category[] categories, Locality[] localities) {
+        return this.getDao().getDemands(categories, localities, resultCriteria);
+    }
 
-        Preconditions.checkNotNull(demandFilter);
-        final Set<Demand> demandsForCategories = getDemands(resultCriteria, demandFilter.getDemandCategories()
-                .toArray(new Category[demandFilter.getDemandCategories().size()]));
-        final Set<Demand> demandsForLocalities = getDemands(resultCriteria, demandFilter.getDemandLocalities()
-                .toArray(new Locality[demandFilter.getDemandLocalities().size()]));
-
-        switch (demandFilter.getFilterOperator()) {
-            case AND:
-                return CollectionUtils.intersection(demandsForCategories, demandsForLocalities);
-            case OR:
-                return CollectionUtils.union(demandsForCategories, demandsForLocalities);
-            default:
-                return Collections.emptySet();
-        }
-
-        // TODO check existing implementaion and if necessary implement new method in dao to get better performance
-//          final ResultProvider<Demand> demandProvider = new ResultProvider<Demand>(resultCriteria) {
-//            @Override
-//            public Collection<Demand> getResult() {
-//                return DemandServiceImpl.this.getDao().getDemands(demandFilter, getResultCriteria());
-//            }
-//        };
-//
-//        return new LinkedHashSet<Demand>(applyOrderByCriteria(demandProvider, resultCriteria));
-
+    @Override
+    public long getDemandsCount(Category[] categories, Locality[] localities) {
+        return this.getDao().getDemandsCount(categories, localities, ResultCriteria.EMPTY_CRITERIA);
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------

@@ -52,7 +52,23 @@ import java.util.List;
 @Indexed
 @NamedQueries({
     @NamedQuery(name = "getAllDemandsCount",
-    query = "select count(*) from Demand")
+                query = "select count(*) from Demand"),
+    @NamedQuery(name = "getDemandsForCategoriesAndLocalities",
+                query = "select demandCategory.demand"
+                        + " from DemandCategory demandCategory,"
+                        + " DemandLocality demandLocality"
+                        + " where demandCategory.demand ="
+                        + " demandLocality.demand"
+                        + " and demandCategory.category.id in (:categoryIds)"
+                        + " and demandLocality.locality.id in (:localityIds)"),
+    @NamedQuery(name = "getDemandsCountForCategoriesAndLocalities",
+                query = "select count(demandCategory.demand)"
+                        + " from DemandCategory demandCategory,"
+                        + " DemandLocality demandLocality"
+                        + " where demandCategory.demand ="
+                        + " demandLocality.demand"
+                        + " and demandCategory.category.id in (:categoryIds)"
+                        + " and demandLocality.locality.id in (:localityIds)")
 })
 public class Demand extends DomainObject {
 
