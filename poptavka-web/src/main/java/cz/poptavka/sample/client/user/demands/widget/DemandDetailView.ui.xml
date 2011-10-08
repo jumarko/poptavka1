@@ -7,8 +7,136 @@
             font-style: italic;
         }
     </ui:style>
-    <g:HTMLPanel>
-		<g:FlexTable ui:field="detailTable"/>
-		<g:Label ui:field="textArea"/>
+    <g:HTMLPanel ui:field="detail">
+		<table>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="commonInfo">Common info: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="demandName">Demand name: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="demandName" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="price">Price:</ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="price" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="endDate">End date:</ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="endDate" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="validTo">Valid to: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="validTo" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="type">Type: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="type" />
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="categories">Categories: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label ui:field="categories" />
+				</td>
+			</tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="localities">Localities: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label ui:field="localities" />
+				</td>
+			</tr>
+			<tr>
+			<tr>
+				<td width="200">
+					<g:Label>
+						<ui:msg key="detailInfo">Detail info: </ui:msg>
+					</g:Label>
+				</td>
+			</tr>
+				<td>
+					<g:Label>
+						<ui:msg key="maxNumberOfSuppliers">Maximal number of suppliers:</ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="maxNumberOfSuppliers" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="minSupplierRating">Minimal supplier rating: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="minSupplierRating" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="excludedSuppliers">Excluded suppliers: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="excludedSuppliers" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<g:Label>
+						<ui:msg key="description">Description: </ui:msg>
+					</g:Label>
+				</td>
+				<td>
+					<g:Label ui:field="description" />
+				</td>
+			</tr>
+		</table>
     </g:HTMLPanel>
 </ui:UiBinder>

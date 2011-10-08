@@ -69,7 +69,7 @@ public class UserConversationPanel extends Composite {
         GWT.log(" **** size: " + messages.size());
 
         if (messages.size() > 1) {
-            for (int i = 1; i < messages.size(); i++) {
+            for (int i = 0; i < messages.size(); i++) {
                 messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
             }
             ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
