@@ -120,6 +120,8 @@ public class AdminSuppliersPresenter
 
     public void onCreateAdminSuppliersAsyncDataProvider(final int totalFound) {
         this.start = 0;
+        orderColumns.clear();
+        orderColumns.put(columnNames[1], OrderType.ASC);
         dataProvider = new AsyncDataProvider<FullSupplierDetail>() {
 
             @Override
@@ -127,7 +129,7 @@ public class AdminSuppliersPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminSuppliers(start, start + length);
+                eventBus.getSortedSuppliers(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -135,20 +137,21 @@ public class AdminSuppliersPresenter
         createAsyncSortHandler();
     }
     private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "", "id", "companyName", "businessType", "certified", "verification"
+        "id", "companyName", "businessType", "certified", "verification"
     };
     private List<String> gridColumns = Arrays.asList(columnNames);
 
     public void createAsyncSortHandler() {
-        //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
                 OrderType orderType = OrderType.DESC;
-                Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }

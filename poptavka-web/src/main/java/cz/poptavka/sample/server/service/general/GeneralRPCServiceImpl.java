@@ -4,6 +4,8 @@
  */
 package cz.poptavka.sample.server.service.general;
 
+import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.Sort;
 import cz.poptavka.sample.client.service.demand.GeneralRPCService;
 import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -22,6 +24,7 @@ import cz.poptavka.sample.shared.domain.PermissionDetail;
 import cz.poptavka.sample.shared.domain.PreferenceDetail;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,23 +45,28 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
      ***********************  ACCESS ROLE SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAccessRolesCount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getAccessRolesCount() {
+        final Search search = new Search(AccessRole.class);
+        return generalService.count(search);
     }
 
-    @Override
-    public ArrayList<AccessRoleDetail> getAccessRoles(int start, int count) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+//    @Override
+//    public ArrayList<AccessRoleDetail> getAccessRoles(int start, int count) {
+//        final Search localitySearch = new Search(AccessRole.class);
+//        localitySearch.setFirstResult(start);
+//        localitySearch.setMaxResults(count);
+//        localitySearch.addSortAsc("name");
+//        return this.createAccessRoleDetailList(generalService.search(localitySearch));
+//    }
     @Override
     public AccessRoleDetail updateAccessRole(AccessRoleDetail accessRoleDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return generalService.merge(accessRoleDetail);
     }
 
     @Override
     public ArrayList<AccessRoleDetail> getSortedAccessRoles(int start, int count, Map<String, OrderType> orderColumns) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.createAccessRoleDetailList(
+                generalService.search(this.search(start, count, orderColumns, AccessRole.class)));
     }
 
     private ArrayList<AccessRoleDetail> createAccessRoleDetailList(Collection<AccessRole> demands) {
@@ -73,24 +81,29 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
      ***********************  EMAIL ACTIVATION SECTION. *******************************************
      **********************************************************************************************/
     @Override
-    public Long getEmailsActivationCount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getEmailsActivationCount() {
+        final Search search = new Search(EmailActivation.class);
+        return generalService.count(search);
     }
 
-    @Override
-    public ArrayList<EmailActivationDetail> getEmailsActivation(int start, int count) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+//    @Override
+//    public ArrayList<EmailActivationDetail> getEmailsActivation(int start, int count) {
+//        final Search search = new Search(EmailActivation.class);
+//        search.setFirstResult(start);
+//        search.setMaxResults(count);
+//        search.addSortAsc("timeout");
+//        return this.createEmailActivationDetailList(generalService.search(search));
+//    }
     @Override
     public EmailActivationDetail updateEmailActivation(EmailActivationDetail supplierDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return generalService.merge(supplierDetail);
     }
 
     @Override
     public ArrayList<EmailActivationDetail> getSortedEmailsActivation(
             int start, int count, Map<String, OrderType> orderColumns) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.createEmailActivationDetailList(
+                generalService.search(this.search(start, count, orderColumns, EmailActivation.class)));
     }
 
     private ArrayList<EmailActivationDetail> createEmailActivationDetailList(Collection<EmailActivation> emailsList) {
@@ -105,23 +118,28 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
      ***********************  INVOICE SECTION. ****************************************************
      **********************************************************************************************/
     @Override
-    public Long getInvoicesCount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getInvoicesCount() {
+        final Search search = new Search(Invoice.class);
+        return generalService.count(search);
     }
 
-    @Override
-    public ArrayList<InvoiceDetail> getInvoices(int start, int count) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+//    @Override
+//    public ArrayList<InvoiceDetail> getInvoices(int start, int count) {
+//        final Search search = new Search(Invoice.class);
+//        search.setFirstResult(start);
+//        search.setMaxResults(count);
+//        search.addSortAsc("issueDate");
+//        return this.createInvoiceDetailList(generalService.search(search));
+//    }
     @Override
     public InvoiceDetail updateInvoice(InvoiceDetail supplierDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return generalService.merge(supplierDetail);
     }
 
     @Override
     public ArrayList<InvoiceDetail> getSortedInvoices(int start, int count, Map<String, OrderType> orderColumns) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.createInvoiceDetailList(
+                generalService.search(this.search(start, count, orderColumns, Invoice.class)));
     }
 
     private ArrayList<InvoiceDetail> createInvoiceDetailList(Collection<Invoice> invoicesList) {
@@ -136,24 +154,28 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
      ***********************  OUR PAYMENT DETAIL SECTION. *****************************************
      **********************************************************************************************/
     @Override
-    public Long getOurPaymentDetailsCount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getOurPaymentDetailsCount() {
+        final Search search = new Search(OurPaymentDetails.class);
+        return generalService.count(search);
     }
 
-    @Override
-    public ArrayList<PaymentDetail> getOurPaymentDetails(int start, int count) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+//    @Override
+//    public ArrayList<PaymentDetail> getOurPaymentDetails(int start, int count) {
+//        final Search search = new Search(OurPaymentDetails.class);
+//        search.setFirstResult(start);
+//        search.setMaxResults(count);
+//        return this.createPaymentDetailList(generalService.search(search));
+//    }
     @Override
     public PaymentDetail updateOurPaymentDetail(PaymentDetail supplierDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return generalService.merge(supplierDetail);
     }
 
     @Override
     public ArrayList<PaymentDetail> getSortedOurPaymentDetails(
             int start, int count, Map<String, OrderType> orderColumns) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.createPaymentDetailList(
+                generalService.search(this.search(start, count, orderColumns, OurPaymentDetails.class)));
     }
 
     private ArrayList<PaymentDetail> createPaymentDetailList(Collection<OurPaymentDetails> paymentsList) {
@@ -168,23 +190,28 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
      ***********************  PERMISSION SECTION. *************************************************
      **********************************************************************************************/
     @Override
-    public Long getPermissionsCount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getPermissionsCount() {
+        final Search search = new Search(Permission.class);
+        return generalService.count(search);
     }
 
-    @Override
-    public ArrayList<PermissionDetail> getPermissions(int start, int count) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+//    @Override
+//    public ArrayList<PermissionDetail> getPermissions(int start, int count) {
+//        final Search search = new Search(Permission.class);
+//        search.setFirstResult(start);
+//        search.setMaxResults(count);
+//        search.addSortAsc("code");
+//        return this.createPermissionDetailList(generalService.search(search));
+//    }
     @Override
     public PermissionDetail updatePermission(PermissionDetail supplierDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return generalService.merge(supplierDetail);
     }
 
     @Override
     public ArrayList<PermissionDetail> getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.createPermissionDetailList(
+                generalService.search(this.search(start, count, orderColumns, Permission.class)));
     }
 
     private ArrayList<PermissionDetail> createPermissionDetailList(Collection<Permission> permissionList) {
@@ -199,23 +226,28 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
      ***********************  PREFERENCE SECTION. *************************************************
      **********************************************************************************************/
     @Override
-    public Long getPreferencesCount() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getPreferencesCount() {
+        final Search search = new Search(Preference.class);
+        return generalService.count(search);
     }
 
-    @Override
-    public ArrayList<PreferenceDetail> getPreferences(int start, int count) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+//    @Override
+//    public ArrayList<PreferenceDetail> getPreferences(int start, int count) {
+//        final Search search = new Search(Preference.class);
+//        search.setFirstResult(start);
+//        search.setMaxResults(count);
+//        search.addSortAsc("key");
+//        return this.createPreferenceDetailList(generalService.search(search));
+//    }
     @Override
     public PreferenceDetail updatePreference(PreferenceDetail supplierDetail) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return generalService.merge(supplierDetail);
     }
 
     @Override
     public ArrayList<PreferenceDetail> getSortedPreferences(int start, int count, Map<String, OrderType> orderColumns) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.createPreferenceDetailList(
+                generalService.search(this.search(start, count, orderColumns, Preference.class)));
     }
 
     private ArrayList<PreferenceDetail> createPreferenceDetailList(Collection<Preference> preference) {
@@ -224,5 +256,23 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
             preferences.add(PreferenceDetail.createPreferenceDetail(role));
         }
         return preferences;
+    }
+
+    /**********************************************************************************************
+     ***********************  COMMON METHODS. *************************************************
+     **********************************************************************************************/
+    private Search search(int start, int count, Map<String, OrderType> orderColumns, Class<?> classs) {
+        final Search search = new Search(classs);
+        search.setFirstResult(start);
+        search.setMaxResults(count);
+        List<Sort> sorts = new ArrayList<Sort>();
+        for (String str : orderColumns.keySet()) {
+            if (orderColumns.get(str) == OrderType.ASC) {
+                sorts.add(new Sort(str, false));
+            } else {
+                sorts.add(new Sort(str, true));
+            }
+        }
+        return search.addSorts(sorts.toArray(new Sort[sorts.size()]));
     }
 }

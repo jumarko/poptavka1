@@ -16,10 +16,7 @@ import java.util.Map;
 public interface GeneralRPCServiceAsync {
 
     //---------------------- ACCESS ROLE ------------------------------------------------
-    void getAccessRolesCount(AsyncCallback<Long> callback);
-
-    void getAccessRoles(int start, int count,
-            AsyncCallback<ArrayList<AccessRoleDetail>> callback);
+    void getAccessRolesCount(AsyncCallback<Integer> callback);
 
     void updateAccessRole(AccessRoleDetail accessRoleDetail,
             AsyncCallback<AccessRoleDetail> callback);
@@ -28,10 +25,7 @@ public interface GeneralRPCServiceAsync {
             AsyncCallback<ArrayList<AccessRoleDetail>> callback);
 
     //---------------------- EMAIL ACTIVATION---------------------------------------------
-    void getEmailsActivationCount(AsyncCallback<Long> callback);
-
-    void getEmailsActivation(int start, int count,
-            AsyncCallback<ArrayList<EmailActivationDetail>> callback);
+    void getEmailsActivationCount(AsyncCallback<Integer> callback);
 
     void updateEmailActivation(EmailActivationDetail supplierDetail,
             AsyncCallback<EmailActivationDetail> callback);
@@ -40,10 +34,7 @@ public interface GeneralRPCServiceAsync {
             AsyncCallback<ArrayList<EmailActivationDetail>> callback);
 
     //---------------------- INVOICE --------------------------------------------------
-    void getInvoicesCount(AsyncCallback<Long> callback);
-
-    void getInvoices(int start, int count,
-            AsyncCallback<ArrayList<InvoiceDetail>> callback);
+    void getInvoicesCount(AsyncCallback<Integer> callback);
 
     void updateInvoice(InvoiceDetail supplierDetail,
             AsyncCallback<InvoiceDetail> callback);
@@ -52,10 +43,7 @@ public interface GeneralRPCServiceAsync {
             AsyncCallback<ArrayList<InvoiceDetail>> callback);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
-    void getOurPaymentDetailsCount(AsyncCallback<Long> callback);
-
-    void getOurPaymentDetails(int start, int count,
-            AsyncCallback<ArrayList<PaymentDetail>> callback);
+    void getOurPaymentDetailsCount(AsyncCallback<Integer> callback);
 
     void updateOurPaymentDetail(PaymentDetail supplierDetail,
             AsyncCallback<PaymentDetail> callback);
@@ -64,10 +52,7 @@ public interface GeneralRPCServiceAsync {
             AsyncCallback<ArrayList<PaymentDetail>> callback);
 
     //---------------------- PERMISSION ------------------------------------------------
-    void getPermissionsCount(AsyncCallback<Long> callback);
-
-    void getPermissions(int start, int count,
-            AsyncCallback<ArrayList<PermissionDetail>> callback);
+    void getPermissionsCount(AsyncCallback<Integer> callback);
 
     void updatePermission(PermissionDetail supplierDetail,
             AsyncCallback<PermissionDetail> callback);
@@ -76,10 +61,7 @@ public interface GeneralRPCServiceAsync {
             AsyncCallback<ArrayList<PermissionDetail>> callback);
 
     //---------------------- PREFERENCES ------------------------------------------------
-    void getPreferencesCount(AsyncCallback<Long> callback);
-
-    void getPreferences(int start, int count,
-            AsyncCallback<ArrayList<PreferenceDetail>> callback);
+    void getPreferencesCount(AsyncCallback<Integer> callback);
 
     void updatePreference(PreferenceDetail supplierDetail,
             AsyncCallback<PreferenceDetail> callback);

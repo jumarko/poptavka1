@@ -155,20 +155,20 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
     }
 
     public void onGetDemandsCountCategoryLocality(long id, String code) {
-//        demandService.getDemandsCountByCategoryLocality(id, code, new AsyncCallback<Long>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                throw new UnsupportedOperationException("onGetDemandsCountLocality failed.");
-//            }
-//
-//            @Override
-//            public void onSuccess(Long result) {
-//                eventBus.setResultSource("categoryLocality");
-//                eventBus.setResultCount(result);
-//                eventBus.createAsyncDataProvider();
-//            }
-//        });
+        demandService.getDemandsCountByCategoryLocality(id, code, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onGetDemandsCountLocality failed.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.setResultSource("categoryLocality");
+                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProvider();
+            }
+        });
     }
 
     //*************** GET DEMANDS DATA *********************

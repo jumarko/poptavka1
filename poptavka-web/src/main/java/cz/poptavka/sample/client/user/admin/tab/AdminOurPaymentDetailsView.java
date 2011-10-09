@@ -5,7 +5,6 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
@@ -191,19 +190,6 @@ public class AdminOurPaymentDetailsView extends Composite
      * Add the columns to the table.
      */
     private void initTableColumns() {
-
-        // Checkbox column. This table will uses a checkbox column for selection.
-        // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
-        // mouse selection.
-        addColumn(new CheckboxCell(true, false), "<br/>", 40, new GetValue<Boolean>() {
-
-            @Override
-            public Boolean getValue(FullDemandDetail object) {
-                // Get the value from the selection model.
-                return selectionModel.isSelected(object);
-            }
-        });
-
         // Demand ID.
         addColumn(new TextCell(), "DID", 50, new GetValue<String>() {
 

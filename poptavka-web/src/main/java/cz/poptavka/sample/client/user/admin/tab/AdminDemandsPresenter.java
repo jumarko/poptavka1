@@ -103,15 +103,18 @@ public class AdminDemandsPresenter
     }
     private AsyncDataProvider dataProvider = null;
     private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "", "id", "client", "title", "type", "status", "validTo", "endDate"
+        "id", "client", "title", "type", "status", "validTo", "endDate"
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
     public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
         this.start = 0;
+        orderColumns.clear();
+        orderColumns.put(columnNames[2], OrderType.ASC);
         dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
@@ -119,7 +122,7 @@ public class AdminDemandsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getSortedDemands(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -133,9 +136,8 @@ public class AdminDemandsPresenter
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
                 OrderType orderType = OrderType.DESC;
-                Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }

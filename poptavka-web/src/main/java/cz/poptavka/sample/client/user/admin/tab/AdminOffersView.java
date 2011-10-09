@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
@@ -148,19 +147,6 @@ public class AdminOffersView extends Composite implements
      * Add the columns to the table.
      */
     private void initGridColumns() {
-
-        // Checkbox column. This table will uses a checkbox column for selection.
-        // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
-        // mouse selection.
-        addColumn(new CheckboxCell(true, false), "<br/>", 15, new GetValue<Boolean>() {
-
-            @Override
-            public Boolean getValue(FullOfferDetail object) {
-                // Get the value from the selection model.
-                return selectionModel.isSelected(object);
-            }
-        });
-
         // Offer ID
         addColumn(new TextCell(), "OID", 40, new GetValue<String>() {
 

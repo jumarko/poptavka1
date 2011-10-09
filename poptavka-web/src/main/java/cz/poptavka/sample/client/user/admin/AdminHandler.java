@@ -73,21 +73,6 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    public void onGetAdminDemands(int start, int count) {
-        demandService.getDemands(start, count, new AsyncCallback<List<FullDemandDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(List<FullDemandDetail> result) {
-                eventBus.displayAdminTabDemands(result);
-            }
-        });
-
-    }
 
     public void onGetSortedDemands(int start, int count, Map<String, OrderType> orderColumns) {
         demandService.getSortedDemands(start, count, orderColumns,
@@ -230,21 +215,21 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    public void onGetAdminSuppliers(int start, int count) {
-        supplierService.getSuppliers(start, count, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<FullSupplierDetail> result) {
-                eventBus.displayAdminTabSuppliers(result);
-            }
-        });
-
-    }
+//    public void onGetAdminSuppliers(int start, int count) {
+//        supplierService.getSuppliers(start, count, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<FullSupplierDetail> result) {
+//                eventBus.displayAdminTabSuppliers(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns) {
         supplierService.getSortedSuppliers(start, count, orderColumns,
@@ -387,21 +372,21 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
-    public void onGetAdminOffers(int start, int count) {
-        offerService.getOffers(start, count, new AsyncCallback<List<FullOfferDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(List<FullOfferDetail> result) {
-                eventBus.displayAdminTabOffers(result);
-            }
-        });
-
-    }
+//    public void onGetAdminOffers(int start, int count) {
+//        offerService.getOffers(start, count, new AsyncCallback<List<FullOfferDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(List<FullOfferDetail> result) {
+//                eventBus.displayAdminTabOffers(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedOffers(int start, int count, Map<String, OrderType> orderColumns) {
         offerService.getSortedOffers(start, count, orderColumns,
@@ -447,26 +432,26 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(Integer result) {
-                eventBus.createAdminClientsAsyncDataProvider(result.intValue());
+                eventBus.createAdminClientsAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetAdminClients(int start, int count) {
-        clientService.getClients(start, count, new AsyncCallback<ArrayList<ClientDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<ClientDetail> result) {
-                eventBus.displayAdminTabClients(result);
-            }
-        });
-
-    }
+//    public void onGetAdminClients(int start, int count) {
+//        clientService.getClients(start, count, new AsyncCallback<ArrayList<ClientDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<ClientDetail> result) {
+//                eventBus.displayAdminTabClients(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedClients(int start, int count, Map<String, OrderType> orderColumns) {
         clientService.getSortedClients(start, count, orderColumns,
@@ -503,7 +488,7 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
      ***********************  ACCESS ROLE SECTION. *************************************************
      **********************************************************************************************/
     public void onGetAdminAccessRolesCount() {
-        generalService.getAccessRolesCount(new AsyncCallback<Long>() {
+        generalService.getAccessRolesCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -511,27 +496,27 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
+            public void onSuccess(Integer result) {
                 eventBus.createAdminClientsAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminAccessRoles(int start, int count) {
-        generalService.getAccessRoles(start, count, new AsyncCallback<ArrayList<AccessRoleDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<AccessRoleDetail> result) {
-                eventBus.displayAdminTabAccessRoles(result);
-            }
-        });
-
-    }
+//    public void onGetAdminAccessRoles(int start, int count) {
+//        generalService.getAccessRoles(start, count, new AsyncCallback<ArrayList<AccessRoleDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<AccessRoleDetail> result) {
+//                eventBus.displayAdminTabAccessRoles(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedAccessRoles(int start, int count, Map<String, OrderType> orderColumns) {
         generalService.getSortedAccessRoles(start, count, orderColumns,
@@ -568,7 +553,7 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
      ***********************  EMAIL ACTIVATION SECTION.*********************************************
      **********************************************************************************************/
     public void onGetAdminEmailsActivationCount() {
-        generalService.getEmailsActivationCount(new AsyncCallback<Long>() {
+        generalService.getEmailsActivationCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -576,27 +561,27 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
-                eventBus.createAdminClientsAsyncDataProvider(result.intValue());
+            public void onSuccess(Integer result) {
+                eventBus.createAdminClientsAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetAdminEmailsActivation(int start, int count) {
-        generalService.getEmailsActivation(start, count, new AsyncCallback<ArrayList<EmailActivationDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<EmailActivationDetail> result) {
-                eventBus.displayAdminTabEmailsActivation(result);
-            }
-        });
-
-    }
+//    public void onGetAdminEmailsActivation(int start, int count) {
+//        generalService.getEmailsActivation(start, count, new AsyncCallback<ArrayList<EmailActivationDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<EmailActivationDetail> result) {
+//                eventBus.displayAdminTabEmailsActivation(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedEmailsActivation(int start, int count, Map<String, OrderType> orderColumns) {
         generalService.getSortedEmailsActivation(start, count, orderColumns,
@@ -633,7 +618,7 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
      ***********************  INVOICE SECTION. *****************************************************
      **********************************************************************************************/
     public void onGetAdminInvoicesCount() {
-        generalService.getInvoicesCount(new AsyncCallback<Long>() {
+        generalService.getInvoicesCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -641,27 +626,27 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
-                eventBus.createAdminClientsAsyncDataProvider(result.intValue());
+            public void onSuccess(Integer result) {
+                eventBus.createAdminClientsAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetAdminInvoices(int start, int count) {
-        generalService.getInvoices(start, count, new AsyncCallback<ArrayList<InvoiceDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<InvoiceDetail> result) {
-                eventBus.displayAdminTabInvoices(result);
-            }
-        });
-
-    }
+//    public void onGetAdminInvoices(int start, int count) {
+//        generalService.getInvoices(start, count, new AsyncCallback<ArrayList<InvoiceDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<InvoiceDetail> result) {
+//                eventBus.displayAdminTabInvoices(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedInvoices(int start, int count, Map<String, OrderType> orderColumns) {
         generalService.getSortedInvoices(start, count, orderColumns,
@@ -698,7 +683,7 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
      ***********************  OUR PAYMENT DETAILS SECTION. *****************************************
      **********************************************************************************************/
     public void onGetAdminOurPaymentDetailsCount() {
-        generalService.getOurPaymentDetailsCount(new AsyncCallback<Long>() {
+        generalService.getOurPaymentDetailsCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -706,27 +691,27 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
-                eventBus.createAdminOurPaymentDetailAsyncDataProvider(result.intValue());
+            public void onSuccess(Integer result) {
+                eventBus.createAdminOurPaymentDetailAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetAdminOurPaymentDetails(int start, int count) {
-        generalService.getOurPaymentDetails(start, count, new AsyncCallback<ArrayList<PaymentDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<PaymentDetail> result) {
-                eventBus.displayAdminTabOurPaymentDetails(result);
-            }
-        });
-
-    }
+//    public void onGetAdminOurPaymentDetails(int start, int count) {
+//        generalService.getOurPaymentDetails(start, count, new AsyncCallback<ArrayList<PaymentDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<PaymentDetail> result) {
+//                eventBus.displayAdminTabOurPaymentDetails(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedOurPaymentDetails(int start, int count, Map<String, OrderType> orderColumns) {
         generalService.getSortedOurPaymentDetails(start, count, orderColumns,
@@ -763,7 +748,7 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
      ***********************  PERMISSIONS SECTION. *****************************************
      **********************************************************************************************/
     public void onGetAdminPermissionsCount() {
-        generalService.getPermissionsCount(new AsyncCallback<Long>() {
+        generalService.getPermissionsCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -771,27 +756,27 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
-                eventBus.createAdminPermissionAsyncDataProvider(result.intValue());
+            public void onSuccess(Integer result) {
+                eventBus.createAdminPermissionAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetAdminPermissions(int start, int count) {
-        generalService.getPermissions(start, count, new AsyncCallback<ArrayList<PermissionDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<PermissionDetail> result) {
-                eventBus.displayAdminTabPermissions(result);
-            }
-        });
-
-    }
+//    public void onGetAdminPermissions(int start, int count) {
+//        generalService.getPermissions(start, count, new AsyncCallback<ArrayList<PermissionDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<PermissionDetail> result) {
+//                eventBus.displayAdminTabPermissions(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedPermissions(int start, int count, Map<String, OrderType> orderColumns) {
         generalService.getSortedPermissions(start, count, orderColumns,
@@ -828,7 +813,7 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
      ***********************  PREFERENCES SECTION. *****************************************
      **********************************************************************************************/
     public void onGetAdminPreferencesCount() {
-        generalService.getPreferencesCount(new AsyncCallback<Long>() {
+        generalService.getPreferencesCount(new AsyncCallback<Integer>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -836,27 +821,27 @@ public class AdminHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(Long result) {
-                eventBus.createAdminPreferenceAsyncDataProvider(result.intValue());
+            public void onSuccess(Integer result) {
+                eventBus.createAdminPreferenceAsyncDataProvider(result);
             }
         });
     }
 
-    public void onGetAdminPreferences(int start, int count) {
-        generalService.getPreferences(start, count, new AsyncCallback<ArrayList<PreferenceDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void onSuccess(ArrayList<PreferenceDetail> result) {
-                eventBus.displayAdminTabPreferences(result);
-            }
-        });
-
-    }
+//    public void onGetAdminPreferences(int start, int count) {
+//        generalService.getPreferences(start, count, new AsyncCallback<ArrayList<PreferenceDetail>>() {
+//
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                throw new UnsupportedOperationException("Not supported yet.");
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<PreferenceDetail> result) {
+//                eventBus.displayAdminTabPreferences(result);
+//            }
+//        });
+//
+//    }
 
     public void onGetSortedPreferences(int start, int count, Map<String, OrderType> orderColumns) {
         generalService.getSortedPreferences(start, count, orderColumns,

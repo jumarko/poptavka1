@@ -220,19 +220,6 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * Add the columns to the table.
      */
     private void initGridColumns() {
-
-        // Checkbox column. This table will uses a checkbox column for selection.
-        // Alternatively, you can call dataGrid.setSelectionEnabled(true) to enable
-        // mouse selection.
-        addColumn(new CheckboxCell(true, false), "<br/>", 15, new GetValue<Boolean>() {
-
-            @Override
-            public Boolean getValue(FullSupplierDetail object) {
-                // Get the value from the selection model.
-                return selectionModel.isSelected(object);
-            }
-        });
-
         // Supplier ID.
         addColumn(new TextCell(), "SID", 30, new GetValue<String>() {
 

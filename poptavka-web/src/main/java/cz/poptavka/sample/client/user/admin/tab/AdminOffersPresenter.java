@@ -90,6 +90,8 @@ public class AdminOffersPresenter
 
     public void onCreateAdminOffersAsyncDataProvider(final int totalFound) {
         this.start = 0;
+        orderColumns.clear();
+        orderColumns.put(columnNames[0], OrderType.ASC);
         dataProvider = new AsyncDataProvider<FullOfferDetail>() {
 
             @Override
@@ -97,7 +99,7 @@ public class AdminOffersPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
+                eventBus.getSortedDemands(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -105,9 +107,10 @@ public class AdminOffersPresenter
         createAsyncSortHandler();
     }
     private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "", "oid", "did", "sid", "price", "state", "created", "finnishDate"
+        "offerId", "demandId", "supplierId", "price", "state", "created", "finnishDate"
     };
     private List<String> gridColumns = Arrays.asList(columnNames);
 
@@ -117,9 +120,8 @@ public class AdminOffersPresenter
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
                 OrderType orderType = OrderType.DESC;
-                Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }

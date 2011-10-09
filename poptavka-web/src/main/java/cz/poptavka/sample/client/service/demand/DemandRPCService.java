@@ -34,11 +34,13 @@ public interface DemandRPCService extends RemoteService {
 
     Long getDemandsCount(Category[] categories);
 
-    Long getDemandsCountByCategory(long id);
-
     Long getDemandsCount(Locality[] localities);
 
+    Long getDemandsCountByCategory(long id);
+
     Long getDemandsCountByLocality(String code);
+
+    Long getDemandsCountByCategoryLocality(long id, String code);
 
     List<FullDemandDetail> getDemands(ResultCriteria resultCriteria);
 

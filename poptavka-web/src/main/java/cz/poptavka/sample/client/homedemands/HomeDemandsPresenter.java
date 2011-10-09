@@ -72,7 +72,6 @@ public class HomeDemandsPresenter extends BasePresenter<
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
     }
 
-    //TODO - Dorobit kombinaciu filtrovania podla categorii && lokality
     /**
      * Bind objects and their action handlers.
      */
@@ -92,7 +91,6 @@ public class HomeDemandsPresenter extends BasePresenter<
                 eventBus.filter();
             }
         });
-        //TODO Martin - kombinacia filtrovanie locality a sucasne categories?
 
         // Add a selection model to handle user selection.
         view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -143,27 +141,18 @@ public class HomeDemandsPresenter extends BasePresenter<
             }
         } else {
             if (view.getCategoryList().getSelectedIndex() == 0) {
-                if (view.getCategoryList().getSelectedIndex() == 0) {
-                    eventBus.getDemandsCountLocality(view.getLocalityList().getValue(
-                            view.getLocalityList().getSelectedIndex()));
-                } else {
-//                            eventBus.getDemandsCountCategoryLocality(view.getLocalityList().getValue(
-//                                    view.getLocalityList().getSelectedIndex()),
-//                                    Long.valueOf(view.getCategoryList().getValue(
-//                                    view.getCategoryList().getSelectedIndex())));
-                }
+                eventBus.getDemandsCountLocality(view.getLocalityList().getValue(
+                        view.getLocalityList().getSelectedIndex()));
+            } else {
+                eventBus.getDemandsCountCategoryLocality(Long.valueOf(
+                        view.getCategoryList().getValue(
+                        view.getCategoryList().getSelectedIndex())),
+                        view.getLocalityList().getValue(
+                        view.getLocalityList().getSelectedIndex()));
             }
         }
     }
 
-//            = new AsyncDataProvider<FullDemandDetail>() {
-//
-//        @Override
-//        protected void onRangeChanged(HasData<FullDemandDetail> display) {
-//            //just for initializing cellTable
-//            //will be implemented later, when allDemandsCount value will be retrieved
-//        }
-//    };
     public void onStart() {
         // TODO praso - probably history initialization will be here
     }
@@ -205,11 +194,11 @@ public class HomeDemandsPresenter extends BasePresenter<
                             view.getLocalityList().getValue(
                             view.getLocalityList().getSelectedIndex()));
                 } else if (resultSource.equals("categoryLocality")) {
-//                    eventBus.getDemandsByCategoriesLocalities(start, start + length,
-//                            Long.valueOf(view.getCategoryList().getValue(
-//                            view.getCategoryList().getSelectedIndex())),
-//                            view.getLocalityList().getValue(
-//                            view.getLocalityList().getSelectedIndex()));
+                    eventBus.getDemandsByCategoriesLocalities(start, start + length,
+                            Long.valueOf(view.getCategoryList().getValue(
+                            view.getCategoryList().getSelectedIndex())),
+                            view.getLocalityList().getValue(
+                            view.getLocalityList().getSelectedIndex()));
                 }
                 eventBus.loadingHide();
             }
@@ -273,6 +262,9 @@ public class HomeDemandsPresenter extends BasePresenter<
 
     public void onDisplayDemands(List<FullDemandDetail> result) {
         dataProvider.updateRowData(start, result);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
+        eventBus.loadingHide();
     }
 
     public void onSetDemand(FullDemandDetail demand) {

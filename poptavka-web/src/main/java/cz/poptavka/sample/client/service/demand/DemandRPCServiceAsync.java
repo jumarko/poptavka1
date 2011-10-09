@@ -23,11 +23,13 @@ public interface DemandRPCServiceAsync {
 
     void getDemandsCount(Category[] categories, AsyncCallback<Long> callback);
 
-    void getDemandsCountByCategory(long id, AsyncCallback<Long> callback);
-
     void getDemandsCount(Locality[] localities, AsyncCallback<Long> callback);
 
+    void getDemandsCountByCategory(long id, AsyncCallback<Long> callback);
+
     void getDemandsCountByLocality(String code, AsyncCallback<Long> callback);
+
+    void getDemandsCountByCategoryLocality(long id, String code, AsyncCallback<Long> callback);
 
     void createNewDemand(FullDemandDetail newDemand, Long clientId,
             AsyncCallback<FullDemandDetail> callback);

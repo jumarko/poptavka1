@@ -33,15 +33,15 @@ public class ProblemDetail implements Serializable {
 
     /**
      * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
+     * @param problem
      * @return DemandDetail
      */
-    public static ProblemDetail createProblemDetail(Problem demand) {
+    public static ProblemDetail createProblemDetail(Problem problem) {
         ProblemDetail detail = new ProblemDetail();
 
-        detail.setPrimaryMessage(demand.getPrimaryMessage());
+        detail.setPrimaryMessage(problem.getPrimaryMessage());
         List<String> messages = new ArrayList<String>();
-        for (Iterator<String> it = demand.getSubMessages().iterator(); it.hasNext();) {
+        for (Iterator<String> it = problem.getSubMessages().iterator(); it.hasNext();) {
             messages.add(it.next());
         }
         detail.setMessages(messages);

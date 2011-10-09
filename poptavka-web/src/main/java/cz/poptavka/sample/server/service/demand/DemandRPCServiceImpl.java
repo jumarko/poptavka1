@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -43,8 +44,6 @@ import java.util.Map;
 public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements DemandRPCService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandRPCServiceImpl.class);
-
-
     /**
      * generated serialVersonUID.
      */
@@ -323,23 +322,14 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public List<FullDemandDetail> getDemandsByCategoryLocality(int fromResult, int toResult, long id, String code) {
-
         final ResultCriteria resultCriteria =
                 new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
+        final List<Category> category = Arrays.asList(this.categoryService.getById(id));
+        final List<Locality> locality = Arrays.asList(this.localityService.getLocality(code));
 
-        List<FullDemandDetail> catList = this.createDemandDetailList(demandService
-                .getDemands(resultCriteria, this.getAllSubcategories(id)));
-        List<FullDemandDetail> locList = this.createDemandDetailList(demandService
-                .getDemands(resultCriteria, this.getAllSublocalities(code)));
-
-        for (int i = catList.size() - 1; i > -1; --i) {
-            FullDemandDetail str = catList.get(i);
-            if (!locList.remove(str)) {
-                catList.remove(str);
-            }
-        }
-        return catList;
-
+        return this.createDemandDetailList(demandService.getDemands(resultCriteria,
+                category.toArray(new Category[category.size()]),
+                locality.toArray(new Locality[locality.size()])));
     }
 
     private Locality[] getAllSublocalities(String code) {
@@ -441,12 +431,25 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public Long getDemandsCountByCategory(long id) {
-        return this.getDemandsCount(this.getAllSubcategories(id));
+//        return this.getDemandsCount(this.getAllSubcategories(id));
+        List<Category> category = Arrays.asList(this.categoryService.getById(id));
+        return demandService.getDemandsCount(category.toArray(new Category[category.size()]));
     }
 
     @Override
     public Long getDemandsCountByLocality(String code) {
-        return this.getDemandsCount(this.getAllSublocalities(code));
+//        return this.getDemandsCount(this.getAllSublocalities(code));
+        List<Locality> locality = Arrays.asList(this.localityService.getLocality(code));
+        return demandService.getDemandsCount(locality.toArray(new Locality[locality.size()]));
+    }
+
+    @Override
+    public Long getDemandsCountByCategoryLocality(long id, String code) {
+        final List<Category> category = Arrays.asList(this.categoryService.getById(id));
+        final List<Locality> locality = Arrays.asList(this.localityService.getLocality(code));
+        return demandService.getDemandsCount(
+                category.toArray(new Category[category.size()]),
+                locality.toArray(new Locality[locality.size()]));
     }
 
     // TODO FIX this, it's not working nullPointerException.

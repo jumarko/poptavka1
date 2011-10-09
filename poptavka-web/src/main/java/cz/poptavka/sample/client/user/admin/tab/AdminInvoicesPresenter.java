@@ -101,15 +101,18 @@ public class AdminInvoicesPresenter
 
     private AsyncDataProvider dataProvider = null;
     private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "", "id", "invoiceNumber", "variableSymbol", "totalPrice", "paymentMethod"
+        "id", "invoiceNumber", "variableSymbol", "totalPrice", "paymentMethod"
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
     public void onCreateAdminInvoicesAsyncDataProvider(final int totalFound) {
         this.start = 0;
+        orderColumns.clear();
+        orderColumns.put(columnNames[1], OrderType.ASC);
         dataProvider = new AsyncDataProvider<InvoiceDetail>() {
 
             @Override
@@ -117,7 +120,7 @@ public class AdminInvoicesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminInvoices(start, start + length);
+                eventBus.getSortedInvoices(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -131,9 +134,8 @@ public class AdminInvoicesPresenter
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
                 OrderType orderType = OrderType.DESC;
-                Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }

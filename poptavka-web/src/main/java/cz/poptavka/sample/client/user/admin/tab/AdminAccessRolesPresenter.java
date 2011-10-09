@@ -22,8 +22,10 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -93,6 +95,7 @@ public class AdminAccessRolesPresenter
     }
     private AsyncDataProvider dataProvider = null;
     private AsyncHandler sortHandler = null;
+    private final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
         "id", "code", "name", "description", "permissions"
@@ -102,6 +105,8 @@ public class AdminAccessRolesPresenter
 
     public void onCreateAdminAccessRoleAsyncDataProvider(final int totalFound) {
         this.start = 0;
+        orderColumns.clear();
+        orderColumns.put(columnNames[1], OrderType.ASC);
         dataProvider = new AsyncDataProvider<AccessRoleDetail>() {
 
             @Override
@@ -109,7 +114,7 @@ public class AdminAccessRolesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminAccessRoles(start, start + length);
+                eventBus.getSortedAccessRoles(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -118,14 +123,12 @@ public class AdminAccessRolesPresenter
     }
 
     public void createAsyncSortHandler() {
-        //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
                 OrderType orderType = OrderType.DESC;
-                Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }
@@ -191,6 +194,7 @@ public class AdminAccessRolesPresenter
                         originalData.put(object.getId(), new AccessRoleDetail(object));
                     }
                 }
+                eventBus.showDialogBox();
 //                final com.gwtext.client.widgets.Window window = new com.gwtext.client.widgets.Window();
 //                window.setTitle("Layout Window");
 //                window.setClosable(true);
@@ -280,5 +284,25 @@ public class AdminAccessRolesPresenter
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+    }
+
+    /**
+     * Create the dialog box for this example.
+     *
+     * @return the new dialog box
+     */
+    public void onShowDialogBox() {
+        // Create a dialog box and set the caption text
+        final DialogBox dialogBox = new DialogBox();
+        dialogBox.ensureDebugId("cwDialogBox");
+        dialogBox.setText("Test");
+
+        // Create a table to layout the content
+        VerticalPanel dialogContents = new VerticalPanel();
+        dialogContents.setWidth("100%");
+        dialogContents.setSpacing(4);
+        dialogBox.setWidget(dialogContents);
+        dialogBox.center();
+        dialogBox.show();
     }
 }

@@ -502,8 +502,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /* ------------------ ALL DEMANDS ---------------------->>>>  */
     //Demand
-    @Event(handlers = AllDemandsHandler.class)
-    void getDemands(int fromResult, int toResult);
+//    @Event(handlers = AllDemandsHandler.class)
+//    void getDemands(int fromResult, int toResult);
 
     @Event(handlers = AllDemandsHandler.class)
     void getAllDemandsCount();
@@ -559,8 +559,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminDemandsPresenter.class)
     void createAdminDemandsAsyncDataProvider(final int totalFound);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemands(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminDemands(int start, int count);
 
     @Event(handlers = AdminHandler.class)
     void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
@@ -628,8 +628,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminSuppliersPresenter.class)
     void createAdminSuppliersAsyncDataProvider(final int totalFound);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminSuppliers(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminSuppliers(int start, int count);
 
     @Event(handlers = AdminHandler.class)
     void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
@@ -692,8 +692,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminOffersPresenter.class)
     void createAdminOffersAsyncDataProvider(final int totalFound);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminOffers(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminOffers(int start, int count);
 
     @Event(handlers = AdminHandler.class)
     void getSortedOffers(int start, int count, Map<String, OrderType> orderColumns);
@@ -724,8 +724,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminClients(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminClients(int start, int count);
 
     @Event(handlers = AdminClientsPresenter.class)
     void createAdminClientsAsyncDataProvider(final int totalFound);
@@ -747,8 +747,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedAccessRoles(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminAccessRoles(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminAccessRoles(int start, int count);
 
     @Event(handlers = AdminAccessRolesPresenter.class)
     void createAdminAccessRoleAsyncDataProvider(final int totalFound);
@@ -758,6 +758,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updateAccessRole(AccessRoleDetail accessRole);
+
+    @Event(handlers = AdminAccessRolesPresenter.class)
+    void showDialogBox();
     /* <<<<<<<<<<-------- ACCESS ROLE -------------------- */
 
     /* ----------------- EMAIL ACTIVATION -------------------->>>>>>>>> */
@@ -770,8 +773,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedEmailsActivation(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminEmailsActivation(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminEmailsActivation(int start, int count);
 
     @Event(handlers = AdminEmailActivationsPresenter.class)
     void createAdminEmailsActivationAsyncDataProvider(final int totalFound);
@@ -793,8 +796,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedInvoices(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminInvoices(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminInvoices(int start, int count);
 
     @Event(handlers = AdminInvoicesPresenter.class)
     void createAdminInvoicesAsyncDataProvider(final int totalFound);
@@ -822,8 +825,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedOurPaymentDetails(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminOurPaymentDetails(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminOurPaymentDetails(int start, int count);
 
     @Event(handlers = AdminOurPaymentDetailsPresenter.class)
     void createAdminOurPaymentDetailAsyncDataProvider(final int totalFound);
@@ -845,8 +848,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminPermissions(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminPermissions(int start, int count);
 
     @Event(handlers = AdminPermissionsPresenter.class)
     void createAdminPermissionAsyncDataProvider(final int totalFound);
@@ -868,8 +871,8 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminHandler.class)
     void getSortedPreferences(int start, int count, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminHandler.class)
-    void getAdminPreferences(int start, int count);
+//    @Event(handlers = AdminHandler.class)
+//    void getAdminPreferences(int start, int count);
 
     @Event(handlers = AdminPreferencesPresenter.class)
     void createAdminPreferenceAsyncDataProvider(final int totalFound);

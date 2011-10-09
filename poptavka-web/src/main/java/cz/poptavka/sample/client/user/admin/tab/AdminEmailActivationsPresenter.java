@@ -95,6 +95,7 @@ public class AdminEmailActivationsPresenter
     }
     private AsyncDataProvider dataProvider = null;
     private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
         "id", "activationLink", "timeout"
@@ -104,6 +105,8 @@ public class AdminEmailActivationsPresenter
 
     public void onCreateAdminEmailsActivationAsyncDataProvider(final int totalFound) {
         this.start = 0;
+        orderColumns.clear();
+        orderColumns.put(columnNames[3], OrderType.DESC);
         dataProvider = new AsyncDataProvider<EmailActivationDetail>() {
 
             @Override
@@ -111,7 +114,7 @@ public class AdminEmailActivationsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminEmailsActivation(start, start + length);
+                eventBus.getSortedEmailsActivation(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -125,9 +128,8 @@ public class AdminEmailActivationsPresenter
 
             @Override
             public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
                 OrderType orderType = OrderType.DESC;
-                Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }

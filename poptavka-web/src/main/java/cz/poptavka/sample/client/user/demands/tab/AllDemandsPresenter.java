@@ -24,9 +24,12 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.user.UserEventBus;
 
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -166,6 +169,7 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
     };
 
     public void onCreateAsyncDataProvider() {
+        final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
@@ -173,9 +177,10 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
                 display.setRowCount((int) resultCount);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
+                orderColumns.put("title", OrderType.ASC);
 
                 if (resultSource.equals("all")) {
-                    eventBus.getDemands(start, start + length);
+                    eventBus.getSortedDemands(start, start + length, orderColumns);
                 } else if (resultSource.equals("category")) {
                     eventBus.getDemandsByCategories(start, start + length,
                             Long.valueOf(view.getCategoryList().getValue(

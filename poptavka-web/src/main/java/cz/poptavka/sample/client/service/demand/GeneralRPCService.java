@@ -18,18 +18,14 @@ import java.util.Map;
 public interface GeneralRPCService extends RemoteService {
 
     //---------------------- ACCESS ROLE ------------------------------------------------
-    Long getAccessRolesCount();
-
-    ArrayList<AccessRoleDetail> getAccessRoles(int start, int count);
+    int getAccessRolesCount();
 
     AccessRoleDetail updateAccessRole(AccessRoleDetail supplierDetail);
 
     ArrayList<AccessRoleDetail> getSortedAccessRoles(int start, int count, Map<String, OrderType> orderColumns);
 
     //---------------------- EMAIL ACTIVATION---------------------------------------------
-    Long getEmailsActivationCount();
-
-    ArrayList<EmailActivationDetail> getEmailsActivation(int start, int count);
+    int getEmailsActivationCount();
 
     EmailActivationDetail updateEmailActivation(EmailActivationDetail supplierDetail);
 
@@ -37,36 +33,28 @@ public interface GeneralRPCService extends RemoteService {
             int start, int count, Map<String, OrderType> orderColumns);
 
     //---------------------- INVOICE --------------------------------------------------
-    Long getInvoicesCount();
-
-    ArrayList<InvoiceDetail> getInvoices(int start, int count);
+    int getInvoicesCount();
 
     InvoiceDetail updateInvoice(InvoiceDetail supplierDetail);
 
     ArrayList<InvoiceDetail> getSortedInvoices(int start, int count, Map<String, OrderType> orderColumns);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
-    Long getOurPaymentDetailsCount();
-
-    ArrayList<PaymentDetail> getOurPaymentDetails(int start, int count);
+    int getOurPaymentDetailsCount();
 
     PaymentDetail updateOurPaymentDetail(PaymentDetail supplierDetail);
 
     ArrayList<PaymentDetail> getSortedOurPaymentDetails(int start, int count, Map<String, OrderType> orderColumns);
 
     //---------------------- PERMISSION ------------------------------------------------
-    Long getPermissionsCount();
-
-    ArrayList<PermissionDetail> getPermissions(int start, int count);
+    int getPermissionsCount();
 
     PermissionDetail updatePermission(PermissionDetail supplierDetail);
 
     ArrayList<PermissionDetail> getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns);
 
     //---------------------- PREFERENCES ------------------------------------------------
-    Long getPreferencesCount();
-
-    ArrayList<PreferenceDetail> getPreferences(int start, int count);
+    int getPreferencesCount();
 
     PreferenceDetail updatePreference(PreferenceDetail supplierDetail);
 
