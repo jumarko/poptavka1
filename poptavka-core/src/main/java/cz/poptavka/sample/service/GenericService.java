@@ -100,6 +100,18 @@ public interface GenericService<T extends DomainObject, Dao extends GenericDao<T
 
     /**
      * The same as {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)}
+     * but returns just the count of the object, not the objects themselves
+     *
+     * <p>
+     * See {@link #getAll(cz.poptavka.sample.domain.common.ResultCriteria)}
+     *
+     * @param example
+     * @return
+     */
+    long findByExampleCount(T example);
+
+    /**
+     * The same as {@link #findByExample(cz.poptavka.sample.domain.common.DomainObject)}
      * but additional criteria are applied on the result.
      *
      * <p>

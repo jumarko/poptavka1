@@ -148,6 +148,13 @@ public class GenericServiceImpl<Dom extends DomainObject, Dao extends GenericDao
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
+    public long findByExampleCount(Dom example) {
+        return this.dao.findByExampleCount(example);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
     public List<Dom> findByExample(Dom example, ResultCriteria resultCriteria) {
         return this.dao.findByExample(example, resultCriteria);
     }

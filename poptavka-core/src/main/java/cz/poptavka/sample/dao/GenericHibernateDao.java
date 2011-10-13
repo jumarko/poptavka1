@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.criterion.Projections;
 
 @Repository
 public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T> {
@@ -333,6 +334,20 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         entityCriteria.add(Example.create(example)
                 .excludeZeroes());
         return entityCriteria.list();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public long findByExampleCount(T example) {
+        Preconditions.checkArgument(example != null, "Example object must not be null");
+        // query by example
+        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
+        entityCriteria.add(Example.create(example)
+                .excludeZeroes());
+        entityCriteria.setProjection(Projections.projectionList().add(
+                Projections.rowCount()));
+        return (Long) entityCriteria.uniqueResult();
     }
 
     @Override

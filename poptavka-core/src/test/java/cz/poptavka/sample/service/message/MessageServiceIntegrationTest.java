@@ -9,7 +9,7 @@ import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
-import cz.poptavka.sample.exception.MessageCannotBeSentException;
+import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import java.util.ArrayList;
@@ -199,7 +199,7 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
     }
 
     @Test
-    public void testMessageLifeCycle() throws MessageCannotBeSentException {
+    public void testMessageLifeCycle() throws MessageException {
         final User user = this.generalService.find(User.class, 111111111L);
         final User user2 = this.generalService.find(User.class, 111111112L);
         long messageId = messageService.newThreadRoot(user).getId();
