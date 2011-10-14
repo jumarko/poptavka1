@@ -86,6 +86,24 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals(12, allLocalities.size());
     }
 
+    @Test
+    public void findLocalityByExampleCount() {
+        final long localityByCode = this.localityService.findByExampleCount(new Locality("loc111", null));
+        Assert.assertEquals(1L, localityByCode);
+
+        final long localityByName = this.localityService.findByExampleCount(new Locality(null, "locality111"));
+        Assert.assertEquals(1L, localityByName);
+
+        // compare IDs
+        Assert.assertEquals(localityByCode, localityByName);
+
+        final Locality localityFilter = new Locality(null, null, LocalityType.DISTRICT);
+        final long allDistricts = this.localityService.findByExampleCount(localityFilter);
+        Assert.assertEquals(3L, allDistricts);
+
+        final long allLocalities = this.localityService.findByExampleCount(new Locality());
+        Assert.assertEquals(12L, allLocalities);
+    }
 
     // TODO: find the way of using association types with Query By Example approach
     @Test
