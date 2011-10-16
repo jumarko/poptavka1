@@ -1,91 +1,85 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+	<ui:with field='res'
+		type='cz.poptavka.sample.client.resources.StyleResource' />
 
-    <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
-        <g:west size="15">
-            <g:HTMLPanel>
-                <ul>
-                    <li>
-                        <g:Hyperlink ui:field="demandsLink">
-                            <ui:msg key="demands">Demands</ui:msg>
-                        </g:Hyperlink>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <g:Hyperlink ui:field="clientsLink">
-                            <ui:msg key="users">Clients</ui:msg>
-                        </g:Hyperlink>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <g:Hyperlink ui:field="suppliersLink">
-                            <ui:msg key="suppliers">Suppliers</ui:msg>
-                        </g:Hyperlink>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <g:Hyperlink ui:field="offersLink">
-                            <ui:msg key="offers">Offers</ui:msg>
-                        </g:Hyperlink>
-                    </li>
-                </ul>
-                
-                <ul>
-                    <li><g:Hyperlink ui:field="accessRolesLink">AccessRole</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="emailActivationsLink">EmailActivation</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="invoicesLink">Invoice</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="messagesLink">Message</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="ourPaymentDetailsLink">OurPaymentDetails</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="paymentMethodsLink">PaymentMethod</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="permissionsLink">Permission</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="preferencesLink">Preference</g:Hyperlink></li>
-                </ul>
-                <ul>
-                    <li><g:Hyperlink ui:field="problemsLink">Problem</g:Hyperlink></li>
-                </ul>
-            </g:HTMLPanel>
-        </g:west>
-        <g:center>
-            <g:ScrollPanel>
-                <g:SimplePanel ui:field="contentPanel">
-                    <g:HTML>
-                        <center>
-                            <h1>Welcome Screen</h1>
-                        </center>
-                    This is the initial page.
-                        <br />
-                        <br />
-                        <strong>Features:</strong>
-                        <ul>
-                            <li>feature</li>
-                            <li>feature</li>
-                            <li>feature</li>
-                            <li>feature</li>
-                            <li>feature</li>
-                        </ul>
-                    </g:HTML>
-                </g:SimplePanel>
-            </g:ScrollPanel>
-        </g:center>
-    </g:DockLayoutPanel>
+	<g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
+		<g:west size="15">
+			<g:HTMLPanel>
+				<ul>
+					<li>
+						<g:Hyperlink ui:field="demandsLink">
+							<ui:msg key="demands">Demands</ui:msg>
+						</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="clientsLink">
+							<ui:msg key="users">Clients</ui:msg>
+						</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="suppliersLink">
+							<ui:msg key="suppliers">Suppliers</ui:msg>
+						</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="offersLink">
+							<ui:msg key="offers">Offers</ui:msg>
+						</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="accessRolesLink">AccessRole</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="emailActivationsLink">EmailActivation</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="invoicesLink">Invoice</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="messagesLink">Message</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="ourPaymentDetailsLink">OurPaymentDetails</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="paymentMethodsLink">PaymentMethod</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="permissionsLink">Permission</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="preferencesLink">Preference</g:Hyperlink>
+					</li>
+					<li>
+						<g:Hyperlink ui:field="problemsLink">Problem</g:Hyperlink>
+					</li>
+				</ul>
+			</g:HTMLPanel>
+		</g:west>
+		<g:center>
+			<g:ScrollPanel>
+				<g:SimplePanel ui:field="contentPanel">
+					<g:HTML>
+						<center>
+							<h1>Welcome Screen</h1>
+						</center>
+						This is the initial page.
+						<br />
+						<br />
+						<strong>Features:</strong>
+						<ul>
+							<li>feature</li>
+							<li>feature</li>
+							<li>feature</li>
+							<li>feature</li>
+							<li>feature</li>
+						</ul>
+					</g:HTML>
+				</g:SimplePanel>
+			</g:ScrollPanel>
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder>

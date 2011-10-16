@@ -169,8 +169,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // change.
         dataGrid = new DataGrid<FullDemandDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("700px");
-        dataGrid.setHeight("500px");
+        dataGrid.setWidth("100%");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
         // Create a Pager to control the table.
