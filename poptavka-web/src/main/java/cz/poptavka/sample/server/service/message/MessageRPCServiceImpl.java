@@ -4,12 +4,14 @@
  */
 package cz.poptavka.sample.server.service.message;
 
+import cz.poptavka.sample.exception.MessageException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,16 +20,16 @@ import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
-import cz.poptavka.sample.domain.message.MessageState;
-import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
+import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.DemandService;
+import cz.poptavka.sample.service.demand.RatingService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
@@ -57,6 +59,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private ClientService clientService;
     private TreeItemService treeItemService;
     private DemandService demandService;
+    private RatingService ratingService;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -88,6 +91,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         this.treeItemService = treeItemService;
     }
 
+    public void setRatingService(RatingService ratingService) {
+        this.ratingService = ratingService;
+    }
+
     // TODO verify
     /**
      * if used somewhere. In the past (before 14.7.) used for MyDemands list of clients
@@ -101,6 +108,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param fakeParam - ignorovat
      * @return messageDetails je ArrayList, ktory obsahuje objekty MessageDetail
      */
+    @Override
     public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
@@ -173,50 +181,21 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param messageDetailImpl
      * @return message
      */
+    @Override
     public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) {
-        Message m = new Message();
-        m.setBody(messageDetailImpl.getBody());
-        m.setCreated(new Date());
-        m.setLastModified(new Date());
-        m.setMessageState(MessageState.SENT);
-        // TODO ivlcek - how to set this next sibling?
-//        m.setNextSibling(null);
-        Message parentMessage = this.messageService.getById(messageDetailImpl.getParentId());
-        m.setParent(parentMessage);
-        User sender = this.generalService.find(User.class, messageDetailImpl.getSenderId());
-        m.setSender(sender);
-        m.setSent(new Date());
-        m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
-        m.setThreadRoot(this.messageService.getById(messageDetailImpl.getThreadRootId()));
-        // set message roles
-        List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
-        // handles events when I send reply to my own message
-        if (messageDetailImpl.getSenderId() == messageDetailImpl.getReceiverId()) {
-            messageDetailImpl.setReceiverId(m.getThreadRoot().getSender().getId().longValue());
+        try {
+            Message m = messageService.newReply(this.messageService.getById(
+                    messageDetailImpl.getThreadRootId()),
+                    this.generalService.find(User.class, messageDetailImpl.getSenderId()));
+            m.setBody(messageDetailImpl.getBody());
+            m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
+            // TODO set the id correctly, check it
+            MessageDetail messageDetailFromDB = MessageDetail.createMessageDetail(this.messageService.create(m));
+            return messageDetailFromDB;
+        } catch (MessageException ex) {
+            Logger.getLogger(MessageRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        // messageToUserRole
-        MessageUserRole messageToUserRole = new MessageUserRole();
-        messageToUserRole.setMessage(m);
-        messageToUserRole.setUser(this.generalService.find(User.class, messageDetailImpl.getReceiverId()));
-        messageToUserRole.setType(MessageUserRoleType.TO);
-        messageToUserRole.setMessageContext(MessageContext.QUERY_TO_POTENTIAL_SUPPLIERS_DEMAND);
-        messageUserRoles.add(messageToUserRole);
-        // messageFromUserRole
-        MessageUserRole messageFromUserRole = new MessageUserRole();
-        messageFromUserRole.setMessage(m);
-        messageFromUserRole.setType(MessageUserRoleType.SENDER);
-        messageFromUserRole.setMessageContext(MessageContext.QUERY_TO_POTENTIAL_SUPPLIERS_DEMAND);
-        messageFromUserRole.setUser(sender);
-        messageUserRoles.add(messageFromUserRole);
-        m.setRoles(messageUserRoles);
-        // TODO set the id correctly, check it
-        MessageDetail messageDetailPersisted = MessageDetail.createMessageDetail(this.messageService.create(m));
-        // TODO set children for parent message - check if it is correct
-        parentMessage.getChildren().add(m);
-        parentMessage.setMessageState(MessageState.REPLY_RECEIVED);
-        parentMessage = this.messageService.update(parentMessage);
-
-        return messageDetailPersisted;
     }
 
     /**
@@ -351,8 +330,13 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
         // fill list
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
+        Client client = new Client();
+        client.setBusinessUser(businessUser);
+        client = clientService.findByExample(client).get(0);
+        int clientRating = ratingService.getAvgRating(client);
         for (UserMessage um : userMessages) {
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
+            detail.setClientRating(clientRating);
 
             potentailDemands.add(detail);
         }

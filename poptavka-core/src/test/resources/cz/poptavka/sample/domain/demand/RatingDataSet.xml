@@ -1,0 +1,9 @@
+<!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
+
+<dataset>
+    <!--############################################ demands ########################################################-->
+    <RATING ID="1" CLIENTRATING="100" SUPPLIERRATING="30" CLIENTMESSAGE="Všechno vpořádku, akorát jsem nedostal na pivo." SUPPLIERMESSAGE="Naprostá spokojenost." />
+    <RATING ID="2" CLIENTRATING="95" SUPPLIERRATING="50" CLIENTMESSAGE="Všechno vpořádku, akorát jsem nedostal na pivo." SUPPLIERMESSAGE="Naprostá spokojenost." />
+    <RATING ID="3" CLIENTRATING="60" SUPPLIERRATING="80" CLIENTMESSAGE="Všechno vpořádku, akorát jsem nedostal na pivo." SUPPLIERMESSAGE="Naprostá spokojenost." />
+    <RATING ID="4" CLIENTRATING="20" SUPPLIERRATING="100" CLIENTMESSAGE="Všechno vpořádku, akorát jsem nedostal na pivo." SUPPLIERMESSAGE="Naprostá spokojenost." />
+</dataset>

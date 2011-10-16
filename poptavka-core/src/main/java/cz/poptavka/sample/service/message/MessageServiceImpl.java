@@ -9,7 +9,7 @@ import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
-import cz.poptavka.sample.exception.MessageCannotBeSentException;
+import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Juraj Martinka
@@ -39,21 +41,24 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     public Message newThreadRoot(User user) {
-        Message message = new Message();
-        message.setMessageState(MessageState.COMPOSED);
-        message.setCreated(new Date());
-        message.setLastModified(new Date());
-        message.setThreadRoot(message);
-
-        message.setSender(user);
-        this.create(message);
-
-        UserMessage userMessage = new UserMessage();
-        userMessage.setMessage(message);
-        userMessage.setUser(user);
-        userMessage.setIsRead(true);
-        userMessageService.create(userMessage);
-        return message;
+        try {
+            Message message = new Message();
+            message.setMessageState(MessageState.COMPOSED);
+            message.setCreated(new Date());
+            message.setLastModified(new Date());
+            message.setThreadRoot(message);
+            message.setSender(user);
+            this.create(message);
+            UserMessage userMessage = new UserMessage();
+            userMessage.setMessage(message);
+            userMessage.setUser(user);
+            userMessage.setIsRead(true);
+            userMessageService.create(userMessage);
+            return message;
+        } catch (MessageException ex) {
+            Logger.getLogger(MessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     /** {@inheritDoc} */
@@ -170,12 +175,12 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
-    public void send(Message message) throws MessageCannotBeSentException {
+    public void send(Message message) throws MessageException {
         if (message.getMessageState() != MessageState.COMPOSED) {
             final StringBuilder sb = new StringBuilder();
             sb.append("Message [id=").append(ToStringUtils.printId(message));
             sb.append(" cannot be sent because it is NOT in a COMPOSED state.");
-            throw new MessageCannotBeSentException(sb.toString());
+            throw new MessageException(sb.toString());
         }
         if ((message.getRoles() == null) || (message.getRoles().isEmpty())) {
             final StringBuilder sb = new StringBuilder();
@@ -183,7 +188,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             sb.append(" cannot be sent because there are no recipients set"
                     + "in ROLES.");
             sb.append("Roles: ").append(message.getRoles());
-            throw new MessageCannotBeSentException(sb.toString());
+            throw new MessageException(sb.toString());
         }
 
         for (MessageUserRole role : message.getRoles()) {
@@ -210,7 +215,10 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             } else {
                 this.getLastChild(parent).setNextSibling(message);
             }
+            parent.setMessageState(MessageState.REPLY_RECEIVED);
+            parent = update(parent);
         }
+        update(message);
     }
 
 

@@ -20,7 +20,7 @@ import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.exception.MessageCannotBeSentException;
+import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.ResultProvider;
 import cz.poptavka.sample.service.message.MessageService;
@@ -247,7 +247,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     @Override
-    public void sendDemandToSuppliers(Demand demand) throws MessageCannotBeSentException {
+    public void sendDemandToSuppliers(Demand demand) throws MessageException {
 
         fillDefaultValues(demand);
 
@@ -303,7 +303,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         for (Demand newDemand : allNewDemands) {
             try {
                 sendDemandToSuppliers(newDemand);
-            } catch (MessageCannotBeSentException e) {
+            } catch (MessageException e) {
                 LOGGER.error("An error occured while trying to send message to suppliers for demand " + newDemand, e);
             }
         }
