@@ -1,13 +1,12 @@
 package cz.poptavka.sample.shared.domain.message;
 
+import com.google.gwt.view.client.ProvidesKey;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.google.gwt.view.client.ProvidesKey;
 
 public class PotentialDemandMessage implements Serializable, TableDisplay {
 
@@ -34,8 +33,6 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     private Date sent;
     private long senderId;
     private long receiverId;
-
-    private int clientRating;
 
     public static PotentialDemandMessage createMessageDetail(UserMessage message) {
         return fillMessageDetail(new PotentialDemandMessage(), message);
@@ -213,14 +210,6 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
-    }
-
-    public int getClientRating() {
-        return clientRating;
-    }
-
-    public void setClientRating(int clientRating) {
-        this.clientRating = clientRating;
     }
 
     public static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER = new ProvidesKey<PotentialDemandMessage>() {

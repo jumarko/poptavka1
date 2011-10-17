@@ -147,19 +147,9 @@ public class Demand extends DomainObject {
 
     @ManyToMany
     @NotAudited
-    @JoinTable(
-        name = "DEMAND_SUPPLIER",
-        joinColumns = @JoinColumn(name = "DEMAND_ID"),
-        inverseJoinColumns = @JoinColumn(name = "SUPPLIER_ID")
-    )
     private List<Supplier> suppliers;
 
     @ManyToMany
-    @JoinTable(
-        name = "DEMAND_EXCLUDED_SUPPLIER",
-        joinColumns = @JoinColumn(name = "DEMAND_ID"),
-        inverseJoinColumns = @JoinColumn(name = "SUPPLIER_ID")
-    )
     private List<Supplier> excludedSuppliers;
 
     /** The minimum rating that the supplier ({@link Supplier} has to have to participate in this demand. */

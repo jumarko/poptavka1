@@ -12,7 +12,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandOrigin;
 import cz.poptavka.sample.domain.demand.DemandType;
-import cz.poptavka.sample.exception.MessageException;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.service.GenericService;
 
 import java.util.List;
@@ -198,7 +198,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @param demand
      * @throws  MessageCannotBeSentException if some error occurs while sending message to suppliers.
      */
-    void sendDemandToSuppliers(Demand demand) throws MessageException;
+    void sendDemandToSuppliers(Demand demand) throws MessageCannotBeSentException;
 
     /**
      * Send all new demands to potential suppliers.

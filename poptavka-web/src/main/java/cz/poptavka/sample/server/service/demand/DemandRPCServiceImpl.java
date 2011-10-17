@@ -13,7 +13,7 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.exception.MessageException;
+import cz.poptavka.sample.exception.MessageCannotBeSentException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -176,7 +176,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         // send message and handle exception if any
         try {
             this.demandService.sendDemandToSuppliers(demand);
-        } catch (MessageException e) {
+        } catch (MessageCannotBeSentException e) {
             LOGGER.error("Demand " + demand + " has not been sent to suppliers. "
                     + "The next try will be made by regular job.");
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
