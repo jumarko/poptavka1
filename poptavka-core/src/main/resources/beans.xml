@@ -22,6 +22,8 @@
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
+    <bean id="ratingDao" class="cz.poptavka.sample.dao.demand.RatingDaoImpl" />
+
     <bean id="auditDao" class="cz.poptavka.sample.dao.audit.AuditDaoImpl" />
 
     <bean id="treeItemDao" class="cz.poptavka.sample.dao.common.TreeItemDaoImpl" />
@@ -78,6 +80,9 @@
         <property name="supplierService" ref="supplierService" />
     </bean>
 
+    <bean id="ratingService" class="cz.poptavka.sample.service.demand.RatingServiceImpl">
+        <constructor-arg ref="ratingDao" />
+    </bean>
 
     <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl">
         <constructor-arg ref="categoryDao" />

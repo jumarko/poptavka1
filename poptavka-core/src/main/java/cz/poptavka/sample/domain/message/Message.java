@@ -10,10 +10,10 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,15 +23,16 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  *
@@ -203,7 +204,8 @@ public class Message extends DomainObject {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(String body) throws MessageException {
+        checkModPermissions();
         this.body = body;
     }
 
@@ -211,7 +213,8 @@ public class Message extends DomainObject {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(User sender) throws MessageException {
+        checkModPermissions();
         this.sender = sender;
     }
 
@@ -227,7 +230,8 @@ public class Message extends DomainObject {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(Date created) throws MessageException {
+        checkModPermissions();
         this.created = created;
     }
 
@@ -300,5 +304,13 @@ public class Message extends DomainObject {
         sb.append("{messageState='").append(messageState).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+    // ----------------------- HELPER METHODS -------------
+    private void checkModPermissions() throws MessageException {
+        if (getMessageState() != MessageState.COMPOSED) {
+            throw new MessageException("Message can be modified only in"
+                    + " COMPOSED state ehile now it's in " + getMessageState()
+                    + " state.");
+        }
     }
 }
