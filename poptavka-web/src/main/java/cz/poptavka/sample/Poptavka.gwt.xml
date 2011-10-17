@@ -11,6 +11,7 @@
     <inherits name='com.google.gwt.user.theme.standard.Standard'/>
 
     <inherits name='cz.poptavka.sample.Domain' />
+    <inherits name='cz.poptavka.sample.Exception' />
 
     <inherits name='net.sf.gilead.Gilead4Gwt'/>
     <inherits name='com.mvp4g.Mvp4gModule'/>
