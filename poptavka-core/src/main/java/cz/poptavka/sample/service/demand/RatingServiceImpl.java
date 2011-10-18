@@ -20,12 +20,18 @@ public class RatingServiceImpl extends GenericServiceImpl<Rating, RatingDao>
     /** {@inheritDoc} */
     @Override
     public Integer getAvgRating(Supplier supplier) {
+        if (supplier == null) {
+            throw new IllegalArgumentException("Supplier mustn't be null.");
+        }
         return this.getDao().getAvgRating(supplier);
     }
 
     /** {@inheritDoc} */
     @Override
     public Integer getAvgRating(Client client) {
+        if (client == null) {
+            throw new IllegalArgumentException("Client mustn't be null.");
+        }
         return this.getDao().getAvgRating(client);
     }
 
