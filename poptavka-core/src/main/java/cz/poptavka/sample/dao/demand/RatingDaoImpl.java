@@ -21,21 +21,29 @@ public class RatingDaoImpl extends GenericHibernateDao<Rating>
 
     /** {@inheritDoc} */
     @Override
-    public int getAvgRating(Supplier supplier) {
+    public Integer getAvgRating(Supplier supplier) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("supplier", supplier);
         Object result = runNamedQueryForSingleResult("getAvgRatingForSupplier",
                 queryParams);
-        return (int) Math.round((Double) result);
+        if (result == null) {
+            return null;
+        } else {
+            return (int) Math.round((Double) result);
+        }
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getAvgRating(Client client) {
+    public Integer getAvgRating(Client client) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("client", client);
         Object result = runNamedQueryForSingleResult("getAvgRatingForClient",
                 queryParams);
-        return (int) Math.round((Double) result);
+        if (result == null) {
+            return null;
+        } else {
+            return (int) Math.round((Double) result);
+        }
     }
 }

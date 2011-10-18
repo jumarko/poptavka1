@@ -22,17 +22,19 @@ public interface RatingService extends GenericService<Rating, RatingDao> {
      * Retrieves a supplier rating average, <code>null</code> if no
      * demans of the respective supplier have been rated
      *
-     * @retun supplier's average rating
+     * @retun client's average rating, <code>null</code> if the client
+     * hasn't been rated yet
      */
-    int getAvgRating(Supplier supplier);
+    Integer getAvgRating(Supplier supplier);
 
     /**
      * Retrieves a supplier rating average, <code>null</code> if no
      * demans of the respective supplier have been rated
      *
-     * @retun supplier's average rating
+     * @retun supplier's average rating, <code>null</code> if the supplier
+     * hasn't been rated yet
      */
-    int getAvgRating(Client client);
+    Integer getAvgRating(Client client);
 
 
 }

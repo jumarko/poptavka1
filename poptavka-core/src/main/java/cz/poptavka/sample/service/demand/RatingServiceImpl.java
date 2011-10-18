@@ -19,13 +19,13 @@ public class RatingServiceImpl extends GenericServiceImpl<Rating, RatingDao>
 
     /** {@inheritDoc} */
     @Override
-    public int getAvgRating(Supplier supplier) {
+    public Integer getAvgRating(Supplier supplier) {
         return this.getDao().getAvgRating(supplier);
     }
 
     /** {@inheritDoc} */
     @Override
-    public int getAvgRating(Client client) {
+    public Integer getAvgRating(Client client) {
         return this.getDao().getAvgRating(client);
     }
 
