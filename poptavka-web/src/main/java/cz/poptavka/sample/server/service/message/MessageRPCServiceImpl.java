@@ -23,7 +23,6 @@ import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
-import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
@@ -343,14 +342,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 userMessageService.getUserMessages(messages, businessUser, MessageFilter.EMPTY_FILTER);
         // fill list
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
-        Client client = new Client();
-        client.setBusinessUser(businessUser);
-        client = clientService.findByExample(client).get(0);
-        int clientRating = ratingService.getAvgRating(client);
         for (UserMessage um : userMessages) {
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
-            detail.setClientRating(clientRating);
-
+            detail.setClientRating(ratingService.getAvgRating(um.getMessage()
+                    .getDemand().getClient()));
             potentailDemands.add(detail);
         }
         return potentailDemands;
