@@ -10,6 +10,18 @@
     function hideLoading() {
         document.getElementById("appLoading").style.display = "none";
     }
+
+    function toggleDiv(ctrl, div) {
+        var divStyle = document.getElementById(div).style;
+        var img = document.getElementById(ctrl);
+        if (divStyle.display == "none") {
+            divStyle.display = "block";
+            img.src = "images/toggleOpen.png";
+        } else {
+            divStyle.display = "none";
+            img.src = "images/toggleClosed.png";
+        }
+    }
 </script>
 </head>
 <body onload="hideLoading()">
@@ -23,7 +35,7 @@
                 <caption>Log In</caption>
                 <tr>
                     <td id="loginMailLabel">Username:</td>
-                    <td><input id="loginMail" name="pLogin" type="text" margin-top: 0px" tabindex="1"></td>
+                    <td><input id="loginMail" name="pLogin" type="text" style="margin-top: 0px" tabindex="1"></td>
                 </tr>
                 <tr>
                     <td id="loginPasswordLabel">Password:</td>

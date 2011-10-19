@@ -66,7 +66,7 @@ public class UserConversationPanel extends Composite {
         // last message is always stored for reply
         replyToMessage = messages.get(messages.size() - 1);
 
-        GWT.log(" **** size: " + messages.size());
+        GWT.log("UserConversation MessageList size: " + messages.size());
 
         if (messages.size() > 1) {
             for (int i = 0; i < messages.size(); i++) {
@@ -94,7 +94,6 @@ public class UserConversationPanel extends Composite {
         }
         messagePanel.add(new SimpleMessageWindow(lastMessage, false, newLastMessage));
         replyToMessage = lastMessage;
-
 
         messageCount = messagePanel.getWidgetCount();
     }

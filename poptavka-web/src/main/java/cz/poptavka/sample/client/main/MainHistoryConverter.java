@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.main;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -20,7 +21,11 @@ public class MainHistoryConverter implements HistoryConverter<MainEventBus> {
     @Override
     public void convertFromToken(String historyName, String param,
             MainEventBus eventBus) {
-        LOGGER.fine(historyName);
+        GWT.log("DEBUG MainHistoryConverter > HistoryName: " + historyName);
+        LOGGER.fine("DEBUG MainHistoryConverter > HistoryName: " + historyName);
+        if (historyName.equals("start")) {
+            eventBus.atHome();
+        }
     }
 
     @Override

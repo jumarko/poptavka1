@@ -43,7 +43,7 @@ public interface MainEventBus extends EventBus {
      */
     @Start
     @InitHistory
-    @Event(handlers = MainPresenter.class)
+    @Event(handlers = MainPresenter.class, historyConverter = MainHistoryConverter.class)
     void start();
 
     /** Login popup display. **/

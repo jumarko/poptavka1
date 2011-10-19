@@ -18,6 +18,9 @@ public interface Images extends ClientBundle {
     @Source("btn-center.png")
     ImageResource showMiddle();
 
+    @Source("btn-center2.png")
+    ImageResource showMiddleLeft();
+
     @Source("btn-down.png")
     ImageResource showDown();
 
@@ -99,4 +102,10 @@ public interface Images extends ClientBundle {
 
     @Source("time-short.png")
     ImageResource timeShort();
+
+    @Source("toggleClosed.png")
+    ImageResource toggleClosed();
+
+    @Source("toggleOpen.png")
+    ImageResource toggleOpen();
 }

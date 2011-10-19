@@ -7,6 +7,8 @@ package cz.poptavka.sample.shared.domain.message;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.gwt.core.client.GWT;
+
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
@@ -50,11 +52,13 @@ public class MessageDetail implements Serializable {
         detail.setMessageId(message.getId());
         detail.setBody(message.getBody());
         detail.setCreated(message.getCreated());
+        detail.setDemandId(message.getDemand().getId());
 //        m.setFirstBornId(serialVersionUID);
         detail.setMessageState(message.getMessageState().name());
         detail.setMessageType(MessageType.CONVERSATION.name());
 //        m.setNexSiblingId(serialVersionUID);
-        detail.setParentId(message.getParent() == null ? detail.getThreadRootId() : message.getParent().getId());
+        detail.setParentId(message.getParent() == null ? -1 : message.getParent().getId());
+        GWT.log(detail.getParentId() + " messageSetter");
 //        m.setReceiverId();
         detail.setSenderId(message.getSender().getId());
         detail.setSent(message.getSent());

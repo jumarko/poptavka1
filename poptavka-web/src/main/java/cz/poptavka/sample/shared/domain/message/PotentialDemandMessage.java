@@ -235,4 +235,9 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         return subject;
     }
 
+    @Override
+    public String getDemandPrice() {
+        return price.toString();
+    }
+
 }

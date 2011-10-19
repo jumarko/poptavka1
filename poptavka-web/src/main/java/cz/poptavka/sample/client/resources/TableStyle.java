@@ -30,4 +30,5 @@ public interface TableStyle extends CssResource {
 
     @ClassName("bold")
     String bold();
+
 }

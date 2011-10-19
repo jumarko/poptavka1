@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+.cell-table-hand-cursor {
+    cursor: pointer;
+    background-color: green;
+}
+
+.cell-table-hand-cursor:hover {
+    cursor: pointer;
+    background-color: red;
+}

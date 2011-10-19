@@ -6,17 +6,19 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
+
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TODO praso - Add history management.

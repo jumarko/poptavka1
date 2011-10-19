@@ -1,7 +1,5 @@
 package cz.poptavka.sample.client.main;
 
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Window;
@@ -33,15 +31,16 @@ public final class Storage {
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
 
-    private static final Logger LOGGER = Logger.getLogger("MainPresenter");
-
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
+
+    public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
 
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
 
     private static UserDetail user;
+
 
     //getters for global final classes
     public LocalizableMessages getMessages() {
@@ -95,5 +94,8 @@ public final class Storage {
     public static UserDetail getUser() {
         return user;
     }
+
+    // ID constants
+    public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
 
 }

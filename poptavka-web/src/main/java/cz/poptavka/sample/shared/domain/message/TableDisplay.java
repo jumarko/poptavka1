@@ -5,9 +5,13 @@ import java.util.Date;
 
 public interface TableDisplay {
 
+    long getMessageId();
+
     String getTitle();
 
     boolean isRead();
+
+    void setRead(boolean value);
 
     boolean isStarred();
 
@@ -16,4 +20,6 @@ public interface TableDisplay {
     Date getCreated();
 
     Date getEndDate();
+
+    String getDemandPrice();
 }

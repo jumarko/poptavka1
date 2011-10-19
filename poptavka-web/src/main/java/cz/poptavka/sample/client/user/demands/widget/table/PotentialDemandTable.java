@@ -83,10 +83,10 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
             = (new Column<PotentialDemandMessage, String>(tableTextCell) {
                 @Override
                 public String getValue(PotentialDemandMessage object) {
-                    if (object.getPrice().equals(BigDecimal.ZERO)) {
+                    if (object.getDemandPrice().equals(BigDecimal.ZERO)) {
                         return BaseDemandDetail.displayHtml(msgs.notEntered(), object.isRead());
                     }
-                    return BaseDemandDetail.displayHtml(object.getPrice().toString(), object.isRead());
+                    return BaseDemandDetail.displayHtml(object.getDemandPrice().toString(), object.isRead());
                 }
             });
 
@@ -135,7 +135,7 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
                     @Override
                     public int compare(PotentialDemandMessage o1,
                             PotentialDemandMessage o2) {
-                        return o1.getPrice().compareTo(o2.getPrice());
+                        return o1.getDemandPrice().compareTo(o2.getDemandPrice());
                     }
                 });
         endDateColumn.setSortable(true);

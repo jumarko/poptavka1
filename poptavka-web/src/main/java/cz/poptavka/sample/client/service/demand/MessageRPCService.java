@@ -43,4 +43,6 @@ public interface MessageRPCService extends RemoteService {
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
 
     ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId);
+
+    void setMessageStarStatus(List<Long> list, boolean newStatus);
 }

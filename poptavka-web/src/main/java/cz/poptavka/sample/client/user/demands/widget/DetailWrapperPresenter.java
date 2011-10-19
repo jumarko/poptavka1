@@ -87,7 +87,7 @@ public class DetailWrapperPresenter extends
         toggleDetailLoading();
     }
     /**
-     * Loads conversation
+     * Loads conversation.
      *
      * @param messageList
      *            list of messages, that belongs to the selected demand

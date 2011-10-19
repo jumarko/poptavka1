@@ -1,27 +1,64 @@
 package cz.poptavka.sample.client.user.demands.widget.table;
 
 import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ValueUpdater;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.ImageResourceRenderer;
 
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.shared.domain.message.TableDisplay;
 
-public class StarCell extends AbstractCell<Object> {
+/**
+ * Clickable cell displaying star status of message.
+ *
+ * @author beho
+ * @param <C>
+ *
+ */
+public class StarCell extends AbstractCell<Boolean>  {
+
+    private static ImageResourceRenderer renderer;
+    //constants
+    private static final ImageResource STARRED = Storage.RSCS.images().starGold();
+    private static final ImageResource STARRED_NOT = Storage.RSCS.images().starSilver();
+
+    public StarCell() {
+        super("click", "keydown");
+        if (renderer == null) {
+            renderer = new ImageResourceRenderer();
+        }
+    }
 
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
-            Object value, SafeHtmlBuilder sb) {
-        TableDisplay obj = (TableDisplay) value;
-        sb.appendHtmlConstant("<table>");
-        sb.appendHtmlConstant("<tr><td>");
-
-        if (obj.isStarred()) {
-            sb.appendHtmlConstant(AbstractImagePrototype.create(Storage.RSCS.images().starGold()).getHTML());
-        } else {
-            sb.appendHtmlConstant(AbstractImagePrototype.create(Storage.RSCS.images().starSilver()).getHTML());
+            Boolean value, SafeHtmlBuilder sb) {
+        if (value != null) {
+            if (value) {
+                sb.append(renderer.render(STARRED));
+            } else {
+                sb.append(renderer.render(STARRED_NOT));
+            }
         }
-        sb.appendHtmlConstant("</td></tr></table>");
+    }
+
+    @Override
+    public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
+            Element parent, Boolean value, NativeEvent event,
+            ValueUpdater<Boolean> valueUpdater) {
+        if (("click".equals(event.getType())) || ("keydown".equals(event.getType()))) {
+            onEnterKeyDown(context, parent, value, event, valueUpdater);
+        }
+    }
+
+    @Override
+    protected void onEnterKeyDown(
+            com.google.gwt.cell.client.Cell.Context context, Element parent,
+            Boolean value, NativeEvent event, ValueUpdater<Boolean> valueUpdater) {
+        if (valueUpdater != null) {
+            valueUpdater.update(value);
+        }
     }
 
 }

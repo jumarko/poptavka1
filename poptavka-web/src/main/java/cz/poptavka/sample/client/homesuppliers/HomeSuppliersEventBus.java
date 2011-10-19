@@ -30,8 +30,9 @@ public interface HomeSuppliersEventBus extends EventBus {
     void start();
 
     /**
-     * Forward event is called only if it is configured here. It there is nothing to carry out
-     * in this method we should remove forward event to save the number of method invocations.
+     * Forward event is called only if it is configured here. It there is
+     * nothing to carry out in this method we should remove forward event to
+     * save the number of method invocations.
      */
     @Forward
     @Event(handlers = SuppliersPresenter.class)
@@ -39,7 +40,8 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     /* Navigation events. */
     /**
-     * The only entry point to this module due to code-splitting and exclusive fragment.
+     * The only entry point to this module due to code-splitting and exclusive
+     * fragment.
      */
     @Event(handlers = SuppliersPresenter.class)
     void goToHomeSuppliers();
@@ -51,7 +53,8 @@ public interface HomeSuppliersEventBus extends EventBus {
     void atSuppliers();
 
     /**
-     * Display sub-categories, suppliers of selected category and detail of selected supplier.
+     * Display sub-categories, suppliers of selected category and detail of
+     * selected supplier.
      */
     @Event(handlers = SuppliersPresenter.class)
     void atDisplaySuppliers(CategoryDetail categoryDetail);
@@ -69,7 +72,8 @@ public interface HomeSuppliersEventBus extends EventBus {
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
     @Event(handlers = SuppliersPresenter.class)
-    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
+    void displaySubCategories(ArrayList<CategoryDetail> list,
+            Long parentCategory);
 
     @Event(handlers = SuppliersPresenter.class)
     void displaySuppliers(ArrayList<FullSupplierDetail> list);
@@ -100,7 +104,8 @@ public interface HomeSuppliersEventBus extends EventBus {
     void getLocalities();
 
     @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
+    void getSuppliersByCategoryLocality(int start, int count, Long category,
+            String locality);
 
     @Event(handlers = SuppliersHandler.class)
     void getSuppliersByCategory(int start, int count, Long category);

@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.user;
 
-import java.util.logging.Logger;
-
+import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -9,13 +8,11 @@ import com.mvp4g.client.history.HistoryConverter;
 @History(type = HistoryConverterType.NONE)
 public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(UserHistoryConverter.class.getName());
 
     @Override
     public void convertFromToken(String historyName, String param,
             UserEventBus eventBus) {
-        LOGGER.fine(" +++++++++ Name: " + historyName + "\nParam: " + param);
+        GWT.log(" +++++++++ Name: " + historyName + "\nParam: " + param);
         eventBus.atAccount();
 //        eventBus.markEventToLoad(historyName);
 //        if (historyName.equals("invokeMyDemands")) {
@@ -37,6 +34,7 @@ public class UserHistoryConverter implements HistoryConverter<UserEventBus>  {
 //        if (historyName.equals("invokeAdminOffers")) {
 //            eventBus.invokeAdminOffers();
 //        }
+
     }
 
     @Override

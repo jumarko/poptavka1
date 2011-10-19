@@ -16,8 +16,8 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
-import cz.poptavka.sample.client.home.creation.DemandCreationModule;
 
+import cz.poptavka.sample.client.home.creation.DemandCreationModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
@@ -157,6 +157,11 @@ public interface HomeEventBus extends EventBus {
     @AfterLoadChildModule
     @Event(handlers = HomePresenter.class)
     void afterLoad();
+//<<<<<<< .mine
+//
+    @Event(forwardToParent = true)
+    void atAccount();
+//=======
 
     /** demand creation related events. **/
 //    @Event(handlers = FormLoginPresenter.class)
@@ -199,4 +204,5 @@ public interface HomeEventBus extends EventBus {
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
     /* Business events handled by Handlers. */
+//>>>>>>> .r748
 }

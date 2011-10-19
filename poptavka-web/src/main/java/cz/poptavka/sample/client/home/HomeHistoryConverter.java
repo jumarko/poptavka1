@@ -2,6 +2,8 @@ package cz.poptavka.sample.client.home;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Window;
+
 import java.util.logging.Logger;
 
 import com.mvp4g.client.annotation.History;
@@ -15,7 +17,7 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
     private static final Logger LOGGER = Logger.getLogger(HomeHistoryConverter.class.getName());
 
     public String convertToToken(String tokenName) {
-        return tokenName;
+        return "";
     }
     public String convertToToken(String historyName, CategoryDetail category) {
         return Long.toString(category.getId());
@@ -25,8 +27,13 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 
     @Override
     public void convertFromToken(String historyName, String param, HomeEventBus eventBus) {
+        Window.alert(historyName);
         eventBus.setHistoryStoredForNextOne(false);
         eventBus.displayMenu();
+
+        if (historyName.contains("user")) {
+            eventBus.atAccount();
+        }
 
         if (historyName.equals("atHome")) {
             eventBus.atHome();

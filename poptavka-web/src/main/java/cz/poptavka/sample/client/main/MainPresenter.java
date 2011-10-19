@@ -84,10 +84,10 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      * For development purposes User Module can be loaded instantly
      */
     public void onStart() {
-        LOGGER.info("Initializing application ... ");
+        GWT.log("Initializing application ... ");
         /** for public part development **/
-        LOGGER.info("    > Home Module");
-        eventBus.atHome();
+//        GWT.log("    > Home Module");
+//        eventBus.atHome();
         /** for user part development **/
 //        LOGGER.info("    > User Module");
 //        eventBus.atAccount();

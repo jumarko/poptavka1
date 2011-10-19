@@ -7,6 +7,7 @@ package cz.poptavka.sample.client.service.demand;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -19,7 +20,6 @@ import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.Map;
 
 @RemoteServiceRelativePath("service/demands")
 public interface DemandRPCService extends RemoteService {

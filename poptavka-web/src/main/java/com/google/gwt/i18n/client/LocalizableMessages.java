@@ -2,7 +2,6 @@ package com.google.gwt.i18n.client;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
 
-
 public interface LocalizableMessages extends Messages {
 
     String logIn();
@@ -95,4 +94,8 @@ public interface LocalizableMessages extends Messages {
     String minRating();
     String maxOffers();
     String excludedSuppliers();
+
+    String today();
+    String yesterday();
+    String client();
 }

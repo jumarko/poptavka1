@@ -43,4 +43,7 @@ public interface MessageRPCServiceAsync {
             AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
 
     void getOfferDemands(long businessUserId, AsyncCallback<ArrayList<OfferDemandMessage>> callback);
+
+    void setMessageStarStatus(List<Long> list, boolean newStatus,
+            AsyncCallback<Void> callback);
 }

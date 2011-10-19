@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.user.demands.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -24,6 +25,8 @@ public class DemandDetailView extends Composite {
     maxNumberOfSuppliers, minSupplierRating, excludedSuppliers, description;
     @UiField
     HTMLPanel detail;
+
+    private boolean empty = true;
 
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
 
@@ -65,19 +68,23 @@ public class DemandDetailView extends Composite {
 
     public DemandDetailView() {
         initWidget(uiBinder.createAndBindUi(this));
+        detail.setVisible(true);
     }
 
     public DemandDetailView(FullDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
+        detail.setVisible(true);
         init((FullDemandDetail) demand);
     }
 
     public DemandDetailView(BaseDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
+        detail.setVisible(true);
         init((BaseDemandDetail) demand);
     }
 
     private void init(BaseDemandDetail demand) {
+
     }
 
     private void init(FullDemandDetail demand) {
@@ -108,11 +115,18 @@ public class DemandDetailView extends Composite {
         }
         excludedSuppliers.setText(excludedSuppliersBuildes.toString());
         description.setText(demand.getDescription());
-
+        empty = false;
+        detail.getElement().getFirstChildElement().getStyle().setDisplay(Display.BLOCK);
     }
 
     public void setDemanDetail(FullDemandDetail detail) {
         this.init(detail);
+    }
+
+    public void toggleVisible() {
+        if (!empty) {
+            detail.setVisible(!detail.isVisible());
+        }
     }
 
 }

@@ -67,7 +67,8 @@ public interface DemandRPCServiceAsync {
 
     void getFullDemandDetail(Long demandId, AsyncCallback<FullDemandDetail> callback);
 
-    void getBaseDemandDetail(Long demandId, AsyncCallback<BaseDemandDetail> callback);
+    void getBaseDemandDetail(Long demandId,
+            AsyncCallback<BaseDemandDetail> callback);
 
     void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullDemandDetail>> callback);

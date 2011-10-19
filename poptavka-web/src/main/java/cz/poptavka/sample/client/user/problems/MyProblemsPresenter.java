@@ -16,9 +16,9 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
-
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.user.User;
 
@@ -29,9 +29,11 @@ import cz.poptavka.sample.domain.user.User;
  */
 @Presenter(view = MyProblemsView.class, multiple = true)
 public class MyProblemsPresenter
-        extends BasePresenter<MyProblemsPresenter.MyProblemsViewInterface, UserEventBus> {
+        extends
+        BasePresenter<MyProblemsPresenter.MyProblemsViewInterface, UserEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger(MyProblemsPresenter.class.getName());
+    private static final Logger LOGGER = Logger
+            .getLogger(MyProblemsPresenter.class.getName());
 
     public interface MyProblemsViewInterface {
 
@@ -55,19 +57,22 @@ public class MyProblemsPresenter
 
         SimplePanel getDetailSection();
     }
+
     private DetailWrapperPresenter detailPresenter = null;
 
     public void bind() {
-        view.getCellTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            public void onSelectionChange(SelectionChangeEvent event) {
-                Problem selected = view.getSelectionModel().getSelectedObject();
-                if (selected != null) {
-                    //TODO Martin - add funkcionality
-//                   eventBus.displayMessages(selected);
-                }
-            }
-        });
-        //TODO Martin -- provide data from db, not fake data
+        view.getCellTable().getSelectionModel()
+                .addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+                    public void onSelectionChange(SelectionChangeEvent event) {
+                        Problem selected = view.getSelectionModel()
+                                .getSelectedObject();
+                        if (selected != null) {
+                            // TODO Martin - add funkcionality
+                            // eventBus.displayMessages(selected);
+                        }
+                    }
+                });
+        // TODO Martin -- provide data from db, not fake data
     }
 
     public void onInvokeMyProblems() {
@@ -133,7 +138,8 @@ public class MyProblemsPresenter
             list.add(m4);
             return list;
         } catch (MessageException ex) {
-            Logger.getLogger(MyProblemsPresenter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MyProblemsPresenter.class.getName()).log(
+                    Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -161,9 +167,11 @@ public class MyProblemsPresenter
             contacts.add(p3);
             return contacts;
         } catch (MessageException ex) {
-            Logger.getLogger(MyProblemsPresenter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MyProblemsPresenter.class.getName()).log(
+                    Level.SEVERE, null, ex);
             return null;
         }
+
     }
 
     // TODO delete, just devel tool

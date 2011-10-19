@@ -11,29 +11,35 @@
     </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:east size="500">
-            <g:HTMLPanel>
-                <div>
-                    Detail <strong>Panel</strong>
-                </div>
-            </g:HTMLPanel>
+            <g:SimplePanel ui:field="wrapperPanel">
+                <g:HTMLPanel>
+                    <div>
+                        <strong>Defail detail panel</strong>
+                        <br /><br />
+                        <div>
+                            Default content....can contain some advertisements.
+                        </div>
+                    </div>
+                </g:HTMLPanel>
+            </g:SimplePanel>
         </g:east>
         <g:center>
             <g:DockLayoutPanel unit="EM">
                 <g:north size="5">
                     <g:HTMLPanel>
                     <div>
-                        <g:Button>
+                        <g:Button ui:field="readBtn">
                             Read
-                    </g:Button>
-                        <g:Button>
+                        </g:Button>
+                        <g:Button ui:field="unreadBtn">
                             Unread
-                    </g:Button>
-                        <g:Button>
+                        </g:Button>
+                        <g:Button ui:field="starBtn">
                             Star
-                    </g:Button>
-                        <g:Button>
+                        </g:Button>
+                        <g:Button ui:field="unstarBtn">
                             Unstar
-                    </g:Button>
+                        </g:Button>
                     </div>
                     </g:HTMLPanel>
                 </g:north>

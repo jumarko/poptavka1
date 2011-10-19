@@ -77,6 +77,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent arg0) {
                 //devel code
                 if (supList != null) {
+                    supList.develRemoveDetailWrapper();
                     eventBus.removeHandler(supList);
                     supList = null;
                     view.getContentPanel().remove(view.getContentPanel().getWidget());

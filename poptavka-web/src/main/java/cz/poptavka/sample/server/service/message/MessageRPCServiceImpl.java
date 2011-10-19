@@ -312,6 +312,19 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
     /**
+     * COMMON.
+     * Change 'star' status of sent messages to chosen value
+     */
+    @Override
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isRead) {
+        for (Long userMessageId : userMessageIds) {
+            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
+            userMessage.setIsStarred(isRead);
+            this.generalService.save(userMessage);
+        }
+    }
+
+    /**
      * SUPPLIER.
      * Returns messages for PotentialDemandsView's table
      */
