@@ -1,6 +1,7 @@
 package cz.poptavka.sample.service.demand;
 
 
+import com.google.common.base.Preconditions;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -29,6 +30,12 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
     @Override
     public Set<PotentialSupplier> getPotentialSuppliers(final Demand demand) {
 
+        Preconditions.checkNotNull(demand);
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(demand.getCategories()),
+                "Demand must have at least one category assigned.");
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(demand.getLocalities()),
+                "Demand must have at least one locality assigned.");
+
         // find all possible suppliers
         final Set<Supplier> suppliers = new HashSet<Supplier>(100);
         suppliers.addAll(supplierService.getSuppliers(demand.getCategories().
@@ -43,7 +50,6 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         // TODO 2) supplier's company name and description (see BusinessUserData) can be searched through
         // for occurrences of some words from demand's description
 //        demand.getDescription();
-
 
 
         // exclude unwanted suppliers
@@ -63,6 +69,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
     /**
      * Check if set <code>potentialSupplierSet</code> contains more than <code>demand#getMaxSuppliers</code> and if so,
      * then remove as many "lowest" (with lowest rating) suppliers as neccessary to satisfy limit.
+     *
      * @param demand
      * @param potentialSupplierSet
      */
@@ -77,7 +84,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
             int numberOfRemovedElements = 0;
 
             for (Iterator<PotentialSupplier> it = potentialSupplierSet.iterator();
-                    numberOfRemovedElements < overflowElementsCount;) {
+                 numberOfRemovedElements < overflowElementsCount;) {
                 // process next element
                 it.next();
                 if (numberOfRemovedElements < overflowElementsCount) {
@@ -97,12 +104,20 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
                             return potentialSupplierOne.getRating() - potentialSupplierTwo.getRating();
                         }
 
-                        if (potentialSupplierOne.getSupplier().getOveralRating()
-                                .compareTo(potentialSupplierTwo.getSupplier().getOveralRating()) != 0) {
+                        if (potentialSupplierOne.getSupplier().getOveralRating() != null) {
+                            if (potentialSupplierOne.getSupplier().getOveralRating()
+                                    .compareTo(potentialSupplierTwo.getSupplier().getOveralRating()) != 0) {
 
-                            return potentialSupplierOne.getSupplier().getOveralRating()
-                                    .compareTo(potentialSupplierTwo.getSupplier().getOveralRating());
+                                return potentialSupplierOne.getSupplier().getOveralRating()
+                                        .compareTo(potentialSupplierTwo.getSupplier().getOveralRating());
+                            }
+                        } else {
+                            if (potentialSupplierTwo.getSupplier().getOveralRating() != null) {
+                                // supplier with rating should be preferred before supplier without ratingß
+                                return -1;
+                            }
                         }
+
 
                         // both suppliers have completely equal ratings, it does not matter in what order they appears
                         // in sorted set, but they must be there! (therefore we cannot return 0)

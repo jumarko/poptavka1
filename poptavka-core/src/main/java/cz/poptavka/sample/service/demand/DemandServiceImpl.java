@@ -257,6 +257,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         // message subject moze byt prazdne = demand.title
         Message message = new Message();
         // TODO Vojto there should be some intro message for the user
+        message.setMessageState(MessageState.COMPOSED);
         message.setBody(demand.getDescription() + " Description might be empty");
         message.setCreated(new Date());
         message.setDemand(demand);
