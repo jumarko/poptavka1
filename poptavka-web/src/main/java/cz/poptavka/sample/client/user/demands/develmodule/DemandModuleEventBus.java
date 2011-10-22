@@ -22,6 +22,19 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 @Events(startView = DemandModuleView.class, module = DemandModule.class)
 public interface DemandModuleEventBus extends EventBus {
 
+
+    /**************************************************************************/
+    /* Navigation | Initialization events. */
+
+    //production init method
+    //during development used multiple instancing
+    @Event(handlers = SupplierListPresenter.class, historyConverter = DemandModuleHistory.class)
+    void initSupplierList();
+
+    /**************************************************************************/
+    /* Business events. */
+    /* Business events handled by DemandModulePresenter. */
+
     //init demands module - left user_type menu and initial content
     @Event(handlers = DemandModulePresenter.class)
     void initDemandModule(SimplePanel panel);
@@ -30,10 +43,25 @@ public interface DemandModuleEventBus extends EventBus {
     @Event(handlers = DemandModulePresenter.class)
     void displayView(Widget content);
 
-    //production init method
-    //during development used multiple instancing
-    @Event(handlers = SupplierListPresenter.class, name = "new", historyConverter = DemandModuleHistory.class)
-    void initSupplierList();
+    /**************************************************************************/
+    /* Business events. */
+    /* Business events handled by ALL VIEW presenters. */
+
+    /**
+     * Send/Response method pair
+     * Sends message and receive the answer in a form of the same message to be displayed on UI.
+     * @param messageToSend
+     * @param type type of handling view
+     */
+    @Event(handlers = DemandModuleMessageHandler.class)
+    void sendMessage(MessageDetail messageToSend, ViewType type);
+    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
+    @Event(handlers = {SupplierListPresenter.class }, passive = true)
+    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
+
+
+    /**************************************************************************/
+    /* Business events handled by SupplierListPresenter. */
 
     /*
      * Request/Response Method pair
@@ -50,6 +78,10 @@ public interface DemandModuleEventBus extends EventBus {
 
     @Event(handlers = DemandModuleContentHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
+    /**************************************************************************/
+    /* Business events handled by DevelDetailWrapperPresenter. */
+
     /*
      * Request/Response Method pair
      * DemandDetail for detail section
@@ -72,19 +104,6 @@ public interface DemandModuleEventBus extends EventBus {
     void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
     @Event(handlers = DevelDetailWrapperPresenter.class)
     void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
-
-    /**
-     * Send/Response method pair
-     * Sends message and receive the answer in a form of the same message to be displayed on UI.
-     * @param messageToSend
-     * @param type type of handling view
-     */
-    @Event(handlers = DemandModuleMessageHandler.class)
-    void sendMessage(MessageDetail messageToSend, ViewType type);
-    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
-    @Event(handlers = {SupplierListPresenter.class }, passive = true)
-    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
-
 
 
 }
