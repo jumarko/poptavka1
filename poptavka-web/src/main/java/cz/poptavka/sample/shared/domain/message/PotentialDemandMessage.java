@@ -35,7 +35,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     private long senderId;
     private long receiverId;
 
-    private int clientRating;
+    private Integer clientRating;
 
     public static PotentialDemandMessage createMessageDetail(UserMessage message) {
         return fillMessageDetail(new PotentialDemandMessage(), message);
@@ -215,11 +215,11 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         this.userMessageId = userMessageId;
     }
 
-    public int getClientRating() {
+    public Integer getClientRating() {
         return clientRating;
     }
 
-    public void setClientRating(int clientRating) {
+    public void setClientRating(Integer clientRating) {
         this.clientRating = clientRating;
     }
 
