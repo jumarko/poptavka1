@@ -67,6 +67,9 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         Message message = this.newThreadRoot(user);
         message.setParent(inReplyTo);
         message.setThreadRoot(inReplyTo.getThreadRoot());
+        if (inReplyTo.getDemand() != null) {
+            message.setDemand(inReplyTo.getDemand());
+        }
         if (inReplyTo.getSubject() == null) {
             message.setSubject("Re: ");
         } else {
