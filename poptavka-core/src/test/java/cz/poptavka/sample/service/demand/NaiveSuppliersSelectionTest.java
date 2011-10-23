@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,8 +72,8 @@ public class NaiveSuppliersSelectionTest extends TestCase {
     public void testGetPotentialSuppliers() {
 
         final Demand demand = new Demand();
-        demand.setCategories(new ArrayList<Category>());
-        demand.setLocalities(new ArrayList<Locality>());
+        demand.setCategories(Arrays.asList(new Category()));
+        demand.setLocalities(Arrays.asList(new Locality()));
         demand.setMinRating(25);
         demand.setMaxSuppliers(5);
         demand.setStatus(DemandStatus.NEW);

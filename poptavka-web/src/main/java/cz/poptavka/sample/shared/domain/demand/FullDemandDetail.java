@@ -1,26 +1,25 @@
 package cz.poptavka.sample.shared.domain.demand;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
  *
  * @author Beho
- *
  */
 public class FullDemandDetail implements Serializable {
 
@@ -34,6 +33,7 @@ public class FullDemandDetail implements Serializable {
 
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
+
     private Map<String, String> localities;
     private Map<Long, String> categories;
     private long clientId;
@@ -59,7 +59,9 @@ public class FullDemandDetail implements Serializable {
     private List<FullSupplierDetail> excludedSuppliers;
 
 
-    /** for serialization. **/
+    /**
+     * for serialization. *
+     */
     public FullDemandDetail() {
         super();
         setType(DemandDetailType.FULL);
@@ -71,6 +73,7 @@ public class FullDemandDetail implements Serializable {
 
     /**
      * Method created FullDemandDetail from provided Demand domain object.
+     *
      * @param demand
      * @return DemandDetail
      */
@@ -105,13 +108,19 @@ public class FullDemandDetail implements Serializable {
 
         detail.setClientId(demand.getClient().getId());
 
-        List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
-        for (Supplier supplier : demand.getExcludedSuppliers()) {
-            excludedSuppliers.add(FullSupplierDetail.createFullSupplierDetail(supplier));
-        }
-        detail.setExcludedSuppliers(excludedSuppliers);
+        setExcludedSuppliers(demand, detail);
 
         return detail;
+    }
+
+    private static void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
+        final List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
+        if (demand.getExcludedSuppliers() != null) {
+            for (Supplier supplier : demand.getExcludedSuppliers()) {
+                excludedSuppliers.add(FullSupplierDetail.createFullSupplierDetail(supplier));
+            }
+        }
+        detail.setExcludedSuppliers(excludedSuppliers);
     }
 
     public void setBasicInfo(HashMap<DemandField, Object> map) {
@@ -174,7 +183,7 @@ public class FullDemandDetail implements Serializable {
         categories.put(id, value);
     }
 
-//    public void setCategories(CategorySelectorInterface categorySelector) {
+    //    public void setCategories(CategorySelectorInterface categorySelector) {
 //        if (categories == null) {
 //            categories = new HashMap<Long, String>();
 //        }
