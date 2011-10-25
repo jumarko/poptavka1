@@ -4,12 +4,14 @@ import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.demand.DemandCategory;
+import cz.poptavka.sample.service.common.TreeItemService;
+import java.util.List;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * Only very simple test of {@link GeneralService}.
@@ -19,13 +21,22 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 3.5.11
  */
-@DataSet(path = "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
+@DataSet(path = {
+        "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
 
+public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private GeneralService generalService;
+
+    @Autowired
+    private TreeItemService treeItemService;
+
 
     @Test
     public void testFindAllLocalities() {
@@ -51,6 +62,29 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
         checkLocality(localitySearchResult, "locality11", 2);
         checkLocality(localitySearchResult, "locality111", 3);
     }
+
+    @Test
+    public void testSearchCategory() {
+        final Search demandCategorySearch = new Search(DemandCategory.class);
+        final Category cat1 = this.generalService.find(Category.class, 2L);
+        Assert.assertNotNull(cat1);
+        final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat1, Category.class);
+        allSubCategories.add(cat1);
+        Assert.assertThat("There must be 6 subcategories for category with id 2", allSubCategories.size(), Is.is(7));
+
+        demandCategorySearch.addFilterIn("category", allSubCategories);
+        demandCategorySearch.addSortAsc("demand.title");
+        demandCategorySearch.setFirstResult(0);
+        demandCategorySearch.setMaxResults(3);
+
+        final List<DemandCategory> demandsForCategory = this.generalService.search(demandCategorySearch);
+        Assert.assertThat("Incorrect number of demands in result set", demandsForCategory.size(), Is.is(3));
+        Assert.assertThat("Unexpected demand", demandsForCategory.get(0).getDemand().getId(), Is.is(10L));
+        Assert.assertThat("Unexpected demand", demandsForCategory.get(1).getDemand().getId(), Is.is(2L));
+        Assert.assertThat("Unexpected demand", demandsForCategory.get(2).getDemand().getId(), Is.is(5L));
+    }
+
+
 
     private void checkLocality(List<Locality> localitySearchResult, String expectedLocalityName, int localityIndex) {
         Assert.assertThat("Incorrect locality",
