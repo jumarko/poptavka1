@@ -21,11 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Juraj Martinka
  *         Date: 4.5.11
  */
+@Transactional(readOnly = true)
 public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> implements MessageService {
     private GeneralService generalService;
     private UserMessageService userMessageService;
@@ -40,6 +42,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional
     public Message newThreadRoot(User user) {
         try {
             Message message = new Message();
@@ -63,6 +66,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional
     public Message newReply(Message inReplyTo, User user) {
         Message message = this.newThreadRoot(user);
         message.setParent(inReplyTo);
@@ -87,7 +91,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         List<MessageUserRole> messageUserRoles = new ArrayList();
         messageUserRoles.add(messageUserRole);
         message.setRoles(messageUserRoles);
-
+        update(message);
         return message;
     }
 
@@ -178,6 +182,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
+    @Transactional
     public void send(Message message) throws MessageException {
         if (message.getMessageState() != MessageState.COMPOSED) {
             final StringBuilder sb = new StringBuilder();
