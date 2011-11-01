@@ -12,6 +12,7 @@ import cz.poptavka.sample.service.register.RegisterService;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -32,11 +33,13 @@ public class OfferServiceImpl extends GenericServiceImpl<Offer, OfferDao> implem
 
     //----------------------------------  Methods for DemandType-s -----------------------------------------------------
     @Override
+    @Transactional(readOnly = true)
     public List<OfferState> getOfferStates() {
         return this.registerService.getAllValues(OfferState.class);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OfferState getOfferState(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for offer state is empty!");
         return this.registerService.getValue(code, OfferState.class);

@@ -247,6 +247,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     }
 
     @Override
+    @Transactional
     public void sendDemandToSuppliers(Demand demand) throws MessageException {
 
         fillDefaultValues(demand);

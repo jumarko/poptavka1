@@ -8,11 +8,11 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Juraj Martinka
@@ -31,6 +31,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(Locality... localities) {
         return getSuppliers(ResultCriteria.EMPTY_CRITERIA, localities);
     }
@@ -40,6 +41,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Locality... localities) {
         return this.getDao().getSuppliers(localities, resultCriteria);
     }
@@ -48,6 +50,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
                                       Category[] categories, Locality[] localities) {
         return this.getDao().getSuppliers(categories, localities,
@@ -58,6 +61,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public Map<Locality, Long> getSuppliersCountForAllLocalities() {
         final List<Map<String, Object>> suppliersCountForAllLocalities =
                 this.getDao().getSuppliersCountForAllLocalities();
@@ -77,6 +81,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCount(Locality... localities) {
         return this.getDao().getSuppliersCount(localities);
     }
@@ -85,6 +90,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Locality locality) {
         return this.getDao().getSuppliersCountQuick(locality);
     }
@@ -93,6 +99,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCountWithoutChildren(Locality locality) {
         return this.getDao().getSuppliersCountWithoutChildren(locality);
     }
@@ -101,11 +108,13 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(Category... categories) {
         return getSuppliers(ResultCriteria.EMPTY_CRITERIA, categories);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Category... categories) {
         return this.getDao().getSuppliers(categories, resultCriteria);
     }
@@ -113,6 +122,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public Map<Category, Long> getSuppliersCountForAllCategories() {
         final List<Map<String, Object>> suppliersCountForAllCategories =
                 this.getDao().getSuppliersCountForAllCategories();
@@ -133,6 +143,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      */
     @Override
     @Cacheable(cacheName = "cache5min")
+    @Transactional(readOnly = true)
     public long getSuppliersCount(Category... categories) {
         return this.getDao().getSuppliersCount(categories);
     }
@@ -141,6 +152,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCount(Category[] categories, Locality[] localities) {
         return this.getDao().getSuppliersCount(categories, localities, null);
     }
@@ -149,6 +161,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCount(Category[] categories, Locality[] localities,
                                   ResultCriteria resultCriteria) {
         return this.getDao().getSuppliersCount(categories, localities,
@@ -159,6 +172,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Category category) {
         return this.getDao().getSuppliersCountQuick(category);
     }
@@ -167,6 +181,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public long getSuppliersCountWithoutChildren(Category category) {
         return this.getDao().getSuppliersCountWithoutChildren(category);
     }
