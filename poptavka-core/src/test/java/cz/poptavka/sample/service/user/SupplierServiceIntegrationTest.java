@@ -3,6 +3,7 @@ package cz.poptavka.sample.service.user;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
@@ -10,9 +11,11 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -214,6 +217,22 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertNotNull(persistedSupplier.get(0).getId());
         // check if certification has been changed correctly
         Assert.assertEquals(!isCertified, persistedSupplier.get(0).isCertified());
+    }
+
+
+    @Ignore
+    @Test
+    public void testSortSuppliersByCompanyName() {
+        final ResultCriteria sortByCompanyNameCriteria = new ResultCriteria.Builder()
+                .firstResult(0)
+                .maxResults(2)
+                .orderByColumns(Arrays.asList("businessUser.businessUserData.companyName"))
+                .build();
+
+        final Set<Supplier> loc1SuppliersByCompanyName = this.supplierService.getSuppliers(sortByCompanyNameCriteria,
+                this.localityService.getLocality("loc1"));
+
+
     }
 
 

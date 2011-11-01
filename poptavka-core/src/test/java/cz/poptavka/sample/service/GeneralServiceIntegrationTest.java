@@ -64,7 +64,7 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
     }
 
     @Test
-    public void testSearchCategory() {
+    public void testSearchDemandsByCategory() {
         final Search demandCategorySearch = new Search(DemandCategory.class);
         final Category cat1 = this.generalService.find(Category.class, 2L);
         Assert.assertNotNull(cat1);
@@ -83,7 +83,6 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertThat("Unexpected demand", demandsForCategory.get(1).getDemand().getId(), Is.is(2L));
         Assert.assertThat("Unexpected demand", demandsForCategory.get(2).getDemand().getId(), Is.is(5L));
     }
-
 
 
     private void checkLocality(List<Locality> localitySearchResult, String expectedLocalityName, int localityIndex) {
