@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Juraj Martinka
  *         Date: 4.5.11
  */
-@Transactional(readOnly = true)
+@Transactional
 public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> implements MessageService {
     private GeneralService generalService;
     private UserMessageService userMessageService;
@@ -42,7 +42,6 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
-    @Transactional
     public Message newThreadRoot(User user) {
         try {
             Message message = new Message();
@@ -66,7 +65,6 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     /** {@inheritDoc} */
     @Override
-    @Transactional
     public Message newReply(Message inReplyTo, User user) {
         Message message = this.newThreadRoot(user);
         message.setParent(inReplyTo);
@@ -97,27 +95,32 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getMessageThreads(User user, MessageFilter messageFilter) {
         return getDao().getMessageThreads(user, messageFilter);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getAllMessages(User user, MessageFilter messageFilter) {
         return getDao().getAllMessages(user, messageFilter);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserMessage> getUserMessages(List<Message> messages, MessageFilter messageFilter) {
         return getDao().getUserMessages(messages, messageFilter);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Message getLastChild(Message parent) {
         return getDao().getLastChild(parent);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getPotentialDemandConversation(Message threadRoot, User supplierUser) {
         return getDao().getPotentialDemandConversation(threadRoot, supplierUser);
     }
@@ -128,6 +131,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public Message getThreadRootMessage(Demand demand) {
         return getDao().getThreadRootMessage(demand);
     }
@@ -138,6 +142,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getAllOfferMessagesForDemand(Message threadRoot) {
         return getDao().getAllOfferMessagesForDemand(threadRoot);
     }
@@ -150,24 +155,28 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getPotentialOfferConversation(Message threadRoot, User supplierUser) {
         return getDao().getPotentialOfferConversation(threadRoot, supplierUser);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public Map<Message, Long> getListOfClientDemandMessagesAll(User user) {
         return getDao().getListOfClientDemandMessagesAll(user);
     }
 
     /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public Map<Message, Long> getListOfClientDemandMessagesUnread(User user) {
         return getDao().getListOfClientDemandMessagesUnread(user);
     }
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getAllDescendants(Message message) {
         List<Message> messages = new ArrayList();
         messages.add(message);
@@ -176,13 +185,13 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Message> getAllDescendants(List<Message> messages) {
         return getDao().getAllDescendants(messages);
     }
 
     /** {@inheritDoc} */
     @Override
-    @Transactional
     public void send(Message message) throws MessageException {
         if (message.getMessageState() != MessageState.COMPOSED) {
             final StringBuilder sb = new StringBuilder();
