@@ -4,21 +4,19 @@ import cz.poptavka.sample.base.integration.BasicIntegrationTest;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.service.user.ClientService;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.sql.DataSource;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * Test of {@link AuditService}.
@@ -79,7 +77,6 @@ public class AuditServiceTest extends BasicIntegrationTest {
 
     @Test
     // TODO: try to make this test run - strange error occurs
-    @Ignore
     public void testGetRevisions1() {
         Assert.assertEquals(1, getClientRevisions(client1).size());
         Assert.assertEquals(1, getClientRevisions(client2).size());
@@ -121,6 +118,8 @@ public class AuditServiceTest extends BasicIntegrationTest {
     private void updateClient(final Client clientForUpdate) {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             protected void doInTransactionWithoutResult(TransactionStatus status) {
+                // merge the state of businessUser to avoid an exception "detached entity passed to persist"
+                clientForUpdate.setBusinessUser(entityManager.merge(clientForUpdate.getBusinessUser()));
                 clientForUpdate.getBusinessUser().setBusinessUserData(
                         new BusinessUserData.Builder().personFirstName("Client1").personLastName("Client1").build());
                 clientService.update(clientForUpdate);
