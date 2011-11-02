@@ -16,9 +16,11 @@ import org.junit.Before;
  * @author Vojtech Hubr
  */
 @DataSet(path = {
-        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
-        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml" },
+        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class RatingServiceTest extends DBUnitBaseTest {
     private Client client11, client12, client13, client14;

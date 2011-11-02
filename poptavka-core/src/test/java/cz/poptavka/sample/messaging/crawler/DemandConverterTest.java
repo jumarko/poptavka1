@@ -23,6 +23,8 @@ import org.springframework.core.convert.converter.Converter;
 @DataSet(path = {
         "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class DemandConverterTest extends DBUnitBaseTest {

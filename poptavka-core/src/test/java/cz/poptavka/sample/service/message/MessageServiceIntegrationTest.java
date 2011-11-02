@@ -29,6 +29,7 @@ import java.util.Map;
  *         Date: 11.5.11
  */
 @DataSet(path = {
+        "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
         "classpath:cz/poptavka/sample/domain/message/MessageDataSet.xml" },

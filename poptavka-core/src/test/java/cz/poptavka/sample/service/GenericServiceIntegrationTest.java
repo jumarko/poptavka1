@@ -14,18 +14,18 @@ import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.util.date.DateUtils;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.hibernate.criterion.Example;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Juraj Martinka
@@ -34,8 +34,9 @@ import java.util.List;
 @DataSet(path = {
         "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
-        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
-        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml" },
+        "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class GenericServiceIntegrationTest extends DBUnitBaseTest {
 
@@ -116,6 +117,7 @@ public class GenericServiceIntegrationTest extends DBUnitBaseTest {
     }
 
     @Test
+    @Ignore // findByExample method will be removed
     public void findDemandByExample() {
         checkDemandsByStatus(DemandStatus.NEW, 6);
 

@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -167,8 +169,10 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     @Override
     public List<Demand> getAllNewDemands(ResultCriteria resultCriteria) {
         final Demand newDemandExample = new Demand();
-        newDemandExample.setStatus(DemandStatus.NEW);
-        return findByExample(newDemandExample);
+
+        final Criteria newDemandCriteria = getHibernateSession().createCriteria(Demand.class);
+        newDemandCriteria.add(Restrictions.eq("status", DemandStatus.NEW));
+        return buildResultCriteria(newDemandCriteria, resultCriteria).list();
     }
 
 

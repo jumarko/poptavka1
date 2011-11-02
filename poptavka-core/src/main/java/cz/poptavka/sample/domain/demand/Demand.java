@@ -12,16 +12,9 @@ import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.util.orm.Constants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
-import org.hibernate.search.annotations.Boost;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,9 +31,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.search.annotations.Boost;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 /**
  * The core domain class which represents demand entered by client.
@@ -94,6 +93,10 @@ public class Demand extends DomainObject {
     private String description;
 
     private BigDecimal price;
+
+    /** The max date when the demand should be finished. */
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date createdDate = new Date();
 
     /** The max date when the demand should be finished. */
     @Temporal(value = TemporalType.DATE)
@@ -215,6 +218,14 @@ public class Demand extends DomainObject {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Date getEndDate() {
