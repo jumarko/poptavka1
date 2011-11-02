@@ -9,15 +9,16 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <aop:config>
         <!-- pointcuts -->
         <aop:pointcut id="allProjectClasses" expression="execution(* cz.poptavka.sample..*.*(..))" />
+        <aop:pointcut id="jobs" expression="execution(* cz.poptavka.sample.service.jobs..JobTask+.execute())" />
 
         <!-- aspects -->
         <aop:aspect id="exceptionLoggerAspect" ref="exceptionLogger">
             <aop:after-throwing  throwing="exception"  pointcut-ref="allProjectClasses" method="logExceptionMethod" />
         </aop:aspect>
-        <!-- ExecutionTimeLogger is only for performance monitoring and debugging - normally it is disabled -->
-        <!--<aop:aspect id="executionTimeLoggerAspect" ref="executionTimeLogger">-->
-            <!--<aop:around pointcut-ref="allProjectClasses" method="logTimeMethod" />-->
-        <!--</aop:aspect>-->
+        <!-- Log execution of jobs -->
+        <aop:aspect id="executionTimeLoggerAspect" ref="executionTimeLogger">
+            <aop:around pointcut-ref="jobs" method="logTimeMethod" />
+        </aop:aspect>
 
     </aop:config>
 

@@ -33,14 +33,14 @@ public class ExecutionTimeLogger {
         stopWatch.stop();
 
         final StringBuffer logMessage = new StringBuffer();
-        logMessage.append(joinPoint.getSignature().getDeclaringType().getName());
+        logMessage.append(joinPoint.getTarget());
         logMessage.append(".");
         logMessage.append(joinPoint.getSignature().getName());
         logMessage.append("(");
         // append args
         final Object[] args = joinPoint.getArgs();
-        for (int i = 0; i < args.length; i++) {
-            logMessage.append(args[i]).append(",");
+        for (final Object arg : args) {
+            logMessage.append(arg).append(",");
         }
         if (args.length > 0) {
             logMessage.deleteCharAt(logMessage.length() - 1);
