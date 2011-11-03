@@ -5,6 +5,7 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandCategory;
 import cz.poptavka.sample.service.common.TreeItemService;
 import java.util.List;
@@ -83,6 +84,27 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertThat("Unexpected demand", demandsForCategory.get(1).getDemand().getId(), Is.is(2L));
         Assert.assertThat("Unexpected demand", demandsForCategory.get(2).getDemand().getId(), Is.is(5L));
     }
+
+
+
+    @Test
+    public void testSortDeamndsByCreatedDate() {
+        final Search demandSearch = new Search(Demand.class);
+        // the newest one should be the first
+        demandSearch.addSortDesc("createdDate");
+        demandSearch.setMaxResults(5);
+        final List<Demand> demandsSortedByCreatedDate = this.generalService.search(demandSearch);
+        Assert.assertThat(demandsSortedByCreatedDate.size(), Is.is(5));
+
+        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(0).getId(), Is.is(2L));
+        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(1).getId(), Is.is(1L));
+        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(2).getId(), Is.is(10L));
+        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(3).getId(), Is.is(5L));
+        // the last one could be any demand which has an empty createdDate
+        Assert.assertNull("Last demand should have an empty createdDate",
+                demandsSortedByCreatedDate.get(4).getCreatedDate());
+    }
+
 
 
     private void checkLocality(List<Locality> localitySearchResult, String expectedLocalityName, int localityIndex) {

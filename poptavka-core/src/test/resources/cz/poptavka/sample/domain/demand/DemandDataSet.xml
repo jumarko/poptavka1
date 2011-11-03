@@ -11,16 +11,22 @@
     <DEMANDORIGIN ID="3" CODE="isvzus.cz" DESCRIPTION="Poptavky z verejneho  informacneho portalu" NAME="isvzus.cz" URL="http://www.isvzus.cz"/>
 
 
-    <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."        PRICE="10000" STATUS="NEW" RATING_ID="1" CLIENT_ID="111111111" />
-    <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."    PRICE="10000" STATUS="NEW" RATING_ID="2" CLIENT_ID="111111111" />
-    <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3" DESCRIPTION="3: All request for java application."           PRICE="1200"               RATING_ID="3" CLIENT_ID="111111113" />
-    <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."                                   RATING_ID="4" CLIENT_ID="111111114" />
-    <DEMAND ID="5" TYPE_ID="2" TITLE="Demand 5" DESCRIPTION="5: Attractive request for java application."/>
+    <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."        PRICE="10000"
+            STATUS="NEW" RATING_ID="1" CLIENT_ID="111111111" CREATEDDATE="2011-11-01 13:33:33" />
+    <DEMAND ID="2" TYPE_ID="2" TITLE="Demand 2" DESCRIPTION="2: Attractive request for java application."    PRICE="10000"
+            STATUS="NEW" RATING_ID="2" CLIENT_ID="111111111" CREATEDDATE="2011-11-02 00:00:01" />
+    <DEMAND ID="3" TYPE_ID="1" TITLE="Demand 3" DESCRIPTION="3: All request for java application."           PRICE="1200"
+            RATING_ID="3" CLIENT_ID="111111113" />
+    <DEMAND ID="4" TYPE_ID="1" TITLE="Demand 4" DESCRIPTION="4: Normal request for java application."
+            RATING_ID="4" CLIENT_ID="111111114" />
+    <DEMAND ID="5" TYPE_ID="2" TITLE="Demand 5" DESCRIPTION="5: Attractive request for java application."
+                                                             CREATEDDATE="2010-10-01 13:33:33"/>
     <DEMAND ID="6" TYPE_ID="1" TITLE="Demand 6" DESCRIPTION="6: All request for java application."           PRICE="444"   />
     <DEMAND ID="7" TYPE_ID="1" TITLE="Demand 7" DESCRIPTION="7: Normal request for java application."        PRICE="1110"                       STATUS="NEW" />
     <DEMAND ID="8" TYPE_ID="1" TITLE="Demand 8" DESCRIPTION="8: Normal request for java application."        PRICE="9000000"                    STATUS="NEW" />
     <DEMAND ID="9" TYPE_ID="1" TITLE="Demand 9" DESCRIPTION="9: Normal request for java application."                                           STATUS="NEW" />
-    <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"                      STATUS="NEW" />
+    <DEMAND ID="10" TYPE_ID="2" TITLE="Demand 10" DESCRIPTION="10: Attractive request for java application." PRICE="10000"
+            STATUS="NEW" CREATEDDATE="2010-10-01 13:33:34"/>
 
     <!--########################################## suppliers for demands ###########################################-->
     <DEMAND_SUPPLIER DEMAND_ID="1" SUPPLIER_ID="1111111114" />
