@@ -88,7 +88,7 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
 
 
     @Test
-    public void testSortDeamndsByCreatedDate() {
+    public void testSortDemandsByCreatedDate() {
         final Search demandSearch = new Search(Demand.class);
         // the newest one should be the first
         demandSearch.addSortDesc("createdDate");
