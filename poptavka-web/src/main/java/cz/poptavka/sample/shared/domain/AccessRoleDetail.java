@@ -13,7 +13,7 @@ import java.util.List;
  * Represents full detail of AccessRole. Serves for creating new
  * AccessRole or for call of detail, that supports editing.
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class AccessRoleDetail implements Serializable {

@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
@@ -29,31 +28,24 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
 
-
 /**
  *
  * @author Martin Slavkovsky
  */
 public class AdminPaymentMethodsView extends Composite
-    implements AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface {
+        implements AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface {
 
-    private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
+    private static AdminPaymentMethodsViewUiBinder uiBinder = GWT.create(AdminPaymentMethodsViewUiBinder.class);
     @UiField
     Button commit, rollback, refresh;
     @UiField
     Label changesLabel;
 
-    /**
-     * @return the demandTypeColumn
-     */
     @Override
     public Column<PaymentMethodDetail, String> getDescriptionColumn() {
         return descriptionColumn;
     }
 
-    /**
-     * @return the demandTypeColumn
-     */
     @Override
     public Column<PaymentMethodDetail, String> getNameColumn() {
         return nameColumn;
@@ -77,15 +69,7 @@ public class AdminPaymentMethodsView extends Composite
         return selectionModel;
     }
 
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
-
-    interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminPaymentMethodsView> {
+    interface AdminPaymentMethodsViewUiBinder extends UiBinder<Widget, AdminPaymentMethodsView> {
     }
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
@@ -99,11 +83,6 @@ public class AdminPaymentMethodsView extends Composite
     SimplePager pager;
     @UiField(provided = true)
     ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
     /**
      * Data provider that will cell table with data.
      */
@@ -164,7 +143,7 @@ public class AdminPaymentMethodsView extends Composite
             }
         });
 
-        // DemandTitle
+        // Name
         nameColumn = addColumn(new EditTextCell(), "Name", 100, new GetValue<String>() {
 
             @Override
@@ -173,7 +152,7 @@ public class AdminPaymentMethodsView extends Composite
             }
         });
 
-        // DemandTitle
+        // Description
         descriptionColumn = addColumn(new EditTextCell(), "Description", 100, new GetValue<String>() {
 
             @Override

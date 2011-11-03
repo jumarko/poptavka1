@@ -4,12 +4,16 @@
  */
 package cz.poptavka.sample.server.service.demand;
 
+import com.googlecode.genericdao.search.Search;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandCategory;
+import cz.poptavka.sample.domain.demand.DemandLocality;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.user.Client;
@@ -18,6 +22,7 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.audit.AuditService;
+import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.message.MessageService;
@@ -106,6 +111,8 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
+    @Autowired
+    private TreeItemService treeItemService;
     //Last computed categories and localities
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new ArrayList<Locality>();
@@ -378,9 +385,30 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private List<FullDemandDetail> createDemandDetailList(Collection<Demand> demands) {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (Demand demand : demands) {
-            List<Number> revisions = auditService.getRevisions(Demand.class, demand.getId());
-            Date createdDate = auditService.getRevisionDate(revisions.get(0));
             FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand);
+            fullDemandDetails.add(demandDetail);
+        }
+        return fullDemandDetails;
+    }
+
+    private List<FullDemandDetail> createDemandDetailListCat(Collection<DemandCategory> demands) {
+        List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
+        for (DemandCategory demand : demands) {
+            List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
+            Date createdDate = auditService.getRevisionDate(revisions.get(0));
+            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand.getDemand());
+            demandDetail.setCreated(createdDate);
+            fullDemandDetails.add(demandDetail);
+        }
+        return fullDemandDetails;
+    }
+
+    private List<FullDemandDetail> createDemandDetailListLoc(Collection<DemandLocality> demands) {
+        List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
+        for (DemandLocality demand : demands) {
+            List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
+            Date createdDate = auditService.getRevisionDate(revisions.get(0));
+            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand.getDemand());
             demandDetail.setCreated(createdDate);
             fullDemandDetails.add(demandDetail);
         }
@@ -461,5 +489,162 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     public Category getCategory(Long id) {
         return categoryService.getById(id);
+    }
+    //Due to performing join by application (not by DB) and reducing doing it twice,
+    //cache found SearchResult, where we obtained both count and data at the same time.
+    //searchResult will be updated after each calling of method filterDemandsCount.
+    //In mehotds filterDemands only cache searchResult will be used.
+    private List<FullDemandDetail> searchResult = null;
+
+    @Override
+    public long filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        if (detail == null) {
+            Search search = new Search(Demand.class);
+            /** sort **/
+            for (String item : orderColumns.keySet()) {
+                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                    search.addSortAsc(item, true);
+                } else {
+                    search.addSortDesc(item, true);
+                }
+            }
+            searchResult = this.createDemandDetailList(this.generalService.search(search));
+        } else {
+            boolean wasCatLoc = true;
+            searchResult = new ArrayList<FullDemandDetail>();
+            if (detail.getCategory() != null) {
+                Search searchCat = this.setFiltersByType(detail, orderColumns, "category");
+                if (detail.getLocality() != null) {
+                    Search searchLoc = this.setFiltersByType(detail, orderColumns, "locality");
+                    List<FullDemandDetail> demandCat = this.createDemandDetailListCat(
+                            this.generalService.search(searchCat));
+                    List<FullDemandDetail> demandLoc = this.createDemandDetailListLoc(
+                            this.generalService.search(searchLoc));
+                    for (FullDemandDetail demandDetail : demandCat) {
+                        if (demandLoc.contains(demandDetail)) {
+                            searchResult.add(demandDetail);
+                        }
+                    }
+                } else {
+                    searchResult = this.createDemandDetailList(this.generalService.search(searchCat));
+                }
+            } else {
+                if (detail.getLocality() != null) {
+                    Search searchLoc = this.setFiltersByType(detail, orderColumns, "locality");
+                    searchResult = this.createDemandDetailListLoc(this.generalService.search(searchLoc));
+                } else {
+                    wasCatLoc = false;
+                }
+            }
+            Search search = this.setCommonFilters(new Search(Demand.class), detail, orderColumns);
+            if (search != null) { //common filter was specified
+                if (wasCatLoc) { //if filtered by category or locality was performed before,
+                    //join with common filtered data is required
+                    List<FullDemandDetail> demands = this.createDemandDetailList(this.generalService.search(search));
+                    List<FullDemandDetail> tmp = new ArrayList<FullDemandDetail>();
+                    for (FullDemandDetail d : demands) { //perform join
+                        if (searchResult.contains(d)) {
+                            tmp.add(d);
+                        }
+                    }
+                    searchResult = tmp;
+                } else {
+                    searchResult = this.createDemandDetailList(this.generalService.search(search));
+                }
+            }
+        }
+
+        return (long) searchResult.size();
+    }
+
+    @Override
+    public List<FullDemandDetail> filterDemands(int start, int count, SearchDataHolder detail) {
+        if (searchResult.size() < (start + count)) {
+            return searchResult.subList(start, searchResult.size());
+        } else {
+            return searchResult.subList(start, start + count);
+        }
+    }
+
+    private Search setFiltersByType(SearchDataHolder detail, Map<String, OrderType> orderColumns, String type) {
+
+        if (type.equals("category")) {
+            final Search searchCat = new Search(DemandCategory.class);
+            if (detail.getCategory() != null) {
+                final List<Category> allSubCategories = Arrays.asList(
+                        this.getAllSubcategories(detail.getCategory().getId()));
+                searchCat.addFilterIn("category", allSubCategories);
+            }
+            /** sort **/
+            for (String item : orderColumns.keySet()) {
+                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                    searchCat.addSortAsc(item, true);
+                } else {
+                    searchCat.addSortDesc(item, true);
+                }
+            }
+            return searchCat;
+        } else { // equals("locality")
+            final Search searchLoc = new Search(DemandLocality.class);
+            if (detail.getLocality() != null) {
+                final List<Locality> allSubLocalities = Arrays.asList(
+                        this.getAllSublocalities(detail.getLocality().getCode()));
+                searchLoc.addFilterIn("locality", allSubLocalities);
+            }
+            /** sort **/
+            for (String item : orderColumns.keySet()) {
+                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                    searchLoc.addSortAsc(item, true);
+                } else {
+                    searchLoc.addSortDesc(item, true);
+                }
+            }
+            return searchLoc;
+        }
+    }
+
+    private Search setCommonFilters(Search search, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        boolean noFilter = true;
+        /** simple **/
+        if (!detail.getText().equals("")) {
+            search.addFilterLike("title", "%" + detail.getText() + "%");
+            noFilter = false;
+        }
+
+        /** additional **/
+        if (detail.isAdditionalInfo()) {
+            if (detail.getPriceFrom() != -1) {
+                search.addFilterGreaterOrEqual("price", detail.getPriceFrom());
+                noFilter = false;
+            }
+            if (detail.getPriceTo() != -1) {
+                search.addFilterLessOrEqual("price", detail.getPriceTo());
+                noFilter = false;
+            }
+
+            if (detail.getDemandType() != null) {
+                search.addFilterEqual("type", demandService.getDemandType(detail.getDemandType()));
+                noFilter = false;
+            }
+
+            if (detail.getEndDate() != null) {
+                search.addFilterGreaterOrEqual("endDate", detail.getEndDate());
+                noFilter = false;
+            }
+        }
+        /** sort **/
+        for (String item : orderColumns.keySet()) {
+            if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                search.addSortAsc(item, true);
+            } else {
+                search.addSortDesc(item, true);
+            }
+        }
+
+        if (noFilter) {
+            return null;
+        } else {
+            return search;
+        }
     }
 }

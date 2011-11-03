@@ -1,11 +1,7 @@
 package cz.poptavka.sample.shared.domain;
 
-import com.google.gwt.user.rebind.rpc.ProblemReport.Problem;
-
+import cz.poptavka.sample.domain.user.Problem;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Represents full detail of demandType. Serves for creating new demandType
@@ -20,15 +16,15 @@ public class ProblemDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
-    private String primaryMessage;
-    private List<String> messages;
+    private Long id;
+    private String text;
 
     /** for serialization. **/
     public ProblemDetail() {
     }
 
-    public ProblemDetail(ProblemDetail demand) {
-        this.updateWholeProblem(demand);
+    public ProblemDetail(ProblemDetail problemDetail) {
+        this.updateWholeProblem(problemDetail);
     }
 
     /**
@@ -39,66 +35,31 @@ public class ProblemDetail implements Serializable {
     public static ProblemDetail createProblemDetail(Problem problem) {
         ProblemDetail detail = new ProblemDetail();
 
-        detail.setPrimaryMessage(problem.getPrimaryMessage());
-        List<String> messages = new ArrayList<String>();
-        for (Iterator<String> it = problem.getSubMessages().iterator(); it.hasNext();) {
-            messages.add(it.next());
-        }
-        detail.setMessages(messages);
+        detail.setId(problem.getId());
+        detail.setText(problem.getText());
 
         return detail;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeProblem(ProblemDetail problemDetail) {
-        primaryMessage = problemDetail.getPrimaryMessage();
-        messages = problemDetail.getMessages();
+        id = problemDetail.getId();
+        text = problemDetail.getText();
     }
 
-    public List<String> getMessages() {
-        return messages;
+    public Long getId() {
+        return id;
     }
 
-    public void setMessages(List<String> messages) {
-        this.messages = messages;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getPrimaryMessage() {
-        return primaryMessage;
+    public String getText() {
+        return text;
     }
 
-    public void setPrimaryMessage(String primaryMessage) {
-        this.primaryMessage = primaryMessage;
+    public void setText(String text) {
+        this.text = text;
     }
-
-    @Override
-    public String toString() {
-
-        return "\nGlobal Problem Detail Info:"
-                + "\n     primaryMessage="
-                + primaryMessage + "\n    messages="
-                + messages.toString();
-    }
-
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (obj == null) {
-//            return false;
-//        }
-//        if (getClass() != obj.getClass()) {
-//            return false;
-//        }
-//        final ProblemDetail other = (ProblemDetail) obj;
-//        if (this.id != other.getId()) {
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int hash = 7;
-//        hash = 11 * hash + (int) (this.id ^ (this.id >>> 32));
-//        return hash;
-//    }
 }

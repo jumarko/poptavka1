@@ -16,8 +16,8 @@ import com.mvp4g.client.view.BaseCycleView;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
 // TODO extend SimpleMessageWindow, if possible.
 public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.ActionMessageInterface {
@@ -46,7 +46,7 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
 
     private boolean collapsed = false;
 
-    private OfferDetail offerDetail;
+    private FullOfferDetail offerDetail;
 
     @Override
     public void createView() {
@@ -116,11 +116,11 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
         collapsed = !collapsed;
     }
 
-    public OfferDetail getOfferDetail() {
+    public FullOfferDetail getFullOfferDetail() {
         return offerDetail;
     }
 
-    public void setOfferDetail(OfferDetail offerDetail) {
+    public void setFullOfferDetail(FullOfferDetail fullOfferDetail) {
         this.offerDetail = offerDetail;
         setMessage(offerDetail.getMessageDetail());
         setMessageStyle(MessageDisplayType.BOTH);

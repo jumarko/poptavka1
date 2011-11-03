@@ -121,7 +121,7 @@ public class AdminSuppliersPresenter
     public void onCreateAdminSuppliersAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
-        orderColumns.put(columnNames[1], OrderType.ASC);
+        orderColumns.put(columnNames[0], OrderType.ASC);
         dataProvider = new AsyncDataProvider<FullSupplierDetail>() {
 
             @Override
@@ -129,7 +129,8 @@ public class AdminSuppliersPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedSuppliers(start, start + length, orderColumns);
+                eventBus.getAdminSuppliers(start, start + length);
+//                eventBus.getSortedSuppliers(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };

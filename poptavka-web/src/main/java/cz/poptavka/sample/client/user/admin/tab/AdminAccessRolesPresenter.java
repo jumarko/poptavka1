@@ -114,7 +114,8 @@ public class AdminAccessRolesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedAccessRoles(start, start + length, orderColumns);
+//                eventBus.getSortedAccessRoles(start, start + length, orderColumns);
+                eventBus.getAdminAccessRoles(start, start + length);
                 eventBus.loadingHide();
             }
         };

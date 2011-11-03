@@ -54,9 +54,10 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public ArrayList<ClientDetail> getClients(int start, int count) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
-
-        return this.createClientDetailList(clientService.getAll(resultCriteria));
+        final Search search = new Search(Client.class);
+        search.setFirstResult(start);
+        search.setMaxResults(count);
+        return this.createClientDetailList(generalService.search(search));
     }
 
     @Autowired

@@ -21,9 +21,9 @@ import com.google.gwt.view.client.NoSelectionModel;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.demands.widget.table.GlobalDemandOfferTable;
 import cz.poptavka.sample.client.user.demands.widget.table.SingleDemandOfferTable;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
 public class OffersView extends Composite implements OffersPresenter.OffersInterface {
 
@@ -128,17 +128,17 @@ public class OffersView extends Composite implements OffersPresenter.OffersInter
     }
 
     @Override
-    public ListDataProvider<OfferDetail> getOfferProvider() {
+    public ListDataProvider<FullOfferDetail> getOfferProvider() {
         return offerTable.getDataProvider();
     }
 
     @Override
-    public MultiSelectionModel<OfferDetail> getOfferModel() {
-        return (MultiSelectionModel<OfferDetail>) offerTable.getSelectionModel();
+    public MultiSelectionModel<FullOfferDetail> getOfferModel() {
+        return (MultiSelectionModel<FullOfferDetail>) offerTable.getSelectionModel();
     }
 
     @Override
-    public Set<OfferDetail> getSelectedOffers() {
+    public Set<FullOfferDetail> getSelectedOffers() {
         return getOfferModel().getSelectedSet();
     }
 

@@ -22,18 +22,16 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.Random;
-
 
 /**
  * This view is to replace DemandsView.java.
@@ -45,24 +43,20 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
 
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
-
     @UiField(provided = true)
     ListBox pageSize;
-    @UiField
-    ListBox category, locality;
-    @UiField
-    HTMLPanel demandView;
+//    @UiField
+//    ListBox category, locality;
     @UiField
     Label bannerLabel;
     @UiField(provided = true)
     DataGrid<FullDemandDetail> dataGrid;
     @UiField(provided = true)
     SimplePager pager;
-
-//    @UiField Hyperlink linkAttachment, linkLogin, linkRegisterClient, linkRegisterSupplier;
-    @UiField FlexTable infoTable;
-    @UiField Label textArea;
-
+    @UiField
+    DemandDetailView demandDetail;
+    @UiField
+    SimplePanel demandDetailPanel;
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private final SingleSelectionModel<FullDemandDetail> selectionModel =
             new SingleSelectionModel<FullDemandDetail>();
@@ -78,25 +72,19 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         pageSize.setSelectedIndex(2);
         initCellTable();
         initWidget(uiBinder.createAndBindUi(this));
-        demandView.setVisible(false);
+        demandDetailPanel.setVisible(false);
         StyleResource.INSTANCE.layout().ensureInjected();
     }
 
-    @Override
-    public HTMLPanel getDemandView() {
-        return demandView;
-    }
-
-    @Override
-    public ListBox getCategoryList() {
-        return category;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return locality;
-    }
-
+//    @Override
+//    public ListBox getCategoryList() {
+//        return category;
+//    }
+//
+//    @Override
+//    public ListBox getLocalityList() {
+//        return locality;
+//    }
     @Override
     public Widget getWidgetView() {
         return this;
@@ -128,7 +116,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     private void initCellTable() {
         // Create a CellTable.
         dataGrid = new DataGrid<FullDemandDetail>();
-        dataGrid.setWidth("600px");
+        dataGrid.setWidth("800px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
         dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
@@ -148,29 +136,38 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      */
     private void initGridColumns() {
         // Date of creation
-        // TODO Martin - opravit ak bude dostupny datum vlozenia
-        addColumn(new TextCell(), bundle.createdDate(), 30, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.createdDate(), 35, new GetValue<String>() {
 
             public String getValue(FullDemandDetail demandDetail) {
-                //TODO Martin dorobit rozdelenie casu a datumu podla niecoho
-                //if (...) {
-                //DateTimeFormat.getFormat("hh:mm").format(demandDetail.getEndDate());
-                //}
-                return DateTimeFormat.getFormat("dd.MM.yyyy").format(demandDetail.getCreated());
+                if (demandDetail.getCreated() == null) {
+                    return "not defined";
+                } else {
+                    Date now = new Date();
+                    long millis = now.getTime() - demandDetail.getCreated().getTime();
+                    if (millis < 86400000) {
+//                    return DateTimeFormat.getFormat("hh:mm").format(demandDetail.getCreated());
+                        return "dnes";
+                    } else if (86400000 <= millis && millis < 172800000) {
+                        return "vcera";
+                    } else {
+                        return DateTimeFormat.getFormat("dd.MM.yyyy").format(demandDetail.getCreated());
+                    }
+                }
             }
         });
 
         // Root category info
-        addColumn(new TextCell(), bundle.category(), 40, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.category(), 60, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
-                if (demandDetail.getCategories() != null
-                        && !demandDetail.getCategories().isEmpty()) {
-                    return demandDetail.getCategories().get(0);
-                } else {
-                    return "";
+                StringBuilder str = new StringBuilder();
+                for (String cat : demandDetail.getCategories().values()) {
+                    str.append(cat);
+                    str.append(",\n");
                 }
+                str.delete(str.length() - 2, str.length());
+                return str.toString();
             }
         });
 
@@ -183,35 +180,36 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
             }
         });
 
-        // Mesto
-        addColumn(new TextCell(), bundle.locality(), 40, new GetValue<String>() {
+        // Locality
+        addColumn(new TextCell(), bundle.locality(), 60, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
-                if (demandDetail.getLocalities() != null
-                        && !demandDetail.getLocalities().isEmpty()) {
-                    return demandDetail.getLocalities().get(0);
-                } else {
-                    return "";
+                StringBuilder str = new StringBuilder();
+                for (String cat : demandDetail.getLocalities().values()) {
+                    str.append(cat);
+                    str.append(",\n");
                 }
-            }
-        });
-
-        // Urgencia
-        addColumn(new ImageStatus(), bundle.urgency(), 40, new GetValue<Date>() {
-
-            @Override
-            public Date getValue(FullDemandDetail object) {
-                return object.getEndDate();
+                str.delete(str.length() - 2, str.length());
+                return str.toString();
             }
         });
 
         // Cena
-        addColumn(new TextCell(), bundle.price(), 30, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.price(), 40, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
                 return String.valueOf(demandDetail.getPrice());
+            }
+        });
+
+        // Urgencia
+        addColumn(new ImageStatus(), "", 20, new GetValue<Date>() {
+
+            @Override
+            public Date getValue(FullDemandDetail object) {
+                return object.getEndDate();
             }
         });
     }
@@ -226,12 +224,20 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         return bannerLabel;
     }
 
+    @Override
+    public DemandDetailView getDemandDetail() {
+        return demandDetail;
+    }
+
+    @Override
+    public SimplePanel getDemandDetailPanel() {
+        return demandDetailPanel;
+    }
+
     /**
      * The Cell used to render Urgent image with text.
      */
     private static class ImageStatus extends AbstractCell<Date> {
-
-        private Random rnd = new Random();
 
         @Override
         public void render(Context context, Date value, SafeHtmlBuilder sb) {
@@ -240,27 +246,26 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
             }
 
             String imageHtml = null;
-            String text = null;
+            String text = "";
 
             long diffSec = value.getTime() - (new Date()).getTime();
             long diffDays = diffSec / (1000 * 60 * 60 * 24);
-//            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
 
             //TODO Martin - i18
             if ((int) diffDays <= 4) { //(0-4) velmi specha
-                text = "velmi specha";
+//                text = "velmi specha";
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
 
             } else if ((int) diffDays <= 8) { //(5-8) specha
-                text = "specha";
+//                text = "specha";
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessUrgent()).getHTML();
 
             } else if ((int) diffDays <= 12) { //(9-12) nespecha
-                text = "nespecha";
+//                text = "nespecha";
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().normal()).getHTML();
 
             } else if (12 < (int) diffDays) { //(13-oo) vobec nespecha
-                text = "vobec nespecha";
+//                text = "vobec nespecha";
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessNormal()).getHTML();
             }
             sb.appendHtmlConstant("<table>");
@@ -307,66 +312,9 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
                 return getter.getValue(demand);
             }
         };
+        column.setSortable(true);
         dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
-    }
-
-    @Override
-    public void setDemand(FullDemandDetail demand) {
-        infoTable.clear();
-        textArea.setText("");
-
-        textArea.getElement().getStyle().setProperty("whiteSpace", "pre");
-//        linkAttachment.setVisible(false);
-
-        int row = 0;
-
-        if (demand.getDescription() != null) {
-            textArea.setText(demand.getDescription());
-        }
-
-        if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.title() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getTitle().toString()));
-        }
-
-        if (demand.getPrice() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.price() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getPrice().toPlainString()));
-        }
-
-        if (demand.getEndDate() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.endDate() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getEndDate().toString()));
-        }
-
-        if (demand.getValidToDate() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.validTo() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getValidToDate().toString()));
-        }
-
-        if (demand.getDemandType() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.type() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getDemandType()));
-        }
-
-        if (demand.getCategories() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.category() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getCategories().toString()
-                    .substring(1, demand.getCategories().toString().length() - 1)));
-        }
-
-        if (demand.getLocalities() != null) {
-            infoTable.setWidget(row, 0, new Label(bundle.locality() + ":"));
-            infoTable.setWidget(row++, 1, new Label(demand.getLocalities().toString()
-                    .substring(1, demand.getLocalities().toString().length() - 1)));
-        }
-
-        if (demand.getPrice() != null) {
-            infoTable.setWidget(row++, 0, new Label(bundle.attachment() + ":"));
-            infoTable.setWidget(row, 1, new Label(demand.getTitle().toString()));
-//            linkAttachment.setVisible(true);
-        }
     }
 }

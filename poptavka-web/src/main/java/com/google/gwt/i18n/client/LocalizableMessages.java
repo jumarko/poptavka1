@@ -12,6 +12,31 @@ public interface LocalizableMessages extends Messages {
     String footerDisplay();
     String footerHide();
     String status();
+    //home - searchPanel
+    String allCategories();
+    String allLocalities();
+    String search();
+    String advancedSearch();
+    String searchContent();
+    String searchInDemands();
+    String searchInSuppliers();
+    String today();
+    String yesterday();
+    String lastWeek();
+    String lastMonth();
+    String noLimits();
+    String searchIn();
+    String priceFrom();
+    String priceTo();
+    String ratingFrom();
+    String ratingTo();
+    String demandType();
+    String finnishDate();
+    String creationDate();
+    String currency();
+    String supplierDescription();
+    String demandText();
+    String supplierName();
 
     //offers view - buttons
     String answer();
@@ -95,7 +120,5 @@ public interface LocalizableMessages extends Messages {
     String maxOffers();
     String excludedSuppliers();
 
-    String today();
-    String yesterday();
     String client();
 }

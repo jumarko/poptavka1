@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.homedemands;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.Window;
@@ -8,15 +7,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.domain.address.LocalityType;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.List;
+import java.util.Map;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
@@ -47,44 +46,42 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
     /**
      * Get all localities. Used for display in listBox localities.
      */
-    public void onGetLocalities() {
-        localityService.getLocalities(LocalityType.REGION,
-                new AsyncCallback<ArrayList<LocalityDetail>>() {
-
-                    @Override
-                    public void onSuccess(ArrayList<LocalityDetail> list) {
-                        eventBus.setLocalityData(list);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        LOGGER.info("onFailureGetLocalities");
-                    }
-                });
-    }
-
+//    public void onGetLocalities() {
+//        localityService.getLocalities(LocalityType.REGION,
+//                new AsyncCallback<ArrayList<LocalityDetail>>() {
+//
+//                    @Override
+//                    public void onSuccess(ArrayList<LocalityDetail> list) {
+//                        eventBus.setLocalityData(list);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable arg0) {
+//                        LOGGER.info("onFailureGetLocalities");
+//                    }
+//                });
+//    }
     // *** GET CATEGORIES
     // ***************************************************************************
     /**
      * Get all categories. Used for display in listBox categories.
      */
-    public void onGetCategories() {
-        categoryService.getCategories(
-                new AsyncCallback<ArrayList<CategoryDetail>>() {
-
-                    @Override
-                    public void onSuccess(ArrayList<CategoryDetail> list) {
-                        LOGGER.info("categories found: " + list.size());
-                        eventBus.setCategoryData(list);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable arg0) {
-                        LOGGER.info("onFailureCategory");
-                    }
-                });
-    }
-
+//    public void onGetCategories() {
+//        categoryService.getCategories(
+//                new AsyncCallback<ArrayList<CategoryDetail>>() {
+//
+//                    @Override
+//                    public void onSuccess(ArrayList<CategoryDetail> list) {
+//                        LOGGER.info("categories found: " + list.size());
+//                        eventBus.setCategoryData(list);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable arg0) {
+//                        LOGGER.info("onFailureCategory");
+//                    }
+//                });
+//    }
     // *** GET DEMANDS
     // ***************************************************************************
     public void onGetDemand(FullDemandDetail demandDetail) {
@@ -238,5 +235,38 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
                         LOGGER.info("onFailureGetDemandsByLocality");
                     }
                 });
+    }
+
+    //*************** FIND DEMANDS DATA *********************
+    public void onFilterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        demandService.filterDemandsCount(detail, orderColumns, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onFilterDemands (HomeDemandsHandler) - not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.setResultSource("filter");
+                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProvider();
+            }
+        });
+    }
+
+    public void onFilterDemands(int start, int count, SearchDataHolder detail) {
+        demandService.filterDemands(start, count, detail, new AsyncCallback<List<FullDemandDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onFilterDemands (HomeDemandsHandler) - not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(List<FullDemandDetail> result) {
+                eventBus.displayDemands(result);
+            }
+        });
     }
 }

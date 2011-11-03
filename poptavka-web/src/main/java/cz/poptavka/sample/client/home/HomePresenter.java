@@ -1,68 +1,69 @@
 package cz.poptavka.sample.client.home;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.ui.ListBox;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
+
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
+import cz.poptavka.sample.client.main.common.search.AdvancedSearchView;
+import cz.poptavka.sample.client.main.common.search.SearchView;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
+import java.util.ArrayList;
 
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
 
     private static final Logger LOGGER = Logger.getLogger("HomePresenter");
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface HomeInterface extends LazyView {
 
-        void setHomeToken(String token);
+        SearchView getSearchView();
 
-        void setCreateDemandToken(String token);
-
-//        void setDisplayDemandsToken(String token);
-//        void setDisplaySuppliersToken(String token);
-//        void setRegisterSupplierToken(String token);
+        AdvancedSearchView getAdvancedSearchView();
 
         Widget getWidgetView();
+
+        void setHomeToken(String token);
 
         void setBody(Widget content);
 
         HasClickHandlers getDemandsButton();
 
         HasClickHandlers getSuppliersButton();
+
         HasClickHandlers getCreateSupplierButton();
+
         HasClickHandlers getCreateDemandButton();
     }
-
     private DemandCreationPresenter demandCreation;
 
     public void bindView() {
         view.setHomeToken(getTokenGenerator().atHome());
 
-//        view.setCreateDemandToken(getTokenGenerator().atCreateDemand());
-// TODO praso - remove TokenGenerator that doesn't support linking between async modules.
-// normal buttons with HasClickHandler are used bellow in bind method
-
-//        view.setDisplayDemandsToken(getTokenGenerator().atDemands());
-
-//        view.setDisplaySuppliersToken(getTokenGenerator().atSuppliers());
-
-//        view.setRegisterSupplierToken(getTokenGenerator().atRegisterSupplier());
-
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeDemands();
+                eventBus.goToHomeDemands(null);
             }
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliers();
+                eventBus.goToHomeSuppliers(null);
             }
         });
         view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
@@ -77,6 +78,27 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
                 eventBus.goToCreateDemand();
             }
         });
+        view.getSearchView().getSearchAdvBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.showHideAdvancedSearchPanel(view.getSearchView().getContent(),
+                        view.getSearchView().getWhere().getSelectedIndex(),
+                        view.getSearchView().getCategory().getSelectedIndex(),
+                        view.getSearchView().getLocality().getSelectedIndex());
+            }
+        });
+        view.getSearchView().getSearchBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (view.getSearchView().getFilter().getWhere() == 0) {
+                    eventBus.goToHomeDemands(view.getSearchView().getFilter());
+                } else {
+                    eventBus.goToHomeSuppliers(view.getSearchView().getFilter());
+                }
+            }
+        });
     }
 
     public void onStart() {
@@ -89,6 +111,8 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public void onAtHome() {
         LOGGER.info("INIT Home Widget");
+        eventBus.getCategories();
+        eventBus.getLocalities();
         onDisplayMenu();
         // TODO initial homepage widget compilation
     }
@@ -116,5 +140,67 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     public void onAfterLoad() {
         // TODO praso -  hide wait loop
 //view.setWaitVisible( false );
+    }
+
+    /******** SEARCH PANEL ***********/
+    public void onShowHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx) {
+        if (view.getAdvancedSearchView().isVisible()) {
+            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0, 0, 0);
+            view.getAdvancedSearchView().setVisible(false);
+        } else {
+            view.getAdvancedSearchView().setBaseInfo(content, whereIdx, catIdx, locIdx);
+            view.getAdvancedSearchView().setVisible(true);
+        }
+    }
+
+    /**
+     * Fills category listBox with given list of localities.
+     * @param list - data (categories)
+     */
+    public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
+        final ListBox box1 = view.getSearchView().getCategory();
+        final ListBox box2 = view.getAdvancedSearchView().getCategory();
+        box1.clear();
+        box2.clear();
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                box1.addItem(MSGS.allCategories());
+                box2.addItem(MSGS.allCategories());
+                for (int i = 0; i < list.size(); i++) {
+                    box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
+                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
+                }
+                box1.setSelectedIndex(0);
+                box2.setSelectedIndex(0);
+                LOGGER.info("Category Lists filled");
+            }
+        });
+    }
+
+    /**
+     * Fills locality listBox with given list of localities.
+     * @param list - data (localities)
+     */
+    public void onSetLocalityData(final ArrayList<LocalityDetail> list) {
+        final ListBox box1 = view.getSearchView().getLocality();
+        final ListBox box2 = view.getAdvancedSearchView().getLocality();
+        box1.clear();
+        box2.clear();
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                box1.addItem(MSGS.allLocalities());
+                for (int i = 0; i < list.size(); i++) {
+                    box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
+                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
+                }
+                box1.setSelectedIndex(0);
+                box2.setSelectedIndex(0);
+                LOGGER.info("Locality Lists filled");
+            }
+        });
     }
 }

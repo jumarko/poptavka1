@@ -22,11 +22,11 @@ public class ClientDetail implements Serializable {
      */
     private static final long serialVersionUID = -530982467233195456L;
     private Long id;
-    private int overalRating;
-    private UserDetail userDetail;
-    private String verification;
-    private List<Long> supplierBlackListIds;
-    private List<Long> demandsIds;
+    private int overalRating = -1;
+    private UserDetail userDetail = null;
+    private String verification = null;
+    private List<Long> supplierBlackListIds = null;
+    private List<Long> demandsIds = null;
 
     /** for serialization. **/
     public ClientDetail() {
@@ -44,14 +44,20 @@ public class ClientDetail implements Serializable {
     public static ClientDetail createClientDetail(Client client) {
         ClientDetail detail = new ClientDetail();
         detail.setId(client.getId());
-        detail.setOveralRating(client.getOveralRating());
-        detail.setVerification(client.getVerification().name());
-        detail.setUserDetail(UserDetail.createUserDetail(client.getBusinessUser()));
-        List<Long> supplierBlackListIds = new ArrayList<Long>();
-        for (Supplier supplier : client.getSupplierBlacklist().getSuppliers()) {
-            supplierBlackListIds.add(supplier.getId());
+        if (client.getOveralRating() != null) {
+            detail.setOveralRating(client.getOveralRating());
         }
-        detail.setSupplierBlackListIds(supplierBlackListIds);
+        if (client.getVerification() != null) {
+            detail.setVerification(client.getVerification().name());
+        }
+        detail.setUserDetail(UserDetail.createUserDetail(client.getBusinessUser()));
+        if (client.getSupplierBlacklist() != null) {
+            List<Long> supplierBlackListIds = new ArrayList<Long>();
+            for (Supplier supplier : client.getSupplierBlacklist().getSuppliers()) {
+                supplierBlackListIds.add(supplier.getId());
+            }
+            detail.setSupplierBlackListIds(supplierBlackListIds);
+        }
 
         List<Long> demandsIds = new ArrayList<Long>();
         for (Demand demand : client.getDemands()) {
@@ -122,14 +128,16 @@ public class ClientDetail implements Serializable {
 
     @Override
     public String toString() {
-
-        return "\nGlobal Client Detail Info:"
-                + "\n    ClientId="
-                + id + "\n     overalRating="
-                + overalRating + "\n    UserDetail="
-                + userDetail.toString() + "\n    SupplierBlackListIds="
-                + supplierBlackListIds.toString() + "\n    DemandsIds="
-                + demandsIds.toString();
+//        StringBuilder str = new StringBuilder();
+//        str.append("\nGlobal Client Detail Info:");
+//        str.append("\n    ClientId=");
+//        str.append(id + "\n     overalRating=");
+//        str.append(Integer.valueOf(overalRating) + "\n    UserDetail=");
+//        str.append(userDetail.toString() + "\n    SupplierBlackListIds=");
+//        str.append(supplierBlackListIds.toString() + "\n    DemandsIds=");
+//        str.append(demandsIds.toString());
+//        return str.toString();
+        return "Client.toString() not implemented";
     }
 
     @Override

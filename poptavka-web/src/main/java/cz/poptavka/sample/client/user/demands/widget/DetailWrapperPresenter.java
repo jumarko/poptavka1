@@ -17,11 +17,11 @@ import cz.poptavka.sample.client.user.messages.OfferQuestionPresenter;
 import cz.poptavka.sample.client.user.messages.OfferWindowPresenter;
 import cz.poptavka.sample.client.user.messages.QuestionPresenter;
 import cz.poptavka.sample.client.user.messages.UserConversationPanel;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = DetailWrapperView.class, multiple = true)
@@ -199,15 +199,14 @@ public class DetailWrapperPresenter extends
     /**
      * CLIENT ONLY Display offer message from presenter. Client can react to it.
      *
-     * @param offerDetail
+     * @param fullOfferDetail
      *            offer detail
      */
-    public void onSetOfferMessage(OfferDetail offerDetail) {
+    public void onSetOfferMessage(FullOfferDetail fullOfferDetail) {
 
-        OfferWindowPresenter presenter = eventBus
-                .addHandler(OfferWindowPresenter.class);
-        presenter.setOfferDetail(offerDetail);
-        GWT.log("OFFER ID: " + offerDetail.getOfferId());
+        OfferWindowPresenter presenter = eventBus.addHandler(OfferWindowPresenter.class);
+        presenter.setFullOfferDetail(fullOfferDetail);
+        GWT.log("OFFER ID: " + fullOfferDetail.getOfferDetail().getId());
         view.getConversationPanel().addOfferMessagePresenter(presenter);
     }
 

@@ -5,19 +5,20 @@
 package cz.poptavka.sample.client.homedemands;
 
 import com.google.gwt.core.client.GWT;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -26,9 +27,13 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This presenter is to replace DemandsPresenter.java.
@@ -44,18 +49,11 @@ public class HomeDemandsPresenter extends BasePresenter<
 
     public interface HomeDemandsViewInterface {
 
-        void setDemand(FullDemandDetail demand);
-//        void setRegisterSupplierToken(String token);
-//
-//        void setAttachmentToken(String token);
-//
-//        void setLoginToken(String token);
+        DemandDetailView getDemandDetail();
+
+        SimplePanel getDemandDetailPanel();
 
         Widget getWidgetView();
-
-        ListBox getCategoryList();
-
-        ListBox getLocalityList();
 
         ListBox getPageSizeCombo();
 
@@ -67,8 +65,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
         Label getBannerLabel();
 
-        HTMLPanel getDemandView();
-
+//        HTMLPanel getDemandView();
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
     }
 
@@ -77,21 +74,6 @@ public class HomeDemandsPresenter extends BasePresenter<
      */
     @Override
     public void bind() {
-        view.getCategoryList().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                eventBus.filter();
-            }
-        });
-        view.getLocalityList().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                eventBus.filter();
-            }
-        });
-
         // Add a selection model to handle user selection.
         view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
@@ -100,10 +82,10 @@ public class HomeDemandsPresenter extends BasePresenter<
                 FullDemandDetail selected = view.getSelectionModel().getSelectedObject();
                 if (selected != null) {
                     view.getBannerLabel().setVisible(false);
-                    view.getDemandView().setVisible(true);
+                    view.getDemandDetailPanel().setVisible(true);
                     eventBus.setDemand(selected);
                 } else {
-                    view.getDemandView().setVisible(false);
+                    view.getDemandDetailPanel().setVisible(false);
                     view.getBannerLabel().setVisible(true);
                 }
             }
@@ -128,31 +110,6 @@ public class HomeDemandsPresenter extends BasePresenter<
         });
     }
 
-    public void onFilter() {
-        eventBus.loadingShow(MSGS.loading());
-        view.getDemandView().setVisible(false);
-        view.getBannerLabel().setVisible(true);
-        if (view.getLocalityList().getSelectedIndex() == 0) {
-            if (view.getCategoryList().getSelectedIndex() == 0) {
-                eventBus.getAllDemandsCount();
-            } else {
-                eventBus.getDemandsCountCategory(Long.valueOf(view.getCategoryList().getValue(
-                        view.getCategoryList().getSelectedIndex())));
-            }
-        } else {
-            if (view.getCategoryList().getSelectedIndex() == 0) {
-                eventBus.getDemandsCountLocality(view.getLocalityList().getValue(
-                        view.getLocalityList().getSelectedIndex()));
-            } else {
-                eventBus.getDemandsCountCategoryLocality(Long.valueOf(
-                        view.getCategoryList().getValue(
-                        view.getCategoryList().getSelectedIndex())),
-                        view.getLocalityList().getValue(
-                        view.getLocalityList().getSelectedIndex()));
-            }
-        }
-    }
-
     public void onStart() {
         // TODO praso - probably history initialization will be here
     }
@@ -161,11 +118,15 @@ public class HomeDemandsPresenter extends BasePresenter<
         // TODO praso - here we can switch css for selected menu button
         //eventBus.selectHomeDemandsMenuButton();
     }
+    private SearchDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
-    public void onGoToHomeDemands() {
-        eventBus.getAllDemandsCount();
-        eventBus.getCategories();
-        eventBus.getLocalities();
+    public void onGoToHomeDemands(SearchDataHolder searchDataHolder) {
+        this.searchDataHolder = searchDataHolder;
+        orderColumns.clear();
+        orderColumns.put(columnNames[0], OrderType.ASC);
+        eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+//        eventBus.getCategories();
+//        eventBus.getLocalities();
         // TODO praso - I have used autodispaly = true so this method shouldn't be necessary anymore
 //        eventBus.setBodyWidget(view.getWidgetView());
     }
@@ -175,6 +136,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     private long resultCount = 0;
 
     public void onCreateAsyncDataProvider() {
+        this.start = 0;
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
@@ -185,25 +147,47 @@ public class HomeDemandsPresenter extends BasePresenter<
 
                 if (resultSource.equals("all")) {
                     eventBus.getDemands(start, start + length);
-                } else if (resultSource.equals("category")) {
-                    eventBus.getDemandsByCategories(start, start + length,
-                            Long.valueOf(view.getCategoryList().getValue(
-                            view.getCategoryList().getSelectedIndex())));
-                } else if (resultSource.equals("locality")) {
-                    eventBus.getDemandsByLocalities(start, start + length,
-                            view.getLocalityList().getValue(
-                            view.getLocalityList().getSelectedIndex()));
-                } else if (resultSource.equals("categoryLocality")) {
-                    eventBus.getDemandsByCategoriesLocalities(start, start + length,
-                            Long.valueOf(view.getCategoryList().getValue(
-                            view.getCategoryList().getSelectedIndex())),
-                            view.getLocalityList().getValue(
-                            view.getLocalityList().getSelectedIndex()));
+                } else if (resultSource.equals("filter")) {
+                    eventBus.filterDemands(start, start + length, searchDataHolder);
                 }
+
                 eventBus.loadingHide();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
+    }
+    private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    //list of grid columns, used to sort them. First must by blank (checkbox in table)
+    private final String[] columnNames = new String[]{
+        "createdDate", "category", "title", "locality", "price"
+    };
+    private List<String> gridColumns = Arrays.asList(columnNames);
+
+    public void createAsyncSortHandler() {
+        createAsyncSortHandler();
+        //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
+        sortHandler = new AsyncHandler(view.getDataGrid()) {
+
+            @Override
+            public void onColumnSort(ColumnSortEvent event) {
+                orderColumns.clear();
+                OrderType orderType = OrderType.DESC;
+                if (event.isSortAscending()) {
+                    orderType = OrderType.ASC;
+                }
+                Column<FullDemandDetail, String> column = (Column<FullDemandDetail, String>) event.getColumn();
+                if (column == null) {
+                    return;
+                }
+                orderColumns.put(gridColumns.get(
+                        view.getDataGrid().getColumnIndex(column)), orderType);
+
+//                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+            }
+        };
+        view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onSetResultSource(String source) {
@@ -214,52 +198,6 @@ public class HomeDemandsPresenter extends BasePresenter<
         this.resultCount = count;
     }
 
-    /**
-     * Fills category listBox with given list of localities.
-     * @param list - data (categories)
-     */
-    public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
-        final ListBox box = view.getCategoryList();
-        box.clear();
-        box.setVisible(true);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                box.addItem("All categories...");
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(),
-                            String.valueOf(list.get(i).getId()));
-                }
-                box.setSelectedIndex(0);
-                LOGGER.info("Category List filled");
-            }
-        });
-    }
-
-    /**
-     * Fills locality listBox with given list of localities.
-     * @param list - data (localities)
-     */
-    public void onSetLocalityData(final ArrayList<LocalityDetail> list) {
-        final ListBox box = view.getLocalityList();
-        box.clear();
-        box.setVisible(true);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                box.addItem("All localities...");
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(),
-                            String.valueOf(list.get(i).getCode()));
-                }
-                box.setSelectedIndex(0);
-                LOGGER.info("Locality List filled");
-            }
-        });
-    }
-
     public void onDisplayDemands(List<FullDemandDetail> result) {
         dataProvider.updateRowData(start, result);
         view.getDataGrid().flush();
@@ -268,7 +206,8 @@ public class HomeDemandsPresenter extends BasePresenter<
     }
 
     public void onSetDemand(FullDemandDetail demand) {
-        view.getDemandView().setVisible(true);
-        view.setDemand(demand);
+        view.getDemandDetailPanel().setVisible(true);
+        view.getDemandDetail().setDemanDetail(demand);
+//        view.setDemand(demand);
     }
 }

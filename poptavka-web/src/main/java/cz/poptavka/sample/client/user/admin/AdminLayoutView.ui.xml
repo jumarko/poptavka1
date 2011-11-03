@@ -41,9 +41,9 @@
 					<li>
 						<g:Hyperlink ui:field="messagesLink">Message</g:Hyperlink>
 					</li>
-					<li>
+<!--					<li>
 						<g:Hyperlink ui:field="ourPaymentDetailsLink">OurPaymentDetails</g:Hyperlink>
-					</li>
+					</li>-->
 					<li>
 						<g:Hyperlink ui:field="paymentMethodsLink">PaymentMethod</g:Hyperlink>
 					</li>

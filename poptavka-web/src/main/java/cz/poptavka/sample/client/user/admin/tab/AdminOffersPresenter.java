@@ -32,8 +32,9 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
+import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.type.OfferStateType;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,17 +58,17 @@ public class AdminOffersPresenter
 
         Widget getWidgetView();
 
-        DataGrid<FullOfferDetail> getDataGrid();
+        DataGrid<OfferDetail> getDataGrid();
 
-        Column<FullOfferDetail, String> getPriceColumn();
+        Column<OfferDetail, String> getPriceColumn();
 
-        Column<FullOfferDetail, String> getOfferStatusColumn();
+        Column<OfferDetail, String> getOfferStatusColumn();
 
-        Column<FullOfferDetail, Date> getOfferCreationDateColumn();
+        Column<OfferDetail, Date> getOfferCreationDateColumn();
 
-        Column<FullOfferDetail, Date> getOfferFinishDateColumn();
+        Column<OfferDetail, Date> getOfferFinishDateColumn();
 
-        SingleSelectionModel<FullOfferDetail> getSelectionModel();
+        SingleSelectionModel<OfferDetail> getSelectionModel();
 
         SimplePanel getAdminSupplierDetail();
 
@@ -92,14 +93,15 @@ public class AdminOffersPresenter
         this.start = 0;
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
-        dataProvider = new AsyncDataProvider<FullOfferDetail>() {
+        dataProvider = new AsyncDataProvider<OfferDetail>() {
 
             @Override
-            protected void onRangeChanged(HasData<FullOfferDetail> display) {
+            protected void onRangeChanged(HasData<OfferDetail> display) {
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedDemands(start, start + length, orderColumns);
+                eventBus.getAdminDemands(start, start + length);
+//                 eventBus.getSortedDemands(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -125,7 +127,7 @@ public class AdminOffersPresenter
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }
-                Column<FullOfferDetail, String> column = (Column<FullOfferDetail, String>) event.getColumn();
+                Column<OfferDetail, String> column = (Column<OfferDetail, String>) event.getColumn();
                 if (column == null) {
                     return;
                 }
@@ -143,7 +145,7 @@ public class AdminOffersPresenter
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabOffers(List<FullOfferDetail> demands) {
+    public void onDisplayAdminTabOffers(List<OfferDetail> demands) {
         dataProvider.updateRowData(start, demands);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
@@ -151,28 +153,28 @@ public class AdminOffersPresenter
 
     @Override
     public void bind() {
-        view.getPriceColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, String>() {
+        view.getPriceColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
 
             @Override
-            public void update(int index, FullOfferDetail object, String value) {
-                if (!object.getPriceString().equals(value)) {
-                    if (!originalData.containsKey(object.getOfferId())) {
-                        originalData.put(object.getOfferId(), new FullOfferDetail(object));
+            public void update(int index, OfferDetail object, String value) {
+                if (!object.getPrice().toString().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new OfferDetail(object));
                     }
-                    object.setPrice(value);
+                    object.setPrice(BigDecimal.valueOf(Long.valueOf(value)));
                     eventBus.addOfferToCommit(object);
                 }
             }
         });
-        view.getOfferStatusColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, String>() {
+        view.getOfferStatusColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
 
             @Override
-            public void update(int index, FullOfferDetail object, String value) {
+            public void update(int index, OfferDetail object, String value) {
                 for (OfferStateType state : OfferStateType.values()) {
                     if (state.getValue().equals(value)) {
                         if (!object.getState().equals(state.name())) {
                             if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getOfferId(), new FullOfferDetail(object));
+                                originalData.put(object.getId(), new OfferDetail(object));
                             }
                             object.setState(state.name());
                             eventBus.addOfferToCommit(object);
@@ -181,13 +183,13 @@ public class AdminOffersPresenter
                 }
             }
         });
-        view.getOfferFinishDateColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, Date>() {
+        view.getOfferFinishDateColumn().setFieldUpdater(new FieldUpdater<OfferDetail, Date>() {
 
             @Override
-            public void update(int index, FullOfferDetail object, Date value) {
+            public void update(int index, OfferDetail object, Date value) {
                 if (!object.getFinishDate().equals(object)) {
                     if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getOfferId(), new FullOfferDetail(object));
+                        originalData.put(object.getId(), new OfferDetail(object));
                     }
                     object.setFinishDate(value);
                     eventBus.addOfferToCommit(object);
@@ -240,9 +242,9 @@ public class AdminOffersPresenter
                 dataToUpdate.clear();
                 view.getDataGrid().setFocus(true);
                 int idx = 0;
-                for (FullOfferDetail data : originalData.values()) {
+                for (OfferDetail data : originalData.values()) {
                     idx = view.getDataGrid().getVisibleItems().indexOf(data);
-                    view.getDataGrid().getVisibleItem(idx).updateWholeOffer(data);
+                    view.getDataGrid().getVisibleItem(idx).updateWholeOfferDetail(data);
                 }
                 view.getDataGrid().flush();
                 view.getDataGrid().redraw();
@@ -267,10 +269,10 @@ public class AdminOffersPresenter
             }
         });
     }
-    private Map<Long, FullOfferDetail> dataToUpdate = new HashMap<Long, FullOfferDetail>();
-    private Map<Long, FullOfferDetail> originalData = new HashMap<Long, FullOfferDetail>();
+    private Map<Long, OfferDetail> dataToUpdate = new HashMap<Long, OfferDetail>();
+    private Map<Long, OfferDetail> originalData = new HashMap<Long, OfferDetail>();
 
-    public void onAddOfferToCommit(FullOfferDetail data) {
+    public void onAddOfferToCommit(OfferDetail data) {
         dataToUpdate.remove(data.getDemandId());
         dataToUpdate.put(data.getDemandId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));

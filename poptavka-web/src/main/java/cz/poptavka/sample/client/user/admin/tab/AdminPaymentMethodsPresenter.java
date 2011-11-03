@@ -24,7 +24,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -76,8 +75,6 @@ public class AdminPaymentMethodsPresenter
 
         SingleSelectionModel<PaymentMethodDetail> getSelectionModel();
 
-        SimplePanel getAdminDemandDetail();
-
         SimplePager getPager();
 
         int getPageSize();
@@ -102,7 +99,7 @@ public class AdminPaymentMethodsPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminPaymentMethodAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
@@ -113,7 +110,8 @@ public class AdminPaymentMethodsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedDemands(start, start + length, orderColumns);
+                eventBus.getAdminPaymentMethods(start, start + length);
+//                eventBus.getSortedDemands(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -140,25 +138,21 @@ public class AdminPaymentMethodsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedPaymentMethods(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminPaymentMethods() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminPaymentMethodsCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<PaymentMethodDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabPaymentMethods(List<PaymentMethodDetail> lis) {
+        dataProvider.updateRowData(start, lis);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-    }
-
-    public void onResponseAdminDemandDetail(Widget widget) {
-        view.getAdminDemandDetail().setWidget(widget);
     }
 
     @Override
@@ -248,7 +242,7 @@ public class AdminPaymentMethodsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminPaymentMethodsCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -257,7 +251,7 @@ public class AdminPaymentMethodsPresenter
     }
     private Boolean detailDisplayed = false;
 
-    public void onAddDemandToCommit(PaymentMethodDetail data, String dataType) {
+    public void onAddPaymentMethodToCommit(PaymentMethodDetail data) {
         dataToUpdate.remove(data.getId());
         dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
@@ -265,7 +259,7 @@ public class AdminPaymentMethodsPresenter
         view.getDataGrid().redraw();
     }
 
-    public void onSetDetailDisplayedDemand(Boolean displayed) {
+    public void onSetDetailDisplayedPaymentMethod(Boolean displayed) {
         detailDisplayed = displayed;
     }
 }

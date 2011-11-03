@@ -6,7 +6,6 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mvp4g.client.annotation.Debug;
@@ -16,9 +15,10 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.Map;
 
 /**
  * TODO praso - Add history management.
@@ -50,7 +50,7 @@ public interface HomeDemandsEventBus extends EventBus {
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
     @Event(handlers = HomeDemandsPresenter.class)
-    void goToHomeDemands();
+    void goToHomeDemands(SearchDataHolder filter);
 
     /* Parent events. */
     /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */
@@ -62,12 +62,12 @@ public interface HomeDemandsEventBus extends EventBus {
 
     /* Business events. */
     /* Business events handled by Presenters. */
-    @Event(handlers = HomeDemandsPresenter.class)
-    void setLocalityData(ArrayList<LocalityDetail> list);
+//    @Event(handlers = HomeDemandsPresenter.class)
+//    void setLocalityData(ArrayList<LocalityDetail> list);
 
     //Display
-    @Event(handlers = HomeDemandsPresenter.class)
-    void setCategoryData(ArrayList<CategoryDetail> list);
+//    @Event(handlers = HomeDemandsPresenter.class)
+//    void setCategoryData(ArrayList<CategoryDetail> list);
 
     @Event(handlers = HomeDemandsPresenter.class)
     void setResultSource(String resultSource);
@@ -84,12 +84,15 @@ public interface HomeDemandsEventBus extends EventBus {
     @Event(handlers = HomeDemandsPresenter.class)
     void setDemand(FullDemandDetail demand);
 
-    @Event(handlers = HomeDemandsPresenter.class)
-    void filter();
+//    @Event(handlers = HomeDemandsPresenter.class)
+//    void filter();
 
     /* Business events handled by Handlers. */
     @Event(handlers = HomeDemandsHandler.class)
     void getAllDemandsCount();
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns);
 
     @Event(handlers = HomeDemandsHandler.class)
     void getDemandsCountCategory(long id);
@@ -104,6 +107,9 @@ public interface HomeDemandsEventBus extends EventBus {
     void getDemands(int fromResult, int toResult);
 
     @Event(handlers = HomeDemandsHandler.class)
+    void filterDemands(int start, int count, SearchDataHolder detail);
+
+    @Event(handlers = HomeDemandsHandler.class)
     void getDemandsByCategories(int fromResult, int toResult, long id);
 
     @Event(handlers = HomeDemandsHandler.class)
@@ -112,9 +118,9 @@ public interface HomeDemandsEventBus extends EventBus {
     @Event(handlers = HomeDemandsHandler.class)
     void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
 
-    @Event(handlers = HomeDemandsHandler.class)
-    void getCategories();
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getLocalities();
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getCategories();
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getLocalities();
 }

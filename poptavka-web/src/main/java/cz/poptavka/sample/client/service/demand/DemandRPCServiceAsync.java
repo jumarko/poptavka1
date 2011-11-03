@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -72,4 +73,9 @@ public interface DemandRPCServiceAsync {
 
     void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullDemandDetail>> callback);
+
+    void filterDemands(int start, int count, SearchDataHolder detail,
+            AsyncCallback<List<FullDemandDetail>> callback);
+
+    void filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns, AsyncCallback<Long> callback);
 }

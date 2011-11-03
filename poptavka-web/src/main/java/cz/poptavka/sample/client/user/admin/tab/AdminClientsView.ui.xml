@@ -41,7 +41,7 @@
                                     <g:Button ui:field="refresh">Refresh</g:Button>
                                     <g:Button ui:field="commit">Commit changes</g:Button>
                                     <g:Button ui:field="rollback">Rollback changes</g:Button>
-                                    <g:Label>Demands changed: </g:Label>
+                                    <g:Label>Clients changed: </g:Label>
                                     <g:Label ui:field="changesLabel"></g:Label>
                                 </g:HorizontalPanel>
                             </td>
@@ -52,7 +52,7 @@
         </g:west>
         <g:center>
             <g:ScrollPanel>
-                <g:SimplePanel ui:field="adminDemandDetail"></g:SimplePanel>
+                <g:SimplePanel ui:field="adminClientDetail"></g:SimplePanel>
             </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>

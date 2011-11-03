@@ -27,8 +27,7 @@ public class AdminLayoutView extends Composite
     @UiField
     Hyperlink demandsLink, offersLink, clientsLink, suppliersLink,
     accessRolesLink, emailActivationsLink, invoicesLink, messagesLink,
-    ourPaymentDetailsLink, paymentMethodsLink, permissionsLink,
-    preferencesLink, problemsLink;
+    paymentMethodsLink, permissionsLink, preferencesLink, problemsLink; //ourPaymentDetailsLink,
 
     public AdminLayoutView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -85,10 +84,10 @@ public class AdminLayoutView extends Composite
         messagesLink.setTargetHistoryToken(linkString);
     }
 
-    @Override
-    public void setOurPaymentDetailsToken(String linkString) {
-        ourPaymentDetailsLink.setTargetHistoryToken(linkString);
-    }
+//    @Override
+//    public void setOurPaymentDetailsToken(String linkString) {
+//        ourPaymentDetailsLink.setTargetHistoryToken(linkString);
+//    }
 
     @Override
     public void setPaymentMethodToken(String linkString) {

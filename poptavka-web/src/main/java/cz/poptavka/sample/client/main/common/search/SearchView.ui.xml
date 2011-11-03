@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:style>
+        .important {
+            font-weight: bold;
+            font-style: italic;
+        }
+    </ui:style>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
+        
+    <g:HTMLPanel ui:field="container">
+        <!-- menu -->
+        <div ui:field="searchMenu">
+            <ul ui:field="searchList">
+                <li>
+                    <g:TextBox ui:field="content">
+                        <ui:msg key="searchContent">search...</ui:msg>
+                    </g:TextBox>
+                </li>
+                <li>
+                    <g:ListBox ui:field="where"></g:ListBox>
+                </li>
+                <li>
+                    <g:ListBox ui:field="category"></g:ListBox>
+                </li>
+                <li>
+                    <g:ListBox ui:field="locality"></g:ListBox>
+                </li>
+                <li>
+                    <g:Button ui:field="searchBtn" styleName='{res.layout.homeMenu}'>
+                        <ui:msg key="search">Search</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="searchAdvBtn" styleName='{res.layout.homeMenu}'>
+                        <ui:msg key="advancedSearch">Adv.Search</ui:msg>
+                    </g:Button>
+                </li>
+            </ul>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

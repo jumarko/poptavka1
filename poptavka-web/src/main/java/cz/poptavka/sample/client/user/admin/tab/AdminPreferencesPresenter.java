@@ -113,7 +113,8 @@ public class AdminPreferencesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedPreferences(start, start + length, orderColumns);
+//                eventBus.getSortedPreferences(start, start + length, orderColumns);
+                eventBus.getAdminPreferences(start, start + length);
                 eventBus.loadingHide();
             }
         };

@@ -83,6 +83,7 @@ public class FullDemandDetail implements Serializable {
         detail.setTitle(demand.getTitle());
         detail.setDescription(demand.getDescription());
         detail.setPrice(demand.getPrice());
+        detail.setCreated(demand.getCreatedDate());
         detail.setEndDate(demand.getEndDate());
         detail.setValidToDate(demand.getValidTo());
         detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
@@ -143,6 +144,7 @@ public class FullDemandDetail implements Serializable {
         title = demand.getTitle();
         description = demand.getDescription();
         price = demand.getPrice();
+        created = demand.getCreated();
         endDate = demand.getEndDate();
         validToDate = demand.getValidToDate();
         maxOffers = demand.getMaxOffers();

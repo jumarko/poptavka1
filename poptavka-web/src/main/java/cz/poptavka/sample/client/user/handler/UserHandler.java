@@ -13,10 +13,10 @@ import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 import java.util.ArrayList;
 
@@ -95,7 +95,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetDemandOffers(long demandId, long threadRootId) {
-        offerService.getDemandOffers(demandId, threadRootId, new AsyncCallback<ArrayList<OfferDetail>>() {
+        offerService.getDemandOffers(demandId, threadRootId, new AsyncCallback<ArrayList<FullOfferDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -103,7 +103,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(ArrayList<OfferDetail> offers) {
+            public void onSuccess(ArrayList<FullOfferDetail> offers) {
                 eventBus.setDemandOffers(offers);
             }
         });

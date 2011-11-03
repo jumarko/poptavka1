@@ -124,7 +124,8 @@ public class AdminOurPaymentDetailsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedOurPaymentDetails(start, start + length, orderColumns);
+                eventBus.getAdminOurPaymentDetails(start, start + length);
+//                eventBus.getSortedOurPaymentDetails(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -277,7 +278,7 @@ public class AdminOurPaymentDetailsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateDemand(dataToUpdate.get(idx));
+//                        eventBus.updateOurPaymentDetail(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

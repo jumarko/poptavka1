@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.OfferRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
-import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
@@ -31,11 +29,8 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 /**
  *
@@ -130,9 +125,9 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     }
 
     @Override
-    public ArrayList<OfferDetail> getDemandOffers(long demandId, long threadRootId) {
+    public ArrayList<FullOfferDetail> getDemandOffers(long demandId, long threadRootId) {
 //        List<Offer> offers = this.demandService.getById(demandId).getOffers();
-        ArrayList<OfferDetail> offerDetails = new ArrayList<OfferDetail>();
+        ArrayList<FullOfferDetail> offerDetails = new ArrayList<FullOfferDetail>();
         Message threadRoot = this.messageService.getById(threadRootId);
         ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getAllOfferMessagesForDemand(threadRoot);
         // retrieve userMessages for each message
@@ -145,22 +140,18 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
         for (UserMessage userMessage : userMessages) {
             Message message = userMessage.getMessage();
-            OfferDetail o = new OfferDetail();
-            Offer offer = message.getOffer();
-            o.setOfferId(offer.getId());
-            o.setMessageDetail(MessageDetail.createMessageDetail(message));
-            // TODO zmenit LOng na maly long v setovacej metode
-            o.setDemandId(Long.valueOf(demandId));
+
+            FullOfferDetail fullOfferDetail = FullOfferDetail.createOfferDetail(message);
+
+            List<Number> revisions = auditService.getRevisions(Offer.class, message.getOffer().getId());
+            //get first occurance, should by the oldest
+            Date createdDate = auditService.getRevisionDate(revisions.get(0));
+
+            fullOfferDetail.getOfferDetail().setCreatedDate(createdDate);
             // TODO ivlcek what is this?
-            o.setIsRead(userMessage.isIsRead());
-            o.setFinishDate(offer.getFinishDate());
-            o.setMessageId(message.getId());
-            // TODO add offer state to OfferDetail
-            o.setState(offer.getState().getCode());
-            o.setPrice(offer.getPrice());
-            o.setSupplierId(offer.getSupplier().getId());
-            o.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
-            offerDetails.add(o);
+            fullOfferDetail.setIsRead(userMessage.isIsRead());
+
+            offerDetails.add(fullOfferDetail);
 
         }
         return offerDetails;
@@ -168,10 +159,10 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
     @Override
     public OfferDetail changeOfferState(OfferDetail offerDetail) {
-        System.out.println("OFFER ID: " + offerDetail.getOfferId());
+        System.out.println("OFFER ID: " + offerDetail.getId());
         System.out.println("is service: " + (generalService == null));
 
-        Offer offer = this.generalService.find(Offer.class, offerDetail.getOfferId());
+        Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
 
         System.out.println("is Offer null: " + (offer == null));
 
@@ -184,47 +175,16 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
     @Override
     public FullOfferDetail updateOffer(FullOfferDetail newOffer) {
-        Offer offer = offerService.getById(newOffer.getOfferId());
+        Offer offer = offerService.getById(newOffer.getOfferDetail().getId());
 
-        OfferState state = offerService.getOfferState(newOffer.getState());
+        OfferState state = offerService.getOfferState(newOffer.getOfferDetail().getState());
         if (state != null) {
             offer.setState(state);
         }
-        offer.setPrice(newOffer.getPrice());
-        offer.setFinishDate(newOffer.getFinishDate());
+        offer.setPrice(newOffer.getOfferDetail().getPrice());
+        offer.setFinishDate(newOffer.getOfferDetail().getFinishDate());
 
         offerService.update(offer);
         return newOffer;
-    }
-
-    @Override
-    public Long getAllOffersCount() {
-        return offerService.getCount();
-    }
-
-    @Override
-    public List<FullOfferDetail> getOffers(int fromResult, int toResult) {
-        final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(fromResult).maxResults(toResult).build();
-        return this.createOfferDetailList(offerService.getAll(resultCriteria));
-    }
-
-    @Override
-    public List<FullOfferDetail> getSortedOffers(int start, int count, Map<String, OrderType> orderColumns) {
-        final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(count).orderByColumns(orderColumns).build();
-        return this.createOfferDetailList(offerService.getAll(resultCriteria));
-    }
-
-    private List<FullOfferDetail> createOfferDetailList(Collection<Offer> offers) {
-        List<FullOfferDetail> fullOfferDetail = new ArrayList<FullOfferDetail>();
-        for (Offer offer : offers) {
-            List<Number> revisions = auditService.getRevisions(Demand.class, offer.getId());
-            Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullOfferDetail offerDetail = FullOfferDetail.crateOfferDetail(offer);
-            offerDetail.setCreated(createdDate);
-            fullOfferDetail.add(offerDetail);
-        }
-        return fullOfferDetail;
     }
 }

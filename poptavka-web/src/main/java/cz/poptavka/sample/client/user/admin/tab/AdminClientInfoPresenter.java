@@ -37,7 +37,7 @@ public class AdminClientInfoPresenter
     public void onShowAdminClientDetail(ClientDetail selectedObject) {
 //        eventBus.displayContent(view.getWidgetView());
         view.setClientDetail(selectedObject);
-        eventBus.responseAdminSupplierDetail(view.getWidgetView());
+        eventBus.responseAdminClientDetail(view.getWidgetView());
 
     }
 

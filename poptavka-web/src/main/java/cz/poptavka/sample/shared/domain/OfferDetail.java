@@ -4,93 +4,89 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.google.gwt.core.client.GWT;
 
-import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.offer.Offer;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
-public class OfferDetail extends MessageDetail implements Serializable {
+public class OfferDetail implements Serializable {
 
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -563380651738612866L;
+    // OfferDetail
+    private long id;
     private BigDecimal price;
-    // TODO remove dipslpayed
-    private boolean isRead;
-    private Date finishDate;
-    private long supplierId;
-    private long messageId;
-    private long offerId;
-    private String supplierName;
-    private MessageDetail messageDetail;
     private String state;
+    private Date createdDate;
+    private Date finishDate;
+    //Demand info
+    private long demandId;
+    private String demandTitle;
+    //Supplier info
+    private long supplierId;
+    private String supplierName;
 
-    public static OfferDetail generateOfferDetail(Message message) {
-        MessageDetail m = new MessageDetail();
-        m.setMessageId(message.getId());
-        m.setBody(message.getBody());
-        m.setCreated(message.getCreated());
-//        m.setFirstBornId(serialVersionUID);
-        m.setMessageState(message.getMessageState().name());
-//        m.setNexSiblingId(serialVersionUID);
-        m.setParentId(message.getParent().getId());
-//        m.setReceiverId();
-        m.setSenderId(message.getSender().getId());
-        m.setSent(message.getSent());
-        m.setSubject(message.getSubject());
-        m.setThreadRootId(message.getThreadRoot().getId());
+    public static OfferDetail createOfferDetail(Offer offer) {
         OfferDetail o = new OfferDetail();
-        Offer offer = message.getOffer();
-        o.setFinishDate(offer.getFinishDate());
-        o.setMessageDetail(m);
-        // tofo ivlcek verify id
-        o.setMessageId(m.getMessageId());
+        //offer info
+        o.setId(offer.getId());
         o.setPrice(offer.getPrice());
-        o.setSupplierId(offer.getSupplier().getId());
-        o.setDemandId(offer.getDemand().getId());
-        o.setOfferId(offer.getId());
-        GWT.log("OFFER ID: " + offer.getId() + ", OFFER DETAIL ID: " + o.getOfferId());
-        // TODO ivlcek - opravit na nieco rozumne
         o.setState(offer.getState().getCode());
+        o.setCreatedDate(offer.getCreated());
+        o.setFinishDate(offer.getFinishDate());
+        //demand info
+        o.setDemandId(offer.getDemand().getId());
+        o.setDemandTitle(offer.getDemand().getTitle());
+        //supplier info
+        o.setSupplierId(offer.getSupplier().getId());
+        o.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
         return o;
     }
 
     public OfferDetail() {
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public OfferDetail(OfferDetail offerDetail) {
+        this.updateWholeOfferDetail(offerDetail);
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void updateWholeOfferDetail(OfferDetail detail) {
+        id = detail.getId();
+        price = detail.getPrice();
+        state = detail.getState();
+        createdDate = detail.getCreatedDate();
+        finishDate = detail.getFinishDate();
+
+        //Demand info
+        demandId = detail.getDemandId();
+        demandTitle = detail.getDemandTitle();
+        //Supplier info
+        supplierId = detail.getSupplierId();
+        supplierName = detail.getSupplierName();
     }
 
-    public void setPrice(String price) {
-        long priceLong = Long.parseLong(price);
-        this.price = BigDecimal.valueOf(priceLong);
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setDemandId(Long demandId) {
-        this.getMessageDetail().setDemandId(demandId);
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public long getDemandId() {
-        return this.getMessageDetail().getDemandId();
+        return demandId;
     }
 
-    public String getPriceString() {
-        return price.toPlainString();
+    public void setDemandId(long demandId) {
+        this.demandId = demandId;
     }
 
-    public boolean getIsRead() {
-        return isRead;
+    public String getDemandTitle() {
+        return demandTitle;
     }
 
-    public void setIsRead(boolean isRead) {
-        this.isRead = isRead;
+    public void setDemandTitle(String demandTitle) {
+        this.demandTitle = demandTitle;
     }
 
     public Date getFinishDate() {
@@ -101,6 +97,14 @@ public class OfferDetail extends MessageDetail implements Serializable {
         this.finishDate = finishDate;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getSupplierId() {
         return supplierId;
     }
@@ -109,67 +113,27 @@ public class OfferDetail extends MessageDetail implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public void setMessageId(long id) {
-        this.messageId = id;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public long getMessageId() {
-        return messageId;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    /**
-     * @return the messageDetail
-     */
-    public MessageDetail getMessageDetail() {
-        return messageDetail;
-    }
-
-    /**
-     * @param messageDetail the messageDetail to set
-     */
-    public void setMessageDetail(MessageDetail messageDetailImpl) {
-        this.messageDetail = messageDetailImpl;
-    }
-
-    /**
-     * @return the supplierName
-     */
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    /**
-     * @param supplierName the supplierName to set
-     */
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
-    /**
-     * @return the state
-     */
     public String getState() {
         return state;
     }
 
-    /**
-     * @param state the state to set
-     */
     public void setState(String state) {
         this.state = state;
     }
 
-    /**
-     * @return the offerId
-     */
-    public long getOfferId() {
-        return offerId;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    /**
-     * @param offerId the offerId to set
-     */
-    public void setOfferId(long offerId) {
-        this.offerId = offerId;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 }

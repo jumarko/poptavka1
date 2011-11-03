@@ -22,7 +22,10 @@ import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchHandler;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -48,19 +51,10 @@ public interface HomeEventBus extends EventBus {
     String atHome();
 
     @Event(modulesToLoad = HomeSuppliersModule.class)
-    void goToHomeSuppliers();
+    void goToHomeSuppliers(SearchDataHolder filter);
 
     @Event(modulesToLoad = HomeDemandsModule.class)
-    void goToHomeDemands();
-
-    // TODO praso - will be replaced by separate module.
-//    @Event(handlers = DemandCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
-//    String atCreateDemand();
-
-//    @Event(handlers = RootPresenter.class, historyConverter = HomeHistoryConverter.class)
-//    String createToken(String token);
-//    @Event(handlers = SupplierCreationPresenter.class, historyConverter = HomeHistoryConverter.class)
-//    String atRegisterSupplier();
+    void goToHomeDemands(SearchDataHolder filter);
 
     @Event(modulesToLoad = SupplierCreationModule.class)
     void goToCreateSupplier();
@@ -98,7 +92,6 @@ public interface HomeEventBus extends EventBus {
 //    /* main module calls - common widgets */
 //    @Event(forwardToParent = true)
 //    void initDemandBasicForm(SimplePanel holderWidget);
-
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget);
 
@@ -107,25 +100,21 @@ public interface HomeEventBus extends EventBus {
 
 //    @Event(forwardToParent = true)
 //    void initDemandAdvForm(SimplePanel holderWidget);
-
 //    @Event(forwardToParent = true)
 //    void initServiceForm(SimplePanel serviceHolder);
 //
 //    @Event(forwardToParent = true)
 //    void initSupplierForm(SimplePanel supplierInfoHolder);
-
     /** main module calls - Handler calls
      * TODO praso - I don't like this. Rework it!
      */
 //    @Event(forwardToParent = true)
 //    void createDemand(FullDemandDetail newDemand, Long clientId);
-
     @Event(forwardToParent = true)
     void getRootCategories();
 
 //    @Event(forwardToParent = true)
 //    void checkFreeEmail(String value);
-
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by Presenters. */
@@ -159,40 +148,32 @@ public interface HomeEventBus extends EventBus {
     void afterLoad();
 //<<<<<<< .mine
 //
+
     @Event(forwardToParent = true)
     void atAccount();
-//=======
 
     /** demand creation related events. **/
 //    @Event(handlers = FormLoginPresenter.class)
 //    void initLoginForm(SimplePanel holderWidget);
-
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void toggleLoginRegistration();
-
     // TODO praso - this should be moved somewhere else. Bud I don't know where :)
 //    @Event(handlers = FormUserRegistrationPresenter.class, passive = true)
 //    void checkFreeEmailResponse(Boolean result);
 //    void checkFreeEmailResponse();
-
 //    @Event(handlers = FormUserRegistrationPresenter.class)
 //    void initRegistrationForm(SimplePanel holderWidget);
     //logic flow order representing registering client and then creating his demand
-
 //    @Event(handlers = HomeHandler.class)
 //    void registerNewClient(UserDetail newClient);
-
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void prepareNewDemandForNewClient(UserDetail client);
-
     //alternative way of loging - verifying
 //    @Event(handlers = HomeHandler.class)
 //    void verifyExistingClient(UserDetail client);
     //error output
-
 //    @Event(handlers = DemandCreationPresenter.class)
 //    void loginError();
-
     /** Home category display widget and related call. */
     @Event(handlers = CategoryDisplayPresenter.class)
     void initCategoryDisplay(SimplePanel holderWidget);
@@ -204,5 +185,19 @@ public interface HomeEventBus extends EventBus {
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
     /* Business events handled by Handlers. */
-//>>>>>>> .r748
+    /********* SEARCH PANEL **********************/
+    @Event(handlers = HomePresenter.class)
+    void showHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx);
+
+    @Event(handlers = SearchHandler.class)
+    void getCategories();
+
+    @Event(handlers = SearchHandler.class)
+    void getLocalities();
+
+    @Event(handlers = HomePresenter.class)
+    void setCategoryData(ArrayList<CategoryDetail> list);
+
+    @Event(handlers = HomePresenter.class)
+    void setLocalityData(ArrayList<LocalityDetail> list);
 }

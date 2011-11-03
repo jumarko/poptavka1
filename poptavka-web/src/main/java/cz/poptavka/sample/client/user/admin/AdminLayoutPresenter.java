@@ -40,7 +40,7 @@ public class AdminLayoutPresenter extends BasePresenter<AdminLayoutPresenter.Adm
 
         void setMessageToken(String linkString);
 
-        void setOurPaymentDetailsToken(String linkString);
+//        void setOurPaymentDetailsToken(String linkString);
 
         void setPaymentMethodToken(String linkString);
 
@@ -63,7 +63,7 @@ public class AdminLayoutPresenter extends BasePresenter<AdminLayoutPresenter.Adm
         view.setEmailActivationToken(getTokenGenerator().invokeAdminEmailActivations());
         view.setInvoiceToken(getTokenGenerator().invokeAdminInvoices());
         view.setMessageToken(getTokenGenerator().invokeAdminMessages());
-        view.setOurPaymentDetailsToken(getTokenGenerator().invokeAdminOurPaymentDetails());
+//        view.setOurPaymentDetailsToken(getTokenGenerator().invokeAdminOurPaymentDetails());
         view.setPaymentMethodToken(getTokenGenerator().invokeAdminPaymentMethods());
         view.setPermissionToken(getTokenGenerator().invokeAdminPermissions());
         view.setPreferenceToken(getTokenGenerator().invokeAdminPreferences());

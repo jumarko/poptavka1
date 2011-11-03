@@ -12,6 +12,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -44,7 +45,7 @@ public interface HomeSuppliersEventBus extends EventBus {
      * fragment.
      */
     @Event(handlers = SuppliersPresenter.class)
-    void goToHomeSuppliers();
+    void goToHomeSuppliers(SearchDataHolder searchDataHolder);
 
     /**
      * Display root categories.
@@ -118,4 +119,10 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     @Event(handlers = SuppliersHandler.class)
     void getSuppliersCountByCategoryLocality(Long category, String locality);
+
+    @Event(handlers = SuppliersHandler.class)
+    void filterSuppliersCount(SearchDataHolder detail);
+
+    @Event(handlers = SuppliersHandler.class)
+    void filterSuppliers(int start, int count, SearchDataHolder detail);
 }

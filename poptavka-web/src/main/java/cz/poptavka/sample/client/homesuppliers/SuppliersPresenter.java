@@ -23,6 +23,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -171,7 +172,7 @@ public class SuppliersPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onGoToHomeSuppliers() {
+    public void onGoToHomeSuppliers(SearchDataHolder searchDataHolder) {
         eventBus.atSuppliers();
     }
 

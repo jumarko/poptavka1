@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -78,4 +79,8 @@ public interface DemandRPCService extends RemoteService {
     List<FullDemandDetail> getDemands(int fromResult, int toResult);
 
     List<FullDemandDetail> getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
+
+    long filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns);
+
+    List<FullDemandDetail> filterDemands(int start, int count, SearchDataHolder detail);
 }

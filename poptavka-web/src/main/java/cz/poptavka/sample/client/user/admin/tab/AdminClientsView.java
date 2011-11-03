@@ -9,7 +9,6 @@ import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -23,12 +22,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.ClientDetail;
-
 
 /**
  *
@@ -36,7 +33,7 @@ import cz.poptavka.sample.shared.domain.ClientDetail;
  */
 public class AdminClientsView extends Composite implements AdminClientsPresenter.AdminClientsInterface {
 
-    private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
+    private static AdminClientsViewUiBinder uiBinder = GWT.create(AdminClientsViewUiBinder.class);
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -93,14 +90,14 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     }
 
     /**
-     * @return the adminDemandDetail
+     * @return the adminClientDetail
      */
     @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
+    public SimplePanel getAdminClientDetail() {
+        return adminClientDetail;
     }
 
-    interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminClientsView> {
+    interface AdminClientsViewUiBinder extends UiBinder<Widget, AdminClientsView> {
     }
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
@@ -115,10 +112,10 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     @UiField(provided = true)
     ListBox pageSizeCombo;
     /**
-     * Detail of selected Demand.
+     * Detail of selected Client.
      */
     @UiField
-    SimplePanel adminDemandDetail;
+    SimplePanel adminClientDetail;
     /**
      * Data provider that will cell table with data.
      */
@@ -160,8 +157,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         pager.setDisplay(dataGrid);
 
         selectionModel = new SingleSelectionModel<ClientDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<ClientDetail>createCheckboxManager());
+        dataGrid.setSelectionModel(getSelectionModel());
 
         // Initialize the columns.
         initTableColumns();
@@ -213,7 +209,11 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
 
             @Override
             public String getValue(ClientDetail object) {
-                return Integer.toString(object.getOveralRating());
+                if (object.getOveralRating() == -1) {
+                    return "";
+                } else {
+                    return Integer.toString(object.getOveralRating());
+                }
             }
         });
     }
@@ -245,12 +245,8 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 return getter.getValue(object);
             }
         };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
-            column.setSortable(true);
-            dataGrid.addColumn(column, headerText);
-        }
+        column.setSortable(true);
+        dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }

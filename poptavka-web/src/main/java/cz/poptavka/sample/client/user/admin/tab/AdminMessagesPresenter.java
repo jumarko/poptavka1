@@ -25,7 +25,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -53,7 +52,7 @@ public class AdminMessagesPresenter
         extends BasePresenter<AdminMessagesPresenter.AdminMessagesInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("    AdminMessagesPresenter");
     private Map<Long, MessageDetail> dataToUpdate = new HashMap<Long, MessageDetail>();
     private Map<Long, MessageDetail> originalData = new HashMap<Long, MessageDetail>();
 
@@ -87,8 +86,6 @@ public class AdminMessagesPresenter
 
         SingleSelectionModel<MessageDetail> getSelectionModel();
 
-        SimplePanel getAdminDemandDetail();
-
         SimplePager getPager();
 
         int getPageSize();
@@ -113,7 +110,7 @@ public class AdminMessagesPresenter
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
+    public void onCreateAdminMessagesAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
         orderColumns.put(columnNames[2], OrderType.ASC);
@@ -124,7 +121,8 @@ public class AdminMessagesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedDemands(start, start + length, orderColumns);
+                eventBus.getAdminMessages(start, start + length);
+//                eventBus.getSortedMessages(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };
@@ -150,25 +148,21 @@ public class AdminMessagesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getSortedMessages(start, view.getPageSize(), orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onInvokeAdminMessages() {
-        eventBus.getAdminDemandsCount();
+        eventBus.getAdminMessagesCount();
         eventBus.displayAdminContent(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabDemands(List<MessageDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    public void onDisplayAdminTabMessages(List<MessageDetail> messages) {
+        dataProvider.updateRowData(start, messages);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-    }
-
-    public void onResponseAdminDemandDetail(Widget widget) {
-        view.getAdminDemandDetail().setWidget(widget);
     }
 
     @Override
@@ -181,7 +175,7 @@ public class AdminMessagesPresenter
                         originalData.put(object.getMessageId(), new MessageDetail(object));
                     }
                     object.setSubject(value);
-//                    eventBus.addMessageToCommit(object);
+                    eventBus.addMessageToCommit(object);
                 }
             }
         });
@@ -193,7 +187,7 @@ public class AdminMessagesPresenter
                         originalData.put(object.getMessageId(), new MessageDetail(object));
                     }
                     object.setBody(value);
-//                    eventBus.addMessageToCommit(object);
+                    eventBus.addMessageToCommit(object);
                 }
             }
         });
@@ -207,7 +201,7 @@ public class AdminMessagesPresenter
                                 originalData.put(object.getMessageId(), new MessageDetail(object));
                             }
                             object.setMessageState(msgState.name());
-//                            eventBus.addMessageToCommit(object);
+                            eventBus.addMessageToCommit(object);
                         }
                     }
                 }
@@ -223,7 +217,7 @@ public class AdminMessagesPresenter
                                 originalData.put(object.getMessageId(), new MessageDetail(object));
                             }
                             object.setMessageType(msgType.name());
-//                            eventBus.addMessageToCommit(object);
+                            eventBus.addMessageToCommit(object);
                         }
                     }
                 }
@@ -237,7 +231,7 @@ public class AdminMessagesPresenter
                         originalData.put(object.getMessageId(), new MessageDetail(object));
                     }
                     object.setCreated(value);
-//                    eventBus.addMessageToCommit(object);
+                    eventBus.addMessageToCommit(object);
                 }
             }
         });
@@ -249,7 +243,7 @@ public class AdminMessagesPresenter
                         originalData.put(object.getMessageId(), new MessageDetail(object));
                     }
                     object.setSent(value);
-//                    eventBus.addMessageToCommit(object);
+                    eventBus.addMessageToCommit(object);
                 }
             }
         });
@@ -259,7 +253,6 @@ public class AdminMessagesPresenter
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent arg0) {
                 int page = view.getPager().getPageStart() / view.getPageSize();
@@ -308,7 +301,7 @@ public class AdminMessagesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminMessagesCount();
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -316,7 +309,7 @@ public class AdminMessagesPresenter
         });
     }
 
-    public void onaddMessageToCommit(MessageDetail data, String dataType) {
+    public void onAddMessageToCommit(MessageDetail data) {
         dataToUpdate.remove(data.getMessageId());
         dataToUpdate.put(data.getMessageId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));

@@ -14,26 +14,26 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
-public class SingleDemandOfferTable extends CellTable<OfferDetail> {
+public class SingleDemandOfferTable extends CellTable<FullOfferDetail> {
 
-    private ListDataProvider<OfferDetail> dataProvider
-        = new ListDataProvider<OfferDetail>();
+    private ListDataProvider<FullOfferDetail> dataProvider
+        = new ListDataProvider<FullOfferDetail>();
 
     public SingleDemandOfferTable(LocalizableMessages msgs, StyleResource rscs) {
         super(KEY_PROVIDER);
 
-        ListHandler<OfferDetail> sorHandler = new ListHandler<OfferDetail>(
+        ListHandler<FullOfferDetail> sorHandler = new ListHandler<FullOfferDetail>(
                 dataProvider.getList());
         this.addColumnSortHandler(sorHandler);
 
         // Create a demandPager to control the table.
 
-        final MultiSelectionModel<OfferDetail> selectionModel = new MultiSelectionModel<OfferDetail>(
+        final MultiSelectionModel<FullOfferDetail> selectionModel = new MultiSelectionModel<FullOfferDetail>(
                 KEY_PROVIDER);
         this.setSelectionModel(selectionModel,
-                DefaultSelectionEventManager.<OfferDetail>createDefaultManager());
+                DefaultSelectionEventManager.<FullOfferDetail>createDefaultManager());
 
         initTableColumns(selectionModel, sorHandler, msgs);
 
@@ -41,33 +41,34 @@ public class SingleDemandOfferTable extends CellTable<OfferDetail> {
         dataProvider.addDataDisplay(this);
     }
 
-    private void initTableColumns(final SelectionModel<OfferDetail> tableSelectionModel,
-        ListHandler<OfferDetail> sortHandler, LocalizableMessages msgs) {
+    private void initTableColumns(final SelectionModel<FullOfferDetail> tableSelectionModel,
+        ListHandler<FullOfferDetail> sortHandler, LocalizableMessages msgs) {
         // MultipleSelection Checkbox
-//        Column<OfferDetail, Boolean> checkBoxColumn = new Column<OfferDetail, Boolean>(
+//        Column<FullOfferDetail, Boolean> checkBoxColumn = new Column<FullOfferDetail, Boolean>(
 //                new CheckboxCell(true, false)) {
 //            @Override
-//            public Boolean getValue(OfferDetail object) {
+//            public Boolean getValue(FullOfferDetail object) {
 //                return tableSelectionModel.isSelected(object);
 //            }
 //        };
 
         // Demand Title Column
-        Column<OfferDetail, String> titleColumn = (new Column<OfferDetail, String>(
+        Column<FullOfferDetail, String> titleColumn = (new Column<FullOfferDetail, String>(
                 new TextCell()) {
             @Override
-            public String getValue(OfferDetail object) {
-                return object.getSupplierName();
+            public String getValue(FullOfferDetail object) {
+                return object.getOfferDetail().getSupplierName();
             }
         });
 
         // Demand Price Column
-        Column<OfferDetail, String> priceColumn = (new Column<OfferDetail, String>(
+        Column<FullOfferDetail, String> priceColumn = (new Column<FullOfferDetail, String>(
                 new TextCell()) {
             @Override
-            public String getValue(OfferDetail object) {
+            public String getValue(FullOfferDetail object) {
                 // TODO add 'none' value into Localizable resources
-                return (object.getPrice() == null ? "None" : object.getPrice().toString());
+                return (object.getOfferDetail().getPrice() == null ? "None"
+                        : object.getOfferDetail().getPrice().toString());
             }
         });
 
@@ -75,29 +76,29 @@ public class SingleDemandOfferTable extends CellTable<OfferDetail> {
                 .getFormat(PredefinedFormat.DATE_MEDIUM);
 
 //        // Demand Finish Column
-//        Column<OfferDetail, String> endDateColumn = (new Column<OfferDetail, String>(
+//        Column<FullOfferDetail, String> endDateColumn = (new Column<FullOfferDetail, String>(
 //                new TextCell()) {
 //            @Override
-//            public String getValue(OfferDetail object) {
+//            public String getValue(FullOfferDetail object) {
 //                return dateFormat.format(object.getEndDate());
 //            }
 //        });
 //
 //        // Demand sent Date column
-//        Column<OfferDetail, String> validToDateColumn = (new Column<OfferDetail, String>(
+//        Column<FullOfferDetail, String> validToDateColumn = (new Column<FullOfferDetail, String>(
 //                new TextCell()) {
 //            @Override
-//            public String getValue(OfferDetail object) {
+//            public String getValue(FullOfferDetail object) {
 //                return dateFormat.format(object.getFinishDate());
 //            }
 //        });
 
 //        // sort methods ****************************
 //        titleColumn.setSortable(true);
-//        sortHandler.setComparator(titleColumn, new Comparator<OfferDetail>() {
+//        sortHandler.setComparator(titleColumn, new Comparator<FullOfferDetail>() {
 //            @Override
-//            public int compare(OfferDetail o1,
-//                    OfferDetail o2) {
+//            public int compare(FullOfferDetail o1,
+//                    FullOfferDetail o2) {
 //                if (o1 == o2) {
 //                    return 0;
 //                }
@@ -109,19 +110,19 @@ public class SingleDemandOfferTable extends CellTable<OfferDetail> {
 //            }
 //        });
 //        priceColumn.setSortable(true);
-//        sortHandler.setComparator(priceColumn, new Comparator<OfferDetail>() {
+//        sortHandler.setComparator(priceColumn, new Comparator<FullOfferDetail>() {
 //            @Override
-//            public int compare(OfferDetail o1,
-//                    OfferDetail o2) {
+//            public int compare(FullOfferDetail o1,
+//                    FullOfferDetail o2) {
 //                return o1.getPrice().compareTo(o2.getPrice());
 //            }
 //        });
 //
 //        endDateColumn.setSortable(true);
 //        validToDateColumn.setSortable(true);
-//        Comparator<OfferDetail> dateComparator = new Comparator<OfferDetail>() {
+//        Comparator<FullOfferDetail> dateComparator = new Comparator<FullOfferDetail>() {
 //            @Override
-//            public int compare(OfferDetail o1, OfferDetail o2) {
+//            public int compare(FullOfferDetail o1, FullOfferDetail o2) {
 //                // TODO Auto-generated method stub
 //                return o1.getEndDate().compareTo(o2.getEndDate());
 //            }
@@ -136,14 +137,14 @@ public class SingleDemandOfferTable extends CellTable<OfferDetail> {
 //        this.addColumn(validToDateColumn, msgs.expireDate());
     }
 
-    private static final ProvidesKey<OfferDetail> KEY_PROVIDER = new ProvidesKey<OfferDetail>() {
+    private static final ProvidesKey<FullOfferDetail> KEY_PROVIDER = new ProvidesKey<FullOfferDetail>() {
         @Override
-        public Object getKey(OfferDetail item) {
-            return item == null ? null : item.getDemandId();
+        public Object getKey(FullOfferDetail item) {
+            return item == null ? null : item.getOfferDetail().getDemandId();
         }
     };
 
-    public  ListDataProvider<OfferDetail> getDataProvider() {
+    public  ListDataProvider<FullOfferDetail> getDataProvider() {
         return dataProvider;
     }
 

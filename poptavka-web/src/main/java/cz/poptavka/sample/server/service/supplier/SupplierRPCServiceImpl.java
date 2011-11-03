@@ -1,7 +1,9 @@
 package cz.poptavka.sample.server.service.supplier;
 
 import com.google.gwt.core.client.GWT;
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -35,6 +37,7 @@ import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,11 +95,9 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     public UserDetail createNewSupplier(UserDetail supplier) {
         Supplier newSupplier = new Supplier();
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(supplier.getCompanyName())
-                .taxId(supplier.getTaxId())
+                .companyName(supplier.getCompanyName()).taxId(supplier.getTaxId())
                 .identificationNumber(supplier.getIdentificationNumber())
-                .phone(supplier.getPhone())
-                .personFirstName(supplier.getFirstName())
+                .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
                 .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
@@ -222,7 +223,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(start).maxResults(count).build();
         Category[] categories = {categoryService.getById(categoryID)};
         Locality[] localities = {localityService.getLocality(localityCode)};
         return this.createSupplierDetailList(supplierService.getSuppliers(
@@ -233,7 +235,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria, categoryService.getById(categoryID)));
@@ -242,7 +245,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
+                .firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
     }
@@ -250,10 +254,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     public ArrayList<FullSupplierDetail> getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns) {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(start)
-                .maxResults(count)
-                .orderByColumns(orderColumns)
-                .build();
+                .firstResult(start).maxResults(count).orderByColumns(orderColumns).build();
         return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
     }
 
@@ -475,5 +476,72 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
             }
         }
         return localitiesHistory.toArray(new Locality[localitiesHistory.size()]);
+    }
+
+    @Override
+    public long filterSuppliersCount(SearchDataHolder detail) {
+        Search search = this.getFilters(detail);
+        return this.generalService.searchAndCount(search).getTotalCount();
+    }
+
+    @Override
+    public ArrayList<FullSupplierDetail> filterSuppliers(int start, int count, SearchDataHolder detail) {
+        Search search = this.getFilters(detail);
+        search.setFirstResult(start);
+        search.setMaxResults(count); //alebo page?
+        return this.createSupplierDetailList(this.generalService.search(search));
+    }
+
+    private Search getFilters(SearchDataHolder detail) {
+        final Search search = new Search(Supplier.class);
+        List<Filter> filters = new ArrayList<Filter>();
+
+        /** simple **/
+        if (!detail.getText().equals("")) {
+            Filter filterTitle = new Filter();
+            filterTitle.setProperty("title");
+            filterTitle.setOperator(6); //like
+            filterTitle.setValue(detail.getText());
+            filters.add(filterTitle);
+        }
+        if (detail.getLocality() != null) {
+            List<Locality> locality = Arrays.asList(this.localityService.getLocality(detail.getLocality().getCode()));
+            Filter filterTitle = new Filter();
+            filterTitle.setProperty("localities");
+            filterTitle.setOperator(8); //is in
+            filterTitle.setValue(locality);
+            filters.add(filterTitle);
+        }
+        if (detail.getCategory() != null) {
+            List<Category> category = Arrays.asList(this.categoryService.getById(detail.getCategory().getId()));
+            Filter filterTitle = new Filter();
+            filterTitle.setProperty("categories");
+            filterTitle.setOperator(8); //is in
+            filterTitle.setValue(category);
+            filters.add(filterTitle);
+        }
+
+
+        /** additional **/
+        if (detail.isAdditionalInfo()) {
+            if (detail.getRatingFrom() != -1) {
+                Filter filterTitle = new Filter();
+                filterTitle.setProperty("overalRating");
+                filterTitle.setOperator(5); //greater or equal
+                filterTitle.setValue(detail.getRatingFrom());
+                filters.add(filterTitle);
+            }
+            if (detail.getRatingTo() != -1) {
+                Filter filterTitle = new Filter();
+                filterTitle.setProperty("overalRating");
+                filterTitle.setOperator(4); //less or equal
+                filterTitle.setValue(detail.getRatingTo());
+                filters.add(filterTitle);
+            }
+
+            //TODO Martin - suppliers description
+        }
+        search.setFilters(filters);
+        return search;
     }
 }

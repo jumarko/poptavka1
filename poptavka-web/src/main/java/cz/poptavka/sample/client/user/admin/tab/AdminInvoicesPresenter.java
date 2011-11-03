@@ -120,7 +120,8 @@ public class AdminInvoicesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedInvoices(start, start + length, orderColumns);
+                eventBus.getAdminInvoices(start, start + length);
+//                 eventBus.getSortedInvoices(start, start + length, orderColumns);
                 eventBus.loadingHide();
             }
         };

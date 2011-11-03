@@ -50,7 +50,7 @@ public class AdminClientsPresenter
         extends BasePresenter<AdminClientsPresenter.AdminClientsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("    AdminClientsPresenter");
     private Map<Long, ClientDetail> dataToUpdate = new HashMap<Long, ClientDetail>();
     private Map<Long, ClientDetail> originalData = new HashMap<Long, ClientDetail>();
 
@@ -80,7 +80,7 @@ public class AdminClientsPresenter
 
         SingleSelectionModel<ClientDetail> getSelectionModel();
 
-        SimplePanel getAdminDemandDetail();
+        SimplePanel getAdminClientDetail();
 
         SimplePager getPager();
 
@@ -101,7 +101,7 @@ public class AdminClientsPresenter
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "id", "companyName", "firstName", "lastName", "rating"
+        "Clients", "overalRating", "supplierBlacklist"
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
@@ -109,7 +109,7 @@ public class AdminClientsPresenter
     public void onCreateAdminClientsAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
-        orderColumns.put(columnNames[0], OrderType.ASC);
+        orderColumns.put(columnNames[1], OrderType.DESC);
         dataProvider = new AsyncDataProvider<ClientDetail>() {
 
             @Override
@@ -117,7 +117,8 @@ public class AdminClientsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedClients(start, start + length, orderColumns);
+//                eventBus.getSortedClients(start, start + length, orderColumns);
+                eventBus.getAdminClients(start, start + length);
                 eventBus.loadingHide();
             }
         };
@@ -142,7 +143,6 @@ public class AdminClientsPresenter
                 }
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
-
                 eventBus.getSortedClients(start, view.getPageSize(), orderColumns);
             }
         };
@@ -160,8 +160,8 @@ public class AdminClientsPresenter
         view.getDataGrid().redraw();
     }
 
-    public void onResponseAdminDemandDetail(Widget widget) {
-        view.getAdminDemandDetail().setWidget(widget);
+    public void onResponseAdminClientDetail(Widget widget) {
+        view.getAdminClientDetail().setWidget(widget);
     }
 
     @Override

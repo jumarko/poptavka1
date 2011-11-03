@@ -41,7 +41,7 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
         if (historyName.equals("addToPath")) {
             eventBus.loadingShow(MSGS.loading());
             if (param.equals("root")) {
-                eventBus.goToHomeSuppliers();
+                eventBus.goToHomeSuppliers(null);
             }
 //            else {
                 // TODO praso - add history management for homeSuppliers. I will

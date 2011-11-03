@@ -24,6 +24,7 @@ import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = OffersView.class, multiple = true)
@@ -42,13 +43,13 @@ public class OffersPresenter extends
 
         NoSelectionModel<OfferDemandMessage> getDemandModel();
 
-        ListDataProvider<OfferDetail> getOfferProvider();
+        ListDataProvider<FullOfferDetail> getOfferProvider();
 
-        MultiSelectionModel<OfferDetail> getOfferModel();
+        MultiSelectionModel<FullOfferDetail> getOfferModel();
 
         Set<OfferDemandDetail> getSelectedSet();
 
-        Set<OfferDetail> getSelectedOffers();
+        Set<FullOfferDetail> getSelectedOffers();
 
         SimplePanel getDetailSection();
 
@@ -75,8 +76,8 @@ public class OffersPresenter extends
         view.getOfferModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Set<OfferDetail> set = view.getSelectedOffers();
-                OfferDetail o = set.iterator().next();
+                Set<FullOfferDetail> set = view.getSelectedOffers();
+                FullOfferDetail o = set.iterator().next();
                 eventBus.setOfferMessage(o);
                 // TODO display every single offer and display it only ONCE
             }
@@ -123,20 +124,20 @@ public class OffersPresenter extends
      *
      * @param offerList list of offer to be added into provider
      */
-    public void onSetDemandOffers(ArrayList<OfferDetail> offers) {
-        List<OfferDetail> offerList = view.getOfferProvider().getList();
+    public void onSetDemandOffers(ArrayList<FullOfferDetail> offers) {
+        List<FullOfferDetail> offerList = view.getOfferProvider().getList();
         // needed clear before inserting offerList of some demand
         offerList.clear();
-        for (OfferDetail o : offers) {
-            GWT.log("OfferDetail ID: " + o.getOfferId());
+        for (FullOfferDetail o : offers) {
+            GWT.log("FullOfferDetail ID: " + o.getOfferDetail().getId());
             offerList.add(o);
         }
         view.getOfferProvider().refresh();
     }
 
-    public void onSetOfferDetailChange(OfferDetail offerDetail) {
-        List<OfferDetail> data = view.getOfferProvider().getList();
-        data.get(data.indexOf(offerDetail)).setState(offerDetail.getState());
+    public void onSetOfferDetailChange(OfferDetail oferDetail) {
+        List<FullOfferDetail> data = view.getOfferProvider().getList();
+        data.get(data.indexOf(oferDetail)).getOfferDetail().setState(oferDetail.getState());
         view.getOfferProvider().refresh();
     }
 

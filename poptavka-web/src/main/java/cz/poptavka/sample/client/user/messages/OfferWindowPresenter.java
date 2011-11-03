@@ -10,13 +10,14 @@ import com.mvp4g.client.presenter.CyclePresenter;
 import com.mvp4g.client.view.CycleView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.OfferStateType;
 
 @Presenter(view = OfferWindow.class, multiple = true)
 public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.ActionMessageInterface, UserEventBus> {
 
     public interface ActionMessageInterface extends CycleView {
+
         Widget getWidgetView();
 
         Anchor getAcceptButton();
@@ -25,13 +26,12 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
 
         Anchor getDeclineButton();
 
-        void setOfferDetail(OfferDetail detail);
+        void setFullOfferDetail(FullOfferDetail fullDetail);
 
-        OfferDetail getOfferDetail();
+        FullOfferDetail getFullOfferDetail();
 
         SimplePanel getResponseHolder();
     }
-
     private OfferQuestionPresenter replyPresenter = null;
 
     public void bindView() {
@@ -39,31 +39,33 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
 
             @Override
             public void onClick(ClickEvent event) {
-                OfferDetail d = view.getOfferDetail();
-                d.setState(OfferStateType.ACCEPTED.getValue());
-                eventBus.getOfferStatusChange(d);
+                FullOfferDetail d = view.getFullOfferDetail();
+                d.getOfferDetail().setState(OfferStateType.ACCEPTED.getValue());
+                eventBus.getOfferStatusChange(d.getOfferDetail());
             }
         });
         view.getDeclineButton().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-                OfferDetail d = view.getOfferDetail();
-                d.setState(OfferStateType.DECLINED.getValue());
-                eventBus.getOfferStatusChange(d);
+                FullOfferDetail d = view.getFullOfferDetail();
+                d.getOfferDetail().setState(OfferStateType.DECLINED.getValue());
+                eventBus.getOfferStatusChange(d.getOfferDetail());
             }
         });
         view.getReplyButton().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-                OfferDetail d = view.getOfferDetail();
-                d.setState(OfferStateType.DECLINED.getValue());
-                eventBus.getOfferStatusChange(d);
+                FullOfferDetail d = view.getFullOfferDetail();
+                d.getOfferDetail().setState(OfferStateType.DECLINED.getValue());
+                eventBus.getOfferStatusChange(d.getOfferDetail());
             }
         });
     }
 
-    public void setOfferDetail(OfferDetail detail) {
-        view.setOfferDetail(detail);
+    public void setFullOfferDetail(FullOfferDetail detail) {
+        view.setFullOfferDetail(detail);
     }
 
     public Widget getWidgetView() {
@@ -76,7 +78,6 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
             eventBus.removeHandler(replyPresenter);
         }
     }
-
 //    private void createReplyWindow() {
 //        replyPresenter = eventBus.addHandler(OfferQuestionPresenter.class);
 ////        replyPresenter.createOfferReplyWindow(new ClickHandler() {
@@ -94,5 +95,4 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
 //            }
 //        });
 //    }
-
 }

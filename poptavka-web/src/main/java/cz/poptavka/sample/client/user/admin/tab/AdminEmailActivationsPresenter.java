@@ -106,7 +106,7 @@ public class AdminEmailActivationsPresenter
     public void onCreateAdminEmailsActivationAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
-        orderColumns.put(columnNames[3], OrderType.DESC);
+        orderColumns.put(columnNames[2], OrderType.DESC);
         dataProvider = new AsyncDataProvider<EmailActivationDetail>() {
 
             @Override
@@ -114,7 +114,8 @@ public class AdminEmailActivationsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedEmailsActivation(start, start + length, orderColumns);
+//                eventBus.getSortedEmailsActivation(start, start + length, orderColumns);
+                eventBus.getAdminEmailsActivation(start, start + length);
                 eventBus.loadingHide();
             }
         };

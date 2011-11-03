@@ -113,7 +113,8 @@ public class AdminPermissionsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getSortedPermissions(start, start + length, orderColumns);
+//                eventBus.getSortedPermissions(start, start + length, orderColumns);
+                eventBus.getAdminPermissions(start, start + length);
                 eventBus.loadingHide();
             }
         };

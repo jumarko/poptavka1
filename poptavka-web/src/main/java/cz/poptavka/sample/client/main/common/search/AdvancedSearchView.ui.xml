@@ -1,0 +1,158 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:style>
+        .important {
+            font-weight: bold;
+            font-style: italic;
+        }
+    </ui:style>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
+        
+    <g:HTMLPanel ui:field="container">
+        <g:HorizontalPanel>
+            <g:VerticalPanel>
+                <g:HTMLPanel>
+                    <table>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="searchIn">Search in</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td width="200">
+                                <g:HorizontalPanel>
+                                    <g:ToggleButton ui:field="demandBtn">In Demands</g:ToggleButton>
+                                    <g:ToggleButton ui:field="supplierBtn">In Suppliers</g:ToggleButton>
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label ui:field="searchTextLabel"/>
+                            </td>
+                            <td>
+                                <g:TextBox ui:field="content" >
+                                    <ui:msg key="searchContent">search...</ui:msg>
+                                </g:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="categories">Categories: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:ListBox ui:field="category" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="localities">Localities: </ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:ListBox ui:field="locality" />
+                            </td>
+                        </tr>
+                    </table>
+                </g:HTMLPanel>
+            </g:VerticalPanel>    
+            <g:VerticalPanel ui:field="demandPanel">
+                <g:HTMLPanel>
+                    <table>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="priceFrom">Price from:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td width="200">
+                                <g:HorizontalPanel>
+                                    <g:TextBox ui:field="priceFrom"/>
+                                    <g:Label>
+                                        <ui:msg key="priceTo">to</ui:msg>
+                                    </g:Label>
+                                    <g:TextBox ui:field="priceTo"/>
+                                    <g:Label>
+                                        <ui:msg key="currency">$</ui:msg>
+                                    </g:Label>
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="demandType">Demand Type:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:ListBox ui:field="demandTypes" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="finnishDate">Finnish date:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <p1:DateBox ui:field="finnishDate" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="creationDate">Creation date:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:ListBox ui:field="creationDate" />
+                            </td>
+                        </tr>
+                    </table>
+                </g:HTMLPanel>
+            </g:VerticalPanel>
+            <g:VerticalPanel ui:field="supplierPanel">
+                <g:HTMLPanel>
+                    <table>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="ratingFrom">Rating from:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td width="200">
+                                <g:HorizontalPanel>
+                                    <g:TextBox ui:field="ratingFrom"/>
+                                    <g:Label>
+                                        <ui:msg key="ratingTo">to</ui:msg>
+                                    </g:Label>
+                                    <g:TextBox ui:field="ratingTo"/>
+                                    <g:Label>%</g:Label>
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="200">
+                                <g:Label>
+                                    <ui:msg key="supplierDescription">Supplier description:</ui:msg>
+                                </g:Label>
+                            </td>
+                            <td>
+                                <g:TextBox ui:field="supplierDescription" />
+                            </td>
+                        </tr>
+                    </table>
+                </g:HTMLPanel>
+            </g:VerticalPanel>
+            <g:Button ui:field="searchBtn">                                
+                <ui:msg key="search">Search</ui:msg>
+            </g:Button>
+        </g:HorizontalPanel>
+    </g:HTMLPanel>
+</ui:UiBinder>

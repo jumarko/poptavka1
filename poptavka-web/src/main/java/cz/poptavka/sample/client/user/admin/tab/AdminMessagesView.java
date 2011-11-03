@@ -25,7 +25,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
@@ -45,7 +44,7 @@ import java.util.List;
  */
 public class AdminMessagesView extends Composite implements AdminMessagesPresenter.AdminMessagesInterface {
 
-    private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
+    private static AdminMessagesViewUiBinder uiBinder = GWT.create(AdminMessagesViewUiBinder.class);
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -117,15 +116,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         return selectionModel;
     }
 
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
-
-    interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminMessagesView> {
+    interface AdminMessagesViewUiBinder extends UiBinder<Widget, AdminMessagesView> {
     }
     /**
      * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
@@ -139,11 +130,6 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     SimplePager pager;
     @UiField(provided = true)
     ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
     /**
      * Data provider that will cell table with data.
      */
@@ -177,7 +163,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         // change.
         dataGrid = new DataGrid<MessageDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setWidth("700px");
+        dataGrid.setWidth("1000px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
@@ -213,7 +199,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 
             @Override
             public String getValue(MessageDetail object) {
-                return String.valueOf(object.getDemandId());
+                return String.valueOf(object.getMessageId());
             }
         });
 
@@ -244,8 +230,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
             }
         });
 
-        // DemandTitle
-        subjectColumn = addColumn(new EditTextCell(), "Subject", 100, new GetValue<String>() {
+        // MessageTitle
+        subjectColumn = addColumn(new EditTextCell(), "Subject", 150, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -258,7 +244,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageState msgState : MessageState.values()) {
             msgStates.add(msgState.name());
         }
-        stateColumn = addColumn(new SelectionCell(msgStates), "State", 100, new GetValue<String>() {
+        stateColumn = addColumn(new SelectionCell(msgStates), "State", 150, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -271,7 +257,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageType msgType : MessageType.values()) {
             msgTypes.add(msgType.getValue());
         }
-        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", 100, new GetValue<String>() {
+        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", 120, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -281,7 +267,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 
         // created date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", 40,
+        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", 60,
                 new GetValue<Date>() {
 
                     @Override
@@ -291,7 +277,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                 });
 
         // sent date.
-        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", 40,
+        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", 60,
                 new GetValue<Date>() {
 
                     @Override
@@ -301,7 +287,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                 });
 
         // body
-        bodyColumn = addColumn(new EditTextCell(), "Body", 160, new GetValue<String>() {
+        bodyColumn = addColumn(new EditTextCell(), "Body", 200, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -353,7 +339,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 
         @Override
         public Object getKey(MessageDetail item) {
-            return item == null ? null : item.getDemandId();
+            return item == null ? null : item.getMessageId();
         }
     };
 

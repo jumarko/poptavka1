@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
@@ -121,6 +122,7 @@ public class SuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
             }
         });
     }
+
     public void onGetSuppliersCountByCategory(Long category) {
         supplierService.getSuppliersCount(category, new AsyncCallback<Long>() {
 
@@ -184,124 +186,37 @@ public class SuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
             }
         });
     }
-//    // *** GET DEMANDS
-//    // ***************************************************************************
-//    public void onGetDemand(FullDemandDetail fullDemandDetail) {
-//        demandService.getWholeDemand(fullDemandDetail.getDemandId(), new AsyncCallback<Demand>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                Window.alert("Failed to retrieve whole demand. We are sorry :(. Try later.");
-//            }
-//
-//            @Override
-//            public void onSuccess(Demand result) {
-////                eventBus.setDemand(result);
-//            }
-//        });
-//    }
-//    //*************** GET DEMANDS COUNT *********************
-//
-//    public void onGetAllDemandsCount() {
-//        demandService.getAllDemandsCount(new AsyncCallback<Long>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                throw new UnsupportedOperationException("Not supported yet.");
-//            }
-//
-//            @Override
-//            public void onSuccess(Long result) {
-//                eventBus.setResultSource("all");
+
+    //*************** FIND DEMANDS DATA *********************
+    public void onFilterSuppliersCount(SearchDataHolder detail) {
+        supplierService.filterSuppliersCount(detail, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onFilterDemands (HomeDemandsHandler) - not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+//                eventBus.setResultSource("filter");
 //                eventBus.setResultCount(result);
 //                eventBus.createAsyncDataProvider();
-//            }
-//        });
-//    }
-//
-//    public void onGetDemandsCountCategory(long id) {
-//        demandService.getDemandsCountByCategory(id, new AsyncCallback<Long>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                throw new UnsupportedOperationException("onGetDemandsCountCategory failed.");
-//            }
-//
-//            @Override
-//            public void onSuccess(Long result) {
-//                eventBus.setResultSource("category");
-//                eventBus.setResultCount(result);
-//                eventBus.createAsyncDataProvider();
-//            }
-//        });
-//    }
-//
-//    public void onGetDemandsCountLocality(String code) {
-//        demandService.getDemandsCountByLocality(code, new AsyncCallback<Long>() {
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                throw new UnsupportedOperationException("onGetDemandsCountLocality failed.");
-//            }
-//
-//            @Override
-//            public void onSuccess(Long result) {
-//                eventBus.setResultSource("locality");
-//                eventBus.setResultCount(result);
-//                eventBus.createAsyncDataProvider();
-//            }
-//        });
-//    }
-//
-//    //*************** GET DEMANDS DATA *********************
-//    /**
-//     * Get all demand from database.
-//     */
-//    public void onGetDemands(int fromResult, int toResult) {
-//        demandService.getDemands(fromResult, toResult, new AsyncCallback<List<DemandDetail>>() {
-//
-//            @Override
-//            public void onSuccess(List<DemandDetail> result) {
-//                eventBus.displayDemands(result);
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                LOGGER.info("onFailureGetDemands");
-//            }
-//        });
-//    }
-//
-//    public void onGetDemandsByCategories(int fromResult, int toResult, long id) {
-//        demandService.getDemandsByCategory(fromResult, toResult, id,
-//                new AsyncCallback<List<DemandDetail>>() {
-//
-//                    @Override
-//                    public void onFailure(Throwable caught) {
-//                        throw new UnsupportedOperationException("Not supported yet.");
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(List<DemandDetail> result) {
-//                        eventBus.displayDemands(result);
-//                    }
-//                });
-//    }
-//
-//    public void onGetDemandsByLocalities(int fromResult, int toResult, String id) {
-//        demandService.getDemandsByLocality(fromResult, toResult, id,
-//                new AsyncCallback<List<DemandDetail>>() {
-//
-//                    @Override
-//                    public void onSuccess(List<DemandDetail> result) {
-//                        LOGGER.info("onSuccessGetDemandsByLocality");
-//                        eventBus.displayDemands(result);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable caught) {
-//                        LOGGER.info("onFailureGetDemandsByLocality");
-//                    }
-//                });
-//    }
+            }
+        });
+    }
+
+    public void onFilterSuppliers(int start, int count, SearchDataHolder detail) {
+        supplierService.filterSuppliers(start, count, detail, new AsyncCallback<ArrayList<FullSupplierDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("onFilterSuppliers (HomeSupliersHandler) - not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(ArrayList<FullSupplierDetail> result) {
+                eventBus.displaySuppliers(result);
+            }
+        });
+    }
 }
