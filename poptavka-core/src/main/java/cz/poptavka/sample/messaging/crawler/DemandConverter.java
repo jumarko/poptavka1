@@ -237,17 +237,14 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
     }
 
     /**
-     * TODO: localityId is comming crawler but this approach is tightly coupled to current state of
-     * Locality table -> locality be searched by its name and then set
-     *
-     * @param sourceDemand
-     * @param domainDemand
+     * Set localities which correspond to the locality of sourceDemand to the domainDemand.
      */
     private void setLocalities(Demand sourceDemand, cz.poptavka.sample.domain.demand.Demand domainDemand) {
         if (StringUtils.isNotBlank(sourceDemand.getLocality())) {
             // find correct locality (-ies) by its name
-            final List<Locality> localities = this.localityService.findByExample(
-                    new Locality(null, sourceDemand.getLocality()));
+            final Search localitySearch = new Search(Locality.class);
+            localitySearch.addFilterEqual("name", sourceDemand);
+            final List<Locality> localities = (List<Locality>) this.generalService.search(localitySearch);
             if (CollectionUtils.isNotEmpty(localities)) {
                 domainDemand.setLocalities(localities);
             } else {

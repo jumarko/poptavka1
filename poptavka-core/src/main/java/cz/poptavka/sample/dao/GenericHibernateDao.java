@@ -9,19 +9,6 @@ import com.google.common.base.Preconditions;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Order;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,7 +16,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.hibernate.criterion.Projections;
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T> {
@@ -323,60 +320,6 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         em().flush();
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<T> findByExample(T example) {
-        Preconditions.checkArgument(example != null, "Example object must not be null");
-        // query by example
-        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
-        entityCriteria.add(Example.create(example)
-                .excludeZeroes());
-        return entityCriteria.list();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public long findByExampleCount(T example) {
-        Preconditions.checkArgument(example != null, "Example object must not be null");
-        // query by example
-        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
-        entityCriteria.add(Example.create(example)
-                .excludeZeroes());
-        entityCriteria.setProjection(Projections.projectionList().add(
-                Projections.rowCount()));
-        return (Long) entityCriteria.uniqueResult();
-    }
-
-    @Override
-    public List<T> findByExample(T example, ResultCriteria resultCriteria) {
-        Preconditions.checkArgument(example != null, "Example object must not be null");
-        // query by example
-        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
-        entityCriteria.add(Example.create(example)
-                .excludeZeroes());
-        return buildResultCriteria(entityCriteria, resultCriteria).list();
-    }
-
-    @Override
-    public List<T> findByExampleCustom(Example customExample) {
-        Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
-        // query by example
-        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
-        entityCriteria.add(customExample);
-        return entityCriteria.list();
-    }
-
-    @Override
-    public List<T> findByExampleCustom(Example customExample, ResultCriteria resultCriteria) {
-        Preconditions.checkArgument(customExample != null, "Custom example object must not be null");
-        // query by example
-        final Criteria entityCriteria = getHibernateSession().createCriteria(this.persistentClass);
-        entityCriteria.add(customExample);
-        return buildResultCriteria(entityCriteria, resultCriteria).list();
-    }
 
     /**
      * Searches through database by given criteria.
