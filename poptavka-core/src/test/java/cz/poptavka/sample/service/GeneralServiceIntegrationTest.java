@@ -74,14 +74,15 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertThat("There must be 6 subcategories for category with id 2", allSubCategories.size(), Is.is(7));
 
         demandCategorySearch.addFilterIn("category", allSubCategories);
-        demandCategorySearch.addSortAsc("demand.title");
+        // get the three newest demands
+        demandCategorySearch.addSortDesc("demand.createdDate");
         demandCategorySearch.setFirstResult(0);
         demandCategorySearch.setMaxResults(3);
 
         final List<DemandCategory> demandsForCategory = this.generalService.search(demandCategorySearch);
         Assert.assertThat("Incorrect number of demands in result set", demandsForCategory.size(), Is.is(3));
-        Assert.assertThat("Unexpected demand", demandsForCategory.get(0).getDemand().getId(), Is.is(10L));
-        Assert.assertThat("Unexpected demand", demandsForCategory.get(1).getDemand().getId(), Is.is(2L));
+        Assert.assertThat("Unexpected demand", demandsForCategory.get(0).getDemand().getId(), Is.is(2L));
+        Assert.assertThat("Unexpected demand", demandsForCategory.get(1).getDemand().getId(), Is.is(10L));
         Assert.assertThat("Unexpected demand", demandsForCategory.get(2).getDemand().getId(), Is.is(5L));
     }
 
@@ -104,7 +105,6 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertNull("Last demand should have an empty createdDate",
                 demandsSortedByCreatedDate.get(4).getCreatedDate());
     }
-
 
 
     private void checkLocality(List<Locality> localitySearchResult, String expectedLocalityName, int localityIndex) {
