@@ -136,7 +136,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      */
     private void initGridColumns() {
         // Date of creation
-        addColumn(new TextCell(), bundle.createdDate(), 35, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.createdDate(), true, 35, new GetValue<String>() {
 
             public String getValue(FullDemandDetail demandDetail) {
                 if (demandDetail.getCreated() == null) {
@@ -157,7 +157,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Root category info
-        addColumn(new TextCell(), bundle.category(), 60, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.category(), false, 60, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
@@ -172,7 +172,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Demand Info
-        addColumn(new TextCell(), bundle.demand(), 100, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.demand(), true, 100, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
@@ -181,7 +181,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Locality
-        addColumn(new TextCell(), bundle.locality(), 60, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.locality(), false, 60, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
@@ -196,7 +196,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Cena
-        addColumn(new TextCell(), bundle.price(), 40, new GetValue<String>() {
+        addColumn(new TextCell(), bundle.price(), true, 40, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
@@ -205,7 +205,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Urgencia
-        addColumn(new ImageStatus(), "", 20, new GetValue<Date>() {
+        addColumn(new ImageStatus(), "", true, 20, new GetValue<Date>() {
 
             @Override
             public Date getValue(FullDemandDetail object) {
@@ -304,7 +304,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      *            the value getter for the cell
      */
     private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell,
-            String headerText, int width, final GetValue<C> getter) {
+            String headerText, boolean sort, int width, final GetValue<C> getter) {
         Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
 
             @Override
@@ -312,7 +312,9 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
                 return getter.getValue(demand);
             }
         };
-        column.setSortable(true);
+        if (sort) {
+            column.setSortable(true);
+        }
         dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;

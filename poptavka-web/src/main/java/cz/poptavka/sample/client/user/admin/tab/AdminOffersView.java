@@ -15,7 +15,6 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -148,7 +147,7 @@ public class AdminOffersView extends Composite implements
      */
     private void initGridColumns() {
         // Offer ID
-        addColumn(new TextCell(), "OID", 40, new GetValue<String>() {
+        addColumn(new TextCell(), "OID", true, 40, new GetValue<String>() {
 
             @Override
             public String getValue(OfferDetail offerDetail) {
@@ -156,7 +155,7 @@ public class AdminOffersView extends Composite implements
             }
         });
         // Demand ID.
-        addColumn(new TextCell(), "DID", 40, new GetValue<String>() {
+        addColumn(new TextCell(), "DID", true, 40, new GetValue<String>() {
 
             @Override
             public String getValue(OfferDetail offerDetail) {
@@ -164,14 +163,14 @@ public class AdminOffersView extends Composite implements
             }
         });
         // Supplier ID
-        addColumn(new TextCell(), "SID", 40, new GetValue<String>() {
+        addColumn(new TextCell(), "SID", true, 40, new GetValue<String>() {
 
             @Override
             public String getValue(OfferDetail offerDetail) {
                 return Long.toString(offerDetail.getSupplierId());
             }
         });
-        priceColumn = addColumn(new EditTextCell(), "Price", 40, new GetValue<String>() {
+        priceColumn = addColumn(new EditTextCell(), "Price", true, 40, new GetValue<String>() {
 
             @Override
             public String getValue(OfferDetail offerDetail) {
@@ -184,7 +183,7 @@ public class AdminOffersView extends Composite implements
         for (OfferStateType offerStatusDetail : OfferStateType.values()) {
             stateList.add(offerStatusDetail.getValue());
         }
-        offerStatusColumn = addColumn(new SelectionCell(stateList), "State", 60, new GetValue<String>() {
+        offerStatusColumn = addColumn(new SelectionCell(stateList), "State", true, 60, new GetValue<String>() {
 
             @Override
             public String getValue(OfferDetail offerDetail) {
@@ -193,7 +192,7 @@ public class AdminOffersView extends Composite implements
         });
 
         // Creation date
-        offerCreationDateColumn = addColumn(new DateCell(), "Created", 60, new GetValue<Date>() {
+        offerCreationDateColumn = addColumn(new DateCell(), "Created", false, 60, new GetValue<Date>() {
 
             @Override
             public Date getValue(OfferDetail offerDetail) {
@@ -202,7 +201,7 @@ public class AdminOffersView extends Composite implements
         });
 
         // Demand end date.
-        offerFinishDateColumn = addColumn(new DateCell(), "Finnish", 60, new GetValue<Date>() {
+        offerFinishDateColumn = addColumn(new DateCell(), "Finnish", true, 60, new GetValue<Date>() {
 
             @Override
             public Date getValue(OfferDetail offerDetail) {
@@ -229,7 +228,7 @@ public class AdminOffersView extends Composite implements
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<OfferDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+    private <C> Column<OfferDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
             final GetValue<C> getter) {
         Column<OfferDetail, C> column = new Column<OfferDetail, C>(cell) {
 
@@ -238,12 +237,10 @@ public class AdminOffersView extends Composite implements
                 return getter.getValue(object);
             }
         };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
+        if (sort) {
             column.setSortable(true);
-            dataGrid.addColumn(column, headerText);
         }
+        dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }

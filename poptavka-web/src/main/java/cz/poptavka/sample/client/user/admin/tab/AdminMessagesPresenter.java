@@ -105,7 +105,7 @@ public class AdminMessagesPresenter
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "id", "client", "title", "type", "status", "validTo", "endDate"
+        "id", "demand.id", "parent.id", "sender.id", "receiver.id", "subject", "messageState", "", "sent", "body"
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
@@ -113,7 +113,7 @@ public class AdminMessagesPresenter
     public void onCreateAdminMessagesAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
-        orderColumns.put(columnNames[2], OrderType.ASC);
+        orderColumns.put(columnNames[0], OrderType.ASC);
         dataProvider = new AsyncDataProvider<MessageDetail>() {
 
             @Override
@@ -267,7 +267,7 @@ public class AdminMessagesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow("Commiting");
                     for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updateMessages(dataToUpdate.get(idx));
+                        eventBus.updateMessage(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

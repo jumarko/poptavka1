@@ -13,7 +13,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -186,7 +185,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     private void initTableColumns() {
 
         // ID
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -195,7 +194,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         });
 
         // Demand ID
-        addColumn(new TextCell(), "DID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "DID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -204,7 +203,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         });
 
         // Parent ID
-        addColumn(new TextCell(), "PID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "PID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -213,7 +212,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         });
 
         // Sender ID
-        addColumn(new TextCell(), "SID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "SID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -222,7 +221,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         });
 
         // Receiver ID
-        addColumn(new TextCell(), "RID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "RID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -231,7 +230,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         });
 
         // MessageTitle
-        subjectColumn = addColumn(new EditTextCell(), "Subject", 150, new GetValue<String>() {
+        subjectColumn = addColumn(new EditTextCell(), "Subject", true, 150, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -244,7 +243,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageState msgState : MessageState.values()) {
             msgStates.add(msgState.name());
         }
-        stateColumn = addColumn(new SelectionCell(msgStates), "State", 150, new GetValue<String>() {
+        stateColumn = addColumn(new SelectionCell(msgStates), "State", true, 150, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -257,7 +256,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageType msgType : MessageType.values()) {
             msgTypes.add(msgType.getValue());
         }
-        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", 120, new GetValue<String>() {
+        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", true, 120, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -267,7 +266,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 
         // created date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", 60,
+        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
                 new GetValue<Date>() {
 
                     @Override
@@ -277,7 +276,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                 });
 
         // sent date.
-        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", 60,
+        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", true, 60,
                 new GetValue<Date>() {
 
                     @Override
@@ -287,7 +286,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                 });
 
         // body
-        bodyColumn = addColumn(new EditTextCell(), "Body", 200, new GetValue<String>() {
+        bodyColumn = addColumn(new EditTextCell(), "Body", true, 200, new GetValue<String>() {
 
             @Override
             public String getValue(MessageDetail object) {
@@ -314,7 +313,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<MessageDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+    private <C> Column<MessageDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
             final GetValue<C> getter) {
         Column<MessageDetail, C> column = new Column<MessageDetail, C>(cell) {
 
@@ -323,12 +322,10 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                 return getter.getValue(object);
             }
         };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
+        if (sort) {
             column.setSortable(true);
-            dataGrid.addColumn(column, headerText);
         }
+        dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }

@@ -141,7 +141,8 @@ public class AdminSuppliersPresenter
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "id", "companyName", "businessType", "certified", "verification"
+        "id", "businessUser.businessUserData.companyName", "businessUser.businessType.businessType",
+        "certified", "verification"
     };
     private List<String> gridColumns = Arrays.asList(columnNames);
 

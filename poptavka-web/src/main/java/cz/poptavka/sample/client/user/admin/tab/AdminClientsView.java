@@ -169,7 +169,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {
@@ -178,7 +178,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         });
 
         // company
-        companyColumn = addColumn(new EditTextCell(), "Company", 50, new GetValue<String>() {
+        companyColumn = addColumn(new EditTextCell(), "Company", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {
@@ -187,7 +187,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         });
 
         // firstName
-        firstNameColumn = addColumn(new EditTextCell(), "Name", 80, new GetValue<String>() {
+        firstNameColumn = addColumn(new EditTextCell(), "Name", true, 80, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {
@@ -196,7 +196,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         });
 
         // lastName
-        lastNameColumn = addColumn(new EditTextCell(), "Surname", 80, new GetValue<String>() {
+        lastNameColumn = addColumn(new EditTextCell(), "Surname", true, 80, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {
@@ -205,7 +205,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         });
 
         // rating
-        ratingColumn = addColumn(new EditTextCell(), "Rating", 40, new GetValue<String>() {
+        ratingColumn = addColumn(new EditTextCell(), "Rating", true, 40, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {
@@ -236,7 +236,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<ClientDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+    private <C> Column<ClientDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
             final GetValue<C> getter) {
         Column<ClientDetail, C> column = new Column<ClientDetail, C>(cell) {
 
@@ -245,7 +245,9 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 return getter.getValue(object);
             }
         };
-        column.setSortable(true);
+        if (sort) {
+            column.setSortable(true);
+        }
         dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;

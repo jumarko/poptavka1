@@ -20,8 +20,6 @@ import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
-//import cz.poptavka.sample.shared.domain.type.ClientSupplierType;
-//import cz.poptavka.sample.shared.domain.type.SupplierStatusType;
 
 /**
  *

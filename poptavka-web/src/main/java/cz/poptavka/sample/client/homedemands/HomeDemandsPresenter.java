@@ -121,10 +121,15 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onGoToHomeDemands(SearchDataHolder searchDataHolder) {
+        if (searchDataHolder == null) {
+            eventBus.getAllDemandsCount();
+        } else {
+            orderColumns.clear();
+            orderColumns.put(columnNames[0], OrderType.ASC);
+            eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+        }
         this.searchDataHolder = searchDataHolder;
-        orderColumns.clear();
-        orderColumns.put(columnNames[0], OrderType.ASC);
-        eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+
 //        eventBus.getCategories();
 //        eventBus.getLocalities();
         // TODO praso - I have used autodispaly = true so this method shouldn't be necessary anymore
@@ -149,12 +154,15 @@ public class HomeDemandsPresenter extends BasePresenter<
                     eventBus.getDemands(start, start + length);
                 } else if (resultSource.equals("filter")) {
                     eventBus.filterDemands(start, start + length, searchDataHolder);
+                } else if (resultSource.equals("allSorted")) {
+                    eventBus.getSortedDemands(start, start + length, orderColumns);
                 }
 
                 eventBus.loadingHide();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
+        this.createAsyncSortHandler();
     }
     private AsyncHandler sortHandler = null;
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
@@ -165,7 +173,6 @@ public class HomeDemandsPresenter extends BasePresenter<
     private List<String> gridColumns = Arrays.asList(columnNames);
 
     public void createAsyncSortHandler() {
-        createAsyncSortHandler();
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
 
@@ -183,8 +190,11 @@ public class HomeDemandsPresenter extends BasePresenter<
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-//                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
-                eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+                if (searchDataHolder == null) {
+                    eventBus.getSortedDemandsCount(orderColumns);
+                } else {
+                    eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+                }
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);

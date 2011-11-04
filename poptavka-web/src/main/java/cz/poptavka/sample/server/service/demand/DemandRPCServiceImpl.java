@@ -267,6 +267,20 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
+    public Long getSortedDemandsCount(Map<String, OrderType> orderColumns) {
+        Search search = new Search(Demand.class);
+        /** sort **/
+        for (String item : orderColumns.keySet()) {
+            if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                search.addSortAsc(item, true);
+            } else {
+                search.addSortDesc(item, true);
+            }
+        }
+        return (long) generalService.searchAndCount(search).getTotalCount();
+    }
+
+    @Override
     public List<FullDemandDetail> getDemands(Locality... localities) {
 
         return this.createDemandDetailList(demandService.getDemands(localities));
@@ -526,7 +540,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                         }
                     }
                 } else {
-                    searchResult = this.createDemandDetailList(this.generalService.search(searchCat));
+                    searchResult = this.createDemandDetailListCat(this.generalService.search(searchCat));
                 }
             } else {
                 if (detail.getLocality() != null) {
@@ -578,9 +592,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             /** sort **/
             for (String item : orderColumns.keySet()) {
                 if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    searchCat.addSortAsc(item, true);
+                    searchCat.addSortAsc("demand." + item, true);
                 } else {
-                    searchCat.addSortDesc(item, true);
+                    searchCat.addSortDesc("demand." + item, true);
                 }
             }
             return searchCat;
@@ -594,9 +608,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             /** sort **/
             for (String item : orderColumns.keySet()) {
                 if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    searchLoc.addSortAsc(item, true);
+                    searchLoc.addSortAsc("demand." + item, true);
                 } else {
-                    searchLoc.addSortDesc(item, true);
+                    searchLoc.addSortDesc("demand." + item, true);
                 }
             }
             return searchLoc;

@@ -9,7 +9,6 @@ import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -189,12 +188,8 @@ public class AdminPaymentMethodsView extends Composite
                 return getter.getValue(object);
             }
         };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
-            column.setSortable(true);
-            dataGrid.addColumn(column, headerText);
-        }
+        column.setSortable(true);
+        dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }

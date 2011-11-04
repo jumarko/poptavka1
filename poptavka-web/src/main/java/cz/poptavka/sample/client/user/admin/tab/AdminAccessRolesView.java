@@ -27,7 +27,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.PermissionDetail;
 
-
 /**
  *
  * @author Martin Slavkovsky
@@ -153,7 +152,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     private void initTableColumns() {
 
         // AccessRole ID.
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(AccessRoleDetail object) {
@@ -162,7 +161,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
         });
 
         // Code
-        addColumn(new TextCell(), "Code", 50, new GetValue<String>() {
+        addColumn(new TextCell(), "Code", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(AccessRoleDetail object) {
@@ -171,7 +170,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
         });
 
         // Name
-        nameColumn = addColumn(new EditTextCell(), "Name", 100, new GetValue<String>() {
+        nameColumn = addColumn(new EditTextCell(), "Name", true, 100, new GetValue<String>() {
 
             @Override
             public String getValue(AccessRoleDetail object) {
@@ -180,7 +179,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
         });
 
         // Description
-        descriptionColumn = addColumn(new EditTextCell(), "Description", 160, new GetValue<String>() {
+        descriptionColumn = addColumn(new EditTextCell(), "Description", true, 160, new GetValue<String>() {
 
             @Override
             public String getValue(AccessRoleDetail object) {
@@ -189,7 +188,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
         });
 
         // Preferences
-        permissionsColumn = addColumn(new TextCell(), "Permissions", 140, new GetValue<String>() {
+        permissionsColumn = addColumn(new TextCell(), "Permissions", false, 140, new GetValue<String>() {
 
             @Override
             public String getValue(AccessRoleDetail object) {
@@ -222,7 +221,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<AccessRoleDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+    private <C> Column<AccessRoleDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
             final GetValue<C> getter) {
         Column<AccessRoleDetail, C> column = new Column<AccessRoleDetail, C>(cell) {
 
@@ -231,7 +230,10 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 return getter.getValue(object);
             }
         };
-        column.setSortable(true);
+        if (sort) {
+            column.setSortable(true);
+        }
+        sort = false;
         dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;

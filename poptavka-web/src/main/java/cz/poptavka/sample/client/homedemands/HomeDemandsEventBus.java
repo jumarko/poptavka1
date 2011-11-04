@@ -64,11 +64,9 @@ public interface HomeDemandsEventBus extends EventBus {
     /* Business events handled by Presenters. */
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void setLocalityData(ArrayList<LocalityDetail> list);
-
     //Display
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void setCategoryData(ArrayList<CategoryDetail> list);
-
     @Event(handlers = HomeDemandsPresenter.class)
     void setResultSource(String resultSource);
 
@@ -95,6 +93,12 @@ public interface HomeDemandsEventBus extends EventBus {
     void filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns);
 
     @Event(handlers = HomeDemandsHandler.class)
+    void getSortedDemandsCount(Map<String, OrderType> orderColumns);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
+
+    @Event(handlers = HomeDemandsHandler.class)
     void getDemandsCountCategory(long id);
 
     @Event(handlers = HomeDemandsHandler.class)
@@ -117,7 +121,6 @@ public interface HomeDemandsEventBus extends EventBus {
 
     @Event(handlers = HomeDemandsHandler.class)
     void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
-
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getCategories();
 //

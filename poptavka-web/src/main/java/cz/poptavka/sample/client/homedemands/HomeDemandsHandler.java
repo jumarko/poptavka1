@@ -41,47 +41,6 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         demandService = service;
     }
 
-    // *** GET LOCALITY
-    // ***************************************************************************
-    /**
-     * Get all localities. Used for display in listBox localities.
-     */
-//    public void onGetLocalities() {
-//        localityService.getLocalities(LocalityType.REGION,
-//                new AsyncCallback<ArrayList<LocalityDetail>>() {
-//
-//                    @Override
-//                    public void onSuccess(ArrayList<LocalityDetail> list) {
-//                        eventBus.setLocalityData(list);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable arg0) {
-//                        LOGGER.info("onFailureGetLocalities");
-//                    }
-//                });
-//    }
-    // *** GET CATEGORIES
-    // ***************************************************************************
-    /**
-     * Get all categories. Used for display in listBox categories.
-     */
-//    public void onGetCategories() {
-//        categoryService.getCategories(
-//                new AsyncCallback<ArrayList<CategoryDetail>>() {
-//
-//                    @Override
-//                    public void onSuccess(ArrayList<CategoryDetail> list) {
-//                        LOGGER.info("categories found: " + list.size());
-//                        eventBus.setCategoryData(list);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Throwable arg0) {
-//                        LOGGER.info("onFailureCategory");
-//                    }
-//                });
-//    }
     // *** GET DEMANDS
     // ***************************************************************************
     public void onGetDemand(FullDemandDetail demandDetail) {
@@ -97,9 +56,25 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 //                eventBus.setDemand(result);
             }
         });
-    }
-    //*************** GET DEMANDS COUNT *********************
 
+    }
+
+    public void onGetSortedDemands(int start, int count, Map<String, OrderType> orderColumns) {
+        demandService.getSortedDemands(start, count, orderColumns, new AsyncCallback<List<FullDemandDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(List<FullDemandDetail> result) {
+                eventBus.displayDemands(result);
+            }
+        });
+    }
+
+    //*************** GET DEMANDS COUNT *********************
     public void onGetAllDemandsCount() {
         demandService.getAllDemandsCount(new AsyncCallback<Long>() {
 
@@ -111,6 +86,23 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
             @Override
             public void onSuccess(Long result) {
                 eventBus.setResultSource("all");
+                eventBus.setResultCount(result);
+                eventBus.createAsyncDataProvider();
+            }
+        });
+    }
+
+    public void onGetSortedDemandsCount(Map<String, OrderType> orderColumns) {
+        demandService.getSortedDemandsCount(orderColumns, new AsyncCallback<Long>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+                eventBus.setResultSource("allSorted");
                 eventBus.setResultCount(result);
                 eventBus.createAsyncDataProvider();
             }

@@ -326,6 +326,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
         final Search search = new Search(Message.class);
         search.setFirstResult(start);
         search.setMaxResults(count);
+//        search.setPage(count);
         return this.createMessageDetailList(generalService.search(search));
     }
 

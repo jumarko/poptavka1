@@ -92,7 +92,7 @@ public class AdminProblemsPresenter
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
     private final String[] columnNames = new String[]{
-        "demandName", "price", "state", "date"
+        "id", "text"
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);

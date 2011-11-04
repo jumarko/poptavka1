@@ -11,7 +11,6 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -221,7 +220,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     private void initGridColumns() {
         // Supplier ID.
-        addColumn(new TextCell(), "SID", 30, new GetValue<String>() {
+        addColumn(new TextCell(), "SID", true, 30, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -230,7 +229,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         });
 
         // Company name.
-        supplierNameColumn = addColumn(new EditTextCell(), "Name", 50, new GetValue<String>() {
+        supplierNameColumn = addColumn(new EditTextCell(), "CompanyName", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -243,7 +242,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         for (BusinessType type : BusinessType.values()) {
             types.add(type.getValue());
         }
-        supplierTypeColumn = addColumn(new SelectionCell(types), "Type", 50, new GetValue<String>() {
+        supplierTypeColumn = addColumn(new SelectionCell(types), "Type", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -252,7 +251,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         });
 
         // Certified.
-        certifiedColumn = addColumn(new CheckboxCell(), "Cert.", 15, new GetValue<Boolean>() {
+        certifiedColumn = addColumn(new CheckboxCell(), "Cert.", true, 15, new GetValue<Boolean>() {
 
             @Override
             public Boolean getValue(FullSupplierDetail object) {
@@ -265,7 +264,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         for (Verification type : Verification.values()) {
             verTypes.add(type.name());
         }
-        verificationColumn = addColumn(new SelectionCell(verTypes), "Verified", 50, new GetValue<String>() {
+        verificationColumn = addColumn(new SelectionCell(verTypes), "Verified", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -292,7 +291,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
             final GetValue<C> getter) {
         Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
 
@@ -301,11 +300,10 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
                 return getter.getValue(object);
             }
         };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
-            dataGrid.addColumn(column, headerText);
+        if (sort) {
+            column.setSortable(true);
         }
+        dataGrid.addColumn(column, headerText);
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
