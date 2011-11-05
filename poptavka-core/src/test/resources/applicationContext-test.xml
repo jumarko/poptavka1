@@ -18,6 +18,7 @@
                 <value>classpath:/database-hsqldb.properties</value>
                 <value>classpath:/messaging.properties</value>
                 <value>classpath:/fulltext-test.properties</value>
+                <value>classpath:/mail.properties</value>
             </list>
         </property>
     </bean>

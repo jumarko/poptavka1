@@ -23,7 +23,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </aop:config>
 
     <!-- aspects' beans' -->
-    <bean id="exceptionLogger" class="cz.poptavka.sample.application.logging.ExceptionLogger" />
+    <bean id="exceptionLogger" class="cz.poptavka.sample.application.logging.ExceptionLogger">
+        <property name="recipients">
+            <!-- Write down mail addresses where the notification email will be sent when an exception occurs -->
+            <list>
+                <value>jumarko@gmail.com</value>
+            </list>
+        </property>
+    </bean>
+
     <bean id="executionTimeLogger" class="cz.poptavka.sample.application.logging.ExecutionTimeLogger" />
 
 
