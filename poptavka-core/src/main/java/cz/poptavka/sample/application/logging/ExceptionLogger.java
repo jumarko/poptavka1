@@ -3,6 +3,8 @@ package cz.poptavka.sample.application.logging;
 import com.google.common.base.Preconditions;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.annotation.Aspect;
@@ -66,10 +68,21 @@ public class ExceptionLogger {
                 "Poptavka exception notification: "
                 + exception.getMessage());
         exceptionNotificationMessage.setText(
-                "Following exception occurs while executing Poptavka application: " + exception.getMessage()
+                "Following exception occurs while executing Poptavka application [location=" + getApplicationLocation()
+                        + "]: " + exception.getMessage()
                 + "\nStacktrace:"
                 + "\n" + stackTraceWriter.toString());
         return exceptionNotificationMessage;
+    }
+
+    private InetAddress getApplicationLocation() {
+        InetAddress applicationLocation = null;
+        try {
+            applicationLocation = InetAddress.getLocalHost();
+        } catch (UnknownHostException uhe) {
+            LOGGER.warn("Cannot get application location (host)", uhe);
+        }
+        return applicationLocation;
     }
 
 }
