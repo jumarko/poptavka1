@@ -33,10 +33,21 @@ public class ExceptionLogger {
 
     private List<String> recipients;
 
+    /**
+     * Indicates whether notification will be sent when exception is thrown while executing tests. Default is true,
+     * which means that notification IS NOT sent.
+     */
+    private boolean excludeExceptionsInTestPhase = true;
+
 
     public void setRecipients(List<String> recipients) {
         this.recipients = recipients;
     }
+
+    public void setExcludeExceptionsInTestPhase(boolean excludeExceptionsInTestPhase) {
+        this.excludeExceptionsInTestPhase = excludeExceptionsInTestPhase;
+    }
+
 
     public void logExceptionMethod(Exception exception) {
         LOGGER.error("An exception has been thrown.", exception);
@@ -48,12 +59,15 @@ public class ExceptionLogger {
         if (CollectionUtils.isNotEmpty(recipients)) {
             Preconditions.checkNotNull(exception);
             final SimpleMailMessage exceptionNotificationMessage = createNotificationMessage(exception);
+            if (excludeExceptionsInTestPhase && exceptionNotificationMessage.getText().contains("SurefireBooter")) {
+                // DO NOT send any notification
+                return;
+            }
             try {
                 this.javaMailSender.send(exceptionNotificationMessage);
             } catch (MailException me) {
                 LOGGER.warn("An error occured while sending exception notification mail: ", me);
             }
-
         }
     }
 
