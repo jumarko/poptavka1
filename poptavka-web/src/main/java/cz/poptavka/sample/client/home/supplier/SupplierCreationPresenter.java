@@ -38,7 +38,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 public class SupplierCreationPresenter
         extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("    SupplierCreationPresenter");
+    private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface CreationViewInterface extends LazyView {

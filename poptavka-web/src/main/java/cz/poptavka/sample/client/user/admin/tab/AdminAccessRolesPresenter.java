@@ -51,7 +51,7 @@ public class AdminAccessRolesPresenter
         extends BasePresenter<AdminAccessRolesPresenter.AdminAccessRolesInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminAccessRolesPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminAccessRolesPresenter");
     private Map<Long, AccessRoleDetail> dataToUpdate = new HashMap<Long, AccessRoleDetail>();
     private Map<Long, AccessRoleDetail> originalData = new HashMap<Long, AccessRoleDetail>();
 

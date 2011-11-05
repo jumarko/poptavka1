@@ -51,7 +51,7 @@ public class AdminInvoicesPresenter
         extends BasePresenter<AdminInvoicesPresenter.AdminInvoicesInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
     private Map<Long, InvoiceDetail> dataToUpdate = new HashMap<Long, InvoiceDetail>();
     private Map<Long, String> metadataToUpdate = new HashMap<Long, String>();
     private Map<Long, InvoiceDetail> originalData = new HashMap<Long, InvoiceDetail>();

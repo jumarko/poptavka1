@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class SuppliersPresenter
         extends BasePresenter<SuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("    DisplaySuppliersPresenter");
+    private final static Logger LOGGER = Logger.getLogger("DisplaySuppliersPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static final int COLUMNS = 4;
 

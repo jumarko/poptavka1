@@ -49,7 +49,7 @@ public class AdminProblemsPresenter
         extends BasePresenter<AdminProblemsPresenter.AdminProblemsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminProblemsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminProblemsPresenter");
     private Map<Long, ProblemDetail> dataToUpdate = new HashMap<Long, ProblemDetail>();
     private Map<Long, ProblemDetail> originalData = new HashMap<Long, ProblemDetail>();
 

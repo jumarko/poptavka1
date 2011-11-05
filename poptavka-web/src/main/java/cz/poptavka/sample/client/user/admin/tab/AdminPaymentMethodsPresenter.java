@@ -49,7 +49,7 @@ public class AdminPaymentMethodsPresenter
         extends BasePresenter<AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminPaymentDescriptionPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminPaymentDescriptionPresenter");
     private Map<Long, PaymentMethodDetail> dataToUpdate = new HashMap<Long, PaymentMethodDetail>();
     private Map<Long, PaymentMethodDetail> originalData = new HashMap<Long, PaymentMethodDetail>();
 

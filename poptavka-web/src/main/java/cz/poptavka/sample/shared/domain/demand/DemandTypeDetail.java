@@ -18,7 +18,7 @@ public class DemandTypeDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
-    private final static Logger LOGGER = Logger.getLogger("    FullDemandDetail");
+    private final static Logger LOGGER = Logger.getLogger("FullDemandDetail");
     private Long id;
     private String value;
     private String description;

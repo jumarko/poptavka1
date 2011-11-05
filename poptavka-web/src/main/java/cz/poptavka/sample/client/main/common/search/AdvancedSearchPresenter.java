@@ -16,7 +16,7 @@ import cz.poptavka.sample.client.home.HomeEventBus;
 public class AdvancedSearchPresenter
         extends BasePresenter<AdvancedSearchPresenter.AdvancedSerachViewInterface, HomeEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdvancedSearchPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdvancedSearchPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static final int COLUMNS = 4;
 

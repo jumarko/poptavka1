@@ -50,7 +50,7 @@ public class AdminClientsPresenter
         extends BasePresenter<AdminClientsPresenter.AdminClientsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminClientsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminClientsPresenter");
     private Map<Long, ClientDetail> dataToUpdate = new HashMap<Long, ClientDetail>();
     private Map<Long, ClientDetail> originalData = new HashMap<Long, ClientDetail>();
 

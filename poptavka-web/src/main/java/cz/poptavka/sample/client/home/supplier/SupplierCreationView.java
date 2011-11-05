@@ -35,7 +35,7 @@ public class SupplierCreationView extends OverflowComposite
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
     interface CreationViewUiBinder extends UiBinder<Widget, SupplierCreationView> {    }
 
-    private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
+    private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 

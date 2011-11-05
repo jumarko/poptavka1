@@ -35,7 +35,7 @@ public class AllSuppliersView extends OverflowComposite
 
     interface SuppliersViewUiBinder extends UiBinder<Widget, AllSuppliersView> {
     }
-    private static final Logger LOGGER = Logger.getLogger("    SupplierCreationView");
+    private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     @UiField(provided = true)
     CellList suppliersList, categoriesList;

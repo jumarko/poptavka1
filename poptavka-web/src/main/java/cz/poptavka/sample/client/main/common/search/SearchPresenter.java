@@ -19,7 +19,7 @@ import cz.poptavka.sample.client.home.HomeEventBus;
 public class SearchPresenter
         extends BasePresenter<SearchPresenter.SearchViewInterface, HomeEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("    DisplaySuppliersPresenter");
+    private final static Logger LOGGER = Logger.getLogger("DisplaySuppliersPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static final int COLUMNS = 4;
 

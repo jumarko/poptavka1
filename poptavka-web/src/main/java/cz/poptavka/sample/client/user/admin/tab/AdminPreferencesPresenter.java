@@ -50,7 +50,7 @@ public class AdminPreferencesPresenter
         extends BasePresenter<AdminPreferencesPresenter.AdminPreferencesInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
     private Map<Long, PreferenceDetail> dataToUpdate = new HashMap<Long, PreferenceDetail>();
     private Map<Long, PreferenceDetail> originalData = new HashMap<Long, PreferenceDetail>();
 

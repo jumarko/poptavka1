@@ -50,7 +50,7 @@ public class AdminPermissionsPresenter
         extends BasePresenter<AdminPermissionsPresenter.AdminPermissionsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
     private Map<Long, PermissionDetail> dataToUpdate = new HashMap<Long, PermissionDetail>();
     private Map<Long, PermissionDetail> originalData = new HashMap<Long, PermissionDetail>();
 

@@ -27,7 +27,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     private static CreationViewUiBinder uiBinder = GWT.create(CreationViewUiBinder.class);
     interface CreationViewUiBinder extends UiBinder<Widget, DemandCreationView> {    }
 
-    private static final Logger LOGGER = Logger.getLogger("    DemandCreationView");
+    private static final Logger LOGGER = Logger.getLogger("DemandCreationView");
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 

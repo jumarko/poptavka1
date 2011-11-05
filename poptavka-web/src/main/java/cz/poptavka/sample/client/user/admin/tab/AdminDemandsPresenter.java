@@ -53,7 +53,7 @@ public class AdminDemandsPresenter
         extends BasePresenter<AdminDemandsPresenter.AdminDemandsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminDemandsPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
     private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
     private Map<Long, FullDemandDetail> originalData = new HashMap<Long, FullDemandDetail>();
 

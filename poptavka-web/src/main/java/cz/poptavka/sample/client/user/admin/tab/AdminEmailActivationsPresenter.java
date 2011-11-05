@@ -51,7 +51,7 @@ public class AdminEmailActivationsPresenter
         extends BasePresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminEmailActivationPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminEmailActivationPresenter");
     private Map<Long, EmailActivationDetail> dataToUpdate = new HashMap<Long, EmailActivationDetail>();
     private Map<Long, EmailActivationDetail> originalData = new HashMap<Long, EmailActivationDetail>();
 

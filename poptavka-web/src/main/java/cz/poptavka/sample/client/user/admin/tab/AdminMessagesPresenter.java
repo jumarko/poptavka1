@@ -52,7 +52,7 @@ public class AdminMessagesPresenter
         extends BasePresenter<AdminMessagesPresenter.AdminMessagesInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminMessagesPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminMessagesPresenter");
     private Map<Long, MessageDetail> dataToUpdate = new HashMap<Long, MessageDetail>();
     private Map<Long, MessageDetail> originalData = new HashMap<Long, MessageDetail>();
 

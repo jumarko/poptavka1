@@ -38,7 +38,7 @@ import java.util.Map;
 public class DemandCreationPresenter
         extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
+    private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     // TODO praso - All this presenters should be moved into this particular

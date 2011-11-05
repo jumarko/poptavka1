@@ -32,7 +32,7 @@
 //@Presenter(view = NewDemandView.class, multiple = true)
 //public class NewDemandPresenter extends LazyPresenter<NewDemandPresenter.NewDemandInterface, UserEventBus> {
 //
-//    private final static Logger LOGGER = Logger.getLogger("    DemandCreationPresenter");
+//    private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
 //    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 //
 //    public interface NewDemandInterface extends LazyView {

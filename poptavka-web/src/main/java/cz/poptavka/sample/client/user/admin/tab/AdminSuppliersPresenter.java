@@ -55,7 +55,7 @@ public class AdminSuppliersPresenter
         extends BasePresenter<AdminSuppliersPresenter.AdminSuppliersInterface, UserEventBus>
         implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("    AdminSuppliersPresenter");
+    private final static Logger LOGGER = Logger.getLogger("AdminSuppliersPresenter");
     private Map<Long, FullSupplierDetail> dataToUpdate = new HashMap<Long, FullSupplierDetail>();
     private Map<Long, FullSupplierDetail> originalData = new HashMap<Long, FullSupplierDetail>();
 
