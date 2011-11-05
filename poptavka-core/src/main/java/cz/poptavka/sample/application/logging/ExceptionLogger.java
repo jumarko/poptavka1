@@ -1,6 +1,7 @@
 package cz.poptavka.sample.application.logging;
 
 import com.google.common.base.Preconditions;
+import cz.poptavka.sample.service.mail.MailService;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
@@ -10,10 +11,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * Aspect which is responsible for logging all uncaught exceptions that occur in any method in application.
@@ -28,9 +27,7 @@ public class ExceptionLogger {
     private static final String NOTIFICATION_MAIL_FROM = "poptavka1@gmail.com";
     private static final int DEFAULT_STACKTRASE_SIZE = 1000;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
+    private MailService mailService;
     private List<String> recipients;
 
     /**
@@ -46,6 +43,10 @@ public class ExceptionLogger {
 
     public void setExcludeExceptionsInTestPhase(boolean excludeExceptionsInTestPhase) {
         this.excludeExceptionsInTestPhase = excludeExceptionsInTestPhase;
+    }
+
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
     }
 
 
@@ -64,7 +65,8 @@ public class ExceptionLogger {
                 return;
             }
             try {
-                this.javaMailSender.send(exceptionNotificationMessage);
+                // send asynchronously to avoid blocking of normal execution
+                this.mailService.sendAsync(exceptionNotificationMessage);
             } catch (MailException me) {
                 LOGGER.warn("An error occured while sending exception notification mail: ", me);
             }

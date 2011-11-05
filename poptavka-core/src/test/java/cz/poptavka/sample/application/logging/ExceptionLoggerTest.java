@@ -56,7 +56,7 @@ public class ExceptionLoggerTest extends BasicIntegrationTest {
     }
 
     @Test
-    public void testLogExceptionMethod() throws Throwable {
+    public void testLogExceptionMethod() throws Exception {
 //        final RuntimeException exceptionInAdvisedMethod =
 //                new RuntimeException("Great exception to be caught by exceptionLoggerAspect!");
 //        Mockito.when(categoryService.getCategory("cat1")).thenThrow(exceptionInAdvisedMethod);

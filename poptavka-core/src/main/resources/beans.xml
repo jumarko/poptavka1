@@ -170,5 +170,6 @@
             </props>
         </property>
     </bean>
+    <bean id="mailService" class="cz.poptavka.sample.service.mail.MailServiceImpl" />
 
 </beans>

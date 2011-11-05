@@ -30,6 +30,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
                 <value>jumarko@gmail.com</value>
             </list>
         </property>
+        <property name="mailService" ref="mailService" />
     </bean>
 
     <bean id="executionTimeLogger" class="cz.poptavka.sample.application.logging.ExecutionTimeLogger" />
