@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.aspectj.lang.annotation.Aspect;
@@ -39,6 +41,23 @@ public class ExceptionLogger {
 
     public void setRecipients(List<String> recipients) {
         this.recipients = recipients;
+    }
+
+    public void addRecipient(String recipient) {
+        if (this.recipients == null) {
+            this.recipients = new ArrayList<String>();
+        }
+        this.recipients.add(recipient);
+    }
+
+    public void removeRecipient(String recipient) {
+        if (this.recipients != null) {
+            this.recipients.remove(recipient);
+        }
+    }
+
+    public List<String> getRecipients() {
+        return Collections.unmodifiableList(recipients);
     }
 
     public void setExcludeExceptionsInTestPhase(boolean excludeExceptionsInTestPhase) {
