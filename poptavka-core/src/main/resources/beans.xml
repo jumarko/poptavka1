@@ -182,6 +182,9 @@
         </property>
         <property name="server" ref="mbeanServer" />
         <property name="assembler" ref="jmxAssembler" />
+        <!-- Ignore registration of mbean if it is already exists => e.g. LocalityServiceDbTest is falling on
+        InstanceAlreadyExistsException when this is not set -->
+        <property name="registrationBehaviorName" value="REGISTRATION_IGNORE_EXISTING" />
     </bean>
     <bean id="jmxAssembler" class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler">
         <property name="managedInterfaces" value="cz.poptavka.sample.application.PoptavkaManagedOperations" />
