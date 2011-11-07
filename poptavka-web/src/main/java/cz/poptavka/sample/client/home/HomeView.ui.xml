@@ -1,55 +1,62 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui"
-    xmlns:t="urn:import:cz.poptavka.sample.client.main.common.search">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:cz.poptavka.sample.client.main.common.search">
 
-    <ui:with field='res'
-        type='cz.poptavka.sample.client.resources.StyleResource' />
+	<ui:with field='res'
+		type='cz.poptavka.sample.client.resources.StyleResource' />
 
-    <g:HTMLPanel ui:field="container">
-        <!-- menu -->
-        <div ui:field="homeMenu">
-            <ul ui:field="menuList">
-                <li>
-                    <g:Hyperlink ui:field="linkHome" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="homeLink">Home</ui:msg>
-                    </g:Hyperlink>
-                </li>
-                <li>
-                    <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="demands">Demands</ui:msg>
-                    </g:Button>
-                </li>
-                <li>
-                    <g:Button ui:field="suppliers" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="suppliers">Suppliers</ui:msg>
-                    </g:Button>
-                </li>
-                <li>
-                    <g:Button ui:field="createSupplier" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="createSupplier">createSupplier</ui:msg>
-                    </g:Button>
-                </li>
-                <li>
-                    <g:Button ui:field="createDemand" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="createDemand">createDemand</ui:msg>
-                    </g:Button>
-                </li>
-                <li>
-<!--                    <t:SearchView ui:field="searchView"/>-->
-                    <t:SearchView ui:field="searchView"/>
-                </li>
-            </ul>
-        </div>
-        <!-- menu END -->
+	<ui:style>
+		.home-container {
+		width: 1075px;
+		margin: auto;
+		}
+		.search-view {
+		float: right;		
+		}
+	</ui:style>
 
-        <g:HTMLPanel>
-            <t:AdvancedSearchView ui:field="advancedSearchView"/>
-            <g:ScrollPanel>
-                <g:SimplePanel ui:field="contentHolder" />
+	<g:HTMLPanel ui:field="container" styleName='{style.home-container}'>
+		<!-- menu -->
+		<div ui:field="homeMenu">
+			<ul ui:field="menuList">
+				<li>
+					<g:Hyperlink ui:field="linkHome" styleName='{res.layout.homeMenu}'>
+						<ui:msg key="homeLink">Home</ui:msg>
+					</g:Hyperlink>
+				</li>
+				<li>
+					<g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>
+						<ui:msg key="demands">Demands</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="suppliers" styleName='{res.layout.homeMenu}'>
+						<ui:msg key="suppliers">Suppliers</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="createSupplier" styleName='{res.layout.homeMenu}'>
+						<ui:msg key="createSupplier">createSupplier</ui:msg>
+					</g:Button>
+				</li>
+				<li>
+					<g:Button ui:field="createDemand" styleName='{res.layout.homeMenu}'>
+						<ui:msg key="createDemand">createDemand</ui:msg>
+					</g:Button>
+				</li>
+			</ul>
+			<!-- <t:SearchView ui:field="searchView"/> -->
+			<t:SearchView ui:field="searchView" styleName='{res.layout.searchView}'/>
+		</div>
+		<!-- menu END -->
 
-            </g:ScrollPanel>
-        </g:HTMLPanel>
-    </g:HTMLPanel>
+		<g:HTMLPanel>
+			<t:AdvancedSearchView ui:field="advancedSearchView" />
+			<g:ScrollPanel>
+				<g:SimplePanel ui:field="contentHolder" />
+
+			</g:ScrollPanel>
+		</g:HTMLPanel>
+	</g:HTMLPanel>
 
 </ui:UiBinder>

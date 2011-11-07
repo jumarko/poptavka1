@@ -39,6 +39,8 @@ public interface LayoutResource extends CssResource {
 
     @ClassName("home-menu")
     String homeMenu();
+    @ClassName("search-view")
+    String searchView();
 
     /** DELETE AFTER THIS LINE **/
 

@@ -7,82 +7,112 @@
  *
  */
 body {
-    margin: 0;
+	margin: 0;
 }
 
 .layout-public-main {
-    min-width: 800px;
-    /* max-width: 1024px; */
-    margin-left: auto;
-    margin-right: auto;
-    position:relative;
+	min-width: 800px;
+	/* max-width: 1024px; */
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
 }
+
 .layout-user-main {
-    width: 100%;
-    height: 100%;
-    position:absolute;
+	width: 100%;
+	height: 100%;
+	position: absolute;
 }
+
 .header-container {
-    background-color: #E0F0FF;
+	background-color: #E0F0FF;
 }
 
 .footer-container {
-    position: absolute;
-    border-top: 2px black dotted;
-    background-color: #D0D0D0;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    height: 0px;
+	position: absolute;
+	border-top: 2px black dotted;
+	background-color: #D0D0D0;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: 0px;
 }
 
 .footer-toggle {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    border: thin solid black;
-    border-bottom: none;
-    cursor: pointer;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	border: thin solid black;
+	border-bottom: none;
+	cursor: pointer;
 }
 
 .body-container {
-    background-color: #F1F1F1;
+	background-color: #F1F1F1;
 }
+
 .login-area {
-    float: right;
-    border-bottom: thin black solid;
+	float: right;
+	border-bottom: thin black solid;
 }
 
 .full-size-panel {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .home-menu {
-    list-style-type: square;
-    display: inline;
+	list-style-type: square;
+	display: inline;
+	padding: 0;
+	margin: 0;
 }
 
 .home-menu li {
-    display: inline;
+	display: inline;
 }
 
+.search-view {
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+
+.search-view ul {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	list-style: none;
+}
+
+.search-view ul li {
+	display: inline;
+}
+
+.search-view select {
+	width: 115px;
+}
+.search-view input {
+	padding: 0 2px;
+}
 .stackLayout {
-    border-bottom: 1px solid #bbbbbb;
+	border-bottom: 1px solid #bbbbbb;
 }
 
 .stackLayoutPanelHeader {
-    cursor: pointer;
-    cursor: hand;
-    font-weight: bold;
-    padding-left: 3px;
-    border: 1px solid #bbbbbb;
-    border-bottom: 0px;
-    background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px -989px;
+	cursor: pointer;
+	cursor: hand;
+	font-weight: bold;
+	padding-left: 3px;
+	border: 1px solid #bbbbbb;
+	border-bottom: 0px;
+	background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px
+		-989px;
 }
 
 div.stackLayoutPanelHeader:hover {
-  background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px -1464px;
+	background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px
+		-1464px;
 }
 /** DELETE AFTER THIS LINE **/
