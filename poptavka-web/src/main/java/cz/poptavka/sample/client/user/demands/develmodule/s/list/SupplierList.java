@@ -121,7 +121,47 @@ public class SupplierList extends Composite implements ReverseViewInterface<Supp
         //init column factory
         ColumnFactory<PotentialDemandMessage> factory = new ColumnFactory<PotentialDemandMessage>();
 
-        //ROW selection column and set it's width to 40px.
+// **** definition of all needed FieldUpdaters
+        //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
+        FieldUpdater<PotentialDemandMessage, String> action = new FieldUpdater<PotentialDemandMessage, String>() {
+
+            @Override
+            public void update(int index, PotentialDemandMessage object,
+                    String value) {
+                TableDisplay obj = object;
+                obj.setRead(true);
+                demandGrid.redraw();
+                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
+            }
+        };
+
+        //DATE FIELD UPDATER displaying of demand detail. The fieldUpdater 'action' cannot be used,
+        //because this is working with Date instead of String
+        FieldUpdater<PotentialDemandMessage, Date> dateAction = new FieldUpdater<PotentialDemandMessage,
+            Date>() {
+
+            @Override
+            public void update(int index, PotentialDemandMessage object,
+                    Date value) {
+                //for pure display detail action
+                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
+            }
+        };
+
+        //STAR COLUMN FIELD UPDATER
+        FieldUpdater<PotentialDemandMessage, Boolean> starUpdater = new FieldUpdater<PotentialDemandMessage, Boolean>()
+        {
+            @Override
+            public void update(int index, PotentialDemandMessage object, Boolean value) {
+                TableDisplay obj = (TableDisplay) object;
+                obj.setStarred(!value);
+                demandGrid.redraw();
+                Long[] item = new Long[] {object.getUserMessageId()};
+                presenter.updateStarStatus(Arrays.asList(item), !value);
+            }
+        };
+
+// **** ROW selection column and set it's width to 40px.
         //contains custom header providing selecting all visible items
         final Header<Boolean> header = factory.createCheckBoxHeader();
         //select
@@ -139,76 +179,55 @@ public class SupplierList extends Composite implements ReverseViewInterface<Supp
         demandGrid.addColumn(factory.createCheckboxColumn(selectionModel), header);
         demandGrid.setColumnWidth(demandGrid.getColumn(ColumnFactory.COL_ZERO), ColumnFactory.WIDTH_40, Unit.PX);
 
-        //Star collumn with defined valueUpdater and custom style
+// **** Star collumn with defined valueUpdater and custom style
         Column<PotentialDemandMessage, Boolean> starColumn = factory.createStarColumn();
-        starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        starColumn.setFieldUpdater(new FieldUpdater<PotentialDemandMessage, Boolean>() {
-
-            @Override
-            public void update(int index, PotentialDemandMessage object, Boolean value) {
-                TableDisplay obj = (TableDisplay) object;
-                obj.setStarred(!value);
-                demandGrid.redraw();
-                Long[] item = new Long[] {object.getUserMessageId()};
-                presenter.updateStarStatus(Arrays.asList(item), !value);
-            }
-        });
+        starColumn.setFieldUpdater(starUpdater);
+        //TODO
+        //testing if assigning style in columnFactory works - works well 7.11.11 Beho
+        //but keep here for reference
+        //starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         demandGrid.setColumnWidth(starColumn, ColumnFactory.WIDTH_40, Unit.PX);
         demandGrid.addColumn(starColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
 
-        //create common demand display fieldUpdater for demand and related conversation display
-        FieldUpdater<PotentialDemandMessage, String> action = new FieldUpdater<PotentialDemandMessage, String>() {
-
-            @Override
-            public void update(int index, PotentialDemandMessage object,
-                    String value) {
-                TableDisplay obj = object;
-                obj.setRead(true);
-                demandGrid.redraw();
-                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
-            }
-        };
-
-        //just for displaying of demand detail. The fieldUpdater 'action' cannot be used, because this is working
-        //with Date instead of String
-        FieldUpdater<PotentialDemandMessage, Date> dateAction = new FieldUpdater<PotentialDemandMessage,
-            Date>() {
-
-            @Override
-            public void update(int index, PotentialDemandMessage object,
-                    Date value) {
-                //for pure display detail action
-                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
-            }
-        };
-
-        Column<PotentialDemandMessage, String> clientCol = factory.createClientColumn(null);
+// **** client column
+        Column<PotentialDemandMessage, String> clientCol = factory.createClientColumn(null, true);
+        clientCol.setFieldUpdater(action);
         demandGrid.addColumn(clientCol, Storage.MSGS.client());
 
-        //demand title column
+// **** demand title column
         Column<PotentialDemandMessage, String> titleCol = factory.createTitleColumn(demandGrid.getSortHandler());
         titleCol.setFieldUpdater(action);
         demandGrid.addColumn(titleCol, Storage.MSGS.title());
 
-        //urgent column
+// **** urgent column
         Column<PotentialDemandMessage, Date> urgentCol = factory.createUrgentColumn(demandGrid.getSortHandler());
         urgentCol.setFieldUpdater(dateAction);
+        //TODO
         //example width, can be different
+        //widths shall be set automatically in
         demandGrid.setColumnWidth(urgentCol, 60, Unit.PX);
         demandGrid.addColumn(urgentCol, Storage.MSGS.urgency());
 
-        //demand price column
+// **** client rating column
+        Column<PotentialDemandMessage, String> ratingCo = factory.createClientRatingColumn(demandGrid.getSortHandler());
+        ratingCo.setFieldUpdater(action);
+        //TODO
+        //implement img header
+        demandGrid.addColumn(ratingCo, "img");
+
+// **** demand price column
         Column<PotentialDemandMessage, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
         priceCol.setFieldUpdater(action);
         demandGrid.addColumn(priceCol, Storage.MSGS.price());
 
-        //creationDate column
+// **** creationDate column
         Column<PotentialDemandMessage, Date> creationCol =
-            factory.createCreationDateColumn(demandGrid.getSortHandler());
+            factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_CREATED);
         creationCol.setFieldUpdater(dateAction);
         demandGrid.addColumn(creationCol, Storage.MSGS.createdDate());
 
     }
+
 
     @Override
     public Button getReadBtn() {

@@ -1,6 +1,7 @@
 package cz.poptavka.sample.shared.domain.message;
 
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
 import java.io.Serializable;
@@ -215,8 +216,8 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         this.userMessageId = userMessageId;
     }
 
-    public Integer getClientRating() {
-        return clientRating;
+    public int getClientRating() {
+        return (clientRating == null ? -100 : clientRating.intValue());
     }
 
     public void setClientRating(Integer clientRating) {
@@ -238,6 +239,30 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     @Override
     public String getDemandPrice() {
         return price.toString();
+    }
+
+    @Override
+    public DemandStatusType getDemandStatus() {
+        // TODO Auto-generated method stub
+        return DemandStatusType.ACTIVE;
+    }
+
+    @Override
+    public String getFormattedMessageCount() {
+        // TODO Auto-generated method stub
+        return "(missing)";
+    }
+
+    @Override
+    public int getMessageCount() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String getClientName() {
+        // TODO Auto-generated method stub
+        return "missing";
     }
 
 }

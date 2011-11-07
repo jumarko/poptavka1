@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 
 import cz.poptavka.sample.client.main.Storage;
 
-public class ClickableImageCell extends AbstractCell<Date> {
+public class UrgentImageCell extends AbstractCell<Date> {
 
     private static ImageResourceRenderer renderer;
 
@@ -31,7 +31,7 @@ public class ClickableImageCell extends AbstractCell<Date> {
 
     private boolean displayed;
 
-    public ClickableImageCell() {
+    public UrgentImageCell() {
         super("click", "keydown", "mouseover", "mouseout");
         if (renderer == null) {
             renderer = new ImageResourceRenderer();

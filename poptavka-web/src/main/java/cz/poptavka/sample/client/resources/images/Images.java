@@ -108,4 +108,7 @@ public interface Images extends ClientBundle {
 
     @Source("toggleOpen.png")
     ImageResource toggleOpen();
+
+    @Source("status-work.png")
+    ImageResource statusWork();
 }

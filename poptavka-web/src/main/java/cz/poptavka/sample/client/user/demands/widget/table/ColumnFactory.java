@@ -14,12 +14,16 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.view.client.SelectionModel;
 
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.TableDisplay;
+import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
 /**
- * Factory class for creating DataGrid columns.
+ * Factory class for creating DataGrid columns including optional sorting ability.
  * Contains constants used for column customization.
+ *
+ * - Contains CheckBox column
  *
  * @author beho
  *
@@ -35,6 +39,9 @@ public class ColumnFactory<T> {
     public static final int COL_FIVE = 5;
     public static final int COL_SIX = 6;
     public static final int COL_SEVEN = 7;
+
+    public static final int DATE_CREATED = 0;
+    public static final int DATE_FINISHED = 1;
 
     //widths
     public static final int WIDTH_40 = 40;
@@ -106,6 +113,7 @@ public class ColumnFactory<T> {
 
         };
         //set column style
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         return col;
     }
 
@@ -170,7 +178,7 @@ public class ColumnFactory<T> {
      * @return urgencyColumn
      */
     public Column<T, Date> createUrgentColumn(ListHandler<T> sortHandler) {
-        Column<T, Date> urgencyColumn = new Column<T, Date>(new ClickableImageCell()) {
+        Column<T, Date> urgencyColumn = new Column<T, Date>(new UrgentImageCell()) {
 
             @Override
             public Date getValue(T object) {
@@ -206,9 +214,7 @@ public class ColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                //TODO
-//                return obj.getRating();
-                return "#TODO";
+                return obj.getClientRating() + "%";
             }
 
         };
@@ -218,9 +224,9 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    //TODO
-//                    return ((TableDisplay) o1).get().compareTo(((TableDisplay) o2).getEndDate());
-                    return 0;
+                    Integer count1 = ((TableDisplay) o1).getClientRating();
+                    Integer count2 = ((TableDisplay) o2).getClientRating();
+                    return count1.compareTo(count2);
                 }
             });
         }
@@ -235,33 +241,38 @@ public class ColumnFactory<T> {
      * update sorting accordingly
      *
      * @param sortHandler
-     * @return ratingColumn
+     * @param displayMessageCount
+     * @return clientName column
      */
-    public Column<T, String> createClientColumn(ListHandler<T> sortHandler) {
-        Column<T, String> ratingColumn = new Column<T, String>(tableTextCell) {
+    public Column<T, String> createClientColumn(ListHandler<T> sortHandler, final boolean displayMessageCount) {
+        Column<T, String> clientColumn = new Column<T, String>(tableTextCell) {
+
+            private boolean displayMessages = displayMessageCount;
 
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                //TODO
-//                return obj.getRating();
-                return "#TODO - CilentName (messageCount)";
+                if (displayMessages) {
+                    return obj.getClientName() + " " + obj.getFormattedMessageCount();
+                } else {
+                    return obj.getClientName();
+                }
             }
 
         };
         if (sortHandler != null) {
-            ratingColumn.setSortable(true);
-            sortHandler.setComparator(ratingColumn, new Comparator<T>() {
+            clientColumn.setSortable(true);
+            sortHandler.setComparator(clientColumn, new Comparator<T>() {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    //TODO
-//                    return ((TableDisplay) o1).get().compareTo(((TableDisplay) o2).getEndDate());
-                    return 0;
+                    Integer count1 = ((TableDisplay) o1).getMessageCount();
+                    Integer count2 = ((TableDisplay) o2).getMessageCount();
+                    return count1.compareTo(count2);
                 }
             });
         }
-        return ratingColumn;
+        return clientColumn;
     }
 
     /**
@@ -273,13 +284,19 @@ public class ColumnFactory<T> {
      * @param sortHandler
      * @return ratingColumn
      */
-    public Column<T, Date> createCreationDateColumn(ListHandler<T> sortHandler) {
+    public Column<T, Date> createDateColumn(ListHandler<T> sortHandler, final int dateType) {
         Column<T, Date> ratingColumn = new Column<T, Date>(new ClickableDateCell()) {
+
+            private int type = dateType;
 
             @Override
             public Date getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return obj.getCreated();
+                if (type == DATE_CREATED) {
+                    return obj.getCreated();
+                } else {
+                    return obj.getEndDate();
+                }
             }
 
         };
@@ -294,6 +311,29 @@ public class ColumnFactory<T> {
             });
         }
         return ratingColumn;
+    }
+
+    public Column<T, DemandStatusType> createStatusColumn(ListHandler<T> sortHandler) {
+        Column<T, DemandStatusType> statusColumn = new Column<T, DemandStatusType>(new StatusImageCell()) {
+
+            @Override
+            public DemandStatusType getValue(T object) {
+                TableDisplay obj = (TableDisplay) object;
+                return obj.getDemandStatus();
+            }
+
+        };
+        if (sortHandler != null) {
+            statusColumn.setSortable(true);
+            sortHandler.setComparator(statusColumn, new Comparator<T>() {
+
+                @Override
+                public int compare(T o1, T o2) {
+                    return ((TableDisplay) o1).getDemandStatus().compareTo(((TableDisplay) o2).getDemandStatus());
+                }
+            });
+        }
+        return statusColumn;
     }
 
 
