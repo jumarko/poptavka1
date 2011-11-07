@@ -1,7 +1,7 @@
 package cz.poptavka.sample.domain.settings;
 
 import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,7 @@ public class NotificationItem extends DomainObject {
     private boolean enabled;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private Period period;
 
     @ManyToOne

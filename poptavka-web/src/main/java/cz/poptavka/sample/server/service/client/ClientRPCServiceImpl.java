@@ -11,6 +11,7 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.product.Service;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.register.Registers;
 import cz.poptavka.sample.domain.settings.Notification;
 import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.settings.Period;
@@ -126,7 +127,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         // budeme to ziskavat cez AUD entitu alebo novy atribut. AUD entitu pre
         // UserService nemame a je urcite nutna
         // TODO ivlcek - create constants for ciselnik Services or use Constants class
-        userService.setService(this.registerService.getValue("classic", Service.class));
+        userService.setService(this.registerService.getValue(Registers.Service.CLASSIC, Service.class));
         List<UserService> userServices = new ArrayList<UserService>();
         userServices.add(userService);
         newClient.getBusinessUser().setUserServices(userServices);
@@ -134,7 +135,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
         NotificationItem notificationItem = new NotificationItem();
         // TODO ivlcek - create constant for Notifications in DB
-        notificationItem.setNotification(this.registerService.getValue("new.message.client", Notification.class));
+        notificationItem.setNotification(this.registerService.getValue(Registers.Notification.NEW_MESSAGE_CLIENT,
+                Notification.class));
         notificationItem.setEnabled(true);
         notificationItem.setPeriod(Period.INSTANTLY);
         notificationItems.add(notificationItem);

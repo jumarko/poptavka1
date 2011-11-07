@@ -1,7 +1,7 @@
 package cz.poptavka.sample.domain;
 
 import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import cz.poptavka.sample.util.reflection.ReflectionUtils;
 import junit.framework.TestCase;
 import org.apache.commons.collections.CollectionUtils;
@@ -370,11 +370,11 @@ public class DomainObjectTest {
         final Column columnAnnotation = field.getAnnotation(Column.class);
         if (columnAnnotation == null) {
             classFieldsViolations.put(field, "Field has no @Column annotation for length restriction.");
-        } else if (!(columnAnnotation.length() == Constants.ENUM_FIELD_LENGTH
-                || columnAnnotation.length() == Constants.ENUM_SHORTINT_FIELD_LENGTH)) {
+        } else if (!(columnAnnotation.length() == OrmConstants.ENUM_FIELD_LENGTH
+                || columnAnnotation.length() == OrmConstants.ENUM_SHORTINT_FIELD_LENGTH)) {
             classFieldsViolations.put(field, "Field has @Column annotation but does not have correct "
-                    + "length restriction. Expected length=" + Constants.ENUM_FIELD_LENGTH
-                    + " or length=" + Constants.ENUM_SHORTINT_FIELD_LENGTH + " for short ORDINAL enums"
+                    + "length restriction. Expected length=" + OrmConstants.ENUM_FIELD_LENGTH
+                    + " or length=" + OrmConstants.ENUM_SHORTINT_FIELD_LENGTH + " for short ORDINAL enums"
                     + ", but found length=" + columnAnnotation.length());
         }
     }

@@ -10,7 +10,7 @@ import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -110,7 +110,7 @@ public class Demand extends DomainObject {
     private String attachmentPath;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private DemandStatus status;
 
     /**

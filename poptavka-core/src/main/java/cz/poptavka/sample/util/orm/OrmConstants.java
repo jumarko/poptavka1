@@ -6,11 +6,11 @@ package cz.poptavka.sample.util.orm;
  * @author Juraj Martinka
  *         Date: 7.5.11
  */
-public final class Constants {
+public final class OrmConstants {
     public static final int ENUM_FIELD_LENGTH = 64;
     public static final int ENUM_SHORTINT_FIELD_LENGTH = 2;
 
-    private Constants() {
+    private OrmConstants() {
         // utility class - DO NOT INSTANTIATE!
     }
 }

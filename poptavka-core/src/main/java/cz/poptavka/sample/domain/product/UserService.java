@@ -3,7 +3,7 @@ package cz.poptavka.sample.domain.product;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.user.BusinessUser;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -31,7 +31,7 @@ public class UserService extends DomainObject {
     private BusinessUser user;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private Status status;
 
 

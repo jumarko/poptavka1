@@ -1,7 +1,7 @@
 package cz.poptavka.sample.domain.address;
 
 import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +21,7 @@ import javax.persistence.ManyToOne;
 public class Address extends DomainObject {
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private AddressType addressType;
 
     @ManyToOne

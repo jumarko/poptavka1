@@ -11,7 +11,7 @@ import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageException;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import java.util.ArrayList;
 
@@ -124,7 +124,7 @@ public class Message extends DomainObject {
     private User sender;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private MessageState messageState;
 
     @Temporal(value = TemporalType.TIMESTAMP)

@@ -4,7 +4,7 @@ import cz.poptavka.sample.domain.common.AdditionalInfo;
 import cz.poptavka.sample.domain.common.AdditionalInfoAware;
 import cz.poptavka.sample.domain.common.TreeItem;
 import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -36,7 +36,7 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
     private String name;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private LocalityType type;
 
     @ManyToMany(mappedBy = "localities")

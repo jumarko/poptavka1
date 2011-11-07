@@ -34,5 +34,7 @@
      <NOTIFICATION  ID="11" DESCRIPTION="Notifikácia o aktualizáciach a novinkách systému"
                 NAME="Nová správa od systému" NOTIFICATIONTYPE="CLIENT" CODE="new.info.client" />
 
+    <SERVICE ID="4" CODE="classic" VALID="1" />
+
 
 </dataset>

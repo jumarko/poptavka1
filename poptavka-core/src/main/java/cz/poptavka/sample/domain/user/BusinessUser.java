@@ -3,7 +3,7 @@ package cz.poptavka.sample.domain.user;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import cz.poptavka.sample.util.strings.ToStringUtils;
 import java.util.ArrayList;
 import org.hibernate.annotations.Cascade;
@@ -38,7 +38,7 @@ public class BusinessUser extends User {
     @OneToMany(mappedBy = "businessUser")
     private List<BusinessUserRole> businessUserRoles = new ArrayList<BusinessUserRole>();
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private BusinessType businessType;
     /** Business user data about company and contact person. */
     @OneToOne

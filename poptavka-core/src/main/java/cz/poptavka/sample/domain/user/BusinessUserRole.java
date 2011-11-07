@@ -1,7 +1,7 @@
 package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.domain.common.DomainObject;
-import cz.poptavka.sample.util.orm.Constants;
+import cz.poptavka.sample.util.orm.OrmConstants;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
@@ -43,7 +43,7 @@ public abstract class BusinessUserRole extends DomainObject {
      * @see {@link cz.poptavka.sample.domain.user.Verification} enum
      */
     @Enumerated(value = EnumType.STRING)
-    @Column(length = Constants.ENUM_FIELD_LENGTH)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private Verification verification;
 
 
