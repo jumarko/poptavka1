@@ -29,4 +29,12 @@ public final class Registers {
         public static final String CLASSIC = "classic";
         public static final String PARTNER_3MONTH = "partner.3month";
     }
+
+    /**
+     * This method exists only for satisfaction of DomainObjectTest. No real meaning.
+     * @return
+     */
+    public String toString() {
+        return "";
+    }
 }
