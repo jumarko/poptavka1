@@ -1,15 +1,8 @@
 package cz.poptavka.sample.server.service.client;
 
+import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.GWT;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.googlecode.genericdao.search.Search;
-
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -28,13 +21,19 @@ import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
@@ -46,6 +45,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private GeneralService generalService;
     private ClientService clientService;
     private LocalityService localityService;
+    private RegisterService registerService;
 
     public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
@@ -75,11 +75,17 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.localityService = localityService;
     }
 
+    @Autowired
+    public void setRegisterService(RegisterService registerService) {
+        this.registerService = registerService;
+    }
+
     /**
      * Vytvorenie noveho klienta.
      *
      */
     public UserDetail createNewClient(UserDetail clientDetail) {
+        Preconditions.checkNotNull(clientDetail);
         Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
@@ -93,14 +99,19 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
         /** Address. **/
         List<Address> addresses = new ArrayList<Address>();
-        for (AddressDetail detail : clientDetail.getAddresses()) {
-            Locality city = this.getLocality(detail.getCityName());
-            Address address = new Address();
-            address.setCity(city);
-            address.setStreet(detail.getStreet());
-            address.setZipCode(detail.getZipCode());
-            addresses.add(address);
+        // TODO are addresses really required - if yes add check for not null,
+        // otherwise following for-each throws NPE if clienDetail#getAddresses returns null
+        if (clientDetail.getAddresses() != null) {
+            for (AddressDetail detail : clientDetail.getAddresses()) {
+                Locality city = this.getLocality(detail.getCityName());
+                Address address = new Address();
+                address.setCity(city);
+                address.setStreet(detail.getStreet());
+                address.setZipCode(detail.getZipCode());
+                addresses.add(address);
+            }
         }
+
         newClient.getBusinessUser().setAddresses(addresses);
         /** Login & pwd information. **/
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
@@ -115,7 +126,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         // budeme to ziskavat cez AUD entitu alebo novy atribut. AUD entitu pre
         // UserService nemame a je urcite nutna
         // TODO ivlcek - create constants for ciselnik Services or use Constants class
-        userService.setService(this.generalService.find(Service.class, 4L));
+        userService.setService(this.registerService.getValue("classic", Service.class));
         List<UserService> userServices = new ArrayList<UserService>();
         userServices.add(userService);
         newClient.getBusinessUser().setUserServices(userServices);
@@ -123,7 +134,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
         NotificationItem notificationItem = new NotificationItem();
         // TODO ivlcek - create constant for Notifications in DB
-        notificationItem.setNotification(this.generalService.find(Notification.class, 10L));
+        notificationItem.setNotification(this.registerService.getValue("new.message.client", Notification.class));
         notificationItem.setEnabled(true);
         notificationItem.setPeriod(Period.INSTANTLY);
         notificationItems.add(notificationItem);
