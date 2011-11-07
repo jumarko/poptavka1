@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
+import cz.poptavka.sample.domain.demand.DemandType;
 
 public class PotentialDemandMessage implements Serializable, TableDisplay {
 
@@ -36,6 +37,9 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     private long senderId;
     private long receiverId;
 
+    private DemandType demandType;
+
+    private String clientName;
     private Integer clientRating;
 
     public static PotentialDemandMessage createMessageDetail(UserMessage message) {
@@ -64,9 +68,13 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         detail.setStarred(userMessage.isIsStarred());
         detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
         detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
+        detail.setDemandType(userMessage.getMessage().getDemand().getType());
+        detail.setClientName(userMessage.getMessage().getDemand().getClient()
+                .getBusinessUser().getBusinessUserData().getCompanyName());
         return detail;
     }
 
+    @Override
     public void setRead(boolean read) {
         this.read = read;
     }
@@ -76,10 +84,12 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         return read;
     }
 
+    @Override
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
 
+    @Override
     public boolean isStarred() {
         return starred;
     }
@@ -88,6 +98,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         this.endDate = endDate;
     }
 
+    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -124,6 +135,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         return MessageType.POTENTIAL_DEMAND;
     }
 
+    @Override
     public long getMessageId() {
         return messageId;
     }
@@ -180,6 +192,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         this.messageState = messageState;
     }
 
+    @Override
     public Date getCreated() {
         return created;
     }
@@ -216,12 +229,30 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         this.userMessageId = userMessageId;
     }
 
+    @Override
     public int getClientRating() {
         return (clientRating == null ? -100 : clientRating.intValue());
     }
 
     public void setClientRating(Integer clientRating) {
         this.clientRating = clientRating;
+    }
+
+    public DemandType getDemandType() {
+        return demandType;
+    }
+
+    public void setDemandType(DemandType demandType) {
+        this.demandType = demandType;
+    }
+
+    @Override
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER = new ProvidesKey<PotentialDemandMessage>() {
@@ -257,12 +288,6 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     public int getMessageCount() {
         // TODO Auto-generated method stub
         return 0;
-    }
-
-    @Override
-    public String getClientName() {
-        // TODO Auto-generated method stub
-        return "missing";
     }
 
 }
