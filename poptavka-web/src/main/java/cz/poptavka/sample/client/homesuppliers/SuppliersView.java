@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.homesuppliers;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import java.util.logging.Logger;
 
@@ -57,9 +56,9 @@ public class SuppliersView extends OverflowComposite
     @UiField(provided = true)
     ListBox pageSizeCombo;
     @UiField
-    ListBox localityList, localities, categories;
+    ListBox localities, categories;
     @UiField
-    Label reklama;
+    Label reklama, filterLabel;
     @UiField
     TextBox overallRating, certified, verification,
     services, bsuRoles, addresses, businessType, email, companyName,
@@ -102,18 +101,21 @@ public class SuppliersView extends OverflowComposite
     }
 
     @Override
-    public ListBox getLocalityList() {
-        return localityList;
+    public Label getFilterLabel() {
+        return filterLabel;
     }
-
-    @Override
-    public String getSelectedLocality() {
-        if (localityList.getSelectedIndex() == 0) {
-            return null;
-        } else {
-            return localityList.getValue(localityList.getSelectedIndex());
-        }
-    }
+//    @Override
+//    public ListBox getLocalityList() {
+//        return localityList;
+//    }
+//    @Override
+//    public String getSelectedLocality() {
+//        if (localityList.getSelectedIndex() == 0) {
+//            return null;
+//        } else {
+//            return localityList.getValue(localityList.getSelectedIndex());
+//        }
+//    }
 
     @Override
     public Widget getWidgetView() {
@@ -161,6 +163,10 @@ public class SuppliersView extends OverflowComposite
         return null; //split;
     }
 
+//    @Override
+//    public CellList getCategoryList() {
+//        return categoriesList;
+//    }
     @Override
     public void displaySubCategories(int columns, ArrayList<CategoryDetail> subCategories) {
         categoriesList.setRowCount(subCategories.size(), true);
@@ -172,7 +178,7 @@ public class SuppliersView extends OverflowComposite
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        if  (supplierDetail.getOverallRating() == -1) {
+        if (supplierDetail.getOverallRating() == -1) {
             overallRating.setText("");
         } else {
             overallRating.setText(Integer.toString(supplierDetail.getOverallRating()));
@@ -274,33 +280,10 @@ public class SuppliersView extends OverflowComposite
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
+        pager.setPageSize(this.getPageSize());
 
         // Initialize the columns.
         initTableColumns(getSelectionSupplierModel());
-    }
-    private Column<FullSupplierDetail, String> supplierNameColumn;
-    private Column<FullSupplierDetail, String> supplierRatingColumn;
-    private Column<FullSupplierDetail, String> supplierAddressColumn;
-    private Column<FullSupplierDetail, String> supplierLocalityColumn;
-
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierNameColumn() {
-        return supplierNameColumn;
-    }
-
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierRatingColumn() {
-        return supplierRatingColumn;
-    }
-
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierAddressColumn() {
-        return supplierAddressColumn;
-    }
-
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierLocalityColumn() {
-        return supplierLocalityColumn;
     }
 
     /**
@@ -309,21 +292,16 @@ public class SuppliersView extends OverflowComposite
     private void initTableColumns(final SingleSelectionModel<FullSupplierDetail> selectionModel) {
 
         // Company name.
-        supplierNameColumn = new Column<FullSupplierDetail, String>(
-                new TextCell()) {
+        addColumn(new TextCell(), "Name", true, 100, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
                 return object.getCompanyName();
             }
-        };
-//        getSupplierNameColumn().setSortable(true);
-        dataGrid.addColumn(getSupplierNameColumn(), "Name");
-        dataGrid.setColumnWidth(getSupplierNameColumn(), 100, Unit.PX);
+        });
 
         // SupplierRating.
-        supplierRatingColumn = new Column<FullSupplierDetail, String>(
-                new TextCell()) {
+        addColumn(new TextCell(), "Rate", true, 30, new GetValue() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -333,14 +311,10 @@ public class SuppliersView extends OverflowComposite
                     return Integer.toString(object.getOverallRating());
                 }
             }
-        };
-        getSupplierRatingColumn().setSortable(true);
-        dataGrid.addColumn(supplierRatingColumn, "Rate");
-        dataGrid.setColumnWidth(supplierRatingColumn, 30, Unit.PX);
+        });
 
         // Address.
-        supplierAddressColumn = new Column<FullSupplierDetail, String>(
-                new TextCell()) {
+        addColumn(new TextCell(), "Address", false, 60, new GetValue() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -352,14 +326,10 @@ public class SuppliersView extends OverflowComposite
                 }
                 return str.toString();
             }
-        };
-//        getSupplierAddressColumn().setSortable(true);
-        dataGrid.addColumn(supplierAddressColumn, "Address");
-        dataGrid.setColumnWidth(supplierAddressColumn, 60, Unit.PX);
+        });
 
         // Locality.
-        supplierLocalityColumn = new Column<FullSupplierDetail, String>(
-                new TextCell()) {
+        addColumn(new TextCell(), "Locality", false, 50, new GetValue() {
 
             @Override
             public String getValue(FullSupplierDetail object) {
@@ -375,11 +345,7 @@ public class SuppliersView extends OverflowComposite
                 }
                 return str.toString();
             }
-        };
-        //Nemusi byt, je tam filtrovanie na zaklade lokalit
-//        getSupplierTypeColumn().setSortable(true);
-        dataGrid.addColumn(supplierLocalityColumn, "Locality");
-        dataGrid.setColumnWidth(supplierLocalityColumn, 50, Unit.PX);
+        });
     }
 
     /**
@@ -400,20 +366,20 @@ public class SuppliersView extends OverflowComposite
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText,
-            final GetValue<C> getter, FieldUpdater<FullSupplierDetail, C> fieldUpdater) {
+    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell,
+            String headerText, boolean sort, int width, final GetValue<C> getter) {
         Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
 
             @Override
-            public C getValue(FullSupplierDetail object) {
-                return getter.getValue(object);
+            public C getValue(FullSupplierDetail demand) {
+                return getter.getValue(demand);
             }
         };
-        column.setFieldUpdater(fieldUpdater);
-//        if (cell instanceof AbstractEditableCell<?, ?>) {
-//            editableCells.add((AbstractEditableCell<?, ?>) cell);
-//        }
+        if (sort) {
+            column.setSortable(true);
+        }
         dataGrid.addColumn(column, headerText);
+        dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
     /**

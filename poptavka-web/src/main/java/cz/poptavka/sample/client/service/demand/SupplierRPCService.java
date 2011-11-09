@@ -10,6 +10,7 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.List;
 import java.util.Map;
 
 @RemoteServiceRelativePath("service/supplier")
@@ -37,5 +38,6 @@ public interface SupplierRPCService extends RemoteService {
 
     long filterSuppliersCount(SearchDataHolder supplier);
 
-    ArrayList<FullSupplierDetail> filterSuppliers(int start, int count, SearchDataHolder supplier);
+    List<FullSupplierDetail> filterSuppliers(int start, int count,
+            SearchDataHolder supplier, Map<String, OrderType> orderColumns);
 }

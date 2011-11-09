@@ -13,10 +13,12 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -77,11 +79,10 @@ public interface HomeSuppliersEventBus extends EventBus {
             Long parentCategory);
 
     @Event(handlers = SuppliersPresenter.class)
-    void displaySuppliers(ArrayList<FullSupplierDetail> list);
+    void displaySuppliers(List<FullSupplierDetail> list);
 
-    @Event(handlers = SuppliersPresenter.class)
-    void setLocalityData(ArrayList<LocalityDetail> list);
-
+//    @Event(handlers = SuppliersPresenter.class)
+//    void setLocalityData(ArrayList<LocalityDetail> list);
     @Event(handlers = SuppliersPresenter.class)
     void addToPath(CategoryDetail category);
 
@@ -91,8 +92,11 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = SuppliersPresenter.class)
     void setCategoryID(Long categoryCode);
 
+//    @Event(handlers = SuppliersPresenter.class)
+//    void resetDisplaySuppliersPager(int totalFoundNew);
+
     @Event(handlers = SuppliersPresenter.class)
-    void resetDisplaySuppliersPager(int totalFoundNew);
+    void createAsyncDataProvider(final int totalFound);
 
     /* Business events handled by Handlers. */
     @Event(handlers = SuppliersHandler.class)
@@ -101,28 +105,27 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = SuppliersHandler.class)
     void getCategories();
 
+//    @Event(handlers = SuppliersHandler.class)
+//    void getLocalities();
+//
+//    @Event(handlers = SuppliersHandler.class)
+//    void getSuppliersByCategoryLocality(int start, int count, Long category,
+//            String locality);
+//
+//    @Event(handlers = SuppliersHandler.class)
+//    void getSuppliersByCategory(int start, int count, Long category);
+//
+//    @Event(handlers = SuppliersHandler.class)
+//    void getSuppliersCount(Long category, String locality);
+//
+//    @Event(handlers = SuppliersHandler.class)
+//    void getSuppliersCountByCategory(Long category);
+//
+//    @Event(handlers = SuppliersHandler.class)
+//    void getSuppliersCountByCategoryLocality(Long category, String locality);
     @Event(handlers = SuppliersHandler.class)
-    void getLocalities();
+    void getSuppliersCount(SearchDataHolder detail);
 
     @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategoryLocality(int start, int count, Long category,
-            String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersByCategory(int start, int count, Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCount(Long category, String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCountByCategory(Long category);
-
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCountByCategoryLocality(Long category, String locality);
-
-    @Event(handlers = SuppliersHandler.class)
-    void filterSuppliersCount(SearchDataHolder detail);
-
-    @Event(handlers = SuppliersHandler.class)
-    void filterSuppliers(int start, int count, SearchDataHolder detail);
+    void getSuppliers(int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns);
 }

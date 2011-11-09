@@ -21,10 +21,10 @@
                         <table width="600px">
                             <tr>
                                 <td>
-                                    <g:HorizontalPanel>
-                                        <g:Label>Filter by locality: </g:Label>
-                                        <g:ListBox ui:field="localityList" />
-                                    </g:HorizontalPanel>
+<!--                                    <g:HorizontalPanel>-->
+                                        <g:Label ui:field="filterLabel">Search panel set, additional filters will by used.</g:Label>
+<!--                                        <g:ListBox ui:field="localityList" />-->
+<!--                                    </g:HorizontalPanel>-->
                                 </td>
                             </tr>
                             <tr>

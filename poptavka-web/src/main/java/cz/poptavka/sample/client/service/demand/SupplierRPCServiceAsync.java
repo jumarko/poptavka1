@@ -9,6 +9,7 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import java.util.List;
 import java.util.Map;
 
 public interface SupplierRPCServiceAsync {
@@ -38,8 +39,8 @@ public interface SupplierRPCServiceAsync {
     void updateSupplier(FullSupplierDetail supplierDetail,
             AsyncCallback<FullSupplierDetail> callback);
 
-    void filterSuppliers(int start, int count, SearchDataHolder supplier,
-            AsyncCallback<ArrayList<FullSupplierDetail>> callback);
+    void filterSuppliers(int start, int count, SearchDataHolder supplier, Map<String, OrderType> orderColumns,
+            AsyncCallback<List<FullSupplierDetail>> callback);
 
     void filterSuppliersCount(SearchDataHolder supplier, AsyncCallback<Long> callback);
 }

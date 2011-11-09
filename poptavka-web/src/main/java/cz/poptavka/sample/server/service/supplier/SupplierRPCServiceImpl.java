@@ -1,7 +1,6 @@
 package cz.poptavka.sample.server.service.supplier;
 
 import com.google.gwt.core.client.GWT;
-import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
@@ -21,6 +20,8 @@ import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.domain.user.SupplierCategory;
+import cz.poptavka.sample.domain.user.SupplierLocality;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
@@ -223,8 +224,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(start).maxResults(count).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
         Category[] categories = {categoryService.getById(categoryID)};
         Locality[] localities = {localityService.getLocality(localityCode)};
         return this.createSupplierDetailList(supplierService.getSuppliers(
@@ -235,8 +235,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(start).maxResults(count).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
                 resultCriteria, categoryService.getById(categoryID)));
@@ -245,8 +244,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count) {
-        final ResultCriteria resultCriteria = new ResultCriteria.Builder()
-                .firstResult(start).maxResults(count).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
     }
@@ -360,6 +358,24 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
         for (Supplier supplier : suppliers) {
             userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplier));
+        }
+        GWT.log("supplierDetailList created: " + userDetails.size());
+        return userDetails;
+    }
+
+    private ArrayList<FullSupplierDetail> createSupplierDetailListCat(Collection<SupplierCategory> suppliersCat) {
+        ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
+        for (SupplierCategory supplierCat : suppliersCat) {
+            userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplierCat.getSupplier()));
+        }
+        GWT.log("supplierDetailList created: " + userDetails.size());
+        return userDetails;
+    }
+
+    private ArrayList<FullSupplierDetail> createSupplierDetailListLoc(Collection<SupplierLocality> suppliersLoc) {
+        ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
+        for (SupplierLocality supplierLoc : suppliersLoc) {
+            userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplierLoc.getSupplier()));
         }
         GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
@@ -480,68 +496,116 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public long filterSuppliersCount(SearchDataHolder detail) {
-        Search search = this.getFilters(detail);
-        return this.generalService.searchAndCount(search).getTotalCount();
+        return this.filter(detail, null).size();
     }
 
     @Override
-    public ArrayList<FullSupplierDetail> filterSuppliers(int start, int count, SearchDataHolder detail) {
-        Search search = this.getFilters(detail);
-        search.setFirstResult(start);
-        search.setMaxResults(count); //alebo page?
-        return this.createSupplierDetailList(this.generalService.search(search));
+    public List<FullSupplierDetail> filterSuppliers(
+            int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        List<FullSupplierDetail> searchResult = this.filter(detail, orderColumns);
+        if (searchResult.size() < (start + count)) {
+            return searchResult.subList(start, searchResult.size());
+        } else {
+            return searchResult.subList(start, count);
+        }
     }
 
-    private Search getFilters(SearchDataHolder detail) {
-        final Search search = new Search(Supplier.class);
-        List<Filter> filters = new ArrayList<Filter>();
-
-        /** simple **/
-        if (!detail.getText().equals("")) {
-            Filter filterTitle = new Filter();
-            filterTitle.setProperty("title");
-            filterTitle.setOperator(6); //like
-            filterTitle.setValue(detail.getText());
-            filters.add(filterTitle);
+    private List<FullSupplierDetail> filter(SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        //null
+        if (detail == null) {
+            Search search = this.getFilter(null, null, orderColumns);
+            return this.createSupplierDetailList(this.generalService.search(search));
         }
-        if (detail.getLocality() != null) {
-            List<Locality> locality = Arrays.asList(this.localityService.getLocality(detail.getLocality().getCode()));
-            Filter filterTitle = new Filter();
-            filterTitle.setProperty("localities");
-            filterTitle.setOperator(8); //is in
-            filterTitle.setValue(locality);
-            filters.add(filterTitle);
+        //0 0
+        if (detail.getCategory() == null && detail.getLocality() == null) {
+            Search search = this.getFilter("else", detail, orderColumns);
+            return this.createSupplierDetailList(this.generalService.search(search));
         }
-        if (detail.getCategory() != null) {
-            List<Category> category = Arrays.asList(this.categoryService.getById(detail.getCategory().getId()));
-            Filter filterTitle = new Filter();
-            filterTitle.setProperty("categories");
-            filterTitle.setOperator(8); //is in
-            filterTitle.setValue(category);
-            filters.add(filterTitle);
+        //1 0
+        if (detail.getCategory() != null && detail.getLocality() == null) {
+            Search search = this.getFilter("category", detail, orderColumns);
+            return this.createSupplierDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
+        //0 1
+        if (detail.getCategory() == null && detail.getLocality() != null) {
+            Search search = this.getFilter("locality", detail, orderColumns);
+            return this.createSupplierDetailListLoc(this.generalService.searchAndCount(search).getResult());
+        }
+        //1 1  --> perform join if filtering by category and locality was used
+        if (detail.getCategory() != null && detail.getLocality() != null) {
+            List<FullSupplierDetail> suppliersCat = this.createSupplierDetailListCat(
+                    this.generalService.searchAndCount(this.getFilter("category", detail, orderColumns)).getResult());
 
+            List<FullSupplierDetail> suppliersLoc = this.createSupplierDetailListLoc(
+                    this.generalService.searchAndCount(this.getFilter("locality", detail, orderColumns)).getResult());
 
-        /** additional **/
-        if (detail.isAdditionalInfo()) {
-            if (detail.getRatingFrom() != -1) {
-                Filter filterTitle = new Filter();
-                filterTitle.setProperty("overalRating");
-                filterTitle.setOperator(5); //greater or equal
-                filterTitle.setValue(detail.getRatingFrom());
-                filters.add(filterTitle);
+            List<FullSupplierDetail> suppliers = new ArrayList<FullSupplierDetail>();
+            for (FullSupplierDetail supplierCat : suppliersCat) {
+                if (suppliersLoc.contains(supplierCat)) {
+                    suppliers.add(supplierCat);
+                }
             }
-            if (detail.getRatingTo() != -1) {
-                Filter filterTitle = new Filter();
-                filterTitle.setProperty("overalRating");
-                filterTitle.setOperator(4); //less or equal
-                filterTitle.setValue(detail.getRatingTo());
-                filters.add(filterTitle);
+            return suppliers;
+        }
+        return null;
+    }
+
+    private Search getFilter(String type, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        Search search = null;
+        String prefix = "";
+        if (detail != null) {
+
+            /** simple **/
+            if (type.equals("category")) {
+                search = new Search(SupplierCategory.class);
+                prefix = "supplier.";
+                if (detail.getCategory() != null) {
+                    final List<Category> allSubCategories = Arrays.asList(
+                            this.getAllSubcategories(detail.getCategory().getId()));
+                    search.addFilterIn("category", allSubCategories);
+                }
+            } else if (type.equals("locality")) {
+                search = new Search(SupplierLocality.class);
+                prefix = "supplier.";
+                if (detail.getLocality() != null) {
+                    final List<Locality> allSubLocalities = Arrays.asList(
+                            this.getAllSublocalities(detail.getLocality().getCode()));
+                    search.addFilterIn("locality", allSubLocalities);
+                }
+            } else {
+                search = new Search(Supplier.class);
+            }
+            if (!detail.getText().equals("")) {
+                search.addFilterLike(prefix + "title", "%" + detail.getText() + "%");
             }
 
-            //TODO Martin - suppliers description
+            /** additional **/
+            if (detail.isAdditionalInfo()) {
+                if (detail.getPriceFrom() != -1) {
+                    search.addFilterGreaterOrEqual(prefix + "rating", detail.getRatingFrom());
+                }
+                if (detail.getPriceTo() != -1) {
+                    search.addFilterLessOrEqual(prefix + "rating", detail.getRatingTo());
+                }
+
+//            if (detail.getEndDate() != null) {
+//                search.addFilterGreaterOrEqual("description", detail.getDescription());
+//                noFilter = false;
+//            }
+            }
+        } else {
+            search = new Search(Supplier.class);
         }
-        search.setFilters(filters);
+        /** sort **/
+        if (orderColumns != null) {
+            for (String item : orderColumns.keySet()) {
+                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                    search.addSortAsc(prefix + item, true);
+                } else {
+                    search.addSortDesc(prefix + item, true);
+                }
+            }
+        }
         return search;
     }
 }
