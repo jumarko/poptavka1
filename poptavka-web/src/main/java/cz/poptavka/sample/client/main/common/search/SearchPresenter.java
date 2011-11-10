@@ -1,12 +1,8 @@
 package cz.poptavka.sample.client.main.common.search;
 
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
@@ -44,33 +40,6 @@ public class SearchPresenter
 
     @Override
     public void bind() {
-        view.getSearchAdvBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.showHideAdvancedSearchPanel(view.getContent(), view.getWhere().getSelectedIndex(),
-                        view.getCategory().getSelectedIndex(), view.getLocality().getSelectedIndex());
-            }
-        });
-        view.getSearchBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                if (view.getWhere().getSelectedIndex() == 0) {
-                    eventBus.goToHomeDemands(view.getFilter());
-                } else {
-                    eventBus.goToHomeSuppliers(view.getFilter());
-                }
-            }
-        });
-        view.getWhere().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-//                eventBus.showHideAdvancedSearchPanel(view.getContent(), view.getWhere().getSelectedIndex(),
-//                        view.getCategory().getSelectedIndex(), view.getLocality().getSelectedIndex());
-            }
-        });
     }
 
     public void onStart() {
@@ -80,8 +49,5 @@ public class SearchPresenter
     public void onForward() {
         // TODO praso - switch css to selected menu button.
         //eventBus.selectCompanyMenu();
-    }
-
-    public void onGoToSearchPanel() {
     }
 }

@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +61,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private GeneralService generalService;
     private UserMessageService userMessageService;
     private AuditService auditService;
+    private TreeItemService treeItemService;
 
     public DemandService getDemandService() {
         return demandService;
@@ -111,8 +111,13 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
+
     @Autowired
-    private TreeItemService treeItemService;
+    public void setTreeItemService(TreeItemService treeItemService) {
+        this.treeItemService = treeItemService;
+    }
+//    @Autowired
+//    private TreeItemService treeItemService;
     //Last computed categories and localities
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new ArrayList<Locality>();
@@ -314,22 +319,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     private Category[] getAllSubcategories(long id) {
-        //if stored are not what i am looking for, retrieve new/actual
-        if (categoriesHistory.isEmpty() || categoriesHistory.get(0).getId() != id) {
-            //clear
-            categoriesHistory = new LinkedList<Category>();
-            //level 0
-            categoriesHistory.add(categoryService.getById(id));
-            //other levels
-            for (int i = 0; i < categoriesHistory.size(); i++) {
-                final List<Category> workingCatList = categoriesHistory.get(i).getChildren();
-                if (workingCatList != null && workingCatList.size() > 0) {
-                    //and children categories
-                    categoriesHistory.addAll(workingCatList);
-                }
-            }
-        }
-        return categoriesHistory.toArray(new Category[categoriesHistory.size()]);
+        final Category cat = this.generalService.find(Category.class, id);
+        final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat, Category.class);
+        allSubCategories.add(cat);
+        return allSubCategories.toArray(new Category[allSubCategories.size()]);
     }
 
     @Override
@@ -354,25 +347,10 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     private Locality[] getAllSublocalities(String code) {
-        //if stored are not what i am looking for, retrieve new/actual
-        if (localitiesHistory.isEmpty() || !localitiesHistory.get(0).getCode().equals(code)) {
-            //clear
-            localitiesHistory = new LinkedList<Locality>();
-            //level 0
-            localitiesHistory.add(localityService.getLocality(code));
-            //other levels
-            int i = 0;
-            List<Locality> workingCatList;
-            while (localitiesHistory.size() != i) {
-                workingCatList = new LinkedList<Locality>();
-                workingCatList = localitiesHistory.get(i++).getChildren();
-                if (workingCatList != null && workingCatList.size() > 0) {
-                    //and children categories
-                    localitiesHistory.addAll(workingCatList);
-                }
-            }
-        }
-        return localitiesHistory.toArray(new Locality[localitiesHistory.size()]);
+        final Locality loc = this.localityService.getLocality(code);
+        final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);
+        allSubLocalites.add(loc);
+        return allSubLocalites.toArray(new Locality[allSubLocalites.size()]);
     }
 
     @Override
@@ -494,7 +472,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                 locality.toArray(new Locality[locality.size()]));
     }
 
-    // TODO FIX this, it's not working nullPointerException.
+    // TODO FIX this, it's not working nullPointerException. -- who use it anyway???
     public Locality getLocality(String code) {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
@@ -504,161 +482,122 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public Category getCategory(Long id) {
         return categoryService.getById(id);
     }
-    //Due to performing join by application (not by DB) and reducing doing it twice,
-    //cache found SearchResult, where we obtained both count and data at the same time.
-    //searchResult will be updated after each calling of method filterDemandsCount.
-    //In mehotds filterDemands only cache searchResult will be used.
-    private List<FullDemandDetail> searchResult = null;
 
     @Override
-    public long filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns) {
-        if (detail == null) {
-            Search search = new Search(Demand.class);
-            /** sort **/
-            for (String item : orderColumns.keySet()) {
-                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    search.addSortAsc(item, true);
-                } else {
-                    search.addSortDesc(item, true);
-                }
-            }
-            searchResult = this.createDemandDetailList(this.generalService.search(search));
-        } else {
-            boolean wasCatLoc = true;
-            searchResult = new ArrayList<FullDemandDetail>();
-            if (detail.getCategory() != null) {
-                Search searchCat = this.setFiltersByType(detail, orderColumns, "category");
-                if (detail.getLocality() != null) {
-                    Search searchLoc = this.setFiltersByType(detail, orderColumns, "locality");
-                    List<FullDemandDetail> demandCat = this.createDemandDetailListCat(
-                            this.generalService.search(searchCat));
-                    List<FullDemandDetail> demandLoc = this.createDemandDetailListLoc(
-                            this.generalService.search(searchLoc));
-                    for (FullDemandDetail demandDetail : demandCat) {
-                        if (demandLoc.contains(demandDetail)) {
-                            searchResult.add(demandDetail);
-                        }
-                    }
-                } else {
-                    searchResult = this.createDemandDetailListCat(this.generalService.search(searchCat));
-                }
-            } else {
-                if (detail.getLocality() != null) {
-                    Search searchLoc = this.setFiltersByType(detail, orderColumns, "locality");
-                    searchResult = this.createDemandDetailListLoc(this.generalService.search(searchLoc));
-                } else {
-                    wasCatLoc = false;
-                }
-            }
-            Search search = this.setCommonFilters(new Search(Demand.class), detail, orderColumns);
-            if (search != null) { //common filter was specified
-                if (wasCatLoc) { //if filtered by category or locality was performed before,
-                    //join with common filtered data is required
-                    List<FullDemandDetail> demands = this.createDemandDetailList(this.generalService.search(search));
-                    List<FullDemandDetail> tmp = new ArrayList<FullDemandDetail>();
-                    for (FullDemandDetail d : demands) { //perform join
-                        if (searchResult.contains(d)) {
-                            tmp.add(d);
-                        }
-                    }
-                    searchResult = tmp;
-                } else {
-                    searchResult = this.createDemandDetailList(this.generalService.search(search));
-                }
-            }
-        }
-
-        return (long) searchResult.size();
+    public long filterDemandsCount(SearchDataHolder detail) {
+        return this.filter(detail, null).size();
     }
 
     @Override
-    public List<FullDemandDetail> filterDemands(int start, int count, SearchDataHolder detail) {
+    public List<FullDemandDetail> filterDemands(
+            int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        List<FullDemandDetail> searchResult = this.filter(detail, orderColumns);
         if (searchResult.size() < (start + count)) {
             return searchResult.subList(start, searchResult.size());
         } else {
-            return searchResult.subList(start, start + count);
+            return searchResult.subList(start, count);
         }
     }
 
-    private Search setFiltersByType(SearchDataHolder detail, Map<String, OrderType> orderColumns, String type) {
-
-        if (type.equals("category")) {
-            final Search searchCat = new Search(DemandCategory.class);
-            if (detail.getCategory() != null) {
-                final List<Category> allSubCategories = Arrays.asList(
-                        this.getAllSubcategories(detail.getCategory().getId()));
-                searchCat.addFilterIn("category", allSubCategories);
-            }
-            /** sort **/
-            for (String item : orderColumns.keySet()) {
-                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    searchCat.addSortAsc("demand." + item, true);
-                } else {
-                    searchCat.addSortDesc("demand." + item, true);
-                }
-            }
-            return searchCat;
-        } else { // equals("locality")
-            final Search searchLoc = new Search(DemandLocality.class);
-            if (detail.getLocality() != null) {
-                final List<Locality> allSubLocalities = Arrays.asList(
-                        this.getAllSublocalities(detail.getLocality().getCode()));
-                searchLoc.addFilterIn("locality", allSubLocalities);
-            }
-            /** sort **/
-            for (String item : orderColumns.keySet()) {
-                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    searchLoc.addSortAsc("demand." + item, true);
-                } else {
-                    searchLoc.addSortDesc("demand." + item, true);
-                }
-            }
-            return searchLoc;
+    private List<FullDemandDetail> filter(SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        //null
+        if (detail == null) {
+            Search search = this.getFilter(null, null, orderColumns);
+            return this.createDemandDetailList(this.generalService.search(search));
         }
+        //0 0
+        if (detail.getCategory() == null && detail.getLocality() == null) {
+            Search search = this.getFilter("else", detail, orderColumns);
+            return this.createDemandDetailList(this.generalService.search(search));
+        }
+        //1 0
+        if (detail.getCategory() != null && detail.getLocality() == null) {
+            Search search = this.getFilter("category", detail, orderColumns);
+            return this.createDemandDetailListCat(this.generalService.searchAndCount(search).getResult());
+        }
+        //0 1
+        if (detail.getCategory() == null && detail.getLocality() != null) {
+            Search search = this.getFilter("locality", detail, orderColumns);
+            return this.createDemandDetailListLoc(this.generalService.searchAndCount(search).getResult());
+        }
+        //1 1  --> perform join if filtering by category and locality was used
+        if (detail.getCategory() != null && detail.getLocality() != null) {
+            List<FullDemandDetail> demandsCat = this.createDemandDetailListCat(
+                    this.generalService.searchAndCount(this.getFilter("category", detail, orderColumns)).getResult());
+
+            List<FullDemandDetail> demandsLoc = this.createDemandDetailListLoc(
+                    this.generalService.searchAndCount(this.getFilter("locality", detail, orderColumns)).getResult());
+
+            List<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
+            for (FullDemandDetail demandCat : demandsCat) {
+                if (demandsLoc.contains(demandCat)) {
+                    demands.add(demandCat);
+                }
+            }
+            return demands;
+        }
+        return null;
     }
 
-    private Search setCommonFilters(Search search, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
-        boolean noFilter = true;
-        /** simple **/
-        if (!detail.getText().equals("")) {
-            search.addFilterLike("title", "%" + detail.getText() + "%");
-            noFilter = false;
-        }
+    private Search getFilter(String type, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+        Search search = null;
+        String prefix = "";
+        if (detail != null) {
 
-        /** additional **/
-        if (detail.isAdditionalInfo()) {
-            if (detail.getPriceFrom() != -1) {
-                search.addFilterGreaterOrEqual("price", detail.getPriceFrom());
-                noFilter = false;
+            /** simple **/
+            if (type.equals("category")) {
+                search = new Search(DemandCategory.class);
+                prefix = "demand.";
+                if (detail.getCategory() != null) {
+                    final List<Category> allSubCategories = Arrays.asList(
+                            this.getAllSubcategories(detail.getCategory().getId()));
+                    search.addFilterIn("category", allSubCategories);
+                }
+            } else if (type.equals("locality")) {
+                search = new Search(DemandLocality.class);
+                prefix = "demand.";
+                if (detail.getLocality() != null) {
+                    final List<Locality> allSubLocalities = Arrays.asList(
+                            this.getAllSublocalities(detail.getLocality().getCode()));
+                    search.addFilterIn("locality", allSubLocalities);
+                }
+            } else {
+                search = new Search(Demand.class);
             }
-            if (detail.getPriceTo() != -1) {
-                search.addFilterLessOrEqual("price", detail.getPriceTo());
-                noFilter = false;
+            if (!detail.getText().equals("")) {
+                search.addFilterLike(prefix + "title", "%" + detail.getText() + "%");
             }
 
-            if (detail.getDemandType() != null) {
-                search.addFilterEqual("type", demandService.getDemandType(detail.getDemandType()));
-                noFilter = false;
-            }
+            /** additional **/
+            if (detail.isAdditionalInfo()) {
+                if (detail.getPriceFrom() != -1) {
+                    search.addFilterGreaterOrEqual(prefix + "rating", detail.getPriceFrom());
+                }
+                if (detail.getPriceTo() != -1) {
+                    search.addFilterLessOrEqual(prefix + "rating", detail.getPriceTo());
+                }
 
-            if (detail.getEndDate() != null) {
-                search.addFilterGreaterOrEqual("endDate", detail.getEndDate());
-                noFilter = false;
+                if (detail.getDemandType() != null) {
+                    search.addFilterEqual("type", demandService.getDemandType(detail.getDemandType()));
+                }
+
+                if (detail.getEndDate() != null) {
+                    search.addFilterGreaterOrEqual("endDate", detail.getEndDate());
+                }
             }
+        } else {
+            search = new Search(Demand.class);
         }
         /** sort **/
-        for (String item : orderColumns.keySet()) {
-            if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                search.addSortAsc(item, true);
-            } else {
-                search.addSortDesc(item, true);
+        if (orderColumns != null) {
+            for (String item : orderColumns.keySet()) {
+                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                    search.addSortAsc(prefix + item, true);
+                } else {
+                    search.addSortDesc(prefix + item, true);
+                }
             }
         }
-
-        if (noFilter) {
-            return null;
-        } else {
-            return search;
-        }
+        return search;
     }
 }

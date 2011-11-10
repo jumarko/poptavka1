@@ -121,42 +121,30 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onGoToHomeDemands(SearchDataHolder searchDataHolder) {
-        if (searchDataHolder == null) {
-            eventBus.getAllDemandsCount();
-        } else {
-            orderColumns.clear();
-            orderColumns.put(columnNames[0], OrderType.ASC);
-            eventBus.filterDemandsCount(searchDataHolder, orderColumns);
-        }
+        orderColumns.clear();
+        orderColumns.put(columnNames[0], OrderType.ASC);
+        eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+//        }
         this.searchDataHolder = searchDataHolder;
-
-//        eventBus.getCategories();
-//        eventBus.getLocalities();
         // TODO praso - I have used autodispaly = true so this method shouldn't be necessary anymore
 //        eventBus.setBodyWidget(view.getWidgetView());
     }
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
-    private String resultSource = "";
-    private long resultCount = 0;
 
-    public void onCreateAsyncDataProvider() {
+    public void onCreateAsyncDataProvider(final int resultCount) {
         this.start = 0;
         this.dataProvider = new AsyncDataProvider<FullDemandDetail>() {
 
             @Override
             protected void onRangeChanged(HasData<FullDemandDetail> display) {
-                display.setRowCount((int) resultCount);
+                display.setRowCount(resultCount);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
 
-                if (resultSource.equals("all")) {
-                    eventBus.getDemands(start, start + length);
-                } else if (resultSource.equals("filter")) {
-                    eventBus.filterDemands(start, start + length, searchDataHolder);
-                } else if (resultSource.equals("allSorted")) {
-                    eventBus.getSortedDemands(start, start + length, orderColumns);
-                }
+                orderColumns.clear();
+                orderColumns.put(gridColumns.get(0), OrderType.DESC);
+                eventBus.filterDemands(start, start + length, searchDataHolder, orderColumns);
 
                 eventBus.loadingHide();
             }
@@ -190,22 +178,10 @@ public class HomeDemandsPresenter extends BasePresenter<
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                if (searchDataHolder == null) {
-                    eventBus.getSortedDemandsCount(orderColumns);
-                } else {
-                    eventBus.filterDemandsCount(searchDataHolder, orderColumns);
-                }
+                eventBus.filterDemandsCount(searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
-    }
-
-    public void onSetResultSource(String source) {
-        this.resultSource = source;
-    }
-
-    public void onSetResultCount(long count) {
-        this.resultCount = count;
     }
 
     public void onDisplayDemands(List<FullDemandDetail> result) {

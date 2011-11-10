@@ -76,8 +76,8 @@ public interface DemandRPCServiceAsync {
     void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullDemandDetail>> callback);
 
-    void filterDemands(int start, int count, SearchDataHolder detail,
+    void filterDemands(int start, int count, SearchDataHolder holder, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullDemandDetail>> callback);
 
-    void filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns, AsyncCallback<Long> callback);
+    void filterDemandsCount(SearchDataHolder holder, AsyncCallback<Long> callback);
 }

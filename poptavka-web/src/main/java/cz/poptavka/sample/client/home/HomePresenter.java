@@ -18,6 +18,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 import cz.poptavka.sample.client.main.common.search.AdvancedSearchView;
+import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -92,10 +93,16 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
             @Override
             public void onClick(ClickEvent event) {
-                if (view.getSearchView().getFilter().getWhere() == 0) {
-                    eventBus.goToHomeDemands(view.getSearchView().getFilter());
+                SearchDataHolder searchDataHolder = new SearchDataHolder();
+                if (view.getAdvancedSearchView().isVisible()) {
+                    searchDataHolder = view.getAdvancedSearchView().getFilter();
                 } else {
-                    eventBus.goToHomeSuppliers(view.getSearchView().getFilter());
+                    searchDataHolder = view.getSearchView().getFilter();
+                }
+                if (view.getSearchView().getFilter().getWhere() == 0) {
+                    eventBus.goToHomeDemands(searchDataHolder);
+                } else {
+                    eventBus.goToHomeSuppliers(searchDataHolder);
                 }
             }
         });

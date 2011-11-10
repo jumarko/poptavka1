@@ -7,7 +7,6 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -23,7 +22,7 @@ import cz.poptavka.sample.domain.demand.DemandType.Type;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
-public class AdvancedSearchView extends Composite implements AdvancedSearchPresenter.AdvancedSerachViewInterface {
+public class AdvancedSearchView extends Composite implements AdvancedSearchPresenter.AdvancedSearchViewInterface {
 
     private static AdvancedSearchViewUiBinder uiBinder = GWT.create(AdvancedSearchViewUiBinder.class);
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -43,12 +42,8 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
     @UiField
     ToggleButton demandBtn, supplierBtn;
     @UiField
-    Button searchBtn;
-    @UiField
     HTMLPanel container;
 
-//    @Override
-//    public void createView() {
     public AdvancedSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
         demandBtn.setDown(true);
@@ -89,11 +84,6 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
     }
 
     @Override
-    public Button getSearchBtn() {
-        return searchBtn;
-    }
-
-    @Override
     public Widget getWidgetView() {
         return this;
     }
@@ -122,6 +112,7 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
             data.setWhere(1);
             data.setRatingFrom(Integer.valueOf(ratingFrom.getText()));
             data.setRatingTo(Integer.valueOf(ratingTo.getText()));
+            data.setSupplierDescription(supplierDescription.getText());
         }
 
         if (category.getSelectedIndex() != 0) {

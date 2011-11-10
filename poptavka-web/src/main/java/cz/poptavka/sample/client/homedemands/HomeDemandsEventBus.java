@@ -67,14 +67,14 @@ public interface HomeDemandsEventBus extends EventBus {
     //Display
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void setCategoryData(ArrayList<CategoryDetail> list);
-    @Event(handlers = HomeDemandsPresenter.class)
-    void setResultSource(String resultSource);
+//    @Event(handlers = HomeDemandsPresenter.class)
+//    void setResultSource(String resultSource);
+
+//    @Event(handlers = HomeDemandsPresenter.class)
+//    void setResultCount(long resultCount);
 
     @Event(handlers = HomeDemandsPresenter.class)
-    void setResultCount(long resultCount);
-
-    @Event(handlers = HomeDemandsPresenter.class)
-    void createAsyncDataProvider();
+    void createAsyncDataProvider(final int resultCount);
 
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);
@@ -86,41 +86,41 @@ public interface HomeDemandsEventBus extends EventBus {
 //    void filter();
 
     /* Business events handled by Handlers. */
-    @Event(handlers = HomeDemandsHandler.class)
-    void getAllDemandsCount();
-
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getAllDemandsCount();
+//
     @Event(handlers = HomeDemandsHandler.class)
     void filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns);
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getSortedDemandsCount(Map<String, OrderType> orderColumns);
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemandsCountCategory(long id);
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemandsCountLocality(String code);
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemandsCountCategoryLocality(long id, String code);
+//
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemands(int fromResult, int toResult);
 
     @Event(handlers = HomeDemandsHandler.class)
-    void getSortedDemandsCount(Map<String, OrderType> orderColumns);
+    void filterDemands(int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns);
 
-    @Event(handlers = HomeDemandsHandler.class)
-    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemandsByCategories(int fromResult, int toResult, long id);
 
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCountCategory(long id);
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemandsByLocalities(int fromResult, int toResult, String code);
 
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCountLocality(String code);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCountCategoryLocality(long id, String code);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemands(int fromResult, int toResult);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void filterDemands(int start, int count, SearchDataHolder detail);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsByCategories(int fromResult, int toResult, long id);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsByLocalities(int fromResult, int toResult, String code);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
+//    @Event(handlers = HomeDemandsHandler.class)
+//    void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getCategories();
 //

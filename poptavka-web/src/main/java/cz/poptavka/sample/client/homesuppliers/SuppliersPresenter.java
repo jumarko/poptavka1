@@ -193,9 +193,8 @@ public class SuppliersPresenter
     private SearchDataHolder searchDataHolder = null;
 
     public void onGoToHomeSuppliers(SearchDataHolder searchDataHolder) {
-        ArrayList<CategoryDetail> rootCat = new ArrayList<CategoryDetail>();
-        rootCat.add(new CategoryDetail(0L, "root"));
-        view.displaySubCategories(0, rootCat);
+        view.getPath().clear();
+        view.addPath(new Hyperlink("root", "!public/addToPath?root"));
         this.searchDataHolder = searchDataHolder;
         eventBus.loadingShow(MSGS.loading());
 

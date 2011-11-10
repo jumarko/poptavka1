@@ -64,6 +64,7 @@ public class FullSupplierDetail implements Serializable {
         for (Locality loc : supplier.getLocalities()) {
             locMap.put(loc.getCode(), loc.getName());
         }
+        detail.setLocalities(locMap);
         if (supplier.getBusinessUser() != null) {
             List<AddressDetail> addresses = new ArrayList<AddressDetail>();
             for (Address addr : supplier.getBusinessUser().getAddresses()) {

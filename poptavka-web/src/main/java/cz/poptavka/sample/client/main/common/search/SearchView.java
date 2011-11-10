@@ -18,10 +18,10 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 public class SearchView extends Composite implements SearchPresenter.SearchViewInterface {
 
-    private static AdvancedSearchViewUiBinder uiBinder = GWT.create(AdvancedSearchViewUiBinder.class);
+    private static SearchViewUiBinder uiBinder = GWT.create(SearchViewUiBinder.class);
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    interface AdvancedSearchViewUiBinder extends UiBinder<Widget, SearchView> {
+    interface SearchViewUiBinder extends UiBinder<Widget, SearchView> {
     }
     @UiField
     UListElement searchList;

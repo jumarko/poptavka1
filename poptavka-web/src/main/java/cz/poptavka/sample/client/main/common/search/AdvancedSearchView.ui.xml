@@ -150,9 +150,6 @@
                     </table>
                 </g:HTMLPanel>
             </g:VerticalPanel>
-            <g:Button ui:field="searchBtn">                                
-                <ui:msg key="search">Search</ui:msg>
-            </g:Button>
         </g:HorizontalPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

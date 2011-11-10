@@ -82,7 +82,8 @@ public interface DemandRPCService extends RemoteService {
 
     List<FullDemandDetail> getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
 
-    long filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns);
+    long filterDemandsCount(SearchDataHolder holder);
 
-    List<FullDemandDetail> filterDemands(int start, int count, SearchDataHolder detail);
+    List<FullDemandDetail> filterDemands(int start, int count,
+            SearchDataHolder holder, Map<String, OrderType> orderColumns);
 }

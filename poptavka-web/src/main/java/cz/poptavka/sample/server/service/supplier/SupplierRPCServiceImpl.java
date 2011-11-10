@@ -26,6 +26,7 @@ import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
@@ -55,6 +56,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private ClientService clientService;
     private LocalityService localityService;
     private CategoryService categoryService;
+    private TreeItemService treeItemService;
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -79,6 +81,11 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
+    }
+
+    @Autowired
+    public void setTreeItemService(TreeItemService treeItemService) {
+        this.treeItemService = treeItemService;
     }
 
     /**
@@ -275,9 +282,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return supplierService.getSuppliersCount(
                 new Category[]{categoryService.getById(categoryID)},
                 new Locality[]{localityService.getLocality(localityCode)});
-//                this.getAllSubcategories(categoryID),
-//                this.getAllSublocalities(localityCode));
-//        return supplierService.getSuppliersCount(categoryID, localityCode);
     }
 
     /**
@@ -448,50 +452,18 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new LinkedList<Locality>();
 
-    private Category[] getAllSubcategories(Long id) {
-
-        //if stored are not what i am looking for, retrieve new/actual
-        if (categoriesHistory.isEmpty() || !categoriesHistory.get(0).getId().equals(id)) {
-            GWT.log("getting all categories");
-            //clear
-            categoriesHistory = new LinkedList<Category>();
-            //level 0
-            categoriesHistory.add(categoryService.getById(id));
-            //other levels
-            int i = 0;
-            List<Category> workingCatList;
-            while (categoriesHistory.size() != i) {
-                workingCatList = new LinkedList<Category>();
-                workingCatList = categoriesHistory.get(i++).getChildren();
-                if (workingCatList != null && workingCatList.size() > 0) {
-                    //and children categories
-                    categoriesHistory.addAll(workingCatList);
-                }
-            }
-        }
-        return categoriesHistory.toArray(new Category[categoriesHistory.size()]);
+    private Category[] getAllSubCategories(Long id) {
+        final Category cat = this.generalService.find(Category.class, id);
+        final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat, Category.class);
+        allSubCategories.add(cat);
+        return allSubCategories.toArray(new Category[allSubCategories.size()]);
     }
 
     private Locality[] getAllSublocalities(String code) {
-        //if stored are not what i am looking for, retrieve new/actual
-        if (localitiesHistory.isEmpty() || !localitiesHistory.get(0).getCode().equals(code)) {
-            //clear
-            localitiesHistory = new LinkedList<Locality>();
-            //level 0
-            localitiesHistory.add(localityService.getLocality(code));
-            //other levels
-            int i = 0;
-            List<Locality> workingCatList;
-            while (localitiesHistory.size() != i) {
-                workingCatList = new LinkedList<Locality>();
-                workingCatList = localitiesHistory.get(i++).getChildren();
-                if (workingCatList != null && workingCatList.size() > 0) {
-                    //and children categories
-                    localitiesHistory.addAll(workingCatList);
-                }
-            }
-        }
-        return localitiesHistory.toArray(new Locality[localitiesHistory.size()]);
+        final Locality loc = this.localityService.getLocality(code);
+        final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);
+        allSubLocalites.add(loc);
+        return allSubLocalites.toArray(new Locality[allSubLocalites.size()]);
     }
 
     @Override
@@ -561,7 +533,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 prefix = "supplier.";
                 if (detail.getCategory() != null) {
                     final List<Category> allSubCategories = Arrays.asList(
-                            this.getAllSubcategories(detail.getCategory().getId()));
+                            this.getAllSubCategories(detail.getCategory().getId()));
                     search.addFilterIn("category", allSubCategories);
                 }
             } else if (type.equals("locality")) {
@@ -576,22 +548,22 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 search = new Search(Supplier.class);
             }
             if (!detail.getText().equals("")) {
-                search.addFilterLike(prefix + "title", "%" + detail.getText() + "%");
+                search.addFilterLike(prefix + "businessUser.businessUserData.companyName",
+                        "%" + detail.getText() + "%");
             }
 
             /** additional **/
             if (detail.isAdditionalInfo()) {
-                if (detail.getPriceFrom() != -1) {
+                if (detail.getRatingFrom() != -1) {
                     search.addFilterGreaterOrEqual(prefix + "rating", detail.getRatingFrom());
                 }
-                if (detail.getPriceTo() != -1) {
+                if (detail.getRatingTo() != -1) {
                     search.addFilterLessOrEqual(prefix + "rating", detail.getRatingTo());
                 }
-
-//            if (detail.getEndDate() != null) {
-//                search.addFilterGreaterOrEqual("description", detail.getDescription());
-//                noFilter = false;
-//            }
+                if (detail.getSupplierDescription() != null) {
+                    search.addFilterLike(prefix + "businessUser.businessUserData.description",
+                            "%" + detail.getSupplierDescription() + "%");
+                }
             }
         } else {
             search = new Search(Supplier.class);
