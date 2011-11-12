@@ -11,11 +11,13 @@
     <modules>
         <module>poptavka-core</module>
         <module>poptavka-web</module>
+        <module>rest-api</module>
     </modules>
 
     <properties>
         <gwt.version>2.4.0</gwt.version>
         <spring.version>3.0.5.RELEASE</spring.version>
+        <spring-social-facebook-version>1.0.0.RELEASE</spring-social-facebook-version>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -417,6 +419,11 @@
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>${javax-mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-facebook</artifactId>
+                <version>${spring-social-facebook-version}</version>
             </dependency>
 
             <!-- AOP -->
