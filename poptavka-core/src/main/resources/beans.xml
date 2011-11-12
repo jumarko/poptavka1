@@ -156,7 +156,7 @@
     <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
 
     <!-- Mail support -->
-    <bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mailserver.host}" />
         <property name="port" value="${mailserver.port}" />
         <property name="protocol" value="${mailserver.protocol}" />
@@ -170,7 +170,9 @@
             </props>
         </property>
     </bean>
-    <bean id="mailService" class="cz.poptavka.sample.service.mail.MailServiceImpl" />
+    <bean id="mailService" class="cz.poptavka.sample.service.mail.MailServiceImpl">
+        <property name="javaMailSender" ref="javaMailSender" />
+    </bean>
 
     <!-- JMX -->
     <context:mbean-server />
