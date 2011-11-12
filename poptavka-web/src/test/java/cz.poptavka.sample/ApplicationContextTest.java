@@ -15,7 +15,7 @@ import javax.servlet.ServletException;
  *         Date: 30.1.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath*:applicationContext-test.xml" })
 public class ApplicationContextTest {
 
     @Autowired
