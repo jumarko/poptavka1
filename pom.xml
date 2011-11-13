@@ -60,7 +60,7 @@
         <serializer.version>2.7.1</serializer.version>
         <xml-apis.version>1.3.04</xml-apis.version>
         <aspectj.version>1.6.10</aspectj.version>
-        <aspectj-maven-plugin.version>1.3</aspectj-maven-plugin.version>
+        <aspectj-maven-plugin.version>1.3.1</aspectj-maven-plugin.version>
         <maven-surefire-plugin.version>2.7.1</maven-surefire-plugin.version>
         <spring.amqp.version>1.0.0.RC1</spring.amqp.version>
         <rabbitmq.version>2.2.0</rabbitmq.version>
