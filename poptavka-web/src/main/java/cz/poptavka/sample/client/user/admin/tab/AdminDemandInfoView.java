@@ -199,7 +199,7 @@ public class AdminDemandInfoView extends Composite implements
         if (contact != null) {
             titleBox.setText(contact.getTitle());
             descriptionBox.setText(contact.getDescription());
-            priceBox.setText(contact.getPrice().toString());
+            priceBox.setText(contact.getPriceString());
             endDateBox.setValue(contact.getEndDate());
             expirationBox.setValue(contact.getValidToDate());
             clientID.setText(String.valueOf(contact.getClientId()));

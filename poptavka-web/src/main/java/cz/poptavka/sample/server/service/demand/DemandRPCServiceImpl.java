@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -578,11 +579,28 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                 }
 
                 if (detail.getDemandType() != null) {
-                    search.addFilterEqual("type", demandService.getDemandType(detail.getDemandType()));
+                    search.addFilterEqual(prefix + "type", demandService.getDemandType(detail.getDemandType()));
                 }
 
                 if (detail.getEndDate() != null) {
-                    search.addFilterGreaterOrEqual("endDate", detail.getEndDate());
+                    search.addFilterGreaterOrEqual(prefix + "endDate", detail.getEndDate());
+                }
+                //created date
+                Calendar calendarDate = Calendar.getInstance(); //today -> case 0
+                switch (detail.getCreationDate()) {
+                    case 1:
+                        calendarDate.add(Calendar.DATE, -1);  //yesterday
+                        break;
+                    case 2:
+                        calendarDate.add(Calendar.DATE, -7);  //last week
+                        break;
+                    case 3:
+                        calendarDate.add(Calendar.DATE, -30);  //last month
+                        break;
+                    default:;
+                }
+                if (detail.getCreationDate() != 4) {
+                    search.addFilterGreaterOrEqual(prefix + "createdDate", new Date(calendarDate.getTimeInMillis()));
                 }
             }
         } else {

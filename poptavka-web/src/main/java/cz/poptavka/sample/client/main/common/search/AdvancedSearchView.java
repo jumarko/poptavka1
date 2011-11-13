@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.main.common.search;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -9,18 +10,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.ToggleButton;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.demand.DemandType.Type;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 public class AdvancedSearchView extends Composite implements AdvancedSearchPresenter.AdvancedSearchViewInterface {
 
@@ -29,32 +26,33 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
 
     interface AdvancedSearchViewUiBinder extends UiBinder<Widget, AdvancedSearchView> {
     }
+//    @UiField
+//    Label searchTextLabel;
     @UiField
-    Label searchTextLabel;
+    TextBox demandContent, supplierContent, priceFrom, priceTo, ratingFrom, ratingTo, supplierDescription;
     @UiField
-    TextBox content, priceFrom, priceTo, ratingFrom, ratingTo, supplierDescription;
-    @UiField
-    ListBox category, locality, demandTypes, creationDate;
+    ListBox demandTypes, creationDate;
     @UiField
     DateBox finnishDate;
     @UiField
-    VerticalPanel demandPanel, supplierPanel;
-    @UiField
-    ToggleButton demandBtn, supplierBtn;
+    HorizontalPanel demandPanel, supplierPanel;
+//    @UiField
+//    ToggleButton demandBtn, supplierBtn;
     @UiField
     HTMLPanel container;
 
     public AdvancedSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
-        demandBtn.setDown(true);
-        demandPanel.setVisible(true);
-        supplierBtn.setDown(false);
+        demandContent.setText(MSGS.searchContent());
+//        demandBtn.setDown(true);
+        demandPanel.setVisible(false);
+//        supplierBtn.setDown(false);
         supplierPanel.setVisible(false);
 
-        category.addItem(MSGS.allCategories());
-        locality.addItem(MSGS.allLocalities());
 
-        priceFrom.setText("0");
+//        category.addItem(MSGS.allCategories());
+//        locality.addItem(MSGS.allLocalities());
+
         ratingFrom.setText("0");
         ratingTo.setText("100");
 
@@ -69,18 +67,23 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
         creationDate.setSelectedIndex(4);
     }
 
-    public void setBaseInfo(String content, int whereIdx, int catIdx, int locIdx) {
-        this.content.setText(content);
+    public void setBaseInfo(String content, int whereIdx) { //, int catIdx, int locIdx) {
         if (whereIdx == 0) {
-            demandBtn.setDown(true);
-            searchTextLabel.setText(MSGS.demandText());
-            supplierBtn.setDown(false);
+            this.demandContent.setText(content);
+//            demandBtn.setDown(true);
+//            searchTextLabel.setText(MSGS.demandText());
+//            supplierBtn.setDown(false);
+            supplierPanel.setVisible(false);
+            demandPanel.setVisible(true);
         } else {
-            demandBtn.setDown(false);
-            searchTextLabel.setText(MSGS.supplierName());
-            supplierBtn.setDown(true);
+            this.supplierContent.setText(content);
+//            demandBtn.setDown(false);
+//            searchTextLabel.setText(MSGS.supplierName());
+//            supplierBtn.setDown(true);
+            demandPanel.setVisible(false);
+            supplierPanel.setVisible(true);
         }
-        this.category.setSelectedIndex(catIdx);
+//        this.category.setSelectedIndex(catIdx);
     }
 
     @Override
@@ -89,6 +92,12 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
     }
 
     private String getContent() {
+        TextBox content = null;
+        if (demandPanel.isVisible()) {
+            content = demandContent;
+        } else {
+            content = supplierContent;
+        }
         if (content.getText().equals(MSGS.searchContent())) {
             return "";
         } else {
@@ -101,50 +110,66 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
         SearchDataHolder data = new SearchDataHolder();
 
         data.setText(this.getContent());
-        if (demandBtn.isDown()) {
+        if (demandPanel.isVisible()) {
             data.setWhere(0);
-            data.setPriceFrom(Integer.valueOf(priceFrom.getText()));
-            data.setPriceTo(Integer.valueOf(priceTo.getText()));
+            data.setPriceFrom(this.getPriceFrom());
+            data.setPriceTo(this.getPriceTo());
             data.setDemandType(demandTypes.getItemText(demandTypes.getSelectedIndex()));
             data.setEndDate(finnishDate.getValue());
             data.setCreationDate(creationDate.getSelectedIndex());
         } else {
             data.setWhere(1);
-            data.setRatingFrom(Integer.valueOf(ratingFrom.getText()));
-            data.setRatingTo(Integer.valueOf(ratingTo.getText()));
+            data.setRatingFrom(this.getRatingFrom());
+            data.setRatingTo(this.getRatingTo());
             data.setSupplierDescription(supplierDescription.getText());
         }
 
-        if (category.getSelectedIndex() != 0) {
-            data.setCategory(new CategoryDetail(
-                    Long.valueOf(category.getValue(category.getSelectedIndex())),
-                    category.getItemText(category.getSelectedIndex())));
-        }
-        if (locality.getSelectedIndex() != 0) {
-            data.setLocality(new LocalityDetail(
-                    null,
-                    category.getItemText(category.getSelectedIndex()),
-                    locality.getValue(locality.getSelectedIndex())));
-        }
+//        if (category.getSelectedIndex() != 0) {
+//            data.setCategory(new CategoryDetail(
+//                    Long.valueOf(category.getValue(category.getSelectedIndex())),
+//                    category.getItemText(category.getSelectedIndex())));
+//        }
+//        if (locality.getSelectedIndex() != 0) {
+//            data.setLocality(new LocalityDetail(
+//                    null,
+//                    category.getItemText(category.getSelectedIndex()),
+//                    locality.getValue(locality.getSelectedIndex())));
+//        }
         data.setAddition(true);
 
         return data;
     }
 
-    public TextBox getPriceFrom() {
-        return priceFrom;
+    public int getPriceFrom() {
+        if (priceFrom.getText().equals("")) {
+            return -1;
+        } else {
+            return Integer.valueOf(priceFrom.getText());
+        }
     }
 
-    public TextBox getPriceTo() {
-        return priceTo;
+    public int getPriceTo() {
+        if (priceTo.getText().equals("")) {
+            return -1;
+        } else {
+            return Integer.valueOf(priceTo.getText());
+        }
     }
 
-    public TextBox getRatingFrom() {
-        return ratingFrom;
+    public int getRatingFrom() {
+        if (ratingFrom.getText().equals("")) {
+            return -1;
+        } else {
+            return Integer.valueOf(ratingFrom.getText());
+        }
     }
 
-    public TextBox getRatingTo() {
-        return ratingTo;
+    public int getRatingTo() {
+        if (ratingTo.getText().equals("")) {
+            return -1;
+        } else {
+            return Integer.valueOf(ratingTo.getText());
+        }
     }
 //
 //    @Override
@@ -153,14 +178,13 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
 //    }
 //
 
-    public ListBox getCategory() {
-        return category;
-    }
-
-    public ListBox getLocality() {
-        return locality;
-    }
-
+//    public ListBox getCategory() {
+//        return category;
+//    }
+//
+//    public ListBox getLocality() {
+//        return locality;
+//    }
     public ListBox getDemandTypes() {
         return demandTypes;
     }
@@ -183,37 +207,78 @@ public class AdvancedSearchView extends Composite implements AdvancedSearchPrese
 //        return container;
 //    }
 
-    @UiHandler("demandBtn")
-    void handleDemandClick(ClickEvent event) {
-        if (demandBtn.isDown()) {
-            supplierBtn.setDown(false);
-            supplierPanel.setVisible(false);
-            searchTextLabel.setText(MSGS.demandText());
-            demandPanel.setVisible(true);
+//    @UiHandler("demandBtn")
+//    void handleDemandClick(ClickEvent event) {
+//        if (demandBtn.isDown()) {
+//            supplierBtn.setDown(false);
+//            supplierPanel.setVisible(false);
+//            searchTextLabel.setText(MSGS.demandText());
+//            demandPanel.setVisible(true);
+//        }
+//    }
+//
+//    @UiHandler("supplierBtn")
+//    void handleSupplierClick(ClickEvent event) {
+//        if (supplierBtn.isDown()) {
+//            demandBtn.setDown(false);
+//            demandPanel.setVisible(false);
+//            searchTextLabel.setText(MSGS.supplierName());
+//            supplierPanel.setVisible(true);
+//        }
+//    }
+    @UiHandler("priceFrom")
+    void validatePriceFrom(ChangeEvent event) {
+        if (!priceFrom.getText().matches("[0-9]+")) {
+            priceFrom.setText("");
         }
     }
 
-    @UiHandler("supplierBtn")
-    void handleSupplierClick(ClickEvent event) {
-        if (supplierBtn.isDown()) {
-            demandBtn.setDown(false);
-            demandPanel.setVisible(false);
-            searchTextLabel.setText(MSGS.supplierName());
-            supplierPanel.setVisible(true);
+    @UiHandler("priceTo")
+    void validatePriceTo(ChangeEvent event) {
+        if (!priceTo.getText().matches("[0-9]+")) {
+            priceTo.setText("");
         }
     }
 
-    @UiHandler("content")
-    void handleContentClick(ClickEvent event) {
-        if (content.getText().equals(MSGS.searchContent())) {
-            content.setText("");
+    @UiHandler("ratingFrom")
+    void validateRatingFrom(ChangeEvent event) {
+        if (!ratingFrom.getText().matches("[0-9]+")) {
+            ratingFrom.setText("0");
         }
     }
 
-    @UiHandler("content")
-    void handleContentDrag(MouseOutEvent event) {
-        if (content.getText().equals("")) {
-            content.setText(MSGS.searchContent());
+    @UiHandler("ratingTo")
+    void validateRatingTo(ChangeEvent event) {
+        if (!ratingTo.getText().matches("[0-9]+")) {
+            ratingTo.setText("100");
+        }
+    }
+
+    @UiHandler("demandContent")
+    void handleDemandContentClick(ClickEvent event) {
+        if (demandContent.getText().equals(MSGS.searchContent())) {
+            demandContent.setText("");
+        }
+    }
+
+    @UiHandler("demandContent")
+    void handleDemandContentDrag(MouseOutEvent event) {
+        if (demandContent.getText().equals("")) {
+            demandContent.setText(MSGS.searchContent());
+        }
+    }
+
+    @UiHandler("supplierContent")
+    void handleSupplierContentClick(ClickEvent event) {
+        if (supplierContent.getText().equals(MSGS.searchContent())) {
+            supplierContent.setText("");
+        }
+    }
+
+    @UiHandler("supplierContent")
+    void handleSupplierContentDrag(MouseOutEvent event) {
+        if (supplierContent.getText().equals("")) {
+            supplierContent.setText(MSGS.searchContent());
         }
     }
 }

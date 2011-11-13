@@ -90,7 +90,7 @@ public class DemandDetailView extends Composite {
     private void init(FullDemandDetail demand) {
         GWT.log("Demand detail" + demand.toString());
         demandName.setText(demand.getTitle());
-        price.setText(demand.getPrice().toString());
+        price.setText(demand.getPriceString());
         endDate.setText(demand.getEndDate().toString());
         validTo.setText(demand.getValidToDate().toString());
         type.setText(demand.getDetailType().getValue());

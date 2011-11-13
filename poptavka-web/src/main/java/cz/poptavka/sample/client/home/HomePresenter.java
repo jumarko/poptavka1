@@ -2,6 +2,8 @@ package cz.poptavka.sample.client.home;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -106,6 +108,14 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
                 }
             }
         });
+        view.getSearchView().getWhere().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent event) {
+                view.getAdvancedSearchView().setBaseInfo(view.getSearchView().getContent(),
+                        view.getSearchView().getWhere().getSelectedIndex()); //, catIdx, locIdx);
+            }
+        });
     }
 
     public void onStart() {
@@ -152,10 +162,10 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
     /******** SEARCH PANEL ***********/
     public void onShowHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx) {
         if (view.getAdvancedSearchView().isVisible()) {
-            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0, 0, 0);
+            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0); //, 0, 0);
             view.getAdvancedSearchView().setVisible(false);
         } else {
-            view.getAdvancedSearchView().setBaseInfo(content, whereIdx, catIdx, locIdx);
+            view.getAdvancedSearchView().setBaseInfo(content, whereIdx); //, catIdx, locIdx);
             view.getAdvancedSearchView().setVisible(true);
         }
     }
@@ -166,21 +176,21 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
      */
     public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
         final ListBox box1 = view.getSearchView().getCategory();
-        final ListBox box2 = view.getAdvancedSearchView().getCategory();
+//        final ListBox box2 = view.getAdvancedSearchView().getCategory();
         box1.clear();
-        box2.clear();
+//        box2.clear();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 
             @Override
             public void execute() {
                 box1.addItem(MSGS.allCategories());
-                box2.addItem(MSGS.allCategories());
+//                box2.addItem(MSGS.allCategories());
                 for (int i = 0; i < list.size(); i++) {
                     box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
-                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
+//                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
                 }
                 box1.setSelectedIndex(0);
-                box2.setSelectedIndex(0);
+//                box2.setSelectedIndex(0);
                 LOGGER.info("Category Lists filled");
             }
         });
@@ -192,9 +202,9 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
      */
     public void onSetLocalityData(final ArrayList<LocalityDetail> list) {
         final ListBox box1 = view.getSearchView().getLocality();
-        final ListBox box2 = view.getAdvancedSearchView().getLocality();
+//        final ListBox box2 = view.getAdvancedSearchView().getLocality();
         box1.clear();
-        box2.clear();
+//        box2.clear();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 
             @Override
@@ -202,10 +212,10 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
                 box1.addItem(MSGS.allLocalities());
                 for (int i = 0; i < list.size(); i++) {
                     box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
-                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
+//                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
                 }
                 box1.setSelectedIndex(0);
-                box2.setSelectedIndex(0);
+//                box2.setSelectedIndex(0);
                 LOGGER.info("Locality Lists filled");
             }
         });

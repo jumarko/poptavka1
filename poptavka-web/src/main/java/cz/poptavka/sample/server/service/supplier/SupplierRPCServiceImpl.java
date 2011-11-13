@@ -561,8 +561,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                     search.addFilterLessOrEqual(prefix + "rating", detail.getRatingTo());
                 }
                 if (detail.getSupplierDescription() != null) {
-                    search.addFilterLike(prefix + "businessUser.businessUserData.description",
-                            "%" + detail.getSupplierDescription() + "%");
+                    String[] str = detail.getSupplierDescription().split("\\s+");
+                    search.addFilterIn(prefix + "businessUser.businessUserData.description", Arrays.asList(str));
                 }
             }
         } else {

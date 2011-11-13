@@ -33,7 +33,6 @@ public class FullDemandDetail implements Serializable {
 
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
-
     private Map<String, String> localities;
     private Map<Long, String> categories;
     private long clientId;
@@ -57,7 +56,6 @@ public class FullDemandDetail implements Serializable {
     private String description;
     private BigDecimal price;
     private List<FullSupplierDetail> excludedSuppliers;
-
 
     /**
      * for serialization. *
@@ -382,6 +380,10 @@ public class FullDemandDetail implements Serializable {
 
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public String getPriceString() {
+        return String.valueOf(price);
     }
 
     public void setType(DemandDetailType demandDetailType) {

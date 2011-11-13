@@ -145,8 +145,8 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
                     Date now = new Date();
                     long millis = now.getTime() - demandDetail.getCreated().getTime();
                     if (millis < 86400000) {
-//                    return DateTimeFormat.getFormat("hh:mm").format(demandDetail.getCreated());
-                        return "dnes";
+                        return DateTimeFormat.getFormat("hh:mm").format(demandDetail.getCreated());
+//                        return "dnes";
                     } else if (86400000 <= millis && millis < 172800000) {
                         return "vcera";
                     } else {
@@ -200,7 +200,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
-                return String.valueOf(demandDetail.getPrice());
+                return demandDetail.getPriceString();
             }
         });
 
