@@ -178,13 +178,14 @@ public class HomeDemandsPresenter extends BasePresenter<
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+                eventBus.filterDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
     public void onDisplayDemands(List<FullDemandDetail> result) {
+//        dataProvider.updateRowData(0, new ArrayList<FullDemandDetail>());
         dataProvider.updateRowData(start, result);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
