@@ -19,6 +19,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     @UiField SimplePanel demandPanel;
     @UiField SimplePanel oldTabPanel;
     @UiField SimplePanel adminPanel;
+    @UiField SimplePanel settingsPanel;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -56,6 +57,18 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     @Override
     public SimplePanel getDemandModulePanel() {
         return demandPanel;
+    }
+
+    public SimplePanel getSettingsPanel() {
+        return settingsPanel;
+    }
+
+    public void setSettingsPanel(SimplePanel settingsPanel) {
+        this.settingsPanel = settingsPanel;
+    }
+
+    public void setBodySettings(Widget body) {
+        settingsPanel.setWidget(body);
     }
 
 }

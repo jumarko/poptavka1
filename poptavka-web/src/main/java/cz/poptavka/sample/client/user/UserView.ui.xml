@@ -40,9 +40,9 @@
             <g:header>
                 <ui:msg key='settings'>Settings</ui:msg>
             </g:header>
-            <g:HTML>
-                <h1>Settings tab</h1>
-            </g:HTML>
+            <g:SimplePanel ui:field="settingsPanel">
+                <g:HTML>TEST</g:HTML>
+            </g:SimplePanel>
         </g:tab>
         <g:tab>
             <g:header>

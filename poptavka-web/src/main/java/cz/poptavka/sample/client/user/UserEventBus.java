@@ -14,10 +14,24 @@ import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBusWithLookup;
 
+import cz.poptavka.sample.client.user.admin.AdminHandler;
 import cz.poptavka.sample.client.user.admin.AdminHistoryConverter;
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminClientInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminClientsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminEmailActivationsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminInvoiceInfoPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminInvoicesPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminMessagesPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminPaymentMethodsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminPermissionsPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminPreferencesPresenter;
+import cz.poptavka.sample.client.user.admin.tab.AdminProblemsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSupplierInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersPresenter;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
@@ -29,20 +43,6 @@ import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
-import cz.poptavka.sample.client.user.admin.AdminHandler;
-import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminClientInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminClientsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminEmailActivationsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminInvoiceInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminInvoicesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminMessagesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminPaymentMethodsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminPermissionsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminPreferencesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminProblemsPresenter;
 import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
@@ -149,6 +149,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = UserPresenter.class)
     void setTabAdminWidget(Widget tabBody);
+
+    @Event(handlers = UserPresenter.class)
+    void setTabSettingsWidget(Widget tabBody);
 
     // for operator only
 //    @Event
@@ -976,4 +979,7 @@ public interface UserEventBus extends EventBusWithLookup {
     /**
      * ********************* End corner ************************
      */
+
+    /** Settings */
+
 }

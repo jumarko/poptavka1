@@ -54,6 +54,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
                 }
             }
         });
+
     }
 
     private static final Logger LOGGER = Logger.getLogger("UserPresenter");
@@ -69,6 +70,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         void setBodyAdmin(Widget body);
 
         Widget getWidgetView();
+
+        void setBodySettings(Widget body);
 
         //TODO
         //Beho devel section, when completed. Put into normal code section
@@ -155,6 +158,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     public void onSetTabAdminWidget(Widget tabBody) {
         view.setBodyAdmin(tabBody);
+    }
+
+    public void onSetTabSettingsWidget(Widget tabBody) {
+        view.setBodySettings(tabBody);
     }
 
     /** REQUESTs && RESPONSEs. **/
