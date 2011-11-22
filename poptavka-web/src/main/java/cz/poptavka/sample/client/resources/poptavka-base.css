@@ -8,6 +8,7 @@
  */
 body {
 	margin: 0;
+	background: url(/images/body_bg.gif) repeat-x;
 }
 
 .layout-public-main {
@@ -25,7 +26,7 @@ body {
 }
 
 .header-container {
-	background-color: #E0F0FF;
+	background-color: none;
 }
 
 .footer-container {
@@ -49,12 +50,30 @@ body {
 }
 
 .body-container {
-	background-color: #F1F1F1;
+	background-color: #ffffff;
 }
 
 .login-area {
 	float: right;
 	border-bottom: thin black solid;
+}
+
+.login-button {
+	background: url(/images/login_bg.png) no-repeat;
+	width: 69px;
+	height: 32px;
+	padding: 10px 5px 0 60px;
+}
+
+.login-button a {
+	color: #fbfbfb;
+	display: block;	
+}
+
+.login-button a:hover {
+	color: #fbfbfb;
+	cursor: pointer;
+	text-decoration: underline;
 }
 
 .full-size-panel {
@@ -71,6 +90,18 @@ body {
 
 .home-menu li {
 	display: inline;
+}
+
+.home-menu li button {
+	border: none;
+	background: none;
+	color: #f4f4f4;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.home-menu li a {
+	color: #f4f4f4;
 }
 
 .search-view {
@@ -93,9 +124,12 @@ body {
 .search-view select {
 	width: 115px;
 }
+
 .search-view input {
 	padding: 0 2px;
+	width: 100px;
 }
+
 .stackLayout {
 	border-bottom: 1px solid #bbbbbb;
 }
