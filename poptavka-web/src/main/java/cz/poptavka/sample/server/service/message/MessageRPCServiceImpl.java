@@ -346,6 +346,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage()
                     .getDemand().getClient()));
+            detail.setMessageCount(messageService
+                    .getAllDescendantsCount(um.getMessage(), businessUser));
+            detail.setUnreadMessageCount(messageService
+                    .getUnreadDescendantsCount(um.getMessage(), businessUser));
             potentailDemands.add(detail);
         }
         return potentailDemands;

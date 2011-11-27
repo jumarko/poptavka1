@@ -42,6 +42,9 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     private String clientName;
     private Integer clientRating;
 
+    private int messageCount;
+    private int unreadMessageCount;
+
     public static PotentialDemandMessage createMessageDetail(UserMessage message) {
         return fillMessageDetail(new PotentialDemandMessage(), message);
     }
@@ -70,7 +73,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
         detail.setDemandType(userMessage.getMessage().getDemand().getType());
         detail.setClientName(userMessage.getMessage().getDemand().getClient()
-                .getBusinessUser().getBusinessUserData().getCompanyName());
+                .getBusinessUser().getBusinessUserData().getDisplayName());
         return detail;
     }
 
@@ -255,6 +258,22 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         this.clientName = clientName;
     }
 
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int descendantMessageCount) {
+        this.messageCount = descendantMessageCount;
+    }
+
+    public int getUnreadMessageCount() {
+        return unreadMessageCount;
+    }
+
+    public void setUnreadMessageCount(int unreadDescendantMessageCount) {
+        this.unreadMessageCount = unreadDescendantMessageCount;
+    }
+
     public static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER = new ProvidesKey<PotentialDemandMessage>() {
         @Override
         public Object getKey(PotentialDemandMessage item) {
@@ -280,14 +299,9 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
 
     @Override
     public String getFormattedMessageCount() {
-        // TODO Auto-generated method stub
-        return "(missing)";
+        return "(" + getMessageCount() + "/"
+                + getUnreadMessageCount() + ")";
     }
 
-    @Override
-    public int getMessageCount() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
 }

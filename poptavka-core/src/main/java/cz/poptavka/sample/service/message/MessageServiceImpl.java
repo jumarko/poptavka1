@@ -174,7 +174,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return getDao().getListOfClientDemandMessagesUnread(user);
     }
 
-
+    /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public List<Message> getAllDescendants(Message message) {
@@ -184,18 +184,30 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
 
     }
 
+    /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public List<Message> getAllDescendants(List<Message> messages) {
         return getDao().getAllDescendants(messages);
     }
 
+    /** {@inheritDoc} */
     @Transactional(readOnly = true)
     public int getAllDescendantsCount(List<Message> messages) {
         return getDao().getAllDescendants(messages).size();
     }
 
+    /** {@inheritDoc} */
     @Transactional(readOnly = true)
+    public int getAllDescendantsCount(Message message) {
+        List<Message> messages = new ArrayList();
+        messages.add(message);
+        return getAllDescendantsCount(messages);
+    }
+
+    /** {@inheritDoc} */
+    @Transactional(readOnly = true)
+    @Override
     public int getAllDescendantsCount(List<Message> messages, User user) {
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 getDao().getAllDescendants(messages), user,
@@ -203,7 +215,18 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return userMessages.size();
     }
 
+    /** {@inheritDoc} */
     @Transactional(readOnly = true)
+    @Override
+    public int getAllDescendantsCount(Message message, User user) {
+        List<Message> messages = new ArrayList();
+        messages.add(message);
+        return getAllDescendantsCount(messages, user);
+    }
+
+    /** {@inheritDoc} */
+    @Transactional(readOnly = true)
+    @Override
     public int getUnreadDescendantsCount(List<Message> messages, User user) {
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 getDao().getAllDescendants(messages), user,
@@ -217,6 +240,14 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return result;
     }
 
+    /** {@inheritDoc} */
+    @Transactional(readOnly = true)
+    @Override
+    public int getUnreadDescendantsCount(Message message, User user) {
+        List<Message> messages = new ArrayList();
+        messages.add(message);
+        return getUnreadDescendantsCount(messages, user);
+    }
 
     /** {@inheritDoc} */
     @Override
