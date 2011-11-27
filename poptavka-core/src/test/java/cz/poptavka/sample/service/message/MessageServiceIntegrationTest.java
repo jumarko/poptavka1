@@ -63,10 +63,11 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 MessageFilter.EMPTY_FILTER);
 
         // three thread roots for tested user
-        Assert.assertEquals(3, messageThreads.size());
+        Assert.assertEquals(4, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
         checkUserMessageExists(200L, messageThreads);
         checkUserMessageExists(300L, messageThreads);
+        checkUserMessageExists(400L, messageThreads);
 
         // one reply to the thread root message
         Assert.assertEquals(1, messageThreads.get(0).getChildren().size());
@@ -82,7 +83,7 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
-        Assert.assertEquals(7, allUserMessages.size());
+        Assert.assertEquals(10, allUserMessages.size());
         checkUserMessageExists(1L, allUserMessages);
         checkUserMessageExists(2L, allUserMessages);
         checkUserMessageExists(3L, allUserMessages);
@@ -90,6 +91,9 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         checkUserMessageExists(200L, allUserMessages);
         checkUserMessageExists(300L, allUserMessages);
         checkUserMessageExists(301L, allUserMessages);
+        checkUserMessageExists(400L, allUserMessages);
+        checkUserMessageExists(401L, allUserMessages);
+        checkUserMessageExists(402L, allUserMessages);
     }
 
     @Test
@@ -98,12 +102,14 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.TO).build());
-        Assert.assertEquals(5, allUserReceivedMessages.size());
+        Assert.assertEquals(7, allUserReceivedMessages.size());
         checkUserMessageExists(1L, allUserReceivedMessages);
         checkUserMessageExists(2L, allUserReceivedMessages);
         checkUserMessageExists(4L, allUserReceivedMessages);
         checkUserMessageExists(200L, allUserReceivedMessages);
         checkUserMessageExists(300L, allUserReceivedMessages);
+        checkUserMessageExists(400L, allUserReceivedMessages);
+        checkUserMessageExists(402L, allUserReceivedMessages);
     }
 
     @Test
@@ -112,9 +118,10 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.SENDER).build());
-        Assert.assertEquals(2, allUserReceivedMessages.size());
+        Assert.assertEquals(3, allUserReceivedMessages.size());
         checkUserMessageExists(3L, allUserReceivedMessages);
         checkUserMessageExists(301L, allUserReceivedMessages);
+        checkUserMessageExists(401L, allUserReceivedMessages);
     }
 
 
@@ -197,6 +204,98 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 1, descendants.size());
 
         checkUserMessageExists(6L, descendants);
+    }
+
+    @Test
+    public void testGetDescendantsCount() {
+        List<Message> threadRoot = new ArrayList();
+        threadRoot.add(this.messageService.getById(1L));
+        int descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                3, descendantsCount);
+
+        threadRoot.clear();
+        threadRoot.add(this.messageService.getById(5L));
+
+        descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                1, descendantsCount);
+    }
+
+    @Test
+    public void testGetDescendantsForUserCount() {
+        final User user = this.generalService.find(User.class, 111111111L);
+        final User user2 = this.generalService.find(User.class, 111111112L);
+        final User user3 = this.generalService.find(User.class, 111111113L);
+        List<Message> threadRoot = new ArrayList();
+        threadRoot.add(this.messageService.getById(1L));
+        int descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot, user);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                3, descendantsCount);
+        descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot, user2);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                3, descendantsCount);
+        descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot, user3);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                0, descendantsCount);
+
+        threadRoot.clear();
+        threadRoot.add(this.messageService.getById(400L));
+        descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot, user);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                2, descendantsCount);
+        descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot, user2);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                2, descendantsCount);
+        descendantsCount =
+                this.messageService.getAllDescendantsCount(threadRoot, user3);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                1, descendantsCount);
+
+    }
+
+    @Test
+    public void testGetUnreadDescendantsCount() {
+        final User user = this.generalService.find(User.class, 111111111L);
+        final User user2 = this.generalService.find(User.class, 111111112L);
+        final User user3 = this.generalService.find(User.class, 111111113L);
+        List<Message> threadRoot = new ArrayList();
+        threadRoot.add(this.messageService.getById(1L));
+        int descendantsCount =
+                this.messageService.getUnreadDescendantsCount(threadRoot, user);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                2, descendantsCount);
+        descendantsCount =
+                this.messageService.getUnreadDescendantsCount(threadRoot, user2);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                1, descendantsCount);
+        descendantsCount =
+                this.messageService.getUnreadDescendantsCount(threadRoot, user3);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                0, descendantsCount);
+
+        threadRoot.clear();
+        threadRoot.add(this.messageService.getById(400L));
+        descendantsCount =
+                this.messageService.getUnreadDescendantsCount(threadRoot, user);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                0, descendantsCount);
+        descendantsCount =
+                this.messageService.getUnreadDescendantsCount(threadRoot, user2);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                0, descendantsCount);
+        descendantsCount =
+                this.messageService.getUnreadDescendantsCount(threadRoot, user3);
+        Assert.assertEquals("Inacurrate number of descendants selected",
+                1, descendantsCount);
+
     }
 
     @Test

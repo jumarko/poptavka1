@@ -8,7 +8,6 @@ import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
 import java.util.HashMap;
 import org.apache.commons.collections.CollectionUtils;
@@ -25,7 +24,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
 
     // TODO ivlcek - maybe I will have to replace MessageFilter by UserMessageFiletr
     @Override
-    public List<UserMessage> getUserMessages(List<Message> messages, BusinessUser user, MessageFilter messageFilter) {
+    public List<UserMessage> getUserMessages(List<Message> messages, User user, MessageFilter messageFilter) {
         final Criteria userMessageCriteria = buildUserMessageCriteria(messages, user, messageFilter);
         // TODO ivlcek - remove this method. It will be in a separate
         return buildResultCriteria(userMessageCriteria, messageFilter.getResultCriteria()).list();
@@ -54,7 +53,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
      * @param messageFilter
      * @return
      */
-    private Criteria buildUserMessageCriteria(List<Message> messages, BusinessUser user, MessageFilter messageFilter) {
+    private Criteria buildUserMessageCriteria(List<Message> messages, User user, MessageFilter messageFilter) {
         final Criteria userMessageCriteria = getHibernateSession().createCriteria(UserMessage.class);
 //        userMessageCriteria.add(Restrictions.eq("message", messages));
         userMessageCriteria.add(Restrictions.eq("user", user));

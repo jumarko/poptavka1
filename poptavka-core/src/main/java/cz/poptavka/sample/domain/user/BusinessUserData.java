@@ -112,6 +112,23 @@ public class BusinessUserData extends DomainObject {
         this.taxId = taxId;
     }
 
+    public String getDisplayName() {
+        String result = "";
+        if (!getPersonLastName().isEmpty()) {
+            result = getPersonLastName();
+        }
+        if (!getPersonFirstName().isEmpty()) {
+            result += ", " + getPersonLastName();
+        }
+        if (!getCompanyName().isEmpty() && !getPersonLastName().isEmpty()) {
+            result = " (" + result + ")";
+        }
+        if (!getCompanyName().isEmpty()) {
+            result = getCompanyName() + result;
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();

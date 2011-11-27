@@ -136,8 +136,8 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @param message
      * @return
      */
-
     List<Message> getAllDescendants(Message message);
+
     /**
      * Gets all the descendants (not just the children) of every item
      * in the given list of messages
@@ -146,6 +146,36 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * @return
      */
     List<Message> getAllDescendants(List<Message> messages);
+
+    /**
+     * Gets count of all the descendants (not just the children) of every item
+     * in the given list of messages
+     *
+     * @param messages
+     * @return
+     */
+    int getAllDescendantsCount(List<Message> messages);
+
+    /**
+     * Gets count of all the descendants (not just the children) of every item
+     * in the given list of messages that the given user can see, i.e. there
+     * is a UserMessage for the message
+     *
+     * @param messages
+     * @param user the user, whose message count should be retrieved
+     * @return
+     */
+    int getAllDescendantsCount(List<Message> messages, User user);
+
+    /**
+     * Gets count of all the descendants (not just the children) of every item
+     * in the given list of messages that the given user can see and hasn't
+     * read
+     *
+     * @param messages
+     * @return
+     */
+    int getUnreadDescendantsCount(List<Message> messages, User user);
 
     /**
      * Sends a message to the recipients stored in the message.

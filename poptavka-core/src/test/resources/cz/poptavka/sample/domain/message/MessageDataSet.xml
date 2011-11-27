@@ -140,4 +140,49 @@
     <USERMESSAGE ID="303" MESSAGE_ID="301" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
     <USERMESSAGE ID="304" MESSAGE_ID="301" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
 
+    <!-- Thread root -->
+    <MESSAGE ID="400"
+             CREATED="2011-05-11"
+             BODY="Ahoj, teta, dnes mam vela prace, budem spat u kamaratky.\nZajtra sa zastavim pre tu slivovicu."
+             PARENT_ID="[NULL]"
+             SENDER_ID="111111112"
+             FIRSTBORN_ID="401"
+             THREADROOT_ID="400"
+             SUBJECT="Dnes nepridem - zajtra"
+             DEMAND_ID="[NULL]" />
+
+    <!-- Reply to the original (thread root) message -->
+    <MESSAGE ID="401" BODY="Ahoj, Kamilko, slivovička je pripravená. Dávaj si na seba pozor. "
+             CREATED="2011-05-11"
+             PARENT_ID="400"
+             SUBJECT="Re: Dnes nepridem - zajtra "
+             SENDER_ID="111111111"
+             FIRSTBORN_ID="402"
+             THREADROOT_ID="400"
+             DEMAND_ID="[NULL]" />
+
+    <!-- Reply to the original (thread root) message -->
+    <MESSAGE ID="402"
+             CREATED="2011-05-11"
+             BODY="Ahoj teto, tak já se pro tu slivovičku zastavím, bude se u té kamarádky hodit."
+             PARENT_ID="401"
+             SENDER_ID="111111112"
+             FIRSTBORN_ID="[NULL]"
+             THREADROOT_ID="400"
+             SUBJECT="Zastavím se"
+             DEMAND_ID="[NULL]" />
+
+    <MESSAGEUSERROLE ID="400" MESSAGE_ID="400" USER_ID="111111111" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="401" MESSAGE_ID="401" USER_ID="111111112" TYPE="TO"/>
+    <MESSAGEUSERROLE ID="402" MESSAGE_ID="402" USER_ID="111111111" TYPE="TO"/>
+
+    <USERMESSAGE ID="401" MESSAGE_ID="400" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="402" MESSAGE_ID="400" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="403" MESSAGE_ID="400" USER_ID="111111113" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="404" MESSAGE_ID="401" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="405" MESSAGE_ID="401" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="406" MESSAGE_ID="401" USER_ID="111111113" ISREAD="0" ISSTARRED="0"/>
+    <USERMESSAGE ID="407" MESSAGE_ID="402" USER_ID="111111111" ISREAD="1" ISSTARRED="0"/>
+    <USERMESSAGE ID="408" MESSAGE_ID="402" USER_ID="111111112" ISREAD="1" ISSTARRED="0"/>
+
 </dataset>

@@ -190,6 +190,34 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
         return getDao().getAllDescendants(messages);
     }
 
+    @Transactional(readOnly = true)
+    public int getAllDescendantsCount(List<Message> messages) {
+        return getDao().getAllDescendants(messages).size();
+    }
+
+    @Transactional(readOnly = true)
+    public int getAllDescendantsCount(List<Message> messages, User user) {
+        List<UserMessage> userMessages = userMessageService.getUserMessages(
+                getDao().getAllDescendants(messages), user,
+                MessageFilter.EMPTY_FILTER);
+        return userMessages.size();
+    }
+
+    @Transactional(readOnly = true)
+    public int getUnreadDescendantsCount(List<Message> messages, User user) {
+        List<UserMessage> userMessages = userMessageService.getUserMessages(
+                getDao().getAllDescendants(messages), user,
+                MessageFilter.EMPTY_FILTER);
+        int result = 0;
+        for (UserMessage userMessage : userMessages) {
+            if (!userMessage.isIsRead()) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+
     /** {@inheritDoc} */
     @Override
     public void send(Message message) throws MessageException {
