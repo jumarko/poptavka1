@@ -42,6 +42,7 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface, UserEventBus> {
 
     protected static final int ADMIN_SECTION = 5;
+    protected static final int MESSAGES_SECTION = 2;
 
     @Override
     public void bindView() {
@@ -51,6 +52,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 if (event.getItem().intValue() == ADMIN_SECTION) {
                     eventBus.initAdmin();
+                } else if (event.getItem().intValue() == MESSAGES_SECTION) {
+                    eventBus.initMessages();
                 }
             }
         });
@@ -68,6 +71,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         void setBody(Widget body);
 
         void setBodyAdmin(Widget body);
+
+        void setBodyMessages(Widget body);
 
         Widget getWidgetView();
 
@@ -158,6 +163,10 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     public void onSetTabAdminWidget(Widget tabBody) {
         view.setBodyAdmin(tabBody);
+    }
+
+    public void onSetTabMessagesWidget(Widget tabBody) {
+        view.setBodyMessages(tabBody);
     }
 
     public void onSetTabSettingsWidget(Widget tabBody) {

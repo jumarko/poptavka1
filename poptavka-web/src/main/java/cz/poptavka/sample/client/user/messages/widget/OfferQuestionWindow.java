@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import java.math.BigDecimal;
 
@@ -23,14 +23,14 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
 /**
- * Mixed widget for sending offer as well for asking questions.
+ * Mixed widget for sending offer as well for asking questions
  *
  * @author Beho
  */
-public class DevelOfferQuestionWindow extends Composite implements DevelOfferQuestionPresenter.ReplyInterface {
+public class OfferQuestionWindow extends Composite implements OfferQuestionPresenter.ReplyInterface {
 
     private static ReplyWindowUiBinder uiBinder = GWT.create(ReplyWindowUiBinder.class);
-    interface ReplyWindowUiBinder extends UiBinder<Widget, DevelOfferQuestionWindow> {   }
+    interface ReplyWindowUiBinder extends UiBinder<Widget, OfferQuestionWindow> {   }
 
     private static final StyleResource CSS = GWT.create(StyleResource.class);
 

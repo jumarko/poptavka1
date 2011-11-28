@@ -32,9 +32,9 @@
                     <ui:msg key='messages'>Messages</ui:msg>
                 </em>
             </g:header>
-            <g:HTML>
-                <h1>Messages Tab</h1>
-            </g:HTML>
+            <g:SimplePanel ui:field="messagesTabPanel">
+                <g:HTML>Messages Tab</g:HTML>
+            </g:SimplePanel>
         </g:tab>
         <g:tab>
             <g:header>

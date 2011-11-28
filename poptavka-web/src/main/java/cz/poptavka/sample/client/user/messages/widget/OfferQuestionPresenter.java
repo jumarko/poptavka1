@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -9,17 +9,20 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
 /**
  * Widget for potentail demands view. Enables supplier to send an offer or just ask question.
  * @author Beho
  *
  */
-@Presenter(view = QuestionWindow.class, multiple = true)
-public class QuestionPresenter extends LazyPresenter<QuestionPresenter.ReplyInterface, UserEventBus> {
+@Presenter(view = OfferQuestionWindow.class, multiple = true)
+public class OfferQuestionPresenter extends LazyPresenter<OfferQuestionPresenter.ReplyInterface, UserEventBus> {
 
     public interface ReplyInterface extends LazyView {
         Widget getWidgetView();
+
+//        void addClickHandler(ClickHandler submitButtonHandler, long demandId);
 
         void addClickHandler(ClickHandler submitButtonHandler);
 
@@ -27,9 +30,17 @@ public class QuestionPresenter extends LazyPresenter<QuestionPresenter.ReplyInte
 
         MessageDetail getCreatedMessage();
 
-        void setNormalStyle();
+        OfferMessageDetail getCreatedOfferMessage();
 
         void setSendingStyle();
+
+        void setNormalStyle();
+
+        // TODO maybe not necessary, check
+        boolean isResponseQuestion();
+
+        // TODO maybe not necessary, check
+        void setResponseToQuestion();
 
     }
 
@@ -52,6 +63,10 @@ public class QuestionPresenter extends LazyPresenter<QuestionPresenter.ReplyInte
 
     public boolean isMessageValid() {
         return view.isValid();
+    }
+
+    public boolean hasResponseQuestion() {
+        return view.isResponseQuestion();
     }
 
 }

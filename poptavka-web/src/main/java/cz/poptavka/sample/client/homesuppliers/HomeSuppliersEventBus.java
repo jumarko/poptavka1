@@ -105,6 +105,8 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = SuppliersHandler.class)
     void getCategories();
 
+    @Event(handlers = SuppliersPresenter.class)
+    void rootWithSearchDataHolder();
 //    @Event(handlers = SuppliersHandler.class)
 //    void getLocalities();
 //

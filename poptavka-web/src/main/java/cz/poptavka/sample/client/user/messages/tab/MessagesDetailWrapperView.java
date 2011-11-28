@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widget;
+package cz.poptavka.sample.client.user.messages.tab;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -14,13 +14,14 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
 import com.google.gwt.user.client.ui.Widget;
+import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
 import cz.poptavka.sample.client.user.messages.widget.UserConversationPanel;
 
-public class DetailWrapperView extends Composite
-    implements DetailWrapperPresenter.IDetailWrapper {
+public class MessagesDetailWrapperView extends Composite
+    implements MessagesDetailWrapperPresenter.IDetailWrapper {
 
-    private static DetailWrapperViewUiBinder uiBinder = GWT.create(DetailWrapperViewUiBinder.class);
-    interface DetailWrapperViewUiBinder extends UiBinder<Widget, DetailWrapperView> {   }
+    private static MessagesDetailWrapperViewUiBinder uiBinder = GWT.create(MessagesDetailWrapperViewUiBinder.class);
+    interface MessagesDetailWrapperViewUiBinder extends UiBinder<Widget, MessagesDetailWrapperView> {   }
 
     @UiField HTMLPanel container;
     @UiField SimplePanel detailHolder;

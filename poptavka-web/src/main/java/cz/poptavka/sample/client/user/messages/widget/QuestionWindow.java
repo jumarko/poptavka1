@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;

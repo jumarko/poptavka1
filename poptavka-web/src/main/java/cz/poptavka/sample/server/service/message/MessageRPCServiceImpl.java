@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.server.service.message;
 
+import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.exception.MessageException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
+import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
@@ -37,7 +40,8 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
-
+import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
+import java.util.Collection;
 
 /**
  *
@@ -134,7 +138,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return details;
     }
 
-
     /**
      * Metoda, ktora vrati zoznam klientovych poptavkovych sprav.
      *
@@ -160,10 +163,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
-        Map<Message, Long> submessageCounts = this.messageService
-                .getListOfClientDemandMessagesAll(businessUser);
-        Map<Message, Long> unreadSubmessageCounts = this.messageService
-                .getListOfClientDemandMessagesUnread(businessUser);
+        Map<Message, Long> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
+        Map<Message, Long> unreadSubmessageCounts =
+                this.messageService.getListOfClientDemandMessagesUnread(businessUser);
         for (Entry<Message, Long> entry : submessageCounts.entrySet()) {
             Message message = entry.getKey();
             long count = entry.getValue();
@@ -173,7 +175,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
         return result;
     }
-
 
     /**
      * Message sent by supplier about a query to potential demand.
@@ -344,8 +345,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
         for (UserMessage um : userMessages) {
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
-            detail.setClientRating(ratingService.getAvgRating(um.getMessage()
-                    .getDemand().getClient()));
+            detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
             detail.setMessageCount(messageService
                     .getAllDescendantsCount(um.getMessage(), businessUser));
             detail.setUnreadMessageCount(messageService
@@ -431,4 +431,38 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return result;
     }
 
+    public List<UserMessageDetail> getMessagesByState(List<String> states,
+            Map<String, OrderType> orderColumns, Boolean negation) {
+        Search search = new Search(UserMessage.class);
+        for (String state : states) {
+            if (negation) {
+//                search.addFilterNotEqual("message.messageState.value", state);
+                search.addFilterNotEqual("message.messageState", MessageState.valueOf(state));
+            } else {
+//                search.addFilterEqual("message.messageState.value", state);
+                search.addFilterEqual("message.messageState", MessageState.valueOf(state));
+            }
+
+        }
+        /** sort **/
+        if (orderColumns != null) {
+            for (String item : orderColumns.keySet()) {
+                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
+                    search.addSortAsc(item, true);
+                } else {
+                    search.addSortDesc(item, true);
+                }
+            }
+        }
+        return this.createUserMessageDetailList(generalService.search(search));
+    }
+
+    private List<UserMessageDetail> createUserMessageDetailList(Collection<UserMessage> userMessages) {
+        List<UserMessageDetail> fullDemandDetails = new ArrayList<UserMessageDetail>();
+        for (UserMessage userMessage : userMessages) {
+            UserMessageDetail demandDetail = UserMessageDetail.createUserMessageDetail(userMessage);
+            fullDemandDetails.add(demandDetail);
+        }
+        return fullDemandDetails;
+    }
 }

@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -7,23 +7,19 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.user.demands.develmodule.DemandModuleEventBus;
+import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
 /**
  * Widget for potentail demands view. Enables supplier to send an offer or just ask question.
  * @author Beho
  *
  */
-@Presenter(view = DevelOfferQuestionWindow.class, multiple = true)
-public class DevelOfferQuestionPresenter extends LazyPresenter<
-    DevelOfferQuestionPresenter.ReplyInterface, DemandModuleEventBus> {
+@Presenter(view = QuestionWindow.class, multiple = true)
+public class QuestionPresenter extends LazyPresenter<QuestionPresenter.ReplyInterface, UserEventBus> {
 
     public interface ReplyInterface extends LazyView {
         Widget getWidgetView();
-
-//        void addClickHandler(ClickHandler submitButtonHandler, long demandId);
 
         void addClickHandler(ClickHandler submitButtonHandler);
 
@@ -31,17 +27,9 @@ public class DevelOfferQuestionPresenter extends LazyPresenter<
 
         MessageDetail getCreatedMessage();
 
-        OfferMessageDetail getCreatedOfferMessage();
-
-        void setSendingStyle();
-
         void setNormalStyle();
 
-        // TODO maybe not necessary, check
-        boolean isResponseQuestion();
-
-        // TODO maybe not necessary, check
-        void setResponseToQuestion();
+        void setSendingStyle();
 
     }
 
@@ -64,10 +52,6 @@ public class DevelOfferQuestionPresenter extends LazyPresenter<
 
     public boolean isMessageValid() {
         return view.isValid();
-    }
-
-    public boolean hasResponseQuestion() {
-        return view.isResponseQuestion();
     }
 
 }

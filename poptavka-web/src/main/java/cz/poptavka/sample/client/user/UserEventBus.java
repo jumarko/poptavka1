@@ -47,6 +47,10 @@ import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
+import cz.poptavka.sample.client.user.messages.MessagesHandler;
+import cz.poptavka.sample.client.user.messages.MessagesHistoryConverter;
+import cz.poptavka.sample.client.user.messages.MessagesLayoutPresenter;
+import cz.poptavka.sample.client.user.messages.tab.MessagesPresenter;
 import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -70,6 +74,7 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -151,14 +156,11 @@ public interface UserEventBus extends EventBusWithLookup {
     void setTabAdminWidget(Widget tabBody);
 
     @Event(handlers = UserPresenter.class)
+    void setTabMessagesWidget(Widget tabBody);
+
+    @Event(handlers = UserPresenter.class)
     void setTabSettingsWidget(Widget tabBody);
 
-    // for operator only
-//    @Event
-//    void invokeMyProblems();
-    /**
-     * Handlers for widget MyProblems.
-     */
     @Event(handlers = MyProblemsPresenter.class)
     void requestMyProblems();
 
@@ -168,9 +170,6 @@ public interface UserEventBus extends EventBusWithLookup {
     /** get client id. **/
     @Event(handlers = UserPresenter.class)
     void requestClientId(FullDemandDetail newDemand);
-//
-//    @Event(handlers = { MyDemandsPresenter.class, DemandsOperatorPresenter.class }, passive = true)
-//    void responseClientDemands(ArrayList<FullDemandDetail> demands);
 
     /**
      * common method for displaying Demand Detail in the window.
@@ -259,10 +258,6 @@ public interface UserEventBus extends EventBusWithLookup {
     historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
-//    @Event(handlers = MyProblemsPresenter.class, activate = MyProblemsPresenter.class, deactivate = {
-//            OffersPresenter.class, NewDemandPresenter.class, PotentialDemandsPresenter.class,
-//            DemandsOperatorPresenter.class, AdminDemandsPresenter.class },
-//            historyConverter = DemandsHistoryConverter.class)
     @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
     String invokeMyProblems();
 
@@ -354,9 +349,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminProblemsPresenter.class, historyConverter = AdminHistoryConverter.class)
     String invokeAdminProblems();
 
-    //TODO Martin - dorobit ?
-//    @Event(handlers = AllSuppliersPresenter.class, historyConverter = AdminHistoryConverter.class)
-//    String invokeAdminUsers();
     /***********************************************************************************************
      ************************* Navigation Events section END ***************************************
      **********************************************************************************************/
@@ -417,7 +409,7 @@ public interface UserEventBus extends EventBusWithLookup {
     // Beho: ??? needed ???
 //    @Event(handlers = MyDemandsPresenter.class)
 //    void responseClientDemands(ArrayList<MessageDetail> result);
-    @Event(handlers = {OldDemandsLayoutPresenter.class, AdminLayoutPresenter.class })
+    @Event(handlers = {OldDemandsLayoutPresenter.class, AdminLayoutPresenter.class, MessagesLayoutPresenter.class })
     void toggleLoading();
 
     @Event(handlers = UserPresenter.class)
@@ -442,6 +434,9 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminLayoutPresenter.class)
     void initAdmin();
 
+    @Event(handlers = MessagesLayoutPresenter.class, historyConverter = MessagesHistoryConverter.class)
+    void initMessages();
+
     /**********************************************************************************************
      ***********************  DEMANDS SECTION. ****************************************************
      **********************************************************************************************/
@@ -461,8 +456,6 @@ public interface UserEventBus extends EventBusWithLookup {
     void getLocalities();
 
     //Suppliers
-//    @Event(handlers = RootPresenter.class)
-//    void getSuppliers(Long category, Long locality);
     @Event(handlers = AllSuppliersHandler.class)
     void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
 
@@ -488,7 +481,6 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AllSuppliersPresenter.class)
     void displayDemandTabSuppliers(ArrayList<FullSupplierDetail> list);
 
-//    @Event(handlers = {AllSuppliersPresenter.class, DemandsPresenter.class })
     @Event(handlers = AllSuppliersPresenter.class)
     void setLocalityData(ArrayList<LocalityDetail> list);
 
@@ -506,10 +498,6 @@ public interface UserEventBus extends EventBusWithLookup {
     /* <<<<<<<<<<-------- ALL SUPPLIERS -------------------- */
 
     /* ------------------ ALL DEMANDS ---------------------->>>>  */
-    //Demand
-//    @Event(handlers = AllDemandsHandler.class)
-//    void getDemands(int fromResult, int toResult);
-
     @Event(handlers = AllDemandsHandler.class)
     void getAllDemandsCount();
 
@@ -548,6 +536,23 @@ public interface UserEventBus extends EventBusWithLookup {
     /**********************************************************************************************
      ***********************  MESSAGES SECTION ****************************************************
      **********************************************************************************************/
+    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
+    String invokeInbox();
+
+    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
+    String invokeSent();
+
+    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
+    String invokeDeleted();
+
+    @Event(handlers = MessagesHandler.class)
+    void getMessages(List<String> states, Map<String, OrderType> orderColumns, Boolean negation);
+
+    @Event(handlers = MessagesPresenter.class)
+    void displayMessages(List<UserMessageDetail> messages);
+
+    @Event(handlers = MessagesLayoutPresenter.class)
+    void displayMessagesContent(Widget contentWidget);
     /**********************************************************************************************
      ***********************  SETTINGS SECTION ****************************************************
      **********************************************************************************************/

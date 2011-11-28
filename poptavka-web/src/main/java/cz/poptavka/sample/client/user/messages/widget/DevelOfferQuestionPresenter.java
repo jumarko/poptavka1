@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -7,7 +7,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.develmodule.DemandModuleEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
@@ -16,8 +16,9 @@ import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
  * @author Beho
  *
  */
-@Presenter(view = OfferQuestionWindow.class, multiple = true)
-public class OfferQuestionPresenter extends LazyPresenter<OfferQuestionPresenter.ReplyInterface, UserEventBus> {
+@Presenter(view = DevelOfferQuestionWindow.class, multiple = true)
+public class DevelOfferQuestionPresenter extends LazyPresenter<
+    DevelOfferQuestionPresenter.ReplyInterface, DemandModuleEventBus> {
 
     public interface ReplyInterface extends LazyView {
         Widget getWidgetView();

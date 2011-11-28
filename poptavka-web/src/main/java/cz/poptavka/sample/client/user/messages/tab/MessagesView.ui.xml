@@ -1,0 +1,63 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+  xmlns:ui="urn:ui:com.google.gwt.uibinder"
+  xmlns:g="urn:import:com.google.gwt.user.client.ui"
+  xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+  xmlns:lsv="cz.poptavka.sample.client.main.common.locality"
+  ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+  ui:generateLocales='default'>
+
+
+    <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
+
+    <ui:style>
+    .cellTable {
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+    </ui:style>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:west size="550">
+            <g:HTMLPanel>
+                <div>
+                    <g:Button ui:field="replyBtn">
+                        <ui:msg key="reply">Reply</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="deleteBtn">
+                        <ui:msg key="delete">Delete</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="markReadBtn">
+                        <ui:msg key="markAsRead">Mark As Read</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="markUnreadBtn">
+                        <ui:msg key="markAsUnread">Mark As Unread</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="moreActionsBtn">
+                        <ui:msg key="moreActions">More Actions</ui:msg>
+                    </g:Button>
+                    <g:Button ui:field="refreshBtn">
+                        <ui:msg key="refresh">Refresh</ui:msg>
+                    </g:Button>
+
+                    <!-- <g:ToggleButton ui:field="moreActionsBtn"> -->
+                    <!-- <ui:msg key="moreActions">More Actions</ui:msg> -->
+                    <!-- </g:ToggleButton> -->
+                </div>
+                <div>
+                    <c:DataGrid ui:field="dataGrid" />
+                    <c:SimplePager ui:field="pager" />
+                    <g:ListBox ui:field='pageSizeCombo'/>
+                </div>
+
+                <g:SimplePanel ui:field="develPanel" />
+
+            </g:HTMLPanel>
+        </g:west>
+        <g:center>
+            <g:SimplePanel ui:field="detailSection" />
+        </g:center>
+    </g:SplitLayoutPanel>
+</ui:UiBinder>
+
+

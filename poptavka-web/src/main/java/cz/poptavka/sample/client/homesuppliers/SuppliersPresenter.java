@@ -218,6 +218,18 @@ public class SuppliersPresenter
         }
     }
 
+    public void onRootWithSearchDataHolder() {
+        view.getFilterLabel().setVisible(true);
+        view.getChildSection().setVisible(true);
+        view.getRootSection().setVisible(false);
+
+        if (searchDataHolder.getCategory() == null) {
+            eventBus.getSubCategories(null);
+        } else {
+            eventBus.getSubCategories(searchDataHolder.getCategory().getId());
+        }
+    }
+
     public void onAtSuppliers() {
 // TODO praso - it shouldn't be necessary to call setBodyWidget since we use autodisplay feature
 //        eventBus.setBodyWidget(view.getWidgetView());

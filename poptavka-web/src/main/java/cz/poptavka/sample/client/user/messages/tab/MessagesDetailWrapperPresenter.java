@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.demands.widget;
+package cz.poptavka.sample.client.user.messages.tab;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
+import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
 import cz.poptavka.sample.client.user.messages.widget.OfferQuestionPresenter;
 import cz.poptavka.sample.client.user.messages.widget.OfferWindowPresenter;
 import cz.poptavka.sample.client.user.messages.widget.QuestionPresenter;
@@ -24,11 +26,12 @@ import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
-@Presenter(view = DetailWrapperView.class, multiple = true)
-public class DetailWrapperPresenter extends
-        LazyPresenter<DetailWrapperPresenter.IDetailWrapper, UserEventBus> {
+@Presenter(view = MessagesDetailWrapperView.class, multiple = true)
+public class MessagesDetailWrapperPresenter extends
+        LazyPresenter<MessagesDetailWrapperPresenter.IDetailWrapper, UserEventBus> {
 
     public interface IDetailWrapper extends LazyView {
+
         Widget getWidgetView();
 
         void setDetail(Widget demandDetailWidget);
@@ -43,12 +46,9 @@ public class DetailWrapperPresenter extends
 
         DemandDetailView getDemandDetail();
     }
-
     private ViewType type;
-
     private OfferQuestionPresenter potentialViewReplyWiget = null;
     private QuestionPresenter myDemandsViewReplyWiget = null;
-
     private LoadingDiv detailLoader;
     private LoadingDiv conversationLoader;
 
@@ -86,6 +86,7 @@ public class DetailWrapperPresenter extends
         // GUI visual event
         toggleDetailLoading();
     }
+
     /**
      * Loads conversation.
      *
@@ -220,33 +221,29 @@ public class DetailWrapperPresenter extends
         if (potentialViewReplyWiget != null) {
             eventBus.removeHandler(potentialViewReplyWiget);
         }
-        potentialViewReplyWiget = eventBus
-                .addHandler(OfferQuestionPresenter.class);
+        potentialViewReplyWiget = eventBus.addHandler(OfferQuestionPresenter.class);
         potentialViewReplyWiget.initReplyWindow(view.getReplyHolder());
         potentialViewReplyWiget.addSubmitHandler(bindReplyWindowAction());
     }
 
     private ClickHandler bindReplyWindowAction() {
         return new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
                 if (potentialViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
                     if (potentialViewReplyWiget.hasResponseQuestion()) {
-                        MessageDetail messageToSend = potentialViewReplyWiget
-                                .getCreatedMessage();
-                        messageToSend = view.getConversationPanel()
-                                .updateSendingMessage(messageToSend);
+                        MessageDetail messageToSend = potentialViewReplyWiget.getCreatedMessage();
+                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                         eventBus.bubbleMessageSending(messageToSend, type);
                     } else {
                         // TODO finish sending of
                         OfferMessageDetail offer = new OfferMessageDetail();
-                        offer = (OfferMessageDetail) view
-                                .getConversationPanel().updateSendingOfferMessage(
-                                        offer);
-                        MessageDetail offerMessage = potentialViewReplyWiget
-                                .getCreatedMessage();
+                        offer = (OfferMessageDetail) view.getConversationPanel().updateSendingOfferMessage(
+                                offer);
+                        MessageDetail offerMessage = potentialViewReplyWiget.getCreatedMessage();
                         offer.setBody(offerMessage.getBody());
                         offer.setDemandId(offerMessage.getDemandId());
                         eventBus.bubbleOfferSending(offer);
@@ -262,21 +259,19 @@ public class DetailWrapperPresenter extends
         }
         myDemandsViewReplyWiget = eventBus.addHandler(QuestionPresenter.class);
         myDemandsViewReplyWiget.initReplyWindow(view.getReplyHolder());
-        myDemandsViewReplyWiget
-                .addSubmitHandler(bindConversationReplyWindowAction());
+        myDemandsViewReplyWiget.addSubmitHandler(bindConversationReplyWindowAction());
     }
 
     private ClickHandler bindConversationReplyWindowAction() {
         return new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
                 if (myDemandsViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
-                    MessageDetail messageToSend = myDemandsViewReplyWiget
-                            .getCreatedMessage();
-                    messageToSend = view.getConversationPanel()
-                            .updateSendingMessage(messageToSend);
+                    MessageDetail messageToSend = myDemandsViewReplyWiget.getCreatedMessage();
+                    messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                     eventBus.bubbleMessageSending(messageToSend, type);
                 }
             }
@@ -313,5 +308,4 @@ public class DetailWrapperPresenter extends
             conversationLoader = null;
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -9,26 +9,30 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.view.BaseCycleView;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
-// TODO extend SimpleMessageWindow, if possible.
-public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.ActionMessageInterface {
+/**
+ * Dummy message with no actions, just to display data.
+ *
+ * @author Beho
+ */
+public class SimpleMessageWindow extends Composite {
+
+    public enum MessageDisplayType {
+        FIRST, LAST, BOTH, NORMAL;
+    }
 
     private static final int DATE_POS = 3;
 
-    private static UserActionMessageViewUiBinder uiBinder = GWT
-            .create(UserActionMessageViewUiBinder.class);
+    private static SimpleMessageWindowUiBinder uiBinder = GWT
+            .create(SimpleMessageWindowUiBinder.class);
 
-    interface UserActionMessageViewUiBinder extends
-            UiBinder<Widget, OfferWindow> {
+    interface SimpleMessageWindowUiBinder extends
+            UiBinder<Widget, SimpleMessageWindow> {
     }
 
     private static final StyleResource CSS = GWT.create(StyleResource.class);
@@ -38,29 +42,17 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
     @UiField Element headerTable;
     @UiField Element messagePreview;
 
-    @UiField Anchor acceptButton;
-    @UiField Anchor replyButton;
-    @UiField Anchor deleteButton;
-
-    @UiField SimplePanel responseHolder;
-
     private boolean collapsed = false;
 
-    private FullOfferDetail offerDetail;
-
-    @Override
-    public void createView() {
+    public SimpleMessageWindow() {
+        CSS.message().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-
-    public void setContent(MessageDetail message, boolean collapsed) {
+    public SimpleMessageWindow(MessageDetail message, boolean isCollapsed) {
+        this();
         setMessage(message);
-
-        // set collapsed state
-        this.collapsed = collapsed;
-        toggleCollapsed();
-        setMessageStyle(MessageDisplayType.BOTH);
+        setCollapsed(isCollapsed);
     }
 
     /**
@@ -71,6 +63,10 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
      * @param collapsed define if this newly created message should be collapsed
      * @param style if true, message is set as first, if false message is set as last!
      */
+    public SimpleMessageWindow(MessageDetail message, boolean collapsed, MessageDisplayType style) {
+        this(message, collapsed);
+        setMessageStyle(style);
+    }
 
     public void setMessage(MessageDetail message) {
         NodeList<Element> tableColumns = headerTable.getElementsByTagName("td");
@@ -88,6 +84,10 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
         body.getElementsByTagName("div").getItem(0).setInnerHTML(message.getBody());
     }
 
+    public void setCollapsed(boolean isCollapsed) {
+        this.collapsed = isCollapsed;
+        toggleCollapsed();
+    }
 
     public void setMessageStyle(MessageDisplayType type) {
         switch (type) {
@@ -116,27 +116,17 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
         collapsed = !collapsed;
     }
 
-    public FullOfferDetail getFullOfferDetail() {
-        return offerDetail;
-    }
-
-    public void setFullOfferDetail(FullOfferDetail fullOfferDetail) {
-        this.offerDetail = offerDetail;
-        setMessage(offerDetail.getMessageDetail());
-        setMessageStyle(MessageDisplayType.BOTH);
-    }
-
     /**********************************************************************************/
     /**                       Widget internal behavior handling.                       */
     @Override
-    public void onLoad() {
+    protected void onLoad() {
         com.google.gwt.user.client.Element castedElement = castElement(header);
         DOM.sinkEvents(castedElement, Event.ONCLICK);
         DOM.setEventListener(castedElement, new MessageToggleHangler());
     }
 
     @Override
-    public void onUnload() {
+    protected void onUnload() {
         super.onUnload();
         DOM.setEventListener(castElement(header), null);
     }
@@ -155,34 +145,4 @@ public class OfferWindow extends BaseCycleView implements OfferWindowPresenter.A
             }
         }
     }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-
-    @Override
-    public Anchor getAcceptButton() {
-        return acceptButton;
-    }
-
-
-    @Override
-    public Anchor getReplyButton() {
-        return replyButton;
-    }
-
-
-    @Override
-    public Anchor getDeclineButton() {
-        return deleteButton;
-    }
-
-
-    @Override
-    public SimplePanel getResponseHolder() {
-        return responseHolder;
-    }
-
 }

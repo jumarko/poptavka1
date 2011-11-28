@@ -20,6 +20,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     @UiField SimplePanel oldTabPanel;
     @UiField SimplePanel adminPanel;
     @UiField SimplePanel settingsPanel;
+    @UiField SimplePanel messagesTabPanel;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -30,14 +31,22 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
         tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().fullSize());
     }
 
+    @Override
     public void setBody(Widget body) {
         oldTabPanel.setWidget(body);
     }
 
+    @Override
     public void setBodyAdmin(Widget body) {
         adminPanel.setWidget(body);
     }
 
+    @Override
+    public void setBodyMessages(Widget body) {
+        messagesTabPanel.setWidget(body);
+    }
+
+    @Override
     public Widget getWidgetView() {
         return this;
     }

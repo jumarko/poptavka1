@@ -113,6 +113,7 @@ public interface LocalizableMessages extends Messages {
     String offers();
     String attachment();
     String createdDate();
+    String sentDate();
     String createdTime();
     String urgency();
     String commonInfo();

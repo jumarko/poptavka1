@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages;
+package cz.poptavka.sample.client.user.messages.widget;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.user.messages.SimpleMessageWindow.MessageDisplayType;
+import cz.poptavka.sample.client.user.messages.widget.SimpleMessageWindow.MessageDisplayType;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 

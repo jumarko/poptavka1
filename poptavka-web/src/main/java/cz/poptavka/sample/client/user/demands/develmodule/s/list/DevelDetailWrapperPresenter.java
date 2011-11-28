@@ -12,8 +12,8 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.demands.develmodule.DemandModuleEventBus;
-import cz.poptavka.sample.client.user.messages.DevelOfferQuestionPresenter;
-import cz.poptavka.sample.client.user.messages.UserConversationPanel;
+import cz.poptavka.sample.client.user.messages.widget.DevelOfferQuestionPresenter;
+import cz.poptavka.sample.client.user.messages.widget.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
