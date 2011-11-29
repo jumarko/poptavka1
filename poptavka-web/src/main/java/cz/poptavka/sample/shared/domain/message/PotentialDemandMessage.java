@@ -61,7 +61,13 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
                 : userMessage.getMessage().getParent().getId());
 //        m.setReceiverId();
         detail.setSenderId(userMessage.getMessage().getSender().getId());
-        detail.setSent(userMessage.getMessage().getSent());
+        //still get annoying nullPE at PotentialDemandMessage
+        //so that's the reason for this check    -Beho. 29.11.11
+        if (userMessage.getMessage().getSent() == null) {
+            detail.setSent(userMessage.getMessage().getCreated());
+        } else {
+            detail.setSent(userMessage.getMessage().getSent());
+        }
         detail.setSubject(userMessage.getMessage().getSubject());
         detail.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
         detail.setUserMessageId(userMessage.getId());

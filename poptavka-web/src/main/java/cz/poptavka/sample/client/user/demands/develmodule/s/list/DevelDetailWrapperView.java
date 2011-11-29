@@ -73,8 +73,8 @@ public class DevelDetailWrapperView extends Composite
     }
 
     @Override
-    public void setChat(ArrayList<MessageDetail> chatMessages) {
-        conversationPanel.setMessageList(chatMessages, false);
+    public void setChat(ArrayList<MessageDetail> chatMessages, boolean collapsed) {
+        conversationPanel.setMessageList(chatMessages, true);
         conversationHeader.toggleLoading();
     }
 

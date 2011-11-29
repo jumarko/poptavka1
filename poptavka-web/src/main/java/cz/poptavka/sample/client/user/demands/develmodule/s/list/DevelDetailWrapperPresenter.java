@@ -38,7 +38,7 @@ public class DevelDetailWrapperPresenter extends
 
         void toggleConversationLoading();
 
-        void setChat(ArrayList<MessageDetail> chatMessages);
+        void setChat(ArrayList<MessageDetail> chatMessages, boolean collapsed);
 
     }
 
@@ -122,8 +122,11 @@ public class DevelDetailWrapperPresenter extends
         //neccessary check for method to be executed only in appropriate presenter
         if (type.equals(wrapperType)) {
             //display chat
+            //TODO
             //boolean param - for collapsed conversation can be fetched from UserDetail object (some kind of setting)
-            view.setChat(chatMessages);
+            //example
+            //Storage.getUser().getMessageCollapsedSetting();
+            view.setChat(chatMessages, true);
             //init replyWidget
             offerQuestionReply.addSubmitHandler(bindReplyWindowAction());
         }

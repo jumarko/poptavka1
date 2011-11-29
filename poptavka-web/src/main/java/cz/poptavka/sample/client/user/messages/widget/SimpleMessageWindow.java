@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.user.messages.widget;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
@@ -77,7 +79,8 @@ public class SimpleMessageWindow extends Composite {
         messagePreview.setInnerText(message.getBody());
 
         // date
-        tableColumns.getItem(DATE_POS).setInnerText(message.getSent().toString());
+        Date date = message.getSent() == null ? message.getCreated() : message.getSent();
+        tableColumns.getItem(DATE_POS).setInnerText(date.toString());
 
         // message body
         // the first child is our content place

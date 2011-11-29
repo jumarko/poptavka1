@@ -52,10 +52,11 @@ public class MessageDetail implements Serializable {
         detail.setParentId(message.getParent() == null ? -1 : message.getParent().getId());
         detail.setSenderId(message.getSender() == null ? -1 : message.getSender().getId());
         detail.setThreadRootId(message.getThreadRoot() == null ? -1 : message.getThreadRoot().getId());
-
         detail.setBody(message.getBody());
         detail.setCreated(message.getCreated());
-
+        //still get annoying nullPE at PotentialDemandMessage
+        //so that's the reason for this check    -Beho. 29.11.11
+        detail.setSent(message.getSent() == null ?  message.getCreated() :  message.getSent());
 //        m.setFirstBornId(serialVersionUID);
         if (message.getMessageState() != null) {
             detail.setMessageState(message.getMessageState().name());
