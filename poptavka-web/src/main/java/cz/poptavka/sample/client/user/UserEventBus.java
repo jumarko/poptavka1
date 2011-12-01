@@ -14,6 +14,7 @@ import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBusWithLookup;
 
+import cz.poptavka.sample.client.homesettings.HomeSettingsPresenter;
 import cz.poptavka.sample.client.user.admin.AdminHandler;
 import cz.poptavka.sample.client.user.admin.AdminHistoryConverter;
 import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
@@ -80,21 +81,17 @@ import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
- * Module loaded after user's log in.
- * Default view is summary of his new messages, new demands for him.
- *
+ * Module loaded after user's log in. Default view is summary of his new
+ * messages, new demands for him.
  * @author beho
- *
  */
 @Events(startView = UserView.class, module = UserModule.class)
-@ChildModules({
-    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false)
-})
+@ChildModules({ @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false) })
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBusWithLookup {
 
     /** init method. **/
-    @Event(handlers = {UserPresenter.class }, historyConverter = UserHistoryConverter.class)
+    @Event(handlers = { UserPresenter.class }, historyConverter = UserHistoryConverter.class)
     String atAccount();
 
     /** getter for UserDetail. **/
@@ -102,8 +99,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getUser();
 
     /**
-     * setter of userDetail for whole application. This user represents logged user
-     *
+     * setter of userDetail for whole application. This user represents logged
+     * user
      * @param user
      */
     @Event(handlers = UserPresenter.class)
@@ -121,11 +118,13 @@ public interface UserEventBus extends EventBusWithLookup {
     void getPotentialDemands(long businessUserId);
 
     @Event(handlers = PotentialDemandsPresenter.class)
-    void responsePotentialDemands(ArrayList<PotentialDemandMessage> potentialDemandsList);
+    void responsePotentialDemands(
+            ArrayList<PotentialDemandMessage> potentialDemandsList);
 
     /** Offer demands GETTER/SETTER. **/
     // this same method could be called to MyDemandsPresenter
-    // depends on it's demandDetailType and what will be difference in data, probably different
+    // depends on it's demandDetailType and what will be difference in data,
+    // probably different
     // method will be used
     @Event(handlers = UserPresenter.class)
     void requestClientOfferDemands();
@@ -145,7 +144,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /**
      * For switching between main tabs like Demands | Messages | Settings | etc.
-     *
      * @param tabBody
      *            current widget
      */
@@ -176,7 +174,7 @@ public interface UserEventBus extends EventBusWithLookup {
      * **/
     // TODO implements demandDetail section loading for Wrapper
     // serves for visual sing, that content is loading
-    @Event(handlers = {UserHandler.class, DetailWrapperPresenter.class })
+    @Event(handlers = { UserHandler.class, DetailWrapperPresenter.class })
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
@@ -186,11 +184,12 @@ public interface UserEventBus extends EventBusWithLookup {
     void setBaseDemandDetail(BaseDemandDetail detail);
 
     /** method for displaying conversation to selected demand. **/
-    @Event(handlers = {UserPresenter.class, DetailWrapperPresenter.class })
+    @Event(handlers = { UserPresenter.class, DetailWrapperPresenter.class })
     void requestPotentialDemandConversation(long messageId, long userMessageId);
 
     @Event(handlers = MessageHandler.class)
-    void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
+    void getPotentialDemandConversation(long messageId, long userId,
+            long userMessageId);
 
     @Event(handlers = DetailWrapperPresenter.class, passive = true)
     void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType);
@@ -200,15 +199,14 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /**
      * Bubbling message to send to UserPresenter to get the user ID.
-     *
-     * @param messageToSend
-     *            message to be sent
+     * @param messageToSend     message to be sent
      */
     @Event(handlers = UserPresenter.class)
     void bubbleMessageSending(MessageDetail messageToSend, ViewType viewType);
 
     @Event(handlers = MessageHandler.class)
-    void sendMessageToPotentialDemand(MessageDetail messageToSend, ViewType viewType);
+    void sendMessageToPotentialDemand(MessageDetail messageToSend,
+            ViewType viewType);
 
     @Event(handlers = DetailWrapperPresenter.class)
     void addMessageToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
@@ -225,7 +223,6 @@ public interface UserEventBus extends EventBusWithLookup {
 
     /**
      * Bubbling offer to send to UserPresenter to get the user ID and supplier ID.
-     *
      * @param messageToSend
      *            message to be sent
      */
@@ -236,26 +233,27 @@ public interface UserEventBus extends EventBusWithLookup {
     void sendDemandOffer(OfferMessageDetail offerToSend);
 
     @Event(handlers = MessageHandler.class)
-    void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);
+    void requestPotentialDemandReadStatusChange(ArrayList<Long> messages,
+            boolean isRead);
 
     /** Call to UserPresenter **/
     /**
      * Display User View - parent Widget for client-logged user section.
-     *
      * @param body
      */
     @Event(forwardToParent = true)
     void setBodyHolderWidget(Widget body);
 
     /**********************************************************************************************
-     ************ Navigation events section. /* Presenters do NOT listen to events when deactivated
-     **********************************************************************************************
-     *     ----------------------- DEMANDS SECTION ----------------------------      */
+     ************ Navigation events section. /* Presenters do NOT listen to events when
+     * deactivated
+     * ----------------------- DEMANDS SECTION ----------------------------
+     */
     @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, PotentialDemandsPresenter.class, AdminDemandsPresenter.class,
-            AdminSuppliersPresenter.class, AdminOffersPresenter.class, AllDemandsPresenter.class,
-            AllSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, PotentialDemandsPresenter.class,
+            AdminDemandsPresenter.class, AdminSuppliersPresenter.class,
+            AdminOffersPresenter.class, AllDemandsPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
@@ -264,59 +262,65 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
             MyDemandsPresenter.class, PotentialDemandsPresenter.class,
             AdminDemandsPresenter.class, AdminOffersPresenter.class,
-            AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
+            AllDemandsPresenter.class, AllSuppliersPresenter.class,
+            AdminSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeOffers();
-
-//    @Event(handlers = NewDemandPresenter.class, activate = NewDemandPresenter.class, deactivate = {
-//            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-//            DemandsOperatorPresenter.class, AdminDemandsPresenter.class, AdminOffersPresenter.class,
-//            AllDemandsPresenter.class, AllSuppliersPresenter.class, AdminSuppliersPresenter.class },
-//    historyConverter = DemandsHistoryConverter.class)
-//    String invokeNewDemand();
+    // @Event(handlers = NewDemandPresenter.class, activate =
+    // NewDemandPresenter.class, deactivate = {
+    // OffersPresenter.class, MyDemandsPresenter.class,
+    // PotentialDemandsPresenter.class,
+    // DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
+    // AdminOffersPresenter.class,
+    // AllDemandsPresenter.class, AllSuppliersPresenter.class,
+    // AdminSuppliersPresenter.class },
+    // historyConverter = DemandsHistoryConverter.class)
+    // String invokeNewDemand();
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class,
             AdminDemandsPresenter.class, AdminOffersPresenter.class,
-            AdminSuppliersPresenter.class, AllDemandsPresenter.class, AllSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
+            AdminSuppliersPresenter.class, AllDemandsPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
     @Event(handlers = AllDemandsPresenter.class, activate = AllDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminDemandsPresenter.class,
-            AllSuppliersPresenter.class, AdminOffersPresenter.class, AdminSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AdminDemandsPresenter.class,
+            AllSuppliersPresenter.class, AdminOffersPresenter.class,
+            AdminSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeAtDemands();
 
     @Event(handlers = AllSuppliersPresenter.class, activate = AllSuppliersPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminDemandsPresenter.class,
-            AllDemandsPresenter.class, AdminOffersPresenter.class, AdminSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AdminDemandsPresenter.class,
+            AllDemandsPresenter.class, AdminOffersPresenter.class,
+            AdminSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeAtSuppliers();
-
-    /*      ------------------------ ADMINISTRATION SECTION ----------------------------    */
-//    @Event(handlers = AdminDemandsPresenter.class, historyConverter = AdminHistoryConverter.class)
+    /*
+     * ------------------------ ADMINISTRATION SECTION
+     */
+    // @Event(handlers = AdminDemandsPresenter.class, historyConverter =
+    // AdminHistoryConverter.class)
     @Event(handlers = AdminDemandsPresenter.class, activate = AdminDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminSuppliersPresenter.class,
-            AllDemandsPresenter.class, AdminOffersPresenter.class, AllSuppliersPresenter.class },
-    historyConverter = AdminHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AdminSuppliersPresenter.class,
+            AllDemandsPresenter.class, AdminOffersPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = AdminHistoryConverter.class)
     String invokeAdminDemands();
 
     @Event(handlers = AdminOffersPresenter.class, activate = AdminOffersPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminSuppliersPresenter.class,
-            AllDemandsPresenter.class, AdminDemandsPresenter.class, AllSuppliersPresenter.class },
-    historyConverter = AdminHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AdminSuppliersPresenter.class,
+            AllDemandsPresenter.class, AdminDemandsPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = AdminHistoryConverter.class)
     String invokeAdminOffers();
 
-//    @Event(handlers = AdminSuppliersPresenter.class, historyConverter = AdminHistoryConverter.class)
+    // @Event(handlers = AdminSuppliersPresenter.class, historyConverter =
+    // AdminHistoryConverter.class)
     @Event(handlers = AdminSuppliersPresenter.class, activate = AdminSuppliersPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminDemandsPresenter.class,
-            AllDemandsPresenter.class, AdminOffersPresenter.class, AllSuppliersPresenter.class },
-    historyConverter = AdminHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AdminDemandsPresenter.class,
+            AllDemandsPresenter.class, AdminOffersPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = AdminHistoryConverter.class)
     String invokeAdminSuppliers();
 
     @Event(handlers = AdminClientsPresenter.class, historyConverter = AdminHistoryConverter.class)
@@ -352,12 +356,12 @@ public interface UserEventBus extends EventBusWithLookup {
     /***********************************************************************************************
      ************************* Navigation Events section END ***************************************
      **********************************************************************************************/
-
     /*
-     * hacky later fire event Needed when refreshing in User Section - refresh not neededi in prod.
+     * hacky later fire event Needed when refreshing in User Section - refresh
+     * not neededi in prod.
      */
     /**********************************************************************************************
-     ***********************  USER SECTION (THE BASE). ********************************************
+     *********************** USER SECTION (THE BASE). ********************************************
      **********************************************************************************************/
     @Event(handlers = UserPresenter.class)
     void fireMarkedEvent();
@@ -402,14 +406,13 @@ public interface UserEventBus extends EventBusWithLookup {
     void clearUserOnUnload();
 
     /** TEST CLIENT DEMANDS ON MESSAGE BASED SYSTEM **/
-    // START
     @Event(handlers = MessageHandler.class)
     void getClientDemands(Long userId, int fakeParameter);
 
     // Beho: ??? needed ???
-//    @Event(handlers = MyDemandsPresenter.class)
-//    void responseClientDemands(ArrayList<MessageDetail> result);
-    @Event(handlers = {OldDemandsLayoutPresenter.class, AdminLayoutPresenter.class, MessagesLayoutPresenter.class })
+    // @Event(handlers = MyDemandsPresenter.class)
+    // void responseClientDemands(ArrayList<MessageDetail> result);
+    @Event(handlers = { OldDemandsLayoutPresenter.class, AdminLayoutPresenter.class, MessagesLayoutPresenter.class })
     void toggleLoading();
 
     @Event(handlers = UserPresenter.class)
@@ -419,7 +422,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getClientDemandWithConversations(Long userId, Long clientId);
 
     @Event(handlers = MyDemandsPresenter.class)
-    void setClientDemandWithConversations(ArrayList<ClientDemandMessageDetail> result);
+    void setClientDemandWithConversations(
+            ArrayList<ClientDemandMessageDetail> result);
 
     @Event(handlers = MessageHandler.class)
     void requestDemandConversations(long messageId);
@@ -427,9 +431,10 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MyDemandsPresenter.class)
     void setDemandConversations(ArrayList<MessageDetail> conversations);
 
-    @Event(handlers = {MessageHandler.class, DetailWrapperPresenter.class })
+    @Event(handlers = { MessageHandler.class, DetailWrapperPresenter.class })
     void requestSingleConversation(long threadRootId, long messageId);
-    //END
+
+    // END
 
     @Event(handlers = AdminLayoutPresenter.class)
     void initAdmin();
@@ -438,24 +443,24 @@ public interface UserEventBus extends EventBusWithLookup {
     void initMessages();
 
     /**********************************************************************************************
-     ***********************  DEMANDS SECTION. ****************************************************
+     *********************** DEMANDS SECTION. ****************************************************
      **********************************************************************************************/
     @Event(handlers = OldDemandsLayoutPresenter.class)
     void displayContent(Widget contentWidget);
 
     /* ---------------- ALL SUPPLIERS ----------------->>>>>>> */
-    //Category
+    // Category
     @Event(handlers = AllSuppliersHandler.class)
     void getSubCategories(Long category);
 
-    @Event(handlers = {AllDemandsHandler.class, AllSuppliersHandler.class })
+    @Event(handlers = { AllDemandsHandler.class, AllSuppliersHandler.class })
     void getCategories();
 
-    //Locality
-    @Event(handlers = {AllDemandsHandler.class, AllSuppliersHandler.class })
+    // Locality
+    @Event(handlers = { AllDemandsHandler.class, AllSuppliersHandler.class })
     void getLocalities();
 
-    //Suppliers
+    // Suppliers
     @Event(handlers = AllSuppliersHandler.class)
     void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
 
@@ -468,7 +473,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AllSuppliersHandler.class)
     void getSuppliersCountByCategory(Long category);
 
-    //Display
+    // Display
     @Event(handlers = AllSuppliersPresenter.class)
     void atDisplaySuppliers(CategoryDetail categoryDetail);
 
@@ -476,7 +481,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
     @Event(handlers = AllSuppliersPresenter.class)
-    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
+    void displaySubCategories(ArrayList<CategoryDetail> list,
+            Long parentCategory);
 
     @Event(handlers = AllSuppliersPresenter.class)
     void displayDemandTabSuppliers(ArrayList<FullSupplierDetail> list);
@@ -495,9 +501,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AllSuppliersPresenter.class)
     void createAsyncDataProviderSupplier(final long totalFound);
-    /* <<<<<<<<<<-------- ALL SUPPLIERS -------------------- */
 
-    /* ------------------ ALL DEMANDS ---------------------->>>>  */
+    /* <<<<<<<<<<-------- ALL SUPPLIERS -------------------- */
+    /* ------------------ ALL DEMANDS ---------------------->>>> */
     @Event(handlers = AllDemandsHandler.class)
     void getAllDemandsCount();
 
@@ -513,7 +519,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AllDemandsHandler.class)
     void getDemandsByLocalities(int fromResult, int toResult, String id);
 
-    //Display
+    // Display
     @Event(handlers = AllDemandsPresenter.class)
     void setCategoryData(ArrayList<CategoryDetail> list);
 
@@ -531,10 +537,10 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AllDemandsPresenter.class)
     void setResultCount(long resultCount);
-    /* <<<<<<<<<<-------- ALL DEMANDS -------------------- */
 
+    /* <<<<<<<<<<-------- ALL DEMANDS -------------------- */
     /**********************************************************************************************
-     ***********************  MESSAGES SECTION ****************************************************
+     *********************** MESSAGES SECTION ****************************************************
      **********************************************************************************************/
     @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
     String invokeInbox();
@@ -553,19 +559,20 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = MessagesLayoutPresenter.class)
     void displayMessagesContent(Widget contentWidget);
+
     /**********************************************************************************************
-     ***********************  SETTINGS SECTION ****************************************************
+     *********************** SETTINGS SECTION ****************************************************
      **********************************************************************************************/
     /**********************************************************************************************
-     ***********************  CONTACTS SECTION ****************************************************
+     *********************** CONTACTS SECTION ****************************************************
      **********************************************************************************************/
     /**********************************************************************************************
-     ***********************  ADMIN SECTION *******************************************************
+     *********************** ADMIN SECTION *******************************************************
      **********************************************************************************************/
     /* ----------------- COMMON -------------------->>>>>>>>> */
-//     @Event(handlers = AdminHandler.class)
-//    void updateObject(Object objectDetail);
-     /* <<<<<<<<<<-------- COMMON -------------------- */
+    // @Event(handlers = AdminHandler.class)
+    // void updateObject(Object objectDetail);
+    /* <<<<<<<<<<-------- COMMON -------------------- */
     /* ----------------- ADMIN DEMANDS -------------------->>>>>>>>> */
     @Event(handlers = AdminHandler.class)
     void getAdminDemandsCount();
@@ -603,7 +610,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminDemandInfoPresenter.class)
     void displayAdminTabDemandsLoop(List<FullDemandDetail> list);
 
-    //---- DemandsInfo
+    // ---- DemandsInfo
     @Event(handlers = AdminHandler.class)
     void getAdminDemandRootCategories();
 
@@ -633,8 +640,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminDemandInfoPresenter.class)
     void doBackDemandLocalities(List<LocalityDetail> list);
-    /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
 
+    /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
     /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
     @Event(handlers = AdminHandler.class)
     void getAdminSuppliersCount();
@@ -646,7 +653,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getAdminSuppliers(int start, int count);
 
     @Event(handlers = AdminHandler.class)
-    void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
+    void getSortedSuppliers(int start, int count,
+            Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void displayAdminTabSuppliers(List<FullSupplierDetail> suppliers);
@@ -666,7 +674,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AdminSuppliersPresenter.class)
     void setDetailDisplayedSupplier(Boolean displayed);
 
-    //---- SuppliersInfo
+    // ---- SuppliersInfo
     @Event(handlers = AdminHandler.class)
     void getAdminSupplierRootCategories();
 
@@ -698,7 +706,6 @@ public interface UserEventBus extends EventBusWithLookup {
     void doBackSupplierLocalities(List<LocalityDetail> list);
 
     /* <<<<<<<<<<-------- ADMIN SUPPLIERS -------------------- */
-
     /* ----------------- ADMIN OFFERS -------------------->>>>>>>>> */
     @Event(handlers = AdminHandler.class)
     void getAdminOffersCount();
@@ -720,8 +727,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminOffersPresenter.class)
     void addOfferToCommit(OfferDetail data);
-    /* <<<<<<<<<<-------- ADMIN OFFERS -------------------- */
 
+    /* <<<<<<<<<<-------- ADMIN OFFERS -------------------- */
     /* ----------------- ADMIN CLIENT -------------------->>>>>>>>> */
     @Event(handlers = AdminClientInfoPresenter.class)
     void showAdminClientDetail(ClientDetail clientDetail);
@@ -752,8 +759,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminClientsPresenter.class)
     void responseAdminClientDetail(Widget widget);
-    /* <<<<<<<<<<-------- ADMIN CLIENT -------------------- */
 
+    /* <<<<<<<<<<-------- ADMIN CLIENT -------------------- */
     /* ----------------- ACCESS ROLE -------------------->>>>>>>>> */
     @Event(handlers = AdminAccessRolesPresenter.class)
     void addAccessRoleToCommit(AccessRoleDetail clientDetail);
@@ -778,8 +785,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminAccessRolesPresenter.class)
     void showDialogBox();
-    /* <<<<<<<<<<-------- ACCESS ROLE -------------------- */
 
+    /* <<<<<<<<<<-------- ACCESS ROLE -------------------- */
     /* ----------------- EMAIL ACTIVATION -------------------->>>>>>>>> */
     @Event(handlers = AdminEmailActivationsPresenter.class)
     void addEmailActivationToCommit(EmailActivationDetail clientDetail);
@@ -801,8 +808,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updateEmailActivation(EmailActivationDetail accessRole);
-    /* <<<<<<<<<<-------- EMAIL ACTIVATION -------------------- */
 
+    /* <<<<<<<<<<-------- EMAIL ACTIVATION -------------------- */
     /* ----------------- INVOICE -------------------->>>>>>>>> */
     @Event(handlers = AdminInvoicesPresenter.class)
     void addInvoiceToCommit(InvoiceDetail clientDetail);
@@ -830,8 +837,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminInvoicesPresenter.class)
     void setDetailDisplayedInvoices(Boolean value);
-    /* <<<<<<<<<<-------- INVOICE -------------------- */
 
+    /* <<<<<<<<<<-------- INVOICE -------------------- */
     /* ----------------- MESSAGE -------------------->>>>>>>>> */
     @Event(handlers = AdminMessagesPresenter.class)
     void addMessageToCommit(MessageDetail messageDetail);
@@ -853,8 +860,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updateMessage(MessageDetail accessRole);
-    /* <<<<<<<<<<-------- MESSAGE DETAILS -------------------- */
 
+    /* <<<<<<<<<<-------- MESSAGE DETAILS -------------------- */
     /* ----------------- OUR PAYMENT DETAILS -------------------->>>>>>>>> */
     @Event(handlers = AdminOurPaymentDetailsPresenter.class)
     void addOurPaymentDetailToCommit(PaymentDetail paymentDetail);
@@ -876,8 +883,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updateOurPaymentDetail(PaymentDetail accessRole);
-    /* <<<<<<<<<<-------- OUR PAYMENT DETAILS -------------------- */
 
+    /* <<<<<<<<<<-------- OUR PAYMENT DETAILS -------------------- */
     /* ----------------- PaymentMethodS DETAILS -------------------->>>>>>>>> */
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void addPaymentMethodToCommit(PaymentMethodDetail paymentMethodDetail);
@@ -886,7 +893,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getAdminPaymentMethodsCount();
 
     @Event(handlers = AdminHandler.class)
-    void getSortedPaymentMethods(int start, int count, Map<String, OrderType> orderColumns);
+    void getSortedPaymentMethods(int start, int count,
+            Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminHandler.class)
     void getAdminPaymentMethods(int start, int count);
@@ -899,8 +907,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updatePaymentMethod(PaymentMethodDetail accessRole);
-    /* <<<<<<<<<<-------- PERMISSIONS DETAILS -------------------- */
 
+    /* <<<<<<<<<<-------- PERMISSIONS DETAILS -------------------- */
     /* ----------------- PERMISSIONS DETAILS -------------------->>>>>>>>> */
     @Event(handlers = AdminPermissionsPresenter.class)
     void addPermissionToCommit(PermissionDetail permissionDetail);
@@ -909,7 +917,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getAdminPermissionsCount();
 
     @Event(handlers = AdminHandler.class)
-    void getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns);
+    void getSortedPermissions(int start, int count,
+            Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminHandler.class)
     void getAdminPermissions(int start, int count);
@@ -922,8 +931,8 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updatePermission(PermissionDetail accessRole);
-    /* <<<<<<<<<<-------- PERMISSIONS DETAILS -------------------- */
 
+    /* <<<<<<<<<<-------- PERMISSIONS DETAILS -------------------- */
     /* ----------------- PREFERENCES DETAILS -------------------->>>>>>>>> */
     @Event(handlers = AdminPreferencesPresenter.class)
     void addPreferenceToCommit(PreferenceDetail preferenceDetail);
@@ -945,6 +954,7 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updatePreference(PreferenceDetail accessRole);
+
     /* <<<<<<<<<<-------- PREFERENCES DETAILS -------------------- */
 
     /* ----------------- PROBLEM DETAILS -------------------->>>>>>>>> */
@@ -968,14 +978,13 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(handlers = AdminHandler.class)
     void updateProblem(ProblemDetail accessRole);
+
     /* <<<<<<<<<<-------- PROBLEM DETAILS -------------------- */
     /**
      * **************** BEHO development corner. ****************
-     *
      * implements methods for Supplier new demands
-     *
      */
-    //init demands module
+    // init demands module
     @Event(modulesToLoad = DemandModule.class)
     void initDemandModule(SimplePanel panel);
 
@@ -984,7 +993,8 @@ public interface UserEventBus extends EventBusWithLookup {
     /**
      * ********************* End corner ************************
      */
-
+    @Event(handlers = HomeSettingsPresenter.class)
+    void initSettings();
     /** Settings */
 
 }

@@ -43,6 +43,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     protected static final int ADMIN_SECTION = 5;
     protected static final int MESSAGES_SECTION = 2;
+    protected static final int SETTINGS_SECTION = 3;
 
     @Override
     public void bindView() {
@@ -54,6 +55,8 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
                     eventBus.initAdmin();
                 } else if (event.getItem().intValue() == MESSAGES_SECTION) {
                     eventBus.initMessages();
+                } else if (event.getItem().intValue() == SETTINGS_SECTION) {
+                    eventBus.initSettings();
                 }
             }
         });
