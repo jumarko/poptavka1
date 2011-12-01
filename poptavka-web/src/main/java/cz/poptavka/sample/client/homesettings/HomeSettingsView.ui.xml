@@ -54,7 +54,7 @@
 						<ui:msg key='companyName'>Name:</ui:msg>
 					</td>
 					<td colspan='2'>
-						<g:TextBox ui:field='companyName' styleName='{style.titleBox}' />
+						<g:TextBox ui:field='companyName'/>
 					</td>
 				</tr>
 				<tr>
@@ -62,7 +62,7 @@
 						<ui:msg key='overalRating'>Client rating:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='clientRating' styleName='{style.priceBox}' />
+						<g:TextBox ui:field='clientRating'/>
 					</td>
 				</tr>
 				<tr>
@@ -70,7 +70,7 @@
 						<ui:msg key='supplierRating'>Supplier rating:</ui:msg>
 					</td>
 					<td colspan='2'>
-						<g:TextBox ui:field='supplierRating' styleName='{style.titleBox}' />
+						<g:TextBox ui:field='supplierRating'/>
 					</td>
 				</tr>
 				<tr>
@@ -84,7 +84,7 @@
 						<ui:msg key='street'>Street:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='street' styleName='{style.endDateBox}' />
+						<g:TextBox ui:field='street'/>
 					</td>
 				</tr>
 				<tr>
@@ -92,7 +92,7 @@
 						<ui:msg key='city'>City:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='city' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='city'/>
 					</td>
 				</tr>
 				<tr>
@@ -100,7 +100,7 @@
 						<ui:msg key='zipCode'>Zip code:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='zipCode' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='zipCode'/>
 					</td>
 				</tr>
 				<tr>
@@ -111,7 +111,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:TextArea ui:field='categoriesBox' styleName='{style.descriptionBox}' />
+						<g:TextArea ui:field='categoriesBox'/>
 					</td>
 				</tr>
 				<tr>
@@ -122,7 +122,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:TextArea ui:field='localitiesBox' styleName='{style.descriptionBox}' />
+						<g:TextArea ui:field='localitiesBox'/>
 					</td>
 				</tr>
 				<tr>
@@ -136,7 +136,7 @@
 						<ui:msg key='web'>Web site:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='web' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='web'/>
 					</td>
 				</tr>
 				<tr>
@@ -144,7 +144,7 @@
 						<ui:msg key='email'>Email:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='email' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='email'/>
 					</td>
 				</tr>
 				<tr>
@@ -152,7 +152,7 @@
 						<ui:msg key='phone'>Phone:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='phone' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='phone'/>
 					</td>
 				</tr>
 				<tr>
@@ -160,7 +160,7 @@
 						<ui:msg key='firstName'>First name:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='firstName' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='firstName'/>
 					</td>
 				</tr>
 				<tr>
@@ -168,7 +168,7 @@
 						<ui:msg key='lastName'>Last name:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='lastName' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='lastName'/>
 					</td>
 				</tr>
 				<tr>
@@ -182,7 +182,7 @@
 						<ui:msg key='identificationNumber'>Identification number:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='identificationNumber' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='identificationNumber'/>
 					</td>
 				</tr>
 				<tr>
@@ -190,7 +190,7 @@
 						<ui:msg key='taxNumber'>Tax number:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='taxNumber' styleName='{style.expirationBox}' />
+						<g:TextBox ui:field='taxNumber'/>
 					</td>
 				</tr>
 				<tr>
@@ -200,7 +200,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:TextArea ui:field='descriptionBox' styleName='{style.descriptionBox}' />
+						<g:TextArea ui:field='descriptionBox'/>
 					</td>
 				</tr>
 				<tr>
