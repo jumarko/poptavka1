@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.user.demands.develmodule.s.list;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -144,6 +145,7 @@ public class DevelDetailWrapperPresenter extends
         return new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                GWT.log(" - ReplyWidget: CLICK ACTION called");
               // sending message only when valid
                 if (offerQuestionReply.isMessageValid()) {
                   // distinguish what kind of message should be sent

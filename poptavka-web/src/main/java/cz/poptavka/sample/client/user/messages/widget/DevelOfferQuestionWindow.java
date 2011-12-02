@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -49,6 +50,7 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
     private boolean hiddenReplyBody = true;
 
     private String selectedResponse = null;
+    private HandlerRegistration submitHandlerRegistration = null;
 
     private long demandId = 0;
 
@@ -75,6 +77,7 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
         questionReplyBtn.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                GWT.log(" CLICK casted");
                 selectedResponse = RESPONSE_QUESTION;
                 replyTextArea.getElement().getNextSiblingElement()
                     .getFirstChildElement().getStyle().setVisibility(Visibility.HIDDEN);
@@ -117,14 +120,19 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
     }
 
     /**
-     * Add ClickHandler to submitButton and demandId of demand user is replying to.
+     * Add ClickHandler to submitButton and demandId of demand user is replying to. Initially assigned to attribute,
+     * to prevent multiple clickHandlers on one widget. Because this widget is not instancialized multiple times.
      *
      * @param submitButtonHandler
      * @param selectedDemandId
      */
     public void addClickHandler(ClickHandler submitButtonHandler) {
-        submitBtn.addClickHandler(submitButtonHandler);
-//        demandId = selectedDemandId;
+        if (submitHandlerRegistration == null) {
+            submitHandlerRegistration = submitBtn.addClickHandler(submitButtonHandler);
+        } else {
+            submitHandlerRegistration.removeHandler();
+            submitHandlerRegistration = submitBtn.addClickHandler(submitButtonHandler);
+        }
     }
 
     @Override

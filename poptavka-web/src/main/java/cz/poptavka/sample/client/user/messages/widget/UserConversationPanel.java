@@ -69,11 +69,11 @@ public class UserConversationPanel extends Composite {
         GWT.log("UserConversation MessageList size: " + messages.size());
 
         if (messages.size() > 1) {
-            for (int i = 0; i < messages.size(); i++) {
+            for (int i = 1; i < messages.size(); i++) {
                 messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
             }
             ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
-            ((SimpleMessageWindow) messagePanel.getWidget(messages.size() - 1))
+            ((SimpleMessageWindow) messagePanel.getWidget(messagePanel.getWidgetCount() - 1))
                 .setMessageStyle(MessageDisplayType.LAST);
         }
 
@@ -85,6 +85,7 @@ public class UserConversationPanel extends Composite {
     }
 
     public void addMessage(MessageDetail lastMessage) {
+        GWT.log("adding newly created message");
         MessageDisplayType newLastMessage = MessageDisplayType.BOTH;
         if (messageCount > 0) {
             SimpleMessageWindow last = (SimpleMessageWindow) messagePanel.getWidget(messageCount - 1);
