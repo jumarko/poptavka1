@@ -52,7 +52,7 @@ public class DemandModulePresenter
         view.getCliNewDemandsAnchor().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.initClientList();
             }
         });
         view.getCliOffersAnchor().addClickHandler(new ClickHandler() {

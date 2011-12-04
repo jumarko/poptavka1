@@ -196,7 +196,7 @@ public class SupplierList extends Composite implements ReverseViewInterface<Supp
         demandGrid.addColumn(clientCol, Storage.MSGS.client());
 
 // **** demand title column
-        Column<PotentialDemandMessage, String> titleCol = factory.createTitleColumn(demandGrid.getSortHandler());
+        Column<PotentialDemandMessage, String> titleCol = factory.createTitleColumn(demandGrid.getSortHandler(), false);
         titleCol.setFieldUpdater(action);
         demandGrid.addColumn(titleCol, Storage.MSGS.title());
 

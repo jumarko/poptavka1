@@ -9,9 +9,9 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.shared.domain.type.DemandStatusType;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 
-public class StatusImageCell extends AbstractCell<DemandStatusType> {
+public class StatusImageCell extends AbstractCell<DemandStatus> {
 
     private static ImageResourceRenderer renderer;
 
@@ -28,7 +28,7 @@ public class StatusImageCell extends AbstractCell<DemandStatusType> {
 
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
-            DemandStatusType value, SafeHtmlBuilder sb) {
+            DemandStatus value, SafeHtmlBuilder sb) {
 
         switch (value) {
             case ACTIVE:
@@ -68,8 +68,8 @@ public class StatusImageCell extends AbstractCell<DemandStatusType> {
 
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-            Element parent, DemandStatusType value, NativeEvent event,
-            ValueUpdater<DemandStatusType> valueUpdater) {
+            Element parent, DemandStatus value, NativeEvent event,
+            ValueUpdater<DemandStatus> valueUpdater) {
         if (("click".equals(event.getType())) || ("keydown".equals(event.getType()))) {
             onEnterKeyDown(context, parent, value, event, valueUpdater);
         }
@@ -84,7 +84,7 @@ public class StatusImageCell extends AbstractCell<DemandStatusType> {
     @Override
     protected void onEnterKeyDown(
             com.google.gwt.cell.client.Cell.Context context, Element parent,
-            DemandStatusType value, NativeEvent event, ValueUpdater<DemandStatusType> valueUpdater) {
+            DemandStatus value, NativeEvent event, ValueUpdater<DemandStatus> valueUpdater) {
         if (valueUpdater != null) {
             valueUpdater.update(value);
         }

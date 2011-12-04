@@ -2,7 +2,7 @@ package cz.poptavka.sample.shared.domain.message;
 
 import java.util.Date;
 
-import cz.poptavka.sample.shared.domain.type.DemandStatusType;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 
 
 public interface TableDisplay {
@@ -36,5 +36,7 @@ public interface TableDisplay {
 
     int getClientRating();
 
-    DemandStatusType getDemandStatus();
+    DemandStatus getDemandStatus();
+
+    Date getExpireDate();
 }

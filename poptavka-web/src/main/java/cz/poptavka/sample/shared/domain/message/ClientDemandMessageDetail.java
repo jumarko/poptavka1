@@ -8,13 +8,16 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.google.gwt.view.client.ProvidesKey;
+
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.message.Message;
 
 /**
  *
  * @author ivan.vlcek
  */
-public class ClientDemandMessageDetail implements Serializable {
+public class ClientDemandMessageDetail implements Serializable, TableDisplay {
 
     /**
      *
@@ -28,10 +31,14 @@ public class ClientDemandMessageDetail implements Serializable {
     private int unreadSubmessages;
     // demand fields
     private String demandTitle;
-    private String demandStatus;
+    private DemandStatus demandStatus;
     private Date endDate;
     private Date expiryDate;
     private BigDecimal price;
+    private boolean read;
+    private Date createdDate;
+    private String clientName;
+    private int clientRating;
 
     public static ClientDemandMessageDetail createDetail(Message message,
             long submessageCount, long unreadSubmessageCount) {
@@ -43,7 +50,7 @@ public class ClientDemandMessageDetail implements Serializable {
         detail.setSubmessages((int) submessageCount);
         detail.setUnreadSubmessages((int) unreadSubmessageCount);
         detail.setDemandTitle(message.getDemand().getTitle());
-        detail.setDemandStatus(message.getDemand().getStatus().toString());
+        detail.setDemandStatus(message.getDemand().getStatus());
         detail.setPrice(message.getDemand().getPrice());
         detail.setEndDate(message.getDemand().getEndDate());
         detail.setExpiryDate(message.getDemand().getValidTo());
@@ -147,14 +154,14 @@ public class ClientDemandMessageDetail implements Serializable {
     /**
      * @return the demandStatus
      */
-    public String getDemandStatus() {
+    public DemandStatus getDemandStatus() {
         return demandStatus;
     }
 
     /**
      * @param demandStatus the demandStatus to set
      */
-    public void setDemandStatus(String demandStatus) {
+    public void setDemandStatus(DemandStatus demandStatus) {
         this.demandStatus = demandStatus;
     }
 
@@ -197,7 +204,11 @@ public class ClientDemandMessageDetail implements Serializable {
      * @param price the price to set
      */
     public void setPrice(BigDecimal price) {
-        this.price = price;
+        if (price == null) {
+            this.price = BigDecimal.ZERO;
+        } else {
+            this.price = price;
+        }
     }
 
     @Override
@@ -213,4 +224,84 @@ public class ClientDemandMessageDetail implements Serializable {
                 + ",\n expiryDate=" + expiryDate
                 + ",\n price=" + price + "}\n\n";
     }
+
+    public static final ProvidesKey<ClientDemandMessageDetail> KEY_PROVIDER =
+        new ProvidesKey<ClientDemandMessageDetail>() {
+            @Override
+            public Object getKey(ClientDemandMessageDetail item) {
+                return item == null ? null : item.getDemandId();
+            }
+        };
+
+    @Override
+    public String getTitle() {
+        return demandTitle;
+    }
+
+
+    @Override
+    public boolean isRead() {
+        return read;
+    }
+
+
+    @Override
+    public void setRead(boolean value) {
+        this.read = value;
+    }
+
+
+    @Override
+    public boolean isStarred() {
+        return false;
+    }
+
+
+    @Override
+    public void setStarred(boolean value) {
+        // TODO Auto-generated method stub
+    }
+
+
+    @Override
+    public Date getCreated() {
+        return createdDate;
+    }
+
+
+    @Override
+    public String getDemandPrice() {
+        return price + "";
+    }
+
+
+    @Override
+    public String getFormattedMessageCount() {
+        return "(" + submessages + ")";
+    }
+
+
+    @Override
+    public int getMessageCount() {
+        return submessages;
+    }
+
+
+    @Override
+    public String getClientName() {
+        return clientName;
+    }
+
+
+    @Override
+    public int getClientRating() {
+        return clientRating;
+    }
+
+
+    @Override
+    public Date getExpireDate() {
+        return expiryDate;
+    }
+
 }

@@ -13,9 +13,11 @@ import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.user.demands.handler.DemandModuleContentHandler;
 import cz.poptavka.sample.client.user.demands.handler.DemandModuleMessageHandler;
+import cz.poptavka.sample.client.user.demands.tab.ClientListPresenter;
 import cz.poptavka.sample.client.user.demands.tab.SupplierListPresenter;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -30,6 +32,9 @@ public interface DemandModuleEventBus extends EventBus {
 
     //production init method
     //during development used multiple instancing
+    @Event(handlers = ClientListPresenter.class)
+    void initClientList();
+
     @Event(handlers = SupplierListPresenter.class, historyConverter = DemandModuleHistory.class)
     void initSupplierList();
 
@@ -61,6 +66,18 @@ public interface DemandModuleEventBus extends EventBus {
     @Event(handlers = {SupplierListPresenter.class }, passive = true)
     void sendMessageResponse(MessageDetail sentMessage, ViewType type);
 
+
+    /**************************************************************************/
+    /* Business events handled by SupplierListPresenter. */
+
+    /*
+     * Request/Response Method pair
+     * Demands for CLIENT - his demands
+     */
+    @Event(handlers = DemandModuleContentHandler.class)
+    void requestClientsDemands();
+    @Event(handlers = ClientListPresenter.class)
+    void responseClientsDemands(ArrayList<ClientDemandMessageDetail> result);
 
     /**************************************************************************/
     /* Business events handled by SupplierListPresenter. */
@@ -106,6 +123,10 @@ public interface DemandModuleEventBus extends EventBus {
     void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
     @Event(handlers = DevelDetailWrapperPresenter.class)
     void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+
+
+
+
 
 
 }

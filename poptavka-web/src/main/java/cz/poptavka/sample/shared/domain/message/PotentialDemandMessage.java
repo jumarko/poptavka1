@@ -1,15 +1,15 @@
 package cz.poptavka.sample.shared.domain.message;
 
-import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.shared.domain.type.DemandStatusType;
-import cz.poptavka.sample.shared.domain.type.MessageType;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
+
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
+import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.shared.domain.type.MessageType;
 
 public class PotentialDemandMessage implements Serializable, TableDisplay {
 
@@ -44,6 +44,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
 
     private int messageCount;
     private int unreadMessageCount;
+    private DemandStatus demandStatus;
 
     public static PotentialDemandMessage createMessageDetail(UserMessage message) {
         return fillMessageDetail(new PotentialDemandMessage(), message);
@@ -78,10 +79,15 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
         detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
         detail.setDemandType(userMessage.getMessage().getDemand().getType());
+        detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
         detail.setClientName(userMessage.getMessage().getDemand().getClient()
                 .getBusinessUser().getBusinessUserData().getDisplayName());
         detail.setClientRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
         return detail;
+    }
+
+    public void setDemandStatus(DemandStatus status) {
+        this.demandStatus = status;
     }
 
     @Override
@@ -299,9 +305,8 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
     }
 
     @Override
-    public DemandStatusType getDemandStatus() {
-        // TODO Auto-generated method stub
-        return DemandStatusType.ACTIVE;
+    public DemandStatus getDemandStatus() {
+        return demandStatus;
     }
 
     @Override
@@ -310,5 +315,9 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
                 + getUnreadMessageCount() + ")";
     }
 
+    @Override
+    public Date getExpireDate() {
+        return null;
+    }
 
 }

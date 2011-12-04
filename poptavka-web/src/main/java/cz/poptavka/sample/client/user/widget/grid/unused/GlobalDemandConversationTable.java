@@ -144,7 +144,8 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
         addColumn(new ImageStatus(), msgs.status(), 40, new GetValue<String>() {
 
             public String getValue(ClientDemandMessageDetail object) {
-                return object.getDemandStatus();
+//                return object.getDemandStatus();
+                return null;
             }
         });
         this.addColumn(titleColumn, msgs.title());

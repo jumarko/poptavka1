@@ -15,8 +15,7 @@
                 <ul>
                     <li>
                         <g:Anchor ui:field="cliNewDemands">
-                            ** INACTIVE **
-                            <ui:msg key="myDemands">New Demands</ui:msg>
+                            <ui:msg key="myDemands">My Demands</ui:msg>
                         </g:Anchor>
                     </li>
                     <li>

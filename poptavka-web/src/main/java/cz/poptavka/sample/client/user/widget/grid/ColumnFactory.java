@@ -19,9 +19,9 @@ import cz.poptavka.sample.client.user.widget.grid.cell.ClickableDateCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.StarCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.StatusImageCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.UrgentImageCell;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.TableDisplay;
-import cz.poptavka.sample.shared.domain.type.DemandStatusType;
 
 /**
  * Factory class for creating DataGrid columns including optional sorting ability.
@@ -46,6 +46,7 @@ public class ColumnFactory<T> {
 
     public static final int DATE_CREATED = 0;
     public static final int DATE_FINISHED = 1;
+    public static final int DATE_EXPIRE = 2;
 
     //widths
     public static final int WIDTH_40 = 40;
@@ -126,14 +127,24 @@ public class ColumnFactory<T> {
      * Create title column.
      *
      * @param sortHandler sortHandler for sorting. If sortHandler is null, no sorting will be associated.
+     * @param displayMessageCount
+     *
      * @return titleColumn
      */
-    public Column<T, String> createTitleColumn(ListHandler<T> sortHandler) {
+    public Column<T, String> createTitleColumn(ListHandler<T> sortHandler, final boolean displayMessageCount) {
         Column<T, String> titleColumn = (new Column<T, String>(tableTextCell) {
+
+            private boolean displayMessages = displayMessageCount;
+
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return BaseDemandDetail.displayHtml(obj.getTitle(), obj.isRead());
+                if (displayMessages) {
+                    return BaseDemandDetail.displayHtml(obj.getTitle()
+                            + " " + obj.getFormattedMessageCount(), obj.isRead());
+                } else {
+                    return BaseDemandDetail.displayHtml(obj.getTitle(), obj.isRead());
+                }
             }
         });
         if (sortHandler != null) {
@@ -296,11 +307,18 @@ public class ColumnFactory<T> {
             @Override
             public Date getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                if (type == DATE_CREATED) {
-                    return obj.getCreated();
-                } else {
-                    return obj.getEndDate();
+                Date date = null;
+                switch (type) {
+                    case DATE_CREATED:
+                        date = obj.getCreated();
+                    case DATE_EXPIRE:
+                        date = obj.getExpireDate();
+                    case DATE_FINISHED:
+                        date = obj.getEndDate();
+                    default:
+                        break;
                 }
+                return date;
             }
 
         };
@@ -317,11 +335,11 @@ public class ColumnFactory<T> {
         return ratingColumn;
     }
 
-    public Column<T, DemandStatusType> createStatusColumn(ListHandler<T> sortHandler) {
-        Column<T, DemandStatusType> statusColumn = new Column<T, DemandStatusType>(new StatusImageCell()) {
+    public Column<T, DemandStatus> createStatusColumn(ListHandler<T> sortHandler) {
+        Column<T, DemandStatus> statusColumn = new Column<T, DemandStatus>(new StatusImageCell()) {
 
             @Override
-            public DemandStatusType getValue(T object) {
+            public DemandStatus getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 return obj.getDemandStatus();
             }

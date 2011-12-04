@@ -15,6 +15,7 @@ import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -25,6 +26,25 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
     private MessageRPCServiceAsync messageService;
     @Inject
     private DemandRPCServiceAsync demandService;
+
+    public void onRequestClientsDemands() {
+        GWT.log("DemandModuleContentHandler > UserId: " + Storage.getUser().getUserId() + " ,ClientId: "
+                + Storage.getUser().getClientId());
+        messageService.getListOfClientDemandMessages(Storage.getUser().getUserId(), Storage.getUser().getClientId(),
+                new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
+
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
+                }
+
+                @Override
+                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
+                    eventBus.responseClientsDemands(result);
+                }
+            });
+    }
+
 
     /**
      * Get Supplier's potential demands list. No parameter is needed.
