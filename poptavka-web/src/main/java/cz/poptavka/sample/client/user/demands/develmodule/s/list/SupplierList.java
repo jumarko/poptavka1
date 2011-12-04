@@ -56,7 +56,7 @@ public class SupplierList extends Composite implements ReverseViewInterface<Supp
 
     //DataGridattributes
     @UiField(provided = true)
-    SupplierListGrid<PotentialDemandMessage> demandGrid;
+    UniversalGrid<PotentialDemandMessage> demandGrid;
     @UiField(provided = true)
     SimplePager pager;
 
@@ -81,7 +81,7 @@ public class SupplierList extends Composite implements ReverseViewInterface<Supp
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
         //demandGrid init
-        demandGrid = new SupplierListGrid<PotentialDemandMessage>(PotentialDemandMessage.KEY_PROVIDER);
+        demandGrid = new UniversalGrid<PotentialDemandMessage>(PotentialDemandMessage.KEY_PROVIDER);
         // Add a selection model so we can select cells.
         final SelectionModel<PotentialDemandMessage> selectionModel =
             new MultiSelectionModel<PotentialDemandMessage>(PotentialDemandMessage.KEY_PROVIDER);
@@ -105,7 +105,7 @@ public class SupplierList extends Composite implements ReverseViewInterface<Supp
     }
 
     @Override
-    public SupplierListGrid<PotentialDemandMessage> getGrid() {
+    public UniversalGrid<PotentialDemandMessage> getGrid() {
         return demandGrid;
     }
 

@@ -122,4 +122,5 @@ public interface LocalizableMessages extends Messages {
     String excludedSuppliers();
 
     String client();
+    String emptyTable();
 }

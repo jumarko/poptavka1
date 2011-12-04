@@ -73,13 +73,13 @@ public class DemandDetailView extends Composite {
 
     public DemandDetailView(FullDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
-        detail.setVisible(true);
+        //detail.setVisible(true);
         init((FullDemandDetail) demand);
     }
 
     public DemandDetailView(BaseDemandDetail demand) {
         initWidget(uiBinder.createAndBindUi(this));
-        detail.setVisible(true);
+        //detail.setVisible(true);
         init((BaseDemandDetail) demand);
     }
 
@@ -124,8 +124,10 @@ public class DemandDetailView extends Composite {
     }
 
     public void toggleVisible() {
-        if (!empty) {
-            detail.setVisible(!detail.isVisible());
+        if (detail.isVisible()) {
+            detail.getElement().getStyle().setDisplay(Display.NONE);
+        } else {
+            detail.getElement().getStyle().setDisplay(Display.BLOCK);
         }
     }
 

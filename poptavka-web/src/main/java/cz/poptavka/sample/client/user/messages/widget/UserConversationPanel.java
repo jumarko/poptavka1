@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.messages.widget;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -134,6 +135,14 @@ public class UserConversationPanel extends Composite {
         messageDetail.setParentId(replyToMessage.getMessageId());
         messageDetail.setDemandId(replyToMessage.getDemandId());
         return messageDetail;
+    }
+
+    public void toggleVisible() {
+        if (messagePanel.isVisible()) {
+            messagePanel.getElement().getStyle().setDisplay(Display.NONE);
+        } else {
+            messagePanel.getElement().getStyle().setDisplay(Display.BLOCK);
+        }
     }
 
 }

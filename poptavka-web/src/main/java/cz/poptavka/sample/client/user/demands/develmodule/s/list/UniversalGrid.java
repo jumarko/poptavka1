@@ -6,22 +6,20 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 
-public class SupplierListGrid<T> extends DataGrid<T> {
+import cz.poptavka.sample.client.main.Storage;
+
+public class UniversalGrid<T> extends DataGrid<T> {
 
     private ListDataProvider<T> dataProvider = new ListDataProvider<T>();
     private ListHandler<T> sortHandler = new ListHandler<T>(dataProvider.getList());
 
 
-    public SupplierListGrid() {
+    public UniversalGrid() {
         super();
-        //insert widget to be displayed, where no relevant data are available
-        this.setEmptyTableWidget(new HTML("<div style=\"text-align: center;\">No relevant data</div>"));
     }
 
-    public SupplierListGrid(ProvidesKey<T> keyProvider) {
+    public UniversalGrid(ProvidesKey<T> keyProvider) {
         super(keyProvider);
-        //insert widget to be displayed, where no relevant data are available
-        this.setEmptyTableWidget(new HTML("<div style=\"text-align: center;\">No relevant data</div>"));
         this.addColumnSortHandler(getSortHandler());
         dataProvider.addDataDisplay(this);
 
@@ -37,6 +35,11 @@ public class SupplierListGrid<T> extends DataGrid<T> {
 
     public ListHandler<T> getSortHandler() {
         return sortHandler;
+    }
+
+    public void displayEmptyTable() {
+        this.setEmptyTableWidget(new HTML("<div style=\"text-align: center;\">"
+                + Storage.MSGS.emptyTable() + "</div>"));
     }
 
 }

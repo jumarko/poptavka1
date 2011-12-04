@@ -41,9 +41,11 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 @Presenter(view = UserView.class)
 public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface, UserEventBus> {
 
-    protected static final int ADMIN_SECTION = 5;
-    protected static final int MESSAGES_SECTION = 2;
-    protected static final int SETTINGS_SECTION = 3;
+    protected static final int DEMANDS_SECTION = 0;
+    protected static final int MESSAGES_SECTION = 1;
+    protected static final int SETTINGS_SECTION = 2;
+    protected static final int CONTACTS_SECTION = 3;
+    protected static final int ADMIN_SECTION = 4;
 
     @Override
     public void bindView() {
@@ -71,7 +73,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
         TabLayoutPanel getLayoutPanel();
 
-        void setBody(Widget body);
+        void setBodyDemand(Widget demandModule);
 
         void setBodyAdmin(Widget body);
 
@@ -80,10 +82,6 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         Widget getWidgetView();
 
         void setBodySettings(Widget body);
-
-        //TODO
-        //Beho devel section, when completed. Put into normal code section
-        void setBodyDemand(Widget demandModule);
 
         SimplePanel getDemandModulePanel();
     }
@@ -161,7 +159,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     }
 
     public void onSetTabWidget(Widget tabBody) {
-        view.setBody(tabBody);
+        view.setBodyDemand(tabBody);
     }
 
     public void onSetTabAdminWidget(Widget tabBody) {

@@ -20,14 +20,6 @@
         </g:tab>
         <g:tab>
             <g:header>
-                <ui:msg key='demands'>Old Demands</ui:msg>
-            </g:header>
-            <g:SimplePanel ui:field="oldTabPanel">
-                <g:HTML>TEST</g:HTML>
-            </g:SimplePanel>
-        </g:tab>
-        <g:tab>
-            <g:header>
                 <em>
                     <ui:msg key='messages'>Messages</ui:msg>
                 </em>

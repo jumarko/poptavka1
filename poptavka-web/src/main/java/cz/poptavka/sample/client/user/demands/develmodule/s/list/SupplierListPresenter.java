@@ -23,8 +23,8 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 
-//@Presenter(view = SupplierList.class)
-@Presenter(view = SupplierList.class, multiple = true)
+@Presenter(view = SupplierList.class)
+//@Presenter(view = SupplierList.class, multiple = true)
 public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.IList, DemandModuleEventBus> {
 
     public interface IList extends LazyView {
@@ -40,7 +40,7 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
         Button getUnstarBtn();
 
         //table getters
-        SupplierListGrid<PotentialDemandMessage> getGrid();
+        UniversalGrid<PotentialDemandMessage> getGrid();
 
         ListDataProvider<PotentialDemandMessage> getDataProvider();
 
@@ -137,12 +137,17 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
     public void onResponseSupplierNewDemands(ArrayList<PotentialDemandMessage> data) {
         GWT.log("++ onResponseSupplierNewDemands");
 
-        List<PotentialDemandMessage> list = view.getDataProvider().getList();
-        list.clear();
-        for (PotentialDemandMessage d : data) {
-            list.add(d);
+        if (data.size() > 0) {
+            List<PotentialDemandMessage> list = view.getDataProvider().getList();
+            list.clear();
+            for (PotentialDemandMessage d : data) {
+                list.add(d);
+            }
+            view.getDataProvider().refresh();
+        } else {
+            view.getDataProvider().getList().clear();
+            view.getGrid().displayEmptyTable();
         }
-        view.getDataProvider().refresh();
     }
 
     //call eventBus to update READ status

@@ -14,34 +14,38 @@
                 </div>
                 <ul>
                     <li>
-                        <g:Hyperlink ui:field="cliDemandsLink">
+                        <g:Anchor ui:field="cliNewDemands">
+                            ** INACTIVE **
                             <ui:msg key="myDemands">New Demands</ui:msg>
-                        </g:Hyperlink>
+                        </g:Anchor>
                     </li>
                     <li>
-                        <g:Hyperlink ui:field="cliOffersLink">
+                        <g:Anchor ui:field="cliOffers">
+                            ** INACTIVE **
                             <ui:msg key="offers">Offers</ui:msg>
-                        </g:Hyperlink>
+                        </g:Anchor>
                     </li>
-                    <li>
-                        <g:Hyperlink ui:field="cliAssignedDemandsLink">
+                    <li><g:Anchor ui:field="cliAssignedDemands">
+                            ** INACTIVE **
                             <ui:msg key="assignedDemands">Assigned Demands</ui:msg>
-                        </g:Hyperlink>
+                        </g:Anchor>
                     </li>
-                    <li>
-                        <g:Hyperlink ui:field="newDemandLink">
+                    <li><g:Anchor ui:field="cliCreateDemand">
+                            ** INACTIVE **
                             <ui:msg key="createDemandLink">Create Demand</ui:msg>
-                        </g:Hyperlink>
+                        </g:Anchor>
                     </li>
                     <li>
-                        <g:Hyperlink ui:field="allDemandsLink">
+                        <g:Anchor ui:field="allDemands">
+                            ** INACTIVE **
                             <ui:msg key="allDemandsLink">All Demands</ui:msg>
-                        </g:Hyperlink>
+                        </g:Anchor>
                     </li>
                     <li>
-                        <g:Hyperlink ui:field="allSuppliersLink">
+                    <g:Anchor ui:field="allSuppliers">
+                            ** INACTIVE **
                             <ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
-                        </g:Hyperlink>
+                        </g:Anchor>
                     </li>
                 </ul>
                 <!-- Supplier submenu -->
@@ -51,25 +55,23 @@
                     </div>
                     <ul>
                         <li>
-                            <g:Hyperlink ui:field="supDemandsLink">
+                            <g:Anchor ui:field="supNewDemands">
                                 <ui:msg key="potentialDemands">Potential Demands</ui:msg>
-                            </g:Hyperlink>
+                            </g:Anchor>
                         </li>
                         <li>
-                            <g:Hyperlink ui:field="supOffersLink">
+                            <g:Anchor ui:field="supOffers">
+                                ** INACTIVE **
                                 <ui:msg key="offers">Offers</ui:msg>
-                            </g:Hyperlink>
+                            </g:Anchor>
                         </li>
                         <li>
-                            <g:Hyperlink ui:field="supAssignedDemandsLink">
+                            <g:Anchor ui:field="supAssignedDemands">
+                                ** INACTIVE **
                                 <ui:msg key="assignedDemands">Assigned Demands</ui:msg>
-                            </g:Hyperlink>
+                            </g:Anchor>
                         </li>
                     </ul>
-                </div>
-                <!-- BEHO DEVEL SECTION -->
-                <div>
-                    <g:Anchor ui:field="develAnchor">Supp new demands</g:Anchor>
                 </div>
             </g:HTMLPanel>
         </g:west>

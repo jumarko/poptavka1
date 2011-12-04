@@ -32,8 +32,18 @@ public class DemandModulePresenter
 
         void setContent(Widget contentWidget);
 
-        //beho devel section
-        Anchor getDevelAnchor();
+        //client menu part
+        Anchor getCliNewDemandsAnchor();
+        Anchor getCliOffersAnchor();
+        Anchor getCliAssignedDemandsAnchor();
+        Anchor getCliCreateDemand();
+        Anchor getAllDemands();
+        Anchor getAllSuppliers();
+
+        // supplier menu part
+        Anchor getSupNewDemandsAnchor();
+        Anchor getSupOffersAnchor();
+        Anchor getSupAssignedAnchor();
 
         /**
          * this is the old section, maybe restore
@@ -59,19 +69,77 @@ public class DemandModulePresenter
     private SupplierListPresenter supList = null;
 
     public void bind() {
-        /**
         // MENU - CLIENT
-        view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
-        view.setOffersToken(getTokenGenerator().invokeOffers());
-        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
-        view.setAllDemandsToken(getTokenGenerator().invokeAtDemands());
-        view.setAllSuppliersToken(getTokenGenerator().invokeAtSuppliers());
+//        view.setMyDemandsToken(getTokenGenerator().invokeMyDemands());
+//        view.setOffersToken(getTokenGenerator().invokeOffers());
+//        view.setNewDemandToken(getTokenGenerator().invokeNewDemand());
+//        view.setAllDemandsToken(getTokenGenerator().invokeAtDemands());
+//        view.setAllSuppliersToken(getTokenGenerator().invokeAtSuppliers());
+        view.getCliNewDemandsAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+        view.getCliOffersAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+        view.getCliAssignedDemandsAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+        view.getCliNewDemandsAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+        view.getAllDemands().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+        view.getAllSuppliers().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
 
         //MENU - SUPPLIER
-        view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
-        */
+        view.getSupNewDemandsAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent arg0) {
+                eventBus.initSupplierList();
+            }
+        });
+        view.getSupOffersAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+        view.getSupAssignedAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                // TODO Auto-generated method stub
+            }
+        });
+//        view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
+
         //DEVEl - BEHO
-        view.getDevelAnchor().addClickHandler(new ClickHandler() {
+        /**
+         * commented but can be used when developing other views
+         *
+        view.getSupNewDemandsAnchor().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent arg0) {
@@ -89,6 +157,7 @@ public class DemandModulePresenter
 //                eventBus.initSupplierList();
             }
         });
+        */
     }
 
     //TODO

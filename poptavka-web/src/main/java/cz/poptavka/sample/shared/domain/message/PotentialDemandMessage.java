@@ -80,6 +80,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
         detail.setDemandType(userMessage.getMessage().getDemand().getType());
         detail.setClientName(userMessage.getMessage().getDemand().getClient()
                 .getBusinessUser().getBusinessUserData().getDisplayName());
+        detail.setClientRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
         return detail;
     }
 
@@ -240,7 +241,7 @@ public class PotentialDemandMessage implements Serializable, TableDisplay {
 
     @Override
     public int getClientRating() {
-        return (clientRating == null ? -100 : clientRating.intValue());
+        return (clientRating == null ? 0 : clientRating.intValue());
     }
 
     public void setClientRating(Integer clientRating) {

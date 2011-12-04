@@ -9,7 +9,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,15 +32,14 @@ public class DemandModuleView extends Composite
 
 
     // CLI menu
-    @UiField Hyperlink cliDemandsLink, cliOffersLink, cliAssignedDemandsLink,
-    newDemandLink, allDemandsLink, allSuppliersLink;
+    @UiField Anchor cliNewDemands, cliOffers, cliAssignedDemands, cliCreateDemand,
+    allDemands, allSuppliers;
     // SUP menu
-    @UiField Hyperlink supDemandsLink, supOffersLink, supAssignedDemandsLink;
+    @UiField Anchor supNewDemands, supOffers, supAssignedDemands;
     // hidden or displayed according to the role
     @UiField DivElement supMenu;
 
     //BEHO devel button, delete after work is done
-    @UiField Anchor develAnchor;
 
     public DemandModuleView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -57,32 +55,7 @@ public class DemandModuleView extends Composite
     public void setContent(Widget contentWidget) {
         contentPanel.setWidget(contentWidget);
     }
-/**
-    @Override
-    public void setMyDemandsToken(String linkString) {
-        cliDemandsLink.setTargetHistoryToken(linkString);
-    }
 
-    @Override
-    public void setOffersToken(String linkString) {
-        cliOffersLink.setTargetHistoryToken(linkString);
-    }
-
-    @Override
-    public void setNewDemandToken(String linkString) {
-        newDemandLink.setTargetHistoryToken(linkString);
-    }
-
-    @Override
-    public void setAllDemandsToken(String linkString) {
-        allDemandsLink.setTargetHistoryToken(linkString);
-    }
-
-    @Override
-    public void setAllSuppliersToken(String linkString) {
-        allSuppliersLink.setTargetHistoryToken(linkString);
-    }
-*/
     /** toggle visible actions/buttons for current user decided by his role. **/
     @Override
     public void setRoleInterface(Role role) {
@@ -111,7 +84,47 @@ public class DemandModuleView extends Composite
     }
 
     @Override
-    public Anchor getDevelAnchor() {
-        return develAnchor;
+    public Anchor getSupNewDemandsAnchor() {
+        return supNewDemands;
+    }
+
+    @Override
+    public Anchor getCliNewDemandsAnchor() {
+        return cliNewDemands;
+    }
+
+    @Override
+    public Anchor getCliOffersAnchor() {
+        return cliOffers;
+    }
+
+    @Override
+    public Anchor getCliAssignedDemandsAnchor() {
+        return cliAssignedDemands;
+    }
+
+    @Override
+    public Anchor getCliCreateDemand() {
+        return cliCreateDemand;
+    }
+
+    @Override
+    public Anchor getAllDemands() {
+        return allDemands;
+    }
+
+    @Override
+    public Anchor getAllSuppliers() {
+        return allSuppliers;
+    }
+
+    @Override
+    public Anchor getSupOffersAnchor() {
+        return supOffers;
+    }
+
+    @Override
+    public Anchor getSupAssignedAnchor() {
+        return supAssignedDemands;
     }
 }

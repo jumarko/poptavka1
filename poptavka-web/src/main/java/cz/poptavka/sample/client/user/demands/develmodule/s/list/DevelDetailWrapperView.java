@@ -46,7 +46,7 @@ public class DevelDetailWrapperView extends Composite
             @Override
             public void onClick(ClickEvent event) {
                 conversationHeader.toggleOpen();
-                conversationPanel.setVisible(!conversationPanel.isVisible());
+                conversationPanel.toggleVisible();
             }
         });
     }

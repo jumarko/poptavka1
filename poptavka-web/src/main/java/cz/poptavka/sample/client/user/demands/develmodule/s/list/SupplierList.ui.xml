@@ -44,7 +44,7 @@
                     </g:HTMLPanel>
                 </g:north>
                 <g:center>
-                    <s:SupplierListGrid ui:field="demandGrid" />
+                    <s:UniversalGrid ui:field="demandGrid" />
                 </g:center>
                  <g:south size="3">
                       <g:HTMLPanel>
