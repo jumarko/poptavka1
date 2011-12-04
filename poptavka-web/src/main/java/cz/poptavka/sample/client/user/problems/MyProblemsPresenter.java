@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.problems;
 
-import cz.poptavka.sample.exception.MessageException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -18,9 +17,10 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.exception.MessageException;
 
 /**
  *
@@ -58,7 +58,7 @@ public class MyProblemsPresenter
         SimplePanel getDetailSection();
     }
 
-    private DetailWrapperPresenter detailPresenter = null;
+    private OldDetailWrapperPresenter detailPresenter = null;
 
     public void bind() {
         view.getCellTable().getSelectionModel()
@@ -76,7 +76,7 @@ public class MyProblemsPresenter
     }
 
     public void onInvokeMyProblems() {
-        eventBus.displayContent(view.getWidgetView());
+        //eventBus.displayContent(view.getWidgetView());
 
         eventBus.requestMyProblems();
     }

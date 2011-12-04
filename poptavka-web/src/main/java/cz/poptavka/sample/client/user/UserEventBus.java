@@ -36,15 +36,13 @@ import cz.poptavka.sample.client.user.admin.tab.AdminPreferencesPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminProblemsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSupplierInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersPresenter;
+import cz.poptavka.sample.client.user.demands.DemandModule;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
-import cz.poptavka.sample.client.user.demands.OldDemandsLayoutPresenter;
-import cz.poptavka.sample.client.user.demands.develmodule.DemandModule;
-import cz.poptavka.sample.client.user.demands.tab.AllDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.tab.AllSuppliersPresenter;
-import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
-import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.AllDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.AllSuppliersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.MyDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.OffersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
@@ -55,6 +53,7 @@ import cz.poptavka.sample.client.user.messages.MessagesLayoutPresenter;
 import cz.poptavka.sample.client.user.messages.tab.MessagesPresenter;
 import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
+import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -176,26 +175,26 @@ public interface UserEventBus extends EventBusWithLookup {
      * **/
     // TODO implements demandDetail section loading for Wrapper
     // serves for visual sing, that content is loading
-    @Event(handlers = { UserHandler.class, DetailWrapperPresenter.class })
+    @Event(handlers = { UserHandler.class, OldDetailWrapperPresenter.class })
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
-    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
     void setFullDemandDetail(FullDemandDetail detail);
 
-    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
     void setBaseDemandDetail(BaseDemandDetail detail);
 
     /** method for displaying conversation to selected demand. **/
-    @Event(handlers = { UserPresenter.class, DetailWrapperPresenter.class })
+    @Event(handlers = { UserPresenter.class, OldDetailWrapperPresenter.class })
     void requestPotentialDemandConversation(long messageId, long userMessageId);
 
     @Event(handlers = MessageHandler.class)
     void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
 
-    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
     void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType);
 
-    @Event(handlers = DetailWrapperPresenter.class, passive = true)
+    @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
     void setSingleDemandConversation(ArrayList<MessageDetail> messageList);
 
     /**
@@ -210,11 +209,11 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MessageHandler.class)
     void sendMessageToPotentialDemand(MessageDetail messageToSend, ViewType viewType);
 
-    @Event(handlers = DetailWrapperPresenter.class)
+    @Event(handlers = OldDetailWrapperPresenter.class)
     void addMessageToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
 
     /** Offers message display & state change. **/
-    @Event(handlers = DetailWrapperPresenter.class)
+    @Event(handlers = OldDetailWrapperPresenter.class)
     void setOfferMessage(FullOfferDetail offerDetail);
 
     @Event(handlers = MessageHandler.class)
@@ -409,7 +408,7 @@ public interface UserEventBus extends EventBusWithLookup {
     // Beho: ??? needed ???
     // @Event(handlers = MyDemandsPresenter.class)
     // void responseClientDemands(ArrayList<MessageDetail> result);
-    @Event(handlers = { OldDemandsLayoutPresenter.class, AdminLayoutPresenter.class, MessagesLayoutPresenter.class })
+    @Event(handlers = { AdminLayoutPresenter.class, MessagesLayoutPresenter.class })
     void toggleLoading();
 
     @Event(handlers = UserPresenter.class)
@@ -427,7 +426,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MyDemandsPresenter.class)
     void setDemandConversations(ArrayList<MessageDetail> conversations);
 
-    @Event(handlers = { MessageHandler.class, DetailWrapperPresenter.class })
+    @Event(handlers = { MessageHandler.class, OldDetailWrapperPresenter.class })
     void requestSingleConversation(long threadRootId, long messageId);
 
     // END
@@ -440,8 +439,6 @@ public interface UserEventBus extends EventBusWithLookup {
     /**********************************************************************************************
      *********************** DEMANDS SECTION. ****************************************************
      **********************************************************************************************/
-    @Event(handlers = OldDemandsLayoutPresenter.class)
-    void displayContent(Widget contentWidget);
 
     /* ---------------- ALL SUPPLIERS ----------------->>>>>>> */
     // Category

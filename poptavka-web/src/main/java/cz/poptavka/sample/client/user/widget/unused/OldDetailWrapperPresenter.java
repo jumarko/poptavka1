@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.user.messages.tab;
+package cz.poptavka.sample.client.user.widget.unused;
 
 import java.util.ArrayList;
 
@@ -26,12 +26,11 @@ import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
-@Presenter(view = MessagesDetailWrapperView.class, multiple = true)
-public class MessagesDetailWrapperPresenter extends
-        LazyPresenter<MessagesDetailWrapperPresenter.IDetailWrapper, UserEventBus> {
+@Presenter(view = OldDetailWrapperView.class, multiple = true)
+public class OldDetailWrapperPresenter extends
+        LazyPresenter<OldDetailWrapperPresenter.IDetailWrapper, UserEventBus> {
 
     public interface IDetailWrapper extends LazyView {
-
         Widget getWidgetView();
 
         void setDetail(Widget demandDetailWidget);
@@ -46,9 +45,12 @@ public class MessagesDetailWrapperPresenter extends
 
         DemandDetailView getDemandDetail();
     }
+
     private ViewType type;
+
     private OfferQuestionPresenter potentialViewReplyWiget = null;
     private QuestionPresenter myDemandsViewReplyWiget = null;
+
     private LoadingDiv detailLoader;
     private LoadingDiv conversationLoader;
 
@@ -86,7 +88,6 @@ public class MessagesDetailWrapperPresenter extends
         // GUI visual event
         toggleDetailLoading();
     }
-
     /**
      * Loads conversation.
      *
@@ -221,29 +222,33 @@ public class MessagesDetailWrapperPresenter extends
         if (potentialViewReplyWiget != null) {
             eventBus.removeHandler(potentialViewReplyWiget);
         }
-        potentialViewReplyWiget = eventBus.addHandler(OfferQuestionPresenter.class);
+        potentialViewReplyWiget = eventBus
+                .addHandler(OfferQuestionPresenter.class);
         potentialViewReplyWiget.initReplyWindow(view.getReplyHolder());
         potentialViewReplyWiget.addSubmitHandler(bindReplyWindowAction());
     }
 
     private ClickHandler bindReplyWindowAction() {
         return new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
                 if (potentialViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
                     if (potentialViewReplyWiget.hasResponseQuestion()) {
-                        MessageDetail messageToSend = potentialViewReplyWiget.getCreatedMessage();
-                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+                        MessageDetail messageToSend = potentialViewReplyWiget
+                                .getCreatedMessage();
+                        messageToSend = view.getConversationPanel()
+                                .updateSendingMessage(messageToSend);
                         eventBus.bubbleMessageSending(messageToSend, type);
                     } else {
                         // TODO finish sending of
                         OfferMessageDetail offer = new OfferMessageDetail();
-                        offer = (OfferMessageDetail) view.getConversationPanel().updateSendingOfferMessage(
-                                offer);
-                        MessageDetail offerMessage = potentialViewReplyWiget.getCreatedMessage();
+                        offer = (OfferMessageDetail) view
+                                .getConversationPanel().updateSendingOfferMessage(
+                                        offer);
+                        MessageDetail offerMessage = potentialViewReplyWiget
+                                .getCreatedMessage();
                         offer.setBody(offerMessage.getBody());
                         offer.setDemandId(offerMessage.getDemandId());
                         eventBus.bubbleOfferSending(offer);
@@ -259,19 +264,21 @@ public class MessagesDetailWrapperPresenter extends
         }
         myDemandsViewReplyWiget = eventBus.addHandler(QuestionPresenter.class);
         myDemandsViewReplyWiget.initReplyWindow(view.getReplyHolder());
-        myDemandsViewReplyWiget.addSubmitHandler(bindConversationReplyWindowAction());
+        myDemandsViewReplyWiget
+                .addSubmitHandler(bindConversationReplyWindowAction());
     }
 
     private ClickHandler bindConversationReplyWindowAction() {
         return new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
                 if (myDemandsViewReplyWiget.isMessageValid()) {
                     // distinguish what kind of message should be sent
-                    MessageDetail messageToSend = myDemandsViewReplyWiget.getCreatedMessage();
-                    messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+                    MessageDetail messageToSend = myDemandsViewReplyWiget
+                            .getCreatedMessage();
+                    messageToSend = view.getConversationPanel()
+                            .updateSendingMessage(messageToSend);
                     eventBus.bubbleMessageSending(messageToSend, type);
                 }
             }
@@ -308,4 +315,5 @@ public class MessagesDetailWrapperPresenter extends
             conversationLoader = null;
         }
     }
+
 }

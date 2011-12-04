@@ -24,7 +24,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.widget.DetailWrapperPresenter;
+import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import java.util.ArrayList;
@@ -170,7 +170,7 @@ public class MessagesPresenter
             }
         });
     }
-    private DetailWrapperPresenter detailPresenter = null;
+    private OldDetailWrapperPresenter detailPresenter = null;
     private boolean loaded = false;
     // TODO delete, just devel tool
 

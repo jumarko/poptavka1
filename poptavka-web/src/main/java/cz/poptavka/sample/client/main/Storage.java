@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
+import cz.poptavka.sample.client.user.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 /**
@@ -39,7 +39,7 @@ public final class Storage {
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
 
-    private static UserDetail user;
+    private static UserDetail user = null;
 
 
     //getters for global final classes

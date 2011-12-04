@@ -28,7 +28,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
-import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
+import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Arrays;

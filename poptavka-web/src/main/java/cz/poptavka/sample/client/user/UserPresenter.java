@@ -23,8 +23,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
-import cz.poptavka.sample.client.user.demands.OldDemandsLayoutPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -86,12 +84,6 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         SimplePanel getDemandModulePanel();
     }
 
-    private OldDemandsLayoutPresenter demandsLayoutPresenter = null;
-
-    // TODO useless!!!!!
-    // do NOT paste code, when you do NOT know, why is it there!!!!!
-    private AdminLayoutPresenter adminLayoutPresenter = null;
-
     private UserDetail user = null;
 
     private String eventMarkedToFire;
@@ -101,11 +93,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     // while developing we can enter this url even without login operation
     public void onAtAccount() {
         Cookies.setCookie("user-presenter", "loaded");
-        if (user == null) {
+        if (Storage.getUser() == null) {
             eventBus.loadingShow(MSGS.progressGetUserDetail());
             eventBus.getUser();
         } else {
-            onSetUser(user);
+            onSetUser(Storage.getUser());
         }
     }
 
@@ -113,18 +105,11 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     // init of demandLayout tab
     //TODO need revision and clean-up
     public void onSetUser(UserDetail userDetail) {
-        //this user detail will be probably moved into global storage class
-        this.user = userDetail;
         Storage.setUser(userDetail);
+        //this should be removed and all references replaces by Storage calls
+        user = userDetail;
 
         showDevelUserInfoPopupThatShouldBedeletedAfter();
-
-        // DemandslayoutInit
-        if (demandsLayoutPresenter != null) {
-            eventBus.removeHandler(demandsLayoutPresenter);
-        }
-        demandsLayoutPresenter = eventBus.addHandler(OldDemandsLayoutPresenter.class);
-        demandsLayoutPresenter.init(user);
 
         eventBus.initDemandModule(view.getDemandModulePanel());
 
@@ -251,6 +236,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         userInfoPanel.setWidth("200px");
         String br = "<br />";
         StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
+        user = Storage.getUser();
         sb.append("ID: " + user.getUserId() + br);
 
         sb.append("<i>-- user roles --</i>" + br);

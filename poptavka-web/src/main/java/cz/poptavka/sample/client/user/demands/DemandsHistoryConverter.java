@@ -7,12 +7,13 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.tab.AllDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.tab.AllSuppliersPresenter;
-import cz.poptavka.sample.client.user.demands.tab.MyDemandsPresenter;
 //import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
-import cz.poptavka.sample.client.user.demands.tab.OffersPresenter;
-import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.AllDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.AllSuppliersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.MyDemandsPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.OffersPresenter;
+import cz.poptavka.sample.client.user.demands.tab.old.PotentialDemandsPresenter;
+
 import java.util.logging.Logger;
 
 /**

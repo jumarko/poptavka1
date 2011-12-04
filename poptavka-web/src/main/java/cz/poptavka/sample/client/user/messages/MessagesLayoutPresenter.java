@@ -9,8 +9,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.client.user.demands.tab.PotentialDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.widget.LoadingDiv;
+import cz.poptavka.sample.client.user.demands.tab.old.PotentialDemandsPresenter;
+import cz.poptavka.sample.client.user.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 

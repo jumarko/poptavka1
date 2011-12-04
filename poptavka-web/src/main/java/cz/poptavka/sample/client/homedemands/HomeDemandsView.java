@@ -30,7 +30,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.user.demands.widget.DemandDetailView;
+import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 /**
