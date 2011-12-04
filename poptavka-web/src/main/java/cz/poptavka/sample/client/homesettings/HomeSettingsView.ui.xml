@@ -54,7 +54,7 @@
 						<ui:msg key='companyName'>Name:</ui:msg>
 					</td>
 					<td colspan='2'>
-						<g:TextBox ui:field='companyName'/>
+						<g:TextBox ui:field='companyName' />
 					</td>
 				</tr>
 				<tr>
@@ -62,7 +62,7 @@
 						<ui:msg key='overalRating'>Client rating:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='clientRating'/>
+						<g:TextBox ui:field='clientRating' />
 					</td>
 				</tr>
 				<tr>
@@ -70,7 +70,7 @@
 						<ui:msg key='supplierRating'>Supplier rating:</ui:msg>
 					</td>
 					<td colspan='2'>
-						<g:TextBox ui:field='supplierRating'/>
+						<g:TextBox ui:field='supplierRating' />
 					</td>
 				</tr>
 				<tr>
@@ -84,7 +84,7 @@
 						<ui:msg key='street'>Street:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='street'/>
+						<g:TextBox ui:field='street' />
 					</td>
 				</tr>
 				<tr>
@@ -92,7 +92,7 @@
 						<ui:msg key='city'>City:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='city'/>
+						<g:TextBox ui:field='city' />
 					</td>
 				</tr>
 				<tr>
@@ -100,7 +100,7 @@
 						<ui:msg key='zipCode'>Zip code:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='zipCode'/>
+						<g:TextBox ui:field='zipCode' />
 					</td>
 				</tr>
 				<tr>
@@ -111,7 +111,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:TextArea ui:field='categoriesBox'/>
+						<g:TextArea ui:field='categoriesBox' />
 					</td>
 				</tr>
 				<tr>
@@ -122,7 +122,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:TextArea ui:field='localitiesBox'/>
+						<g:TextArea ui:field='localitiesBox' />
 					</td>
 				</tr>
 				<tr>
@@ -136,7 +136,7 @@
 						<ui:msg key='web'>Web site:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='web'/>
+						<g:TextBox ui:field='web' />
 					</td>
 				</tr>
 				<tr>
@@ -144,7 +144,7 @@
 						<ui:msg key='email'>Email:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='email'/>
+						<g:TextBox ui:field='email' />
 					</td>
 				</tr>
 				<tr>
@@ -152,7 +152,7 @@
 						<ui:msg key='phone'>Phone:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='phone'/>
+						<g:TextBox ui:field='phone' />
 					</td>
 				</tr>
 				<tr>
@@ -160,7 +160,7 @@
 						<ui:msg key='firstName'>First name:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='firstName'/>
+						<g:TextBox ui:field='firstName' />
 					</td>
 				</tr>
 				<tr>
@@ -168,7 +168,7 @@
 						<ui:msg key='lastName'>Last name:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='lastName'/>
+						<g:TextBox ui:field='lastName' />
 					</td>
 				</tr>
 				<tr>
@@ -182,7 +182,7 @@
 						<ui:msg key='identificationNumber'>Identification number:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='identificationNumber'/>
+						<g:TextBox ui:field='identificationNumber' />
 					</td>
 				</tr>
 				<tr>
@@ -190,7 +190,69 @@
 						<ui:msg key='taxNumber'>Tax number:</ui:msg>
 					</td>
 					<td>
-						<g:TextBox ui:field='taxNumber'/>
+						<g:TextBox ui:field='taxNumber' />
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='notifications'>Notifications:</ui:msg>
+					</td>
+					<td />
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='newMessage'>New messages:</ui:msg>
+					</td>
+					<td>
+						<g:CheckBox ui:field='newMessageButton' />
+						<g:ListBox ui:field="newMessageOptions" visibleItemCount='1'/>
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='newDemand'>New demand:</ui:msg>
+					</td>
+					<td>
+						<g:CheckBox ui:field='newDemandButton' />
+						<g:ListBox ui:field="newDemandOptions" visibleItemCount='1'/>
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='newSystemMessage'>New messages from system:</ui:msg>
+					</td>
+					<td>
+						<g:CheckBox ui:field='newSystemMessageButton' />
+						<g:ListBox ui:field="newSystemMessageOptions" visibleItemCount='1'/>
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='newOperatorMessage'>New messages from operator:</ui:msg>
+					</td>
+					<td>
+						<g:CheckBox ui:field='newOperatorMessageButton' />
+						<g:ListBox ui:field="newOperatorMessageOptions" visibleItemCount='1'/>
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='demandStateChange'>Demand state change:</ui:msg>
+					</td>
+					<td>
+						<g:CheckBox ui:field='demandStateChangeButton' />
+						<g:ListBox ui:field="demandStateChangeOptions" visibleItemCount='1'/>
+					</td>
+				</tr>
+				<tr>
+					<td class='{style.label}'>
+						<ui:msg key='services'>Services:</ui:msg>
+					</td>
+					<td />
+				</tr>
+				<tr>
+					<td colspan='2'>
+						<g:TextArea ui:field='servicesBox' />
 					</td>
 				</tr>
 				<tr>
@@ -200,7 +262,7 @@
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:TextArea ui:field='descriptionBox'/>
+						<g:TextArea ui:field='descriptionBox' />
 					</td>
 				</tr>
 				<tr>

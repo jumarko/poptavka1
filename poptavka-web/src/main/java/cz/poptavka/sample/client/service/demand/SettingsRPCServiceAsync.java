@@ -6,5 +6,5 @@ import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 public interface SettingsRPCServiceAsync {
 
-    void getUserSettings(String sessionId, AsyncCallback<SettingsDetail> callback);
+    void getUserSettings(long userId, AsyncCallback<SettingsDetail> callback);
 }

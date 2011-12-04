@@ -8,5 +8,5 @@ import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 @RemoteServiceRelativePath("service/settings")
 public interface SettingsRPCService extends RemoteService {
 
-    SettingsDetail getUserSettings(String sessionId);
+    SettingsDetail getUserSettings(long userId);
 }

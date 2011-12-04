@@ -3,8 +3,10 @@ package cz.poptavka.sample.server.service.settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.service.demand.SettingsRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -28,12 +30,8 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private GeneralService generalService;
 
     @Override
-    public SettingsDetail getUserSettings(String sessionId) {
-        // TODO make real implementation of getting user according to sessionID
-        // now it's just fake string, that needs to be parsed
-        String[] parsedSession = sessionId.split("=");
-        Long userId = Long.parseLong(parsedSession[(parsedSession.length - 1)]);
-
+    public SettingsDetail getUserSettings(long userId) {
+        GWT.log("Getting user settings for user:" + Storage.getUser().getUserId());
         final BusinessUser user = (BusinessUser) generalService.searchUnique(
                 new Search(User.class).addFilterEqual("id", userId));
 
@@ -81,7 +79,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             addresses.add(detail);
         }
         settingsDetail.setAddresses(addresses);
-
+        GWT.log("User settings get:" + settingsDetail.getFirstName());
         return settingsDetail;
     }
 

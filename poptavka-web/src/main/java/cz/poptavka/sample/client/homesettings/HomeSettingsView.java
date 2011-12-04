@@ -3,7 +3,9 @@ package cz.poptavka.sample.client.homesettings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -54,6 +56,28 @@ public class HomeSettingsView extends Composite implements
     TextBox taxNumber;
     @UiField
     TextArea descriptionBox;
+    @UiField
+    TextArea servicesBox;
+    @UiField
+    CheckBox newMessageButton;
+    @UiField
+    ListBox newMessageOptions;
+    @UiField
+    CheckBox newDemandButton;
+    @UiField
+    ListBox newDemandOptions;
+    @UiField
+    CheckBox newSystemMessageButton;
+    @UiField
+    ListBox newSystemMessageOptions;
+    @UiField
+    CheckBox newOperatorMessageButton;
+    @UiField
+    ListBox newOperatorMessageOptions;
+    @UiField
+    CheckBox demandStateChangeButton;
+    @UiField
+    ListBox demandStateChangeOptions;
 
     @Override
     public Widget getWidgetView() {
@@ -122,6 +146,50 @@ public class HomeSettingsView extends Composite implements
 
     public TextArea getDescriptionBox() {
         return descriptionBox;
+    }
+
+    public TextArea getServicesBox() {
+        return servicesBox;
+    }
+
+    public CheckBox getNewMessageButton() {
+        return newMessageButton;
+    }
+
+    public ListBox getNewMessageOptions() {
+        return newMessageOptions;
+    }
+
+    public CheckBox getNewDemandButton() {
+        return newDemandButton;
+    }
+
+    public ListBox getNewDemandOptions() {
+        return newDemandOptions;
+    }
+
+    public CheckBox getNewSystemMessageButton() {
+        return newSystemMessageButton;
+    }
+
+    public ListBox getNewSystemMessageOptions() {
+        return newSystemMessageOptions;
+    }
+
+    public CheckBox getNewOperatorMessageButton() {
+        return newOperatorMessageButton;
+    }
+
+    public ListBox getNewOperatorMessageOptions() {
+        return newOperatorMessageOptions;
+    }
+
+    public CheckBox getDemandStateChangeButton() {
+        return demandStateChangeButton;
+    }
+
+    public ListBox getDemandStateChangeOptions() {
+        return demandStateChangeOptions;
     }
 
 }
