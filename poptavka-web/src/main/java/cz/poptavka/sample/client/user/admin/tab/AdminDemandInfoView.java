@@ -146,7 +146,8 @@ public class AdminDemandInfoView extends Composite implements
         return locPath;
     }
 
-    public AdminDemandInfoView() {
+    @Override
+    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         editCatPanel.setVisible(false);
         editLocPanel.setVisible(false);

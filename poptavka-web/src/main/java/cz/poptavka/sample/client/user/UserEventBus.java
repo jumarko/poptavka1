@@ -2,8 +2,6 @@ package cz.poptavka.sample.client.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,26 +14,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 
 import cz.poptavka.sample.client.homesettings.HomeSettingsHandler;
 import cz.poptavka.sample.client.homesettings.HomeSettingsPresenter;
-import cz.poptavka.sample.client.user.admin.AdminHandler;
-import cz.poptavka.sample.client.user.admin.AdminHistoryConverter;
-import cz.poptavka.sample.client.user.admin.AdminLayoutPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminClientInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminClientsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminEmailActivationsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminInvoiceInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminInvoicesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminMessagesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminPaymentMethodsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminPermissionsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminPreferencesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminProblemsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminSupplierInfoPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminSuppliersPresenter;
+import cz.poptavka.sample.client.user.admin.AdminModule;
 import cz.poptavka.sample.client.user.demands.DemandModule;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
 import cz.poptavka.sample.client.user.demands.tab.old.AllDemandsPresenter;
@@ -47,26 +26,13 @@ import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
-import cz.poptavka.sample.client.user.messages.MessagesHandler;
-import cz.poptavka.sample.client.user.messages.MessagesHistoryConverter;
-import cz.poptavka.sample.client.user.messages.MessagesLayoutPresenter;
-import cz.poptavka.sample.client.user.messages.tab.MessagesPresenter;
+import cz.poptavka.sample.client.user.messages.MessagesModule;
 import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
-import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.ClientDetail;
-import cz.poptavka.sample.shared.domain.EmailActivationDetail;
-import cz.poptavka.sample.shared.domain.InvoiceDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.PaymentDetail;
-import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
-import cz.poptavka.sample.shared.domain.PermissionDetail;
-import cz.poptavka.sample.shared.domain.PreferenceDetail;
-import cz.poptavka.sample.shared.domain.ProblemDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -75,7 +41,6 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
-import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -87,12 +52,16 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
  * @author beho
  */
 @Events(startView = UserView.class, module = UserModule.class)
-@ChildModules({ @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false) })
+@ChildModules({
+    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false)
+})
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBusWithLookup {
 
     /** init method. **/
-    @Event(handlers = { UserPresenter.class }, historyConverter = UserHistoryConverter.class)
+    @Event(handlers = UserPresenter.class, historyConverter = UserHistoryConverter.class)
     String atAccount();
 
     /** getter for UserDetail. **/
@@ -155,9 +124,6 @@ public interface UserEventBus extends EventBusWithLookup {
     void setTabAdminWidget(Widget tabBody);
 
     @Event(handlers = UserPresenter.class)
-    void setTabMessagesWidget(Widget tabBody);
-
-    @Event(handlers = UserPresenter.class)
     void setTabSettingsWidget(Widget tabBody);
 
     @Event(handlers = MyProblemsPresenter.class)
@@ -175,7 +141,7 @@ public interface UserEventBus extends EventBusWithLookup {
      * **/
     // TODO implements demandDetail section loading for Wrapper
     // serves for visual sing, that content is loading
-    @Event(handlers = { UserHandler.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = {UserHandler.class, OldDetailWrapperPresenter.class })
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
@@ -185,7 +151,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void setBaseDemandDetail(BaseDemandDetail detail);
 
     /** method for displaying conversation to selected demand. **/
-    @Event(handlers = { UserPresenter.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = {UserPresenter.class, OldDetailWrapperPresenter.class })
     void requestPotentialDemandConversation(long messageId, long userMessageId);
 
     @Event(handlers = MessageHandler.class)
@@ -252,102 +218,32 @@ public interface UserEventBus extends EventBusWithLookup {
      * deactivated ----------------------- DEMANDS SECTION
      */
     @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, PotentialDemandsPresenter.class, AdminDemandsPresenter.class,
-            AdminSuppliersPresenter.class, AdminOffersPresenter.class, AllDemandsPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, PotentialDemandsPresenter.class, AllSuppliersPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
     String invokeMyProblems();
 
     @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
-            MyDemandsPresenter.class, PotentialDemandsPresenter.class, AdminDemandsPresenter.class,
-            AdminOffersPresenter.class, AllDemandsPresenter.class, AllSuppliersPresenter.class,
-            AdminSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            MyDemandsPresenter.class, PotentialDemandsPresenter.class, AllDemandsPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeOffers();
 
-    // @Event(handlers = NewDemandPresenter.class, activate =
-    // NewDemandPresenter.class, deactivate = {
-    // OffersPresenter.class, MyDemandsPresenter.class,
-    // PotentialDemandsPresenter.class,
-    // DemandsOperatorPresenter.class, AdminDemandsPresenter.class,
-    // AdminOffersPresenter.class,
-    // AllDemandsPresenter.class, AllSuppliersPresenter.class,
-    // AdminSuppliersPresenter.class },
-    // historyConverter = DemandsHistoryConverter.class)
-    // String invokeNewDemand();
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, AdminDemandsPresenter.class,
-            AdminOffersPresenter.class, AdminSuppliersPresenter.class, AllDemandsPresenter.class,
+            OffersPresenter.class, MyDemandsPresenter.class, AllDemandsPresenter.class,
             AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
     @Event(handlers = AllDemandsPresenter.class, activate = AllDemandsPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminDemandsPresenter.class, AllSuppliersPresenter.class, AdminOffersPresenter.class,
-            AdminSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeAtDemands();
 
     @Event(handlers = AllSuppliersPresenter.class, activate = AllSuppliersPresenter.class, deactivate = {
             OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminDemandsPresenter.class, AllDemandsPresenter.class, AdminOffersPresenter.class,
-            AdminSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            AllDemandsPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeAtSuppliers();
-
-    /*
-     * ------------------------ ADMINISTRATION SECTION
-     */
-    // @Event(handlers = AdminDemandsPresenter.class, historyConverter =
-    // AdminHistoryConverter.class)
-    @Event(handlers = AdminDemandsPresenter.class, activate = AdminDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminSuppliersPresenter.class, AllDemandsPresenter.class, AdminOffersPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminDemands();
-
-    @Event(handlers = AdminOffersPresenter.class, activate = AdminOffersPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminSuppliersPresenter.class, AllDemandsPresenter.class, AdminDemandsPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminOffers();
-
-    // @Event(handlers = AdminSuppliersPresenter.class, historyConverter =
-    // AdminHistoryConverter.class)
-    @Event(handlers = AdminSuppliersPresenter.class, activate = AdminSuppliersPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AdminDemandsPresenter.class, AllDemandsPresenter.class, AdminOffersPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminSuppliers();
-
-    @Event(handlers = AdminClientsPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminClients();
-
-    @Event(handlers = AdminAccessRolesPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminAccessRoles();
-
-    @Event(handlers = AdminEmailActivationsPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminEmailActivations();
-
-    @Event(handlers = AdminInvoicesPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminInvoices();
-
-    @Event(handlers = AdminMessagesPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminMessages();
-
-    @Event(handlers = AdminOurPaymentDetailsPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminOurPaymentDetails();
-
-    @Event(handlers = AdminPaymentMethodsPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminPaymentMethods();
-
-    @Event(handlers = AdminPermissionsPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminPermissions();
-
-    @Event(handlers = AdminPreferencesPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminPreferences();
-
-    @Event(handlers = AdminProblemsPresenter.class, historyConverter = AdminHistoryConverter.class)
-    String invokeAdminProblems();
 
     /***********************************************************************************************
      ************************* Navigation Events section END ***************************************
@@ -408,9 +304,8 @@ public interface UserEventBus extends EventBusWithLookup {
     // Beho: ??? needed ???
     // @Event(handlers = MyDemandsPresenter.class)
     // void responseClientDemands(ArrayList<MessageDetail> result);
-    @Event(handlers = { AdminLayoutPresenter.class, MessagesLayoutPresenter.class })
-    void toggleLoading();
-
+//    @Event(handlers = { OldDemandsLayoutPresenter.class })
+//    void toggleLoading();
     @Event(handlers = UserPresenter.class)
     void requestDemandsWithConversationInfo();
 
@@ -426,16 +321,10 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MyDemandsPresenter.class)
     void setDemandConversations(ArrayList<MessageDetail> conversations);
 
-    @Event(handlers = { MessageHandler.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = {MessageHandler.class, OldDetailWrapperPresenter.class })
     void requestSingleConversation(long threadRootId, long messageId);
 
     // END
-    @Event(handlers = AdminLayoutPresenter.class)
-    void initAdmin();
-
-    @Event(handlers = MessagesLayoutPresenter.class, historyConverter = MessagesHistoryConverter.class)
-    void initMessages();
-
     /**********************************************************************************************
      *********************** DEMANDS SECTION. ****************************************************
      **********************************************************************************************/
@@ -445,11 +334,11 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AllSuppliersHandler.class)
     void getSubCategories(Long category);
 
-    @Event(handlers = { AllDemandsHandler.class, AllSuppliersHandler.class })
+    @Event(handlers = {AllDemandsHandler.class, AllSuppliersHandler.class })
     void getCategories();
 
     // Locality
-    @Event(handlers = { AllDemandsHandler.class, AllSuppliersHandler.class })
+    @Event(handlers = {AllDemandsHandler.class, AllSuppliersHandler.class })
     void getLocalities();
 
     // Suppliers
@@ -533,444 +422,12 @@ public interface UserEventBus extends EventBusWithLookup {
     /**********************************************************************************************
      *********************** MESSAGES SECTION ****************************************************
      **********************************************************************************************/
-    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
-    String invokeInbox();
-
-    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
-    String invokeSent();
-
-    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
-    String invokeDeleted();
-
-    @Event(handlers = MessagesHandler.class)
-    void getMessages(List<String> states, Map<String, OrderType> orderColumns,
-            Boolean negation);
-
-    @Event(handlers = MessagesPresenter.class)
-    void displayMessages(List<UserMessageDetail> messages);
-
-    @Event(handlers = MessagesLayoutPresenter.class)
-    void displayMessagesContent(Widget contentWidget);
-
     /**********************************************************************************************
      *********************** SETTINGS SECTION ****************************************************
      **********************************************************************************************/
     /**********************************************************************************************
      *********************** CONTACTS SECTION ****************************************************
      **********************************************************************************************/
-    /**********************************************************************************************
-     *********************** ADMIN SECTION *******************************************************
-     **********************************************************************************************/
-    /* ----------------- COMMON -------------------->>>>>>>>> */
-    // @Event(handlers = AdminHandler.class)
-    // void updateObject(Object objectDetail);
-    /* <<<<<<<<<<-------- COMMON -------------------- */
-    /* ----------------- ADMIN DEMANDS -------------------->>>>>>>>> */
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandsCount();
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void createAdminDemandsAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemands(int start, int count);
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void updateDemand(FullDemandDetail demand);
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void displayAdminTabDemands(List<FullDemandDetail> demands);
-
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void showAdminDemandDetail(FullDemandDetail selectedObject);
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void responseAdminDemandDetail(Widget widget);
-
-    @Event(handlers = AdminLayoutPresenter.class)
-    void displayAdminContent(Widget contentWidget);
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void addDemandToCommit(FullDemandDetail data);
-
-    @Event(handlers = AdminDemandsPresenter.class)
-    void setDetailDisplayedDemand(Boolean displayed);
-
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminTabDemandsLoop(List<FullDemandDetail> list);
-
-    // ---- DemandsInfo
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandRootCategories();
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandSubCategories(Long catId);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandParentCategories(Long catId);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandRootLocalities();
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandSubLocalities(String locCode);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminDemandParentLocalities(String locCode);
-
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminDemandCategories(List<CategoryDetail> list);
-
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void displayAdminDemandLocalities(List<LocalityDetail> list);
-
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void doBackDemandCategories(List<CategoryDetail> list);
-
-    @Event(handlers = AdminDemandInfoPresenter.class)
-    void doBackDemandLocalities(List<LocalityDetail> list);
-
-    /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
-    /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
-    @Event(handlers = AdminHandler.class)
-    void getAdminSuppliersCount();
-
-    @Event(handlers = AdminSuppliersPresenter.class)
-    void createAdminSuppliersAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSuppliers(int start, int count);
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminSuppliersPresenter.class)
-    void displayAdminTabSuppliers(List<FullSupplierDetail> suppliers);
-
-    @Event(handlers = AdminHandler.class)
-    void updateSupplier(FullSupplierDetail supplier);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void showAdminSupplierDetail(FullSupplierDetail selectedObject);
-
-    @Event(handlers = AdminSuppliersPresenter.class)
-    void responseAdminSupplierDetail(Widget widget);
-
-    @Event(handlers = AdminSuppliersPresenter.class)
-    void addSupplierToCommit(FullSupplierDetail data);
-
-    @Event(handlers = AdminSuppliersPresenter.class)
-    void setDetailDisplayedSupplier(Boolean displayed);
-
-    // ---- SuppliersInfo
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierRootCategories();
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierSubCategories(Long catId);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierParentCategories(Long catId);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierRootLocalities();
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierSubLocalities(String locCode);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminSupplierParentLocalities(String locCode);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void displayAdminSupplierCategories(List<CategoryDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void displayAdminSupplierLocalities(List<LocalityDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void doBackSupplierCategories(List<CategoryDetail> list);
-
-    @Event(handlers = AdminSupplierInfoPresenter.class)
-    void doBackSupplierLocalities(List<LocalityDetail> list);
-
-    /* <<<<<<<<<<-------- ADMIN SUPPLIERS -------------------- */
-    /* ----------------- ADMIN OFFERS -------------------->>>>>>>>> */
-    @Event(handlers = AdminHandler.class)
-    void getAdminOffersCount();
-
-    @Event(handlers = AdminOffersPresenter.class)
-    void createAdminOffersAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminOffers(int start, int count);
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedOffers(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void updateOffer(OfferDetail demand);
-
-    @Event(handlers = AdminOffersPresenter.class)
-    void displayAdminTabOffers(List<OfferDetail> demands);
-
-    @Event(handlers = AdminOffersPresenter.class)
-    void addOfferToCommit(OfferDetail data);
-
-    /* <<<<<<<<<<-------- ADMIN OFFERS -------------------- */
-    /* ----------------- ADMIN CLIENT -------------------->>>>>>>>> */
-    @Event(handlers = AdminClientInfoPresenter.class)
-    void showAdminClientDetail(ClientDetail clientDetail);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void setDetailDisplayedClient(Boolean value);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void addClientToCommit(ClientDetail clientDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminClientsCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminClients(int start, int count);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void createAdminClientsAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void displayAdminTabClients(List<ClientDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updateClient(ClientDetail supplier);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void responseAdminClientDetail(Widget widget);
-
-    /* <<<<<<<<<<-------- ADMIN CLIENT -------------------- */
-    /* ----------------- ACCESS ROLE -------------------->>>>>>>>> */
-    @Event(handlers = AdminAccessRolesPresenter.class)
-    void addAccessRoleToCommit(AccessRoleDetail clientDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminAccessRolesCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedAccessRoles(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminAccessRoles(int start, int count);
-
-    @Event(handlers = AdminAccessRolesPresenter.class)
-    void createAdminAccessRoleAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminAccessRolesPresenter.class)
-    void displayAdminTabAccessRoles(List<AccessRoleDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updateAccessRole(AccessRoleDetail accessRole);
-
-    @Event(handlers = AdminAccessRolesPresenter.class)
-    void showDialogBox();
-
-    /* <<<<<<<<<<-------- ACCESS ROLE -------------------- */
-    /* ----------------- EMAIL ACTIVATION -------------------->>>>>>>>> */
-    @Event(handlers = AdminEmailActivationsPresenter.class)
-    void addEmailActivationToCommit(EmailActivationDetail clientDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminEmailsActivationCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedEmailsActivation(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminEmailsActivation(int start, int count);
-
-    @Event(handlers = AdminEmailActivationsPresenter.class)
-    void createAdminEmailsActivationAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminEmailActivationsPresenter.class)
-    void displayAdminTabEmailsActivation(List<EmailActivationDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updateEmailActivation(EmailActivationDetail accessRole);
-
-    /* <<<<<<<<<<-------- EMAIL ACTIVATION -------------------- */
-    /* ----------------- INVOICE -------------------->>>>>>>>> */
-    @Event(handlers = AdminInvoicesPresenter.class)
-    void addInvoiceToCommit(InvoiceDetail clientDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminInvoicesCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedInvoices(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminInvoices(int start, int count);
-
-    @Event(handlers = AdminInvoicesPresenter.class)
-    void createAdminInvoicesAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminInvoicesPresenter.class)
-    void displayAdminTabInvoices(List<InvoiceDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updateInvoice(InvoiceDetail accessRole);
-
-    @Event(handlers = AdminInvoiceInfoPresenter.class)
-    void showAdminInvoicesDetail(InvoiceDetail clientDetail);
-
-    @Event(handlers = AdminInvoicesPresenter.class)
-    void setDetailDisplayedInvoices(Boolean value);
-
-    /* <<<<<<<<<<-------- INVOICE -------------------- */
-    /* ----------------- MESSAGE -------------------->>>>>>>>> */
-    @Event(handlers = AdminMessagesPresenter.class)
-    void addMessageToCommit(MessageDetail messageDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminMessagesCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedMessages(int start, int count,
-            Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminMessages(int start, int count);
-
-    @Event(handlers = AdminMessagesPresenter.class)
-    void createAdminMessagesAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminMessagesPresenter.class)
-    void displayAdminTabMessages(List<MessageDetail> messages);
-
-    @Event(handlers = AdminHandler.class)
-    void updateMessage(MessageDetail accessRole);
-
-    /* <<<<<<<<<<-------- MESSAGE DETAILS -------------------- */
-    /* ----------------- OUR PAYMENT DETAILS -------------------->>>>>>>>> */
-    @Event(handlers = AdminOurPaymentDetailsPresenter.class)
-    void addOurPaymentDetailToCommit(PaymentDetail paymentDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminOurPaymentDetailsCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedOurPaymentDetails(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminOurPaymentDetails(int start, int count);
-
-    @Event(handlers = AdminOurPaymentDetailsPresenter.class)
-    void createAdminOurPaymentDetailAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminOurPaymentDetailsPresenter.class)
-    void displayAdminTabOurPaymentDetails(List<PaymentDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updateOurPaymentDetail(PaymentDetail accessRole);
-
-    /* <<<<<<<<<<-------- OUR PAYMENT DETAILS -------------------- */
-    /* ----------------- PaymentMethodS DETAILS -------------------->>>>>>>>> */
-    @Event(handlers = AdminPaymentMethodsPresenter.class)
-    void addPaymentMethodToCommit(PaymentMethodDetail paymentMethodDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminPaymentMethodsCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedPaymentMethods(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminPaymentMethods(int start, int count);
-
-    @Event(handlers = AdminPaymentMethodsPresenter.class)
-    void createAdminPaymentMethodAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminPaymentMethodsPresenter.class)
-    void displayAdminTabPaymentMethods(List<PaymentMethodDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updatePaymentMethod(PaymentMethodDetail accessRole);
-
-    /* <<<<<<<<<<-------- PERMISSIONS DETAILS -------------------- */
-    /* ----------------- PERMISSIONS DETAILS -------------------->>>>>>>>> */
-    @Event(handlers = AdminPermissionsPresenter.class)
-    void addPermissionToCommit(PermissionDetail permissionDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminPermissionsCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminPermissions(int start, int count);
-
-    @Event(handlers = AdminPermissionsPresenter.class)
-    void createAdminPermissionAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminPermissionsPresenter.class)
-    void displayAdminTabPermissions(List<PermissionDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updatePermission(PermissionDetail accessRole);
-
-    /* <<<<<<<<<<-------- PERMISSIONS DETAILS -------------------- */
-    /* ----------------- PREFERENCES DETAILS -------------------->>>>>>>>> */
-    @Event(handlers = AdminPreferencesPresenter.class)
-    void addPreferenceToCommit(PreferenceDetail preferenceDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminPreferencesCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedPreferences(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminPreferences(int start, int count);
-
-    @Event(handlers = AdminPreferencesPresenter.class)
-    void createAdminPreferenceAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminPreferencesPresenter.class)
-    void displayAdminTabPreferences(List<PreferenceDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updatePreference(PreferenceDetail accessRole);
-
-    /* <<<<<<<<<<-------- PREFERENCES DETAILS -------------------- */
-
-    /* ----------------- PROBLEM DETAILS -------------------->>>>>>>>> */
-    @Event(handlers = AdminProblemsPresenter.class)
-    void addProblemToCommit(ProblemDetail problemDetail);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminProblemsCount();
-
-    @Event(handlers = AdminHandler.class)
-    void getSortedProblems(int start, int count,
-            Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminHandler.class)
-    void getAdminProblems(int start, int count);
-
-    @Event(handlers = AdminProblemsPresenter.class)
-    void createAdminProblemAsyncDataProvider(final int totalFound);
-
-    @Event(handlers = AdminProblemsPresenter.class)
-    void displayAdminTabProblems(List<ProblemDetail> clients);
-
-    @Event(handlers = AdminHandler.class)
-    void updateProblem(ProblemDetail accessRole);
-
-    /* <<<<<<<<<<-------- PROBLEM DETAILS -------------------- */
     /**
      * **************** BEHO development corner. **************** implements
      * methods for Supplier new demands
@@ -981,6 +438,14 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(forwardToParent = true)
     void goToCreateDemand();
+
+    //added by Martin
+    //init demands module
+    @Event(modulesToLoad = MessagesModule.class)
+    void initMessagesModule(SimplePanel panel);
+
+    @Event(modulesToLoad = AdminModule.class)
+    void initAdminModule(SimplePanel panel);
 
     /**
      * ********************* End corner ************************

@@ -8,7 +8,6 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
-import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
@@ -31,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @EventHandler
-public class AdminHandler extends BaseEventHandler<UserEventBus> {
+public class AdminModuleHandler extends BaseEventHandler<AdminModuleEventBus> {
 
     @Inject
     private CategoryRPCServiceAsync categoryService = null;

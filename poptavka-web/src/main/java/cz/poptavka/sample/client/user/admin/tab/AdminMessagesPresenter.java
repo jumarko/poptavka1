@@ -31,9 +31,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -49,7 +52,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminMessagesView.class)
 public class AdminMessagesPresenter
-        extends BasePresenter<AdminMessagesPresenter.AdminMessagesInterface, UserEventBus>
+        extends LazyPresenter<AdminMessagesPresenter.AdminMessagesInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminMessagesPresenter");
@@ -66,7 +69,7 @@ public class AdminMessagesPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminMessagesInterface {
+    public interface AdminMessagesInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -123,7 +126,7 @@ public class AdminMessagesPresenter
                 int length = display.getVisibleRange().getLength();
                 eventBus.getAdminMessages(start, start + length);
 //                eventBus.getSortedMessages(start, start + length, orderColumns);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -154,19 +157,20 @@ public class AdminMessagesPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminMessages() {
+    public void onInitMessages() {
         eventBus.getAdminMessagesCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabMessages(List<MessageDetail> messages) {
         dataProvider.updateRowData(start, messages);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getSubjectColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
             @Override
             public void update(int index, MessageDetail object, String value) {
@@ -265,11 +269,11 @@ public class AdminMessagesPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateMessage(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

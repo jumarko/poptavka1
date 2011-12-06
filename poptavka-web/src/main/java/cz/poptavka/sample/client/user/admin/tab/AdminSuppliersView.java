@@ -171,7 +171,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         return adminSupplierDetail;
     }
 
-    public AdminSuppliersView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

@@ -24,7 +24,7 @@
                     <ui:msg key='messages'>Messages</ui:msg>
                 </em>
             </g:header>
-            <g:SimplePanel ui:field="messagesTabPanel">
+            <g:SimplePanel ui:field="messagesPanel">
                 <g:HTML>Messages Tab</g:HTML>
             </g:SimplePanel>
         </g:tab>
@@ -49,7 +49,7 @@
                 <ui:msg key='administration'>Admistration</ui:msg>
             </g:header>
             <g:SimplePanel ui:field="adminPanel">
-                <g:HTML>TEST</g:HTML>
+                <g:HTML>Admin Tab</g:HTML>
             </g:SimplePanel>
         </g:tab>
         <g:tab>

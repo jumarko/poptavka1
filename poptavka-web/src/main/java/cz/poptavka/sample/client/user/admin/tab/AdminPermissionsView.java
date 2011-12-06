@@ -114,7 +114,8 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     private Column<PermissionDetail, Date> demandExpirationColumn;
     private Column<PermissionDetail, Date> demandEndColumn;
 
-    public AdminPermissionsView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

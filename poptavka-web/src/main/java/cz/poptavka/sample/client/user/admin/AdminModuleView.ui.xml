@@ -10,51 +10,51 @@
 			<g:HTMLPanel>
 				<ul>
 					<li>
-						<g:Hyperlink ui:field="demandsLink">
+						<g:Anchor ui:field="demandsAnchor">
 							<ui:msg key="demands">Demands</ui:msg>
-						</g:Hyperlink>
+						</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="clientsLink">
+						<g:Anchor ui:field="clientsAnchor">
 							<ui:msg key="users">Clients</ui:msg>
-						</g:Hyperlink>
+						</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="suppliersLink">
+						<g:Anchor ui:field="suppliersAnchor">
 							<ui:msg key="suppliers">Suppliers</ui:msg>
-						</g:Hyperlink>
+						</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="offersLink">
+						<g:Anchor ui:field="offersAnchor">
 							<ui:msg key="offers">Offers</ui:msg>
-						</g:Hyperlink>
+						</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="accessRolesLink">AccessRole</g:Hyperlink>
+						<g:Anchor ui:field="accessRolesAnchor">AccessRole</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="emailActivationsLink">EmailActivation</g:Hyperlink>
+						<g:Anchor ui:field="emailActivationsAnchor">EmailActivation</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="invoicesLink">Invoice</g:Hyperlink>
+						<g:Anchor ui:field="invoicesAnchor">Invoice</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="messagesLink">Message</g:Hyperlink>
+						<g:Anchor ui:field="messagesAnchor">Message</g:Anchor>
 					</li>
 <!--					<li>
-						<g:Hyperlink ui:field="ourPaymentDetailsLink">OurPaymentDetails</g:Hyperlink>
+						<g:Anchor ui:field="ourPaymentDetailsAnchor">OurPaymentDetails</g:Anchor>
 					</li>-->
 					<li>
-						<g:Hyperlink ui:field="paymentMethodsLink">PaymentMethod</g:Hyperlink>
+						<g:Anchor ui:field="paymentMethodsAnchor">PaymentMethod</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="permissionsLink">Permission</g:Hyperlink>
+						<g:Anchor ui:field="permissionsAnchor">Permission</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="preferencesLink">Preference</g:Hyperlink>
+						<g:Anchor ui:field="preferencesAnchor">Preference</g:Anchor>
 					</li>
 					<li>
-						<g:Hyperlink ui:field="problemsLink">Problem</g:Hyperlink>
+						<g:Anchor ui:field="problemsAnchor">Problem</g:Anchor>
 					</li>
 				</ul>
 			</g:HTMLPanel>

@@ -141,7 +141,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     private Column<MessageDetail, Date> createdColumn;
     private Column<MessageDetail, Date> sentColumn;
 
-    public AdminMessagesView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

@@ -31,9 +31,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.PreferenceDetail;
 import java.util.Arrays;
@@ -47,7 +50,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminPreferencesView.class)
 public class AdminPreferencesPresenter
-        extends BasePresenter<AdminPreferencesPresenter.AdminPreferencesInterface, UserEventBus>
+        extends LazyPresenter<AdminPreferencesPresenter.AdminPreferencesInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
@@ -64,7 +67,7 @@ public class AdminPreferencesPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminPreferencesInterface {
+    public interface AdminPreferencesInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -115,7 +118,7 @@ public class AdminPreferencesPresenter
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedPreferences(start, start + length, orderColumns);
                 eventBus.getAdminPreferences(start, start + length);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -147,15 +150,16 @@ public class AdminPreferencesPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminPreferences() {
+    public void onInitPreferences() {
         eventBus.getAdminPreferencesCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabPreferences(List<PreferenceDetail> preferences) {
         dataProvider.updateRowData(start, preferences);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -163,7 +167,7 @@ public class AdminPreferencesPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getValueColumn().setFieldUpdater(new FieldUpdater<PreferenceDetail, String>() {
 
             @Override
@@ -211,11 +215,11 @@ public class AdminPreferencesPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updatePreference(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

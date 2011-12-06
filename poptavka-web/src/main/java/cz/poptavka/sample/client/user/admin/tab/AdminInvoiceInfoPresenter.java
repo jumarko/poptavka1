@@ -10,8 +10,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.google.gwt.user.client.ui.Button;
-import com.mvp4g.client.presenter.BasePresenter;
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.shared.domain.InvoiceDetail;
 
 /**
@@ -20,9 +21,9 @@ import cz.poptavka.sample.shared.domain.InvoiceDetail;
  */
 @Presenter(view = AdminInvoiceInfoView.class)
 public class AdminInvoiceInfoPresenter
-        extends BasePresenter<AdminInvoiceInfoPresenter.AdminInvoiceInfoInterface, UserEventBus> {
+        extends LazyPresenter<AdminInvoiceInfoPresenter.AdminInvoiceInfoInterface, AdminModuleEventBus> {
 
-    public interface AdminInvoiceInfoInterface {
+    public interface AdminInvoiceInfoInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -41,7 +42,7 @@ public class AdminInvoiceInfoPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getUpdateBtn().addClickHandler(new ClickHandler() {
 
             @Override

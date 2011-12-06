@@ -65,7 +65,7 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 
             GWT.log("history name called: " + historyName);
 //            Window.alert("history name called: " + historyName);
-            eventBus.toggleLoading();
+//            eventBus.toggleLoading();
 
             //devel behaviour
             if (historyName.equals(DEMAND_MY)) {

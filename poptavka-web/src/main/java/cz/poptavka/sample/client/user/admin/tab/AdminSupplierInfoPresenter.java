@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -28,8 +28,10 @@ import java.util.List;
  */
 @Presenter(view = AdminSupplierInfoView.class)
 public class AdminSupplierInfoPresenter
-        extends LazyPresenter<AdminSupplierInfoPresenter.AdminSupplierInfoInterface, UserEventBus> {
+        extends LazyPresenter<AdminSupplierInfoPresenter.AdminSupplierInfoInterface, AdminModuleEventBus> {
+
     public interface AdminSupplierInfoInterface extends LazyView {
+
         Widget getWidgetView();
 
         void setSupplierDetail(FullSupplierDetail contact);
@@ -162,8 +164,8 @@ public class AdminSupplierInfoPresenter
             public void onClick(ClickEvent event) {
                 int idx = view.getEditCatList().getSelectedIndex();
                 categoryHistory.add(new String[]{
-                    view.getEditCatList().getValue(idx),
-                    view.getEditCatList().getItemText(idx)});
+                            view.getEditCatList().getValue(idx),
+                            view.getEditCatList().getItemText(idx)});
                 eventBus.getAdminSupplierSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
             }
         });
@@ -173,8 +175,8 @@ public class AdminSupplierInfoPresenter
             public void onClick(ClickEvent event) {
                 int idx = view.getEditLocList().getSelectedIndex();
                 localityHistory.add(new String[]{
-                    view.getEditLocList().getValue(idx),
-                    view.getEditLocList().getItemText(idx)});
+                            view.getEditLocList().getValue(idx),
+                            view.getEditLocList().getItemText(idx)});
                 eventBus.getAdminSupplierSubLocalities(view.getEditLocList().getValue(idx));
             }
         });
@@ -211,7 +213,6 @@ public class AdminSupplierInfoPresenter
             }
         });
     }
-
     private List<String[]> categoryHistory = new ArrayList<String[]>();
     private List<String[]> localityHistory = new ArrayList<String[]>();
     private Boolean alreadyAdded = false;

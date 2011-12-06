@@ -31,9 +31,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import java.util.Arrays;
@@ -47,7 +50,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminClientsView.class)
 public class AdminClientsPresenter
-        extends BasePresenter<AdminClientsPresenter.AdminClientsInterface, UserEventBus>
+        extends LazyPresenter<AdminClientsPresenter.AdminClientsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminClientsPresenter");
@@ -64,7 +67,7 @@ public class AdminClientsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminClientsInterface {
+    public interface AdminClientsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -120,7 +123,7 @@ public class AdminClientsPresenter
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedClients(start, start + length, orderColumns);
                 eventBus.getAdminClients(start, start + length);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -150,15 +153,16 @@ public class AdminClientsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminClients() {
+    public void onInitClients() {
         eventBus.getAdminClientsCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabClients(List<ClientDetail> clients) {
         dataProvider.updateRowData(start, clients);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     public void onResponseAdminClientDetail(Widget widget) {
@@ -166,7 +170,7 @@ public class AdminClientsPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getCompanyColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
 
             @Override
@@ -247,11 +251,11 @@ public class AdminClientsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateClient(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

@@ -32,10 +32,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
-//import cz.poptavka.sample.shared.domain.demand.DemandDetail;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.Verification;
@@ -51,8 +53,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminSuppliersView.class)//, multiple=true)
 public class AdminSuppliersPresenter
-        //      extends LazyPresenter<AdminSuppliersPresenter.AdminSuppliersInterface, UserEventBus>
-        extends BasePresenter<AdminSuppliersPresenter.AdminSuppliersInterface, UserEventBus>
+        extends LazyPresenter<AdminSuppliersPresenter.AdminSuppliersInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminSuppliersPresenter");
@@ -69,7 +70,7 @@ public class AdminSuppliersPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminSuppliersInterface { //extends LazyView {
+    public interface AdminSuppliersInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -103,9 +104,9 @@ public class AdminSuppliersPresenter
     }
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
 
-    public void onInvokeAdminSuppliers() {
+    public void onInitSuppliers() {
         eventBus.getAdminSuppliersCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabSuppliers(List<FullSupplierDetail> suppliers) {
@@ -114,6 +115,7 @@ public class AdminSuppliersPresenter
             GWT.log("suppliers are null");
         }
         dataProvider.updateRowData(start, suppliers);
+        Storage.hideLoading();
     }
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
@@ -131,7 +133,7 @@ public class AdminSuppliersPresenter
                 int length = display.getVisibleRange().getLength();
                 eventBus.getAdminSuppliers(start, start + length);
 //                eventBus.getSortedSuppliers(start, start + length, orderColumns);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -175,8 +177,7 @@ public class AdminSuppliersPresenter
     }
 
     @Override
-    public void bind() {
-//    public void bindView() {
+    public void bindView() {
         view.getSupplierNameColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
 
             @Override
@@ -263,11 +264,12 @@ public class AdminSuppliersPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateSupplier(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

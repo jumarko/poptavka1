@@ -13,14 +13,20 @@ import cz.poptavka.sample.client.resources.StyleResource;
 public class UserView extends Composite implements UserPresenter.UserViewInterface {
 
     private static UserViewUiBinder uiBinder = GWT.create(UserViewUiBinder.class);
-    interface UserViewUiBinder extends UiBinder<Widget, UserView> { }
 
-    @UiField TabLayoutPanel tabLayoutPanel;
-    @UiField SimplePanel demandPanel;
+    interface UserViewUiBinder extends UiBinder<Widget, UserView> {
+    }
+    @UiField
+    TabLayoutPanel tabLayoutPanel;
+    @UiField
+    SimplePanel demandPanel;
     //@UiField SimplePanel oldTabPanel;
-    @UiField SimplePanel adminPanel;
-    @UiField SimplePanel settingsPanel;
-    @UiField SimplePanel messagesTabPanel;
+    @UiField
+    SimplePanel adminPanel;
+    @UiField
+    SimplePanel settingsPanel;
+    @UiField
+    SimplePanel messagesPanel;
 
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -42,8 +48,13 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     }
 
     @Override
+    public void setBodySettings(Widget body) {
+        settingsPanel.setWidget(body);
+    }
+
+    @Override
     public void setBodyMessages(Widget body) {
-        messagesTabPanel.setWidget(body);
+        messagesPanel.setWidget(body);
     }
 
     @Override
@@ -61,6 +72,16 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
         return demandPanel;
     }
 
+    @Override
+    public SimplePanel getMessagesModulePanel() {
+        return messagesPanel;
+    }
+
+    @Override
+    public SimplePanel getAdminModulePanel() {
+        return adminPanel;
+    }
+
     public SimplePanel getSettingsPanel() {
         return settingsPanel;
     }
@@ -68,9 +89,4 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
     public void setSettingsPanel(SimplePanel settingsPanel) {
         this.settingsPanel = settingsPanel;
     }
-
-    public void setBodySettings(Widget body) {
-        settingsPanel.setWidget(body);
-    }
-
 }

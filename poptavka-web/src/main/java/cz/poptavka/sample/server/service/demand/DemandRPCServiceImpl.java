@@ -595,7 +595,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                         calendarDate.add(Calendar.DATE, -7);  //last week
                         break;
                     case 3:
-                        calendarDate.add(Calendar.DATE, -30);  //last month
+                        calendarDate.add(Calendar.MONTH, -1);  //last month
                         break;
                     default:;
                 }

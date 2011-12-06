@@ -4,6 +4,8 @@
  */
 package cz.poptavka.sample.shared.domain.message;
 
+import com.google.gwt.view.client.ProvidesKey;
+import cz.poptavka.sample.client.user.messages.tab.MessageTableDisplay;
 import cz.poptavka.sample.domain.message.UserMessage;
 import java.io.Serializable;
 
@@ -11,15 +13,20 @@ import java.io.Serializable;
  *
  * @author Martin Slavkovsky
  */
-public class UserMessageDetail implements Serializable {
+public class UserMessageDetail implements Serializable, MessageTableDisplay {
 
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -928374659233195109L;
+    private Long id;
     private boolean isRead;
     private boolean isStarred;
     private MessageDetail messageDetail;
+    private String senderEmail;
+
+    private int messageCount;
+    private int unreadMessageCount;
 
     public UserMessageDetail() {
     }
@@ -29,37 +36,46 @@ public class UserMessageDetail implements Serializable {
     }
 
     public static UserMessageDetail createUserMessageDetail(UserMessage userMessage) {
-        return fillUserMessageDetail(new UserMessageDetail(), userMessage);
-    }
-
-    public static UserMessageDetail fillUserMessageDetail(UserMessageDetail detail, UserMessage userMessage) {
-        detail.setIsRead(userMessage.isIsRead());
-        detail.setIsStarred(userMessage.isIsStarred());
+        UserMessageDetail detail = new UserMessageDetail();
+        detail.setId(userMessage.getId());
+        detail.setRead(userMessage.isIsRead());
+        detail.setStarred(userMessage.isIsStarred());
         detail.setMessageDetail(MessageDetail.createMessageDetail(userMessage.getMessage()));
+        detail.setSenderEmail(userMessage.getUser().getEmail());
 
         return detail;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeUserMessage(UserMessageDetail detail) {
+        id = detail.getId();
         isRead = detail.isRead();
-        isStarred = detail.isIsStarred();
+        isStarred = detail.isStarred();
         messageDetail = detail.getMessageDetail();
+        senderEmail = detail.getSenderEmail();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean isRead() {
         return isRead;
     }
 
-    public void setIsRead(boolean isRead) {
+    public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
 
-    public boolean isIsStarred() {
+    public boolean isStarred() {
         return isStarred;
     }
 
-    public void setIsStarred(boolean isStarred) {
+    public void setStarred(boolean isStarred) {
         this.isStarred = isStarred;
     }
 
@@ -69,6 +85,41 @@ public class UserMessageDetail implements Serializable {
 
     public void setMessageDetail(MessageDetail messageDetail) {
         this.messageDetail = messageDetail;
+    }
+
+    @Override
+    public String getSenderEmail() {
+        return senderEmail;
+    }
+
+    public void setSenderEmail(String senderEmail) {
+        this.senderEmail = senderEmail;
+    }
+
+    @Override
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    @Override
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
+    }
+
+    @Override
+    public int getUnreadMessageCount() {
+        return unreadMessageCount;
+    }
+
+    @Override
+    public void setUnreadMessageCount(int unreadMessageCount) {
+        this.unreadMessageCount = unreadMessageCount;
+    }
+
+    @Override
+    public String getFormattedMessageCount() {
+        return "(" + getMessageCount() + "/"
+                + getUnreadMessageCount() + ")";
     }
 
     public String toString() {
@@ -95,4 +146,11 @@ public class UserMessageDetail implements Serializable {
             return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
         }
     }
+    public static final ProvidesKey<UserMessageDetail> KEY_PROVIDER = new ProvidesKey<UserMessageDetail>() {
+
+        @Override
+        public Object getKey(UserMessageDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
 }

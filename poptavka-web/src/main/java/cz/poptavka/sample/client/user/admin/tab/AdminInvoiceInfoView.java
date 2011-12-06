@@ -53,7 +53,8 @@ public class AdminInvoiceInfoView extends Composite implements
         return updateButton;
     }
 
-    public AdminInvoiceInfoView() {
+    @Override
+    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         initInvoiceInfoForm();
     }

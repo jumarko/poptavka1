@@ -109,7 +109,8 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     private Column<AccessRoleDetail, String> descriptionColumn;
     private Column<AccessRoleDetail, String> permissionsColumn;
 
-    public AdminAccessRolesView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

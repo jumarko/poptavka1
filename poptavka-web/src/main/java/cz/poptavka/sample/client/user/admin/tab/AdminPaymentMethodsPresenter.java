@@ -30,9 +30,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
 import java.util.Arrays;
@@ -46,7 +49,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminPaymentMethodsView.class)
 public class AdminPaymentMethodsPresenter
-        extends BasePresenter<AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface, UserEventBus>
+        extends LazyPresenter<AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminPaymentDescriptionPresenter");
@@ -63,7 +66,7 @@ public class AdminPaymentMethodsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminPaymentMethodsInterface {
+    public interface AdminPaymentMethodsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -112,7 +115,7 @@ public class AdminPaymentMethodsPresenter
                 int length = display.getVisibleRange().getLength();
                 eventBus.getAdminPaymentMethods(start, start + length);
 //                eventBus.getSortedDemands(start, start + length, orderColumns);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -144,19 +147,20 @@ public class AdminPaymentMethodsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminPaymentMethods() {
+    public void onInitPaymentMethods() {
         eventBus.getAdminPaymentMethodsCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabPaymentMethods(List<PaymentMethodDetail> lis) {
         dataProvider.updateRowData(start, lis);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getNameColumn().setFieldUpdater(new FieldUpdater<PaymentMethodDetail, String>() {
 
             @Override
@@ -204,11 +208,11 @@ public class AdminPaymentMethodsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
 //                        eventBus.updatePaymentDescription(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

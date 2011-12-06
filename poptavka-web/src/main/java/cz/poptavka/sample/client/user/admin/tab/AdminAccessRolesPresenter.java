@@ -32,9 +32,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
 import java.util.Arrays;
@@ -48,7 +51,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminAccessRolesView.class)
 public class AdminAccessRolesPresenter
-        extends BasePresenter<AdminAccessRolesPresenter.AdminAccessRolesInterface, UserEventBus>
+        extends LazyPresenter<AdminAccessRolesPresenter.AdminAccessRolesInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminAccessRolesPresenter");
@@ -65,7 +68,7 @@ public class AdminAccessRolesPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminAccessRolesInterface {
+    public interface AdminAccessRolesInterface  extends LazyView {
 
         Widget getWidgetView();
 
@@ -116,7 +119,7 @@ public class AdminAccessRolesPresenter
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedAccessRoles(start, start + length, orderColumns);
                 eventBus.getAdminAccessRoles(start, start + length);
-                eventBus.loadingHide();
+                Storage.showLoading(Storage.MSGS.getAccessRoleData());
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -146,19 +149,20 @@ public class AdminAccessRolesPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminAccessRoles() {
+    public void onInitAccessRoles() {
         eventBus.getAdminAccessRolesCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabAccessRoles(List<AccessRoleDetail> accessRoles) {
         dataProvider.updateRowData(start, accessRoles);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getNameColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
 
             @Override
@@ -233,11 +237,11 @@ public class AdminAccessRolesPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateAccessRole(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

@@ -180,7 +180,7 @@ public class AllDemandsPresenter extends BasePresenter<AllDemandsPresenter.Deman
                 orderColumns.put("title", OrderType.ASC);
 
                 if (resultSource.equals("all")) {
-                    eventBus.getSortedDemands(start, start + length, orderColumns);
+//                    eventBus.getSortedDemands(start, start + length, orderColumns);
                 } else if (resultSource.equals("category")) {
                     eventBus.getDemandsByCategories(start, start + length,
                             Long.valueOf(view.getCategoryList().getValue(

@@ -10,14 +10,12 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
-import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
-import java.util.Map;
 
 /**
  *
@@ -49,6 +47,9 @@ public interface MessageRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus);
 
-    List<UserMessageDetail> getMessagesByState(List<String> states,
-            Map<String, OrderType> orderColumns, Boolean negation);
+    List<UserMessageDetail> getInboxMessages(Long recipientId);
+
+    List<UserMessageDetail> getSentMessages(Long senderId);
+
+    List<UserMessageDetail> getDeletedMessages(Long userId);
 }

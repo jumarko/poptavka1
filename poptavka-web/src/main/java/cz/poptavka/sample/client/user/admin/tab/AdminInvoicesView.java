@@ -28,7 +28,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.InvoiceDetail;
 
-
 /**
  *
  * @author Martin Slavkovsky
@@ -48,7 +47,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     public Column<InvoiceDetail, String> getPriceColumn() {
         return priceColumn;
     }
-/**
+
+    /**
      * @return the invoice number Column
      */
     @Override
@@ -71,7 +71,6 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     public Column<InvoiceDetail, String> getPaymentMethodColumn() {
         return payMethodColumn;
     }
-
 
     @Override
     public Widget getWidgetView() {
@@ -128,7 +127,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     private Column<InvoiceDetail, String> payMethodColumn;
     private Column<InvoiceDetail, String> invoiceNumberColumn;
 
-    public AdminInvoicesView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

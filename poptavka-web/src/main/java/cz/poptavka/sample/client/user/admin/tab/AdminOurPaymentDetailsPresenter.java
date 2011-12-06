@@ -32,9 +32,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.PaymentDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -51,7 +54,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminOurPaymentDetailsView.class)
 public class AdminOurPaymentDetailsPresenter
-        extends BasePresenter<AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface, UserEventBus>
+        extends LazyPresenter<AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
@@ -68,7 +71,7 @@ public class AdminOurPaymentDetailsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminOurPaymentDetailsInterface {
+    public interface AdminOurPaymentDetailsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -102,7 +105,6 @@ public class AdminOurPaymentDetailsPresenter
 
         ListBox getPageSizeCombo();
     }
-
     private AsyncDataProvider dataProvider = null;
     private AsyncHandler sortHandler = null;
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
@@ -126,7 +128,7 @@ public class AdminOurPaymentDetailsPresenter
                 int length = display.getVisibleRange().getLength();
                 eventBus.getAdminOurPaymentDetails(start, start + length);
 //                eventBus.getSortedOurPaymentDetails(start, start + length, orderColumns);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -158,15 +160,16 @@ public class AdminOurPaymentDetailsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminOurPaymentDetails() {
+    public void onInitOurPaymentDetails() {
 //        eventBus.getAdminDemandsOurPaymentDetails();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabOurPaymentDetails(List<PaymentDetail> paymentDetailList) {
         dataProvider.updateRowData(start, paymentDetailList);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -174,7 +177,7 @@ public class AdminOurPaymentDetailsPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
 
             @Override
@@ -276,11 +279,11 @@ public class AdminOurPaymentDetailsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
 //                        eventBus.updateOurPaymentDetail(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

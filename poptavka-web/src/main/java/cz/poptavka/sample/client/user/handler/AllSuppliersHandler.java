@@ -148,7 +148,7 @@ public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onSuccess(ArrayList<FullSupplierDetail> result) {
-                        eventBus.displayAdminTabSuppliers(result);
+//                        eventBus.displayAdminTabSuppliers(result);
                     }
                 });
     }
@@ -163,7 +163,7 @@ public class AllSuppliersHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onSuccess(ArrayList<FullSupplierDetail> result) {
-                eventBus.displayAdminTabSuppliers(result);
+//                eventBus.displayAdminTabSuppliers(result);
             }
         });
     }

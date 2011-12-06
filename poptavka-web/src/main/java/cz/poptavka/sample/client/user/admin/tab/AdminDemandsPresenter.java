@@ -32,9 +32,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
@@ -50,7 +53,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminDemandsView.class)
 public class AdminDemandsPresenter
-        extends BasePresenter<AdminDemandsPresenter.AdminDemandsInterface, UserEventBus>
+        extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
@@ -67,7 +70,7 @@ public class AdminDemandsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminDemandsInterface {
+    public interface AdminDemandsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -124,7 +127,7 @@ public class AdminDemandsPresenter
                 int length = display.getVisibleRange().getLength();
                 eventBus.getAdminDemands(start, start + length);
 //                eventBus.getSortedDemands(start, start + length, orderColumns);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -155,15 +158,16 @@ public class AdminDemandsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminDemands() {
+    public void onInitDemands() {
         eventBus.getAdminDemandsCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabDemands(List<FullDemandDetail> demands) {
         dataProvider.updateRowData(start, demands);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -171,7 +175,7 @@ public class AdminDemandsPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
 
             @Override
@@ -273,11 +277,11 @@ public class AdminDemandsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateDemand(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -14,21 +14,21 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public class MessagesLayoutView extends Composite
-        implements MessagesLayoutPresenter.MessagesLayoutInterface, StyleInterface {
+public class MessagesModuleView extends Composite
+        implements MessagesModulePresenter.MessagesLayoutInterface, StyleInterface {
 
-    private static DemandsLayoutViewUiBinder uiBinder = GWT.create(DemandsLayoutViewUiBinder.class);
+    private static MessagesModuleViewUiBinder uiBinder = GWT.create(MessagesModuleViewUiBinder.class);
 
-    interface DemandsLayoutViewUiBinder extends UiBinder<Widget, MessagesLayoutView> {
+    interface MessagesModuleViewUiBinder extends UiBinder<Widget, MessagesModuleView> {
     }
-    private static final Logger LOGGER = Logger.getLogger(MessagesLayoutView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MessagesModuleView.class.getName());
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Hyperlink inboxLink, sentLink, trashLink;
+    Anchor inboxAnchor, sentAnchor, trashAnchor;
 
-    public MessagesLayoutView() {
+    public MessagesModuleView() {
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -44,18 +44,18 @@ public class MessagesLayoutView extends Composite
     }
 
     @Override
-    public void setInboxToken(String linkString) {
-        inboxLink.setTargetHistoryToken(linkString);
+    public Anchor getInboxAnchor() {
+        return inboxAnchor;
     }
 
     @Override
-    public void setSentToken(String linkString) {
-        sentLink.setTargetHistoryToken(linkString);
+    public Anchor getSentAnchor() {
+        return sentAnchor;
     }
 
     @Override
-    public void setTrashToken(String linkString) {
-        trashLink.setTargetHistoryToken(linkString);
+    public Anchor getTrashAnchor() {
+        return trashAnchor;
     }
 
     /** toggle visible actions/buttons for current user decided by his role. **/

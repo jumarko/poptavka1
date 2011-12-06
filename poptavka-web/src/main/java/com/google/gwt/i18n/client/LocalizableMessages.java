@@ -102,6 +102,8 @@ public interface LocalizableMessages extends Messages {
     String progressGetUserDetail();
     String progressCreatingUserInterface();
     String progressDemandsLayoutInit();
+    String progressMessagesLayoutInit();
+    String progressAdminLayoutInit();
     String notEntered();
 
     //used in displying demands
@@ -123,4 +125,20 @@ public interface LocalizableMessages extends Messages {
 
     String client();
     String emptyTable();
+
+    //Admin module
+    String getDemandsData();
+    String getClientsData();
+    String getOffersData();
+    String getSuppliersData();
+    String getAccessRoleData();
+    String getEmailActivationData();
+    String getInvoiceData();
+    String getMessageData();
+    String getPaymentMethodData();
+    String getPermissionData();
+    String getPreferenceData();
+    String getProblemData();
+    String commit();
+
 }

@@ -126,7 +126,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private Column<ClientDetail, String> lastNameColumn;
     private Column<ClientDetail, String> ratingColumn;
 
-    public AdminClientsView() {
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

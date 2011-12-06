@@ -86,7 +86,8 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
     private Column<ProblemDetail, String> stateColumn;
     private Column<ProblemDetail, Date> dateColumn;
 
-    public AdminProblemsView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

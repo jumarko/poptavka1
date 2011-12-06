@@ -13,8 +13,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.mvp4g.client.presenter.BasePresenter;
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -27,9 +28,9 @@ import java.util.List;
  */
 @Presenter(view = AdminDemandInfoView.class)
 public class AdminDemandInfoPresenter
-        extends BasePresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, UserEventBus> {
+        extends LazyPresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, AdminModuleEventBus> {
 
-    public interface AdminDemandInfoInterface {
+    public interface AdminDemandInfoInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -81,7 +82,7 @@ public class AdminDemandInfoPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getUpdateBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -162,8 +163,8 @@ public class AdminDemandInfoPresenter
             public void onClick(ClickEvent event) {
                 int idx = view.getEditCatList().getSelectedIndex();
                 categoryHistory.add(new String[]{
-                    view.getEditCatList().getValue(idx),
-                    view.getEditCatList().getItemText(idx)});
+                            view.getEditCatList().getValue(idx),
+                            view.getEditCatList().getItemText(idx)});
                 eventBus.getAdminDemandSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
             }
         });
@@ -173,8 +174,8 @@ public class AdminDemandInfoPresenter
             public void onClick(ClickEvent event) {
                 int idx = view.getEditLocList().getSelectedIndex();
                 localityHistory.add(new String[]{
-                    view.getEditLocList().getValue(idx),
-                    view.getEditLocList().getItemText(idx)});
+                            view.getEditLocList().getValue(idx),
+                            view.getEditLocList().getItemText(idx)});
                 eventBus.getAdminDemandSubLocalities(view.getEditLocList().getValue(idx));
             }
         });

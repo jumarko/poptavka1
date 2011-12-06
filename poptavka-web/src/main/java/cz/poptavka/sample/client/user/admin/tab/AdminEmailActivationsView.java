@@ -38,7 +38,7 @@ import java.util.Date;
  * @author Martin Slavkovsky
  */
 public class AdminEmailActivationsView extends Composite
-    implements AdminEmailActivationsPresenter.AdminEmailActivationsInterface {
+        implements AdminEmailActivationsPresenter.AdminEmailActivationsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
     @UiField
@@ -115,7 +115,8 @@ public class AdminEmailActivationsView extends Composite
     private Column<EmailActivationDetail, String> activationColumn;
     private Column<EmailActivationDetail, Date> timeoutColumn;
 
-    public AdminEmailActivationsView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

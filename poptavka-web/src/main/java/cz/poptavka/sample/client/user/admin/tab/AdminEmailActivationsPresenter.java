@@ -32,9 +32,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.EmailActivationDetail;
 import java.util.Arrays;
@@ -48,7 +51,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminEmailActivationsView.class)
 public class AdminEmailActivationsPresenter
-        extends BasePresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, UserEventBus>
+        extends LazyPresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminEmailActivationPresenter");
@@ -65,7 +68,7 @@ public class AdminEmailActivationsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminEmailActivationsInterface {
+    public interface AdminEmailActivationsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -116,7 +119,7 @@ public class AdminEmailActivationsPresenter
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedEmailsActivation(start, start + length, orderColumns);
                 eventBus.getAdminEmailsActivation(start, start + length);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -148,15 +151,16 @@ public class AdminEmailActivationsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminEmailActivations() {
+    public void onInitEmailsActivation() {
         eventBus.getAdminEmailsActivationCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabEmailsActivation(List<EmailActivationDetail> demands) {
         dataProvider.updateRowData(start, demands);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -164,7 +168,7 @@ public class AdminEmailActivationsPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getActivationLinkColumn().setFieldUpdater(new FieldUpdater<EmailActivationDetail, String>() {
 
             @Override
@@ -212,11 +216,11 @@ public class AdminEmailActivationsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateEmailActivation(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

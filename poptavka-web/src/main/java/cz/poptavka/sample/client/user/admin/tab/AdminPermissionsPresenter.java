@@ -31,9 +31,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.PermissionDetail;
 import java.util.Arrays;
@@ -47,7 +50,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminPermissionsView.class)
 public class AdminPermissionsPresenter
-        extends BasePresenter<AdminPermissionsPresenter.AdminPermissionsInterface, UserEventBus>
+        extends LazyPresenter<AdminPermissionsPresenter.AdminPermissionsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
@@ -64,7 +67,7 @@ public class AdminPermissionsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminPermissionsInterface {
+    public interface AdminPermissionsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -115,7 +118,7 @@ public class AdminPermissionsPresenter
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedPermissions(start, start + length, orderColumns);
                 eventBus.getAdminPermissions(start, start + length);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -147,15 +150,16 @@ public class AdminPermissionsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminPermissions() {
+    public void onInitPermissions() {
         eventBus.getAdminPermissionsCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabPermissions(List<PermissionDetail> permissions) {
         dataProvider.updateRowData(start, permissions);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
@@ -163,7 +167,7 @@ public class AdminPermissionsPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getNameColumn().setFieldUpdater(new FieldUpdater<PermissionDetail, String>() {
 
             @Override
@@ -211,11 +215,11 @@ public class AdminPermissionsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updatePermission(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

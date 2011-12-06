@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
-import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageState;
+import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
@@ -254,8 +254,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 //        OfferDetail offerDetailPersisted = OfferDetail.generateOfferDetail(m);
 //        // create UserMessage for Client receiving this message
 //        UserMessage userMessage = new UserMessage();
-//        userMessage.setIsRead(false);
-//        userMessage.setIsStarred(false);
+//        userMessage.setRead(false);
+//        userMessage.setStarred(false);
 //        userMessage.setMessage(m);
 //        userMessage.setUser(receiver);
 //        generalService.save(userMessage);
@@ -346,10 +346,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         for (UserMessage um : userMessages) {
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
-            detail.setMessageCount(messageService
-                    .getAllDescendantsCount(um.getMessage(), businessUser));
-            detail.setUnreadMessageCount(messageService
-                    .getUnreadDescendantsCount(um.getMessage(), businessUser));
+            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
+            detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
             potentailDemands.add(detail);
         }
         return potentailDemands;
@@ -431,38 +429,60 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return result;
     }
 
-    public List<UserMessageDetail> getMessagesByState(List<String> states,
-            Map<String, OrderType> orderColumns, Boolean negation) {
-        Search search = new Search(UserMessage.class);
-        for (String state : states) {
-            if (negation) {
-//                search.addFilterNotEqual("message.messageState.value", state);
-                search.addFilterNotEqual("message.messageState", MessageState.valueOf(state));
-            } else {
-//                search.addFilterEqual("message.messageState.value", state);
-                search.addFilterEqual("message.messageState", MessageState.valueOf(state));
-            }
-
-        }
-        /** sort **/
-        if (orderColumns != null) {
-            for (String item : orderColumns.keySet()) {
-                if (orderColumns.get(item).getValue().equals(OrderType.ASC.getValue())) {
-                    search.addSortAsc(item, true);
-                } else {
-                    search.addSortDesc(item, true);
-                }
-            }
-        }
-        return this.createUserMessageDetailList(generalService.search(search));
-    }
-
     private List<UserMessageDetail> createUserMessageDetailList(Collection<UserMessage> userMessages) {
-        List<UserMessageDetail> fullDemandDetails = new ArrayList<UserMessageDetail>();
+        List<UserMessageDetail> userMessageDetails = new ArrayList<UserMessageDetail>();
         for (UserMessage userMessage : userMessages) {
             UserMessageDetail demandDetail = UserMessageDetail.createUserMessageDetail(userMessage);
-            fullDemandDetails.add(demandDetail);
+            userMessageDetails.add(demandDetail);
         }
-        return fullDemandDetails;
+        return userMessageDetails;
+    }
+
+    public List<UserMessageDetail> getInboxMessages(Long recipientId) {
+        Search search = new Search(MessageUserRole.class);
+        search.addFilterIn("type", Arrays.asList(
+                MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
+        search.addFilterEqual("user", generalService.find(User.class, recipientId));
+        search.setDistinct(true);
+        search.addSort("message.sent", true);
+        List<MessageUserRole> messageUserRoles = generalService.search(search);
+        List<UserMessageDetail> messageDetails = new ArrayList<UserMessageDetail>();
+        for (MessageUserRole messageUserRole : messageUserRoles) {
+            Search searchUserMessage = new Search(UserMessage.class);
+            searchUserMessage.addFilterEqual("user", generalService.find(User.class,
+                    messageUserRole.getUser().getId()));
+            List<UserMessage> users = generalService.search(searchUserMessage);
+            for (UserMessage userMessage : users) {
+                PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(userMessage);
+                detail.setMessageCount(messageService.getAllDescendantsCount(
+                        userMessage.getMessage(), userMessage.getUser()));
+                detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(
+                        userMessage.getMessage(), userMessage.getUser()));
+                messageDetails.add(UserMessageDetail.createUserMessageDetail(userMessage));
+            }
+        }
+        return messageDetails;
+    }
+
+    public List<UserMessageDetail> getSentMessages(Long senderId) {
+        Search search = new Search(Message.class);
+        search.addFilterEqual("sender", generalService.find(User.class, senderId));
+        search.addSort("sent", true);
+        List<Message> messages = generalService.search(search);
+        List<UserMessageDetail> messageDetails = new ArrayList<UserMessageDetail>();
+        for (Message message : messages) {
+            messageDetails.add(UserMessageDetail.createUserMessageDetail(
+                    generalService.find(UserMessage.class, message.getId())));
+        }
+        return messageDetails;
+    }
+
+    public List<UserMessageDetail> getDeletedMessages(Long userId) {
+        Search search = new Search(UserMessage.class);
+        search.addFilterEqual("user", generalService.find(User.class, userId));
+        search.addFilterEqual("message.messageState", MessageState.DELETED);
+        //TODO Martin - created alebo lastModified? Ak reply tak sa zmeni lastModified?
+        search.addSort("created", true);
+        return this.createUserMessageDetailList(generalService.search(search));
     }
 }

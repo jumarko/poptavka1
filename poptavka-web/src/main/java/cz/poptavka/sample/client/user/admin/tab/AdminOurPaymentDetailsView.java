@@ -44,7 +44,7 @@ import java.util.List;
  * @author Martin Slavkovsky
  */
 public class AdminOurPaymentDetailsView extends Composite
-    implements AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface {
+        implements AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
     @UiField
@@ -148,7 +148,8 @@ public class AdminOurPaymentDetailsView extends Composite
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
 
-    public AdminOurPaymentDetailsView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

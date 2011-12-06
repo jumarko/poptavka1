@@ -12,7 +12,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.google.gwt.user.client.ui.Button;
-import cz.poptavka.sample.client.user.UserEventBus;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 
 /**
@@ -21,7 +21,7 @@ import cz.poptavka.sample.shared.domain.ClientDetail;
  */
 @Presenter(view = AdminClientInfoView.class)
 public class AdminClientInfoPresenter
-        extends LazyPresenter<AdminClientInfoPresenter.AdminClientInfoInterface, UserEventBus> {
+        extends LazyPresenter<AdminClientInfoPresenter.AdminClientInfoInterface, AdminModuleEventBus> {
 
     public interface AdminClientInfoInterface extends LazyView {
 

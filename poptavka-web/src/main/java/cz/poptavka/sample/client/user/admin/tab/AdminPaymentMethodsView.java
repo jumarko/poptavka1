@@ -90,7 +90,8 @@ public class AdminPaymentMethodsView extends Composite
     private Column<PaymentMethodDetail, String> nameColumn;
     private Column<PaymentMethodDetail, String> descriptionColumn;
 
-    public AdminPaymentMethodsView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

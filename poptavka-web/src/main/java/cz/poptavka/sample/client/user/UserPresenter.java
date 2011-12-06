@@ -52,9 +52,9 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             @Override
             public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
                 if (event.getItem().intValue() == ADMIN_SECTION) {
-                    eventBus.initAdmin();
+                    eventBus.initAdminModule(view.getAdminModulePanel());
                 } else if (event.getItem().intValue() == MESSAGES_SECTION) {
-                    eventBus.initMessages();
+                    eventBus.initMessagesModule(view.getMessagesModulePanel());
                 } else if (event.getItem().intValue() == SETTINGS_SECTION) {
                     eventBus.initSettings();
                 }
@@ -62,9 +62,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         });
 
     }
-
     private static final Logger LOGGER = Logger.getLogger("UserPresenter");
-
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface UserViewInterface extends LazyView {
@@ -82,10 +80,12 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         void setBodySettings(Widget body);
 
         SimplePanel getDemandModulePanel();
+
+        SimplePanel getMessagesModulePanel();
+
+        SimplePanel getAdminModulePanel();
     }
-
     private UserDetail user = null;
-
     private String eventMarkedToFire;
     private boolean fireMarkedEvent = false;
 
@@ -172,7 +172,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
 
     public void onMarkEventToLoad(String historyName) {
         fireMarkedEvent = true;
-        this.eventMarkedToFire  = historyName;
+        this.eventMarkedToFire = historyName;
     }
 
     public void onClearUserOnUnload() {
@@ -215,10 +215,12 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
             accessDenied();
         }
     }
+
     public void onBubbleMessageSending(MessageDetail messageToSend, ViewType viewType) {
         messageToSend.setSenderId(user.getUserId());
         eventBus.sendMessageToPotentialDemand(messageToSend, viewType);
     }
+
     public void onBubbleOfferSending(OfferMessageDetail offerToSend) {
         if (user.getRoleList().contains(Role.SUPPLIER)) {
             offerToSend.setSenderId(user.getUserId());
@@ -229,7 +231,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
     }
 
- // TODO delete for production
+    // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         final DialogBox userInfoPanel = new DialogBox(false, false);
         userInfoPanel.setText("User Info Box");
@@ -271,6 +273,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         HTML content = new HTML(sb.toString());
         Button closeButton = new Button("Close");
         closeButton.addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 userInfoPanel.hide();

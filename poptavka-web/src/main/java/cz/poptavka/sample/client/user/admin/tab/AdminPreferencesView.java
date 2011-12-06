@@ -110,7 +110,8 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
     private Column<PreferenceDetail, String> valueColumn;
     private Column<PreferenceDetail, String> descriptionColumn;
 
-    public AdminPreferencesView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

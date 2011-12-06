@@ -146,7 +146,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
 
-    public AdminDemandsView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

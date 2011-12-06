@@ -30,9 +30,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.user.UserEventBus;
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.ProblemDetail;
 import java.util.Arrays;
@@ -46,7 +49,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminProblemsView.class)
 public class AdminProblemsPresenter
-        extends BasePresenter<AdminProblemsPresenter.AdminProblemsInterface, UserEventBus>
+        extends LazyPresenter<AdminProblemsPresenter.AdminProblemsInterface, AdminModuleEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminProblemsPresenter");
@@ -63,7 +66,7 @@ public class AdminProblemsPresenter
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public interface AdminProblemsInterface {
+    public interface AdminProblemsInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -110,7 +113,7 @@ public class AdminProblemsPresenter
                 int length = display.getVisibleRange().getLength();
                 eventBus.getAdminProblems(start, start + length);
 //                eventBus.getSortedProblems(start, start + length, ordersColumn);
-                eventBus.loadingHide();
+                Storage.hideLoading();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -142,19 +145,20 @@ public class AdminProblemsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInvokeAdminProblems() {
+    public void onInitProblems() {
         eventBus.getAdminProblemsCount();
-        eventBus.displayAdminContent(view.getWidgetView());
+        eventBus.displayView(view.getWidgetView());
     }
 
     public void onDisplayAdminTabProblems(List<ProblemDetail> problems) {
         dataProvider.updateRowData(start, problems);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
+        Storage.hideLoading();
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getTextColumn().setFieldUpdater(new FieldUpdater<ProblemDetail, String>() {
 
             @Override
@@ -196,11 +200,11 @@ public class AdminProblemsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     view.getDataGrid().setFocus(true);
-                    eventBus.loadingShow("Commiting");
+                    Storage.showLoading(Storage.MSGS.commit());
                     for (Long idx : dataToUpdate.keySet()) {
                         eventBus.updateProblem(dataToUpdate.get(idx));
                     }
-                    eventBus.loadingHide();
+                    Storage.hideLoading();
                     dataToUpdate.clear();
                     originalData.clear();
                     Window.alert("Changes commited");

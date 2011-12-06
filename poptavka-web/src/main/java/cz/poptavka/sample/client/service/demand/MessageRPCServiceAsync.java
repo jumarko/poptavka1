@@ -5,7 +5,6 @@
 package cz.poptavka.sample.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
@@ -15,7 +14,6 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -49,6 +47,9 @@ public interface MessageRPCServiceAsync {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
-    void getMessagesByState(List<String> states, Map<String, OrderType> orderColumns, Boolean negation,
-            AsyncCallback<List<UserMessageDetail>> callback);
+    void getInboxMessages(Long recipientId, AsyncCallback<List<UserMessageDetail>> callback);
+
+    void getSentMessages(Long senderId, AsyncCallback<List<UserMessageDetail>> callback);
+
+    void getDeletedMessages(Long userId, AsyncCallback<List<UserMessageDetail>> callback);
 }
