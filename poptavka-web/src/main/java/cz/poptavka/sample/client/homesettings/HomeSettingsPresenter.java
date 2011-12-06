@@ -110,23 +110,30 @@ public class HomeSettingsPresenter
         view.getCompanyName().setText(detail.getCompanyName());
         view.getClientRating().setText(
                 Integer.toString(detail.getClientRating()));
-        view.getSupplierRating().setText(
-                Integer.toString(detail.getSupplier().getOverallRating()));
+        if (detail.getSupplier() != null
+                && detail.getSupplier().getOverallRating() != null) {
+            view.getSupplierRating().setText(
+                    Integer.toString(detail.getSupplier().getOverallRating()));
+        }
         view.getStreet().setText(detail.getAddresses().get(0).getStreet());
         view.getCity().setText(detail.getAddresses().get(0).getCityName());
         view.getZipCode().setText(detail.getAddresses().get(0).getZipCode());
 
         StringBuilder categoryBuilder = new StringBuilder();
-        for (String category : detail.getSupplier().getCategories()) {
-            categoryBuilder.append(category);
-            categoryBuilder.append("\n");
+        if (detail.getSupplier() != null) {
+            for (String category : detail.getSupplier().getCategories()) {
+                categoryBuilder.append(category);
+                categoryBuilder.append("\n");
+            }
         }
         view.getCategoriesBox().setText(categoryBuilder.toString());
 
         StringBuilder localitiesBuilder = new StringBuilder();
-        for (String locality : detail.getSupplier().getLocalities()) {
-            localitiesBuilder.append(locality);
-            localitiesBuilder.append("\n");
+        if (detail.getSupplier() != null) {
+            for (String locality : detail.getSupplier().getLocalities()) {
+                localitiesBuilder.append(locality);
+                localitiesBuilder.append("\n");
+            }
         }
         view.getLocalitiesBox().setText(localitiesBuilder.toString());
         view.getEmail().setText(detail.getEmail());

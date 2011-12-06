@@ -12,7 +12,7 @@ public class SupplierDetail implements Serializable {
     private static final long serialVersionUID = -8271479725303195283L;
 
     private Long supplierId;
-    private int overallRating;
+    private Integer overallRating;
     private boolean certified;
     private String description;
     private ArrayList<String> localities;
@@ -22,7 +22,7 @@ public class SupplierDetail implements Serializable {
     public SupplierDetail() {
     }
 
-    public int getOverallRating() {
+    public Integer getOverallRating() {
         return overallRating;
     }
 
