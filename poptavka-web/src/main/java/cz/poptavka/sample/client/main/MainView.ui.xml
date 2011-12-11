@@ -23,7 +23,7 @@
 				<div style="margin: auto; width: 1075px; position: relative; height: 110px;">
 					<!-- Logo -->
 					<div
-						style="position: absolute; background: url(/images/logo.png) no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;"></div>
+						style="position: absolute; background: url(images/logo.png) no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;"></div>
 					<!-- end Logo -->
 					
 					<!-- Login Button -->
