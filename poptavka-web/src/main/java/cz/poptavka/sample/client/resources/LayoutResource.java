@@ -32,6 +32,20 @@ public interface LayoutResource extends CssResource {
     /** UserView.class **/
     @ClassName("full-size-panel")
     String fullSize();
+    @ClassName("tab-layout-container")
+    String tabLayoutContainer();
+    @ClassName("tab-layout-panel")
+    String tabLayoutPanel();
+    @ClassName("demand-tab-content")
+    String demandTabContent();
+    @ClassName("demand-tab-content-header")
+    String demandTabContentHeader();
+    @ClassName("pager")
+    String pager();
+    @ClassName("submenu-header")
+    String submenuHeader();
+    @ClassName("submenu-list")
+    String submenuList();
 
     /** DemandCreation.class **/
     @ClassName("stackLayout")

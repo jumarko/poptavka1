@@ -35,6 +35,7 @@ public class UserView extends Composite implements UserPresenter.UserViewInterfa
          */
         StyleResource.INSTANCE.layout().ensureInjected();
         tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().fullSize());
+        tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().tabLayoutContainer());
     }
 
     @Override
