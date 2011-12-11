@@ -1,14 +1,11 @@
 package cz.poptavka.sample.client.home;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.SimplePanel;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -19,9 +16,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
-import cz.poptavka.sample.client.main.common.search.AdvancedSearchView;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchView;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import java.util.ArrayList;
@@ -34,15 +28,15 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public interface HomeInterface extends LazyView {
 
-        SearchView getSearchView();
-
-        AdvancedSearchView getAdvancedSearchView();
-
+//        SearchModuleView getSearchView();
+//        AdvancedSearchView getAdvancedSearchView();
         Widget getWidgetView();
 
         void setHomeToken(String token);
 
         void setBody(Widget content);
+
+        SimplePanel getSearchPanel();
 
         HasClickHandlers getDemandsButton();
 
@@ -60,13 +54,13 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeDemands(null);
+                eventBus.initHomeDemandsModule(null);
             }
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliers(null);
+                eventBus.initHomeSupplierModule(null);
             }
         });
         view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
@@ -81,41 +75,41 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
                 eventBus.goToCreateDemand();
             }
         });
-        view.getSearchView().getSearchAdvBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.showHideAdvancedSearchPanel(view.getSearchView().getContent(),
-                        view.getSearchView().getWhere().getSelectedIndex(),
-                        view.getSearchView().getCategory().getSelectedIndex(),
-                        view.getSearchView().getLocality().getSelectedIndex());
-            }
-        });
-        view.getSearchView().getSearchBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                SearchDataHolder searchDataHolder = new SearchDataHolder();
-                if (view.getAdvancedSearchView().isVisible()) {
-                    searchDataHolder = view.getAdvancedSearchView().getFilter();
-                } else {
-                    searchDataHolder = view.getSearchView().getFilter();
-                }
-                if (view.getSearchView().getFilter().getWhere() == 0) {
-                    eventBus.goToHomeDemands(searchDataHolder);
-                } else {
-                    eventBus.goToHomeSuppliers(searchDataHolder);
-                }
-            }
-        });
-        view.getSearchView().getWhere().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent event) {
-                view.getAdvancedSearchView().setBaseInfo(view.getSearchView().getContent(),
-                        view.getSearchView().getWhere().getSelectedIndex()); //, catIdx, locIdx);
-            }
-        });
+//        view.getSearchView().getSearchAdvBtn().addClickHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                eventBus.showHideAdvancedSearchPanel(view.getSearchView().getContent(),
+//                        view.getSearchView().getWhere().getSelectedIndex(),
+//                        view.getSearchView().getCategory().getSelectedIndex(),
+//                        view.getSearchView().getLocality().getSelectedIndex());
+//            }
+//        });
+//        view.getSearchView().getSearchBtn().addClickHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
+//                if (view.getAdvancedSearchView().isVisible()) {
+//                    searchDataHolder = view.getAdvancedSearchView().getFilter();
+//                } else {
+//                    searchDataHolder = view.getSearchView().getFilter();
+//                }
+//                if (view.getSearchView().getFilter().getWhere() == 0) {
+//                    eventBus.goToHomeDemands(searchDataHolder);
+//                } else {
+//                    eventBus.goToHomeSuppliers(searchDataHolder);
+//                }
+//            }
+//        });
+//        view.getSearchView().getWhere().addChangeHandler(new ChangeHandler() {
+//
+//            @Override
+//            public void onChange(ChangeEvent event) {
+//                view.getAdvancedSearchView().setBaseInfo(view.getSearchView().getContent(),
+//                        view.getSearchView().getWhere().getSelectedIndex()); //, catIdx, locIdx);
+//            }
+//        });
     }
 
     public void onStart() {
@@ -128,8 +122,9 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public void onAtHome() {
         LOGGER.info("INIT Home Widget");
-        eventBus.getCategories();
-        eventBus.getLocalities();
+//        eventBus.getCategories();
+//        eventBus.getLocalities();
+        eventBus.initSearchModule(view.getSearchPanel());
         onDisplayMenu();
         // TODO initial homepage widget compilation
     }
@@ -161,13 +156,13 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     /******** SEARCH PANEL ***********/
     public void onShowHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx) {
-        if (view.getAdvancedSearchView().isVisible()) {
-            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0); //, 0, 0);
-            view.getAdvancedSearchView().setVisible(false);
-        } else {
-            view.getAdvancedSearchView().setBaseInfo(content, whereIdx); //, catIdx, locIdx);
-            view.getAdvancedSearchView().setVisible(true);
-        }
+//        if (view.getAdvancedSearchView().isVisible()) {
+//            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0); //, 0, 0);
+//            view.getAdvancedSearchView().setVisible(false);
+//        } else {
+//            view.getAdvancedSearchView().setBaseInfo(content, whereIdx); //, catIdx, locIdx);
+//            view.getAdvancedSearchView().setVisible(true);
+//        }
     }
 
     /**
@@ -175,25 +170,25 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
      * @param list - data (categories)
      */
     public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
-        final ListBox box1 = view.getSearchView().getCategory();
+//        final ListBox box1 = view.getSearchView().getCategory();
 //        final ListBox box2 = view.getAdvancedSearchView().getCategory();
-        box1.clear();
+//        box1.clear();
 //        box2.clear();
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                box1.addItem(MSGS.allCategories());
-//                box2.addItem(MSGS.allCategories());
-                for (int i = 0; i < list.size(); i++) {
-                    box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
-//                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
-                }
-                box1.setSelectedIndex(0);
-//                box2.setSelectedIndex(0);
-                LOGGER.info("Category Lists filled");
-            }
-        });
+//        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+//
+//            @Override
+//            public void execute() {
+//                box1.addItem(MSGS.allCategories());
+////                box2.addItem(MSGS.allCategories());
+//                for (int i = 0; i < list.size(); i++) {
+//                    box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
+////                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
+//                }
+//                box1.setSelectedIndex(0);
+////                box2.setSelectedIndex(0);
+//                LOGGER.info("Category Lists filled");
+//            }
+//        });
     }
 
     /**
@@ -201,23 +196,23 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
      * @param list - data (localities)
      */
     public void onSetLocalityData(final ArrayList<LocalityDetail> list) {
-        final ListBox box1 = view.getSearchView().getLocality();
-//        final ListBox box2 = view.getAdvancedSearchView().getLocality();
-        box1.clear();
-//        box2.clear();
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                box1.addItem(MSGS.allLocalities());
-                for (int i = 0; i < list.size(); i++) {
-                    box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
-//                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
-                }
-                box1.setSelectedIndex(0);
-//                box2.setSelectedIndex(0);
-                LOGGER.info("Locality Lists filled");
-            }
-        });
+//        final ListBox box1 = view.getSearchView().getLocality();
+////        final ListBox box2 = view.getAdvancedSearchView().getLocality();
+//        box1.clear();
+////        box2.clear();
+//        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+//
+//            @Override
+//            public void execute() {
+//                box1.addItem(MSGS.allLocalities());
+//                for (int i = 0; i < list.size(); i++) {
+//                    box1.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
+////                    box2.addItem(list.get(i).getName(), String.valueOf(list.get(i).getCode()));
+//                }
+//                box1.setSelectedIndex(0);
+////                box2.setSelectedIndex(0);
+//                LOGGER.info("Locality Lists filled");
+//            }
+//        });
     }
 }

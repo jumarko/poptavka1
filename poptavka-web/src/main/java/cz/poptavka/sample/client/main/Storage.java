@@ -22,25 +22,20 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 public final class Storage {
 
     private static final Storage INSTANCE = new Storage();
+    private static String currentlyLoadedView = "";
 
     public static Storage get() {
         return INSTANCE;
     }
-
     //constants
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
-
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
-
     public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
-
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
-
     private static UserDetail user = null;
-
 
     //getters for global final classes
     public LocalizableMessages getMessages() {
@@ -95,7 +90,13 @@ public final class Storage {
         return user;
     }
 
+    public static String getCurrentlyLoadedView() {
+        return currentlyLoadedView;
+    }
+
+    public static void setCurrentlyLoadedView(String currentlyLoadedView) {
+        Storage.currentlyLoadedView = currentlyLoadedView;
+    }
     // ID constants
     public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
-
 }

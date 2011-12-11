@@ -219,7 +219,7 @@ public interface UserEventBus extends EventBusWithLookup {
      */
     @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
             OffersPresenter.class, PotentialDemandsPresenter.class, AllSuppliersPresenter.class },
-            historyConverter = DemandsHistoryConverter.class)
+    historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)

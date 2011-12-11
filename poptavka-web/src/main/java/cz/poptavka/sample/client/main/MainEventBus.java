@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.main;
 
-
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -17,7 +16,6 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.HomeModule;
-//import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
@@ -31,7 +29,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @ChildModules({
     @ChildModule(moduleClass = HomeModule.class, async = false, autoDisplay = false),
     @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false)
-    })
+})
 public interface MainEventBus extends EventBus {
 
     /**
@@ -65,11 +63,9 @@ public interface MainEventBus extends EventBus {
     //from event handler automatic redirection
 //    @Event(modulesToLoad = UserModule.class, passive = true)
 //    void addNewDemand(FullDemandDetail result);
-
     // TODO praso - where did thismetod come from? Figure out.
 //    @Event(modulesToLoad = HomeModule.class)
 //    void goToCreateDemand();
-
     @Event(modulesToLoad = HomeModule.class)
     void goToCreateSupplier();
 
@@ -131,7 +127,6 @@ public interface MainEventBus extends EventBus {
 //
 //    @Event(handlers = MainPresenter.class)
 //    void initSupplierForm(SimplePanel supplierInfoHolder);
-
 //    // TODO praso - this should be moved to HomeModule. I don't see reason to have it in RootModule
 //    @Event(handlers = MainHandler.class)
 //    void checkFreeEmail(String value);
@@ -139,12 +134,10 @@ public interface MainEventBus extends EventBus {
 ////    @Event(handlers = SupplierInfoPresenter.class,
 //    @Event(modulesToLoad = HomeModule.class)
 //    void checkFreeEmailResponse(Boolean result);
-
     /** NO EDITING AFTER THIS LINE
      * Every Child Module HAVE TO implement this method calls.
      * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
      */
-
     /**
      * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
      * @param progressGettingDemandDataring message to be displayed during loading
@@ -178,9 +171,7 @@ public interface MainEventBus extends EventBus {
     @Event(modulesToLoad = UserModule.class, passive = true)
     void clearUserOnUnload();
 
-
     // Navigation event
     @Event(modulesToLoad = HomeModule.class)
     void goToCreateDemand();
-
 }

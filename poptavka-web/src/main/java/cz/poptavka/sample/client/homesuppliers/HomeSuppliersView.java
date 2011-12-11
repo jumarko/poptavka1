@@ -34,12 +34,12 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 
-public class SuppliersView extends OverflowComposite
-        implements SuppliersPresenter.SuppliersViewInterface {
+public class HomeSuppliersView extends OverflowComposite
+        implements HomeSuppliersPresenter.SuppliersViewInterface {
 
     private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
 
-    interface SuppliersViewUiBinder extends UiBinder<Widget, SuppliersView> {
+    interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
     }
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -73,7 +73,7 @@ public class SuppliersView extends OverflowComposite
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>();
 
-    public SuppliersView() {
+    public HomeSuppliersView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");

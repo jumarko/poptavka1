@@ -3,7 +3,7 @@ package cz.poptavka.sample.client.service.demand;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.domain.common.OrderType;
 
 import cz.poptavka.sample.shared.domain.ServiceDetail;
@@ -39,8 +39,8 @@ public interface SupplierRPCServiceAsync {
     void updateSupplier(FullSupplierDetail supplierDetail,
             AsyncCallback<FullSupplierDetail> callback);
 
-    void filterSuppliers(int start, int count, SearchDataHolder supplier, Map<String, OrderType> orderColumns,
+    void filterSuppliers(int start, int count, SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullSupplierDetail>> callback);
 
-    void filterSuppliersCount(SearchDataHolder supplier, AsyncCallback<Long> callback);
+    void filterSuppliersCount(SearchModuleDataHolder supplier, AsyncCallback<Long> callback);
 }

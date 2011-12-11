@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.domain.common.OrderType;
 
 import cz.poptavka.sample.shared.domain.ServiceDetail;
@@ -36,8 +36,8 @@ public interface SupplierRPCService extends RemoteService {
 
     FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail);
 
-    long filterSuppliersCount(SearchDataHolder supplier);
+    long filterSuppliersCount(SearchModuleDataHolder supplier);
 
     List<FullSupplierDetail> filterSuppliers(int start, int count,
-            SearchDataHolder supplier, Map<String, OrderType> orderColumns);
+            SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns);
 }

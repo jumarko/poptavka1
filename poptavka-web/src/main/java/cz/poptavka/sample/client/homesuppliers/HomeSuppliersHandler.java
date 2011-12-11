@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
-public class SuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
+public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
@@ -202,12 +202,13 @@ public class SuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
 //        });
 //    }
     //*************** GET SUPPLIERS DATA *********************
-    public void onGetSuppliersCount(SearchDataHolder detail) {
+    public void onGetSuppliersCount(SearchModuleDataHolder detail) {
         supplierService.filterSuppliersCount(detail, new AsyncCallback<Long>() {
 
             @Override
             public void onFailure(Throwable caught) {
-                throw new UnsupportedOperationException("onFilterDemands (HomeDemandsHandler) - not supported yet.");
+                throw new UnsupportedOperationException("onFilterSuppliers "
+                        + "(HomeSuppliersHandler) - not supported yet.");
             }
 
             @Override
@@ -218,7 +219,8 @@ public class SuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
         });
     }
 
-    public void onGetSuppliers(int start, int count, SearchDataHolder search, Map<String, OrderType> orderColumns) {
+    public void onGetSuppliers(int start, int count, SearchModuleDataHolder search,
+            Map<String, OrderType> orderColumns) {
         supplierService.filterSuppliers(start, count, search, orderColumns,
                 new AsyncCallback<List<FullSupplierDetail>>() {
 

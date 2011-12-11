@@ -22,8 +22,8 @@ import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
 import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchHandler;
+import cz.poptavka.sample.client.main.common.search.SearchModule;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
@@ -33,7 +33,8 @@ import cz.poptavka.sample.shared.domain.LocalityDetail;
     @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true)
+    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = SearchModule.class, async = true, autoDisplay = false)
 })
 public interface HomeEventBus extends EventBus {
 
@@ -51,16 +52,19 @@ public interface HomeEventBus extends EventBus {
     String atHome();
 
     @Event(modulesToLoad = HomeSuppliersModule.class)
-    void goToHomeSuppliers(SearchDataHolder filter);
+    void initHomeSupplierModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = HomeDemandsModule.class)
-    void goToHomeDemands(SearchDataHolder filter);
+    void initHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = SupplierCreationModule.class)
     void goToCreateSupplier();
 
     @Event(modulesToLoad = DemandCreationModule.class)
     void goToCreateDemand();
+
+    @Event(modulesToLoad = SearchModule.class)
+    void initSearchModule(SimplePanel panel);
 
     /**************************************************************************/
     /* Parent events. */
@@ -135,6 +139,8 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomePresenter.class)
     void setBodyWidget(Widget content);
 
+//    @Event(handlers = SearchModulePresenter.class)
+//    void setSearchPanelBody(Widget body);
     @LoadChildModuleError
     @Event(handlers = HomePresenter.class)
     void errorOnLoad(Throwable reason);
@@ -189,12 +195,12 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomePresenter.class)
     void showHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx);
 
-    @Event(handlers = SearchHandler.class)
-    void getCategories();
-
-    @Event(handlers = SearchHandler.class)
-    void getLocalities();
-
+    //TODO Martin presunut do SearchModuleHandlera
+//    @Event(handlers = SearchModuleHandler.class)
+//    void getCategories();
+//
+//    @Event(handlers = SearchModuleHandler.class)
+//    void getLocalities();
     @Event(handlers = HomePresenter.class)
     void setCategoryData(ArrayList<CategoryDetail> list);
 

@@ -1,11 +1,10 @@
 package cz.poptavka.sample.client.homedemands;
 
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -68,7 +67,6 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 //            }
 //        });
 //    }
-
     //*************** GET DEMANDS COUNT *********************
 //    public void onGetAllDemandsCount() {
 //        demandService.getAllDemandsCount(new AsyncCallback<Long>() {
@@ -154,11 +152,10 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 //            }
 //        });
 //    }
-
     //*************** GET DEMANDS DATA *********************
     /**
      * Get all demand from database.
-//     */
+    //     */
 //    public void onGetDemands(int fromResult, int toResult) {
 //        demandService.getDemands(fromResult, toResult, new AsyncCallback<List<FullDemandDetail>>() {
 //
@@ -223,9 +220,8 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 //                    }
 //                });
 //    }
-
     //*************** FIND DEMANDS DATA *********************
-    public void onFilterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+    public void onFilterDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         demandService.filterDemandsCount(detail, new AsyncCallback<Long>() {
 
             @Override
@@ -242,7 +238,8 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         });
     }
 
-    public void onFilterDemands(int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns) {
+    public void onFilterDemands(int start, int count, SearchModuleDataHolder detail,
+            Map<String, OrderType> orderColumns) {
         demandService.filterDemands(start, count, detail, orderColumns, new AsyncCallback<List<FullDemandDetail>>() {
 
             @Override

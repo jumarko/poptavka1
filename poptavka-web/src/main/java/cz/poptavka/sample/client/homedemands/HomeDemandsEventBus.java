@@ -15,7 +15,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Map;
@@ -50,7 +50,7 @@ public interface HomeDemandsEventBus extends EventBus {
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
     @Event(handlers = HomeDemandsPresenter.class)
-    void goToHomeDemands(SearchDataHolder filter);
+    void initHomeDemandsModule(SearchModuleDataHolder filter);
 
     /* Parent events. */
     /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */
@@ -69,10 +69,8 @@ public interface HomeDemandsEventBus extends EventBus {
 //    void setCategoryData(ArrayList<CategoryDetail> list);
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void setResultSource(String resultSource);
-
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void setResultCount(long resultCount);
-
     @Event(handlers = HomeDemandsPresenter.class)
     void createAsyncDataProvider(final int resultCount);
 
@@ -90,7 +88,7 @@ public interface HomeDemandsEventBus extends EventBus {
 //    void getAllDemandsCount();
 //
     @Event(handlers = HomeDemandsHandler.class)
-    void filterDemandsCount(SearchDataHolder detail, Map<String, OrderType> orderColumns);
+    void filterDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 //
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getSortedDemandsCount(Map<String, OrderType> orderColumns);
@@ -111,14 +109,11 @@ public interface HomeDemandsEventBus extends EventBus {
 //    void getDemands(int fromResult, int toResult);
 
     @Event(handlers = HomeDemandsHandler.class)
-    void filterDemands(int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns);
-
+    void filterDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getDemandsByCategories(int fromResult, int toResult, long id);
-
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getDemandsByLocalities(int fromResult, int toResult, String code);
-
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
 //    @Event(handlers = HomeDemandsHandler.class)

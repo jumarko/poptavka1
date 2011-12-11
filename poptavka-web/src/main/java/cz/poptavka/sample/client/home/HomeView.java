@@ -14,9 +14,7 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import cz.poptavka.sample.client.main.common.search.AdvancedSearchView;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.main.common.search.SearchView;
 
 /**
  * Main view for home/unlogged user aka public section.
@@ -47,11 +45,11 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @UiField
     Button createDemand;
     @UiField
-    SimplePanel contentHolder;
-    @UiField
-    SearchView searchView;
-    @UiField
-    AdvancedSearchView advancedSearchView;
+    SimplePanel contentHolder, searchPanel;
+//    @UiField
+//    SearchModuleView searchView;
+//    @UiField
+//    AdvancedSearchView advancedSearchView;
     @UiField
     DockLayoutPanel homeLayoutHolder;
 
@@ -59,19 +57,18 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
-        advancedSearchView.setVisible(false);
+//        advancedSearchView.setVisible(false);
     }
 
-    @Override
-    public SearchView getSearchView() {
-        return searchView;
-    }
-
-    @Override
-    public AdvancedSearchView getAdvancedSearchView() {
-        return advancedSearchView;
-    }
-
+//    @Override
+//    public SearchModuleView getSearchView() {
+//        return searchView;
+//    }
+//
+//    @Override
+//    public AdvancedSearchView getAdvancedSearchView() {
+//        return advancedSearchView;
+//    }
     @Override
     public Widget getWidgetView() {
         return this;
@@ -80,6 +77,11 @@ public class HomeView extends Composite implements HomePresenter.HomeInterface {
     @Override
     public void setBody(Widget body) {
         contentHolder.setWidget(body);
+    }
+
+    @Override
+    public SimplePanel getSearchPanel() {
+        return searchPanel;
     }
 
     public void setHomeToken(String token) {

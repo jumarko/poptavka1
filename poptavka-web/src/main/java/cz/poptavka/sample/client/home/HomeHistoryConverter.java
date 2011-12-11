@@ -19,10 +19,10 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
     public String convertToToken(String tokenName) {
         return "";
     }
+
     public String convertToToken(String historyName, CategoryDetail category) {
         return Long.toString(category.getId());
     }
-
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     @Override
@@ -41,11 +41,11 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
         if (historyName.equals("addToPath")) {
             eventBus.loadingShow(MSGS.loading());
             if (param.equals("root")) {
-                eventBus.goToHomeSuppliers(null);
+                eventBus.initHomeSupplierModule(null);
             }
 //            else {
-                // TODO praso - add history management for homeSuppliers. I will
-                // comment Martin's methods for now
+            // TODO praso - add history management for homeSuppliers. I will
+            // comment Martin's methods for now
 //                eventBus.setCategoryID(Long.valueOf(param));
 //                eventBus.removeFromPath(Long.valueOf(param));
 //                eventBus.getSubCategories(Long.valueOf(param));

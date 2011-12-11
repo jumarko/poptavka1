@@ -12,7 +12,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -24,12 +24,12 @@ import java.util.Map;
  *
  * @author ivan.vlcek
  */
-@Events(startView = SuppliersView.class, module = HomeSuppliersModule.class)
+@Events(startView = HomeSuppliersView.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeSuppliersEventBus extends EventBus {
 
     @Start
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void start();
 
     /**
@@ -38,7 +38,7 @@ public interface HomeSuppliersEventBus extends EventBus {
      * save the number of method invocations.
      */
     @Forward
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void forward();
 
     /* Navigation events. */
@@ -46,20 +46,20 @@ public interface HomeSuppliersEventBus extends EventBus {
      * The only entry point to this module due to code-splitting and exclusive
      * fragment.
      */
-    @Event(handlers = SuppliersPresenter.class)
-    void goToHomeSuppliers(SearchDataHolder searchDataHolder);
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void initHomeSupplierModule(SearchModuleDataHolder searchDataHolder);
 
     /**
      * Display root categories.
      */
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void atSuppliers();
 
     /**
      * Display sub-categories, suppliers of selected category and detail of
      * selected supplier.
      */
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void atDisplaySuppliers(CategoryDetail categoryDetail);
 
     /* Parent events. */
@@ -71,63 +71,63 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     /* Business events. */
     /* Business events handled by Presenters. */
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void displaySubCategories(ArrayList<CategoryDetail> list,
             Long parentCategory);
 
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void displaySuppliers(List<FullSupplierDetail> list);
 
-//    @Event(handlers = SuppliersPresenter.class)
+//    @Event(handlers = HomeSuppliersPresenter.class)
 //    void setLocalityData(ArrayList<LocalityDetail> list);
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void addToPath(CategoryDetail category);
 
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void removeFromPath(Long code);
 
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void setCategoryID(Long categoryCode);
 
-//    @Event(handlers = SuppliersPresenter.class)
+//    @Event(handlers = HomeSuppliersPresenter.class)
 //    void resetDisplaySuppliersPager(int totalFoundNew);
-
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void createAsyncDataProvider(final int totalFound);
 
     /* Business events handled by Handlers. */
-    @Event(handlers = SuppliersHandler.class)
+    @Event(handlers = HomeSuppliersHandler.class)
     void getSubCategories(Long category);
 
-    @Event(handlers = SuppliersHandler.class)
+    @Event(handlers = HomeSuppliersHandler.class)
     void getCategories();
 
-    @Event(handlers = SuppliersPresenter.class)
+    @Event(handlers = HomeSuppliersPresenter.class)
     void rootWithSearchDataHolder();
-//    @Event(handlers = SuppliersHandler.class)
+//    @Event(handlers = HomeSuppliersHandler.class)
 //    void getLocalities();
 //
-//    @Event(handlers = SuppliersHandler.class)
+//    @Event(handlers = HomeSuppliersHandler.class)
 //    void getSuppliersByCategoryLocality(int start, int count, Long category,
 //            String locality);
 //
-//    @Event(handlers = SuppliersHandler.class)
+//    @Event(handlers = HomeSuppliersHandler.class)
 //    void getSuppliersByCategory(int start, int count, Long category);
 //
-//    @Event(handlers = SuppliersHandler.class)
+//    @Event(handlers = HomeSuppliersHandler.class)
 //    void getSuppliersCount(Long category, String locality);
 //
-//    @Event(handlers = SuppliersHandler.class)
+//    @Event(handlers = HomeSuppliersHandler.class)
 //    void getSuppliersCountByCategory(Long category);
 //
-//    @Event(handlers = SuppliersHandler.class)
+//    @Event(handlers = HomeSuppliersHandler.class)
 //    void getSuppliersCountByCategoryLocality(Long category, String locality);
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliersCount(SearchDataHolder detail);
 
-    @Event(handlers = SuppliersHandler.class)
-    void getSuppliers(int start, int count, SearchDataHolder detail, Map<String, OrderType> orderColumns);
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getSuppliersCount(SearchModuleDataHolder detail);
+
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getSuppliers(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 }

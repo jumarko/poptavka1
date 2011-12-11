@@ -25,7 +25,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.resources.StyleResource;
 
 import cz.poptavka.sample.domain.common.OrderType;
@@ -38,9 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Presenter(view = SuppliersView.class)
-public class SuppliersPresenter
-        extends BasePresenter<SuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
+@Presenter(view = HomeSuppliersView.class)
+public class HomeSuppliersPresenter
+        extends BasePresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
 
     private final static Logger LOGGER = Logger.getLogger("DisplaySuppliersPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -107,9 +108,9 @@ public class SuppliersPresenter
                 if (selected != null) {
                     eventBus.atDisplaySuppliers(selected);
                     if (searchDataHolder == null) {
-                        searchDataHolder = new SearchDataHolder();
+                        searchDataHolder = new SearchModuleDataHolder();
                     }
-                    searchDataHolder.setCategory(new CategoryDetail(selected.getId(), selected.getName()));
+                    searchDataHolder.setSupplierCategory(new CategoryDetail(selected.getId(), selected.getName()));
                 }
             }
         });
@@ -128,9 +129,9 @@ public class SuppliersPresenter
                     historyTokens.add(selected.getId());
                     eventBus.addToPath(selected);
                     if (searchDataHolder == null) {
-                        searchDataHolder = new SearchDataHolder();
+                        searchDataHolder = new SearchModuleDataHolder();
                     }
-                    searchDataHolder.setCategory(new CategoryDetail(selected.getId(), selected.getName()));
+                    searchDataHolder.setSupplierCategory(new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.getSubCategories(selected.getId());
                 }
             }
@@ -190,9 +191,10 @@ public class SuppliersPresenter
         // TODO praso - switch css to selected menu button.
         //eventBus.selectCompanyMenu();
     }
-    private SearchDataHolder searchDataHolder = null;
+    private SearchModuleDataHolder searchDataHolder = null;
 
-    public void onGoToHomeSuppliers(SearchDataHolder searchDataHolder) {
+    public void onInitHomeSupplierModule(SearchModuleDataHolder searchDataHolder) {
+        Storage.setCurrentlyLoadedView("homeSuppliers");
         view.getPath().clear();
         view.addPath(new Hyperlink("root", "!public/addToPath?root"));
         this.searchDataHolder = searchDataHolder;
@@ -210,10 +212,10 @@ public class SuppliersPresenter
             view.getChildSection().setVisible(true);
             view.getRootSection().setVisible(false);
 
-            if (searchDataHolder.getCategory() == null) {
+            if (searchDataHolder.getSupplierCategory() == null) {
                 eventBus.getSubCategories(null);
             } else {
-                eventBus.getSubCategories(searchDataHolder.getCategory().getId());
+                eventBus.getSubCategories(searchDataHolder.getSupplierCategory().getId());
             }
         }
     }
@@ -223,10 +225,10 @@ public class SuppliersPresenter
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);
 
-        if (searchDataHolder.getCategory() == null) {
+        if (searchDataHolder.getSupplierCategory() == null) {
             eventBus.getSubCategories(null);
         } else {
-            eventBus.getSubCategories(searchDataHolder.getCategory().getId());
+            eventBus.getSubCategories(searchDataHolder.getSupplierCategory().getId());
         }
     }
 

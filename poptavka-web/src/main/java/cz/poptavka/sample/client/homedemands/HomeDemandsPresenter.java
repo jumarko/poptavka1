@@ -27,7 +27,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.main.common.search.SearchDataHolder;
+import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -118,9 +119,10 @@ public class HomeDemandsPresenter extends BasePresenter<
         // TODO praso - here we can switch css for selected menu button
         //eventBus.selectHomeDemandsMenuButton();
     }
-    private SearchDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
-    public void onGoToHomeDemands(SearchDataHolder searchDataHolder) {
+    public void onInitHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
+        Storage.setCurrentlyLoadedView("homeDemands");
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
         eventBus.filterDemandsCount(searchDataHolder, orderColumns);
