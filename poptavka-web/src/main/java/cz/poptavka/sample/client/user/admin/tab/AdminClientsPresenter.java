@@ -154,6 +154,7 @@ public class AdminClientsPresenter
     }
 
     public void onInitClients() {
+        Storage.setCurrentlyLoadedView("adminClients");
         eventBus.getAdminClientsCount();
         eventBus.displayView(view.getWidgetView());
     }

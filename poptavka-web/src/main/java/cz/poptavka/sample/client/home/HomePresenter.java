@@ -16,9 +16,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
-import java.util.ArrayList;
 
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
@@ -169,7 +166,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
      * Fills category listBox with given list of localities.
      * @param list - data (categories)
      */
-    public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
+//    public void onSetCategoryData(final ArrayList<CategoryDetail> list) {
 //        final ListBox box1 = view.getSearchView().getCategory();
 //        final ListBox box2 = view.getAdvancedSearchView().getCategory();
 //        box1.clear();
@@ -189,13 +186,13 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 //                LOGGER.info("Category Lists filled");
 //            }
 //        });
-    }
+//    }
 
     /**
      * Fills locality listBox with given list of localities.
      * @param list - data (localities)
      */
-    public void onSetLocalityData(final ArrayList<LocalityDetail> list) {
+//    public void onSetLocalityData(final ArrayList<LocalityDetail> list) {
 //        final ListBox box1 = view.getSearchView().getLocality();
 ////        final ListBox box2 = view.getAdvancedSearchView().getLocality();
 //        box1.clear();
@@ -214,5 +211,5 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 //                LOGGER.info("Locality Lists filled");
 //            }
 //        });
-    }
+//    }
 }

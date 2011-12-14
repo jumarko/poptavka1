@@ -90,6 +90,8 @@ public interface LocalizableMessages extends Messages {
     String title();
     String description();
     String duration();
+    String from();
+    String to();
 
     String month();
     String fewMonths();

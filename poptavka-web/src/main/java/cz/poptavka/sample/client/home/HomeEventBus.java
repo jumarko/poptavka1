@@ -25,7 +25,6 @@ import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
 import cz.poptavka.sample.client.main.common.search.SearchModule;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -201,9 +200,9 @@ public interface HomeEventBus extends EventBus {
 //
 //    @Event(handlers = SearchModuleHandler.class)
 //    void getLocalities();
-    @Event(handlers = HomePresenter.class)
-    void setCategoryData(ArrayList<CategoryDetail> list);
+//    @Event(handlers = HomePresenter.class)
+//    void setCategoryData(ArrayList<CategoryDetail> list);
 
-    @Event(handlers = HomePresenter.class)
-    void setLocalityData(ArrayList<LocalityDetail> list);
+//    @Event(handlers = HomePresenter.class)
+//    void setLocalityData(ArrayList<LocalityDetail> list);
 }

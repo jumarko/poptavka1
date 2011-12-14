@@ -7,7 +7,7 @@
             font-weight: bold;
             font-style: italic;
         }
-        .ratingBox {
+        .rangeBox {
             width: 30px;
             margin-right:10px;
             margin-left:10px;
@@ -18,19 +18,14 @@
         .margin {
             
         }
-        .ull {
-            list-style-type:none;
-            padding:0px;
-            margin:0px;
-        }
     </ui:style>
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
         
-    <g:HTMLPanel ui:field="container">
+    <g:HTMLPanel>
         <!-- menu -->
-        <div ui:field="searchMenu">
-            <ul ui:field="searchList" styleName="{style.ull}">
+        <div>
+            <ul>
                 <li>
                     <g:Label>
                         <ui:msg key="supplierName">Company name:</ui:msg>
@@ -64,11 +59,11 @@
                                     <g:Label styleName="{style.margin}">
                                         <ui:msg key="ratingFrom">from</ui:msg>
                                     </g:Label>
-                                    <g:TextBox styleName="{style.ratingBox}" ui:field="ratingFrom"/>
+                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingFrom"/>
                                     <g:Label styleName="{style.margin}">
                                         <ui:msg key="ratingTo">to</ui:msg>
                                     </g:Label>
-                                    <g:TextBox styleName="{style.ratingBox}" ui:field="ratingTo"/>
+                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingTo"/>
                                     <g:Label styleName="{style.margin}">%</g:Label>
                                 </g:HorizontalPanel>
                             </td>
@@ -83,11 +78,6 @@
                 <li>
                     <g:TextBox ui:field="supplierDescription" />
                 </li>
-<!--                <li>
-                    <g:Button ui:field="searchBtn" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="search">Search</ui:msg>
-                    </g:Button>
-                </li>-->
             </ul>
         </div>
     </g:HTMLPanel>

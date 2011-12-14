@@ -111,6 +111,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
 //        orderColumns.clear();
 //        orderColumns.put("message.created", OrderType.ASC);
 //
+        Storage.setCurrentlyLoadedView("messagesTab");
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (detailSection == null) {

@@ -105,6 +105,7 @@ public class AdminSuppliersPresenter
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
 
     public void onInitSuppliers() {
+        Storage.setCurrentlyLoadedView("adminSuppliers");
         eventBus.getAdminSuppliersCount();
         eventBus.displayView(view.getWidgetView());
     }

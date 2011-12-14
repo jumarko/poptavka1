@@ -150,6 +150,7 @@ public class AdminAccessRolesPresenter
     }
 
     public void onInitAccessRoles() {
+        Storage.setCurrentlyLoadedView("adminAccessRoles");
         eventBus.getAdminAccessRolesCount();
         eventBus.displayView(view.getWidgetView());
     }

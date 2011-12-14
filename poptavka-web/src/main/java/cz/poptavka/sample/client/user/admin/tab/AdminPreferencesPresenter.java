@@ -151,6 +151,7 @@ public class AdminPreferencesPresenter
     }
 
     public void onInitPreferences() {
+        Storage.setCurrentlyLoadedView("adminPreferences");
         eventBus.getAdminPreferencesCount();
         eventBus.displayView(view.getWidgetView());
     }

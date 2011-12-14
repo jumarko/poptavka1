@@ -156,6 +156,7 @@ public class AdminInvoicesPresenter
     }
 
     public void onInitInvoices() {
+        Storage.setCurrentlyLoadedView("adminInvoices");
         eventBus.getAdminInvoicesCount();
         eventBus.displayView(view.getWidgetView());
     }

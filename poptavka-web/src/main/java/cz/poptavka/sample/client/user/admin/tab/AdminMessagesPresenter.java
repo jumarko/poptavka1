@@ -158,6 +158,7 @@ public class AdminMessagesPresenter
     }
 
     public void onInitMessages() {
+        Storage.setCurrentlyLoadedView("adminMessages");
         eventBus.getAdminMessagesCount();
         eventBus.displayView(view.getWidgetView());
     }

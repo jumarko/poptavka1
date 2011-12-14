@@ -146,6 +146,7 @@ public class AdminProblemsPresenter
     }
 
     public void onInitProblems() {
+        Storage.setCurrentlyLoadedView("adminProblems");
         eventBus.getAdminProblemsCount();
         eventBus.displayView(view.getWidgetView());
     }

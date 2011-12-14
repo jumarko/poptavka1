@@ -110,7 +110,8 @@ public class HomeSuppliersPresenter
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
                     }
-                    searchDataHolder.setSupplierCategory(new CategoryDetail(selected.getId(), selected.getName()));
+                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
+                            new CategoryDetail(selected.getId(), selected.getName()));
                 }
             }
         });
@@ -131,7 +132,8 @@ public class HomeSuppliersPresenter
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
                     }
-                    searchDataHolder.setSupplierCategory(new CategoryDetail(selected.getId(), selected.getName()));
+                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
+                            new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.getSubCategories(selected.getId());
                 }
             }
@@ -212,10 +214,10 @@ public class HomeSuppliersPresenter
             view.getChildSection().setVisible(true);
             view.getRootSection().setVisible(false);
 
-            if (searchDataHolder.getSupplierCategory() == null) {
+            if (searchDataHolder.getHomeSuppliers().getSupplierCategory() == null) {
                 eventBus.getSubCategories(null);
             } else {
-                eventBus.getSubCategories(searchDataHolder.getSupplierCategory().getId());
+                eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
             }
         }
     }
@@ -225,10 +227,10 @@ public class HomeSuppliersPresenter
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);
 
-        if (searchDataHolder.getSupplierCategory() == null) {
+        if (searchDataHolder.getHomeSuppliers().getSupplierCategory() == null) {
             eventBus.getSubCategories(null);
         } else {
-            eventBus.getSubCategories(searchDataHolder.getSupplierCategory().getId());
+            eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
         }
     }
 

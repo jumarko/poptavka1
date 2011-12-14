@@ -161,6 +161,7 @@ public class AdminOurPaymentDetailsPresenter
     }
 
     public void onInitOurPaymentDetails() {
+        Storage.setCurrentlyLoadedView("adminPaymentDetails");
 //        eventBus.getAdminDemandsOurPaymentDetails();
         eventBus.displayView(view.getWidgetView());
     }

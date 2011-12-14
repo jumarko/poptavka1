@@ -489,22 +489,26 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
             return this.createSupplierDetailList(this.generalService.search(search));
         }
         //0 0
-        if (detail.getSupplierCategory() == null && detail.getSupplierLocality() == null) {
+        if (detail.getHomeSuppliers().getSupplierCategory() == null
+                && detail.getHomeSuppliers().getSupplierLocality() == null) {
             Search search = this.getFilter(detail, orderColumns);
             return this.createSupplierDetailList(this.generalService.search(search));
         }
         //1 0
-        if (detail.getSupplierCategory() != null && detail.getSupplierLocality() == null) {
+        if (detail.getHomeSuppliers().getSupplierCategory() != null
+                && detail.getHomeSuppliers().getSupplierLocality() == null) {
             Search search = this.getFilter(detail, orderColumns);
             return this.createSupplierDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
-        if (detail.getSupplierCategory() == null && detail.getSupplierLocality() != null) {
+        if (detail.getHomeSuppliers().getSupplierCategory() == null
+                && detail.getHomeSuppliers().getSupplierLocality() != null) {
             Search search = this.getFilter(detail, orderColumns);
             return this.createSupplierDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (detail.getSupplierCategory() != null && detail.getSupplierLocality() != null) {
+        if (detail.getHomeSuppliers().getSupplierCategory() != null
+                && detail.getHomeSuppliers().getSupplierLocality() != null) {
             List<FullSupplierDetail> suppliersCat = this.createSupplierDetailListCat(
                     this.generalService.searchAndCount(this.getFilter(detail, orderColumns)).getResult());
 
@@ -528,35 +532,35 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         if (detail != null) {
 
             /** simple **/
-            if (detail.getSupplierCategory() != null) {
+            if (detail.getHomeSuppliers().getSupplierCategory() != null) {
                 search = new Search(SupplierCategory.class);
                 prefix = "supplier.";
                 final List<Category> allSubCategories = Arrays.asList(
-                        this.getAllSubCategories(detail.getSupplierCategory().getId()));
+                        this.getAllSubCategories(detail.getHomeSuppliers().getSupplierCategory().getId()));
                 search.addFilterIn("category", allSubCategories);
-            } else if (detail.getSupplierLocality() != null) {
+            } else if (detail.getHomeSuppliers().getSupplierLocality() != null) {
                 search = new Search(SupplierLocality.class);
                 prefix = "supplier.";
                 final List<Locality> allSubLocalities = Arrays.asList(
-                        this.getAllSublocalities(detail.getSupplierLocality().getCode()));
+                        this.getAllSublocalities(detail.getHomeSuppliers().getSupplierLocality().getCode()));
                 search.addFilterIn("locality", allSubLocalities);
             } else {
                 search = new Search(Supplier.class);
             }
-            if (!detail.getSupplierName().equals("")) {
+            if (detail.getHomeSuppliers().getSupplierName() != null) {
                 search.addFilterLike(prefix + "businessUser.businessUserData.companyName",
-                        "%" + detail.getText() + "%");
+                        "%" + detail.getHomeSuppliers().getSupplierName() + "%");
             }
 
             //                if (detail.isAdditionalInfo()) {
-            if (detail.getRatingFrom() != 0) {
-                search.addFilterGreaterOrEqual(prefix + "overalRating", detail.getRatingFrom());
+            if (detail.getHomeSuppliers().getRatingFrom() != null) {
+                search.addFilterGreaterOrEqual(prefix + "overalRating", detail.getHomeSuppliers().getRatingFrom());
             }
-            if (detail.getRatingTo() != 100) {
-                search.addFilterLessOrEqual(prefix + "overalRating", detail.getRatingTo());
+            if (detail.getHomeSuppliers().getRatingTo() != null) {
+                search.addFilterLessOrEqual(prefix + "overalRating", detail.getHomeSuppliers().getRatingTo());
             }
-            if (!detail.getSupplierDescription().equals("")) {
-                String[] str = detail.getSupplierDescription().split("\\s+");
+            if (detail.getHomeSuppliers().getSupplierDescription() != null) {
+                String[] str = detail.getHomeSuppliers().getSupplierDescription().split("\\s+");
                 search.addFilterIn(prefix + "businessUser.businessUserData.description", Arrays.asList(str));
             }
         } else {

@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -19,16 +18,13 @@ import cz.poptavka.sample.domain.demand.DemandType.Type;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
-public class HomeDemandViewView extends Composite implements SearchModulePresenter.SearchModulesViewInterface {
+public class HomeDemandViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, HomeDemandViewView> {
     }
-    @UiField
-    UListElement searchList;
-//    @UiField
-//    Button searchBtn;
     @UiField
     TextBox demandTitle, priceFrom, priceTo;
     @UiField
@@ -55,23 +51,31 @@ public class HomeDemandViewView extends Composite implements SearchModulePresent
     @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-//        data.setType("homeDemands");
-        data.setDemandTitle(demandTitle.getText());
-        data.setDemandType(demandTypes.getItemText(demandTypes.getSelectedIndex()));
+        data.initHomeDemands();
+        if (!demandTitle.getText().equals("")) {
+            data.getHomeDemands().setDemandTitle(demandTitle.getText());
+        }
+        data.getHomeDemands().setDemandType(demandTypes.getItemText(demandTypes.getSelectedIndex()));
         int selected = category.getSelectedIndex();
         if (selected != 0) {
-            data.setDemandCategory(new CategoryDetail(Long.valueOf(category.getValue(selected)),
+            data.getHomeDemands().setDemandCategory(new CategoryDetail(Long.valueOf(category.getValue(selected)),
                     category.getItemText(selected)));
         }
         selected = locality.getSelectedIndex();
         if (selected != 0) {
-            data.setDemandLocality(new LocalityDetail(locality.getItemText(selected),
+            data.getHomeDemands().setDemandLocality(new LocalityDetail(locality.getItemText(selected),
                     locality.getValue(selected)));
         }
-        data.setPriceFrom(this.getPriceFrom());
-        data.setPriceTo(this.getPriceTo());
-        data.setCreationDate(creationDate.getSelectedIndex());
-        data.setEndDate(finnishDate.getValue());
+        if (!priceFrom.getText().equals("")) {
+            data.getHomeDemands().setPriceFrom(Integer.valueOf(priceFrom.getText()));
+        }
+        if (!priceTo.getText().equals("")) {
+            data.getHomeDemands().setPriceTo(Integer.valueOf(priceTo.getText()));
+        }
+        data.getHomeDemands().setCreationDate(creationDate.getSelectedIndex());
+        if (finnishDate.getValue() != null) {
+            data.getHomeDemands().setEndDate(finnishDate.getValue());
+        }
         return data;
     }
 
@@ -90,20 +94,34 @@ public class HomeDemandViewView extends Composite implements SearchModulePresent
         return locality;
     }
 
-    public int getPriceFrom() {
-        if (priceFrom.getText().equals("")) {
-            return -1;
-        } else {
-            return Integer.valueOf(priceFrom.getText());
+    @Override
+    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
+        StringBuilder infoText = new StringBuilder();
+        if (data.getHomeDemands().getDemandTitle() != null) {
+            infoText.append("title:" + data.getHomeDemands().getDemandTitle());
         }
-    }
-
-    public int getPriceTo() {
-        if (priceTo.getText().equals("")) {
-            return -1;
-        } else {
-            return Integer.valueOf(priceTo.getText());
+        if (data.getHomeDemands().getDemandType() != null) {
+            infoText.append("type:" + data.getHomeDemands().getDemandType());
         }
+        if (data.getHomeDemands().getDemandCategory() != null) {
+            infoText.append("category:" + data.getHomeDemands().getDemandCategory().getName());
+        }
+        if (data.getHomeDemands().getDemandLocality() != null) {
+            infoText.append("locality:" + data.getHomeDemands().getDemandLocality().getName());
+        }
+        if (data.getHomeDemands().getCreationDate() != null) {
+            infoText.append("creationDate:" + creationDate.getItemText(data.getHomeDemands().getCreationDate()));
+        }
+        if (data.getHomeDemands().getEndDate() != null) {
+            infoText.append("finnishDate:" + data.getHomeDemands().getEndDate().toString());
+        }
+        if (data.getHomeDemands().getPriceFrom() != null) {
+            infoText.append("priceFrom:" + data.getHomeDemands().getPriceFrom());
+        }
+        if (data.getHomeDemands().getPriceTo() != null) {
+            infoText.append("priceTo:" + data.getHomeDemands().getPriceTo());
+        }
+        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("priceFrom")
@@ -118,34 +136,5 @@ public class HomeDemandViewView extends Composite implements SearchModulePresent
         if (!priceTo.getText().matches("[0-9]+")) {
             priceTo.setText("");
         }
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getDemandTitle().equals("")) {
-            infoText.append("title:" + data.getDemandTitle());
-        }
-        if (!data.getDemandType().equals("")) {
-            infoText.append("type:" + data.getDemandType());
-        }
-        if (data.getDemandCategory() != null) {
-            infoText.append("category:" + data.getDemandCategory().getName());
-        }
-        if (data.getDemandLocality() != null) {
-            infoText.append("locality:" + data.getDemandLocality().getName());
-        }
-        if (data.getCreationDate() != 4) {
-            infoText.append("creationDate:" + creationDate.getItemText(data.getCreationDate()));
-        }
-        if (data.getEndDate() != null) {
-            infoText.append("finnishDate:" + data.getEndDate().toString());
-        }
-        if (data.getPriceFrom() != 0) {
-            infoText.append("priceFrom:" + data.getPriceFrom());
-        }
-        if (data.getPriceTo() != 0) {
-            infoText.append("priceTo:" + data.getPriceTo());
-        }
-        infoHolder.setText(infoText.toString());
     }
 }

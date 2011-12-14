@@ -22,10 +22,9 @@
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
         
-    <g:HTMLPanel ui:field="container">
-        <!-- menu -->
-        <div ui:field="searchMenu">
-            <ul ui:field="searchList">
+    <g:HTMLPanel>
+        <div>
+            <ul>
                 <li>
                     <g:Label>Title</g:Label>
                 </li>
@@ -103,11 +102,6 @@
                         </tr>
                     </table>
                 </li>
-<!--                <li>
-                    <g:Button ui:field="searchBtn" styleName='{res.layout.homeMenu}'>
-                        <ui:msg key="search">Search</ui:msg>
-                    </g:Button>
-                </li>-->
             </ul>
         </div>
     </g:HTMLPanel>

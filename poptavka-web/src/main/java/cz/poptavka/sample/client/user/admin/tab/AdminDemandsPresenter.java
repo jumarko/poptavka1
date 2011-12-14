@@ -159,6 +159,7 @@ public class AdminDemandsPresenter
     }
 
     public void onInitDemands() {
+        Storage.setCurrentlyLoadedView("adminDemands");
         eventBus.getAdminDemandsCount();
         eventBus.displayView(view.getWidgetView());
     }

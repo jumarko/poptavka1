@@ -110,6 +110,7 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
     public void onInitSupplierList() {
 //        commented code is from production code
 //        if (!initialized) {
+        Storage.setCurrentlyLoadedView("potentialDemandMessages");
         eventBus.requestSupplierNewDemands();
 //        }
         eventBus.displayView(view.getWidgetView());

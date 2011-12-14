@@ -151,6 +151,7 @@ public class AdminPermissionsPresenter
     }
 
     public void onInitPermissions() {
+        Storage.setCurrentlyLoadedView("adminPermissions");
         eventBus.getAdminPermissionsCount();
         eventBus.displayView(view.getWidgetView());
     }

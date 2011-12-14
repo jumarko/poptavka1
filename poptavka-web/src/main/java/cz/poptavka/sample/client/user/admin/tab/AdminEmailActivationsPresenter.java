@@ -152,6 +152,7 @@ public class AdminEmailActivationsPresenter
     }
 
     public void onInitEmailsActivation() {
+        Storage.setCurrentlyLoadedView("adminEmailsActivation");
         eventBus.getAdminEmailsActivationCount();
         eventBus.displayView(view.getWidgetView());
     }

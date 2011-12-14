@@ -144,6 +144,7 @@ public class AdminOffersPresenter
     }
 
     public void onInitOffers() {
+        Storage.setCurrentlyLoadedView("adminOffers");
         eventBus.getAdminOffersCount();
         eventBus.displayView(view.getWidgetView());
     }

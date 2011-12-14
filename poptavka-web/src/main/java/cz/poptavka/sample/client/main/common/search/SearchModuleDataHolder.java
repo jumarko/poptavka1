@@ -1,185 +1,195 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.poptavka.sample.client.main.common.search;
 
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminAccessRoles;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminClients;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminDemands;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminEmailActivation;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminInvoices;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminMessages;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminOffers;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminPaymentMethods;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminPermissions;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminPreferences;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminProblems;
+import cz.poptavka.sample.client.main.common.search.dataHolders.AdminSuppliers;
+import cz.poptavka.sample.client.main.common.search.dataHolders.HomeDemands;
+import cz.poptavka.sample.client.main.common.search.dataHolders.HomeSuppliers;
+import cz.poptavka.sample.client.main.common.search.dataHolders.MessagesTab;
+import cz.poptavka.sample.client.main.common.search.dataHolders.PotentialDemandMessages;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
+ * Before using classes init method must be called.
  *
- * @author Mato
+ * @author Martin Slavkovsky
  */
 public class SearchModuleDataHolder implements Serializable {
 
+    private Common common = null;
+    private HomeDemands homeDemands = null;
+    private HomeSuppliers homeSuppliers = null;
+    private PotentialDemandMessages potentialDemandMessages = null;
+    private AdminAccessRoles adminAccessRoles = null;
+    private AdminClients adminClients = null;
+    private AdminDemands adminDemands = null;
+    private AdminEmailActivation adminEmailActivation = null;
+    private AdminInvoices adminInvoice = null;
+    private AdminMessages adminMessages = null;
+    private AdminOffers adminOffers = null;
+    private AdminPaymentMethods adminPaymentMethods = null;
+    private AdminPermissions adminPermissions = null;
+    private AdminPreferences adminPreferences = null;
+    private AdminProblems adminProblems = null;
+    private AdminSuppliers adminSuppliers = null;
+    private MessagesTab messagesTab = null;
+
+    public void initCommon() {
+        common = new Common();
+    }
+
+    public void initHomeDemands() {
+        homeDemands = new HomeDemands();
+    }
+
+    public void initHomeSuppliers() {
+        homeSuppliers = new HomeSuppliers();
+    }
+
+    public void initPotentialDemandMessages() {
+        potentialDemandMessages = new PotentialDemandMessages();
+    }
+
+    public void initAdminAccessRoles() {
+        adminAccessRoles = new AdminAccessRoles();
+    }
+
+    public void initAdminClients() {
+        adminClients = new AdminClients();
+    }
+
+    public void initAdminDemands() {
+        adminDemands = new AdminDemands();
+    }
+
+    public void initAdminEmailActivation() {
+        adminEmailActivation = new AdminEmailActivation();
+    }
+
+    public void initAdminInvoices() {
+        adminInvoice = new AdminInvoices();
+    }
+
+    public void initAdminMessages() {
+        adminMessages = new AdminMessages();
+    }
+
+    public void initAdminOffers() {
+        adminOffers = new AdminOffers();
+    }
+
+    public void initAdminPaymentMethods() {
+        adminPaymentMethods = new AdminPaymentMethods();
+    }
+
+    public void initAdminPermissions() {
+        adminPermissions = new AdminPermissions();
+    }
+
+    public void initAdminPreferences() {
+        adminPreferences = new AdminPreferences();
+    }
+
+    public void initAdminProblems() {
+        adminProblems = new AdminProblems();
+    }
+
+    public void initAdminSuppliers() {
+        adminSuppliers = new AdminSuppliers();
+    }
+
+    public void initMessagesTab() {
+        messagesTab = new MessagesTab();
+    }
+
+    public AdminAccessRoles getAdminAccessRoles() {
+        return adminAccessRoles;
+    }
+
+    public AdminClients getAdminClients() {
+        return adminClients;
+    }
+
+    public AdminDemands getAdminDemands() {
+        return adminDemands;
+    }
+
+    public AdminEmailActivation getAdminEmailActivation() {
+        return adminEmailActivation;
+    }
+
+    public AdminInvoices getAdminInvoice() {
+        return adminInvoice;
+    }
+
+    public AdminMessages getAdminMessages() {
+        return adminMessages;
+    }
+
+    public AdminOffers getAdminOffers() {
+        return adminOffers;
+    }
+
+    public AdminPaymentMethods getAdminPaymentMethods() {
+        return adminPaymentMethods;
+    }
+
+    public AdminPermissions getAdminPermissions() {
+        return adminPermissions;
+    }
+
+    public AdminPreferences getAdminPreferences() {
+        return adminPreferences;
+    }
+
+    public AdminProblems getAdminProblems() {
+        return adminProblems;
+    }
+
+    public AdminSuppliers getAdminSuppliers() {
+        return adminSuppliers;
+    }
+
+    public Common getCommon() {
+        return common;
+    }
+
+    public HomeDemands getHomeDemands() {
+        return homeDemands;
+    }
+
+    public HomeSuppliers getHomeSuppliers() {
+        return homeSuppliers;
+    }
+
+    public PotentialDemandMessages getPotentialDemandMessages() {
+        return potentialDemandMessages;
+    }
+
+    public MessagesTab getMessagesTab() {
+        return messagesTab;
+    }
+
     /** COMMON - full text search **/
-//    private String type = null;
-    private String text = "";
+    public static class Common implements Serializable {
 
-    public String getText() {
-        return text;
-    }
+        private String text = "";
 
-    public void setText(String text) {
-        this.text = text;
-    }
-//    public String getType() {
-//        return type;
-//    }
-//
-//    public void setType(String type) {
-//        this.type = type;
-//    }
-    /** HOMEDEMANDS **/
-    private String demandTitle = "";
-    private CategoryDetail demandCategory = null;
-    private LocalityDetail demandLocality = null;
-    private int priceFrom = -1;
-    private int priceTo = -1;
-    private String demandType = "";
-    private Date endDate = null;
-    //0 - today
-    //1 - yesterday
-    //2 - last week
-    //3 - last month
-    //4 - no limit
-    private int creationDate = -1;
+        public String getText() {
+            return text;
+        }
 
-    public int getCreationDate() {
-        return creationDate;
+        public void setText(String text) {
+            this.text = text;
+        }
     }
-
-    public void setCreationDate(int creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public CategoryDetail getDemandCategory() {
-        return demandCategory;
-    }
-
-    public void setDemandCategory(CategoryDetail demandCategory) {
-        this.demandCategory = demandCategory;
-    }
-
-    public LocalityDetail getDemandLocality() {
-        return demandLocality;
-    }
-
-    public void setDemandLocality(LocalityDetail demandLocality) {
-        this.demandLocality = demandLocality;
-    }
-
-    public String getDemandTitle() {
-        return demandTitle;
-    }
-
-    public void setDemandTitle(String demandTitle) {
-        this.demandTitle = demandTitle;
-    }
-
-    public String getDemandType() {
-        return demandType;
-    }
-
-    public void setDemandType(String demandType) {
-        this.demandType = demandType;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public int getPriceFrom() {
-        return priceFrom;
-    }
-
-    public void setPriceFrom(int priceFrom) {
-        this.priceFrom = priceFrom;
-    }
-
-    public int getPriceTo() {
-        return priceTo;
-    }
-
-    public void setPriceTo(int priceTo) {
-        this.priceTo = priceTo;
-    }
-    /** HOMESUPPLIERS **/
-    private String supplierName = "";
-    private CategoryDetail supplierCategory = null;
-    private LocalityDetail supplierLocality = null;
-    private int ratingFrom = -1;
-    private int ratingTo = -1;
-    private String supplierDescription = "";
-
-    public int getRatingFrom() {
-        return ratingFrom;
-    }
-
-    public void setRatingFrom(int ratingFrom) {
-        this.ratingFrom = ratingFrom;
-    }
-
-    public int getRatingTo() {
-        return ratingTo;
-    }
-
-    public void setRatingTo(int ratingTo) {
-        this.ratingTo = ratingTo;
-    }
-
-    public CategoryDetail getSupplierCategory() {
-        return supplierCategory;
-    }
-
-    public void setSupplierCategory(CategoryDetail supplierCategory) {
-        this.supplierCategory = supplierCategory;
-    }
-
-    public String getSupplierDescription() {
-        return supplierDescription;
-    }
-
-    public void setSupplierDescription(String supplierDescription) {
-        this.supplierDescription = supplierDescription;
-    }
-
-    public LocalityDetail getSupplierLocality() {
-        return supplierLocality;
-    }
-
-    public void setSupplierLocality(LocalityDetail supplierLocality) {
-        this.supplierLocality = supplierLocality;
-    }
-
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-    /** POTENTIALDEMANDMESSAGES **/
-    /** MESSAGES - INBOX **/
-    /** MESSAGES - SENT **/
-    /** MESSAGES - DELETED **/
-    /** ADMINACCESSROLE **/
-    /** ADMINCLIENT **/
-    /** ADMINDEMAND **/
-    /** ADMINEMAILACTIVATION **/
-    /** ADMININVOICE **/
-    /** ADMINMESSAGES **/
-    /** ADMINOFFER **/
-    /** ADMINPAYMETNDETAIL **/
-    /** ADMINPERMISSION **/
-    /** ADMINPREFERENCES **/
-    /** ADMINPROBLEMS **/
-    /** ADMINSUPPLIERS **/
 }

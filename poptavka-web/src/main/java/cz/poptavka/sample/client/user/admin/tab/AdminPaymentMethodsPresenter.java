@@ -148,6 +148,7 @@ public class AdminPaymentMethodsPresenter
     }
 
     public void onInitPaymentMethods() {
+        Storage.setCurrentlyLoadedView("adminPaymentMethods");
         eventBus.getAdminPaymentMethodsCount();
         eventBus.displayView(view.getWidgetView());
     }

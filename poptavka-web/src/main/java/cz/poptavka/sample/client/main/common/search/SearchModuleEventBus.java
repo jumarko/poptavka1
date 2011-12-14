@@ -7,8 +7,22 @@ import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
+import cz.poptavka.sample.client.main.common.search.views.AdminAccessRolesViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminClientsViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminDemandsViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminEmailActivationViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminInvoicesViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminMessagesViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminOffersViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminPaymentMethodsViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminPermissionsViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminPreferencesViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminProblemsViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.AdminSuppliersViewPresenter;
 import cz.poptavka.sample.client.main.common.search.views.HomeDemandViewPresenter;
 import cz.poptavka.sample.client.main.common.search.views.HomeSuppliersViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.MessagesTabViewPresenter;
+import cz.poptavka.sample.client.main.common.search.views.PotentialDemandMessagesViewPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import java.util.ArrayList;
@@ -17,17 +31,74 @@ import java.util.ArrayList;
 @Events(startView = SearchModuleView.class, module = SearchModule.class)
 public interface SearchModuleEventBus extends EventBus {
 
+    // MODULES INIT METHODS
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void initHomeDemandsModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void initHomeSupplierModule(SearchModuleDataHolder filter);
+
+//    @Event(forwardToParent = true)
+//    void initDemandsTabModule(SearchModuleDataHolder filter);
+//
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModule(SearchModuleDataHolder filter);
+//
+//    @Event(forwardToParent = true)
+//    void initAdminsTabModule(SearchModuleDataHolder filter);
+
+    // VIEWS INIT METHODS
     /**************************************************************************/
     /* Navigation | Initialization events. */
     //production init method
-    //during development used multiple instancing
     @Event(handlers = HomeDemandViewPresenter.class)
     void initHomeDemandView(PopupPanel popupPanel);
 
     @Event(handlers = HomeSuppliersViewPresenter.class)
     void initHomeSuppliersView(PopupPanel popupPanel);
-//    @Event(handlers = SupplierListPresenter.class, historyConverter = DemandModuleHistory.class)
-//    void initSupplierList();
+
+    @Event(handlers = AdminAccessRolesViewPresenter.class)
+    void initAdminAccessRolesView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminClientsViewPresenter.class)
+    void initAdminClientsRolesView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminDemandsViewPresenter.class)
+    void initAdminDemandsView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminEmailActivationViewPresenter.class)
+    void initAdminEmailActivationView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminInvoicesViewPresenter.class)
+    void initAdminInvoicesView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminMessagesViewPresenter.class)
+    void initAdminMessagesView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminOffersViewPresenter.class)
+    void initAdminOffersView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminPaymentMethodsViewPresenter.class)
+    void initAdminPaymentMethodsView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminPermissionsViewPresenter.class)
+    void initAdminPermissionsView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminPreferencesViewPresenter.class)
+    void initAdminPreferencesView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminProblemsViewPresenter.class)
+    void initAdminProblemsView(PopupPanel popupPanel);
+
+    @Event(handlers = AdminSuppliersViewPresenter.class)
+    void initAdminSuppliersView(PopupPanel popupPanel);
+
+    @Event(handlers = PotentialDemandMessagesViewPresenter.class)
+    void initPotentialDemandMessagesView(PopupPanel popupPanel);
+
+    @Event(handlers = MessagesTabViewPresenter.class)
+    void initMessagesTabView(PopupPanel popupPanel);
 
     /**************************************************************************/
     /* Business events. */
@@ -114,15 +185,11 @@ public interface SearchModuleEventBus extends EventBus {
     @Event(handlers = SearchModuleHandler.class)
     void requestLocalities();
 
-    @Event(handlers = {HomeDemandViewPresenter.class, HomeSuppliersViewPresenter.class })
+    @Event(handlers = {HomeDemandViewPresenter.class, HomeSuppliersViewPresenter.class,
+            AdminSuppliersViewPresenter.class })
     void responseCategories(final ArrayList<CategoryDetail> list);
 
-    @Event(handlers = {HomeDemandViewPresenter.class, HomeSuppliersViewPresenter.class })
+    @Event(handlers = {HomeDemandViewPresenter.class, HomeSuppliersViewPresenter.class,
+            AdminSuppliersViewPresenter.class })
     void responseLocalities(final ArrayList<LocalityDetail> list);
-
-    @Event(forwardToParent = true)
-    void initHomeDemandsModule(SearchModuleDataHolder filter);
-
-    @Event(forwardToParent = true)
-    void initHomeSupplierModule(SearchModuleDataHolder filter);
 }

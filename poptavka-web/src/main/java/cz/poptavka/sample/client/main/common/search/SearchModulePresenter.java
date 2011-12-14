@@ -60,13 +60,31 @@ public class SearchModulePresenter extends
                     eventBus.initHomeDemandsModule(view.getFilter());
                 } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
                     eventBus.initHomeSupplierModule(view.getFilter());
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminEmailsActivation")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminInvoices")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminMessages")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminOffers")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminPaymentMethods")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminPermissions")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminPreferences")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminProblems")) {
+//                } else if (Storage.getCurrentlyLoadedView().equals("adminSuppliers")) {
+                } else if (Storage.getCurrentlyLoadedView().equals("potentialDemandMessages")) {
+//                    eventBus.initDemandsTabModule(view.getFilter());
+                } else if (Storage.getCurrentlyLoadedView().equals("messagesTab")) {
+//                    eventBus.initMessagesTabModule(view.getFilter());
+                } else { //Admin...whatever
+//                    eventBus.initAdminsTabModule(view.getFilter());
                 }
-                ((SearchModulesViewInterface) view.getPopupPanel().getWidget())
-                        .displayAdvSearchDataInfo(view.getFilter(), view.getSerachContent());
+
+                ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).
+                        displayAdvSearchDataInfo(view.getFilter(), view.getSerachContent());
             }
         });
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
 
@@ -74,15 +92,42 @@ public class SearchModulePresenter extends
                     eventBus.initHomeDemandView(view.getPopupPanel());
                 } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
                     eventBus.initHomeSuppliersView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
+                    eventBus.initAdminAccessRolesView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
+                    eventBus.initAdminClientsRolesView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {
+                    eventBus.initAdminDemandsView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminEmailsActivation")) {
+                    eventBus.initAdminEmailActivationView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminInvoices")) {
+                    eventBus.initAdminInvoicesView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminMessages")) {
+                    eventBus.initAdminMessagesView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminOffers")) {
+                    eventBus.initAdminOffersView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminPaymentMethods")) {
+                    eventBus.initAdminPaymentMethodsView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminPermissions")) {
+                    eventBus.initAdminPermissionsView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminPreferences")) {
+                    eventBus.initAdminPreferencesView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminProblems")) {
+                    eventBus.initAdminProblemsView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("adminSuppliers")) {
+                    eventBus.initAdminSuppliersView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("potentialDemandMessages")) {
+                    eventBus.initPotentialDemandMessagesView(view.getPopupPanel());
+                } else if (Storage.getCurrentlyLoadedView().equals("messagesTab")) {
+                    eventBus.initMessagesTabView(view.getPopupPanel());
+                } else {
+                    return;
                 }
                 Widget source = (Widget) event.getSource();
                 int left = source.getAbsoluteLeft() - 250;
                 int top = source.getAbsoluteTop() + 20;
                 view.getPopupPanel().setPopupPosition(left, top);
 
-                // Show the popup
-//        popupPanel.setHeight("150px");
-//        popupPanel.setWidth("150px");
                 view.getPopupPanel().setAnimationEnabled(true);
                 view.getPopupPanel().show();
             }
