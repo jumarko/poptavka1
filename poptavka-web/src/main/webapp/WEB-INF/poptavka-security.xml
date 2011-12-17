@@ -29,7 +29,7 @@
     <beans:bean id="customAuthenticationEntryPoint" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationEntryPoint" />
 
 
-    <!-- Custom handler to indicate that the authentication is successful -->
+    <!-- Custom handler to indicate that the authentication is succ`essful -->
     <beans:bean id="customAuthenticationSuccessHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationSuccessHandler" />
 
     <!-- Custom handler to indicate that the authentication has failed -->
