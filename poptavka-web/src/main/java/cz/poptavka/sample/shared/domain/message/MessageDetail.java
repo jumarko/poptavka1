@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
 /**
@@ -21,11 +22,11 @@ public class MessageDetail implements Serializable {
      */
     private static final long serialVersionUID = -928374659233195109L;
     private long messageId;
+
     private long threadRootId;
     private long parentId;
 //    private long firstBornId;
 //    private long nexSiblingId;
-    private long demandId;
     private String subject;
     private String body;
     private String messageState;
@@ -34,6 +35,13 @@ public class MessageDetail implements Serializable {
     private Date sent;
     private long senderId;
     private long receiverId;
+    private long userMessageId;
+    private boolean read;
+    private boolean starred;
+
+    private int messageCount;
+    private int unreadSubmessages;
+
 
     public MessageDetail() {
     }
@@ -48,7 +56,6 @@ public class MessageDetail implements Serializable {
 
     public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {
         detail.setMessageId(message.getId());
-        detail.setDemandId(message.getDemand() == null ? -1 : message.getDemand().getId());
         detail.setParentId(message.getParent() == null ? -1 : message.getParent().getId());
         detail.setSenderId(message.getSender() == null ? -1 : message.getSender().getId());
         detail.setThreadRootId(message.getThreadRoot() == null ? -1 : message.getThreadRoot().getId());
@@ -56,7 +63,12 @@ public class MessageDetail implements Serializable {
         detail.setCreated(message.getCreated());
         //still get annoying nullPE at PotentialDemandMessage
         //so that's the reason for this check    -Beho. 29.11.11
-        detail.setSent(message.getSent() == null ?  message.getCreated() :  message.getSent());
+        if (message.getSent() == null) {
+            detail.setSent(message.getCreated());
+        } else {
+            detail.setSent(message.getSent());
+        }
+
 //        m.setFirstBornId(serialVersionUID);
         if (message.getMessageState() != null) {
             detail.setMessageState(message.getMessageState().name());
@@ -65,10 +77,19 @@ public class MessageDetail implements Serializable {
 //        m.setNexSiblingId(serialVersionUID);
 //        m.setReceiverId();
 
-
         detail.setSent(message.getSent());
         detail.setSubject(message.getSubject());
 
+        return detail;
+    }
+
+    public static MessageDetail fillMessageDetail(MessageDetail detail,
+            UserMessage userMessage) {
+        fillMessageDetail(detail, userMessage.getMessage());
+        detail.setRead(userMessage.isIsRead());
+        detail.setStarred(userMessage.isIsStarred());
+        detail.setMessageCount(detail.getMessageCount());
+        detail.setUnreadSubmessages(detail.getUnreadSubmessages());
         return detail;
     }
 
@@ -77,7 +98,6 @@ public class MessageDetail implements Serializable {
         messageId = detail.getMessageId();
         threadRootId = detail.getThreadRootId();
         parentId = detail.getParentId();
-        demandId = detail.getDemandId();
         subject = detail.getSubject();
         body = detail.getBody();
         messageState = detail.getMessageState();
@@ -86,6 +106,11 @@ public class MessageDetail implements Serializable {
         sent = detail.getSent();
         senderId = detail.getSenderId();
         receiverId = detail.getReceiverId();
+        read = detail.isRead();
+        starred = detail.isStarred();
+        messageCount = detail.getMessageCount();
+        unreadSubmessages = detail.getUnreadSubmessages();
+        userMessageId = detail.getUserMessageId();
     }
 
     public long getMessageId() {
@@ -159,13 +184,6 @@ public class MessageDetail implements Serializable {
 //    public void setNexSiblingId(long nexSiblingId) {
 //        this.nexSiblingId = nexSiblingId;
 //    }
-    public long getDemandId() {
-        return demandId;
-    }
-
-    public void setDemandId(long demandId) {
-        this.demandId = demandId;
-    }
 
     /**
      * @return the subject
@@ -275,6 +293,52 @@ public class MessageDetail implements Serializable {
         this.receiverId = receiverId;
     }
 
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
+
+    public int getUnreadSubmessages() {
+        return unreadSubmessages;
+    }
+
+    public void setUnreadSubmessages(int unreadSubmessages) {
+        this.unreadSubmessages = unreadSubmessages;
+    }
+
+    public long getUserMessageId() {
+        return userMessageId;
+    }
+
+    public void setUserMessageId(long userMessageId) {
+        this.userMessageId = userMessageId;
+    }
+
+    public String getFormattedMessageCount() {
+        return "(" + getMessageCount() + "/"
+                + getUnreadSubmessages() + ")";
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("MessageID: " + messageId);
@@ -282,7 +346,6 @@ public class MessageDetail implements Serializable {
         sb.append("\nParentID: " + parentId);
 //        sb.append("\nFirstBornIdID: " + firstBornId);
 //        sb.append("\nNexSiblingID: " + nexSiblingId);
-        sb.append("\ndemandID: " + demandId);
         sb.append("\nSubject: " + subject);
         sb.append("\nBody: " + body);
         sb.append("\nMessageState: " + messageState);

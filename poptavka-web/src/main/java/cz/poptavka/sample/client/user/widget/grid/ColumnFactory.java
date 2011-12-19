@@ -140,10 +140,10 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return BaseDemandDetail.displayHtml(obj.getTitle()
+                    return BaseDemandDetail.displayHtml(obj.getDemandTitle()
                             + " " + obj.getFormattedMessageCount(), obj.isRead());
                 } else {
-                    return BaseDemandDetail.displayHtml(obj.getTitle(), obj.isRead());
+                    return BaseDemandDetail.displayHtml(obj.getDemandTitle(), obj.isRead());
                 }
             }
         });
@@ -153,7 +153,7 @@ public class ColumnFactory<T> {
                 @Override
                 public int compare(T o1, T o2) {
 
-                    return ((TableDisplay) o1).getTitle().compareTo(((TableDisplay) o2).getTitle());
+                    return ((TableDisplay) o1).getDemandTitle().compareTo(((TableDisplay) o2).getDemandTitle());
                 }
             });
         }

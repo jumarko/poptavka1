@@ -55,7 +55,7 @@ public class UserConversationPanel extends Composite {
     }
 
     /**
-     * Display list of messages. When messages are set, control panell should be displayed as well.
+     * Display list of messages. When messages are set, control panel should be displayed as well.
      * Message List size is at least always 1
      *
      * @param messages list of messages to be displayed
@@ -119,7 +119,6 @@ public class UserConversationPanel extends Composite {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
-        messageDetail.setDemandId(replyToMessage.getDemandId());
         return messageDetail;
     }
 
@@ -133,7 +132,6 @@ public class UserConversationPanel extends Composite {
         messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
         messageDetail.setReceiverId(replyToMessage.getSenderId());
         messageDetail.setParentId(replyToMessage.getMessageId());
-        messageDetail.setDemandId(replyToMessage.getDemandId());
         return messageDetail;
     }
 

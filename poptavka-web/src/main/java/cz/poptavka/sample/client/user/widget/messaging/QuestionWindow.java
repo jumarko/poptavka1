@@ -56,7 +56,6 @@ public class QuestionWindow extends Composite implements QuestionPresenter.Reply
     public MessageDetail getCreatedMessage() {
         MessageDetail message =  new MessageDetail();
         message.setBody(replyTextArea.getText());
-        message.setDemandId(demandId);
         return message;
     }
 

@@ -9,7 +9,7 @@ public interface TableDisplay {
 
     long getMessageId();
 
-    String getTitle();
+    String getDemandTitle();
 
     boolean isRead();
 

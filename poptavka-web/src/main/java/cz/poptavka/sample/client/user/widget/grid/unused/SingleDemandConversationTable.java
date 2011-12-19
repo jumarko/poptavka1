@@ -16,23 +16,24 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.DemandMessageDetail;
 
-public class SingleDemandConversationTable extends CellTable<MessageDetail> {
+public class SingleDemandConversationTable extends CellTable<DemandMessageDetail> {
 
-    private ListDataProvider<MessageDetail> dataProvider = new ListDataProvider<MessageDetail>();
+    private ListDataProvider<DemandMessageDetail> dataProvider = new ListDataProvider<DemandMessageDetail>();
 
     public SingleDemandConversationTable(LocalizableMessages msgs, StyleResource rscs) {
         super(KEY_PROVIDER);
 
-        ListHandler<MessageDetail> sorHandler = new ListHandler<MessageDetail>(dataProvider.getList());
+        ListHandler<DemandMessageDetail> sorHandler = new ListHandler<DemandMessageDetail>(dataProvider.getList());
         this.addColumnSortHandler(sorHandler);
 
         // Create a demandPager to control the table.
 
-        final SelectionModel<MessageDetail> selectionModel = new NoSelectionModel<MessageDetail>(
+        final SelectionModel<DemandMessageDetail> selectionModel = new NoSelectionModel<DemandMessageDetail>(
                 KEY_PROVIDER);
-        this.setSelectionModel(selectionModel, DefaultSelectionEventManager.<MessageDetail>createDefaultManager());
+        this.setSelectionModel(selectionModel, DefaultSelectionEventManager
+                .<DemandMessageDetail>createDefaultManager());
 
         initTableColumns(selectionModel, sorHandler, msgs);
 
@@ -40,8 +41,8 @@ public class SingleDemandConversationTable extends CellTable<MessageDetail> {
         dataProvider.addDataDisplay(this);
     }
 
-    private void initTableColumns(final SelectionModel<MessageDetail> tableSelectionModel,
-            ListHandler<MessageDetail> sortHandler, final LocalizableMessages msgs) {
+    private void initTableColumns(final SelectionModel<DemandMessageDetail> tableSelectionModel,
+            ListHandler<DemandMessageDetail> sortHandler, final LocalizableMessages msgs) {
         // MultipleSelection Checkbox
         // Column<OfferDemandMessage, Boolean> checkBoxColumn = new Column<OfferDemandMessage, Boolean>(
         // new CheckboxCell(true, false)) {
@@ -52,9 +53,9 @@ public class SingleDemandConversationTable extends CellTable<MessageDetail> {
         // };
 
         // Demand Title Column
-        Column<MessageDetail, String> titleColumn = (new Column<MessageDetail, String>(new TextCell()) {
+        Column<DemandMessageDetail, String> titleColumn = (new Column<DemandMessageDetail, String>(new TextCell()) {
             @Override
-            public String getValue(MessageDetail object) {
+            public String getValue(DemandMessageDetail object) {
                 return object.getSubject();
             }
         });
@@ -62,26 +63,26 @@ public class SingleDemandConversationTable extends CellTable<MessageDetail> {
         final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
 
         // Demand Finish Column
-        Column<MessageDetail, String> dateColumn = (new Column<MessageDetail, String>(new TextCell()) {
+        Column<DemandMessageDetail, String> dateColumn = (new Column<DemandMessageDetail, String>(new TextCell()) {
             @Override
-            public String getValue(MessageDetail object) {
+            public String getValue(DemandMessageDetail object) {
                 return dateFormat.format(object.getCreated());
             }
         });
 
         // Demand sent Date column
-        Column<MessageDetail, String> stateColumn = (new Column<MessageDetail, String>(new TextCell()) {
+        Column<DemandMessageDetail, String> stateColumn = (new Column<DemandMessageDetail, String>(new TextCell()) {
             @Override
-            public String getValue(MessageDetail object) {
+            public String getValue(DemandMessageDetail object) {
                 return object.getMessageState();
             }
         });
 
         // sort methods ****************************
         titleColumn.setSortable(true);
-        sortHandler.setComparator(titleColumn, new Comparator<MessageDetail>() {
+        sortHandler.setComparator(titleColumn, new Comparator<DemandMessageDetail>() {
             @Override
-            public int compare(MessageDetail o1, MessageDetail o2) {
+            public int compare(DemandMessageDetail o1, DemandMessageDetail o2) {
                 if (o1 == o2) {
                     return 0;
                 }
@@ -100,14 +101,14 @@ public class SingleDemandConversationTable extends CellTable<MessageDetail> {
         this.addColumn(stateColumn, msgs.expireDate());
     }
 
-    private static final ProvidesKey<MessageDetail> KEY_PROVIDER = new ProvidesKey<MessageDetail>() {
+    private static final ProvidesKey<DemandMessageDetail> KEY_PROVIDER = new ProvidesKey<DemandMessageDetail>() {
         @Override
-        public Object getKey(MessageDetail item) {
+        public Object getKey(DemandMessageDetail item) {
             return item == null ? null : item.getDemandId();
         }
     };
 
-    public ListDataProvider<MessageDetail> getDataProvider() {
+    public ListDataProvider<DemandMessageDetail> getDataProvider() {
         return dataProvider;
     }
 

@@ -117,7 +117,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * of ALL the messages spanning from the demand message (including the
      * demand message itself)
      */
-    Map<Message, Long> getListOfClientDemandMessagesAll(User user);
+    Map<Message, Integer> getListOfClientDemandMessagesAll(User user);
 
     /**
      * Gets all the demand messages of the given user along with the number of
@@ -129,7 +129,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
      * of UNREAD messages spanning from the demand message (including the
      * demand message itself)
      */
-    Map<Message, Long> getListOfClientDemandMessagesUnread(User user);
+    Map<Message, Integer> getListOfClientDemandMessagesUnread(User user);
 
     /**
      * Gets all the descendants (not just the children) of a given message

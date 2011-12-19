@@ -19,7 +19,7 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.widget.grid.unused.GlobalDemandConversationTable;
 import cz.poptavka.sample.client.user.widget.grid.unused.SingleDemandConversationTable;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.message.DemandMessageDetail;
 
 public class MyDemandsView extends Composite implements
         MyDemandsPresenter.MyDemandsInterface {
@@ -132,13 +132,13 @@ public class MyDemandsView extends Composite implements
     }
 
     @Override
-    public ListDataProvider<MessageDetail> getConversationProvider() {
+    public ListDataProvider<DemandMessageDetail> getConversationProvider() {
         return conversationTable.getDataProvider();
     }
 
     @Override
-    public NoSelectionModel<MessageDetail> getConversationTableModel() {
-        return (NoSelectionModel<MessageDetail>) conversationTable.getSelectionModel();
+    public NoSelectionModel<DemandMessageDetail> getConversationTableModel() {
+        return (NoSelectionModel<DemandMessageDetail>) conversationTable.getSelectionModel();
     }
 
 }

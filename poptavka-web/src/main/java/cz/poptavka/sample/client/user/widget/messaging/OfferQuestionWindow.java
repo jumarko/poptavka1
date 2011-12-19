@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.message.DemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
@@ -134,8 +135,8 @@ public class OfferQuestionWindow extends Composite implements OfferQuestionPrese
 
     @Override
     public MessageDetail getCreatedMessage() {
-        MessageDetail message = null;
-        message = new MessageDetail();
+        DemandMessageDetail message = null;
+        message = new DemandMessageDetail();
         message.setBody(replyTextArea.getText());
         message.setDemandId(demandId);
         return message;

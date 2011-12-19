@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,12 +122,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         ArrayList<MessageDetail> details = new ArrayList<MessageDetail>();
 
         for (Message m : messages) {
-            MessageDetail md = new MessageDetail();
-            md.setMessageId(m.getId());
-            md.setThreadRootId(md.getMessageId());
-            md.setParentId(md.getMessageId());
-            md.setSenderId(m.getSender().getId());
-            md.setCreated(m.getCreated());
+            ClientDemandMessageDetail md = new ClientDemandMessageDetail();
             md.setSent(m.getSent());
             md.setDemandId(m.getDemand().getId());
             md.setSubject(m.getDemand().getTitle());
@@ -163,15 +157,17 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
-        Map<Message, Long> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
-        Map<Message, Long> unreadSubmessageCounts =
+        Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
+        Map<Message, Integer> unreadSubmessageCounts =
                 this.messageService.getListOfClientDemandMessagesUnread(businessUser);
-        for (Entry<Message, Long> entry : submessageCounts.entrySet()) {
-            Message message = entry.getKey();
-            long count = entry.getValue();
-            long unreadCount = unreadSubmessageCounts.get(entry.getKey());
-            result.add(ClientDemandMessageDetail.createDetail(message, count,
-                    unreadCount));
+        List<UserMessage> userMessages = userMessageService.getUserMessages(
+                new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
+        for (UserMessage userMessage : userMessages) {
+            ClientDemandMessageDetail detail = ClientDemandMessageDetail
+                    .createDetail(userMessage);
+            detail.setMessageCount(submessageCounts.get(userMessage.getMessage()));
+            detail.setUnreadSubmessages(unreadSubmessageCounts
+                    .get(userMessage.getMessage()));
         }
         return result;
     }
@@ -347,7 +343,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
-            detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
             potentailDemands.add(detail);
         }
         return potentailDemands;
@@ -456,7 +452,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(userMessage);
                 detail.setMessageCount(messageService.getAllDescendantsCount(
                         userMessage.getMessage(), userMessage.getUser()));
-                detail.setUnreadMessageCount(messageService.getUnreadDescendantsCount(
+                detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(
                         userMessage.getMessage(), userMessage.getUser()));
                 messageDetails.add(UserMessageDetail.createUserMessageDetail(userMessage));
             }

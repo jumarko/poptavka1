@@ -163,14 +163,14 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<Message, Long> getListOfClientDemandMessagesAll(User user) {
+    public Map<Message, Integer> getListOfClientDemandMessagesAll(User user) {
         return getDao().getListOfClientDemandMessagesAll(user);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
-    public Map<Message, Long> getListOfClientDemandMessagesUnread(User user) {
+    public Map<Message, Integer> getListOfClientDemandMessagesUnread(User user) {
         return getDao().getListOfClientDemandMessagesUnread(user);
     }
 

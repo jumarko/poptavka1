@@ -145,7 +145,6 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
         MessageDetail message = null;
         message = new MessageDetail();
         message.setBody(replyTextArea.getText());
-        message.setDemandId(demandId);
         return message;
     }
 

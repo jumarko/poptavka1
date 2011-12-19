@@ -146,20 +146,20 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final Message threadRoot200 = this.messageService.getById(200L);
         final Message threadRoot300 = this.messageService.getById(300L);
         final User client = this.generalService.find(User.class, 111111112L);
-        final Map<Message, Long> listOfClientDemandMessages =
+        final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesAll(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
                 3, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
-                (Object) 4L, (Object) listOfClientDemandMessages.get(threadRoot1));
+                (Object) 4, (Object) listOfClientDemandMessages.get(threadRoot1));
         checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
-                (Object) 1L, (Object) listOfClientDemandMessages.get(threadRoot200));
+                (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot200));
         checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
-                (Object) 2L, (Object) listOfClientDemandMessages.get(threadRoot300));
+                (Object) 2, (Object) listOfClientDemandMessages.get(threadRoot300));
     }
 
     @Test
@@ -168,20 +168,20 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final Message threadRoot200 = this.messageService.getById(200L);
         final Message threadRoot300 = this.messageService.getById(300L);
         final User client = this.generalService.find(User.class, 111111112L);
-        final Map<Message, Long> listOfClientDemandMessages =
+        final Map<Message, Integer> listOfClientDemandMessages =
                 this.messageService.getListOfClientDemandMessagesUnread(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
                 3, listOfClientDemandMessages.size());
 
         checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1L, (Object) listOfClientDemandMessages.get(threadRoot1));
+                (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot1));
         checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1L, (Object) listOfClientDemandMessages.get(threadRoot200));
+                (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot200));
         checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 0L, (Object) listOfClientDemandMessages.get(threadRoot300));
+                (Object) 0, (Object) listOfClientDemandMessages.get(threadRoot300));
     }
 
 

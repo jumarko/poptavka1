@@ -90,15 +90,15 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
     }
 
     @Override
-    public Map<Message, Long> getListOfClientDemandMessagesAll(User user) {
-        return getListOfClientDemandMessagesHelper(user,
-                "getListOfClientDemandMessagesSub");
+    public Map<Message, Integer> getListOfClientDemandMessagesAll(User user) {
+        return longValueMapToIntValueMap(getListOfClientDemandMessagesHelper(user,
+                "getListOfClientDemandMessagesSub"));
     }
 
     @Override
-    public Map<Message, Long> getListOfClientDemandMessagesUnread(User user) {
-        return getListOfClientDemandMessagesHelper(user,
-                "getListOfClientDemandMessagesUnreadSub");
+    public Map<Message, Integer> getListOfClientDemandMessagesUnread(User user) {
+        return longValueMapToIntValueMap(getListOfClientDemandMessagesHelper(user,
+                "getListOfClientDemandMessagesUnreadSub"));
 
     }
 
@@ -225,5 +225,15 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
             }
         }
         return messageMap;
+    }
+
+    private Map<Message, Integer> longValueMapToIntValueMap(
+            Map<Message, Long> longMap) {
+        Map<Message, Integer> result = new HashMap();
+        for (Map.Entry<Message, Long> entry : longMap.entrySet()) {
+            result.put(entry.getKey(), (int) entry.getValue().intValue());
+        }
+        return result;
+
     }
 }

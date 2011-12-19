@@ -250,7 +250,7 @@ public class OldDetailWrapperPresenter extends
                         MessageDetail offerMessage = potentialViewReplyWiget
                                 .getCreatedMessage();
                         offer.setBody(offerMessage.getBody());
-                        offer.setDemandId(offerMessage.getDemandId());
+                        //offer.setDemandId(offerMessage.getDemandId());
                         eventBus.bubbleOfferSending(offer);
                     }
                 }
