@@ -14,12 +14,12 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.main.MainEventBus;
+import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 @Presenter(view = LocalitySelectorView.class, multiple = true)
 public class LocalitySelectorPresenter
-    extends LazyPresenter<LocalitySelectorPresenter.LocalitySelectorInterface, MainEventBus> {
+    extends LazyPresenter<LocalitySelectorPresenter.LocalitySelectorInterface, RootEventBus> {
 
     /** View interface methods. **/
     public interface LocalitySelectorInterface extends LazyView {

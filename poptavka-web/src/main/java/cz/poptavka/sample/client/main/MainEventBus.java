@@ -11,11 +11,8 @@ import com.mvp4g.client.annotation.InitHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
-import com.mvp4g.client.annotation.module.ChildModule;
-import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBus;
 
-import cz.poptavka.sample.client.home.HomeModule;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
@@ -24,20 +21,15 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
-@Events(startView = MainView.class, historyOnStart = true)
+@Events(startView = MainView.class, historyOnStart = true, module = MainModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@ChildModules({
-    @ChildModule(moduleClass = HomeModule.class, async = false, autoDisplay = false),
-    @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false)
-})
 public interface MainEventBus extends EventBus {
 
     /**
      * Start method is initialized only once when the root module is first
-     * initialized.
-     * Init method for layout and history initialization. Layout initialization
-     * contains menu injection.
-     * To inject more widgets, update onStart() method of MainPresenter
+     * initialized. Init method for layout and history initialization. Layout
+     * initialization contains menu injection. To inject more widgets, update
+     * onStart() method of MainPresenter
      */
     @Start
     @InitHistory
@@ -49,28 +41,28 @@ public interface MainEventBus extends EventBus {
     void login();
 
     /** Init home module (unlogged user). */
-    @Event(modulesToLoad = HomeModule.class)
-    void atHome();
 
     /** init method for Authentificated User. */
-    //should be only for UserPresenter
+    // should be only for UserPresenter
     // TODO MainPage login button text, should be handled by children modules
     // TODO check - maybe this should be the UserModule load method
     @Event(modulesToLoad = UserModule.class, handlers = MainPresenter.class)
     void atAccount();
 
     // TODO
-    //from event handler automatic redirection
-//    @Event(modulesToLoad = UserModule.class, passive = true)
-//    void addNewDemand(FullDemandDetail result);
+    // from event handler automatic redirection
+    // @Event(modulesToLoad = UserModule.class, passive = true)
+    // void addNewDemand(FullDemandDetail result);
     // TODO praso - where did thismetod come from? Figure out.
-//    @Event(modulesToLoad = HomeModule.class)
-//    void goToCreateDemand();
-    @Event(modulesToLoad = HomeModule.class)
-    void goToCreateSupplier();
+    // @Event(modulesToLoad = HomeModule.class)
+    // void goToCreateDemand();
+    /*
+     * @Event(modulesToLoad = HomeModule.class) void goToCreateSupplier();
+     */
 
     /**
-     * Sets widget to View's body section. Body section can hold one widget only.
+     * Sets widget to View's body section. Body section can hold one widget
+     * only.
      *
      * @param body
      */
@@ -113,7 +105,8 @@ public interface MainEventBus extends EventBus {
     void initLocalityWidget(SimplePanel embedToWidget);
 
     @Event(handlers = LocalitySelectorPresenter.class)
-    void setLocalityData(int localityType, ArrayList<LocalityDetail> localityList);
+    void setLocalityData(int localityType,
+            ArrayList<LocalityDetail> localityList);
 
     @Event(handlers = MainHandler.class)
     void getRootLocalities();
@@ -122,38 +115,47 @@ public interface MainEventBus extends EventBus {
     void getChildLocalities(int localityType, String locCode);
 
     /** Supplier registration **/
-//    @Event(handlers = MainPresenter.class)
-//    void initServiceForm(SimplePanel serviceHolder);
-//
-//    @Event(handlers = MainPresenter.class)
-//    void initSupplierForm(SimplePanel supplierInfoHolder);
-//    // TODO praso - this should be moved to HomeModule. I don't see reason to have it in RootModule
-//    @Event(handlers = MainHandler.class)
-//    void checkFreeEmail(String value);
-//
-////    @Event(handlers = SupplierInfoPresenter.class,
-//    @Event(modulesToLoad = HomeModule.class)
-//    void checkFreeEmailResponse(Boolean result);
-    /** NO EDITING AFTER THIS LINE
-     * Every Child Module HAVE TO implement this method calls.
-     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
+    // @Event(handlers = MainPresenter.class)
+    // void initServiceForm(SimplePanel serviceHolder);
+    //
+    // @Event(handlers = MainPresenter.class)
+    // void initSupplierForm(SimplePanel supplierInfoHolder);
+    // // TODO praso - this should be moved to HomeModule. I don't see reason to
+    // have it in RootModule
+    // @Event(handlers = MainHandler.class)
+    // void checkFreeEmail(String value);
+    //
+    // // @Event(handlers = SupplierInfoPresenter.class,
+    // @Event(modulesToLoad = HomeModule.class)
+    // void checkFreeEmailResponse(Boolean result);
+    /**
+     * NO EDITING AFTER THIS LINE Every Child Module HAVE TO implement this
+     * method calls. Popup methods for shoving, changing text and hiding, for
+     * letting user know, that application is still working.
      */
     /**
-     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
-     * @param progressGettingDemandDataring message to be displayed during loading
+     * Popup methods for shoving, changing text and hiding, for letting user
+     * know, that application is still working.
+     *
+     * @param progressGettingDemandDataring
+     *            message to be displayed during loading
      */
     @Event(handlers = MainPresenter.class)
     void loadingShow(String loadingMessage);
 
     /**
-     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
-     * Just for user section, you can show partial loading
+     * Popup methods for shoving, changing text and hiding, for letting user
+     * know, that application is still working. Just for user section, you can
+     * show partial loading
      *
-     * @param progressGettingDemandDataring message to be displayed during loading
-     * @param anchor anchoring widget
+     * @param progressGettingDemandDataring
+     *            message to be displayed during loading
+     * @param anchor
+     *            anchoring widget
      */
     @Event(handlers = MainPresenter.class)
-    void loadingShowWithAnchor(String progressGettingDemandDataring, Widget anchor);
+    void loadingShowWithAnchor(String progressGettingDemandDataring,
+            Widget anchor);
 
     @Event(handlers = MainPresenter.class)
     void loadingHide();
@@ -172,6 +174,8 @@ public interface MainEventBus extends EventBus {
     void clearUserOnUnload();
 
     // Navigation event
-    @Event(modulesToLoad = HomeModule.class)
-    void goToCreateDemand();
+    /*
+     * @Event(modulesToLoad = HomeModule.class) void goToCreateDemand();
+     */
+
 }

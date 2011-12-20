@@ -24,7 +24,7 @@ public class MainHistoryConverter implements HistoryConverter<MainEventBus> {
         GWT.log("DEBUG MainHistoryConverter > HistoryName: " + historyName);
         LOGGER.fine("DEBUG MainHistoryConverter > HistoryName: " + historyName);
         if (historyName.equals("start")) {
-            eventBus.atHome();
+            //eventBus.atHome();
         }
     }
 

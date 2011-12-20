@@ -1,5 +1,7 @@
 package cz.poptavka.sample.client.main.common.category;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Grid;
@@ -10,14 +12,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import cz.poptavka.sample.client.main.MainEventBus;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
 
-import java.util.ArrayList;
+import cz.poptavka.sample.client.root.RootEventBus;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Presenter(view = CategorySelectorView.class, multiple = true)
 public class CategorySelectorPresenter
-    extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, MainEventBus> {
+    extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, RootEventBus> {
 
     private static final String NONLEAF_SUFFIX = " >";
 

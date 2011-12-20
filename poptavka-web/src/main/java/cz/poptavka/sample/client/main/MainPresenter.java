@@ -63,7 +63,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
             @Override
             public void onClick(ClickEvent event) {
                 if (loggedIn) {
-                    eventBus.atHome();
+                    //eventBus.atHome();
                     Cookies.setCookie("user-presenter", "unloaded");
                 } else {
                     onInitLoginWindow();
@@ -87,7 +87,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
         GWT.log("Initializing application ... ");
         /** for public part development **/
 //        GWT.log("    > Home Module");
-//        eventBus.atHome();
+        //eventBus.atHome();
         /** for user part development **/
 //        LOGGER.info("    > User Module");
 //        eventBus.atAccount();

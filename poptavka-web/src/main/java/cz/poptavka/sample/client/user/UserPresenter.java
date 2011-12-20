@@ -92,6 +92,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     // initial user call after login
     // while developing we can enter this url even without login operation
     public void onAtAccount() {
+        GWT.log("User Presenter at account");
         Cookies.setCookie("user-presenter", "loaded");
         if (Storage.getUser() == null) {
             eventBus.loadingShow(MSGS.progressGetUserDetail());

@@ -11,8 +11,6 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.AfterLoadChildModule;
 import com.mvp4g.client.annotation.module.BeforeLoadChildModule;
-import com.mvp4g.client.annotation.module.ChildModule;
-import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
@@ -28,13 +26,6 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Events(startView = HomeView.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-@ChildModules({
-    @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = SearchModule.class, async = true, autoDisplay = false)
-})
 public interface HomeEventBus extends EventBus {
 
     @Start
@@ -67,7 +58,10 @@ public interface HomeEventBus extends EventBus {
 
     /**************************************************************************/
     /* Parent events. */
-    /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */
+    /*
+     * GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO
+     * SAVE CODE.
+     */
     /**
      * Display HomeView - parent Widget for public section.
      */
@@ -81,10 +75,10 @@ public interface HomeEventBus extends EventBus {
     void setPublicLayout();
 
     /**
-     * Popup methods for shoving, changing text and hiding,
-     * for letting user know, that application is still working.
-     * Every Child Module HAVE TO implement this method calls.
-     * Popup methods for shoving, changing text and hiding, for letting user know, that application is still working.
+     * Popup methods for shoving, changing text and hiding, for letting user
+     * know, that application is still working. Every Child Module HAVE TO
+     * implement this method calls. Popup methods for shoving, changing text and
+     * hiding, for letting user know, that application is still working.
      */
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
@@ -92,32 +86,33 @@ public interface HomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void loadingHide();
 
-//    /* main module calls - common widgets */
-//    @Event(forwardToParent = true)
-//    void initDemandBasicForm(SimplePanel holderWidget);
+    // /* main module calls - common widgets */
+    // @Event(forwardToParent = true)
+    // void initDemandBasicForm(SimplePanel holderWidget);
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holderWidget);
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel holderWidget);
 
-//    @Event(forwardToParent = true)
-//    void initDemandAdvForm(SimplePanel holderWidget);
-//    @Event(forwardToParent = true)
-//    void initServiceForm(SimplePanel serviceHolder);
-//
-//    @Event(forwardToParent = true)
-//    void initSupplierForm(SimplePanel supplierInfoHolder);
-    /** main module calls - Handler calls
-     * TODO praso - I don't like this. Rework it!
+    // @Event(forwardToParent = true)
+    // void initDemandAdvForm(SimplePanel holderWidget);
+    // @Event(forwardToParent = true)
+    // void initServiceForm(SimplePanel serviceHolder);
+    //
+    // @Event(forwardToParent = true)
+    // void initSupplierForm(SimplePanel supplierInfoHolder);
+    /**
+     * main module calls - Handler calls TODO praso - I don't like this. Rework
+     * it!
      */
-//    @Event(forwardToParent = true)
-//    void createDemand(FullDemandDetail newDemand, Long clientId);
+    // @Event(forwardToParent = true)
+    // void createDemand(FullDemandDetail newDemand, Long clientId);
     @Event(forwardToParent = true)
     void getRootCategories();
 
-//    @Event(forwardToParent = true)
-//    void checkFreeEmail(String value);
+    // @Event(forwardToParent = true)
+    // void checkFreeEmail(String value);
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by Presenters. */
@@ -125,21 +120,20 @@ public interface HomeEventBus extends EventBus {
     void displayMenu();
 
     /**
-     * Assign widget to selected part and automatically removes previous widget. Optionally can remove widgets from
-     * others anchors
-     * TODO praso - rename this method to changeBody()
+     * Assign widget to selected part and automatically removes previous widget.
+     * Optionally can remove widgets from others anchors TODO praso - rename
+     * this method to changeBody()
+     *
      * @param content
      */
-    @DisplayChildModuleView({
-        HomeSuppliersModule.class,
-        HomeDemandsModule.class,
-        DemandCreationModule.class,
-        SupplierCreationModule.class })
+    @DisplayChildModuleView({ HomeSuppliersModule.class,
+            HomeDemandsModule.class, DemandCreationModule.class,
+            SupplierCreationModule.class })
     @Event(handlers = HomePresenter.class)
     void setBodyWidget(Widget content);
 
-//    @Event(handlers = SearchModulePresenter.class)
-//    void setSearchPanelBody(Widget body);
+    // @Event(handlers = SearchModulePresenter.class)
+    // void setSearchPanelBody(Widget body);
     @LoadChildModuleError
     @Event(handlers = HomePresenter.class)
     void errorOnLoad(Throwable reason);
@@ -151,34 +145,37 @@ public interface HomeEventBus extends EventBus {
     @AfterLoadChildModule
     @Event(handlers = HomePresenter.class)
     void afterLoad();
-//<<<<<<< .mine
-//
+
+    // <<<<<<< .mine
+    //
 
     @Event(forwardToParent = true)
     void atAccount();
 
     /** demand creation related events. **/
-//    @Event(handlers = FormLoginPresenter.class)
-//    void initLoginForm(SimplePanel holderWidget);
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void toggleLoginRegistration();
-    // TODO praso - this should be moved somewhere else. Bud I don't know where :)
-//    @Event(handlers = FormUserRegistrationPresenter.class, passive = true)
-//    void checkFreeEmailResponse(Boolean result);
-//    void checkFreeEmailResponse();
-//    @Event(handlers = FormUserRegistrationPresenter.class)
-//    void initRegistrationForm(SimplePanel holderWidget);
-    //logic flow order representing registering client and then creating his demand
-//    @Event(handlers = HomeHandler.class)
-//    void registerNewClient(UserDetail newClient);
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void prepareNewDemandForNewClient(UserDetail client);
-    //alternative way of loging - verifying
-//    @Event(handlers = HomeHandler.class)
-//    void verifyExistingClient(UserDetail client);
-    //error output
-//    @Event(handlers = DemandCreationPresenter.class)
-//    void loginError();
+    // @Event(handlers = FormLoginPresenter.class)
+    // void initLoginForm(SimplePanel holderWidget);
+    // @Event(handlers = DemandCreationPresenter.class)
+    // void toggleLoginRegistration();
+    // TODO praso - this should be moved somewhere else. Bud I don't know where
+    // :)
+    // @Event(handlers = FormUserRegistrationPresenter.class, passive = true)
+    // void checkFreeEmailResponse(Boolean result);
+    // void checkFreeEmailResponse();
+    // @Event(handlers = FormUserRegistrationPresenter.class)
+    // void initRegistrationForm(SimplePanel holderWidget);
+    // logic flow order representing registering client and then creating his
+    // demand
+    // @Event(handlers = HomeHandler.class)
+    // void registerNewClient(UserDetail newClient);
+    // @Event(handlers = DemandCreationPresenter.class)
+    // void prepareNewDemandForNewClient(UserDetail client);
+    // alternative way of loging - verifying
+    // @Event(handlers = HomeHandler.class)
+    // void verifyExistingClient(UserDetail client);
+    // error output
+    // @Event(handlers = DemandCreationPresenter.class)
+    // void loginError();
     /** Home category display widget and related call. */
     @Event(handlers = CategoryDisplayPresenter.class)
     void initCategoryDisplay(SimplePanel holderWidget);
@@ -192,17 +189,18 @@ public interface HomeEventBus extends EventBus {
     /* Business events handled by Handlers. */
     /********* SEARCH PANEL **********************/
     @Event(handlers = HomePresenter.class)
-    void showHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx);
+    void showHideAdvancedSearchPanel(String content, int whereIdx, int catIdx,
+            int locIdx);
 
-    //TODO Martin presunut do SearchModuleHandlera
-//    @Event(handlers = SearchModuleHandler.class)
-//    void getCategories();
-//
-//    @Event(handlers = SearchModuleHandler.class)
-//    void getLocalities();
-//    @Event(handlers = HomePresenter.class)
-//    void setCategoryData(ArrayList<CategoryDetail> list);
+    // TODO Martin presunut do SearchModuleHandlera
+    // @Event(handlers = SearchModuleHandler.class)
+    // void getCategories();
+    //
+    // @Event(handlers = SearchModuleHandler.class)
+    // void getLocalities();
+    // @Event(handlers = HomePresenter.class)
+    // void setCategoryData(ArrayList<CategoryDetail> list);
 
-//    @Event(handlers = HomePresenter.class)
-//    void setLocalityData(ArrayList<LocalityDetail> list);
+    // @Event(handlers = HomePresenter.class)
+    // void setLocalityData(ArrayList<LocalityDetail> list);
 }

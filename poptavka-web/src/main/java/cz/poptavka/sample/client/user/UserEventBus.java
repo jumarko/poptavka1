@@ -435,10 +435,10 @@ public interface UserEventBus extends EventBusWithLookup {
     // init demands module
     @Event(modulesToLoad = DemandModule.class)
     void initDemandModule(SimplePanel panel);
-
+/*
     @Event(forwardToParent = true)
     void goToCreateDemand();
-
+*/
     //added by Martin
     //init demands module
     @Event(modulesToLoad = MessagesModule.class)

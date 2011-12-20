@@ -10,12 +10,12 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.main.MainEventBus;
+import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
-public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, MainEventBus> {
+public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
 
     private static final Logger LOGGER = Logger.getLogger(LoginPopupPresenter.class
         .getName());
