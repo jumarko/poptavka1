@@ -1,6 +1,7 @@
 package cz.poptavka.sample.client.root;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -144,7 +145,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onDisplayMenu() {
         eventBus.setPublicLayout();
-        eventBus.setBodyHolderWidget(view.getBody());
+        view.getMenu().getElement().getStyle().setDisplay(Display.BLOCK);
+        view.getSearchBar().getElement().getStyle().setDisplay(Display.BLOCK);
+    }
+
+    public void onAtAccount() {
+        view.getMenu().getElement().getStyle().setDisplay(Display.NONE);
+        view.getSearchBar().getElement().getStyle().setDisplay(Display.NONE);
     }
 
 }

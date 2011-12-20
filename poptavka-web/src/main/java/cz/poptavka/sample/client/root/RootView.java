@@ -72,9 +72,13 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     }
 
     @Override
-    public IsWidget getBody() {
-        // TODO Auto-generated method stub
+    public Widget getBody() {
         return this.body;
+    }
+
+    @Override
+    public Widget getMenu() {
+        return this.menu;
     }
 
 }

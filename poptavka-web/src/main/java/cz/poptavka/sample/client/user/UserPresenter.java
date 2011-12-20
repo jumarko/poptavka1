@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
@@ -100,6 +101,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         } else {
             onSetUser(Storage.getUser());
         }
+        view.getWidgetView().getElement().getStyle().setDisplay(Display.BLOCK);
     }
 
     // setting of user
@@ -182,6 +184,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         } else {
             accessDenied();
         }
+        view.getWidgetView().getElement().getStyle().setDisplay(Display.NONE);
     }
 
     public void onRequestClientDemands() {

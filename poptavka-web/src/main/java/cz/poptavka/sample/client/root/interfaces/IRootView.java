@@ -2,6 +2,7 @@ package cz.poptavka.sample.client.root.interfaces;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public interface IRootView extends IsWidget {
 
@@ -23,6 +24,8 @@ public interface IRootView extends IsWidget {
 
     SimplePanel getSearchBar();
 
-    IsWidget getBody();
+    Widget getBody();
+
+    Widget getMenu();
 
 }

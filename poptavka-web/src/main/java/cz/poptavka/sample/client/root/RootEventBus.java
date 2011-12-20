@@ -86,7 +86,8 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = HeaderPresenter.class)
     void initLoginWindow();
 
-    @Event(modulesToLoad = UserModule.class, handlers = HeaderPresenter.class)
+    @Event(modulesToLoad = UserModule.class, handlers = {
+            HeaderPresenter.class, RootPresenter.class })
     void atAccount();
 
     // Afer login
