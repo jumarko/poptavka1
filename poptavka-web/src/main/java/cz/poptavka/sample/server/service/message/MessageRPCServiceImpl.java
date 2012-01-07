@@ -302,7 +302,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
-            userMessage.setIsRead(isRead);
+            userMessage.setRead(isRead);
             this.generalService.save(userMessage);
         }
     }
@@ -315,12 +315,15 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     public void setMessageStarStatus(List<Long> userMessageIds, boolean isRead) {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
-            userMessage.setIsStarred(isRead);
+            userMessage.setStarred(isRead);
             this.generalService.save(userMessage);
         }
     }
 
     /**
+     *
+     * TODO - remove this garbage and call {@link UserMessageService#getPotentialDemands)
+     *
      * SUPPLIER.
      * Returns messages for PotentialDemandsView's table
      */

@@ -11,18 +11,18 @@ import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Juraj Martinka
@@ -39,12 +39,12 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private MessageService messageService;
-
     @Autowired
     private GeneralService generalService;
-
     @Autowired
     private UserMessageService userMessageService;
+    @Autowired
+    private SupplierService supplierService;
 
     private User user;
 
@@ -62,8 +62,7 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final List<Message> messageThreads = this.messageService.getMessageThreads(this.user,
                 MessageFilter.EMPTY_FILTER);
 
-        // three thread roots for tested user
-        Assert.assertEquals(4, messageThreads.size());
+        Assert.assertEquals(5, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
         checkUserMessageExists(200L, messageThreads);
         checkUserMessageExists(300L, messageThreads);
@@ -83,7 +82,7 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
-        Assert.assertEquals(10, allUserMessages.size());
+        Assert.assertEquals(11, allUserMessages.size());
         checkUserMessageExists(1L, allUserMessages);
         checkUserMessageExists(2L, allUserMessages);
         checkUserMessageExists(3L, allUserMessages);
@@ -233,30 +232,30 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         threadRoot.add(this.messageService.getById(1L));
         int descendantsCount =
                 this.messageService.getAllDescendantsCount(threadRoot, user);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 3, descendantsCount);
         descendantsCount =
                 this.messageService.getAllDescendantsCount(threadRoot, user2);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 3, descendantsCount);
         descendantsCount =
                 this.messageService.getAllDescendantsCount(threadRoot, user3);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 0, descendantsCount);
 
         threadRoot.clear();
         threadRoot.add(this.messageService.getById(400L));
         descendantsCount =
                 this.messageService.getAllDescendantsCount(threadRoot, user);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 2, descendantsCount);
         descendantsCount =
                 this.messageService.getAllDescendantsCount(threadRoot, user2);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 2, descendantsCount);
         descendantsCount =
                 this.messageService.getAllDescendantsCount(threadRoot, user3);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 1, descendantsCount);
 
     }
@@ -270,30 +269,30 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         threadRoot.add(this.messageService.getById(1L));
         int descendantsCount =
                 this.messageService.getUnreadDescendantsCount(threadRoot, user);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 2, descendantsCount);
         descendantsCount =
                 this.messageService.getUnreadDescendantsCount(threadRoot, user2);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 1, descendantsCount);
         descendantsCount =
                 this.messageService.getUnreadDescendantsCount(threadRoot, user3);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 0, descendantsCount);
 
         threadRoot.clear();
         threadRoot.add(this.messageService.getById(400L));
         descendantsCount =
                 this.messageService.getUnreadDescendantsCount(threadRoot, user);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 0, descendantsCount);
         descendantsCount =
                 this.messageService.getUnreadDescendantsCount(threadRoot, user2);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 0, descendantsCount);
         descendantsCount =
                 this.messageService.getUnreadDescendantsCount(threadRoot, user3);
-        Assert.assertEquals("Inacurrate number of descendants selected",
+        Assert.assertEquals("Incorrect number of descendants selected",
                 1, descendantsCount);
 
     }

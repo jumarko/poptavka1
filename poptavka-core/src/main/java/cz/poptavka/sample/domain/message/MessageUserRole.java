@@ -71,7 +71,7 @@ public class MessageUserRole extends DomainObject {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("MessageserRole");
+        sb.append("MessageUserRole");
         sb.append("{user.email='").append(user.getEmail()).append('\'');
         sb.append("{roleType='").append(type).append('\'');
         sb.append("{message='").append(message).append('\'');

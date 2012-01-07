@@ -8,7 +8,6 @@ import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GenericService;
-
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +66,7 @@ public interface MessageService extends GenericService<Message, MessageDao> {
 
     /**
      * Returns a userMessage of given message. UserMessage stores attributes like
-     * isRead, isStared
+     * read, starred
      *
      * @param messages
      * @param messageFilter

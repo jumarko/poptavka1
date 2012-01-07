@@ -7,7 +7,11 @@ package cz.poptavka.sample.domain.message;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.user.User;
 
+import cz.poptavka.sample.util.orm.OrmConstants;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,28 +51,22 @@ import javax.persistence.NamedQuery;
                         + " and userMessage.message = :message") }
 )
 public class UserMessage extends DomainObject {
-    private boolean isRead;
-    private boolean isStarred;
     @ManyToOne
     private Message message;
     @ManyToOne
     private User user;
 
-    public boolean isIsRead() {
-        return isRead;
-    }
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
+    private MessageUserRoleType roleType;
 
-    public void setIsRead(boolean isRead) {
-        this.isRead = isRead;
-    }
+    @Enumerated(value = EnumType.ORDINAL)
+    @Column(length = OrmConstants.ENUM_SHORTINT_FIELD_LENGTH)
+    private MessageContext messageContext;
 
-    public boolean isIsStarred() {
-        return isStarred;
-    }
+    private boolean read;
+    private boolean starred;
 
-    public void setIsStarred(boolean isStarred) {
-        this.isStarred = isStarred;
-    }
 
     public Message getMessage() {
         return message;
@@ -86,12 +84,45 @@ public class UserMessage extends DomainObject {
         this.user = user;
     }
 
+    public MessageUserRoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(MessageUserRoleType roleType) {
+        this.roleType = roleType;
+    }
+
+    public MessageContext getMessageContext() {
+        return messageContext;
+    }
+
+    public void setMessageContext(MessageContext messageContext) {
+        this.messageContext = messageContext;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
+    }
+
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean starred) {
+        this.starred = starred;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("ContactMessage");
-        sb.append("{user='").append(user.getEmail()).append('\'');
+        sb.append("{user.email='").append(user.getEmail()).append('\'');
         sb.append("{message='").append(message).append('\'');
+        sb.append("{roleType='").append(roleType).append('\'');
         sb.append('}');
         return sb.toString();
     }

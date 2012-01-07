@@ -149,7 +149,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
             fullOfferDetail.getOfferDetail().setCreatedDate(createdDate);
             // TODO ivlcek what is this?
-            fullOfferDetail.setIsRead(userMessage.isIsRead());
+            fullOfferDetail.setIsRead(userMessage.isRead());
 
             offerDetails.add(fullOfferDetail);
 

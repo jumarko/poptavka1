@@ -42,7 +42,7 @@ public interface MessageDao extends GenericDao<Message> {
 
     /**
      * Returns a userMessage of given message. UserMessage stores attributes like
-     * isRead, isStared
+     * read, starred
      *
      * @param messages
      * @param messageFilter

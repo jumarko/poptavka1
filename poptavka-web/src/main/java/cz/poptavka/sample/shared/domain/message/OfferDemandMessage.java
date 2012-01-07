@@ -54,8 +54,8 @@ public class OfferDemandMessage implements Serializable {
         detail.setUserMessageId(message.getId());
         detail.setDemandId(message.getMessage().getDemand().getId());
         detail.setPrice(message.getMessage().getDemand().getPrice());
-        detail.setRead(message.isIsRead());
-        detail.setStarred(message.isIsStarred());
+        detail.setRead(message.isRead());
+        detail.setStarred(message.isStarred());
         detail.setEndDate(message.getMessage().getDemand().getEndDate());
         detail.setValidToDate(message.getMessage().getDemand().getValidTo());
         detail.setDemandTitle(message.getMessage().getDemand().getTitle());

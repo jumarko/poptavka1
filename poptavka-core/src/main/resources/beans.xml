@@ -108,6 +108,7 @@
 
     <bean id="userMessageService" class="cz.poptavka.sample.service.usermessage.UserMessageServiceImpl">
         <constructor-arg ref="userMessageDao" />
+        <constructor-arg ref="generalService" />
     </bean>
 
     <bean id="offerService" class="cz.poptavka.sample.service.offer.OfferServiceImpl">

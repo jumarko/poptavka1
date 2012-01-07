@@ -7,11 +7,10 @@ package cz.poptavka.sample.service.address;
 
 import cz.poptavka.sample.base.RealDbTest;
 import cz.poptavka.sample.domain.address.Locality;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * This test DEPENDS on the state of database.

@@ -14,7 +14,6 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.util.strings.ToStringUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +53,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             UserMessage userMessage = new UserMessage();
             userMessage.setMessage(message);
             userMessage.setUser(user);
-            userMessage.setIsRead(true);
+            userMessage.setRead(true);
             userMessageService.create(userMessage);
             return message;
         } catch (MessageException ex) {
@@ -233,7 +232,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
                 MessageFilter.EMPTY_FILTER);
         int result = 0;
         for (UserMessage userMessage : userMessages) {
-            if (!userMessage.isIsRead()) {
+            if (!userMessage.isRead()) {
                 result++;
             }
         }
@@ -273,8 +272,8 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
                     || (role.getType() == MessageUserRoleType.BCC)) {
                 // we got one of the recipients of the message
                 UserMessage userMessage = new UserMessage();
-                userMessage.setIsRead(false);
-                userMessage.setIsStarred(false);
+                userMessage.setRead(false);
+                userMessage.setStarred(false);
                 userMessage.setMessage(message);
                 userMessage.setUser(role.getUser());
                 generalService.save(userMessage);

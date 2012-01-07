@@ -142,7 +142,7 @@ public class BaseDemandDetail implements Serializable {
                 + description + "\n  Price="
                 + price + "\n    endDate="
                 + endDate + "\n  validToDate="
-                + validToDate + "\n  isRead="
+                + validToDate + "\n  read="
                 + read + "\n     isStarred="
                 + starred + "\n  detailType="
                 + detailType + "\n";
