@@ -45,9 +45,9 @@ public interface DemandRPCService extends RemoteService {
 
     List<FullDemandDetail> getDemands(ResultCriteria resultCriteria);
 
-    List<FullDemandDetail> getDemands(Locality[] localities);
+    List<FullDemandDetail> getDemands(Locality... localities);
 
-    List<FullDemandDetail> getDemands(Category[] categories);
+    List<FullDemandDetail> getDemands(Category... categories);
 
     List<FullDemandDetail> getDemands(ResultCriteria resultCriteria, Locality[] localities);
 
