@@ -2,7 +2,7 @@ package cz.poptavka.sample.client.user.demands;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -32,42 +32,42 @@ public class DemandModulePresenter
         void setContent(Widget contentWidget);
 
         //client menu part
-        Anchor getCliNewDemandsAnchor();
-        Anchor getCliOffersAnchor();
-        Anchor getCliAssignedDemandsAnchor();
-        Anchor getCliCreateDemand();
-        Anchor getAllDemands();
-        Anchor getAllSuppliers();
+        Button getCliNewDemandsButton();
+        Button getCliOffersButton();
+        Button getCliAssignedDemandsButton();
+        Button getCliCreateDemand();
+        Button getAllDemands();
+        Button getAllSuppliers();
 
         // supplier menu part
-        Anchor getSupNewDemandsAnchor();
-        Anchor getSupOffersAnchor();
-        Anchor getSupAssignedAnchor();
+        Button getSupNewDemandsButton();
+        Button getSupOffersButton();
+        Button getSupAssignedButton();
 
         SimplePanel getContentPanel();
     }
 
     public void bind() {
         // MENU - CLIENT
-        view.getCliNewDemandsAnchor().addClickHandler(new ClickHandler() {
+        view.getCliNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.initClientList();
             }
         });
-        view.getCliOffersAnchor().addClickHandler(new ClickHandler() {
+        view.getCliOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
             }
         });
-        view.getCliAssignedDemandsAnchor().addClickHandler(new ClickHandler() {
+        view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
             }
         });
-        view.getCliNewDemandsAnchor().addClickHandler(new ClickHandler() {
+        view.getCliNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
@@ -87,19 +87,19 @@ public class DemandModulePresenter
         });
 
         //MENU - SUPPLIER
-        view.getSupNewDemandsAnchor().addClickHandler(new ClickHandler() {
+        view.getSupNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.initSupplierList();
+                eventBus.initSupplierList(null);
             }
         });
-        view.getSupOffersAnchor().addClickHandler(new ClickHandler() {
+        view.getSupOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
             }
         });
-        view.getSupAssignedAnchor().addClickHandler(new ClickHandler() {
+        view.getSupAssignedButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
@@ -110,7 +110,7 @@ public class DemandModulePresenter
         /**
          * commented but can be used when developing other views
          *
-        view.getSupNewDemandsAnchor().addClickHandler(new ClickHandler() {
+        view.getSupNewDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent arg0) {
@@ -133,7 +133,7 @@ public class DemandModulePresenter
 
     //TODO
     //later add UserDetail as parameter
-    public void onInitDemandModule(SimplePanel panel) {
+    public void onInitDemandModule() {
         // hiding window for this is after succesfull Userhandler call
         Storage.showLoading(Storage.MSGS.progressDemandsLayoutInit());
 //        if (user.getRoleList().contains(Role.CLIENT)) {
@@ -149,7 +149,9 @@ public class DemandModulePresenter
 //            eventBus.getPotentialDemands(user.getId());
 //        }
 
-        panel.setWidget(view.getWidgetView());
+//        panel.setWidget(view.getWidgetView());
+        view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+        eventBus.setBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();

@@ -17,6 +17,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.client.user.widget.grid.UniversalGrid;
@@ -63,6 +64,7 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
     //remove this annotation for production
     @SuppressWarnings("unused")
     private boolean initialized = false;
+    private SearchModuleDataHolder searchDataHolder;
 
     /** Defines button actions. */
     public void bindView() {
@@ -107,12 +109,14 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
      *
      * Associated DetailWrapper widget is created and initialized.
      */
-    public void onInitSupplierList() {
+    public void onInitSupplierList(SearchModuleDataHolder filter) {
 //        commented code is from production code
 //        if (!initialized) {
         Storage.setCurrentlyLoadedView("potentialDemandMessages");
-        eventBus.requestSupplierNewDemands();
+        searchDataHolder = filter;
+        eventBus.requestSupplierNewDemands(searchDataHolder);
 //        }
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (detailSection == null) {

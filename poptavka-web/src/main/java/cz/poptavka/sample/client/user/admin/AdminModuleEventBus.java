@@ -1,8 +1,8 @@
 package cz.poptavka.sample.client.user.admin;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -10,6 +10,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminClientInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminClientsPresenter;
@@ -54,105 +55,72 @@ public interface AdminModuleEventBus extends EventBus {
     //production init method
     //during development used multiple instancing
     @Event(handlers = AdminDemandsPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initDemands();
+    void initDemands(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminClientsPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initClients();
+    void initClients(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminSuppliersPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initSuppliers();
+    void initSuppliers(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminOffersPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initOffers();
+    void initOffers(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminAccessRolesPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initAccessRoles();
+    void initAccessRoles(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminEmailActivationsPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initEmailsActivation();
+    void initEmailsActivation(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminInvoicesPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initInvoices();
+    void initInvoices(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminMessagesPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initMessages();
+    void initMessages(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminPaymentMethodsPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initPaymentMethods();
+    void initPaymentMethods(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminPermissionsPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initPermissions();
+    void initPermissions(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminPreferencesPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initPreferences();
+    void initPreferences(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminProblemsPresenter.class, historyConverter = AdminModuleHistory.class)
-    void initProblems();
-
-//    @Event(handlers = AdminDemandsPresenter.class)
-//    void initDemands();
-//
-//    @Event(handlers = AdminClientsPresenter.class)
-//    void initClients();
-//
-//    @Event(handlers = AdminSuppliersPresenter.class)
-//    void initSuppliers();
-//
-//    @Event(handlers = AdminOffersPresenter.class)
-//    void initOffers();
-//
-//    @Event(handlers = AdminAccessRolesPresenter.class)
-//    void initAccessRoles();
-//
-//    @Event(handlers = AdminEmailActivationsPresenter.class)
-//    void initEmailsActivation();
-//
-//    @Event(handlers = AdminInvoicesPresenter.class)
-//    void initInvoices();
-//
-//    @Event(handlers = AdminMessagesPresenter.class)
-//    void initMessages();
-//
-//    @Event(handlers = AdminPaymentMethodsPresenter.class)
-//    void initPaymentMethods();
-//
-//    @Event(handlers = AdminPermissionsPresenter.class)
-//    void initPermissions();
-//
-//    @Event(handlers = AdminPreferencesPresenter.class)
-//    void initPreferences();
-//
-//    @Event(handlers = AdminProblemsPresenter.class)
-//    void initProblems();
-
+    void initProblems(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by AdminModulePresenter. */
     //init demands module - left user_type menu and initial content
     @Event(handlers = AdminModulePresenter.class)
-    void initAdminModule(SimplePanel panel);
+    void initAdminModule();
 
     //display widget in content area
     @Event(handlers = AdminModulePresenter.class)
     void displayView(Widget content);
 
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(IsWidget body);
+    /**************************************************************************/
     /**********************************************************************************************
      *********************** ADMIN SECTION *******************************************************
      **********************************************************************************************/
     /* ----------------- ADMIN DEMANDS -------------------->>>>>>>>> */
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminDemandsCount();
+    void getAdminDemandsCount(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = AdminDemandsPresenter.class)
     void createAdminDemandsAsyncDataProvider(final int totalFound);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminDemands(int start, int count);
+    void getAdminDemands(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
-    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
-
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
     void updateDemand(FullDemandDetail demand);
 
@@ -167,7 +135,6 @@ public interface AdminModuleEventBus extends EventBus {
 
 //    @Event(handlers = AdminModulePresenter.class)
 //    void displayAdminContent(Widget contentWidget);
-
     @Event(handlers = AdminDemandsPresenter.class)
     void addDemandToCommit(FullDemandDetail data);
 
@@ -211,17 +178,17 @@ public interface AdminModuleEventBus extends EventBus {
     /* <<<<<<<<<<-------- ADMIN DEMANDS -------------------- */
     /* ----------------- ADMIN SUPPLIERS -------------------->>>>>>>>> */
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminSuppliersCount();
+    void getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void createAdminSuppliersAsyncDataProvider(final int totalFound);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminSuppliers(int start, int count);
+    void getAdminSuppliers(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
-    void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
-
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminSuppliersPresenter.class)
     void displayAdminTabSuppliers(List<FullSupplierDetail> suppliers);
 
@@ -274,17 +241,17 @@ public interface AdminModuleEventBus extends EventBus {
     /* <<<<<<<<<<-------- ADMIN SUPPLIERS -------------------- */
     /* ----------------- ADMIN OFFERS -------------------->>>>>>>>> */
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminOffersCount();
+    void getAdminOffersCount(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = AdminOffersPresenter.class)
     void createAdminOffersAsyncDataProvider(final int totalFound);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminOffers(int start, int count);
+    void getAdminOffers(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
-    void getSortedOffers(int start, int count, Map<String, OrderType> orderColumns);
-
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedOffers(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
     void updateOffer(OfferDetail demand);
 
@@ -306,13 +273,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addClientToCommit(ClientDetail clientDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminClientsCount();
+    void getAdminClientsCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedClients(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminClients(int start, int count);
+    void getAdminClients(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminClientsPresenter.class)
     void createAdminClientsAsyncDataProvider(final int totalFound);
@@ -332,13 +299,14 @@ public interface AdminModuleEventBus extends EventBus {
     void addAccessRoleToCommit(AccessRoleDetail clientDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminAccessRolesCount();
+    void getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
+//            Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedAccessRoles(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminAccessRoles(int start, int count);
+    void getAdminAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminAccessRolesPresenter.class)
     void createAdminAccessRoleAsyncDataProvider(final int totalFound);
@@ -358,13 +326,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addEmailActivationToCommit(EmailActivationDetail clientDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminEmailsActivationCount();
+    void getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedEmailsActivation(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedEmailsActivation(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminEmailsActivation(int start, int count);
+    void getAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminEmailActivationsPresenter.class)
     void createAdminEmailsActivationAsyncDataProvider(final int totalFound);
@@ -381,13 +349,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addInvoiceToCommit(InvoiceDetail clientDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminInvoicesCount();
+    void getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedInvoices(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedInvoices(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminInvoices(int start, int count);
+    void getAdminInvoices(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminInvoicesPresenter.class)
     void createAdminInvoicesAsyncDataProvider(final int totalFound);
@@ -410,14 +378,14 @@ public interface AdminModuleEventBus extends EventBus {
     void addMessageToCommit(MessageDetail messageDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminMessagesCount();
+    void getAdminMessagesCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedMessages(int start, int count,
+//            Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedMessages(int start, int count,
-            Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminMessages(int start, int count);
+    void getAdminMessages(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminMessagesPresenter.class)
     void createAdminMessagesAsyncDataProvider(final int totalFound);
@@ -434,13 +402,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addOurPaymentDetailToCommit(PaymentDetail paymentDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminOurPaymentDetailsCount();
+    void getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedOurPaymentDetails(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedOurPaymentDetails(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminOurPaymentDetails(int start, int count);
+    void getAdminOurPaymentDetails(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminOurPaymentDetailsPresenter.class)
     void createAdminOurPaymentDetailAsyncDataProvider(final int totalFound);
@@ -457,13 +425,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addPaymentMethodToCommit(PaymentMethodDetail paymentMethodDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminPaymentMethodsCount();
+    void getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedPaymentMethods(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedPaymentMethods(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminPaymentMethods(int start, int count);
+    void getAdminPaymentMethods(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void createAdminPaymentMethodAsyncDataProvider(final int totalFound);
@@ -480,13 +448,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addPermissionToCommit(PermissionDetail permissionDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminPermissionsCount();
+    void getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedPermissions(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminPermissions(int start, int count);
+    void getAdminPermissions(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminPermissionsPresenter.class)
     void createAdminPermissionAsyncDataProvider(final int totalFound);
@@ -503,13 +471,13 @@ public interface AdminModuleEventBus extends EventBus {
     void addPreferenceToCommit(PreferenceDetail preferenceDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminPreferencesCount();
+    void getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedPreferences(int start, int count, Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedPreferences(int start, int count, Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminPreferences(int start, int count);
+    void getAdminPreferences(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminPreferencesPresenter.class)
     void createAdminPreferenceAsyncDataProvider(final int totalFound);
@@ -527,14 +495,14 @@ public interface AdminModuleEventBus extends EventBus {
     void addProblemToCommit(ProblemDetail problemDetail);
 
     @Event(handlers = AdminModuleHandler.class)
-    void getAdminProblemsCount();
+    void getAdminProblemsCount(SearchModuleDataHolder searchDataHolder);
 
+//    @Event(handlers = AdminModuleHandler.class)
+//    void getSortedProblems(int start, int count,
+//            Map<String, OrderType> orderColumns);
     @Event(handlers = AdminModuleHandler.class)
-    void getSortedProblems(int start, int count,
-            Map<String, OrderType> orderColumns);
-
-    @Event(handlers = AdminModuleHandler.class)
-    void getAdminProblems(int start, int count);
+    void getAdminProblems(int start, int count, SearchModuleDataHolder searchDataHolder,
+        Map<String, OrderType> orderColumns);
 
     @Event(handlers = AdminProblemsPresenter.class)
     void createAdminProblemAsyncDataProvider(final int totalFound);

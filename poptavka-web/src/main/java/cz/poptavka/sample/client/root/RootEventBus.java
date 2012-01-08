@@ -68,6 +68,7 @@ public interface RootEventBus extends EventBus {
     @DisplayChildModuleView({ HomeWelcomeModule.class,
             DemandCreationModule.class, SupplierCreationModule.class,
             HomeDemandsModule.class, HomeSuppliersModule.class })
+            //UserModule.class })
     @Event(handlers = RootPresenter.class)
     void setBodyHolderWidget(IsWidget body);
 

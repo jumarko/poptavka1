@@ -251,7 +251,6 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
             long diffSec = value.getTime() - (new Date()).getTime();
             long diffDays = diffSec / (1000 * 60 * 60 * 24);
 
-            //TODO Martin - i18
             if ((int) diffDays <= 4) { //(0-4) velmi specha
 //                text = "velmi specha";
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();

@@ -10,18 +10,19 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
 public class AdminInvoicesViewView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+        AdminInvoicesViewPresenter.AdminInvoicesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminInvoicesViewView> {
     }
     @UiField
-    TextBox idFrom, idTo, variableSymbol, paymentMethod, totalPriceFrom, totalPriceTo,
+    TextBox idFrom, idTo, variableSymbol, totalPriceFrom, totalPriceTo,
     invoiceNumberFrom, invoiceNumberTo;
+    @UiField
+    ListBox paymentMethod;
 
 //    @Override
 //    public void createView() {
@@ -54,8 +55,9 @@ public class AdminInvoicesViewView extends Composite implements
         if (!variableSymbol.getText().equals("")) {
             data.getAdminInvoice().setVariableSymbol(variableSymbol.getText());
         }
-        if (!paymentMethod.getText().equals("")) {
-            data.getAdminInvoice().setPaymentMethod(paymentMethod.getText());
+        if (paymentMethod.getSelectedIndex() != 0) {
+            data.getAdminInvoice().setPaymentMethodId(
+                    Long.valueOf(paymentMethod.getValue(paymentMethod.getSelectedIndex())));
         }
         return data;
     }
@@ -66,13 +68,8 @@ public class AdminInvoicesViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        return null;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return null;
+    public ListBox getPaymentMethodList() {
+        return paymentMethod;
     }
 
     @Override
@@ -106,9 +103,9 @@ public class AdminInvoicesViewView extends Composite implements
             infoText.append("varSymb:");
             infoText.append(data.getAdminInvoice().getVariableSymbol());
         }
-        if (data.getAdminInvoice().getPaymentMethod() != null) {
-            infoText.append("payMethod:");
-            infoText.append(data.getAdminInvoice().getPaymentMethod());
+        if (data.getAdminInvoice().getPaymentMethodId() != null) {
+            infoText.append("methodId:");
+            infoText.append(data.getAdminInvoice().getPaymentMethodId());
         }
         infoHolder.setText(infoText.toString());
     }

@@ -35,6 +35,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.ProblemDetail;
@@ -99,6 +100,7 @@ public class AdminProblemsPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminProblemAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -111,8 +113,7 @@ public class AdminProblemsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminProblems(start, start + length);
-//                eventBus.getSortedProblems(start, start + length, ordersColumn);
+                eventBus.getAdminProblems(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -139,15 +140,16 @@ public class AdminProblemsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitProblems() {
+    public void onInitProblems(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminProblems");
-        eventBus.getAdminProblemsCount();
+        searchDataHolder = filter;
+        eventBus.getAdminProblemsCount(searchDataHolder);
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -239,7 +241,7 @@ public class AdminProblemsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminProblemsCount();
+                    eventBus.getAdminProblemsCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

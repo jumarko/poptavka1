@@ -12,10 +12,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
@@ -37,6 +33,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -53,22 +50,22 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminDemandsView.class)
 public class AdminDemandsPresenter
-        extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, AdminModuleEventBus>
-        implements HasValueChangeHandlers<String> {
+        extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, AdminModuleEventBus> {
+//        implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
     private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
     private Map<Long, FullDemandDetail> originalData = new HashMap<Long, FullDemandDetail>();
 
-    @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+//    @Override
+//    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
+//
+//    @Override
+//    public void fireEvent(GwtEvent<?> event) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 
     public interface AdminDemandsInterface extends LazyView {
 
@@ -113,6 +110,7 @@ public class AdminDemandsPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -125,8 +123,7 @@ public class AdminDemandsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
-//                eventBus.getSortedDemands(start, start + length, orderColumns);
+                eventBus.getAdminDemands(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -152,15 +149,17 @@ public class AdminDemandsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitDemands() {
+    public void onInitDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminDemands");
-        eventBus.getAdminDemandsCount();
+        searchDataHolder = filter;
+        eventBus.getAdminDemandsCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -316,7 +315,7 @@ public class AdminDemandsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminDemandsCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

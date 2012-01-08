@@ -5,6 +5,7 @@
 package cz.poptavka.sample.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
@@ -41,6 +42,9 @@ public interface MessageRPCServiceAsync {
             AsyncCallback<ArrayList<MessageDetail>> callback);
 
     void getPotentialDemands(long businessUserId,
+            AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
+
+    void getPotentialDemandsBySearch(long businessUserId, SearchModuleDataHolder searchDataHolder,
             AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
 
     void getOfferDemands(long businessUserId, AsyncCallback<ArrayList<OfferDemandMessage>> callback);

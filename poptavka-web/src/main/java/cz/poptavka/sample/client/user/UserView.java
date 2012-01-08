@@ -1,93 +1,60 @@
 package cz.poptavka.sample.client.user;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.UListElement;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
+import cz.poptavka.sample.client.root.ReverseCompositeView;
+import cz.poptavka.sample.client.user.IUserMenuView.IUserMenuPresenter;
 
-import cz.poptavka.sample.client.resources.StyleResource;
-
-public class UserView extends Composite implements UserPresenter.UserViewInterface {
+public class UserView extends ReverseCompositeView<IUserMenuPresenter> implements IUserMenuView {
+//        Composite implements IUserMenuView {
 
     private static UserViewUiBinder uiBinder = GWT.create(UserViewUiBinder.class);
 
     interface UserViewUiBinder extends UiBinder<Widget, UserView> {
     }
+//    @UiField
+//    HTMLPanel container;
+    //menu section
     @UiField
-    TabLayoutPanel tabLayoutPanel;
+    UListElement menuList;
+//    @UiField
+//    Hyperlink linkHome;
     @UiField
-    SimplePanel demandPanel;
-    //@UiField SimplePanel oldTabPanel;
-    @UiField
-    SimplePanel adminPanel;
-    @UiField
-    SimplePanel settingsPanel;
-    @UiField
-    SimplePanel messagesPanel;
+    Button demands, messages, settings, contacts, administration;
+//    @UiField
+//    SimplePanel contentHolder, searchPanel;
 
-    public void createView() {
+    public UserView() {
         initWidget(uiBinder.createAndBindUi(this));
-        /**
-         * Doing it this way only to keep standart gwt-class on tabLayoutPanel
-         */
-        StyleResource.INSTANCE.layout().ensureInjected();
-        tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().fullSize());
-        tabLayoutPanel.addStyleName(StyleResource.INSTANCE.layout().tabLayoutContainer());
     }
 
     @Override
-    public void setBodyDemand(Widget demandModule) {
-        demandPanel.setWidget(demandModule);
+    public HasClickHandlers getDemandsButton() {
+        return demands;
     }
 
     @Override
-    public void setBodyAdmin(Widget body) {
-        adminPanel.setWidget(body);
+    public HasClickHandlers getMessagesButton() {
+        return messages;
     }
 
     @Override
-    public void setBodySettings(Widget body) {
-        settingsPanel.setWidget(body);
+    public HasClickHandlers getSettingsButton() {
+        return settings;
     }
 
     @Override
-    public void setBodyMessages(Widget body) {
-        messagesPanel.setWidget(body);
+    public HasClickHandlers getContactsButton() {
+        return contacts;
     }
 
     @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public TabLayoutPanel getLayoutPanel() {
-        return tabLayoutPanel;
-    }
-
-    @Override
-    public SimplePanel getDemandModulePanel() {
-        return demandPanel;
-    }
-
-    @Override
-    public SimplePanel getMessagesModulePanel() {
-        return messagesPanel;
-    }
-
-    @Override
-    public SimplePanel getAdminModulePanel() {
-        return adminPanel;
-    }
-
-    public SimplePanel getSettingsPanel() {
-        return settingsPanel;
-    }
-
-    public void setSettingsPanel(SimplePanel settingsPanel) {
-        this.settingsPanel = settingsPanel;
+    public HasClickHandlers getAdministrationButton() {
+        return administration;
     }
 }

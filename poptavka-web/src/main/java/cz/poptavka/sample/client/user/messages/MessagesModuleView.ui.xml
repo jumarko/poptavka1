@@ -13,19 +13,19 @@
                 </div>-->
                 <ul>
                     <li>
-                        <g:Anchor ui:field="inboxAnchor">
+                        <g:Button ui:field="inboxButton">
                             <ui:msg key="inbox">Inbox</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                     <li>
-                        <g:Anchor ui:field="sentAnchor">
+                        <g:Button ui:field="sentButton">
                             <ui:msg key="sent">Sent</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                     <li>
-                        <g:Anchor ui:field="trashAnchor">
+                        <g:Button ui:field="trashButton">
                             <ui:msg key="trash">Trash</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                 </ul>
             </g:HTMLPanel>

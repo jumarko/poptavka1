@@ -33,6 +33,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -103,8 +104,7 @@ public class AdminOffersPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminDemands(start, start + length);
-//                 eventBus.getSortedDemands(start, start + length, orderColumns);
+                eventBus.getAdminDemands(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -118,6 +118,7 @@ public class AdminOffersPresenter
         "id", "demand.id", "supplier.id", "price", "state", "", "finnishDate"
     };
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
@@ -137,15 +138,17 @@ public class AdminOffersPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedDemands(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitOffers() {
+    public void onInitOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminOffers");
-        eventBus.getAdminOffersCount();
+        searchDataHolder = filter;
+        eventBus.getAdminOffersCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -267,7 +270,7 @@ public class AdminOffersPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminOffersCount();
+                    eventBus.getAdminOffersCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

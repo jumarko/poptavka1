@@ -15,8 +15,8 @@ import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 @Presenter(view = HomeSettingsView.class)
 public class HomeSettingsPresenter
-        extends
-        BasePresenter<HomeSettingsPresenter.HomeSettingsViewInterface, UserEventBus> {
+        extends BasePresenter<HomeSettingsPresenter.HomeSettingsViewInterface, UserEventBus> {
+
     public interface HomeSettingsViewInterface {
 
         Widget getWidgetView();
@@ -74,7 +74,6 @@ public class HomeSettingsPresenter
         CheckBox getDemandStateChangeButton();
 
         ListBox getDemandStateChangeOptions();
-
     }
 
     public void onInitSettings() {
@@ -99,7 +98,7 @@ public class HomeSettingsPresenter
         view.getDemandStateChangeOptions().addItem("immediately");
         view.getDemandStateChangeOptions().addItem("daily");
         view.getDemandStateChangeOptions().addItem("weekly");
-        eventBus.setTabSettingsWidget(view.getWidgetView());
+//        eventBus.setTabSettingsWidget(view.getWidgetView()); //TODO MArtin ako to ma byt????
         long userId = Storage.getUser().getUserId();
         eventBus.getLoggedUser(userId);
 
@@ -140,8 +139,7 @@ public class HomeSettingsPresenter
         view.getPhone().setText(detail.getPhone());
         view.getFirstName().setText(detail.getFirstName());
         view.getLastName().setText(detail.getLastName());
-        view.getIdentificationNumber()
-                .setText(detail.getIdentificationNumber());
+        view.getIdentificationNumber().setText(detail.getIdentificationNumber());
         view.getTaxNumber().setText(detail.getTaxId());
         view.getDescriptionBox().setText(detail.getDescription());
     }

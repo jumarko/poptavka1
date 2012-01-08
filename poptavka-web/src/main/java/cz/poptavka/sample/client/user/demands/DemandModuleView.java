@@ -7,7 +7,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,10 +32,10 @@ public class DemandModuleView extends Composite
 
 
     // CLI menu
-    @UiField Anchor cliNewDemands, cliOffers, cliAssignedDemands, cliCreateDemand,
+    @UiField Button cliNewDemands, cliOffers, cliAssignedDemands, cliCreateDemand,
     allDemands, allSuppliers;
     // SUP menu
-    @UiField Anchor supNewDemands, supOffers, supAssignedDemands;
+    @UiField Button supNewDemands, supOffers, supAssignedDemands;
     // hidden or displayed according to the role
     @UiField DivElement supMenu;
 
@@ -84,47 +84,47 @@ public class DemandModuleView extends Composite
     }
 
     @Override
-    public Anchor getSupNewDemandsAnchor() {
+    public Button getSupNewDemandsButton() {
         return supNewDemands;
     }
 
     @Override
-    public Anchor getCliNewDemandsAnchor() {
+    public Button getCliNewDemandsButton() {
         return cliNewDemands;
     }
 
     @Override
-    public Anchor getCliOffersAnchor() {
+    public Button getCliOffersButton() {
         return cliOffers;
     }
 
     @Override
-    public Anchor getCliAssignedDemandsAnchor() {
+    public Button getCliAssignedDemandsButton() {
         return cliAssignedDemands;
     }
 
     @Override
-    public Anchor getCliCreateDemand() {
+    public Button getCliCreateDemand() {
         return cliCreateDemand;
     }
 
     @Override
-    public Anchor getAllDemands() {
+    public Button getAllDemands() {
         return allDemands;
     }
 
     @Override
-    public Anchor getAllSuppliers() {
+    public Button getAllSuppliers() {
         return allSuppliers;
     }
 
     @Override
-    public Anchor getSupOffersAnchor() {
+    public Button getSupOffersButton() {
         return supOffers;
     }
 
     @Override
-    public Anchor getSupAssignedAnchor() {
+    public Button getSupAssignedButton() {
         return supAssignedDemands;
     }
 }

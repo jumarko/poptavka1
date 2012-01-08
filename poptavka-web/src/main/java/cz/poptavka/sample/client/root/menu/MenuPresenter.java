@@ -11,8 +11,7 @@ import cz.poptavka.sample.client.root.interfaces.IMenuView;
 import cz.poptavka.sample.client.root.interfaces.IMenuView.IMenuPresenter;
 
 @Presenter(view = MenuView.class)
-public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
-        implements IMenuPresenter {
+public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus> implements IMenuPresenter {
 
     public void onStart() {
         bindView();

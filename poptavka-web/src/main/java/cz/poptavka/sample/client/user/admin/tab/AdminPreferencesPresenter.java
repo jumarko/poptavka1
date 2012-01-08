@@ -36,6 +36,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.PreferenceDetail;
@@ -104,6 +105,7 @@ public class AdminPreferencesPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminPreferenceAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -116,8 +118,7 @@ public class AdminPreferencesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-//                eventBus.getSortedPreferences(start, start + length, orderColumns);
-                eventBus.getAdminPreferences(start, start + length);
+                eventBus.getAdminPreferences(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -144,15 +145,17 @@ public class AdminPreferencesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedPreferences(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminPreferences(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitPreferences() {
+    public void onInitPreferences(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminPreferences");
-        eventBus.getAdminPreferencesCount();
+        searchDataHolder = filter;
+        eventBus.getAdminPreferencesCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -254,7 +257,7 @@ public class AdminPreferencesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminPreferencesCount();
+                    eventBus.getAdminPreferencesCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

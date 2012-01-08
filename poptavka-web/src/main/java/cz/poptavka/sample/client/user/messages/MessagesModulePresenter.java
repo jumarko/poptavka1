@@ -2,7 +2,7 @@ package cz.poptavka.sample.client.user.messages;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -25,11 +25,11 @@ public class MessagesModulePresenter
         void setContent(Widget contentWidget);
 
         //beho devel section
-        Anchor getInboxAnchor();
+        Button getInboxButton();
 
-        Anchor getSentAnchor();
+        Button getSentButton();
 
-        Anchor getTrashAnchor();
+        Button getTrashButton();
 
         SimplePanel getContentPanel();
     }
@@ -49,7 +49,7 @@ public class MessagesModulePresenter
         view.setPotentialDemandsToken(getTokenGenerator().invokePotentialDemands());
          */
         //DEVEl - BEHO
-        view.getInboxAnchor().addClickHandler(new ClickHandler() {
+        view.getInboxButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent arg0) {
@@ -67,7 +67,7 @@ public class MessagesModulePresenter
 //                eventBus.initInbox();
             }
         });
-        view.getSentAnchor().addClickHandler(new ClickHandler() {
+        view.getSentButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent arg0) {
@@ -85,7 +85,7 @@ public class MessagesModulePresenter
                 eventBus.initSent();
             }
         });
-        view.getTrashAnchor().addClickHandler(new ClickHandler() {
+        view.getTrashButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent arg0) {
@@ -107,7 +107,7 @@ public class MessagesModulePresenter
 
     //TODO
     //later add UserDetail as parameter
-    public void onInitMessagesModule(SimplePanel panel) {
+    public void onInitMessagesModule() {
         // hiding window for this is after succesfull Userhandler call
         Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
 //        if (user.getRoleList().contains(Role.CLIENT)) {
@@ -123,7 +123,9 @@ public class MessagesModulePresenter
 //            eventBus.getPotentialDemands(user.getId());
 //        }
 
-        panel.setWidget(view.getWidgetView());
+//        panel.setWidget(view.getWidgetView());
+        view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+        eventBus.setBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();

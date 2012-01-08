@@ -8,10 +8,13 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
+import java.util.List;
 
 //@SuppressWarnings("deprecation")
 @EventHandler
@@ -19,6 +22,7 @@ public class SearchModuleHandler extends BaseEventHandler<SearchModuleEventBus> 
 
     private LocalityRPCServiceAsync localityService = null;
     private CategoryRPCServiceAsync categoryService = null;
+    private GeneralRPCServiceAsync generalService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
@@ -71,5 +75,20 @@ public class SearchModuleHandler extends BaseEventHandler<SearchModuleEventBus> 
                         throw new UnsupportedOperationException("onFailureCategory");
                     }
                 });
+    }
+
+    public void onRequestPaymentMethods() {
+        generalService.getAdminPaymentMethods(new AsyncCallback<List<PaymentMethodDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(List<PaymentMethodDetail> result) {
+                eventBus.responsePaymentMethods(result);
+            }
+        });
     }
 }

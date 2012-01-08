@@ -6,34 +6,16 @@ import java.util.Date;
 /** POTENTIALDEMANDMESSAGES **/
 public class PotentialDemandMessages implements Serializable {
 
-    private Long idFrom = null;
-    private Long idTo = null;
     private Boolean isStared = null;
     private String sender = null;
     private String demandTitle = null;
-    private String urgention = null;
+    private Integer urgention = null;
     private Integer ratingFrom = null;
     private Integer ratingTo = null;
     private Integer priceFrom = null;
     private Integer priceTo = null;
     private Date createdFrom = null;
     private Date createdTo = null;
-
-    public Long getIdFrom() {
-        return idFrom;
-    }
-
-    public void setIdFrom(Long idFrom) {
-        this.idFrom = idFrom;
-    }
-
-    public Long getIdTo() {
-        return idTo;
-    }
-
-    public void setIdTo(Long idTo) {
-        this.idTo = idTo;
-    }
 
     public String getSender() {
         return sender;
@@ -107,11 +89,11 @@ public class PotentialDemandMessages implements Serializable {
         this.createdTo = createdTo;
     }
 
-    public String getUrgention() {
+    public Integer getUrgention() {
         return urgention;
     }
 
-    public void setUrgention(String urgention) {
+    public void setUrgention(Integer urgention) {
         this.urgention = urgention;
     }
 }

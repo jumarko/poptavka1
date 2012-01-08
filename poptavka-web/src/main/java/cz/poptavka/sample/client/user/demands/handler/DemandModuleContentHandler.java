@@ -11,6 +11,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
@@ -50,7 +51,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
      * Get Supplier's potential demands list. No parameter is needed.
      * Business UserID is fetched from Storage
      */
-    public void onRequestSupplierNewDemands() {
+    public void onRequestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
         messageService.getPotentialDemands(Storage.getUser().getUserId(),
                 new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
                     @Override
@@ -68,6 +69,23 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
                         eventBus.responseSupplierNewDemands(result);
                     }
                 });
+//        messageService.getPotentialDemandsBySearch(Storage.getUser().getUserId(), searchModuleDataHolder,
+//                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
+//                    @Override
+//                    public void onFailure(Throwable caught) {
+//                        if (!(caught instanceof IllegalArgumentException)) {
+//                            Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList\n\n"
+//                                + caught.getMessage());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(
+//                            ArrayList<PotentialDemandMessage> result) {
+//                        GWT.log(">> CALL *RequestSupplierNewDemands. Result size: " + result.size());
+//                        eventBus.responseSupplierNewDemands(result);
+//                    }
+//                });
     }
 
     /**

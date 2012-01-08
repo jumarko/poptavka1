@@ -12,7 +12,7 @@ public class AdminInvoices implements Serializable {
     private String variableSymbol = null;
     private Integer totalPriceFrom = null;
     private Integer totalPriceTo = null;
-    private String paymentMethod = null;
+    private Long paymentMethodId = null;
 
     public Long getIdFrom() {
         return idFrom;
@@ -46,12 +46,12 @@ public class AdminInvoices implements Serializable {
         this.invoiceNumberTo = invoiceNumberTo;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public Long getPaymentMethodId() {
+        return paymentMethodId;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setPaymentMethodId(Long paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
     }
 
     public Integer getTotalPriceFrom() {

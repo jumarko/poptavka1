@@ -37,6 +37,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.EmailActivationDetail;
@@ -105,6 +106,7 @@ public class AdminEmailActivationsPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminEmailsActivationAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -117,8 +119,7 @@ public class AdminEmailActivationsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-//                eventBus.getSortedEmailsActivation(start, start + length, orderColumns);
-                eventBus.getAdminEmailsActivation(start, start + length);
+                eventBus.getAdminEmailsActivation(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -145,15 +146,17 @@ public class AdminEmailActivationsPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedEmailsActivation(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminEmailsActivation(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitEmailsActivation() {
+    public void onInitEmailsActivation(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminEmailsActivation");
-        eventBus.getAdminEmailsActivationCount();
+        searchDataHolder = filter;
+        eventBus.getAdminEmailsActivationCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -255,7 +258,7 @@ public class AdminEmailActivationsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminEmailsActivationCount();
+                    eventBus.getAdminEmailsActivationCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

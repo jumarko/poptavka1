@@ -6,8 +6,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
-import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
@@ -16,14 +14,12 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
+
+import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.user.IUserMenuView.IUserMenuPresenter;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -38,27 +34,32 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
  *
  */
 @Presenter(view = UserView.class)
-public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface, UserEventBus> {
-
-    protected static final int DEMANDS_SECTION = 0;
-    protected static final int MESSAGES_SECTION = 1;
-    protected static final int SETTINGS_SECTION = 2;
-    protected static final int CONTACTS_SECTION = 3;
-    protected static final int ADMIN_SECTION = 4;
+public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> implements IUserMenuPresenter {
 
     @Override
-    public void bindView() {
-        view.getLayoutPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
+    public void bind() {
+        view.getDemandsButton().addClickHandler(new ClickHandler() {
 
-            @Override
-            public void onBeforeSelection(BeforeSelectionEvent<Integer> event) {
-                if (event.getItem().intValue() == ADMIN_SECTION) {
-                    eventBus.initAdminModule(view.getAdminModulePanel());
-                } else if (event.getItem().intValue() == MESSAGES_SECTION) {
-                    eventBus.initMessagesModule(view.getMessagesModulePanel());
-                } else if (event.getItem().intValue() == SETTINGS_SECTION) {
-                    eventBus.initSettings();
-                }
+            public void onClick(ClickEvent event) {
+                eventBus.initDemandModule();
+            }
+        });
+        view.getMessagesButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                eventBus.initMessagesModule();
+            }
+        });
+        view.getSettingsButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                eventBus.initSettings();
+            }
+        });
+        view.getAdministrationButton().addClickHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+                eventBus.initAdminModule();
             }
         });
 
@@ -66,26 +67,6 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     private static final Logger LOGGER = Logger.getLogger("UserPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    public interface UserViewInterface extends LazyView {
-
-        TabLayoutPanel getLayoutPanel();
-
-        void setBodyDemand(Widget demandModule);
-
-        void setBodyAdmin(Widget body);
-
-        void setBodyMessages(Widget body);
-
-        Widget getWidgetView();
-
-        void setBodySettings(Widget body);
-
-        SimplePanel getDemandModulePanel();
-
-        SimplePanel getMessagesModulePanel();
-
-        SimplePanel getAdminModulePanel();
-    }
     private UserDetail user = null;
     private String eventMarkedToFire;
     private boolean fireMarkedEvent = false;
@@ -93,15 +74,17 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
     // initial user call after login
     // while developing we can enter this url even without login operation
     public void onAtAccount() {
+//        bindView();
         GWT.log("User Presenter at account");
         Cookies.setCookie("user-presenter", "loaded");
+//        eventBus.initSearchModule(view.getSearchPanel());
         if (Storage.getUser() == null) {
             eventBus.loadingShow(MSGS.progressGetUserDetail());
             eventBus.getUser();
         } else {
             onSetUser(Storage.getUser());
         }
-        view.getWidgetView().getElement().getStyle().setDisplay(Display.BLOCK);
+        view.asWidget().getElement().getStyle().setDisplay(Display.BLOCK);
     }
 
     // setting of user
@@ -112,12 +95,13 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         //this should be removed and all references replaces by Storage calls
         user = userDetail;
 
-        showDevelUserInfoPopupThatShouldBedeletedAfter();
+//        showDevelUserInfoPopupThatShouldBedeletedAfter();
 
-        eventBus.initDemandModule(view.getDemandModulePanel());
-
-        eventBus.setUserLayout();
-        eventBus.setBodyHolderWidget(view.getWidgetView());
+//        eventBus.setUserLayout();
+//        eventBus.setBodyHolderWidget(new Label("TA CO"));
+//        eventBus.setHeader(new Label("TA CO HEADER?"));
+        eventBus.setMenu(view);
+        eventBus.initDemandModule();
 
         eventBus.loadingHide();
     }
@@ -146,22 +130,21 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         }
     }
 
-    public void onSetTabWidget(Widget tabBody) {
-        view.setBodyDemand(tabBody);
-    }
-
-    public void onSetTabAdminWidget(Widget tabBody) {
-        view.setBodyAdmin(tabBody);
-    }
-
-    public void onSetTabMessagesWidget(Widget tabBody) {
-        view.setBodyMessages(tabBody);
-    }
-
-    public void onSetTabSettingsWidget(Widget tabBody) {
-        view.setBodySettings(tabBody);
-    }
-
+//    public void onSetTabWidget(Widget tabBody) {
+//        view.setBodyDemand(tabBody);
+//    }
+//
+//    public void onSetTabAdminWidget(Widget tabBody) {
+//        view.setBodyAdmin(tabBody);
+//    }
+//
+//    public void onSetTabMessagesWidget(Widget tabBody) {
+//        view.setBodyMessages(tabBody);
+//    }
+//
+//    public void onSetTabSettingsWidget(Widget tabBody) {
+//        view.setBodySettings(tabBody);
+//    }
     /** REQUESTs && RESPONSEs. **/
     public void onRequestClientId(FullDemandDetail newDemand) {
         // TODO refactor this method to call just demand
@@ -184,7 +167,7 @@ public class UserPresenter extends LazyPresenter<UserPresenter.UserViewInterface
         } else {
             accessDenied();
         }
-        view.getWidgetView().getElement().getStyle().setDisplay(Display.NONE);
+        view.asWidget().getElement().getStyle().setDisplay(Display.NONE);
     }
 
     public void onRequestClientDemands() {

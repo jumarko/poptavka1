@@ -70,3 +70,13 @@
 .hyperlink {
     display: inline;
 }
+
+.user {
+    height: 800px;
+    width: 800px
+}
+
+.user_content {
+    height: 400px;
+    width: 1000px
+}

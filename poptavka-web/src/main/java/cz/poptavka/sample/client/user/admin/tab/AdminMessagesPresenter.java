@@ -36,6 +36,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.message.MessageState;
@@ -112,6 +113,7 @@ public class AdminMessagesPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminMessagesAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -124,8 +126,7 @@ public class AdminMessagesPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminMessages(start, start + length);
-//                eventBus.getSortedMessages(start, start + length, orderColumns);
+                eventBus.getAdminMessages(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -151,15 +152,17 @@ public class AdminMessagesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedMessages(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminMessages(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitMessages() {
+    public void onInitMessages(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminMessages");
-        eventBus.getAdminMessagesCount();
+        searchDataHolder = filter;
+        eventBus.getAdminMessagesCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -306,7 +309,7 @@ public class AdminMessagesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminMessagesCount();
+                    eventBus.getAdminMessagesCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

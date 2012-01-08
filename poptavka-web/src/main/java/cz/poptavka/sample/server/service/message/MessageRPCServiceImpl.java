@@ -5,6 +5,7 @@
 package cz.poptavka.sample.server.service.message;
 
 import com.googlecode.genericdao.search.Search;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.exception.MessageException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,7 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
+import java.util.Calendar;
 import java.util.Collection;
 
 /**
@@ -154,20 +156,21 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param clientId - parameter z UI
      * @return ClientDemandMessageDetail
      */
-    public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId) {
+    @Override
+    public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(
+            long businessUserId, long clientId) {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
-        Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
-        Map<Message, Integer> unreadSubmessageCounts =
-                this.messageService.getListOfClientDemandMessagesUnread(businessUser);
+        Map<Message, Integer> submessageCounts = this.messageService
+                .getListOfClientDemandMessagesAll(businessUser);
+        Map<Message, Integer> unreadSubmessageCounts = this.messageService
+                .getListOfClientDemandMessagesUnread(businessUser);
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
         for (UserMessage userMessage : userMessages) {
-            ClientDemandMessageDetail detail = ClientDemandMessageDetail
-                    .createDetail(userMessage);
+            ClientDemandMessageDetail detail = ClientDemandMessageDetail.createDetail(userMessage);
             detail.setMessageCount(submessageCounts.get(userMessage.getMessage()));
-            detail.setUnreadSubmessages(unreadSubmessageCounts
-                    .get(userMessage.getMessage()));
+            detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage()));
         }
         return result;
     }
@@ -352,12 +355,119 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return potentailDemands;
     }
 
+    //Martin - temporary, to try if it works this way too, if yes && fast too -> this one will be better
+    @Override
+    public ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(
+            long businessUserId, SearchModuleDataHolder searchDataHolder) {
+        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+
+        User user = generalService.find(User.class, businessUserId);
+
+        Search searchMsgUser = new Search(MessageUserRole.class);
+        searchMsgUser.addFilterEqual("user", user);
+        searchMsgUser.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+
+        Search searchMsgs = new Search(Message.class);
+        searchMsgs.addFilterIn("roles", generalService.search(searchMsgUser));
+        if (searchDataHolder != null) {
+            searchMsgs = this.setPotentialDemandsFilter(searchDataHolder, searchMsgs);
+        } else {
+            searchMsgs.addFilterEqual("sender", user); // ?? to iste ako User vyssie?
+        }
+
+        Search searchUserMsgs = new Search(UserMessage.class);
+        searchUserMsgs.addFilterEqual("user", user);
+        searchUserMsgs.addFilterEqual("message", (Collection) Arrays.asList(generalService.search(searchMsgs)));
+        if (searchDataHolder != null) {
+            if (searchDataHolder.getPotentialDemandMessages().getIsStared() != null) {
+                searchUserMsgs.addFilterEqual("isStarred",
+                        searchDataHolder.getPotentialDemandMessages().getIsStared());
+            }
+        }
+
+        final List<UserMessage> userMessages = generalService.search(searchUserMsgs);
+
+        // fill list
+        ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
+        for (UserMessage um : userMessages) {
+            PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
+            detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
+            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
+            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+            potentailDemands.add(detail);
+        }
+        return potentailDemands;
+    }
+
+    private Search setPotentialDemandsFilter(SearchModuleDataHolder searchDataHolder, Search search) {
+        if (searchDataHolder.getPotentialDemandMessages().getSender() != null) {
+            search.addFilterLike("sender.email", searchDataHolder.getPotentialDemandMessages().getSender());
+        }
+        if (searchDataHolder.getPotentialDemandMessages().getUrgention() != null) {
+            Calendar calendarDate1 = Calendar.getInstance(); //today
+            Calendar calendarDate2 = Calendar.getInstance();
+            switch (searchDataHolder.getPotentialDemandMessages().getUrgention()) {
+                case 1: //ends in one day => urgent
+                    calendarDate1.add(Calendar.DATE, +1);
+                    search.addFilterLessOrEqual("demand.endDate", calendarDate1.DATE);
+                    break;
+                case 2: //ends in one week, but not tomorrow => less urgent
+                    calendarDate1.add(Calendar.DATE, +1);
+                    calendarDate2.add(Calendar.DATE, +7);
+                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate1.DATE);
+                    search.addFilterLessOrEqual("demand.endDate", calendarDate2.DATE);
+                    break;
+                case 3: //ends in one month, but not next week => normal
+                    calendarDate1.add(Calendar.DATE, +7);
+                    calendarDate2.add(Calendar.MONTH, +1);
+                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate1.DATE);
+                    search.addFilterLessOrEqual("demand.endDate", calendarDate2.DATE);
+                    break;
+                case 4: //ends in more than one month => less normal
+                    calendarDate2.add(Calendar.MONTH, +1);
+                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate2.DATE);
+                    break;
+                default:
+                    ;
+            }
+        }
+        if (searchDataHolder.getPotentialDemandMessages().getCreatedFrom() != null) {
+            search.addFilterGreaterOrEqual("created",
+                    searchDataHolder.getPotentialDemandMessages().getCreatedFrom());
+        }
+        if (searchDataHolder.getPotentialDemandMessages().getCreatedTo() != null) {
+            search.addFilterLessOrEqual("created", searchDataHolder.getPotentialDemandMessages().getCreatedTo());
+        }
+        //Demand
+        if (searchDataHolder.getPotentialDemandMessages().getRatingFrom() != null) {
+            search.addFilterGreaterOrEqual("demand.client.overalRating",
+                    searchDataHolder.getPotentialDemandMessages().getRatingFrom());
+        }
+        if (searchDataHolder.getPotentialDemandMessages().getRatingTo() != null) {
+            search.addFilterLessOrEqual("demand.client.overalRating",
+                    searchDataHolder.getPotentialDemandMessages().getRatingTo());
+        }
+        if (searchDataHolder.getPotentialDemandMessages().getDemandTitle() != null) {
+            search.addFilterLike("demand.title", searchDataHolder.getPotentialDemandMessages().getDemandTitle());
+        }
+        //TODO demand.price alebo offer.price???
+        if (searchDataHolder.getPotentialDemandMessages().getPriceFrom() != null) {
+            search.addFilterGreaterOrEqual("demand.price",
+                    searchDataHolder.getPotentialDemandMessages().getPriceFrom());
+        }
+        if (searchDataHolder.getPotentialDemandMessages().getPriceTo() != null) {
+            search.addFilterLessOrEqual("demand.price", searchDataHolder.getPotentialDemandMessages().getPriceTo());
+        }
+        return search;
+    }
+
     /**
      * CLIENT.
      *
      * Vrati zoznam ponukovych sprav.
      *
-     * TODO: nacitat zoznam ponukovych sprav tak, aby pri kazdej sprave bolo jasne, ci je oznacena ako precitana alebo
+     * TODO: nacitat zoznam ponukovych sprav tak, aby pri kazdej sprave bolo jasne,
+     * ci je oznacena ako precitana alebo
      * nie.
      */
     @Override

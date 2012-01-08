@@ -14,11 +14,9 @@ import cz.poptavka.sample.client.root.ReverseCompositeView;
 import cz.poptavka.sample.client.root.interfaces.IMenuView;
 import cz.poptavka.sample.client.root.interfaces.IMenuView.IMenuPresenter;
 
-public class MenuView extends ReverseCompositeView<IMenuPresenter> implements
-        IMenuView {
+public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IMenuView {
 
-    private static MenuViewUiBinder uiBinder = GWT
-            .create(MenuViewUiBinder.class);
+    private static MenuViewUiBinder uiBinder = GWT.create(MenuViewUiBinder.class);
 
     interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }

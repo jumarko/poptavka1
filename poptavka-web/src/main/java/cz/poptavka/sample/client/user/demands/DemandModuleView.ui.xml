@@ -14,37 +14,37 @@
                 </div>
                 <ul class='{res.layout.submenuList}'>
                     <li>
-                        <g:Anchor ui:field="cliNewDemands">
+                        <g:Button ui:field="cliNewDemands">
                             <ui:msg key="myDemands">My Demands</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                     <li>
-                        <g:Anchor ui:field="cliOffers">
+                        <g:Button ui:field="cliOffers">
                             ** INACTIVE **
                             <ui:msg key="offers">Offers</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
-                    <li><g:Anchor ui:field="cliAssignedDemands">
+                    <li><g:Button ui:field="cliAssignedDemands">
                             ** INACTIVE **
                             <ui:msg key="assignedDemands">Assigned Demands</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
-                    <li><g:Anchor ui:field="cliCreateDemand">
+                    <li><g:Button ui:field="cliCreateDemand">
                             ** INACTIVE **
                             <ui:msg key="createDemandLink">Create Demand</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                     <li>
-                        <g:Anchor ui:field="allDemands">
+                        <g:Button ui:field="allDemands">
                             ** INACTIVE **
                             <ui:msg key="allDemandsLink">All Demands</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                     <li>
-                    <g:Anchor ui:field="allSuppliers">
+                    <g:Button ui:field="allSuppliers">
                             ** INACTIVE **
                             <ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
-                        </g:Anchor>
+                        </g:Button>
                     </li>
                 </ul>
                 <!-- Supplier submenu -->
@@ -54,21 +54,21 @@
                     </div>
                     <ul class='{res.layout.submenuList}'>
                         <li>
-                            <g:Anchor ui:field="supNewDemands">
+                            <g:Button ui:field="supNewDemands">
                                 <ui:msg key="potentialDemands">Potential Demands</ui:msg>
-                            </g:Anchor>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Anchor ui:field="supOffers">
+                            <g:Button ui:field="supOffers">
                                 ** INACTIVE **
                                 <ui:msg key="offers">Offers</ui:msg>
-                            </g:Anchor>
+                            </g:Button>
                         </li>
                         <li>
-                            <g:Anchor ui:field="supAssignedDemands">
+                            <g:Button ui:field="supAssignedDemands">
                                 ** INACTIVE **
                                 <ui:msg key="assignedDemands">Assigned Demands</ui:msg>
-                            </g:Anchor>
+                            </g:Button>
                         </li>
                     </ul>
                 </div>

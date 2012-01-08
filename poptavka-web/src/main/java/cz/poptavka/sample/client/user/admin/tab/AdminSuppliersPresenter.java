@@ -37,6 +37,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.user.BusinessType;
@@ -104,9 +105,10 @@ public class AdminSuppliersPresenter
     }
 //    private ArrayList<Demand> demands = new ArrayList<Demand>();
 
-    public void onInitSuppliers() {
+    public void onInitSuppliers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminSuppliers");
-        eventBus.getAdminSuppliersCount();
+        searchDataHolder = filter;
+        eventBus.getAdminSuppliersCount(searchDataHolder);
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -120,6 +122,7 @@ public class AdminSuppliersPresenter
     }
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminSuppliersAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -132,8 +135,8 @@ public class AdminSuppliersPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
-                eventBus.getAdminSuppliers(start, start + length);
-//                eventBus.getSortedSuppliers(start, start + length, orderColumns);
+                eventBus.getAdminSuppliers(start, start + length, searchDataHolder, orderColumns);
+
                 Storage.hideLoading();
             }
         };
@@ -167,7 +170,7 @@ public class AdminSuppliersPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedSuppliers(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminSuppliers(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
@@ -304,7 +307,7 @@ public class AdminSuppliersPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount();
+                    eventBus.getAdminDemandsCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

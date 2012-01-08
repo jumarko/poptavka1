@@ -1,10 +1,8 @@
 package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
@@ -22,7 +20,7 @@ public class PotentialDemandMessagesViewView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, PotentialDemandMessagesViewView> {
     }
     @UiField
-    TextBox idFrom, idTo, sender, title, ratingFrom, ratingTo, priceFrom, priceTo;
+    TextBox sender, title, ratingFrom, ratingTo, priceFrom, priceTo;
     @UiField
     CheckBox isStar;
     @UiField
@@ -34,18 +32,17 @@ public class PotentialDemandMessagesViewView extends Composite implements
 //    public void createView() {
     public PotentialDemandMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
+        urgent.addItem("select urgention");
+        urgent.addItem("less normal");
+        urgent.addItem("normal");
+        urgent.addItem("less urgent");
+        urgent.addItem("urgent");
     }
 
     @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initPotentialDemandMessages();
-        if (!idFrom.getText().equals("")) {
-            data.getPotentialDemandMessages().setIdFrom(Long.valueOf(idFrom.getText()));
-        }
-        if (!idTo.getText().equals("")) {
-            data.getPotentialDemandMessages().setIdTo(Long.valueOf(idTo.getText()));
-        }
         if (!sender.getText().equals("")) {
             data.getPotentialDemandMessages().setSender(sender.getText());
         }
@@ -73,6 +70,9 @@ public class PotentialDemandMessagesViewView extends Composite implements
         if (createdTo.getValue() != null) {
             data.getPotentialDemandMessages().setCreatedTo(createdTo.getValue());
         }
+        if (urgent.getSelectedIndex() != 0) {
+            data.getPotentialDemandMessages().setUrgention(urgent.getSelectedIndex());
+        }
         return data;
     }
 
@@ -94,14 +94,6 @@ public class PotentialDemandMessagesViewView extends Composite implements
     @Override
     public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
         StringBuilder infoText = new StringBuilder();
-        if (data.getPotentialDemandMessages().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getPotentialDemandMessages().getIdFrom());
-        }
-        if (data.getPotentialDemandMessages().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getPotentialDemandMessages().getIdTo());
-        }
         if (data.getPotentialDemandMessages().getSender() != null) {
             infoText.append("sender:");
             infoText.append(data.getPotentialDemandMessages().getSender());
@@ -116,7 +108,7 @@ public class PotentialDemandMessagesViewView extends Composite implements
         }
         if (data.getPotentialDemandMessages().getUrgention() != null) {
             infoText.append("urgent:");
-            infoText.append(data.getPotentialDemandMessages().getUrgention());
+            infoText.append(urgent.getItemText(data.getPotentialDemandMessages().getUrgention()));
         }
         if (data.getPotentialDemandMessages().getCreatedFrom() != null) {
             infoText.append("createdFrom:");
@@ -143,19 +135,5 @@ public class PotentialDemandMessagesViewView extends Composite implements
             infoText.append(data.getPotentialDemandMessages().getPriceTo());
         }
         infoHolder.setText(infoText.toString());
-    }
-
-    @UiHandler("idFrom")
-    void validatePriceFrom(ChangeEvent event) {
-        if (!idFrom.getText().matches("[0-9]+")) {
-            idFrom.setText("");
-        }
-    }
-
-    @UiHandler("idTo")
-    void validatePriceTo(ChangeEvent event) {
-        if (!idTo.getText().matches("[0-9]+")) {
-            idTo.setText("");
-        }
     }
 }

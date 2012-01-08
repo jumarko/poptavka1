@@ -25,7 +25,9 @@ import cz.poptavka.sample.client.main.common.search.views.MessagesTabViewPresent
 import cz.poptavka.sample.client.main.common.search.views.PotentialDemandMessagesViewPresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
 import java.util.ArrayList;
+import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startView = SearchModuleView.class, module = SearchModule.class)
@@ -47,7 +49,6 @@ public interface SearchModuleEventBus extends EventBus {
 //
 //    @Event(forwardToParent = true)
 //    void initAdminsTabModule(SearchModuleDataHolder filter);
-
     // VIEWS INIT METHODS
     /**************************************************************************/
     /* Navigation | Initialization events. */
@@ -192,4 +193,10 @@ public interface SearchModuleEventBus extends EventBus {
     @Event(handlers = {HomeDemandViewPresenter.class, HomeSuppliersViewPresenter.class,
             AdminSuppliersViewPresenter.class })
     void responseLocalities(final ArrayList<LocalityDetail> list);
+
+    @Event(handlers = SearchModuleHandler.class)
+    void requestPaymentMethods();
+
+    @Event(handlers = AdminInvoicesViewPresenter.class)
+    void responsePaymentMethods(final List<PaymentMethodDetail> list);
 }

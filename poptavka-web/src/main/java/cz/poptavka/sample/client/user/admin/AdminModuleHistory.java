@@ -5,6 +5,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import java.util.logging.Logger;
 
 @History(type = HistoryConverterType.DEFAULT)
@@ -31,35 +32,35 @@ public class AdminModuleHistory implements HistoryConverter<AdminModuleEventBus>
 //        LOGGER.fine(" +++++++++ ADMIN  Name: " + historyName + "\nParam: " + param);
 
         if (historyName.equals(DEMANDS)) {
-            eventBus.initDemands();
+            eventBus.initDemands(null);
         }
 
         if (historyName.equals(CLIENTS)) {
-            eventBus.initClients();
+            eventBus.initClients(null);
         }
 
         if (historyName.equals(SUPPLIERS)) {
-            eventBus.initSuppliers();
+            eventBus.initSuppliers(null);
         }
 
         if (historyName.equals(OFFERS)) {
-            eventBus.initOffers();
+            eventBus.initOffers(null);
         }
 
         if (historyName.equals(ACCESSROLES)) {
-            eventBus.initAccessRoles();
+            eventBus.initAccessRoles(null);
         }
 
         if (historyName.equals(EMAILACTIVATIONS)) {
-            eventBus.initEmailsActivation();
+            eventBus.initEmailsActivation(null);
         }
 
         if (historyName.equals(INVOICES)) {
-            eventBus.initInvoices();
+            eventBus.initInvoices(null);
         }
 
         if (historyName.equals(MESSAGES)) {
-            eventBus.initMessages();
+            eventBus.initMessages(null);
         }
 
 //        if (historyName.equals(OURPAYMENTDETAILS)) {
@@ -67,19 +68,19 @@ public class AdminModuleHistory implements HistoryConverter<AdminModuleEventBus>
 //        }
 
         if (historyName.equals(PAYMENTMETHODS)) {
-            eventBus.initPaymentMethods();
+            eventBus.initPaymentMethods(null);
         }
 
         if (historyName.equals(PERMISSIONS)) {
-            eventBus.initPermissions();
+            eventBus.initPermissions(null);
         }
 
         if (historyName.equals(PREFERENCES)) {
-            eventBus.initPreferences();
+            eventBus.initPreferences(null);
         }
 
         if (historyName.equals(PROBLEMS)) {
-            eventBus.initProblems();
+            eventBus.initProblems(null);
         }
     }
 
@@ -89,51 +90,51 @@ public class AdminModuleHistory implements HistoryConverter<AdminModuleEventBus>
         return false;
     }
 
-    public String onInitDemands() {
+    public String onInitDemands(SearchModuleDataHolder searchDataHolder) {
         return "onInitDemands in AdminModuleHistory";
     }
 
-    public String onInitClients() {
+    public String onInitClients(SearchModuleDataHolder searchDataHolder) {
         return "onInitClients in AdminModuleHistory";
     }
 
-    public String onInitSuppliers() {
+    public String onInitSuppliers(SearchModuleDataHolder searchDataHolder) {
         return "onInitSuppliers in AdminModuleHistory";
     }
 
-    public String onInitOffers() {
+    public String onInitOffers(SearchModuleDataHolder searchDataHolder) {
         return "onInitOffers in AdminModuleHistory";
     }
 
-    public String onInitAccessRoles() {
+    public String onInitAccessRoles(SearchModuleDataHolder searchDataHolder) {
         return "onInitRoles in AdminModuleHistory";
     }
 
-    public String onInitEmailsActivation() {
+    public String onInitEmailsActivation(SearchModuleDataHolder searchDataHolder) {
         return "onInitActivation in AdminModuleHistory";
     }
 
-    public String onInitInvoices() {
+    public String onInitInvoices(SearchModuleDataHolder searchDataHolder) {
         return "onInitInvoices in AdminModuleHistory";
     }
 
-    public String onInitMessages() {
+    public String onInitMessages(SearchModuleDataHolder searchDataHolder) {
         return "onInitMessages in AdminModuleHistory";
     }
 
-    public String onInitPaymentMethods() {
+    public String onInitPaymentMethods(SearchModuleDataHolder searchDataHolder) {
         return "onInitPaymentMethods in AdminModuleHistory";
     }
 
-    public String onInitPermissions() {
+    public String onInitPermissions(SearchModuleDataHolder searchDataHolder) {
         return "onInitPermissions in AdminModuleHistory";
     }
 
-    public String onInitPreferences() {
+    public String onInitPreferences(SearchModuleDataHolder searchDataHolder) {
         return "onInitPreferences in AdminModuleHistory";
     }
 
-    public String onInitProblems() {
+    public String onInitProblems(SearchModuleDataHolder searchDataHolder) {
         return "onInitProblems in AdminModuleHistory";
     }
 }

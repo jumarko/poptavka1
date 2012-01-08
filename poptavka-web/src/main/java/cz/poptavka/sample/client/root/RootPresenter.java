@@ -22,7 +22,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         implements IRootPresenter {
 
     private PopupPanel popup = null;
-
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
 
@@ -78,7 +77,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onInitDemandAdvForm(SimplePanel holderWidget) {
-
     }
 
     public void onLoadingShowWithAnchor(String loadingMessage, Widget anchor) {
@@ -108,16 +106,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
-
     }
-
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
 
     private void createLoadingPopup(String loadingMessage, Widget anchor) {
         popup = new PopupPanel(false, false);
-        popup.setStylePrimaryName(StyleResource.INSTANCE.common()
-                .loadingPopup());
+        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
         popup.setWidget(new LoadingPopup(loadingMessage));
         int top = anchor.getAbsoluteTop() + (anchor.getOffsetHeight() / 2);
         int left = anchor.getAbsoluteLeft() + (anchor.getOffsetWidth() / 2)
@@ -135,8 +130,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     private void createLoadingPopup(String loadingMessage) {
         popup = new PopupPanel(false, false);
-        popup.setStylePrimaryName(StyleResource.INSTANCE.common()
-                .loadingPopup());
+        popup.setStylePrimaryName(StyleResource.INSTANCE.common().loadingPopup());
         popup.setWidget(new LoadingPopup(loadingMessage));
         popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X,
                 (Window.getClientHeight() / 2) - OFFSET_Y);
@@ -150,8 +144,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtAccount() {
-        view.getMenu().getElement().getStyle().setDisplay(Display.NONE);
-        view.getSearchBar().getElement().getStyle().setDisplay(Display.NONE);
+        //tu ak nejake zmeny root modulu po prihlaseni
     }
-
 }

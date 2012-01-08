@@ -36,6 +36,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.ClientDetail;
@@ -109,6 +110,7 @@ public class AdminClientsPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminClientsAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -122,7 +124,7 @@ public class AdminClientsPresenter
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedClients(start, start + length, orderColumns);
-                eventBus.getAdminClients(start, start + length);
+                eventBus.getAdminClients(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }
         };
@@ -147,15 +149,17 @@ public class AdminClientsPresenter
                 }
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
-                eventBus.getSortedClients(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminClients(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitClients() {
+    public void onInitClients(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminClients");
-        eventBus.getAdminClientsCount();
+        searchDataHolder = filter;
+        eventBus.getAdminClientsCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -290,7 +294,7 @@ public class AdminClientsPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminClientsCount();
+                    eventBus.getAdminClientsCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

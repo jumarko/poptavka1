@@ -1,9 +1,9 @@
 package cz.poptavka.sample.client.user.messages;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -47,12 +47,15 @@ public interface MessagesModuleEventBus extends EventBus {
     /* Business events handled by DemandModulePresenter. */
     //init demands module - left user_type menu and initial content
     @Event(handlers = MessagesModulePresenter.class)
-    void initMessagesModule(SimplePanel panel);
+    void initMessagesModule();
 
     //display widget in content area
     @Event(handlers = MessagesModulePresenter.class)
     void displayView(Widget content);
 
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(IsWidget body);
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by ALL VIEW presenters. */

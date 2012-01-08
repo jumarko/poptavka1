@@ -31,4 +31,10 @@ public interface CommonResource extends CssResource {
 
     @ClassName("hyperlink")
     String hyperlinkInline();
+
+    @ClassName("user_content")
+    String userContent();
+
+    @ClassName("user")
+    String user();
 }

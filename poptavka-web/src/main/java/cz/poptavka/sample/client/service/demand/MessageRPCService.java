@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
@@ -33,6 +34,9 @@ public interface MessageRPCService extends RemoteService {
     ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId);
 
     ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
+
+    ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(long businessUserId,
+            SearchModuleDataHolder searchDataHolder);
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId,
             long userMessageId);

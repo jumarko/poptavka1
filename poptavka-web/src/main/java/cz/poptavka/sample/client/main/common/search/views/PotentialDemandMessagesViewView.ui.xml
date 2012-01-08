@@ -26,27 +26,6 @@
         <div>
             <ul>
                 <li>
-                    <g:Label>ID</g:Label>
-                </li>
-                <li>
-                    <table>
-                        <tr>
-                            <td width="200">
-                                <g:HorizontalPanel>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="from">from</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="idFrom"/>
-                                    <g:Label styleName="{style.margin}">
-                                        <ui:msg key="to">to</ui:msg>
-                                    </g:Label>
-                                    <g:TextBox styleName="{style.rangeBox}" ui:field="idTo"/>
-                                </g:HorizontalPanel>
-                            </td>
-                        </tr>
-                    </table>
-                </li>
-                <li>
                     <g:Label>Star</g:Label>
                 </li>
                 <li>

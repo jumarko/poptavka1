@@ -1,9 +1,9 @@
 package cz.poptavka.sample.client.user.demands;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -11,6 +11,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.handler.DemandModuleContentHandler;
 import cz.poptavka.sample.client.user.demands.handler.DemandModuleMessageHandler;
 import cz.poptavka.sample.client.user.demands.tab.ClientListPresenter;
@@ -36,7 +37,7 @@ public interface DemandModuleEventBus extends EventBus {
     void initClientList();
 
     @Event(handlers = SupplierListPresenter.class, historyConverter = DemandModuleHistory.class)
-    void initSupplierList();
+    void initSupplierList(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Business events. */
@@ -44,12 +45,15 @@ public interface DemandModuleEventBus extends EventBus {
 
     //init demands module - left user_type menu and initial content
     @Event(handlers = DemandModulePresenter.class)
-    void initDemandModule(SimplePanel panel);
+    void initDemandModule();
 
     //display widget in content area
     @Event(handlers = DemandModulePresenter.class)
     void displayView(Widget content);
 
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(IsWidget body);
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by ALL VIEW presenters. */
@@ -87,7 +91,7 @@ public interface DemandModuleEventBus extends EventBus {
      * NEW demands for SUPPLIER
      */
     @Event(handlers = DemandModuleContentHandler.class)
-    void requestSupplierNewDemands();
+    void requestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder);
     @Event(handlers = SupplierListPresenter.class)
     void responseSupplierNewDemands(ArrayList<PotentialDemandMessage> result);
 

@@ -37,6 +37,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
@@ -105,6 +106,7 @@ public class AdminAccessRolesPresenter
     };
     private int start = 0;
     private List<String> gridColumns = Arrays.asList(columnNames);
+    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onCreateAdminAccessRoleAsyncDataProvider(final int totalFound) {
         this.start = 0;
@@ -118,7 +120,7 @@ public class AdminAccessRolesPresenter
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
 //                eventBus.getSortedAccessRoles(start, start + length, orderColumns);
-                eventBus.getAdminAccessRoles(start, start + length);
+                eventBus.getAdminAccessRoles(start, start + length, searchDataHolder, orderColumns);
                 Storage.showLoading(Storage.MSGS.getAccessRoleData());
             }
         };
@@ -143,15 +145,17 @@ public class AdminAccessRolesPresenter
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.getSortedAccessRoles(start, view.getPageSize(), orderColumns);
+                eventBus.getAdminAccessRoles(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitAccessRoles() {
+    public void onInitAccessRoles(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminAccessRoles");
-        eventBus.getAdminAccessRolesCount();
+        searchDataHolder = filter;
+        eventBus.getAdminAccessRolesCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
@@ -201,20 +205,6 @@ public class AdminAccessRolesPresenter
                     }
                 }
                 eventBus.showDialogBox();
-//                final com.gwtext.client.widgets.Window window = new com.gwtext.client.widgets.Window();
-//                window.setTitle("Layout Window");
-//                window.setClosable(true);
-//                window.setWidth(600);
-//                window.setHeight(350);
-//                window.setPlain(true);
-//                window.setLayout(new com.gwtext.client.widgets.layout.BorderLayout());
-////                window.add(tabPanel, centerData);
-////                window.add(navPanel, westData);
-//                window.setCloseAction(com.gwtext.client.widgets.Window.HIDE);
-
-//                            object.setPermissions();
-//                            eventBus.addAccessRoleToCommit(object);
-
             }
         });
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -276,7 +266,7 @@ public class AdminAccessRolesPresenter
                     dataProvider = null;
                     view.getDataGrid().flush();
                     view.getDataGrid().redraw();
-                    eventBus.getAdminAccessRolesCount();
+                    eventBus.getAdminAccessRolesCount(searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

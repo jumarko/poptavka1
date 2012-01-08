@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -25,122 +25,122 @@ public class AdminModulePresenter extends
 
         void setContent(Widget contentWidget);
 
-        Anchor getDemandsAnchor();
+        Button getDemandsButton();
 
-        Anchor getClientsAnchor();
+        Button getClientsButton();
 
-        Anchor getOffersAnchor();
+        Button getOffersButton();
 
-        Anchor getSuppliersAnchor();
+        Button getSuppliersButton();
 
-        Anchor getAccessRoleAnchor();
+        Button getAccessRoleButton();
 
-        Anchor getEmailActivationAnchor();
+        Button getEmailActivationButton();
 
-        Anchor getInvoiceAnchor();
+        Button getInvoiceButton();
 
-        Anchor getMessageAnchor();
+        Button getMessageButton();
 
-        Anchor getPaymentMethodAnchor();
+        Button getPaymentMethodButton();
 
-        Anchor getPermissionAnchor();
+        Button getPermissionButton();
 
-        Anchor getPreferenceAnchor();
+        Button getPreferenceButton();
 
-        Anchor getProblemAnchor();
+        Button getProblemButton();
 
         SimplePanel getContentPanel();
     }
     private LoadingDiv loading = null;
 
     public void bind() {
-        view.getDemandsAnchor().addClickHandler(new ClickHandler() {
+        view.getDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initDemands();
+                eventBus.initDemands(null);
             }
         });
-        view.getClientsAnchor().addClickHandler(new ClickHandler() {
+        view.getClientsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initClients();
+                eventBus.initClients(null);
             }
         });
-        view.getSuppliersAnchor().addClickHandler(new ClickHandler() {
+        view.getSuppliersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initSuppliers();
+                eventBus.initSuppliers(null);
             }
         });
-        view.getOffersAnchor().addClickHandler(new ClickHandler() {
+        view.getOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initOffers();
+                eventBus.initOffers(null);
             }
         });
-        view.getAccessRoleAnchor().addClickHandler(new ClickHandler() {
+        view.getAccessRoleButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAccessRoles();
+                eventBus.initAccessRoles(null);
             }
         });
-        view.getEmailActivationAnchor().addClickHandler(new ClickHandler() {
+        view.getEmailActivationButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initEmailsActivation();
+                eventBus.initEmailsActivation(null);
             }
         });
-        view.getInvoiceAnchor().addClickHandler(new ClickHandler() {
+        view.getInvoiceButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initInvoices();
+                eventBus.initInvoices(null);
             }
         });
-        view.getMessageAnchor().addClickHandler(new ClickHandler() {
+        view.getMessageButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initMessages();
+                eventBus.initMessages(null);
             }
         });
-        view.getPaymentMethodAnchor().addClickHandler(new ClickHandler() {
+        view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initPaymentMethods();
+                eventBus.initPaymentMethods(null);
             }
         });
-        view.getPermissionAnchor().addClickHandler(new ClickHandler() {
+        view.getPermissionButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initPermissions();
+                eventBus.initPermissions(null);
             }
         });
-        view.getPreferenceAnchor().addClickHandler(new ClickHandler() {
+        view.getPreferenceButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initPreferences();
+                eventBus.initPreferences(null);
             }
         });
-        view.getProblemAnchor().addClickHandler(new ClickHandler() {
+        view.getProblemButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initProblems();
+                eventBus.initProblems(null);
             }
         });
     }
 
-    public void onInitAdminModule(SimplePanel panel) {
+    public void onInitAdminModule() {
         GWT.log("onInitAdminModule - som tu");
         //eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
 //        eventBus.setTabAdminWidget(view.getWidgetView());
@@ -148,7 +148,9 @@ public class AdminModulePresenter extends
 //        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
-        panel.setWidget(view.getWidgetView());
+//        panel.setWidget(view.getWidgetView());
+        view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+        eventBus.setBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
     }
 

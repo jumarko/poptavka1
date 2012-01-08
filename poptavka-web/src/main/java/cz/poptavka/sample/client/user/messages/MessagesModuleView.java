@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,7 +26,7 @@ public class MessagesModuleView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Anchor inboxAnchor, sentAnchor, trashAnchor;
+    Button inboxButton, sentButton, trashButton;
 
     public MessagesModuleView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -44,18 +44,18 @@ public class MessagesModuleView extends Composite
     }
 
     @Override
-    public Anchor getInboxAnchor() {
-        return inboxAnchor;
+    public Button getInboxButton() {
+        return inboxButton;
     }
 
     @Override
-    public Anchor getSentAnchor() {
-        return sentAnchor;
+    public Button getSentButton() {
+        return sentButton;
     }
 
     @Override
-    public Anchor getTrashAnchor() {
-        return trashAnchor;
+    public Button getTrashButton() {
+        return trashButton;
     }
 
     /** toggle visible actions/buttons for current user decided by his role. **/

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.user;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -117,15 +118,14 @@ public interface UserEventBus extends EventBusWithLookup {
      * @param tabBody
      *            current widget
      */
-    @Event(handlers = UserPresenter.class)
-    void setTabWidget(Widget tabBody);
-
-    @Event(handlers = UserPresenter.class)
-    void setTabAdminWidget(Widget tabBody);
-
-    @Event(handlers = UserPresenter.class)
-    void setTabSettingsWidget(Widget tabBody);
-
+//    @Event(handlers = UserPresenter.class)
+//    void setTabWidget(Widget tabBody);
+//
+//    @Event(handlers = UserPresenter.class)
+//    void setTabAdminWidget(Widget tabBody);
+//
+//    @Event(handlers = UserPresenter.class)
+//    void setTabSettingsWidget(Widget tabBody);
     @Event(handlers = MyProblemsPresenter.class)
     void requestMyProblems();
 
@@ -210,8 +210,16 @@ public interface UserEventBus extends EventBusWithLookup {
      *
      * @param body
      */
+//    @DisplayChildModuleView({DemandModule.class,
+//        AdminModule.class, MessagesModule.class })
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(Widget body);
+    void setBodyHolderWidget(IsWidget body);
+
+    @Event(forwardToParent = true)
+    void setMenu(IsWidget menu);
+
+    @Event(forwardToParent = true)
+    void setHeader(IsWidget header);
 
     /**********************************************************************************************
      ************ Navigation events section. /* Presenters do NOT listen to events when
@@ -434,19 +442,22 @@ public interface UserEventBus extends EventBusWithLookup {
      */
     // init demands module
     @Event(modulesToLoad = DemandModule.class)
-    void initDemandModule(SimplePanel panel);
-/*
+    void initDemandModule();
+    /*
     @Event(forwardToParent = true)
     void goToCreateDemand();
-*/
+     */
     //added by Martin
     //init demands module
+
     @Event(modulesToLoad = MessagesModule.class)
-    void initMessagesModule(SimplePanel panel);
+    void initMessagesModule();
 
     @Event(modulesToLoad = AdminModule.class)
-    void initAdminModule(SimplePanel panel);
+    void initAdminModule();
 
+//    @Event(forwardToParent = true)
+//    void initSearchModule(SimplePanel panel);
     /**
      * ********************* End corner ************************
      */
