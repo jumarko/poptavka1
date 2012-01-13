@@ -37,6 +37,7 @@ public interface LocalizableMessages extends Messages {
     String supplierDescription();
     String demandText();
     String supplierName();
+    String select();
 
     //offers view - buttons
     String answer();

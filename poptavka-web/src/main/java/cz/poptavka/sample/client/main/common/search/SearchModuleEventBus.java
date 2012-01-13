@@ -41,6 +41,9 @@ public interface SearchModuleEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initHomeSupplierModule(SearchModuleDataHolder filter);
 
+    @Event(forwardToParent = true)
+    void initAdminModule(SearchModuleDataHolder filter);
+
 //    @Event(forwardToParent = true)
 //    void initDemandsTabModule(SearchModuleDataHolder filter);
 //

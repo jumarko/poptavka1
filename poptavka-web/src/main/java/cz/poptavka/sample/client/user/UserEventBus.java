@@ -15,6 +15,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 
 import cz.poptavka.sample.client.homesettings.HomeSettingsHandler;
 import cz.poptavka.sample.client.homesettings.HomeSettingsPresenter;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModule;
 import cz.poptavka.sample.client.user.demands.DemandModule;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
@@ -454,7 +455,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void initMessagesModule();
 
     @Event(modulesToLoad = AdminModule.class)
-    void initAdminModule();
+    void initAdminModule(SearchModuleDataHolder filter);
 
 //    @Event(forwardToParent = true)
 //    void initSearchModule(SimplePanel panel);

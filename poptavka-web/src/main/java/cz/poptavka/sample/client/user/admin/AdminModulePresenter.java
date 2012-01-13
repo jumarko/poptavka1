@@ -11,11 +11,12 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.widget.LoadingDiv;
 
 @Presenter(view = AdminModuleView.class, multiple = true)
-public class AdminModulePresenter extends
-        BasePresenter<AdminModulePresenter.AdminModuleInterface, AdminModuleEventBus> {
+public class AdminModulePresenter extends BasePresenter<AdminModulePresenter
+        .AdminModuleInterface, AdminModuleEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
@@ -140,7 +141,7 @@ public class AdminModulePresenter extends
         });
     }
 
-    public void onInitAdminModule() {
+    public void onInitAdminModule(SearchModuleDataHolder filter) {
         GWT.log("onInitAdminModule - som tu");
         //eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
 //        eventBus.setTabAdminWidget(view.getWidgetView());
@@ -151,7 +152,36 @@ public class AdminModulePresenter extends
 //        panel.setWidget(view.getWidgetView());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
         eventBus.setBodyHolderWidget(view.getWidgetView());
+
         Storage.hideLoading();
+
+        if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
+            eventBus.initAccessRoles(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
+            eventBus.initClients(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {
+            eventBus.initDemands(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminEmailsActivation")) {
+            eventBus.initEmailsActivation(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminInvoices")) {
+            eventBus.initInvoices(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminMessages")) {
+            eventBus.initMessages(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminOffers")) {
+            eventBus.initOffers(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminPaymentMethods")) {
+            eventBus.initPaymentMethods(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminPermissions")) {
+            eventBus.initPermissions(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminPreferences")) {
+            eventBus.initPreferences(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminProblems")) {
+            eventBus.initProblems(filter);
+        } else if (Storage.getCurrentlyLoadedView().equals("adminSuppliers")) {
+            eventBus.initSuppliers(filter);
+        } else {
+            return;
+        }
     }
 
     public void onToggleLoading() {

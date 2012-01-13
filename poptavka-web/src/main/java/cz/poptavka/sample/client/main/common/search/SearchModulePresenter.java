@@ -77,7 +77,7 @@ public class SearchModulePresenter extends
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTab")) {
 //                    eventBus.initMessagesTabModule(view.getFilter());
                 } else { //Admin...whatever
-//                    eventBus.initAdminsTabModule(view.getFilter());
+                    eventBus.initAdminModule(view.getFilter());
                 }
 
                 ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).

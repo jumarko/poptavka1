@@ -109,6 +109,7 @@ public class AdminSuppliersPresenter
         Storage.setCurrentlyLoadedView("adminSuppliers");
         searchDataHolder = filter;
         eventBus.getAdminSuppliersCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 

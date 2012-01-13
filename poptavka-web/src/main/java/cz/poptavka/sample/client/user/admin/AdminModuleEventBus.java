@@ -95,7 +95,7 @@ public interface AdminModuleEventBus extends EventBus {
     /* Business events handled by AdminModulePresenter. */
     //init demands module - left user_type menu and initial content
     @Event(handlers = AdminModulePresenter.class)
-    void initAdminModule();
+    void initAdminModule(SearchModuleDataHolder filter);
 
     //display widget in content area
     @Event(handlers = AdminModulePresenter.class)

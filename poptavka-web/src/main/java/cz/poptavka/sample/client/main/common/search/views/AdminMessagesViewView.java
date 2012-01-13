@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.message.MessageState;
@@ -34,9 +35,11 @@ public class AdminMessagesViewView extends Composite implements
 //    public void createView() {
     public AdminMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
+        type.addItem(Storage.MSGS.select());
         for (MessageType msgtype : MessageType.values()) {
             type.addItem(msgtype.name());
         }
+        state.addItem(Storage.MSGS.select());
         for (MessageState msgState : MessageState.values()) {
             state.addItem(msgState.name());
         }
@@ -94,8 +97,12 @@ public class AdminMessagesViewView extends Composite implements
         if (sentTo.getValue() != null) {
             data.getAdminMessages().setSentTo(sentTo.getValue());
         }
-        data.getAdminMessages().setType(type.getItemText(type.getSelectedIndex()));
-        data.getAdminMessages().setState(state.getItemText(state.getSelectedIndex()));
+        if (type.getSelectedIndex() != 0) {
+            data.getAdminMessages().setType(type.getItemText(type.getSelectedIndex()));
+        }
+        if (state.getSelectedIndex() != 0) {
+            data.getAdminMessages().setState(state.getItemText(state.getSelectedIndex()));
+        }
         return data;
     }
 

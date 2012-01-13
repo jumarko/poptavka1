@@ -49,8 +49,12 @@ public class AdminClientsViewView extends Composite implements
         if (!lastName.getText().equals("")) {
             data.getAdminClients().setLastName(lastName.getText());
         }
-        data.getAdminClients().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
-        data.getAdminClients().setRatingTo(Integer.valueOf(ratingTo.getText()));
+        if (!ratingFrom.getText().equals("0")) {
+            data.getAdminClients().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
+        }
+        if (!ratingTo.getText().equals("100")) {
+            data.getAdminClients().setRatingTo(Integer.valueOf(ratingTo.getText()));
+        }
         return data;
     }
 

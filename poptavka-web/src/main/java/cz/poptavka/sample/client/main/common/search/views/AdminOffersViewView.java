@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.offer.OfferState;
@@ -34,6 +35,7 @@ public class AdminOffersViewView extends Composite implements
 //    public void createView() {
     public AdminOffersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
+        state.addItem(Storage.MSGS.select());
         for (Type type : OfferState.Type.values()) {
             state.addItem(type.name());
         }
@@ -79,7 +81,9 @@ public class AdminOffersViewView extends Composite implements
         if (finnishTo.getValue() != null) {
             data.getAdminOffers().setFinnishTo(finnishTo.getValue());
         }
-        data.getAdminOffers().setState(state.getItemText(state.getSelectedIndex()));
+        if (state.getSelectedIndex() != 0) {
+            data.getAdminOffers().setState(state.getItemText(state.getSelectedIndex()));
+        }
         return data;
     }
 

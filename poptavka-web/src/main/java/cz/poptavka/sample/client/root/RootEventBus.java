@@ -158,6 +158,9 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = SearchModule.class)
     void initSearchModule(SimplePanel panel);
 
+    @Event(modulesToLoad = UserModule.class)
+    void initAdminModule(SearchModuleDataHolder filter);
+
     @Event(modulesToLoad = SupplierCreationModule.class)
     void goToCreateSupplier();
 

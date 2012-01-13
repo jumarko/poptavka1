@@ -37,6 +37,7 @@ public class HomeDemandViewView extends Composite implements
     public HomeDemandViewView() {
         initWidget(uiBinder.createAndBindUi(this));
 
+        demandTypes.addItem(Storage.MSGS.select());
         for (Type type : DemandType.Type.values()) {
             demandTypes.addItem(type.name());
         }
@@ -55,7 +56,9 @@ public class HomeDemandViewView extends Composite implements
         if (!demandTitle.getText().equals("")) {
             data.getHomeDemands().setDemandTitle(demandTitle.getText());
         }
-        data.getHomeDemands().setDemandType(demandTypes.getItemText(demandTypes.getSelectedIndex()));
+        if (demandTypes.getSelectedIndex() != 0) {
+            data.getHomeDemands().setDemandType(demandTypes.getItemText(demandTypes.getSelectedIndex()));
+        }
         int selected = category.getSelectedIndex();
         if (selected != 0) {
             data.getHomeDemands().setDemandCategory(new CategoryDetail(Long.valueOf(category.getValue(selected)),

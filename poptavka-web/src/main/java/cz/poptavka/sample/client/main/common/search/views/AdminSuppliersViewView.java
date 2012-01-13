@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.user.BusinessType;
@@ -34,11 +35,13 @@ public class AdminSuppliersViewView extends Composite implements
         initWidget(uiBinder.createAndBindUi(this));
         ratingFrom.setText("0");
         ratingTo.setText("100");
+        type.addItem(Storage.MSGS.select());
         for (BusinessType bType : BusinessType.values()) {
             type.addItem(bType.getValue());
         }
         certified.addItem("true");
         certified.addItem("false");
+        verified.addItem(Storage.MSGS.select());
         for (Verification type : Verification.values()) {
             verified.addItem(type.name());
         }
@@ -63,9 +66,13 @@ public class AdminSuppliersViewView extends Composite implements
         }
         data.getAdminSuppliers().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
         data.getAdminSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
-        data.getAdminSuppliers().setType(type.getItemText(type.getSelectedIndex()));
+        if (type.getSelectedIndex() != 0) {
+            data.getAdminSuppliers().setType(type.getItemText(type.getSelectedIndex()));
+        }
         data.getAdminSuppliers().setCertified(Boolean.valueOf(certified.getItemText(certified.getSelectedIndex())));
-        data.getAdminSuppliers().setVerified(verified.getItemText(verified.getSelectedIndex()));
+        if (verified.getSelectedIndex() != 0) {
+            data.getAdminSuppliers().setVerified(verified.getItemText(verified.getSelectedIndex()));
+        }
         if (!idFrom.getText().equals("")) {
             data.getAdminDemands().setDemandIdFrom(Long.valueOf(idFrom.getText()));
         }

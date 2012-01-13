@@ -59,7 +59,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         view.getAdministrationButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule();
+                eventBus.initAdminModule(null);
             }
         });
 

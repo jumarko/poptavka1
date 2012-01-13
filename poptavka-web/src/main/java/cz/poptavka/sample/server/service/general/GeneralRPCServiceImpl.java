@@ -11,6 +11,8 @@ import cz.poptavka.sample.client.service.demand.GeneralRPCService;
 import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandStatus;
+import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.invoice.OurPaymentDetails;
 import cz.poptavka.sample.domain.invoice.PaymentMethod;
@@ -73,7 +75,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
         if (searchDataHolder == null) {
             search = new Search(Demand.class);
         } else {
-            search = this.setAdminAccessRoleFilters(searchDataHolder, new Search(Demand.class));
+            search = this.setAdminDemandFilters(searchDataHolder, new Search(Demand.class));
         }
         return (long) generalService.count(search);
     }
@@ -83,7 +85,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
         Search search = new Search(Demand.class);
         if (searchDataHolder != null) {
-            search = this.setAdminAccessRoleFilters(searchDataHolder, search);
+            search = this.setAdminDemandFilters(searchDataHolder, search);
         }
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
@@ -97,8 +99,46 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
 //    private Search setAdminClientsFilters(SearchModuleDataHolder searchDataHolder, Search search) {
-
 //    }
+    private Search setAdminDemandFilters(SearchModuleDataHolder searchDataHolder, Search search) {
+        if (searchDataHolder.getAdminDemands().getDemandIdFrom() != null) {
+            search.addFilterGreaterOrEqual("id", searchDataHolder.getAdminDemands().getDemandIdFrom());
+        }
+        if (searchDataHolder.getAdminDemands().getDemandIdTo() != null) {
+            search.addFilterLessOrEqual("id", searchDataHolder.getAdminDemands().getDemandIdTo());
+        }
+        if (searchDataHolder.getAdminDemands().getClientIdFrom() != null) {
+            search.addFilterGreaterOrEqual("client.id:", searchDataHolder.getAdminDemands().getClientIdFrom());
+        }
+        if (searchDataHolder.getAdminDemands().getClientIdTo() != null) {
+            search.addFilterLessOrEqual("client.id:", searchDataHolder.getAdminDemands().getClientIdTo());
+        }
+        if (searchDataHolder.getAdminDemands().getDemandTitle() != null) {
+            search.addFilterEqual("title", "%" + searchDataHolder.getAdminDemands().getDemandTitle() + "%");
+        }
+        if (searchDataHolder.getAdminDemands().getDemandType() != null) {
+            List<DemandType> types = generalService.search(new Search(DemandType.class)
+                    .addFilterEqual("value", searchDataHolder.getAdminDemands().getDemandType()));
+            search.addFilterEqual("type", types.get(0));
+        }
+        if (searchDataHolder.getAdminDemands().getDemandStatus() != null) {
+            search.addFilterEqual("status", DemandStatus.valueOf(searchDataHolder.getAdminDemands().getDemandStatus()));
+        }
+        if (searchDataHolder.getAdminDemands().getExpirationDateFrom() != null) {
+            search.addFilterGreaterOrEqual("validTo", searchDataHolder.getAdminDemands().getExpirationDateFrom());
+        }
+        if (searchDataHolder.getAdminDemands().getExpirationDateTo() != null) {
+            search.addFilterLessOrEqual("validTo", searchDataHolder.getAdminDemands().getExpirationDateTo());
+        }
+        if (searchDataHolder.getAdminDemands().getEndDateFrom() != null) {
+            search.addFilterGreaterOrEqual("endDate", searchDataHolder.getAdminDemands().getEndDateFrom());
+        }
+        if (searchDataHolder.getAdminDemands().getEndDateTo() != null) {
+            search.addFilterLessOrEqual("endDate", searchDataHolder.getAdminDemands().getEndDateTo());
+        }
+        return search;
+    }
+
     private List<FullDemandDetail> createDemandDetailList(Collection<Demand> demands) {
         List<FullDemandDetail> demandDetail = new ArrayList<FullDemandDetail>();
         for (Demand demand : demands) {
@@ -165,11 +205,11 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
         }
         if (searchDataHolder.getAdminClients().getRatingFrom() != null) {
             search.addFilterGreaterOrEqual("overalRating:",
-                    searchDataHolder.getAdminClients().getRatingFrom().toString());
+                    searchDataHolder.getAdminClients().getRatingFrom());
         }
         if (searchDataHolder.getAdminClients().getRatingTo() != null) {
             search.addFilterLessOrEqual("overalRating",
-                    searchDataHolder.getAdminClients().getRatingTo().toString());
+                    searchDataHolder.getAdminClients().getRatingTo());
         }
         return search;
     }
@@ -438,7 +478,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
     public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) {
         Search search = null;
         if (searchDataHolder == null) {
-            search = null;
+            search = new Search(EmailActivation.class);
         } else {
             search = this.setAdminEmailsActivationFilters(searchDataHolder, new Search(EmailActivation.class));
         }
@@ -834,7 +874,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
     public Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) {
         Search search = null;
         if (searchDataHolder == null) {
-            search = null;
+            search = new Search(Preference.class);
         } else {
             search = this.setAdminPreferencesFilters(searchDataHolder, new Search(Preference.class));
         }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.demand.DemandStatus;
@@ -34,9 +35,11 @@ public class AdminDemandsViewView extends Composite implements
 //    public void createView() {
     public AdminDemandsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
+        demandType.addItem(Storage.MSGS.select());
         for (Type type : DemandType.Type.values()) {
             demandType.addItem(type.name());
         }
+        demandStatus.addItem(Storage.MSGS.select());
         for (DemandStatus status : DemandStatus.values()) {
             demandStatus.addItem(status.name());
         }
@@ -73,8 +76,12 @@ public class AdminDemandsViewView extends Composite implements
         if (endDateTo.getValue() != null) {
             data.getAdminDemands().setEndDateFrom(endDateTo.getValue());
         }
-        data.getAdminDemands().setDemandType(demandType.getItemText(demandType.getSelectedIndex()));
-        data.getAdminDemands().setDemandStatus(demandStatus.getItemText(demandStatus.getSelectedIndex()));
+        if (demandType.getSelectedIndex() != 0) {
+            data.getAdminDemands().setDemandType(demandType.getItemText(demandType.getSelectedIndex()));
+        }
+        if (demandStatus.getSelectedIndex() != 0) {
+            data.getAdminDemands().setDemandStatus(demandStatus.getItemText(demandStatus.getSelectedIndex()));
+        }
         return data;
     }
 
