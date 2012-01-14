@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -25,6 +27,8 @@ public class HomeSuppliersViewView extends Composite implements
     TextBox companyName, ratingFrom, ratingTo, supplierDescription;
     @UiField
     ListBox category, locality;
+    @UiField
+    Button clearBtn;
 
 //    @Override
     public HomeSuppliersViewView() {
@@ -38,8 +42,12 @@ public class HomeSuppliersViewView extends Composite implements
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initHomeSuppliers();
-        data.getHomeSuppliers().setSupplierName(companyName.getText());
-        data.getHomeSuppliers().setSupplierDescription(supplierDescription.getText());
+        if (!companyName.getText().equals("")) {
+            data.getHomeSuppliers().setSupplierName(companyName.getText());
+        }
+        if (!supplierDescription.getText().equals("")) {
+            data.getHomeSuppliers().setSupplierDescription(supplierDescription.getText());
+        }
         int selected = category.getSelectedIndex();
         if (selected != 0) {
             data.getHomeSuppliers().setSupplierCategory(new CategoryDetail(Long.valueOf(category.getValue(selected)),
@@ -50,8 +58,12 @@ public class HomeSuppliersViewView extends Composite implements
             data.getHomeSuppliers().setSupplierLocality(new LocalityDetail(locality.getItemText(selected),
                     locality.getValue(selected)));
         }
-        data.getHomeSuppliers().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
-        data.getHomeSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
+        if (!ratingFrom.getText().equals("0")) {
+            data.getHomeSuppliers().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
+        }
+        if (!ratingTo.getText().equals("100")) {
+            data.getHomeSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
+        }
         return data;
     }
 
@@ -106,5 +118,15 @@ public class HomeSuppliersViewView extends Composite implements
         if (!ratingTo.getText().matches("[0-9]+")) {
             ratingTo.setText("100");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        companyName.setText("");
+        supplierDescription.setText("");
+        category.setSelectedIndex(0);
+        locality.setSelectedIndex(0);
+        ratingFrom.setText("0");
+        ratingTo.setText("100");
     }
 }

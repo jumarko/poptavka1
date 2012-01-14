@@ -74,6 +74,8 @@ public class AdminClientsPresenter
 
         DataGrid<ClientDetail> getDataGrid();
 
+        Column<ClientDetail, String> getIdColumn();
+
         Column<ClientDetail, String> getCompanyColumn();
 
         Column<ClientDetail, String> getFirstNameColumn();
@@ -157,6 +159,7 @@ public class AdminClientsPresenter
 
     public void onInitClients(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminClients");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminClientsCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

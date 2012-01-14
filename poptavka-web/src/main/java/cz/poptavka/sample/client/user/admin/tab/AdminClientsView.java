@@ -6,7 +6,6 @@ package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -38,6 +37,14 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     Button commit, rollback, refresh;
     @UiField
     Label changesLabel;
+
+    /**
+     * @return the companyColumn
+     */
+    @Override
+    public Column<ClientDetail, String> getIdColumn() {
+        return idColumn;
+    }
 
     /**
      * @return the companyColumn
@@ -121,6 +128,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
      */
     private SingleSelectionModel<ClientDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
+    private Column<ClientDetail, String> idColumn;
     private Column<ClientDetail, String> companyColumn;
     private Column<ClientDetail, String> firstNameColumn;
     private Column<ClientDetail, String> lastNameColumn;
@@ -169,7 +177,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
+        idColumn = addColumn(new MyClickCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {

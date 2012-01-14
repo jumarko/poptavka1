@@ -167,4 +167,7 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = DemandCreationModule.class)
     void goToCreateDemand();
 
+    @Event(modulesToLoad = SearchModule.class)
+    void clearSearchContent();
+
 }

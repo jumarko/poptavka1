@@ -78,6 +78,9 @@
                 <li>
                     <g:TextBox ui:field="supplierDescription" />
                 </li>
+                <li>
+                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                </li>
             </ul>
         </div>
     </g:HTMLPanel>

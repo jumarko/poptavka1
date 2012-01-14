@@ -8,7 +8,6 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -73,10 +72,19 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     private SingleSelectionModel<FullSupplierDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
+    private Column<FullSupplierDetail, String> idColumn;
     private Column<FullSupplierDetail, String> supplierNameColumn;
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
+
+    /**
+     * @return the Supplier Id
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getSupplierIdColumn() {
+        return idColumn;
+    }
 
     /**
      * @return the SupplierNameColumn
@@ -221,7 +229,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     private void initGridColumns() {
         // Supplier ID.
-        addColumn(new TextCell(), "SID", true, 30, new GetValue<String>() {
+        idColumn = addColumn(new MyClickCell(), "ID", true, 30, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {

@@ -100,6 +100,9 @@
                 <li>
                     <g:ListBox ui:field="paymentMethod"/>
                 </li>
+                <li>
+                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                </li>
             </ul>
         </div>
     </g:HTMLPanel>

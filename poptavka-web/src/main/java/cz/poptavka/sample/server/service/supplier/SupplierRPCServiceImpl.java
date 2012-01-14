@@ -548,8 +548,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 search = new Search(Supplier.class);
             }
             if (detail.getHomeSuppliers().getSupplierName() != null) {
-                search.addFilterLike(prefix + "businessUser.businessUserData.companyName",
-                        "%" + detail.getHomeSuppliers().getSupplierName() + "%");
+                Collection<BusinessUserData> data = generalService.search(
+                    new Search(BusinessUserData.class).addFilterLike("companyName",
+                        "%" + detail.getAdminSuppliers().getSupplierName() + "%"));
+                search.addFilterIn("businessUser.businessUserData", data);
             }
 
             //                if (detail.isAdditionalInfo()) {
@@ -560,8 +562,16 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 search.addFilterLessOrEqual(prefix + "overalRating", detail.getHomeSuppliers().getRatingTo());
             }
             if (detail.getHomeSuppliers().getSupplierDescription() != null) {
-                String[] str = detail.getHomeSuppliers().getSupplierDescription().split("\\s+");
-                search.addFilterIn(prefix + "businessUser.businessUserData.description", Arrays.asList(str));
+                Collection<BusinessUserData> descsData = new ArrayList<BusinessUserData>();
+                String[] descs = detail.getHomeSuppliers().getSupplierDescription().split("\\s+");
+
+                for (int i = 0; i < descs.length; i++) {
+                    descsData.addAll(generalService.search(new Search(BusinessUserData.class)
+                            .addFilterLike("description", "%" + detail.getAdminSuppliers()
+                            .getSupplierDescription() + "%")));
+                }
+
+                search.addFilterIn("businessUser.businessUserData", descsData);
             }
         } else {
             search = new Search(Supplier.class);

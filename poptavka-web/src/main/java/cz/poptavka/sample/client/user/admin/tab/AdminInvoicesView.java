@@ -41,6 +41,14 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     Label changesLabel;
 
     /**
+     * @return the ID Column
+     */
+    @Override
+    public Column<InvoiceDetail, String> getIdColumn() {
+        return idColumn;
+    }
+
+    /**
      * @return the price Column
      */
     @Override
@@ -122,6 +130,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      */
     private SingleSelectionModel<InvoiceDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
+    private Column<InvoiceDetail, String> idColumn;
     private Column<InvoiceDetail, String> priceColumn;
     private Column<InvoiceDetail, String> varSymbolColumn;
     private Column<InvoiceDetail, String> payMethodColumn;
@@ -171,7 +180,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      */
     private void initTableColumns() {
         // ID
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        idColumn = addColumn(new MyClickCell(), "ID", 50, new GetValue<String>() {
 
             @Override
             public String getValue(InvoiceDetail object) {

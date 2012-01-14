@@ -27,8 +27,12 @@ public class AdminSuppliersViewPresenter
     }
 
     public void onInitAdminSuppliersView(PopupPanel popupPanel) {
-        eventBus.requestCategories();
-        eventBus.requestLocalities();
+        if (view.getCategoryList().getItemCount() == 0) {
+            eventBus.requestCategories();
+        }
+        if (view.getLocalityList().getItemCount() == 0) {
+            eventBus.requestLocalities();
+        }
         popupPanel.setWidget(view.getWidgetView());
     }
 

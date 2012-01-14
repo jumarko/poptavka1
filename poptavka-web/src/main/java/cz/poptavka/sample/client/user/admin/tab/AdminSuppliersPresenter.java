@@ -77,6 +77,8 @@ public class AdminSuppliersPresenter
 
         DataGrid<FullSupplierDetail> getDataGrid();
 
+        Column<FullSupplierDetail, String> getSupplierIdColumn();
+
         Column<FullSupplierDetail, String> getSupplierNameColumn();
 
         Column<FullSupplierDetail, String> getSupplierTypeColumn();
@@ -107,6 +109,7 @@ public class AdminSuppliersPresenter
 
     public void onInitSuppliers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminSuppliers");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminSuppliersCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
@@ -183,8 +186,13 @@ public class AdminSuppliersPresenter
 
     @Override
     public void bindView() {
+        view.getSupplierIdColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
+            @Override
+            public void update(int index, FullSupplierDetail object, String value) {
+                eventBus.showAdminSupplierDetail(object);
+            }
+        });
         view.getSupplierNameColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 if (!object.getCompanyName().equals(value)) {
@@ -197,7 +205,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getSupplierTypeColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 for (BusinessType businessType : BusinessType.values()) {
@@ -214,7 +221,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getCertifiedColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, Boolean>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, Boolean value) {
                 if (object.isCertified() != value) {
@@ -227,7 +233,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getVerificationColumn().setFieldUpdater(new FieldUpdater<FullSupplierDetail, String>() {
-
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
                 for (Verification verification : Verification.values()) {
@@ -242,7 +247,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getSupplierId())) {
@@ -255,7 +259,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent arg0) {
                 int page = view.getPager().getPageStart() / view.getPageSize();
@@ -264,7 +267,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getCommitBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
@@ -282,7 +284,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -300,7 +301,6 @@ public class AdminSuppliersPresenter
             }
         });
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {

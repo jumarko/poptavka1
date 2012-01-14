@@ -52,6 +52,9 @@
                 <li>
                     <g:TextBox ui:field="text"/>
                 </li>
+                <li>
+                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                </li>
             </ul>
         </div>
     </g:HTMLPanel>

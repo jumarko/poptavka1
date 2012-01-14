@@ -148,6 +148,7 @@ public class AdminProblemsPresenter
 
     public void onInitProblems(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminProblems");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminProblemsCount(searchDataHolder);
         eventBus.displayView(view.getWidgetView());

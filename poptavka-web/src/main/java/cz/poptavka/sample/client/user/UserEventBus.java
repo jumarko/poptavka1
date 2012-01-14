@@ -459,6 +459,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
 //    @Event(forwardToParent = true)
 //    void initSearchModule(SimplePanel panel);
+    @Event(forwardToParent = true)
+    void clearSearchContent();
+
     /**
      * ********************* End corner ************************
      */

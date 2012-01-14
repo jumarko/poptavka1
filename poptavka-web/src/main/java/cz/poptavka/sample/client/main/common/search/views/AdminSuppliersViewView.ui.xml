@@ -117,6 +117,9 @@
                 <li>
                     <g:ListBox ui:field="certified"></g:ListBox>
                 </li>
+                <li>
+                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                </li>
             </ul>
         </div>
     </g:HTMLPanel>

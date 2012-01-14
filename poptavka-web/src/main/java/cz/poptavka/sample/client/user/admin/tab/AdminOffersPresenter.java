@@ -146,6 +146,7 @@ public class AdminOffersPresenter
 
     public void onInitOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminOffers");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminOffersCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -21,6 +23,8 @@ public class AdminPaymentMethodsViewView extends Composite implements
     }
     @UiField
     TextBox idFrom, idTo, name, description;
+    @UiField
+    Button clearBtn;
 
     //    @Override
 //    public void createView() {
@@ -96,5 +100,13 @@ public class AdminPaymentMethodsViewView extends Composite implements
         if (!idTo.getText().matches("[0-9]+")) {
             idTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        idFrom.setText("");
+        idTo.setText("");
+        name.setText("");
+        description.setText("");
     }
 }

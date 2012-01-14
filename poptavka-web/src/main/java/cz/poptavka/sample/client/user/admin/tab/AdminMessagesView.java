@@ -32,7 +32,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
-import cz.poptavka.sample.shared.domain.type.MessageType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -252,18 +251,18 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
             }
         });
 
-        // type.
-        List<String> msgTypes = new ArrayList<String>();
-        for (MessageType msgType : MessageType.values()) {
-            msgTypes.add(msgType.getValue());
-        }
-        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", true, 120, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getMessageType();
-            }
-        });
+        // type.  TODO musi byt??
+//        List<String> msgTypes = new ArrayList<String>();
+//        for (MessageType msgType : MessageType.values()) {
+//            msgTypes.add(msgType.getValue());
+//        }
+//        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", true, 120, new GetValue<String>() {
+//
+//            @Override
+//            public String getValue(MessageDetail object) {
+//                return object.getMessageType();
+//            }
+//        });
 
         // created date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);

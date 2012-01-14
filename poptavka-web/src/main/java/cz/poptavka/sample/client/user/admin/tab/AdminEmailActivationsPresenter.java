@@ -154,6 +154,7 @@ public class AdminEmailActivationsPresenter
 
     public void onInitEmailsActivation(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminEmailsActivation");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminEmailsActivationCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

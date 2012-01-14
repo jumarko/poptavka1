@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -21,6 +23,8 @@ public class AdminClientsViewView extends Composite implements
     }
     @UiField
     TextBox idFrom, idTo, companyName, firstName, lastName, ratingFrom, ratingTo;
+    @UiField
+    Button clearBtn;
 
 //    @Override
 //    public void createView() {
@@ -133,5 +137,16 @@ public class AdminClientsViewView extends Composite implements
         if (!ratingTo.getText().matches("[0-9]+")) {
             ratingTo.setText("100");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        idFrom.setText("");
+        idTo.setText("");
+        companyName.setText("");
+        firstName.setText("");
+        lastName.setText("");
+        ratingFrom.setText("0");
+        ratingTo.setText("100");
     }
 }

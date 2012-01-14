@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -30,6 +32,8 @@ public class AdminMessagesViewView extends Composite implements
     DateBox createdFrom, createdTo, sentFrom, sentTo;
     @UiField
     ListBox type, state;
+    @UiField
+    Button clearBtn;
 
     //    @Override
 //    public void createView() {
@@ -74,10 +78,10 @@ public class AdminMessagesViewView extends Composite implements
             data.getAdminMessages().setSenderIdTo(Long.valueOf(senderIdTo.getText()));
         }
         if (!receiverIdFrom.getText().equals("")) {
-            data.getAdminMessages().setSenderIdFrom(Long.valueOf(receiverIdFrom.getText()));
+            data.getAdminMessages().setReceiverIdFrom(Long.valueOf(receiverIdFrom.getText()));
         }
         if (!receiverIdTo.getText().equals("")) {
-            data.getAdminMessages().setSenderIdTo(Long.valueOf(receiverIdTo.getText()));
+            data.getAdminMessages().setReceiverIdTo(Long.valueOf(receiverIdTo.getText()));
         }
         if (!subject.getText().equals("")) {
             data.getAdminMessages().setSubject(subject.getText());
@@ -134,7 +138,7 @@ public class AdminMessagesViewView extends Composite implements
         }
         if (data.getAdminMessages().getDemandIdFrom() != null) {
             infoText.append("demandIdFrom:");
-            infoText.append(data.getAdminMessages().getDemandIdTo());
+            infoText.append(data.getAdminMessages().getDemandIdFrom());
         }
         if (data.getAdminMessages().getDemandIdTo() != null) {
             infoText.append("demandIdTo:");
@@ -185,8 +189,8 @@ public class AdminMessagesViewView extends Composite implements
             infoText.append(data.getAdminMessages().getSentFrom());
         }
         if (data.getAdminMessages().getSentFrom() != null) {
-            infoText.append("sentFrom:");
-            infoText.append(data.getAdminMessages().getSentFrom());
+            infoText.append("sentTo:");
+            infoText.append(data.getAdminMessages().getSentTo());
         }
         if (data.getAdminMessages().getType() != null) {
             infoText.append("type:");
@@ -268,5 +272,27 @@ public class AdminMessagesViewView extends Composite implements
         if (!receiverIdTo.getText().matches("[0-9]+")) {
             receiverIdTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        messageIdFrom.setText("");
+        messageIdTo.setText("");
+        demandIdFrom.setText("");
+        demandIdTo.setText("");
+        parentIdFrom.setText("");
+        parentIdTo.setText("");
+        senderIdFrom.setText("");
+        senderIdTo.setText("");
+        receiverIdFrom.setText("");
+        receiverIdTo.setText("");
+        subject.setText("");
+        body.setText("");
+        createdFrom.setValue(null);
+        createdTo.setValue(null);
+        sentFrom.setValue(null);
+        sentTo.setValue(null);
+        type.setSelectedIndex(0);
+        state.setSelectedIndex(0);
     }
 }

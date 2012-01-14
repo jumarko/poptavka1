@@ -8,7 +8,6 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -49,6 +48,22 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     Button commit, rollback, refresh;
     @UiField
     Label changesLabel;
+
+    /**
+     * @return the demand id column
+     */
+    @Override
+    public Column<FullDemandDetail, String> getIdColumn() {
+        return idColumn;
+    }
+
+    /**
+     * @return the client id column
+     */
+    @Override
+    public Column<FullDemandDetail, String> getCidColumn() {
+        return cidColumn;
+    }
 
     /**
      * @return the demandTypeColumn
@@ -140,6 +155,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      */
     private SingleSelectionModel<FullDemandDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
+    private Column<FullDemandDetail, String> idColumn;
+    private Column<FullDemandDetail, String> cidColumn;
     private Column<FullDemandDetail, String> demandTypeColumn;
     private Column<FullDemandDetail, String> demandTitleColumn;
     private Column<FullDemandDetail, String> statusColumn;
@@ -190,7 +207,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        addColumn(new TextCell(), "DID", true, 50, new GetValue<String>() {
+        idColumn = addColumn(new MyClickCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
@@ -199,7 +216,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         });
 
         // Client ID.
-        addColumn(new TextCell(), "CID", true, 50, new GetValue<String>() {
+        cidColumn = addColumn(new MyClickCell(), "CID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {

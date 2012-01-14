@@ -76,6 +76,8 @@ public class AdminInvoicesPresenter
 
         DataGrid<InvoiceDetail> getDataGrid();
 
+        Column<InvoiceDetail, String> getIdColumn();
+
         Column<InvoiceDetail, String> getPriceColumn();
 
         Column<InvoiceDetail, String> getPaymentMethodColumn();
@@ -158,6 +160,7 @@ public class AdminInvoicesPresenter
 
     public void onInitInvoices(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminInvoices");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminInvoicesCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

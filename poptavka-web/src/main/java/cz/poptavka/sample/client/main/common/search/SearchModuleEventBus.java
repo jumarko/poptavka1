@@ -52,6 +52,9 @@ public interface SearchModuleEventBus extends EventBus {
 //
 //    @Event(forwardToParent = true)
 //    void initAdminsTabModule(SearchModuleDataHolder filter);
+
+    @Event(handlers = SearchModulePresenter.class)
+    void clearSearchContent();
     // VIEWS INIT METHODS
     /**************************************************************************/
     /* Navigation | Initialization events. */

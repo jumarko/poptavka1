@@ -1,8 +1,11 @@
 package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
@@ -27,6 +30,8 @@ public class PotentialDemandMessagesViewView extends Composite implements
     ListBox urgent;
     @UiField
     DateBox createdFrom, createdTo;
+    @UiField
+    Button clearBtn;
 
 //    @Override
 //    public void createView() {
@@ -135,5 +140,19 @@ public class PotentialDemandMessagesViewView extends Composite implements
             infoText.append(data.getPotentialDemandMessages().getPriceTo());
         }
         infoHolder.setText(infoText.toString());
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        sender.setText("");
+        title.setText("");
+        isStar.setText("");
+        ratingFrom.setText("");
+        ratingTo.setText("");
+        priceFrom.setText("");
+        priceTo.setText("");
+        createdFrom.setValue(null);
+        createdTo.setValue(null);
+        urgent.setSelectedIndex(0);
     }
 }

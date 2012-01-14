@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -28,31 +30,45 @@ public class AdminSuppliersViewView extends Composite implements
     TextBox ratingFrom, ratingTo, supplierDescription, idFrom, idTo, supplierName;
     @UiField
     ListBox supplierCategory, supplierLocality, type, certified, verified;
+    @UiField
+    Button clearBtn;
 
     //    @Override
     public AdminSuppliersViewView() {
 //    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+        //Rating
         ratingFrom.setText("0");
         ratingTo.setText("100");
+        //BusinessType
         type.addItem(Storage.MSGS.select());
         for (BusinessType bType : BusinessType.values()) {
             type.addItem(bType.getValue());
         }
+        type.setSelectedIndex(0);
+        //Certified
+        certified.addItem(Storage.MSGS.select());
         certified.addItem("true");
         certified.addItem("false");
+        certified.setSelectedIndex(0);
+        //Vertified
         verified.addItem(Storage.MSGS.select());
         for (Verification type : Verification.values()) {
             verified.addItem(type.name());
         }
+        verified.setSelectedIndex(0);
     }
 
     @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initAdminSuppliers();
-        data.getAdminSuppliers().setSupplierName(supplierName.getText());
-        data.getAdminSuppliers().setSupplierDescription(supplierDescription.getText());
+        if (!supplierName.getText().equals("")) {
+            data.getAdminSuppliers().setSupplierName(supplierName.getText());
+        }
+        if (!supplierDescription.getText().equals("")) {
+            data.getAdminSuppliers().setSupplierDescription(supplierDescription.getText());
+        }
         int selected = supplierCategory.getSelectedIndex();
         if (selected != 0) {
             data.getAdminSuppliers().setSupplierCategory(new CategoryDetail(
@@ -64,12 +80,18 @@ public class AdminSuppliersViewView extends Composite implements
             data.getAdminSuppliers().setSupplierLocality(new LocalityDetail(supplierLocality.getItemText(selected),
                     supplierLocality.getValue(selected)));
         }
-        data.getAdminSuppliers().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
-        data.getAdminSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
+        if (!ratingFrom.getText().equals("0")) {
+            data.getAdminSuppliers().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
+        }
+        if (!ratingTo.getText().equals("100")) {
+            data.getAdminSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
+        }
         if (type.getSelectedIndex() != 0) {
             data.getAdminSuppliers().setType(type.getItemText(type.getSelectedIndex()));
         }
-        data.getAdminSuppliers().setCertified(Boolean.valueOf(certified.getItemText(certified.getSelectedIndex())));
+        if (certified.getSelectedIndex() != 0) {
+            data.getAdminSuppliers().setCertified(Boolean.valueOf(certified.getItemText(certified.getSelectedIndex())));
+        }
         if (verified.getSelectedIndex() != 0) {
             data.getAdminSuppliers().setVerified(verified.getItemText(verified.getSelectedIndex()));
         }
@@ -173,5 +195,20 @@ public class AdminSuppliersViewView extends Composite implements
         if (!idTo.getText().matches("[0-9]+")) {
             idTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        supplierName.setText("");
+        supplierDescription.setText("");
+        supplierCategory.setSelectedIndex(0);
+        supplierLocality.setSelectedIndex(0);
+        ratingFrom.setText("0");
+        ratingTo.setText("100");
+        type.setSelectedIndex(0);
+        certified.setSelectedIndex(0);
+        verified.setSelectedIndex(0);
+        idFrom.setText("");
+        idTo.setText("");
     }
 }

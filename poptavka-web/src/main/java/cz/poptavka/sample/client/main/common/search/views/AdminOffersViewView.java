@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -30,6 +32,8 @@ public class AdminOffersViewView extends Composite implements
     DateBox createdFrom, createdTo, finnishFrom, finnishTo;
     @UiField
     ListBox state;
+    @UiField
+    Button clearBtn;
 
     //    @Override
 //    public void createView() {
@@ -215,5 +219,22 @@ public class AdminOffersViewView extends Composite implements
         if (!priceTo.getText().matches("[0-9]+")) {
             priceTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        offerIdFrom.setText("");
+        offerIdTo.setText("");
+        demandIdFrom.setText("");
+        demandIdTo.setText("");
+        supplierIdFrom.setText("");
+        supplierIdTo.setText("");
+        priceFrom.setText("");
+        priceTo.setText("");
+        createdFrom.setValue(null);
+        createdTo.setValue(null);
+        finnishFrom.setValue(null);
+        finnishTo.setValue(null);
+        state.setSelectedIndex(0);
     }
 }

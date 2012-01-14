@@ -150,6 +150,7 @@ public class AdminPaymentMethodsPresenter
 
     public void onInitPaymentMethods(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminPaymentMethods");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminPaymentMethodsCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

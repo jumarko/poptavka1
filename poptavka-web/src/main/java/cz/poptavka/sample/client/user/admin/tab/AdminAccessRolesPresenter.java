@@ -153,6 +153,7 @@ public class AdminAccessRolesPresenter
 
     public void onInitAccessRoles(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminAccessRoles");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminAccessRolesCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

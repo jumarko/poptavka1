@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -30,6 +32,8 @@ public class AdminDemandsViewView extends Composite implements
     DateBox expirationDateFrom, expirationDateTo, endDateFrom, endDateTo;
     @UiField
     ListBox demandType, demandStatus;
+    @UiField
+    Button clearBtn;
 
     //    @Override
 //    public void createView() {
@@ -176,5 +180,20 @@ public class AdminDemandsViewView extends Composite implements
         if (!clientIdTo.getText().matches("[0-9]+")) {
             clientIdTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        demandIdFrom.setText("");
+        demandIdTo.setText("");
+        clientIdFrom.setText("");
+        clientIdTo.setText("");
+        demandTitle.setText("");
+        expirationDateFrom.setValue(null);
+        expirationDateTo.setValue(null);
+        endDateFrom.setValue(null);
+        endDateTo.setValue(null);
+        demandType.setSelectedIndex(0);
+        demandStatus.setSelectedIndex(0);
     }
 }

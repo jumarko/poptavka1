@@ -153,6 +153,7 @@ public class AdminPreferencesPresenter
 
     public void onInitPreferences(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminPreferences");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminPreferencesCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

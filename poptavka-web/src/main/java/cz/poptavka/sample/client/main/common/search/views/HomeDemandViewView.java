@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -31,6 +33,8 @@ public class HomeDemandViewView extends Composite implements
     ListBox category, locality, demandTypes, creationDate;
     @UiField
     DateBox finnishDate;
+    @UiField
+    Button clearBtn;
 
 //    @Override
 //    public void createView() {
@@ -139,5 +143,16 @@ public class HomeDemandViewView extends Composite implements
         if (!priceTo.getText().matches("[0-9]+")) {
             priceTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        demandTitle.setText("");
+        demandTypes.setSelectedIndex(0);
+        category.setSelectedIndex(0);
+        locality.setSelectedIndex(0);
+        priceFrom.setText("");
+        priceTo.setText("");
+        creationDate.setSelectedIndex(0);
     }
 }

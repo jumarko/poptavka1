@@ -145,4 +145,8 @@ public class SearchModulePresenter extends
         panel.setWidget(view.getWidgetView());
         Storage.hideLoading();
     }
+
+    public void onClearSearchContent() {
+        view.getSerachContent().setText(Storage.MSGS.searchContent());
+    }
 }

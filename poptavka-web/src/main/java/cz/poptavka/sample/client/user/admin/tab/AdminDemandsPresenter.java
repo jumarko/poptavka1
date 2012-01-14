@@ -73,6 +73,10 @@ public class AdminDemandsPresenter
 
         DataGrid<FullDemandDetail> getDataGrid();
 
+        Column<FullDemandDetail, String> getIdColumn();
+
+        Column<FullDemandDetail, String> getCidColumn();
+
         Column<FullDemandDetail, String> getDemandTitleColumn();
 
         Column<FullDemandDetail, String> getDemandTypeColumn();
@@ -157,6 +161,7 @@ public class AdminDemandsPresenter
 
     public void onInitDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminDemands");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminDemandsCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

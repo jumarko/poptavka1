@@ -101,6 +101,9 @@ public interface AdminModuleEventBus extends EventBus {
     @Event(handlers = AdminModulePresenter.class)
     void displayView(Widget content);
 
+    @Event(forwardToParent = true)
+    void clearSearchContent();
+
     /**************************************************************************/
     @Event(forwardToParent = true)
     void setBodyHolderWidget(IsWidget body);

@@ -12,7 +12,6 @@ import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.invoice.OurPaymentDetails;
 import cz.poptavka.sample.domain.invoice.PaymentMethod;
@@ -21,13 +20,17 @@ import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.settings.Preference;
+import cz.poptavka.sample.domain.user.BusinessType;
+import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
 import cz.poptavka.sample.domain.user.rights.Permission;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.ClientDetail;
 import cz.poptavka.sample.shared.domain.EmailActivationDetail;
@@ -56,6 +59,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
 
     private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
+    private DemandService demandService;
 
     public GeneralService getAdminGeneralService() {
         return generalService;
@@ -108,18 +112,17 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
             search.addFilterLessOrEqual("id", searchDataHolder.getAdminDemands().getDemandIdTo());
         }
         if (searchDataHolder.getAdminDemands().getClientIdFrom() != null) {
-            search.addFilterGreaterOrEqual("client.id:", searchDataHolder.getAdminDemands().getClientIdFrom());
+            search.addFilterGreaterOrEqual("client.id", searchDataHolder.getAdminDemands().getClientIdFrom());
         }
         if (searchDataHolder.getAdminDemands().getClientIdTo() != null) {
-            search.addFilterLessOrEqual("client.id:", searchDataHolder.getAdminDemands().getClientIdTo());
+            search.addFilterLessOrEqual("client.id", searchDataHolder.getAdminDemands().getClientIdTo());
         }
         if (searchDataHolder.getAdminDemands().getDemandTitle() != null) {
             search.addFilterEqual("title", "%" + searchDataHolder.getAdminDemands().getDemandTitle() + "%");
         }
         if (searchDataHolder.getAdminDemands().getDemandType() != null) {
-            List<DemandType> types = generalService.search(new Search(DemandType.class)
-                    .addFilterEqual("value", searchDataHolder.getAdminDemands().getDemandType()));
-            search.addFilterEqual("type", types.get(0));
+            search.addFilterEqual("type", demandService.getDemandType(
+                    searchDataHolder.getAdminDemands().getDemandType()));
         }
         if (searchDataHolder.getAdminDemands().getDemandStatus() != null) {
             search.addFilterEqual("status", DemandStatus.valueOf(searchDataHolder.getAdminDemands().getDemandStatus()));
@@ -192,19 +195,25 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
             search.addFilterLessOrEqual("id", searchDataHolder.getAdminClients().getIdTo());
         }
         if (searchDataHolder.getAdminClients().getCompanyName() != null) {
-            search.addFilterLike("businessUser.businessUserData.companyName",
-                    searchDataHolder.getAdminClients().getCompanyName());
+            Collection<BusinessUserData> data = generalService.search(
+                    new Search(BusinessUserData.class).addFilterLike("companyName",
+                        "%" + searchDataHolder.getAdminClients().getCompanyName() + "%"));
+            search.addFilterIn("businessUser.businessUserData", data);
         }
         if (searchDataHolder.getAdminClients().getFirstName() != null) {
-            search.addFilterLike("businessUser.businessUserData.personFirstName:",
-                    searchDataHolder.getAdminClients().getFirstName());
+            Collection<BusinessUserData> data = generalService.search(
+                    new Search(BusinessUserData.class).addFilterLike("personFirstName",
+                        "%" + searchDataHolder.getAdminClients().getFirstName() + "%"));
+            search.addFilterIn("businessUser.businessUserData", data);
         }
         if (searchDataHolder.getAdminClients().getLastName() != null) {
-            search.addFilterLike("businessUser.businessUserData.personLastName",
-                    searchDataHolder.getAdminClients().getLastName());
+            List<BusinessUserData> data = generalService.search(
+                    new Search(BusinessUserData.class).addFilterLike("personLastName",
+                        "%" + searchDataHolder.getAdminClients().getLastName() + "%"));
+            search.addFilterIn("businessUser.businessUserData", data);
         }
         if (searchDataHolder.getAdminClients().getRatingFrom() != null) {
-            search.addFilterGreaterOrEqual("overalRating:",
+            search.addFilterGreaterOrEqual("overalRating",
                     searchDataHolder.getAdminClients().getRatingFrom());
         }
         if (searchDataHolder.getAdminClients().getRatingTo() != null) {
@@ -231,7 +240,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
         if (searchDataHolder == null) {
             search = new Search(Supplier.class);
         } else {
-            search = this.setAdminAccessRoleFilters(searchDataHolder, new Search(Supplier.class));
+            search = this.setAdminSuppliersFilters(searchDataHolder, new Search(Supplier.class));
         }
         return (long) generalService.count(search);
     }
@@ -241,7 +250,7 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
         Search search = new Search(Supplier.class);
         if (searchDataHolder != null) {
-            search = this.setAdminAccessRoleFilters(searchDataHolder, search);
+            search = this.setAdminSuppliersFilters(searchDataHolder, search);
         }
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
@@ -260,53 +269,45 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
 //        return this.createFullSupplierDetailList(
 //                generalService.search(this.setSortSearch(start, count, orderColumns, Supplier.class)));
 //    }
-//    private  Search setAdminOffersFilters(SearchModuleDataHolder searchDataHolder, Search search) {
-//    if (searchDataHolder.getAdminSuppliers().getSupplierName() != null) {
-//            search.addFilterLike("businessUser.businessUserData.companyName",
-//                    searchDataHolder.getAdminSuppliers().getSupplierName());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getSupplierDescription() != null) {
-//            search.addFilterLike("businessUser.businessUserData.description",
-//                    searchDataHolder.getAdminSuppliers().getSupplierDescription());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getSupplierCategory() != null) {
-//            search.addFilter("category:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getSupplierCategory().getName());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getSupplierLocality() != null) {
-//            infoText.append("locality:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getSupplierLocality().getName());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getRatingFrom() != null) {
-//            infoText.append("ratingFrom:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getRatingFrom());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getRatingTo() != null) {
-//            infoText.append("ratingTo:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getRatingTo());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getType() != null) {
-//            infoText.append("type:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getType());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getCertified() != null) {
-//            infoText.append("cert:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getCertified());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getVerified() != null) {
-//            infoText.append("verif:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getVerified());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getIdFrom() != null) {
-//            infoText.append("idFrom:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getIdFrom());
-//        }
-//        if (searchDataHolder.getAdminSuppliers().getIdTo() != null) {
-//            infoText.append("idTo:");
-//            infoText.append(searchDataHolder.getAdminSuppliers().getIdTo());
-//        }
-//        return search;
-//    }
+    private Search setAdminSuppliersFilters(SearchModuleDataHolder searchDataHolder, Search search) {
+        if (searchDataHolder.getAdminSuppliers().getSupplierName() != null) {
+            Collection<BusinessUserData> data = generalService.search(
+                    new Search(BusinessUserData.class).addFilterLike("companyName",
+                        "%" + searchDataHolder.getAdminSuppliers().getSupplierName() + "%"));
+            search.addFilterIn("businessUser.businessUserData", data);
+        }
+        if (searchDataHolder.getAdminSuppliers().getSupplierDescription() != null) {
+            Collection<BusinessUserData> data = generalService.search(
+                    new Search(BusinessUserData.class).addFilterLike("description",
+                        "%" + searchDataHolder.getAdminSuppliers().getSupplierDescription() + "%"));
+            search.addFilterIn("businessUser.businessUserData", data);
+        }
+        if (searchDataHolder.getAdminSuppliers().getSupplierCategory() != null) {
+            search.addFilterGreaterOrEqual("id", searchDataHolder.getAdminSuppliers().getIdFrom());
+        }
+        if (searchDataHolder.getAdminSuppliers().getSupplierLocality() != null) {
+            search.addFilterLessOrEqual("id", searchDataHolder.getAdminSuppliers().getIdTo());
+        }
+        if (searchDataHolder.getAdminSuppliers().getRatingFrom() != null) {
+            search.addFilterGreaterOrEqual("overalRating", searchDataHolder.getAdminSuppliers().getRatingFrom());
+        }
+        if (searchDataHolder.getAdminSuppliers().getRatingFrom() != null) {
+            search.addFilterLessOrEqual("overalRating", searchDataHolder.getAdminSuppliers().getRatingTo());
+        }
+        if (searchDataHolder.getAdminSuppliers().getType() != null) {
+            search.addFilterEqual("businessUser.businessType",
+                    BusinessType.valueOf(searchDataHolder.getAdminSuppliers().getType()));
+        }
+        if (searchDataHolder.getAdminSuppliers().getCertified() != null) {
+            search.addFilterEqual("certified", searchDataHolder.getAdminSuppliers().getCertified());
+        }
+        if (searchDataHolder.getAdminSuppliers().getVerified() != null) {
+            search.addFilterEqual("verification",
+                    Verification.valueOf(searchDataHolder.getAdminSuppliers().getVerified()));
+        }
+        return search;
+    }
+
     private List<FullSupplierDetail> createFullSupplierDetailList(Collection<Supplier> demands) {
         List<FullSupplierDetail> accessRoles = new ArrayList<FullSupplierDetail>();
         for (Supplier role : demands) {

@@ -153,6 +153,7 @@ public class AdminPermissionsPresenter
 
     public void onInitPermissions(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView("adminPermissions");
+        eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminPermissionsCount(searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());

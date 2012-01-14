@@ -2,9 +2,11 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
@@ -27,6 +29,8 @@ public class MessagesTabViewView extends Composite implements
     CheckBox isStar;
     @UiField
     DateBox createdFrom, createdTo;
+    @UiField
+    Button clearBtn;
 
 //    @Override
 //    public void createView() {
@@ -123,5 +127,16 @@ public class MessagesTabViewView extends Composite implements
         if (!idTo.getText().matches("[0-9]+")) {
             idTo.setText("");
         }
+    }
+
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        idFrom.setText("");
+        idTo.setText("");
+        sender.setText("");
+        subject.setText("");
+        isStar.setText("");
+        createdFrom.setValue(null);
+        createdTo.setValue(null);
     }
 }
