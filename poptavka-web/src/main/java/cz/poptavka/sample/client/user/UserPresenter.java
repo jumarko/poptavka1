@@ -95,7 +95,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         //this should be removed and all references replaces by Storage calls
         user = userDetail;
 
-//        showDevelUserInfoPopupThatShouldBedeletedAfter();
+        showDevelUserInfoPopupThatShouldBedeletedAfter();
 
 //        eventBus.setUserLayout();
 //        eventBus.setBodyHolderWidget(new Label("TA CO"));

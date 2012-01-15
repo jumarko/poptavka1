@@ -191,10 +191,10 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
         demandGrid.addColumn(userCol, "Od koho");
 
 // **** subject column
-        Column<UserMessageDetail, String> subjectCol = factory.createSubjectColumn(null, true);
+        Column<UserMessageDetail, String> subjectCol = factory.createSubjectColumn(demandGrid.getSortHandler(), true);
         subjectCol.setFieldUpdater(action);
 //        demandGrid.addColumn(subjectCol, Storage.MSGS.client());
-        demandGrid.addColumn(userCol, "Predmet");
+        demandGrid.addColumn(subjectCol, "Predmet");
 
 
 //// **** urgent column

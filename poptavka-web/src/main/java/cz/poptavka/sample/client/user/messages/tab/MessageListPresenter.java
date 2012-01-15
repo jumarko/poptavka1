@@ -243,6 +243,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
         //add conversation loading events and so on
         detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
         eventBus.requestConversation(threadRootId, subRootId);
+//        eventBus.requestConversation(124L, 124L);
 
         //init default replyWidget
         //it is initalized now, because we do not need to have it visible before first demand selection

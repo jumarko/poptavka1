@@ -92,7 +92,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     }
 
     public void onRequestConversation(Long threadRootId, Long subRootId) {
-        messageService.getConversationMessages((long) threadRootId, (long) subRootId,
+        messageService.getConversationMessages(threadRootId, subRootId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
                     @Override

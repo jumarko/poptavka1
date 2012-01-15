@@ -25,24 +25,20 @@ public class ConversationWrapperPresenter extends
     public static final int CHAT = 1;
 
     public interface IDetailWrapper extends LazyView {
+
         Widget getWidgetView();
 
 //        void setDetail(FullDemandDetail demandDetail);
-
         UserConversationPanel getConversationPanel();
 
         SimplePanel getReplyHolder();
 
 //        void toggleDemandLoading();
-
         void toggleConversationLoading();
 
         void setChat(ArrayList<MessageDetail> chatMessages);
-
     }
-
     private ViewType type;
-
     /**
      * TODO.
      * IMPORTANT ..... NEED TO BE DISCUSSED
@@ -73,7 +69,6 @@ public class ConversationWrapperPresenter extends
         }
     }
 
-
     /**
      * Initialize widget and sets his type.
      *
@@ -86,7 +81,6 @@ public class ConversationWrapperPresenter extends
         detailSection.setWidget(view.getWidgetView());
         this.type = viewType;
     }
-
 
     /**
      * Initializes reply widget, when first demand is clicked.
@@ -109,7 +103,6 @@ public class ConversationWrapperPresenter extends
 //            view.setDetail(demandDetail);
 //        }
 //    }
-
     /**
      * Response method for fetching demand-related chat.
      * Internally creates clickHandler for ReplyWidgets submit button.
@@ -119,13 +112,13 @@ public class ConversationWrapperPresenter extends
      */
     public void onResponseConversation(ArrayList<MessageDetail> chatMessages, ViewType wrapperType) {
         //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(wrapperType)) {
-            //display chat
-            //boolean param - for collapsed conversation can be fetched from UserDetail object (some kind of setting)
-            view.setChat(chatMessages);
-            //init replyWidget
-            offerQuestionReply.addSubmitHandler(bindReplyWindowAction());
-        }
+//        if (type.equals(wrapperType)) {
+        //display chat
+        //boolean param - for collapsed conversation can be fetched from UserDetail object (some kind of setting)
+        view.setChat(chatMessages);
+        //init replyWidget
+        offerQuestionReply.addSubmitHandler(bindReplyWindowAction());
+//        }
     }
 
     /**
@@ -138,22 +131,21 @@ public class ConversationWrapperPresenter extends
      */
     private ClickHandler bindReplyWindowAction() {
         return new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-              // sending message only when valid
+                // sending message only when valid
                 if (offerQuestionReply.isMessageValid()) {
-                  // distinguish what kind of message should be sent
+                    // distinguish what kind of message should be sent
                     if (offerQuestionReply.hasResponseQuestion()) {
-                        MessageDetail messageToSend = offerQuestionReply
-                              .getCreatedMessage();
-                        messageToSend = view.getConversationPanel()
-                              .updateSendingMessage(messageToSend);
+                        MessageDetail messageToSend = offerQuestionReply.getCreatedMessage();
+                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                         messageToSend.setSenderId(Storage.getUser().getUserId());
                         eventBus.sendMessage(messageToSend, type);
 //                        Window.alert(messageToSend.getMessageId() + "");
                     } else {
-                      // TODO
-                      //finish sending of offer
+                        // TODO
+                        //finish sending of offer
 //                      OfferMessageDetail offer = new OfferMessageDetail();
 //                      offer = (OfferMessageDetail) view
 //                              .getConversationPanel().updateSendingOfferMessage(
@@ -195,7 +187,6 @@ public class ConversationWrapperPresenter extends
             view.toggleConversationLoading();
         }
     }
-
     /**
      * Response when user click demand to see the details. DemandDetails widget,
      * past conversation regarding this demand and reply widget is created.
@@ -210,7 +201,6 @@ public class ConversationWrapperPresenter extends
 //        // GUI visual event
 //        toggleDetailLoading();
 //    }
-
 //    public void onSetBaseDemandDetail(BaseDemandDetail detail) {
 //        view.setDetail(new DemandDetailView(detail));
 //        // GUI visual event
@@ -248,7 +238,6 @@ public class ConversationWrapperPresenter extends
 //        view.getConversationPanel().setMessageList(messageList, true);
 //        toggleConversationLoading();
 //    }
-
     // TODO merge with method above, the same method body + different options
     // for different types
 //    public void onSetSingleDemandConversation(
@@ -267,7 +256,6 @@ public class ConversationWrapperPresenter extends
 //        view.getConversationPanel().setMessageList(messageList, true);
 //        toggleConversationLoading();
 //    }
-
 //    public void onAddMessageToPotentailDemandConversation(MessageDetail result,
 //            ViewType wrapperhandlerType) {
 //        if (!wrapperhandlerType.equals(type)) {
@@ -285,7 +273,6 @@ public class ConversationWrapperPresenter extends
 //        }
 //
 //    }
-
     /**
      * Visual sign, that demand detail is loading it's children. clear all it's
      * children;
@@ -311,7 +298,6 @@ public class ConversationWrapperPresenter extends
 //
 //        // reply window stay always loaded, do not do anything
 //    }
-
     /**
      * Visual SIGN ONLY. For getting conversation
      *
@@ -325,7 +311,6 @@ public class ConversationWrapperPresenter extends
 //            toggleConversationLoading();
 //        }
 //    }
-
     /**
      * CLIENT ONLY Display offer message from presenter. Client can react to it.
      *
@@ -340,7 +325,6 @@ public class ConversationWrapperPresenter extends
 //        GWT.log("OFFER ID: " + offerDetail.getOfferId());
 //        view.getConversationPanel().addOfferMessagePresenter(presenter);
 //    }
-
     /**
      * SUPPLIER ONLY Creates reply window for creating Offer/Question message.
      *
@@ -356,7 +340,6 @@ public class ConversationWrapperPresenter extends
 //        potentialViewReplyWiget.initReplyWindow(view.getReplyHolder());
 //        potentialViewReplyWiget.addSubmitHandler(bindReplyWindowAction());
 //    }
-
 //    private ClickHandler bindReplyWindowAction() {
 //        return new ClickHandler() {
 //            @Override
@@ -386,7 +369,6 @@ public class ConversationWrapperPresenter extends
 //            }
 //        };
 //    }
-
 //    private void setMyDemandsViewReplyWidget() {
 //        if (myDemandsViewReplyWiget != null) {
 //            eventBus.removeHandler(myDemandsViewReplyWiget);
@@ -396,7 +378,6 @@ public class ConversationWrapperPresenter extends
 //        myDemandsViewReplyWiget
 //                .addSubmitHandler(bindConversationReplyWindowAction());
 //    }
-
 //    private ClickHandler bindConversationReplyWindowAction() {
 //        return new ClickHandler() {
 //            @Override
@@ -413,7 +394,6 @@ public class ConversationWrapperPresenter extends
 //            }
 //        };
 //    }
-
     /** loading events **/
     // just to enable loading
 //    public void onRequestPotentialDemandConversation(long messageId,
@@ -431,7 +411,6 @@ public class ConversationWrapperPresenter extends
 //            detailLoader = null;
 //        }
 //    }
-
 //    public void toggleConversationLoading() {
 //        if (conversationLoader == null) {
 //            GWT.log("  - loading created");
@@ -444,5 +423,4 @@ public class ConversationWrapperPresenter extends
 //            conversationLoader = null;
 //        }
 //    }
-
 }

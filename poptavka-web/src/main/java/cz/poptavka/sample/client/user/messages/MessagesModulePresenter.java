@@ -72,17 +72,17 @@ public class MessagesModulePresenter
             @Override
             public void onClick(ClickEvent arg0) {
                 //devel code
-//                if (supList != null) {
-//                    supList.develRemoveDetailWrapper();
-//                    eventBus.removeHandler(supList);
-//                    supList = null;
-//                    view.getContentPanel().remove(view.getContentPanel().getWidget());
-//                }
-//                supList = eventBus.addHandler(MessageListPresenter.class);
-//                supList.onInitSent();
+                if (supList != null) {
+                    supList.develRemoveDetailWrapper();
+                    eventBus.removeHandler(supList);
+                    supList = null;
+                    view.getContentPanel().remove(view.getContentPanel().getWidget());
+                }
+                supList = eventBus.addHandler(MessageListPresenter.class);
+                supList.onInitSent();
 
                 //production code
-                eventBus.initSent();
+//                eventBus.initSent();
             }
         });
         view.getTrashButton().addClickHandler(new ClickHandler() {
