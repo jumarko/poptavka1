@@ -47,6 +47,12 @@ public interface DemandModuleEventBus extends EventBus {
     @Event(handlers = DemandModulePresenter.class)
     void initDemandModule();
 
+    @Event(forwardToParent = true)
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+
+    @Event(forwardToParent = true)
+    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+
     //display widget in content area
     @Event(handlers = DemandModulePresenter.class)
     void displayView(Widget content);
@@ -54,6 +60,9 @@ public interface DemandModuleEventBus extends EventBus {
     /**************************************************************************/
     @Event(forwardToParent = true)
     void setBodyHolderWidget(IsWidget body);
+
+    @Event(handlers = DemandModulePresenter.class)
+    void setUserBodyHolderWidget(Widget body);
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by ALL VIEW presenters. */

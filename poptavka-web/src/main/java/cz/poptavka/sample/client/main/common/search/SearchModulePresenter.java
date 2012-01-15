@@ -57,9 +57,13 @@ public class SearchModulePresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 if (Storage.getCurrentlyLoadedView().equals("homeDemands")) {
-                    eventBus.initHomeDemandsModule(view.getFilter());
+                    eventBus.initHomeDemandsModule(view.getFilter(), "home");
+                } else if (Storage.getCurrentlyLoadedView().equals("userDemands")) {
+                    eventBus.initHomeDemandsModule(view.getFilter(), "user");
                 } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
-                    eventBus.initHomeSupplierModule(view.getFilter());
+                    eventBus.initHomeSuppliersModule(view.getFilter(), "home");
+                } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
+                    eventBus.initHomeSuppliersModule(view.getFilter(), "user");
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {

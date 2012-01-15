@@ -216,11 +216,17 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(forwardToParent = true)
     void setBodyHolderWidget(IsWidget body);
 
+    @Event(modulesToLoad = DemandModule.class)
+    void setUserBodyHolderWidget(Widget body);
+
     @Event(forwardToParent = true)
     void setMenu(IsWidget menu);
 
     @Event(forwardToParent = true)
     void setHeader(IsWidget header);
+
+    @Event(forwardToParent = true)
+    void start();
 
     /**********************************************************************************************
      ************ Navigation events section. /* Presenters do NOT listen to events when
@@ -444,6 +450,12 @@ public interface UserEventBus extends EventBusWithLookup {
     // init demands module
     @Event(modulesToLoad = DemandModule.class)
     void initDemandModule();
+
+    @Event(forwardToParent = true)
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+
+    @Event(forwardToParent = true)
+    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
     /*
     @Event(forwardToParent = true)
     void goToCreateDemand();

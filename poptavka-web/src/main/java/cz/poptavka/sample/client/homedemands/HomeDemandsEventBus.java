@@ -6,6 +6,8 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
 
 import com.mvp4g.client.annotation.Debug;
@@ -50,7 +52,13 @@ public interface HomeDemandsEventBus extends EventBus {
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
     @Event(handlers = HomeDemandsPresenter.class)
-    void initHomeDemandsModule(SearchModuleDataHolder filter);
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(IsWidget body);
+
+    @Event(forwardToParent = true)
+    void setUserBodyHolderWidget(Widget body);
 
     /* Parent events. */
     /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */

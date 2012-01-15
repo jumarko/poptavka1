@@ -36,13 +36,11 @@
                     </li>
                     <li>
                         <g:Button ui:field="allDemands">
-                            ** INACTIVE **
                             <ui:msg key="allDemandsLink">All Demands</ui:msg>
                         </g:Button>
                     </li>
                     <li>
                     <g:Button ui:field="allSuppliers">
-                            ** INACTIVE **
                             <ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
                         </g:Button>
                     </li>

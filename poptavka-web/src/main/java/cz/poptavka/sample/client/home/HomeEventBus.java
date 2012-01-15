@@ -42,10 +42,10 @@ public interface HomeEventBus extends EventBus {
     String atHome();
 
     @Event(modulesToLoad = HomeSuppliersModule.class)
-    void initHomeSupplierModule(SearchModuleDataHolder filter);
+    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = HomeDemandsModule.class)
-    void initHomeDemandsModule(SearchModuleDataHolder filter);
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = SupplierCreationModule.class)
     void goToCreateSupplier();

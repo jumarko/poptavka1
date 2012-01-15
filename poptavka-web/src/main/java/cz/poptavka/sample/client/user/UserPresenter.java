@@ -167,7 +167,8 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         } else {
             accessDenied();
         }
-        view.asWidget().getElement().getStyle().setDisplay(Display.NONE);
+//        view.asWidget().getElement().getStyle().setDisplay(Display.NONE);
+        eventBus.start();
     }
 
     public void onRequestClientDemands() {

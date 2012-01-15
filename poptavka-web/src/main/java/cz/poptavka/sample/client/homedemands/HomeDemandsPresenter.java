@@ -121,15 +121,20 @@ public class HomeDemandsPresenter extends BasePresenter<
     }
     private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
-    public void onInitHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedView("homeDemands");
+    public void onInitHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
         eventBus.filterDemandsCount(searchDataHolder, orderColumns);
 //        }
         this.searchDataHolder = searchDataHolder;
-        // TODO praso - I have used autodispaly = true so this method shouldn't be necessary anymore
-//        eventBus.setBodyWidget(view.getWidgetView());
+
+        if (location.equals("home")) {
+            Storage.setCurrentlyLoadedView("homeDemands");
+            eventBus.setBodyHolderWidget(view.getWidgetView());
+        } else if (location.equals("user")) {
+            Storage.setCurrentlyLoadedView("userDemands");
+            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+        }
     }
     private AsyncDataProvider dataProvider = null;
     private int start = 0;

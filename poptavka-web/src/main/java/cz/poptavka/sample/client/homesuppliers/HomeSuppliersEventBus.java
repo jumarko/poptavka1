@@ -6,6 +6,8 @@
  */
 package cz.poptavka.sample.client.homesuppliers;
 
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -47,7 +49,13 @@ public interface HomeSuppliersEventBus extends EventBus {
      * fragment.
      */
     @Event(handlers = HomeSuppliersPresenter.class)
-    void initHomeSupplierModule(SearchModuleDataHolder searchDataHolder);
+    void initHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
+
+    @Event(forwardToParent = true)
+    void setBodyHolderWidget(IsWidget body);
+
+    @Event(forwardToParent = true)
+    void setUserBodyHolderWidget(Widget body);
 
     /**
      * Display root categories.

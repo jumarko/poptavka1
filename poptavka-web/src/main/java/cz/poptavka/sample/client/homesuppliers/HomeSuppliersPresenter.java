@@ -195,7 +195,7 @@ public class HomeSuppliersPresenter
     }
     private SearchModuleDataHolder searchDataHolder = null;
 
-    public void onInitHomeSupplierModule(SearchModuleDataHolder searchDataHolder) {
+    public void onInitHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
         Storage.setCurrentlyLoadedView("homeSuppliers");
         view.getPath().clear();
         view.addPath(new Hyperlink("root", "!public/addToPath?root"));
@@ -219,6 +219,14 @@ public class HomeSuppliersPresenter
             } else {
                 eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
             }
+        }
+
+        if (location.equals("home")) {
+            Storage.setCurrentlyLoadedView("homeSuppliers");
+            eventBus.setBodyHolderWidget(view.getWidgetView());
+        } else if (location.equals("user")) {
+            Storage.setCurrentlyLoadedView("userSuppliers");
+            eventBus.setUserBodyHolderWidget(view.getWidgetView());
         }
     }
 

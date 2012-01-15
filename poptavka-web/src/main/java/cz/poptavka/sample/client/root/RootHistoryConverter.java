@@ -40,7 +40,7 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
         if (historyName.equals("addToPath")) {
             eventBus.loadingShow(MSGS.loading());
             if (param.equals("root")) {
-                eventBus.initHomeSupplierModule(null);
+                eventBus.initHomeSuppliersModule(null, "home"); //TODO ako dorobit obe moznosti
             }
         }
 

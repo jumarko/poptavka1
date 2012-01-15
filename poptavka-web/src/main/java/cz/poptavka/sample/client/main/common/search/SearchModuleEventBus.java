@@ -36,10 +36,10 @@ public interface SearchModuleEventBus extends EventBus {
     // MODULES INIT METHODS
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void initHomeDemandsModule(SearchModuleDataHolder filter);
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void initHomeSupplierModule(SearchModuleDataHolder filter);
+    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
     void initAdminModule(SearchModuleDataHolder filter);

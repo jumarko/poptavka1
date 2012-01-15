@@ -41,8 +41,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
         @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true),
         @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
-        @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
-        @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
+        @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = false),
+        @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = SearchModule.class, async = false, autoDisplay = true) })
 public interface RootEventBus extends EventBus {
     @Start
@@ -66,11 +66,14 @@ public interface RootEventBus extends EventBus {
     void setHeader(IsWidget header);
 
     @DisplayChildModuleView({ HomeWelcomeModule.class,
-            DemandCreationModule.class, SupplierCreationModule.class,
-            HomeDemandsModule.class, HomeSuppliersModule.class })
+            DemandCreationModule.class, SupplierCreationModule.class })//,
+//            HomeDemandsModule.class, HomeSuppliersModule.class })
             //UserModule.class })
     @Event(handlers = RootPresenter.class)
     void setBodyHolderWidget(IsWidget body);
+
+    @Event(modulesToLoad = UserModule.class)
+    void setUserBodyHolderWidget(Widget body);
 
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
@@ -147,10 +150,10 @@ public interface RootEventBus extends EventBus {
 
     /** Menu control section */
     @Event(modulesToLoad = HomeDemandsModule.class)
-    void initHomeDemandsModule(SearchModuleDataHolder filter);
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = HomeSuppliersModule.class)
-    void initHomeSupplierModule(SearchModuleDataHolder filter);
+    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = HomeWelcomeModule.class)
     void initHomeWelcomeModule(SearchModuleDataHolder filter);

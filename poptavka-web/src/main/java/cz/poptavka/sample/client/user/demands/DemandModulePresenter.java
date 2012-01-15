@@ -76,13 +76,13 @@ public class DemandModulePresenter
         view.getAllDemands().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.initHomeDemandsModule(null, "user");
             }
         });
         view.getAllSuppliers().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.initHomeSuppliersModule(null, "user");
             }
         });
 
@@ -161,6 +161,12 @@ public class DemandModulePresenter
 
     public void onDisplayView(Widget content) {
         view.setContent(content);
+    }
+
+    public void onSetUserBodyHolderWidget(Widget body) {
+//        view.getContentPanel().add(body);
+        view.setContent(body);
+//        view.getContentPanel().add(new Label("TA COCO CO"));
     }
 
 }
