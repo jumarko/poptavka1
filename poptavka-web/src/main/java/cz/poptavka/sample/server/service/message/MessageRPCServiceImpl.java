@@ -591,7 +591,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         //Ziskaj vsetky prvotne spravy
         Search firstBornMessagesSearch = new Search(Message.class);
         firstBornMessagesSearch.addFilterNull("parent");
-        firstBornMessagesSearch.addFilterEqual("user", generalService.find(User.class, senderId));
+        firstBornMessagesSearch.addFilterEqual("sender", generalService.find(User.class, senderId));
         List<Message> firstBornMessages = generalService.search(firstBornMessagesSearch);
 
 //        //Ziskaj vsetky prvotne spravy, kt boli poslane danemu uzivatelovi

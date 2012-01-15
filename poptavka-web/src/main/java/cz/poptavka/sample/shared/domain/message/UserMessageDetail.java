@@ -41,7 +41,7 @@ public class UserMessageDetail implements Serializable, MessageTableDisplay {
         detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
         detail.setMessageDetail(MessageDetail.createMessageDetail(userMessage.getMessage()));
-        detail.setSenderEmail(userMessage.getUser().getEmail());
+        detail.setSenderEmail(userMessage.getMessage().getSender().getEmail()); //User().getEmail());
 
         return detail;
     }
