@@ -52,24 +52,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
      * Business UserID is fetched from Storage
      */
     public void onRequestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
-        messageService.getPotentialDemands(Storage.getUser().getUserId(),
-                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (!(caught instanceof IllegalArgumentException)) {
-                            Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList\n\n"
-                                + caught.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(
-                            ArrayList<PotentialDemandMessage> result) {
-                        GWT.log(">> CALL *RequestSupplierNewDemands. Result size: " + result.size());
-                        eventBus.responseSupplierNewDemands(result);
-                    }
-                });
-//        messageService.getPotentialDemandsBySearch(Storage.getUser().getUserId(), searchModuleDataHolder,
+//        messageService.getPotentialDemands(Storage.getUser().getUserId(),
 //                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
 //                    @Override
 //                    public void onFailure(Throwable caught) {
@@ -86,6 +69,23 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
 //                        eventBus.responseSupplierNewDemands(result);
 //                    }
 //                });
+        messageService.getPotentialDemandsBySearch(Storage.getUser().getUserId(), searchModuleDataHolder,
+                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        if (!(caught instanceof IllegalArgumentException)) {
+                            Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList\n\n"
+                                + caught.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(
+                            ArrayList<PotentialDemandMessage> result) {
+                        GWT.log(">> CALL *RequestSupplierNewDemands. Result size: " + result.size());
+                        eventBus.responseSupplierNewDemands(result);
+                    }
+                });
     }
 
     /**

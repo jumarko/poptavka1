@@ -52,7 +52,7 @@ public class DemandModulePresenter
         view.getCliNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initClientList();
+                // TODO Auto-generated method stub
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
@@ -67,10 +67,10 @@ public class DemandModulePresenter
                 // TODO Auto-generated method stub
             }
         });
-        view.getCliNewDemandsButton().addClickHandler(new ClickHandler() {
+        view.getCliCreateDemand().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.goToCreateDemand("user");
             }
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {

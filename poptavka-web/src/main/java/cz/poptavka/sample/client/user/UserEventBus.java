@@ -456,10 +456,9 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(forwardToParent = true)
     void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
-    /*
+
     @Event(forwardToParent = true)
-    void goToCreateDemand();
-     */
+    void goToCreateDemand(String location);
     //added by Martin
     //init demands module
 

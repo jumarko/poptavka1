@@ -30,7 +30,6 @@
                         </g:Button>
                     </li>
                     <li><g:Button ui:field="cliCreateDemand">
-                            ** INACTIVE **
                             <ui:msg key="createDemandLink">Create Demand</ui:msg>
                         </g:Button>
                     </li>

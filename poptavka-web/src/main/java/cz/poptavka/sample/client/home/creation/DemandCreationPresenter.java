@@ -100,15 +100,15 @@ public class DemandCreationPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onGoToCreateDemand() {
-        this.onAtCreateDemand();
+    public void onGoToCreateDemand(String location) {
+        this.onAtCreateDemand(location);
     }
 
 
     /**
      * Init method call. TODO decide when other parts should be built.
      */
-    public void onAtCreateDemand() {
+    public void onAtCreateDemand(String location) {
         LOGGER.info("  INIT DemandCreation Widget");
         view.getMainPanel().showWidget(0);
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
@@ -127,6 +127,12 @@ public class DemandCreationPresenter
                 eventBus.initLoginForm(view.getHolderPanel(LOGIN));
             }
         });
+
+        if (location.equals("home")) {
+            eventBus.setBodyHolderWidget(view.getWidgetView());
+        } else if (location.equals("user")) {
+            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+        }
     }
 
     private void registerNewCient() {

@@ -42,7 +42,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus> implem
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemand();
+                eventBus.goToCreateDemand("home");
             }
         });
 

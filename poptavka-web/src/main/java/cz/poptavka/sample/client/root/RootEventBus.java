@@ -39,7 +39,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @ChildModules({
         @ChildModule(moduleClass = HomeWelcomeModule.class, async = false, autoDisplay = true),
         @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false),
-        @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true),
+        @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
         @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = false),
@@ -65,8 +65,8 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void setHeader(IsWidget header);
 
-    @DisplayChildModuleView({ HomeWelcomeModule.class,
-            DemandCreationModule.class, SupplierCreationModule.class })//,
+    @DisplayChildModuleView({ HomeWelcomeModule.class, SupplierCreationModule.class })
+//            DemandCreationModule.class, SupplierCreationModule.class })//,
 //            HomeDemandsModule.class, HomeSuppliersModule.class })
             //UserModule.class })
     @Event(handlers = RootPresenter.class)
@@ -168,7 +168,7 @@ public interface RootEventBus extends EventBus {
     void goToCreateSupplier();
 
     @Event(modulesToLoad = DemandCreationModule.class)
-    void goToCreateDemand();
+    void goToCreateDemand(String location);
 
     @Event(modulesToLoad = SearchModule.class)
     void clearSearchContent();

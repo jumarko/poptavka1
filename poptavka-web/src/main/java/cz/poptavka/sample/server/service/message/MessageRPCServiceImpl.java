@@ -21,7 +21,6 @@ import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
-import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
@@ -43,6 +42,7 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.TreeMap;
 
 /**
  *
@@ -161,10 +161,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             long businessUserId, long clientId) {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
-        Map<Message, Integer> submessageCounts = this.messageService
-                .getListOfClientDemandMessagesAll(businessUser);
-        Map<Message, Integer> unreadSubmessageCounts = this.messageService
-                .getListOfClientDemandMessagesUnread(businessUser);
+        Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
+        Map<Message, Integer> unreadSubmessageCounts =
+                this.messageService.getListOfClientDemandMessagesUnread(businessUser);
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
         for (UserMessage userMessage : userMessages) {
@@ -358,42 +357,37 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     //Martin - temporary, to try if it works this way too, if yes && fast too -> this one will be better
     @Override
     public ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(
-            long businessUserId, SearchModuleDataHolder searchDataHolder) {
-        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+            long userId, SearchModuleDataHolder searchDataHolder) {
+        // TODO userID vs businessUserID ??
+        User user = generalService.find(User.class, userId);
 
-        User user = generalService.find(User.class, businessUserId);
+        Search messageUserRoleSearch = new Search(MessageUserRole.class);
+        messageUserRoleSearch.addFilterEqual("user", user);
+        messageUserRoleSearch.addFilterEqual("type", MessageUserRoleType.TO);
+        List<MessageUserRole> messageUsersRole = generalService.search(messageUserRoleSearch);
 
-        Search searchMsgUser = new Search(MessageUserRole.class);
-        searchMsgUser.addFilterEqual("user", user);
-        searchMsgUser.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-
-        Search searchMsgs = new Search(Message.class);
-        searchMsgs.addFilterIn("roles", generalService.search(searchMsgUser));
-        if (searchDataHolder != null) {
-            searchMsgs = this.setPotentialDemandsFilter(searchDataHolder, searchMsgs);
-        } else {
-            searchMsgs.addFilterEqual("sender", user); // ?? to iste ako User vyssie?
-        }
-
-        Search searchUserMsgs = new Search(UserMessage.class);
-        searchUserMsgs.addFilterEqual("user", user);
-        searchUserMsgs.addFilterEqual("message", (Collection) Arrays.asList(generalService.search(searchMsgs)));
-        if (searchDataHolder != null) {
-            if (searchDataHolder.getPotentialDemandMessages().getIsStared() != null) {
-                searchUserMsgs.addFilterEqual("isStarred",
-                        searchDataHolder.getPotentialDemandMessages().getIsStared());
+        List<MessageUserRole> potentialDemandMessages = new ArrayList<MessageUserRole>();
+        for (MessageUserRole mur : messageUsersRole) {
+            if (mur.getMessageContext().equals(MessageContext.POTENTIAL_SUPPLIERS_DEMAND)) {
+                potentialDemandMessages.add(mur);
             }
         }
 
-        final List<UserMessage> userMessages = generalService.search(searchUserMsgs);
+        List<UserMessage> potentialDemandUserMessages = new ArrayList<UserMessage>();
+        for (MessageUserRole mur : potentialDemandMessages) {
+            Search potentialDemandUserMessagesSearch = new Search(UserMessage.class);
+            potentialDemandUserMessagesSearch.addFilterEqual("user", mur.getUser());
+            potentialDemandUserMessagesSearch.addFilterEqual("message", mur.getMessage());
+            potentialDemandUserMessages.addAll(generalService.search(potentialDemandUserMessagesSearch));
+        }
 
         // fill list
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
-        for (UserMessage um : userMessages) {
+        for (UserMessage um : potentialDemandUserMessages) {
             PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
-            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
-            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
+            detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), user));
+            detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), user));
             potentailDemands.add(detail);
         }
         return potentailDemands;
@@ -427,8 +421,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                     calendarDate2.add(Calendar.MONTH, +1);
                     search.addFilterGreaterOrEqual("demand.endDate", calendarDate2.DATE);
                     break;
-                default:
-                    ;
+                default:;
             }
         }
         if (searchDataHolder.getPotentialDemandMessages().getCreatedFrom() != null) {
@@ -554,80 +547,75 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
     public List<UserMessageDetail> getInboxMessages(Long recipientId) {
-        //Ziskaj vsetky prvotne spravy
-        Search firstBornMessagesSearch = new Search(Message.class);
-        firstBornMessagesSearch.addFilterNull("parent");
-        List<Message> firstBornMessages = generalService.search(firstBornMessagesSearch);
+        return this.getMessages(recipientId, Arrays.asList(
+                MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
+    }
 
-        //Ziskaj vsetky prvotne spravy, kt boli poslane danemu uzivatelovi
-        List<MessageUserRole> inboxMessages = new ArrayList<MessageUserRole>();
-        for (Message firstMsg : firstBornMessages) {
-            Search search = new Search(MessageUserRole.class);
-            search.addFilterEqual("user", generalService.find(User.class, recipientId));
-            search.addFilterEqual("message", firstMsg);
-            search.addFilterIn("type", Arrays.asList(
-                    MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
-            inboxMessages.addAll(generalService.search(search));
+    public List<UserMessageDetail> getSentMessages(Long senderId) {
+        return this.getMessages(senderId, Arrays.asList(MessageUserRoleType.SENDER));
+    }
+
+    private List<UserMessageDetail> getMessages(Long recipientId, List<MessageUserRoleType> roles) {
+        User recipient = generalService.find(User.class, recipientId);
+        //Ziskaj vsetky spravy daneho uzivatela, kt bol oznaceny ako adresat
+        List<MessageUserRole> recipientMessages = new ArrayList<MessageUserRole>();
+        Search recipientMessagesSearch = new Search(MessageUserRole.class);
+        recipientMessagesSearch.addFilterEqual("user", recipient);
+        recipientMessagesSearch.addFilterIn("type", roles);
+        recipientMessages.addAll(generalService.search(recipientMessagesSearch));
+
+
+//        Search firstBornRecipientMessagesSearch = new Search(Message.class);
+//        List<Message> firstBornRecipientMessages = new ArrayList<Message>();
+//        for (MessageUserRole mur : recipientMessages) {
+//            firstBornRecipientMessagesSearch.addFilterEqual("id", mur.getMessage().getId());
+//            firstBornRecipientMessages = generalService.search(firstBornRecipientMessagesSearch);
+//        }
+
+        Map<Long, Message> rootRecipientMessages = new TreeMap<Long, Message>();
+        for (MessageUserRole mur : recipientMessages) {
+            if (mur.getMessage().getParent() == null) {
+                if (!rootRecipientMessages.containsKey(mur.getMessage().getThreadRoot().getId())) {
+                    rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
+                }
+            }
         }
 
         //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
-        List<UserMessage> inboxMessages2 = new ArrayList<UserMessage>();
-        for (MessageUserRole messageUserRole : inboxMessages) {
+        List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
+        for (Message msg : rootRecipientMessages.values()) {
             Search userMessagesSearch = new Search(UserMessage.class);
-            userMessagesSearch.addFilterEqual("user", messageUserRole.getUser());
-            userMessagesSearch.addFilterEqual("message", messageUserRole.getMessage());
-            inboxMessages2.addAll(generalService.search(userMessagesSearch));
+            userMessagesSearch.addFilterEqual("user", recipient);
+            userMessagesSearch.addFilterEqual("message", msg);
+            inboxMessages.addAll(generalService.search(userMessagesSearch));
         }
 
         List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
-        for (UserMessage userMessage : inboxMessages2) {
+        for (UserMessage userMessage : inboxMessages) {
             inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
         }
 
         return inboxMessagesDetail;
     }
 
-    public List<UserMessageDetail> getSentMessages(Long senderId) {
-        //Ziskaj vsetky prvotne spravy
-        Search firstBornMessagesSearch = new Search(Message.class);
-        firstBornMessagesSearch.addFilterNull("parent");
-        firstBornMessagesSearch.addFilterEqual("sender", generalService.find(User.class, senderId));
-        List<Message> firstBornMessages = generalService.search(firstBornMessagesSearch);
-
-//        //Ziskaj vsetky prvotne spravy, kt boli poslane danemu uzivatelovi
-//        List<MessageUserRole> inboxMessages = new ArrayList<MessageUserRole>();
-//        for (Message firstMsg : firstBornMessages) {
-//            Search search = new Search(MessageUserRole.class);
-//            search.addFilterEqual("user", generalService.find(User.class, recipientId));
-//            search.addFilterEqual("message", firstMsg);
-//            search.addFilterIn("type", Arrays.asList(
-//        MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
-//            inboxMessages.addAll(generalService.search(search));
-//        }
-
-        //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
-        List<UserMessage> inboxMessages2 = new ArrayList<UserMessage>();
-        for (Message messageUserRole : firstBornMessages) {
-            Search userMessagesSearch = new Search(UserMessage.class);
-            userMessagesSearch.addFilterEqual("user", messageUserRole.getSender());
-            userMessagesSearch.addFilterEqual("message", messageUserRole);
-            inboxMessages2.addAll(generalService.search(userMessagesSearch));
-        }
-
-        List<UserMessageDetail> sentMessagesDetail = new ArrayList<UserMessageDetail>();
-        for (UserMessage userMessage : inboxMessages2) {
-            sentMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
-        }
-
-        return sentMessagesDetail;
-    }
-
     public List<UserMessageDetail> getDeletedMessages(Long userId) {
-        Search search = new Search(UserMessage.class);
-        search.addFilterEqual("user", generalService.find(User.class, userId));
-        search.addFilterEqual("message.messageState", MessageState.DELETED);
-        //TODO Martin - created alebo lastModified? Ak reply tak sa zmeni lastModified?
-        search.addSort("created", true);
-        return this.createUserMessageDetailList(generalService.search(search));
+        Search userMessagesSearch = new Search(Message.class);
+        userMessagesSearch.addFilterEqual("user", generalService.find(User.class, userId));
+        List<UserMessage> userMessages = generalService.search(userMessagesSearch);
+
+        Map<Long, UserMessage> rootDeletedMessages = new TreeMap<Long, UserMessage>();
+        for (UserMessage userMessage : userMessages) {
+            if (userMessage.getMessage().getParent() == null) {
+                if (!rootDeletedMessages.containsKey(userMessage.getMessage().getThreadRoot().getId())) {
+                    rootDeletedMessages.put(userMessage.getMessage().getThreadRoot().getId(), userMessage);
+                }
+            }
+        }
+
+        List<UserMessageDetail> deletedMessagesDetail = new ArrayList<UserMessageDetail>();
+        for (UserMessage userMessage : rootDeletedMessages.values()) {
+            deletedMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+        }
+        return deletedMessagesDetail;
     }
 }
