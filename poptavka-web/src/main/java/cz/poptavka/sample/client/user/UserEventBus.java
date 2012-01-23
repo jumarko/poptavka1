@@ -1,23 +1,17 @@
 package cz.poptavka.sample.client.user;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.module.ChildModule;
-import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.event.EventBusWithLookup;
 
-import cz.poptavka.sample.client.homesettings.HomeSettingsHandler;
-import cz.poptavka.sample.client.homesettings.HomeSettingsPresenter;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModule;
-import cz.poptavka.sample.client.user.demands.DemandModule;
 import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
 import cz.poptavka.sample.client.user.demands.tab.old.AllDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.old.AllSuppliersPresenter;
@@ -28,7 +22,6 @@ import cz.poptavka.sample.client.user.handler.AllDemandsHandler;
 import cz.poptavka.sample.client.user.handler.AllSuppliersHandler;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
-import cz.poptavka.sample.client.user.messages.MessagesModule;
 import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
@@ -44,21 +37,16 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
-import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
  * Module loaded after user's log in. Default view is summary of his new
  * messages, new demands for him.
+ *
  * @author beho
  */
 @Events(startView = UserView.class, module = UserModule.class)
-@ChildModules({
-    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false)
-})
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBusWithLookup {
 
@@ -73,6 +61,7 @@ public interface UserEventBus extends EventBusWithLookup {
     /**
      * setter of userDetail for whole application. This user represents logged
      * user
+     *
      * @param user
      */
     @Event(handlers = UserPresenter.class)
@@ -90,7 +79,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getPotentialDemands(long businessUserId);
 
     @Event(handlers = PotentialDemandsPresenter.class)
-    void responsePotentialDemands(ArrayList<PotentialDemandMessage> potentialDemandsList);
+    void responsePotentialDemands(
+            ArrayList<PotentialDemandMessage> potentialDemandsList);
 
     /** Offer demands GETTER/SETTER. **/
     // this same method could be called to MyDemandsPresenter
@@ -119,14 +109,14 @@ public interface UserEventBus extends EventBusWithLookup {
      * @param tabBody
      *            current widget
      */
-//    @Event(handlers = UserPresenter.class)
-//    void setTabWidget(Widget tabBody);
-//
-//    @Event(handlers = UserPresenter.class)
-//    void setTabAdminWidget(Widget tabBody);
-//
-//    @Event(handlers = UserPresenter.class)
-//    void setTabSettingsWidget(Widget tabBody);
+    // @Event(handlers = UserPresenter.class)
+    // void setTabWidget(Widget tabBody);
+    //
+    // @Event(handlers = UserPresenter.class)
+    // void setTabAdminWidget(Widget tabBody);
+    //
+    // @Event(handlers = UserPresenter.class)
+    // void setTabSettingsWidget(Widget tabBody);
     @Event(handlers = MyProblemsPresenter.class)
     void requestMyProblems();
 
@@ -142,7 +132,7 @@ public interface UserEventBus extends EventBusWithLookup {
      * **/
     // TODO implements demandDetail section loading for Wrapper
     // serves for visual sing, that content is loading
-    @Event(handlers = {UserHandler.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = { UserHandler.class, OldDetailWrapperPresenter.class })
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
     @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
@@ -152,14 +142,16 @@ public interface UserEventBus extends EventBusWithLookup {
     void setBaseDemandDetail(BaseDemandDetail detail);
 
     /** method for displaying conversation to selected demand. **/
-    @Event(handlers = {UserPresenter.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = { UserPresenter.class, OldDetailWrapperPresenter.class })
     void requestPotentialDemandConversation(long messageId, long userMessageId);
 
     @Event(handlers = MessageHandler.class)
-    void getPotentialDemandConversation(long messageId, long userId, long userMessageId);
+    void getPotentialDemandConversation(long messageId, long userId,
+            long userMessageId);
 
     @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
-    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList, ViewType wrapperhandlerType);
+    void setPotentialDemandConversation(ArrayList<MessageDetail> messageList,
+            ViewType wrapperhandlerType);
 
     @Event(handlers = OldDetailWrapperPresenter.class, passive = true)
     void setSingleDemandConversation(ArrayList<MessageDetail> messageList);
@@ -174,10 +166,12 @@ public interface UserEventBus extends EventBusWithLookup {
     void bubbleMessageSending(MessageDetail messageToSend, ViewType viewType);
 
     @Event(handlers = MessageHandler.class)
-    void sendMessageToPotentialDemand(MessageDetail messageToSend, ViewType viewType);
+    void sendMessageToPotentialDemand(MessageDetail messageToSend,
+            ViewType viewType);
 
     @Event(handlers = OldDetailWrapperPresenter.class)
-    void addMessageToPotentailDemandConversation(MessageDetail result, ViewType wrapperhandlerType);
+    void addMessageToPotentailDemandConversation(MessageDetail result,
+            ViewType wrapperhandlerType);
 
     /** Offers message display & state change. **/
     @Event(handlers = OldDetailWrapperPresenter.class)
@@ -203,7 +197,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void sendDemandOffer(OfferMessageDetail offerToSend);
 
     @Event(handlers = MessageHandler.class)
-    void requestPotentialDemandReadStatusChange(ArrayList<Long> messages, boolean isRead);
+    void requestPotentialDemandReadStatusChange(ArrayList<Long> messages,
+            boolean isRead);
 
     /** Call to UserPresenter **/
     /**
@@ -211,12 +206,12 @@ public interface UserEventBus extends EventBusWithLookup {
      *
      * @param body
      */
-//    @DisplayChildModuleView({DemandModule.class,
-//        AdminModule.class, MessagesModule.class })
+    // @DisplayChildModuleView({DemandModule.class,
+    // AdminModule.class, MessagesModule.class })
     @Event(forwardToParent = true)
     void setBodyHolderWidget(IsWidget body);
 
-    @Event(modulesToLoad = DemandModule.class)
+    @Event(forwardToParent = true)
     void setUserBodyHolderWidget(Widget body);
 
     @Event(forwardToParent = true)
@@ -233,31 +228,33 @@ public interface UserEventBus extends EventBusWithLookup {
      * deactivated ----------------------- DEMANDS SECTION
      */
     @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, PotentialDemandsPresenter.class, AllSuppliersPresenter.class },
-    historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, PotentialDemandsPresenter.class,
+            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeMyDemands();
 
     @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
     String invokeMyProblems();
 
     @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
-            MyDemandsPresenter.class, PotentialDemandsPresenter.class, AllDemandsPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            MyDemandsPresenter.class, PotentialDemandsPresenter.class,
+            AllDemandsPresenter.class, AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokeOffers();
 
     @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, AllDemandsPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            AllDemandsPresenter.class, AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
     @Event(handlers = AllDemandsPresenter.class, activate = AllDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AllSuppliersPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AllSuppliersPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokeAtDemands();
 
     @Event(handlers = AllSuppliersPresenter.class, activate = AllSuppliersPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class, PotentialDemandsPresenter.class,
-            AllDemandsPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+            OffersPresenter.class, MyDemandsPresenter.class,
+            PotentialDemandsPresenter.class, AllDemandsPresenter.class },
+            historyConverter = DemandsHistoryConverter.class)
     String invokeAtSuppliers();
 
     /***********************************************************************************************
@@ -295,7 +292,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void loadingShow(String progressGettingDemandData);
 
     @Event(forwardToParent = true)
-    void loadingShowWithAnchor(String progressGettingDemandDataring, Widget anchor);
+    void loadingShowWithAnchor(String progressGettingDemandDataring,
+            Widget anchor);
 
     @Event(forwardToParent = true)
     void createDemand(FullDemandDetail demand, Long id);
@@ -319,8 +317,8 @@ public interface UserEventBus extends EventBusWithLookup {
     // Beho: ??? needed ???
     // @Event(handlers = MyDemandsPresenter.class)
     // void responseClientDemands(ArrayList<MessageDetail> result);
-//    @Event(handlers = { OldDemandsLayoutPresenter.class })
-//    void toggleLoading();
+    // @Event(handlers = { OldDemandsLayoutPresenter.class })
+    // void toggleLoading();
     @Event(handlers = UserPresenter.class)
     void requestDemandsWithConversationInfo();
 
@@ -328,7 +326,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void getClientDemandWithConversations(Long userId, Long clientId);
 
     @Event(handlers = MyDemandsPresenter.class)
-    void setClientDemandWithConversations(ArrayList<ClientDemandMessageDetail> result);
+    void setClientDemandWithConversations(
+            ArrayList<ClientDemandMessageDetail> result);
 
     @Event(handlers = MessageHandler.class)
     void requestDemandConversations(long messageId);
@@ -336,7 +335,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = MyDemandsPresenter.class)
     void setDemandConversations(ArrayList<MessageDetail> conversations);
 
-    @Event(handlers = {MessageHandler.class, OldDetailWrapperPresenter.class })
+    @Event(handlers = { MessageHandler.class, OldDetailWrapperPresenter.class })
     void requestSingleConversation(long threadRootId, long messageId);
 
     // END
@@ -349,16 +348,17 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = AllSuppliersHandler.class)
     void getSubCategories(Long category);
 
-    @Event(handlers = {AllDemandsHandler.class, AllSuppliersHandler.class })
+    @Event(handlers = { AllDemandsHandler.class, AllSuppliersHandler.class })
     void getCategories();
 
     // Locality
-    @Event(handlers = {AllDemandsHandler.class, AllSuppliersHandler.class })
+    @Event(handlers = { AllDemandsHandler.class, AllSuppliersHandler.class })
     void getLocalities();
 
     // Suppliers
     @Event(handlers = AllSuppliersHandler.class)
-    void getSuppliersByCategoryLocality(int start, int count, Long category, String locality);
+    void getSuppliersByCategoryLocality(int start, int count, Long category,
+            String locality);
 
     @Event(handlers = AllSuppliersHandler.class)
     void getSuppliersByCategory(int start, int count, Long category);
@@ -377,7 +377,8 @@ public interface UserEventBus extends EventBusWithLookup {
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
     @Event(handlers = AllSuppliersPresenter.class)
-    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
+    void displaySubCategories(ArrayList<CategoryDetail> list,
+            Long parentCategory);
 
     @Event(handlers = AllSuppliersPresenter.class)
     void displayDemandTabSuppliers(ArrayList<FullSupplierDetail> list);
@@ -448,7 +449,7 @@ public interface UserEventBus extends EventBusWithLookup {
      * methods for Supplier new demands
      */
     // init demands module
-    @Event(modulesToLoad = DemandModule.class)
+    @Event(forwardToParent = true)
     void initDemandModule();
 
     @Event(forwardToParent = true)
@@ -459,30 +460,24 @@ public interface UserEventBus extends EventBusWithLookup {
 
     @Event(forwardToParent = true)
     void goToCreateDemand(String location);
-    //added by Martin
-    //init demands module
 
-    @Event(modulesToLoad = MessagesModule.class)
+    // added by Martin
+    // init demands module
+
+    @Event(forwardToParent = true)
     void initMessagesModule();
 
-    @Event(modulesToLoad = AdminModule.class)
+    @Event(forwardToParent = true)
     void initAdminModule(SearchModuleDataHolder filter);
 
-//    @Event(forwardToParent = true)
-//    void initSearchModule(SimplePanel panel);
+    // @Event(forwardToParent = true)
+    // void initSearchModule(SimplePanel panel);
     @Event(forwardToParent = true)
     void clearSearchContent();
 
     /**
      * ********************* End corner ************************
      */
-    @Event(handlers = HomeSettingsPresenter.class)
+    @Event(forwardToParent = true)
     void initSettings();
-
-    /** Settings */
-    @Event(handlers = HomeSettingsHandler.class)
-    void getLoggedUser(long userId);
-
-    @Event(handlers = HomeSettingsPresenter.class)
-    void setSettings(SettingsDetail detail);
 }

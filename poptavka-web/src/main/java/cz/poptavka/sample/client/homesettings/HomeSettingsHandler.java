@@ -7,11 +7,10 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.SettingsRPCServiceAsync;
-import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 @EventHandler
-public class HomeSettingsHandler extends BaseEventHandler<UserEventBus> {
+public class HomeSettingsHandler extends BaseEventHandler<HomeSettingsEventBus> {
 
     @Inject
     SettingsRPCServiceAsync settingsService;
