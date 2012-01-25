@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -46,8 +47,8 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
         });
     }
 
-    public void onGetInboxMessages(Long recipientId) {
-        messageService.getInboxMessages(recipientId, new AsyncCallback<List<UserMessageDetail>>() {
+    public void onGetInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder) {
+        messageService.getInboxMessages(recipientId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -61,8 +62,8 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
         });
     }
 
-    public void onGetSentMessages(Long senderId) {
-        messageService.getSentMessages(senderId, new AsyncCallback<List<UserMessageDetail>>() {
+    public void onGetSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder) {
+        messageService.getSentMessages(senderId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -76,8 +77,8 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
         });
     }
 
-    public void onGetDeletedMessages(Long userId) {
-        messageService.getDeletedMessages(userId, new AsyncCallback<List<UserMessageDetail>>() {
+    public void onGetDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder) {
+        messageService.getDeletedMessages(userId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {

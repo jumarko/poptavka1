@@ -28,7 +28,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 
@@ -179,8 +178,13 @@ public class AdminClientsPresenter
 
     @Override
     public void bindView() {
+        view.getIdColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
+            @Override
+            public void update(int index, ClientDetail object, String value) {
+                eventBus.showAdminClientDetail(object);
+            }
+        });
         view.getCompanyColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-
             @Override
             public void update(int index, ClientDetail object, String value) {
                 if (!object.getUserDetail().getCompanyName().equals(value)) {
@@ -193,7 +197,6 @@ public class AdminClientsPresenter
             }
         });
         view.getFirstNameColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-
             @Override
             public void update(int index, ClientDetail object, String value) {
                 if (!object.getUserDetail().getFirstName().equals(value)) {
@@ -206,7 +209,6 @@ public class AdminClientsPresenter
             }
         });
         view.getLastNameColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-
             @Override
             public void update(int index, ClientDetail object, String value) {
                 if (!object.getUserDetail().getLastName().equals(value)) {
@@ -219,7 +221,6 @@ public class AdminClientsPresenter
             }
         });
         view.getRatingColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-
             @Override
             public void update(int index, ClientDetail object, String value) {
                 if (!Integer.toString(object.getOveralRating()).equals(value)) {
@@ -231,21 +232,7 @@ public class AdminClientsPresenter
                 }
             }
         });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getId())) {
-                    eventBus.showAdminClientDetail(dataToUpdate.get(
-                            view.getSelectionModel().getSelectedObject().getId()));
-                } else {
-                    eventBus.showAdminClientDetail(view.getSelectionModel().getSelectedObject());
-                }
-                eventBus.setDetailDisplayedClient(true);
-            }
-        });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent arg0) {
                 int page = view.getPager().getPageStart() / view.getPageSize();
@@ -254,7 +241,6 @@ public class AdminClientsPresenter
             }
         });
         view.getCommitBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
@@ -271,7 +257,6 @@ public class AdminClientsPresenter
             }
         });
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -289,7 +274,6 @@ public class AdminClientsPresenter
             }
         });
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {

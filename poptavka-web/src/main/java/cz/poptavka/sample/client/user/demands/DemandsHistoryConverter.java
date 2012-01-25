@@ -8,8 +8,6 @@ import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.user.UserEventBus;
 //import cz.poptavka.sample.client.user.demands.tab.NewDemandPresenter;
-import cz.poptavka.sample.client.user.demands.tab.old.AllDemandsPresenter;
-import cz.poptavka.sample.client.user.demands.tab.old.AllSuppliersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.old.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.old.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.old.PotentialDemandsPresenter;
@@ -40,16 +38,12 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
     private static final String DEMAND_NEW = "invokeNewDemand";
     private static final String DEMANDS_POTENTIAL = "invokePotentialDemands";
     private static final String DEMANDS_OPERATOR = "invokeDemandsOperator";
-    private static final String DEMANDS_ALLDEMANDS = "invokeAtDemands";
-    private static final String DEMANDS_ALLSUPPLIERS = "invokeAtSuppliers";
 
     private MyDemandsPresenter myDemandPresenter = null;
     private OffersPresenter offersPresenter = null;
 //    private NewDemandPresenter newDemandPresenter = null;
     private PotentialDemandsPresenter potentialDemandsPresenter = null;
 //    private DemandsOperatorPresenter operatorPresenter = null;
-    private AllDemandsPresenter demandsPresenter = null;
-    private AllSuppliersPresenter suppliersPresenter = null;
 
     /**           DEVEL PRESENTER INITIALIZATION SECTION               */
     /*******************************************************************/
@@ -108,22 +102,6 @@ public class DemandsHistoryConverter implements HistoryConverter<UserEventBus> {
 //                operatorPresenter = eventBus.addHandler(DemandsOperatorPresenter.class);
 //                operatorPresenter.onInvokeDemandsOperator();
 //            }
-            if (historyName.equals(DEMANDS_ALLDEMANDS)) {
-                if (demandsPresenter != null) {
-//                    DemandsPresenter.cleanDetailWrapperPresenterForDevelopment();
-                    eventBus.removeHandler(demandsPresenter);
-                }
-                demandsPresenter = eventBus.addHandler(AllDemandsPresenter.class);
-                demandsPresenter.onInvokeAtDemands();
-            }
-            if (historyName.equals(DEMANDS_ALLSUPPLIERS)) {
-                if (suppliersPresenter != null) {
-//                    DemandsPresenter.cleanDetailWrapperPresenterForDevelopment();
-                    eventBus.removeHandler(suppliersPresenter);
-                }
-                suppliersPresenter = eventBus.addHandler(AllSuppliersPresenter.class);
-                suppliersPresenter.onInvokeAtSuppliers();
-            }
 
         } else {
             GWT.log("event marked to fire later: " + historyName);

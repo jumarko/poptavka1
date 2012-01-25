@@ -331,4 +331,8 @@ public class AdminSuppliersPresenter
     public void onSetDetailDisplayedSupplier(Boolean displayed) {
         detailDisplayed = displayed;
     }
+
+    public void displayDetailContent(FullSupplierDetail detail) {
+        eventBus.showAdminSupplierDetail(detail);
+    }
 }

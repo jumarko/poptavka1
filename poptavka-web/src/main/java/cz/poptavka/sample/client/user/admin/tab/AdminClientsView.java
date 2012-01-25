@@ -5,6 +5,7 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -177,7 +178,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        idColumn = addColumn(new MyClickCell(), "ID", true, 50, new GetValue<String>() {
+        idColumn = addColumn(new ClickableTextCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(ClientDetail object) {

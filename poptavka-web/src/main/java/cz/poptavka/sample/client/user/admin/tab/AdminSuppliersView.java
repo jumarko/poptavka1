@@ -6,6 +6,7 @@ package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.core.client.GWT;
@@ -77,6 +78,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
+    private AdminSuppliersPresenter presenter;
 
     /**
      * @return the Supplier Id
@@ -229,7 +231,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     private void initGridColumns() {
         // Supplier ID.
-        idColumn = addColumn(new MyClickCell(), "ID", true, 30, new GetValue<String>() {
+        idColumn = addColumn(new ClickableTextCell(), "ID", true, 30, new GetValue<String>() {
 
             @Override
             public String getValue(FullSupplierDetail object) {

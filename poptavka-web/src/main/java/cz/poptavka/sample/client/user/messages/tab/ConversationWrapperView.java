@@ -71,7 +71,7 @@ public class ConversationWrapperView extends Composite
 
     @Override
     public void setChat(ArrayList<MessageDetail> chatMessages) {
-        conversationPanel.setMessageList(chatMessages, false);
+        conversationPanel.setMessageList(chatMessages, true);
         conversationHeader.toggleLoading();
     }
 

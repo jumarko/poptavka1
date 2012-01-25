@@ -5,6 +5,7 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -102,8 +103,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      * @return the adminDemandDetail
      */
     @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
+    public SimplePanel getAdminInvoiceDetail() {
+        return adminInvoiceDetail;
     }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminInvoicesView> {
@@ -124,7 +125,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      * Detail of selected Demand.
      */
     @UiField
-    SimplePanel adminDemandDetail;
+    SimplePanel adminInvoiceDetail;
     /**
      * Data provider that will cell table with data.
      */
@@ -180,7 +181,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      */
     private void initTableColumns() {
         // ID
-        idColumn = addColumn(new MyClickCell(), "ID", 50, new GetValue<String>() {
+        idColumn = addColumn(new ClickableTextCell(), "ID", 50, new GetValue<String>() {
 
             @Override
             public String getValue(InvoiceDetail object) {

@@ -88,7 +88,7 @@ public class AdminInvoicesPresenter
 
         SingleSelectionModel<InvoiceDetail> getSelectionModel();
 
-        SimplePanel getAdminDemandDetail();
+        SimplePanel getAdminInvoiceDetail();
 
         SimplePager getPager();
 
@@ -174,12 +174,19 @@ public class AdminInvoicesPresenter
         Storage.hideLoading();
     }
 
-    public void onResponseAdminDemandDetail(Widget widget) {
-        view.getAdminDemandDetail().setWidget(widget);
+    public void onResponseAdminInvoiceDetail(Widget widget) {
+        view.getAdminInvoiceDetail().setWidget(widget);
     }
 
     @Override
     public void bindView() {
+        view.getIdColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+
+            @Override
+            public void update(int index, InvoiceDetail object, String value) {
+                eventBus.showAdminInvoicesDetail(object);
+            }
+        });
         view.getInvoiceNumberColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
 
             @Override
@@ -210,7 +217,7 @@ public class AdminInvoicesPresenter
 
             @Override
             public void update(int index, InvoiceDetail object, String value) {
-                if (!object.getTotalPrice().equals(value)) {
+                if (!object.getTotalPrice().toString().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
@@ -223,7 +230,7 @@ public class AdminInvoicesPresenter
 
             @Override
             public void update(int index, InvoiceDetail object, String value) {
-                if (!object.getPaymentMethod().equals(value)) {
+                if (!object.getPaymentMethod().getName().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }

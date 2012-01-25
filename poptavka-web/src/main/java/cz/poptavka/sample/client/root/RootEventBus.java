@@ -167,6 +167,15 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = HomeWelcomeModule.class)
     void initHomeWelcomeModule(SearchModuleDataHolder filter);
 
+    @Event(modulesToLoad = UserModule.class)
+    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
+
+    @Event(modulesToLoad = UserModule.class)
+    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
+
+    @Event(modulesToLoad = UserModule.class)
+    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
+
     @Event(modulesToLoad = SearchModule.class)
     void initSearchModule(SimplePanel panel);
 

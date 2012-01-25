@@ -48,6 +48,8 @@ public class AdminOffersView extends Composite implements
     Button commit, rollback, refresh;
     @UiField
     Label changesLabel;
+    @UiField
+    SimplePanel adminOfferDetail;
 
     @Override
     public Widget getWidgetView() {
@@ -56,7 +58,7 @@ public class AdminOffersView extends Composite implements
 
     @Override
     public SimplePanel getAdminSupplierDetail() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return adminOfferDetail;
     }
 
     interface AdministrationViewUiBinder extends UiBinder<Widget, AdminOffersView> {

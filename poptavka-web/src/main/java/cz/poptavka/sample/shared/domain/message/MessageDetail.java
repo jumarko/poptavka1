@@ -89,6 +89,7 @@ public class MessageDetail implements Serializable {
         detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
         detail.setMessageCount(detail.getMessageCount());
+        detail.setUserMessageId(userMessage.getId());
         detail.setUnreadSubmessages(detail.getUnreadSubmessages());
         return detail;
     }

@@ -51,9 +51,9 @@ public interface MessageRPCService extends RemoteService {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus);
 
-    List<UserMessageDetail> getInboxMessages(Long recipientId);
+    List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
 
-    List<UserMessageDetail> getSentMessages(Long senderId);
+    List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
 
-    List<UserMessageDetail> getDeletedMessages(Long userId);
+    List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
 }

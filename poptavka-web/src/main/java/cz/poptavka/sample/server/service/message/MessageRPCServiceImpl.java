@@ -21,6 +21,7 @@ import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
+import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.MessageUserRole;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
@@ -40,7 +41,6 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.TreeMap;
 
@@ -355,15 +355,34 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
     //Martin - temporary, to try if it works this way too, if yes && fast too -> this one will be better
+    // Works fine - if more data in DB available - perform speed test
     @Override
     public ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(
             long userId, SearchModuleDataHolder searchDataHolder) {
         // TODO userID vs businessUserID ??
         User user = generalService.find(User.class, userId);
 
+        Search messageSearch = null;
+        if (searchDataHolder != null) {
+            messageSearch = new Search(Message.class);
+            if (searchDataHolder.getMessagesTab().getSender() != null) {
+                messageSearch.addFilterIn("sender", generalService.search(new Search(User.class)
+                        .addFilterLike("email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
+            }
+            if (searchDataHolder.getMessagesTab().getSubject() != null) {
+                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
+            }
+            if (searchDataHolder.getMessagesTab().getBody() != null) {
+                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            }
+        }
+
         Search messageUserRoleSearch = new Search(MessageUserRole.class);
         messageUserRoleSearch.addFilterEqual("user", user);
         messageUserRoleSearch.addFilterEqual("type", MessageUserRoleType.TO);
+        if (searchDataHolder != null) {
+            messageUserRoleSearch.addFilterIn("message", generalService.search(messageSearch));
+        }
         List<MessageUserRole> messageUsersRole = generalService.search(messageUserRoleSearch);
 
         List<MessageUserRole> potentialDemandMessages = new ArrayList<MessageUserRole>();
@@ -393,66 +412,68 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return potentailDemands;
     }
 
-    private Search setPotentialDemandsFilter(SearchModuleDataHolder searchDataHolder, Search search) {
-        if (searchDataHolder.getPotentialDemandMessages().getSender() != null) {
-            search.addFilterLike("sender.email", searchDataHolder.getPotentialDemandMessages().getSender());
-        }
-        if (searchDataHolder.getPotentialDemandMessages().getUrgention() != null) {
-            Calendar calendarDate1 = Calendar.getInstance(); //today
-            Calendar calendarDate2 = Calendar.getInstance();
-            switch (searchDataHolder.getPotentialDemandMessages().getUrgention()) {
-                case 1: //ends in one day => urgent
-                    calendarDate1.add(Calendar.DATE, +1);
-                    search.addFilterLessOrEqual("demand.endDate", calendarDate1.DATE);
-                    break;
-                case 2: //ends in one week, but not tomorrow => less urgent
-                    calendarDate1.add(Calendar.DATE, +1);
-                    calendarDate2.add(Calendar.DATE, +7);
-                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate1.DATE);
-                    search.addFilterLessOrEqual("demand.endDate", calendarDate2.DATE);
-                    break;
-                case 3: //ends in one month, but not next week => normal
-                    calendarDate1.add(Calendar.DATE, +7);
-                    calendarDate2.add(Calendar.MONTH, +1);
-                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate1.DATE);
-                    search.addFilterLessOrEqual("demand.endDate", calendarDate2.DATE);
-                    break;
-                case 4: //ends in more than one month => less normal
-                    calendarDate2.add(Calendar.MONTH, +1);
-                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate2.DATE);
-                    break;
-                default:;
-            }
-        }
-        if (searchDataHolder.getPotentialDemandMessages().getCreatedFrom() != null) {
-            search.addFilterGreaterOrEqual("created",
-                    searchDataHolder.getPotentialDemandMessages().getCreatedFrom());
-        }
-        if (searchDataHolder.getPotentialDemandMessages().getCreatedTo() != null) {
-            search.addFilterLessOrEqual("created", searchDataHolder.getPotentialDemandMessages().getCreatedTo());
-        }
-        //Demand
-        if (searchDataHolder.getPotentialDemandMessages().getRatingFrom() != null) {
-            search.addFilterGreaterOrEqual("demand.client.overalRating",
-                    searchDataHolder.getPotentialDemandMessages().getRatingFrom());
-        }
-        if (searchDataHolder.getPotentialDemandMessages().getRatingTo() != null) {
-            search.addFilterLessOrEqual("demand.client.overalRating",
-                    searchDataHolder.getPotentialDemandMessages().getRatingTo());
-        }
-        if (searchDataHolder.getPotentialDemandMessages().getDemandTitle() != null) {
-            search.addFilterLike("demand.title", searchDataHolder.getPotentialDemandMessages().getDemandTitle());
-        }
-        //TODO demand.price alebo offer.price???
-        if (searchDataHolder.getPotentialDemandMessages().getPriceFrom() != null) {
-            search.addFilterGreaterOrEqual("demand.price",
-                    searchDataHolder.getPotentialDemandMessages().getPriceFrom());
-        }
-        if (searchDataHolder.getPotentialDemandMessages().getPriceTo() != null) {
-            search.addFilterLessOrEqual("demand.price", searchDataHolder.getPotentialDemandMessages().getPriceTo());
-        }
-        return search;
-    }
+    //TODO Martin - if not used - delete it
+//    private Search setPotentialDemandsFilter(SearchModuleDataHolder searchDataHolder, Search search) {
+//        if (searchDataHolder.getPotentialDemandMessages().getSender() != null) {
+//            search.addFilterLike("sender.email", searchDataHolder.getPotentialDemandMessages().getSender());
+//        }
+//        if (searchDataHolder.getPotentialDemandMessages().getUrgention() != null) {
+//            Calendar calendarDate1 = Calendar.getInstance(); //today
+//            Calendar calendarDate2 = Calendar.getInstance();
+//            switch (searchDataHolder.getPotentialDemandMessages().getUrgention()) {
+//                case 1: //ends in one day => urgent
+//                    calendarDate1.add(Calendar.DATE, +1);
+//                    search.addFilterLessOrEqual("demand.endDate", calendarDate1.DATE);
+//                    break;
+//                case 2: //ends in one week, but not tomorrow => less urgent
+//                    calendarDate1.add(Calendar.DATE, +1);
+//                    calendarDate2.add(Calendar.DATE, +7);
+//                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate1.DATE);
+//                    search.addFilterLessOrEqual("demand.endDate", calendarDate2.DATE);
+//                    break;
+//                case 3: //ends in one month, but not next week => normal
+//                    calendarDate1.add(Calendar.DATE, +7);
+//                    calendarDate2.add(Calendar.MONTH, +1);
+//                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate1.DATE);
+//                    search.addFilterLessOrEqual("demand.endDate", calendarDate2.DATE);
+//                    break;
+//                case 4: //ends in more than one month => less normal
+//                    calendarDate2.add(Calendar.MONTH, +1);
+//                    search.addFilterGreaterOrEqual("demand.endDate", calendarDate2.DATE);
+//                    break;
+//                default:
+//                    ;
+//            }
+//        }
+//        if (searchDataHolder.getPotentialDemandMessages().getCreatedFrom() != null) {
+//            search.addFilterGreaterOrEqual("created",
+//                    searchDataHolder.getPotentialDemandMessages().getCreatedFrom());
+//        }
+//        if (searchDataHolder.getPotentialDemandMessages().getCreatedTo() != null) {
+//            search.addFilterLessOrEqual("created", searchDataHolder.getPotentialDemandMessages().getCreatedTo());
+//        }
+//        //Demand
+//        if (searchDataHolder.getPotentialDemandMessages().getRatingFrom() != null) {
+//            search.addFilterGreaterOrEqual("demand.client.overalRating",
+//                    searchDataHolder.getPotentialDemandMessages().getRatingFrom());
+//        }
+//        if (searchDataHolder.getPotentialDemandMessages().getRatingTo() != null) {
+//            search.addFilterLessOrEqual("demand.client.overalRating",
+//                    searchDataHolder.getPotentialDemandMessages().getRatingTo());
+//        }
+//        if (searchDataHolder.getPotentialDemandMessages().getDemandTitle() != null) {
+//            search.addFilterLike("demand.title", searchDataHolder.getPotentialDemandMessages().getDemandTitle());
+//        }
+//        //TODO demand.price alebo offer.price???
+//        if (searchDataHolder.getPotentialDemandMessages().getPriceFrom() != null) {
+//            search.addFilterGreaterOrEqual("demand.price",
+//                    searchDataHolder.getPotentialDemandMessages().getPriceFrom());
+//        }
+//        if (searchDataHolder.getPotentialDemandMessages().getPriceTo() != null) {
+//            search.addFilterLessOrEqual("demand.price", searchDataHolder.getPotentialDemandMessages().getPriceTo());
+//        }
+//        return search;
+//    }
 
     /**
      * CLIENT.
@@ -522,6 +543,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @param subRootId
      * @return conversation list
      */
+    @Override
     public ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) {
 //        Message root = messageService.getById(threadRootId);
         Message subRoot = messageService.getById(subRootId);
@@ -546,22 +568,44 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return userMessageDetails;
     }
 
-    public List<UserMessageDetail> getInboxMessages(Long recipientId) {
-        return this.getMessages(recipientId, Arrays.asList(
+    @Override
+    public List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder) {
+        return this.getMessages(recipientId, searchDataHolder, Arrays.asList(
                 MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
     }
 
-    public List<UserMessageDetail> getSentMessages(Long senderId) {
-        return this.getMessages(senderId, Arrays.asList(MessageUserRoleType.SENDER));
+    @Override
+    public List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder) {
+        return this.getMessages(senderId, searchDataHolder, Arrays.asList(MessageUserRoleType.SENDER));
     }
 
-    private List<UserMessageDetail> getMessages(Long recipientId, List<MessageUserRoleType> roles) {
+    private List<UserMessageDetail> getMessages(Long recipientId, SearchModuleDataHolder searchDataHolder,
+            List<MessageUserRoleType> roles) {
         User recipient = generalService.find(User.class, recipientId);
+
+        Search messageSearch = null;
+        if (searchDataHolder != null) {
+            messageSearch = new Search(Message.class);
+            if (searchDataHolder.getMessagesTab().getSender() != null) {
+                messageSearch.addFilterIn("sender", generalService.search(new Search(User.class)
+                        .addFilterLike("email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
+            }
+            if (searchDataHolder.getMessagesTab().getSubject() != null) {
+                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
+            }
+            if (searchDataHolder.getMessagesTab().getBody() != null) {
+                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            }
+        }
+
         //Ziskaj vsetky spravy daneho uzivatela, kt bol oznaceny ako adresat
         List<MessageUserRole> recipientMessages = new ArrayList<MessageUserRole>();
         Search recipientMessagesSearch = new Search(MessageUserRole.class);
         recipientMessagesSearch.addFilterEqual("user", recipient);
         recipientMessagesSearch.addFilterIn("type", roles);
+        if (searchDataHolder != null) {
+            recipientMessagesSearch.addFilterIn("message", generalService.search(messageSearch));
+        }
         recipientMessages.addAll(generalService.search(recipientMessagesSearch));
 
 
@@ -575,12 +619,11 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Map<Long, Message> rootRecipientMessages = new TreeMap<Long, Message>();
         for (MessageUserRole mur : recipientMessages) {
             if (mur.getMessage().getParent() == null) {
-                if (!rootRecipientMessages.containsKey(mur.getMessage().getThreadRoot().getId())) {
-                    rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
-                }
+                // nemusi kontorlovat, ved thread_id s parent_id = null je vzdy len jeden
+//                if (!rootRecipientMessages.containsKey(mur.getMessage().getThreadRoot().getId())) {
+                rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
             }
         }
-
         //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
         List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
         for (Message msg : rootRecipientMessages.values()) {
@@ -589,7 +632,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             userMessagesSearch.addFilterEqual("message", msg);
             inboxMessages.addAll(generalService.search(userMessagesSearch));
         }
-
         List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
         for (UserMessage userMessage : inboxMessages) {
             inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
@@ -598,12 +640,31 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         return inboxMessagesDetail;
     }
 
-    public List<UserMessageDetail> getDeletedMessages(Long userId) {
-        Search userMessagesSearch = new Search(Message.class);
-        userMessagesSearch.addFilterEqual("user", generalService.find(User.class, userId));
-        List<UserMessage> userMessages = generalService.search(userMessagesSearch);
+    @Override
+    public List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder) {
+        Search messageSearch = new Search(Message.class);
+        messageSearch.addFilterEqual("messageState", MessageState.DELETED);
+        if (searchDataHolder != null) {
+            if (searchDataHolder.getMessagesTab().getSender() != null) {
+                messageSearch.addFilterIn("sender", generalService.search(new Search(User.class)
+                        .addFilterLike("email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
+            }
+            if (searchDataHolder.getMessagesTab().getSubject() != null) {
+                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
+            }
+            if (searchDataHolder.getMessagesTab().getBody() != null) {
+                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            }
+        }
 
+        Search userMessagesSearch = new Search(UserMessage.class);
+        userMessagesSearch.addFilterEqual("user", generalService.find(User.class, userId));
+        if (searchDataHolder != null) {
+            userMessagesSearch.addFilterIn("message", generalService.search(messageSearch));
+        }
+        List<UserMessage> userMessages = generalService.search(userMessagesSearch);
         Map<Long, UserMessage> rootDeletedMessages = new TreeMap<Long, UserMessage>();
+
         for (UserMessage userMessage : userMessages) {
             if (userMessage.getMessage().getParent() == null) {
                 if (!rootDeletedMessages.containsKey(userMessage.getMessage().getThreadRoot().getId())) {
@@ -611,11 +672,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 }
             }
         }
-
         List<UserMessageDetail> deletedMessagesDetail = new ArrayList<UserMessageDetail>();
+
         for (UserMessage userMessage : rootDeletedMessages.values()) {
             deletedMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
         }
+
         return deletedMessagesDetail;
     }
 }

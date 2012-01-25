@@ -16,6 +16,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -62,6 +63,7 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     private boolean initialized = false;
 
     /** Defines button actions. */
+    @Override
     public void bindView() {
         view.getReadBtn().addClickHandler(new ClickHandler() {
 
@@ -123,19 +125,22 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     }
     private final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
 
-    public void onInitInbox() {
+    public void onInitMessagesTabModuleInbox(SearchModuleDataHolder filter) {
         this.init();
-        eventBus.getInboxMessages(Storage.getUser().getUserId());
+        Storage.setCurrentlyLoadedView("messagesTabInbox");
+        eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
     }
 
-    public void onInitSent() {
+    public void onInitMessagesTabModuleSent(SearchModuleDataHolder filter) {
         this.init();
-        eventBus.getSentMessages(Storage.getUser().getUserId());
+        Storage.setCurrentlyLoadedView("messagesTabSent");
+        eventBus.getSentMessages(Storage.getUser().getUserId(), filter);
     }
 
-    public void onInitTrash() {
+    public void onInitMessagesTabModuleTrash(SearchModuleDataHolder filter) {
         this.init();
-        eventBus.getDeletedMessages(Storage.getUser().getUserId());
+        Storage.setCurrentlyLoadedView("messagesTabTrash");
+        eventBus.getDeletedMessages(Storage.getUser().getUserId(), filter);
     }
 
     public void onDisplayMessages(List<UserMessageDetail> messages) {

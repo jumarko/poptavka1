@@ -5,6 +5,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import java.util.logging.Logger;
 
 /**
@@ -24,9 +25,9 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
     /*******************************************************************/
     /**           .DEVEL PRESENTER INITIALIZATION SECTION.               */
     private static final Logger LOGGER = Logger.getLogger(MessagesModuleHistory.class.getName());
-    private static final String MESSAGES_INBOX = "initInbox";
-    private static final String MESSAGES_SENT = "initSent";
-    private static final String MESSAGES_DELETED = "initTrash";
+    private static final String MESSAGES_INBOX = "initMessagesTabModuleInbox";
+    private static final String MESSAGES_SENT = "initMessagesTabModuleSent";
+    private static final String MESSAGES_DELETED = "initMessagesTabModuleTrash";
 //    private MessageListPresenter messagePresenter = null;
 
     /**           DEVEL PRESENTER INITIALIZATION SECTION               */
@@ -40,15 +41,15 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
 
         //devel behaviour
         if (historyName.equals(MESSAGES_INBOX)) {
-            eventBus.initInbox();
+            eventBus.initMessagesTabModuleInbox(null);
         }
 
         if (historyName.equals(MESSAGES_SENT)) {
-            eventBus.initSent();
+            eventBus.initMessagesTabModuleSent(null);
         }
 
         if (historyName.equals(MESSAGES_DELETED)) {
-            eventBus.initTrash();
+            eventBus.initMessagesTabModuleTrash(null);
         }
     }
 
@@ -57,15 +58,15 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
         return false;
     }
 
-    public String onInitInbox() {
-        return "onInitInbox";
+    public String onInitMessagesTabModuleInbox(SearchModuleDataHolder filter) {
+        return "onInitMessagesTabModuleInbox";
     }
 
-    public String onInitSent() {
-        return "onInitSent";
+    public String onInitMessagesTabModuleSent(SearchModuleDataHolder filter) {
+        return "onInitMessagesTabModuleSent";
     }
 
-    public String onInitTrash() {
-        return "onInitTrash";
+    public String onInitMessagesTabModuleTrash(SearchModuleDataHolder filter) {
+        return "onInitMessagesTabModuleTrash";
     }
 }

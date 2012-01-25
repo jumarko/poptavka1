@@ -47,8 +47,14 @@ public interface SearchModuleEventBus extends EventBus {
 //    @Event(forwardToParent = true)
 //    void initDemandsTabModule(SearchModuleDataHolder filter);
 //
-//    @Event(forwardToParent = true)
-//    void initMessagesTabModule(SearchModuleDataHolder filter);
+    @Event(forwardToParent = true)
+    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
 //
 //    @Event(forwardToParent = true)
 //    void initAdminsTabModule(SearchModuleDataHolder filter);

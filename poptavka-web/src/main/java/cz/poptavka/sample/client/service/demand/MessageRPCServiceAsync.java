@@ -51,9 +51,12 @@ public interface MessageRPCServiceAsync {
 
     void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
 
-    void getInboxMessages(Long recipientId, AsyncCallback<List<UserMessageDetail>> callback);
+    void getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder,
+            AsyncCallback<List<UserMessageDetail>> callback);
 
-    void getSentMessages(Long senderId, AsyncCallback<List<UserMessageDetail>> callback);
+    void getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder,
+            AsyncCallback<List<UserMessageDetail>> callback);
 
-    void getDeletedMessages(Long userId, AsyncCallback<List<UserMessageDetail>> callback);
+    void getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder,
+            AsyncCallback<List<UserMessageDetail>> callback);
 }

@@ -27,6 +27,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 
+import com.mvp4g.client.view.ReverseViewInterface;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.demands.tab.SupplierListPresenter.IList;
 import cz.poptavka.sample.client.user.widget.grid.ColumnFactory;
@@ -41,8 +42,8 @@ import cz.poptavka.sample.shared.domain.message.TableDisplay;
  * @author beho
  *
  */
-public class SupplierList extends Composite implements IList {
-    //ReverseViewInterface<SupplierListPresenter>, IList {
+public class SupplierList extends Composite implements //IList {
+    ReverseViewInterface<SupplierListPresenter>, IList {
 
     private static DemandListUiBinder uiBinder = GWT.create(DemandListUiBinder.class);
     interface DemandListUiBinder extends UiBinder<Widget, SupplierList> {
@@ -67,15 +68,15 @@ public class SupplierList extends Composite implements IList {
     //detailWrapperPanel
     @UiField SimplePanel wrapperPanel;
 
-//    @Override
-//    public void setPresenter(SupplierListPresenter presenter) {
-//        this.presenter = presenter;
-//    }
-//
-//    @Override
-//    public SupplierListPresenter getPresenter() {
-//        return presenter;
-//    }
+    @Override
+    public void setPresenter(SupplierListPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public SupplierListPresenter getPresenter() {
+        return presenter;
+    }
 
     @Override
     public void createView() {

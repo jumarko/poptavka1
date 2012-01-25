@@ -11,6 +11,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.messages.tab.ConversationWrapperPresenter;
 import cz.poptavka.sample.client.user.messages.tab.MessageListPresenter;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -26,13 +27,13 @@ public interface MessagesModuleEventBus extends EventBus {
     //production init method
     //during development used multiple instancing
     @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
-    void initInbox();
+    void initMessagesTabModuleInbox(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
-    void initSent();
+    void initMessagesTabModuleSent(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
-    void initTrash();
+    void initMessagesTabModuleTrash(SearchModuleDataHolder searchDataHolder);
 
 //    @Event(handlers = MessageListPresenter.class)
 //    void initInbox();
@@ -78,13 +79,13 @@ public interface MessagesModuleEventBus extends EventBus {
     /**************************************************************************/
     /* Business events handled by SupplierListPresenter. */
     @Event(handlers = MessagesModuleMessageHandler.class)
-    void getInboxMessages(Long recipientId);
+    void getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = MessagesModuleMessageHandler.class)
-    void getSentMessages(Long senderId);
+    void getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = MessagesModuleMessageHandler.class)
-    void getDeletedMessages(Long userId);
+    void getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = MessagesModuleMessageHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);

@@ -181,8 +181,19 @@ public class AdminDemandsPresenter
 
     @Override
     public void bindView() {
+        view.getIdColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                eventBus.showAdminDemandDetail(object);
+            }
+        });
+        view.getCidColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                eventBus.showAdminDemandDetail(object);
+            }
+        });
         view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 if (!object.getTitle().equals(value)) {
@@ -195,7 +206,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (ClientDemandType clientDemandType : ClientDemandType.values()) {
@@ -212,7 +222,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
             @Override
             public void update(int index, FullDemandDetail object, String value) {
                 for (DemandStatusType demandStatusType : DemandStatusType.values()) {
@@ -229,7 +238,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 if (!object.getValidToDate().equals(value)) {
@@ -242,10 +250,9 @@ public class AdminDemandsPresenter
             }
         });
         view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getEndDate().equals(object)) {
+                if (!object.getEndDate().equals(value)) {
                     if (!originalData.containsKey(object.getDemandId())) {
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }
@@ -255,7 +262,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getDemandId())) {
@@ -268,7 +274,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
             @Override
             public void onChange(ChangeEvent arg0) {
                 int page = view.getPager().getPageStart() / view.getPageSize();
@@ -277,7 +282,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getCommitBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
@@ -294,7 +298,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -312,7 +315,6 @@ public class AdminDemandsPresenter
             }
         });
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {

@@ -109,6 +109,7 @@ public class HomeSuppliersPresenter
                     eventBus.atDisplaySuppliers(selected);
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
+                        searchDataHolder.initHomeSuppliers();
                     }
                     searchDataHolder.getHomeSuppliers().setSupplierCategory(
                             new CategoryDetail(selected.getId(), selected.getName()));
@@ -131,6 +132,7 @@ public class HomeSuppliersPresenter
                     eventBus.addToPath(selected);
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
+                        searchDataHolder.initHomeSuppliers();
                     }
                     searchDataHolder.getHomeSuppliers().setSupplierCategory(
                             new CategoryDetail(selected.getId(), selected.getName()));

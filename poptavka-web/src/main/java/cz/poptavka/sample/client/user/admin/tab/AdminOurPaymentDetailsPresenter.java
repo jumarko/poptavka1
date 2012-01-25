@@ -170,7 +170,7 @@ public class AdminOurPaymentDetailsPresenter
         eventBus.displayView(view.getWidgetView());
     }
 
-    public void onDisplayAdminTabOurPaymentDetails(List<PaymentDetail> paymentDetailList) {
+    public void onShowAdminTabOurPaymentDetails(List<PaymentDetail> paymentDetailList) {
         dataProvider.updateRowData(start, paymentDetailList);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
@@ -247,7 +247,7 @@ public class AdminOurPaymentDetailsPresenter
 
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getEndDate().equals(object)) {
+                if (!object.getEndDate().equals(value)) {
                     if (!originalData.containsKey(object.getDemandId())) {
                         originalData.put(object.getDemandId(), new FullDemandDetail(object));
                     }

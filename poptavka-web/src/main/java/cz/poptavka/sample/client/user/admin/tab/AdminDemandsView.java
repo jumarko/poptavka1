@@ -5,6 +5,7 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
@@ -207,7 +208,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        idColumn = addColumn(new MyClickCell(), "ID", true, 50, new GetValue<String>() {
+        idColumn = addColumn(new ClickableTextCell(), "ID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {
@@ -216,7 +217,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         });
 
         // Client ID.
-        cidColumn = addColumn(new MyClickCell(), "CID", true, 50, new GetValue<String>() {
+        cidColumn = addColumn(new ClickableTextCell(), "CID", true, 50, new GetValue<String>() {
 
             @Override
             public String getValue(FullDemandDetail object) {

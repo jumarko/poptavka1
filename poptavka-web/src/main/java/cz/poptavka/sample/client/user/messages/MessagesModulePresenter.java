@@ -36,6 +36,7 @@ public class MessagesModulePresenter
     //devel attribute
     private MessageListPresenter supList = null;
 
+    @Override
     public void bind() {
         /**
         // MENU - CLIENT
@@ -61,7 +62,7 @@ public class MessagesModulePresenter
                     view.getContentPanel().remove(view.getContentPanel().getWidget());
                 }
                 supList = eventBus.addHandler(MessageListPresenter.class);
-                supList.onInitInbox();
+                supList.onInitMessagesTabModuleInbox(null);
 
                 //production code
 //                eventBus.initInbox();
@@ -79,7 +80,7 @@ public class MessagesModulePresenter
                     view.getContentPanel().remove(view.getContentPanel().getWidget());
                 }
                 supList = eventBus.addHandler(MessageListPresenter.class);
-                supList.onInitSent();
+                supList.onInitMessagesTabModuleSent(null);
 
                 //production code
 //                eventBus.initSent();
@@ -97,10 +98,10 @@ public class MessagesModulePresenter
                     view.getContentPanel().remove(view.getContentPanel().getWidget());
                 }
                 supList = eventBus.addHandler(MessageListPresenter.class);
-                supList.onInitTrash();
+                supList.onInitMessagesTabModuleTrash(null);
 
                 //production code
-                eventBus.initTrash();
+//                eventBus.initTrash();
             }
         });
     }

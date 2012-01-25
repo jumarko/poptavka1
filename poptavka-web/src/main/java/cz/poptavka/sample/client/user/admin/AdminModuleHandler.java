@@ -654,7 +654,7 @@ public class AdminModuleHandler extends BaseEventHandler<AdminModuleEventBus> {
 
                     @Override
                     public void onSuccess(List<PaymentDetail> result) {
-                        eventBus.displayAdminTabOurPaymentDetails(result);
+                        eventBus.showAdminTabOurPaymentDetails(result);
                     }
                 });
     }

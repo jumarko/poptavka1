@@ -51,6 +51,7 @@ public class SearchModulePresenter extends
     }
     private LoadingDiv loading = null;
 
+    @Override
     public void bind() {
         view.getSearchBtn().addClickHandler(new ClickHandler() {
 
@@ -62,7 +63,7 @@ public class SearchModulePresenter extends
                     eventBus.initHomeDemandsModule(view.getFilter(), "user");
                 } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
                     eventBus.initHomeSuppliersModule(view.getFilter(), "home");
-                } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
+                } else if (Storage.getCurrentlyLoadedView().equals("userSuppliers")) {
                     eventBus.initHomeSuppliersModule(view.getFilter(), "user");
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
@@ -78,20 +79,23 @@ public class SearchModulePresenter extends
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminSuppliers")) {
                 } else if (Storage.getCurrentlyLoadedView().equals("potentialDemandMessages")) {
 //                    eventBus.initDemandsTabModule(view.getFilter());
-                } else if (Storage.getCurrentlyLoadedView().equals("messagesTab")) {
-//                    eventBus.initMessagesTabModule(view.getFilter());
+                } else if (Storage.getCurrentlyLoadedView().equals("messagesTabInbox")) {
+                    eventBus.initMessagesTabModuleInbox(view.getFilter());
+                } else if (Storage.getCurrentlyLoadedView().equals("messagesTabSent")) {
+                    eventBus.initMessagesTabModuleSent(view.getFilter());
+                } else if (Storage.getCurrentlyLoadedView().equals("messagesTabTrash")) {
+                    eventBus.initMessagesTabModuleTrash(view.getFilter());
                 } else { //Admin...whatever
                     eventBus.initAdminModule(view.getFilter());
                 }
 
-                ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).
-                        displayAdvSearchDataInfo(view.getFilter(), view.getSerachContent());
+                ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).displayAdvSearchDataInfo(
+                        view.getFilter(), view.getSerachContent());
             }
         });
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-
                 if (Storage.getCurrentlyLoadedView().equals("homeDemands")) {
                     eventBus.initHomeDemandView(view.getPopupPanel());
                 } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
@@ -122,7 +126,9 @@ public class SearchModulePresenter extends
                     eventBus.initAdminSuppliersView(view.getPopupPanel());
                 } else if (Storage.getCurrentlyLoadedView().equals("potentialDemandMessages")) {
                     eventBus.initPotentialDemandMessagesView(view.getPopupPanel());
-                } else if (Storage.getCurrentlyLoadedView().equals("messagesTab")) {
+                } else if (Storage.getCurrentlyLoadedView().equals("messagesTabInbox")
+                        || Storage.getCurrentlyLoadedView().equals("messagesTabSent")
+                        || Storage.getCurrentlyLoadedView().equals("messagesTabTrash")) {
                     eventBus.initMessagesTabView(view.getPopupPanel());
                 } else {
                     return;

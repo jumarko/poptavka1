@@ -19,36 +19,26 @@
     </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="700">
-            <g:DecoratorPanel>
-                <g:HTMLPanel>
-                    <table cellspacing='0' cellpadding='0'>
-                        <tr>
-                            <td valign='top'>
-                                <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align='center'>
-                                <g:HorizontalPanel>
-                                    <c:SimplePager ui:field='pager' />
-                                    <g:ListBox ui:field='pageSizeCombo'/>
-                                </g:HorizontalPanel>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td  align='left'>
-                                <g:HorizontalPanel>
-                                    <g:Button ui:field="refresh">Refresh</g:Button>
-                                    <g:Button ui:field="commit">Commit changes</g:Button>
-                                    <g:Button ui:field="rollback">Rollback changes</g:Button>
-                                    <g:Label>Clients changed: </g:Label>
-                                    <g:Label ui:field="changesLabel"></g:Label>
-                                </g:HorizontalPanel>
-                            </td>
-                        </tr>
-                    </table>
-                </g:HTMLPanel>
-            </g:DecoratorPanel>
+            <g:DockLayoutPanel unit="PX">
+                <g:south size="50">
+                    <g:HorizontalPanel>
+                        <g:Button ui:field="refresh">Refresh</g:Button>
+                        <g:Button ui:field="commit">Commit changes</g:Button>
+                        <g:Button ui:field="rollback">Rollback changes</g:Button>
+                        <g:Label>Clients changed: </g:Label>
+                        <g:Label ui:field="changesLabel"></g:Label>
+                    </g:HorizontalPanel>
+                </g:south>
+                <g:south size="35">
+                    <g:HorizontalPanel>
+                        <c:SimplePager ui:field='pager' />
+                        <g:ListBox ui:field='pageSizeCombo' />
+                    </g:HorizontalPanel>
+                </g:south>
+                <g:center>
+                    <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
+                </g:center>
+            </g:DockLayoutPanel>
         </g:west>
         <g:center>
             <g:ScrollPanel>
