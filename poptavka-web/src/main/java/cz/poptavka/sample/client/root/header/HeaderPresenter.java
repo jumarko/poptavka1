@@ -62,6 +62,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         this.loggedIn = false;
         view.getLoginLink().setText(MSGS.logIn());
         eventBus.displayMenu();
+        eventBus.initHomeWelcomeModule(null);
     }
 
     public void onAtAccount() {

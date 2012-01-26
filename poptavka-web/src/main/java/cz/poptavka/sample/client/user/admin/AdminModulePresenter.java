@@ -15,10 +15,12 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.widget.LoadingDiv;
 
 @Presenter(view = AdminModuleView.class, multiple = true)
-public class AdminModulePresenter extends BasePresenter<AdminModulePresenter
-        .AdminModuleInterface, AdminModuleEventBus> {
+public class AdminModulePresenter
+        extends
+        BasePresenter<AdminModulePresenter.AdminModuleInterface, AdminModuleEventBus> {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT
+            .create(LocalizableMessages.class);
 
     public interface AdminModuleInterface {
 
@@ -52,6 +54,7 @@ public class AdminModulePresenter extends BasePresenter<AdminModulePresenter
 
         SimplePanel getContentPanel();
     }
+
     private LoadingDiv loading = null;
 
     public void bind() {
@@ -143,13 +146,13 @@ public class AdminModulePresenter extends BasePresenter<AdminModulePresenter
 
     public void onInitAdminModule(SearchModuleDataHolder filter) {
         GWT.log("onInitAdminModule - som tu");
-        //eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
-//        eventBus.setTabAdminWidget(view.getWidgetView());
-//        eventBus.fireMarkedEvent();
-//        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
+        // eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
+        // eventBus.setTabAdminWidget(view.getWidgetView());
+        // eventBus.fireMarkedEvent();
+        // eventBus.setUserInteface((StyleInterface) view.getWidgetView());
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
-//        panel.setWidget(view.getWidgetView());
+        // panel.setWidget(view.getWidgetView());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
         eventBus.setBodyHolderWidget(view.getWidgetView());
 
@@ -161,7 +164,8 @@ public class AdminModulePresenter extends BasePresenter<AdminModulePresenter
             eventBus.initClients(filter);
         } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {
             eventBus.initDemands(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminEmailsActivation")) {
+        } else if (Storage.getCurrentlyLoadedView().equals(
+                "adminEmailsActivation")) {
             eventBus.initEmailsActivation(filter);
         } else if (Storage.getCurrentlyLoadedView().equals("adminInvoices")) {
             eventBus.initInvoices(filter);
@@ -169,7 +173,8 @@ public class AdminModulePresenter extends BasePresenter<AdminModulePresenter
             eventBus.initMessages(filter);
         } else if (Storage.getCurrentlyLoadedView().equals("adminOffers")) {
             eventBus.initOffers(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminPaymentMethods")) {
+        } else if (Storage.getCurrentlyLoadedView().equals(
+                "adminPaymentMethods")) {
             eventBus.initPaymentMethods(filter);
         } else if (Storage.getCurrentlyLoadedView().equals("adminPermissions")) {
             eventBus.initPermissions(filter);

@@ -122,6 +122,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 //        eventBus.getCategories();
 //        eventBus.getLocalities();
         eventBus.initSearchModule(view.getSearchPanel());
+        eventBus.initHomeWelcomeModule(null);
         onDisplayMenu();
         // TODO initial homepage widget compilation
     }

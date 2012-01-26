@@ -191,6 +191,8 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomePresenter.class)
     void showHideAdvancedSearchPanel(String content, int whereIdx, int catIdx,
             int locIdx);
+    @Event(forwardToParent = true)
+    void initHomeWelcomeModule(Object object);
 
     // TODO Martin presunut do SearchModuleHandlera
     // @Event(handlers = SearchModuleHandler.class)

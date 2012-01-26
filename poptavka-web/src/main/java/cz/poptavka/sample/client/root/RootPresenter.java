@@ -144,6 +144,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtAccount() {
-        //tu ak nejake zmeny root modulu po prihlaseni
+        eventBus.initDemandModule();
     }
 }
