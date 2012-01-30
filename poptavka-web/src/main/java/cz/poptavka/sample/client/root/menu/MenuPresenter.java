@@ -11,7 +11,8 @@ import cz.poptavka.sample.client.root.interfaces.IMenuView;
 import cz.poptavka.sample.client.root.interfaces.IMenuView.IMenuPresenter;
 
 @Presenter(view = MenuView.class)
-public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus> implements IMenuPresenter {
+public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
+        implements IMenuPresenter {
 
     public void onStart() {
         bindView();
@@ -46,5 +47,11 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus> implem
             }
         });
 
+    }
+
+    public void onSetHomeMenu() {
+        bindView();
+        GWT.log("set menu after log out");
+        eventBus.setMenu(view);
     }
 }

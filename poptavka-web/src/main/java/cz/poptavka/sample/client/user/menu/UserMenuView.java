@@ -1,17 +1,20 @@
 package cz.poptavka.sample.client.user.menu;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.dom.client.UListElement;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 
-public class UserMenuView extends Composite implements HasText {
+import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.client.root.ReverseCompositeView;
+import cz.poptavka.sample.client.user.IUserMenuView.IUserMenuPresenter;
+import cz.poptavka.sample.client.user.interfaces.IUserMenuView;
+
+public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter>
+        implements IUserMenuView {
 
     private static UserMenuViewUiBinder uiBinder = GWT
             .create(UserMenuViewUiBinder.class);
@@ -19,29 +22,49 @@ public class UserMenuView extends Composite implements HasText {
     interface UserMenuViewUiBinder extends UiBinder<Widget, UserMenuView> {
     }
 
-    public UserMenuView() {
-        initWidget(uiBinder.createAndBindUi(this));
-    }
-
     @UiField
-    Button button;
+    Button demands, messages, settings, contacts, administration;
+    @UiField
+    UListElement menuList;
 
-    public UserMenuView(String firstName) {
-        initWidget(uiBinder.createAndBindUi(this));
-        button.setText(firstName);
+    public UserMenuView() {
+        uiBinder.createAndBindUi(this);
+        menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
     }
 
-    @UiHandler("button")
-    void onClick(ClickEvent e) {
-        Window.alert("Hello!");
+    @Override
+    public HasClickHandlers getDemandsButton() {
+        return demands;
     }
 
-    public void setText(String text) {
-        button.setText(text);
+    @Override
+    public HasClickHandlers getMessagesButton() {
+        return messages;
     }
 
-    public String getText() {
-        return button.getText();
+    @Override
+    public HasClickHandlers getSettingsButton() {
+        return settings;
+    }
+
+    @Override
+    public HasClickHandlers getContactsButton() {
+        return contacts;
+    }
+
+    @Override
+    public HasClickHandlers getAdministrationButton() {
+        return administration;
+    }
+
+    @Override
+    public void setHomeToken(String token) {
+
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 
 }

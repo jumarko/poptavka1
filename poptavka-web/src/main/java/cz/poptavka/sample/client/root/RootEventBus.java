@@ -33,6 +33,7 @@ import cz.poptavka.sample.client.root.searchBar.SearchBarPresenter;
 import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.client.user.admin.AdminModule;
 import cz.poptavka.sample.client.user.demands.DemandModule;
+import cz.poptavka.sample.client.user.menu.UserMenuPresenter;
 import cz.poptavka.sample.client.user.messages.MessagesModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
@@ -198,5 +199,11 @@ public interface RootEventBus extends EventBus {
 
     @Event(modulesToLoad = SearchModule.class)
     void clearSearchContent();
+
+    @Event(handlers = UserMenuPresenter.class)
+    void setUserMenu();
+
+    @Event(handlers = MenuPresenter.class)
+    void setHomeMenu();
 
 }
