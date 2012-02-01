@@ -103,6 +103,10 @@ public final class ReflectionUtils {
                     && startsWithSomePrefix(publicMethod.getName(), accessorPrefixes)) {
                 return publicMethod;
             }
+            // special case are boolean properties which names start with "is" - they can have getter with same name
+            if (field.getName().startsWith(GETTER_BOOLEAN_PREFIX) && publicMethod.getName().equals(field.getName())) {
+                return publicMethod;
+            }
         }
 
         return null;

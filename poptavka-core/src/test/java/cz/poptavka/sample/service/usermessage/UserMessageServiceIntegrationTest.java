@@ -7,6 +7,7 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
+import cz.poptavka.sample.service.GeneralService;
 import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -24,6 +25,8 @@ public class UserMessageServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private UserMessageService userMessageService;
+    @Autowired
+    private GeneralService generalService;
 
     @Test
     public void testGetPotentialDemands() {
@@ -33,5 +36,12 @@ public class UserMessageServiceIntegrationTest extends DBUnitBaseTest {
                 this.userMessageService.getPotentialDemands(supplierWithPotentialDemands);
         assertThat("Incorrect number of potential demands for supplier id=" + supplierWithPotentialDemands.getId(),
                 potentialDemands.size(), is(2));
+    }
+
+    @Test
+    public void testSetMessageReadStatus() {
+        final UserMessage unreadUserMessage = this.generalService.find(UserMessage.class, 4L);
+        unreadUserMessage.setRead(true);
+        this.generalService.save(unreadUserMessage);
     }
 }

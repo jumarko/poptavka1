@@ -11,19 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Handy ancestor for all Tests that want to communicate with real database.
  * <p>
- * Classic integration tests ({@link DbUnitBaseTest} should be prefered.
+ * Classic integration tests ({@link DbUnitBaseTest} should be preferred.
  * Db tests serve only as a secondary testing tool to test behavior of an application  against real db.
  * <p>
  *     However, all data that are modified with these tests should be rolled back unless custom transaction handling
  *     or some obscure operations are used.
- *     If you really want to changes being commited into the DB you have to use @Rollback(value = false) annotation
+ *     If you really want to changes being committed into the DB you have to use @Rollback(value = false) annotation
  *     on test method.
  * <p>
  *     Each test method that can change the state of DB should be marked as being ignored by following annotation>
- *     <pre> @Ignore // do not use live DB if it is not neccessary </pre>
+ *     <pre> @Ignore // do not use live DB if it is not necessary </pre>
  * <p>
  *     Default transaction propagation for this kind of tests is <i>readOnly</i>.
- *     If you want to perform CUD operations then you want to use following annotation:
+ *     If you want to perform CRUD operations then you want to use following annotation:
  *     <pre>@Transactional(propagation = Propagation.REQUIRED)</pre>
  *
  *

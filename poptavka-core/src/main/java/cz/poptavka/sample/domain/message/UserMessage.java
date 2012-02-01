@@ -64,7 +64,8 @@ public class UserMessage extends DomainObject {
     @Column(length = OrmConstants.ENUM_SHORTINT_FIELD_LENGTH)
     private MessageContext messageContext;
 
-    private boolean read;
+    /** Column cannot be named "read" because that is MySQL reserved key word */
+    private boolean isRead;
     private boolean starred;
 
 
@@ -101,11 +102,11 @@ public class UserMessage extends DomainObject {
     }
 
     public boolean isRead() {
-        return read;
+        return isRead;
     }
 
     public void setRead(boolean read) {
-        this.read = read;
+        this.isRead = read;
     }
 
     public boolean isStarred() {

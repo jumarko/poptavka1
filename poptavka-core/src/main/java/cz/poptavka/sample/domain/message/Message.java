@@ -63,7 +63,7 @@ import org.hibernate.annotations.CascadeType;
                         + "from UserMessage as subUserMessage right join"
                         + " subUserMessage.message as subMessage"
                         + " right join subMessage.threadRoot as message\n"
-                        + "where subUserMessage.read = false"
+                        + "where subUserMessage.isRead = false"
                         + " and subUserMessage.user = :user"
                         + " and message.demand is not null"
                         + " and message.sender = :sender\n"
