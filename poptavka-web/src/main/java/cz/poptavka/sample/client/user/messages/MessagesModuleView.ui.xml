@@ -13,6 +13,11 @@
                 </div>-->
                 <ul>
                     <li>
+                        <g:Button ui:field="composeButton">
+                            <ui:msg key="composeButton">Composer</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
                         <g:Button ui:field="inboxButton">
                             <ui:msg key="inbox">Inbox</ui:msg>
                         </g:Button>
@@ -31,7 +36,37 @@
             </g:HTMLPanel>
         </g:west>
         <g:center>
-            <g:ScrollPanel>
+            <g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="splitPanelSouth">
+                <g:south size="800">
+                    <g:SimplePanel ui:field="wrapperDetail">
+                        <g:HTMLPanel>
+                            <div>
+                                <strong>Defail detail panel</strong>
+                                <br />
+                                <br />
+                                <div>
+                            Default content....can contain some advertisements.
+                                </div>
+                            </div>
+                        </g:HTMLPanel>
+                    </g:SimplePanel>
+                </g:south>
+                <g:center>
+                    <g:SimplePanel ui:field="wrapperMain">
+                        <g:HTMLPanel>
+                            <div>
+                                <strong>Main panel</strong>
+                                <br />
+                                <br />
+                                <div>
+                            Main content for MessageList and ComposeMessage widgets.
+                                </div>
+                            </div>
+                        </g:HTMLPanel>    
+                    </g:SimplePanel>                        
+                </g:center>
+            </g:SplitLayoutPanel>
+<!--            <g:ScrollPanel>
                 <g:SimplePanel ui:field="contentPanel">
                     <g:HTML>
                         <center>
@@ -41,7 +76,7 @@
                         <br />
                     </g:HTML>
                 </g:SimplePanel>
-            </g:ScrollPanel>
+            </g:ScrollPanel>-->
         </g:center>
     </g:DockLayoutPanel>
 </ui:UiBinder>

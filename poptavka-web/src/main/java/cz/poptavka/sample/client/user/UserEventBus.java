@@ -416,7 +416,7 @@ public interface UserEventBus extends EventBusWithLookup {
     // init demands module
 
     @Event(forwardToParent = true)
-    void initMessagesModule();
+    void initMessagesModule(String action);
 
     @Event(forwardToParent = true)
     void initAdminModule(SearchModuleDataHolder filter);

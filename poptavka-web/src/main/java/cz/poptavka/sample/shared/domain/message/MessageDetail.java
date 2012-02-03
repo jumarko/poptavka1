@@ -17,12 +17,13 @@ import cz.poptavka.sample.shared.domain.type.MessageType;
  */
 public class MessageDetail implements Serializable {
 
+    private static final String HTML_UNREAD_START = "<strong>";
+    private static final String HTML_UNREAD_END = "</strong>";
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -928374659233195109L;
     private long messageId;
-
     private long threadRootId;
     private long parentId;
 //    private long firstBornId;
@@ -38,10 +39,8 @@ public class MessageDetail implements Serializable {
     private long userMessageId;
     private boolean read;
     private boolean starred;
-
     private int messageCount;
     private int unreadSubmessages;
-
 
     public MessageDetail() {
     }
@@ -185,7 +184,6 @@ public class MessageDetail implements Serializable {
 //    public void setNexSiblingId(long nexSiblingId) {
 //        this.nexSiblingId = nexSiblingId;
 //    }
-
     /**
      * @return the subject
      */
@@ -337,6 +335,14 @@ public class MessageDetail implements Serializable {
     public String getFormattedMessageCount() {
         return "(" + getMessageCount() + "/"
                 + getUnreadSubmessages() + ")";
+    }
+
+    public static String displayHtml(String trustedHtml, boolean isRead) {
+        if (isRead) {
+            return trustedHtml;
+        } else {
+            return HTML_UNREAD_START + trustedHtml + HTML_UNREAD_END;
+        }
     }
 
     @Override

@@ -43,6 +43,8 @@ public interface MessageRPCService extends RemoteService {
 
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 
+    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl);
+
     OfferMessageDetail sendOffer(OfferMessageDetail demandOffer);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
@@ -56,4 +58,6 @@ public interface MessageRPCService extends RemoteService {
     List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
 
     List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
+
+    void deleteMessages(List<Long> messagesIds);
 }

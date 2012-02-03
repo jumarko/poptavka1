@@ -6,6 +6,7 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.logging.Logger;
 
 /**
@@ -28,8 +29,9 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
     private static final String MESSAGES_INBOX = "initMessagesTabModuleInbox";
     private static final String MESSAGES_SENT = "initMessagesTabModuleSent";
     private static final String MESSAGES_DELETED = "initMessagesTabModuleTrash";
-//    private MessageListPresenter messagePresenter = null;
+    private static final String COMPOSE_MESSAGE = "initMessagesTabComposeMail";
 
+//    private MessageListPresenter messagePresenter = null;
     /**           DEVEL PRESENTER INITIALIZATION SECTION               */
     /*******************************************************************/
     @Override
@@ -51,6 +53,10 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
         if (historyName.equals(MESSAGES_DELETED)) {
             eventBus.initMessagesTabModuleTrash(null);
         }
+
+        if (historyName.equals(COMPOSE_MESSAGE)) {
+            eventBus.initMessagesTabComposeMail(null, null);
+        }
     }
 
     @Override
@@ -68,5 +74,9 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
 
     public String onInitMessagesTabModuleTrash(SearchModuleDataHolder filter) {
         return "onInitMessagesTabModuleTrash";
+    }
+
+    public String onInitMessagesTabComposeMail(UserDetail recipient, String action) {
+        return "onInitMessagesTabComposeMail";
     }
 }

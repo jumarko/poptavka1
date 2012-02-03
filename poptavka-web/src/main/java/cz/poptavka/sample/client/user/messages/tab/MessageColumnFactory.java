@@ -1,10 +1,10 @@
 package cz.poptavka.sample.client.user.messages.tab;
 
 import java.util.Comparator;
-import java.util.Date;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -15,8 +15,8 @@ import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.user.widget.grid.cell.ClickableDateCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.StarCell;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 /**
  * Factory class for creating DataGrid columns including optional sorting ability.
@@ -127,7 +127,7 @@ public class MessageColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
-                return obj.getSenderEmail();
+                return MessageDetail.displayHtml(obj.getSenderEmail(), obj.isRead());
             }
         });
         if (sortHandler != null) {
@@ -137,8 +137,8 @@ public class MessageColumnFactory<T> {
                 @Override
                 public int compare(T o1, T o2) {
 
-                    return ((MessageTableDisplay) o1).getSenderEmail()
-                            .compareTo(((MessageTableDisplay) o2).getSenderEmail());
+                    return ((MessageTableDisplay) o1).getSenderEmail().compareTo(
+                            ((MessageTableDisplay) o2).getSenderEmail());
                 }
             });
         }
@@ -165,9 +165,10 @@ public class MessageColumnFactory<T> {
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
                 if (displayMessages) {
-                    return obj.getMessageDetail().getSubject() + " " + obj.getFormattedMessageCount();
+                    return MessageDetail.displayHtml(
+                            obj.getMessageDetail().getSubject() + " " + obj.getFormattedMessageCount(), obj.isRead());
                 } else {
-                    return obj.getMessageDetail().getSubject();
+                    return MessageDetail.displayHtml(obj.getMessageDetail().getSubject(), obj.isRead());
                 }
             }
         };
@@ -195,15 +196,17 @@ public class MessageColumnFactory<T> {
      * @param sortHandler
      * @return ratingColumn
      */
-    public Column<T, Date> createDateColumn(ListHandler<T> sortHandler, final int dateType) {
-        Column<T, Date> ratingColumn = new Column<T, Date>(new ClickableDateCell()) {
+    public Column<T, String> createDateColumn(ListHandler<T> sortHandler, final int dateType) {
+        Column<T, String> ratingColumn = new Column<T, String>(tableTextCell) {
 
-            private int type = dateType;
+            private int type = dateType; // ???
 
             @Override
-            public Date getValue(T object) {
+            public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
-                return obj.getMessageDetail().getCreated();
+                return MessageDetail.displayHtml(
+                        DateTimeFormat.getFormat("MM/dd/yy").format(obj.getMessageDetail().getCreated()),
+                        obj.isRead());
             }
         };
         if (sortHandler != null) {
@@ -212,8 +215,8 @@ public class MessageColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    return ((MessageTableDisplay) o1).getMessageDetail().getCreated()
-                            .compareTo(((MessageTableDisplay) o2).getMessageDetail().getCreated());
+                    return ((MessageTableDisplay) o1).getMessageDetail().getCreated().compareTo(
+                            ((MessageTableDisplay) o2).getMessageDetail().getCreated());
                 }
             });
         }

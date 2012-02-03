@@ -183,7 +183,7 @@ public interface RootEventBus extends EventBus {
     void initAdminModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = MessagesModule.class)
-    void initMessagesModule();
+    void initMessagesModule(String action);
 
     @Event(modulesToLoad = DemandModule.class)
     void initDemandModule();

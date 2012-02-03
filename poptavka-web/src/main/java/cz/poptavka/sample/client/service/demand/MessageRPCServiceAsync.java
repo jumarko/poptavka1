@@ -27,6 +27,8 @@ public interface MessageRPCServiceAsync {
 
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 
+    void sendInternalMessage(MessageDetail messageDetailImpl, AsyncCallback<MessageDetail> callback);
+
     void sendOffer(OfferMessageDetail demandOffer, AsyncCallback<OfferMessageDetail> callback);
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
@@ -59,4 +61,6 @@ public interface MessageRPCServiceAsync {
 
     void getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder,
             AsyncCallback<List<UserMessageDetail>> callback);
+
+    void deleteMessages(List<Long> messagesIds, AsyncCallback<List<UserMessageDetail>> callback);
 }

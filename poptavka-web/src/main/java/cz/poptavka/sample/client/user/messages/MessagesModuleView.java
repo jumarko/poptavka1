@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -24,9 +25,11 @@ public class MessagesModuleView extends Composite
     private static final Logger LOGGER = Logger.getLogger(MessagesModuleView.class.getName());
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField
-    SimplePanel contentPanel;
+    SimplePanel wrapperMain, wrapperDetail;
     @UiField
-    Button inboxButton, sentButton, trashButton;
+    Button inboxButton, sentButton, trashButton, composeButton;
+    @UiField
+    SplitLayoutPanel splitPanelSouth;
 
     public MessagesModuleView() {
         StyleResource.INSTANCE.common().ensureInjected();
@@ -39,8 +42,18 @@ public class MessagesModuleView extends Composite
     }
 
     @Override
-    public void setContent(Widget contentWidget) {
-        contentPanel.setWidget(contentWidget);
+    public SimplePanel getWrapperMain() {
+        return wrapperMain;
+    }
+
+    @Override
+    public SimplePanel getWrapperDetail() {
+        return wrapperDetail;
+    }
+
+    @Override
+    public Button getComposeButton() {
+        return composeButton;
     }
 
     @Override
@@ -58,6 +71,11 @@ public class MessagesModuleView extends Composite
         return trashButton;
     }
 
+    @Override
+    public SplitLayoutPanel getSplitPanel() {
+        return splitPanelSouth;
+    }
+
     /** toggle visible actions/buttons for current user decided by his role. **/
     @Override
     public void setRoleInterface(Role role) {
@@ -73,10 +91,5 @@ public class MessagesModuleView extends Composite
             default:
                 break;
         }
-    }
-
-    @Override
-    public SimplePanel getContentPanel() {
-        return contentPanel;
     }
 }

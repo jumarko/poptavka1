@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -12,19 +14,19 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
-import cz.poptavka.sample.client.user.widget.messaging.DevelOfferQuestionPresenter;
+import cz.poptavka.sample.client.user.widget.messaging.OfferQuestionPresenter;
 import cz.poptavka.sample.client.user.widget.messaging.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = ConversationWrapperView.class, multiple = true)
-public class ConversationWrapperPresenter extends
-        LazyPresenter<ConversationWrapperPresenter.IDetailWrapper, MessagesModuleEventBus> {
+public class ConversationWrapperPresenter
+        extends LazyPresenter<ConversationWrapperPresenter.IDetailWrapper, MessagesModuleEventBus> {
 
     public static final int DETAIL = 0;
     public static final int CHAT = 1;
 
-    public interface IDetailWrapper extends LazyView {
+    public interface IDetailWrapper extends LazyView, IsWidget {
 
         Widget getWidgetView();
 
@@ -36,7 +38,60 @@ public class ConversationWrapperPresenter extends
 //        void toggleDemandLoading();
         void toggleConversationLoading();
 
+        Button getReplyBtn();
+
         void setChat(ArrayList<MessageDetail> chatMessages);
+    }
+
+    @Override
+    public void bindView() {
+        view.getReplyBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                ComposeMessagePresenter composer = eventBus.addHandler(ComposeMessagePresenter.class);
+                composer.onInitMessagesTabComposeMail(null, null);
+//                eventBus.initMessagesTabComposeMail(null, null);
+            }
+        });
+    }
+
+    /**
+     * New data are fetched from db.
+     *
+     * @param demandId ID for demand detail
+     * @param messageId ID for demand related conversation
+     * @param userMessageId ID for demand related conversation
+     */
+    public void onDisplayConversation(Long threadRootId, Long subRootId) {
+        //TODO
+        //copy role check from old implementation
+        //
+        //
+
+        //can be solved by enum in future or can be accesed from storage class
+//        detailSection.showLoading(DevelDetailWrapperPresenter.DETAIL);
+//        eventBus.requestDemandDetail(demandId, type);
+
+        //add conversation loading events and so on
+        eventBus.displayDetail(view.getWidgetView());
+        this.showLoading(CHAT);
+//        this.initReplyWidget();
+        eventBus.requestConversation(threadRootId, subRootId);
+
+
+//        eventBus.requestConversation(124L, 124L);
+
+        //init default replyWidget
+        //it is initalized now, because we do not need to have it visible before first demand selection
+
+    }
+
+    public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
+        //neccessary check for method to be executed only in appropriate presenter
+        if (type.equals(handlingType)) {
+            this.addConversationMessage(sentMessage);
+        }
     }
     private ViewType type;
     /**
@@ -49,7 +104,7 @@ public class ConversationWrapperPresenter extends
      * - enabling replyWidget after message sending
      * - ... more to come?
      */
-    private DevelOfferQuestionPresenter offerQuestionReply = null;
+    private OfferQuestionPresenter offerQuestionReply = null;
 //
 //    private OfferQuestionPresenter potentialViewReplyWiget = null;
 //    private QuestionPresenter myDemandsViewReplyWiget = null;
@@ -87,22 +142,11 @@ public class ConversationWrapperPresenter extends
      */
     public void initReplyWidget() {
         if (offerQuestionReply == null) {
-            offerQuestionReply = eventBus.addHandler(DevelOfferQuestionPresenter.class);
+            offerQuestionReply = eventBus.addHandler(OfferQuestionPresenter.class);
         }
         offerQuestionReply.initReplyWindow(view.getReplyHolder());
     }
 
-    /**
-     * Response method for fetching demandDetail.
-     *
-     * @param demandDetail detail to be displayed
-     */
-//    public void onResponseDemandDetail(FullDemandDetail demandDetail, ViewType wrapperType) {
-//        //neccessary check for method to be executed only in appropriate presenter
-//        if (type.equals(wrapperType)) {
-//            view.setDetail(demandDetail);
-//        }
-//    }
     /**
      * Response method for fetching demand-related chat.
      * Internally creates clickHandler for ReplyWidgets submit button.
@@ -117,7 +161,7 @@ public class ConversationWrapperPresenter extends
         //boolean param - for collapsed conversation can be fetched from UserDetail object (some kind of setting)
         view.setChat(chatMessages);
         //init replyWidget
-        offerQuestionReply.addSubmitHandler(bindReplyWindowAction());
+//            offerQuestionReply.addSubmitHandler(bindReplyWindowAction());
 //        }
     }
 
@@ -141,7 +185,7 @@ public class ConversationWrapperPresenter extends
                         MessageDetail messageToSend = offerQuestionReply.getCreatedMessage();
                         messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                         messageToSend.setSenderId(Storage.getUser().getUserId());
-                        eventBus.sendMessage(messageToSend, type);
+                        eventBus.sendMessage(messageToSend, "composeReply");
 //                        Window.alert(messageToSend.getMessageId() + "");
                     } else {
                         // TODO

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.user.messages;
 
+import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.Window;
@@ -31,8 +32,8 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
      * @param messageToSend
      * @param type
      */
-    public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
-        messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
+    public void onSendMessage(MessageDetail messageToSend, final String action) {
+        messageService.sendInternalMessage(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -42,7 +43,15 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
 
             @Override
             public void onSuccess(MessageDetail sentMessage) {
-                eventBus.sendMessageResponse(sentMessage, type);
+                if (action.equals("composeNewForwarded")) {
+                    // TODO forward back where I was when forwarded to Compose Message widget
+                } else if (action.equals("composeNew")) {
+                    //TODO forward to inbox
+                    eventBus.initMessagesTabModuleInbox(null);
+                } else if (action.equals("composeReply")) {
+                    //TODO forward to inbox && display relevant conversation with new reply
+                }
+//                eventBus.sendMessageResponse(sentMessage, type);
             }
         });
     }
@@ -148,6 +157,21 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
+            }
+        });
+    }
+
+    public void onDeleteMessages(List<Long> messagesIds) {
+        messageService.deleteMessages(messagesIds, new AsyncCallback<List<UserMessageDetail>>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(List<UserMessageDetail> result) {
+                GWT.log("Messages deleted.");
             }
         });
     }

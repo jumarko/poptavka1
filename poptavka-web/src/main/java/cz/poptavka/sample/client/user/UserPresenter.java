@@ -47,7 +47,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         view.getMessagesButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initMessagesModule();
+                eventBus.initMessagesModule("displayGrid");
             }
         });
         view.getSettingsButton().addClickHandler(new ClickHandler() {

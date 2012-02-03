@@ -1,28 +1,31 @@
 package cz.poptavka.sample.client.user.messages.tab;
 
-
+import com.google.gwt.cell.client.FieldUpdater;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
+
+
+
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
-import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
-import cz.poptavka.sample.shared.domain.type.ViewType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +33,7 @@ import java.util.Map;
 @Presenter(view = MessageList.class, multiple = true)
 public class MessageListPresenter extends LazyPresenter<MessageListPresenter.IListM, MessagesModuleEventBus> {
 
-    public interface IListM extends LazyView {
+    public interface IListM extends LazyView, IsWidget {
 
         Widget getWidgetView();
 
@@ -43,24 +46,32 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
 
         Button getUnstarBtn();
 
+        Button getDeleteBtn();
+
         //table getters
         MessageListGrid<UserMessageDetail> getGrid();
 
         ListDataProvider<UserMessageDetail> getDataProvider();
 
+        Column<UserMessageDetail, String> getCreationCol();
+
+        Column<UserMessageDetail, Boolean> getStarColumn();
+
+        Column<UserMessageDetail, String> getSubjectCol();
+
+        Column<UserMessageDetail, String> getUserCol();
+
         List<Long> getSelectedIdList();
 
         Set<UserMessageDetail> getSelectedMessageList();
-
-        //detail wrapper
-        SimplePanel getWrapperPanel();
     }
     //viewType
-    private ViewType type = ViewType.POTENTIAL;
-    private ConversationWrapperPresenter detailSection = null;
+//    private ViewType type = ViewType.POTENTIAL;
+//    private ConversationWrapperPresenter detailSection = null;
     //remove this annotation for production
     @SuppressWarnings("unused")
     private boolean initialized = false;
+    private ConversationWrapperPresenter detailSection = null;
 
     /** Defines button actions. */
     @Override
@@ -97,6 +108,69 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
                 updateStarStatus(view.getSelectedIdList(), false);
             }
         });
+        view.getDeleteBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.deleteMessages(view.getSelectedIdList());
+            }
+        });
+        view.getUserCol().setFieldUpdater(new FieldUpdater<UserMessageDetail, String>() {
+
+            @Override
+            public void update(int index, UserMessageDetail object, String value) {
+//                MessageTableDisplay obj = (MessageTableDisplay) object;
+                object.setRead(true);
+                eventBus.requestReadStatusUpdate(Arrays.asList(object.getId()), true);
+                view.getGrid().redraw();
+                if (detailSection == null) {
+                    detailSection = eventBus.addHandler(ConversationWrapperPresenter.class);
+                }
+                eventBus.displayConversation(
+                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
+            }
+        });
+        view.getSubjectCol().setFieldUpdater(new FieldUpdater<UserMessageDetail, String>() {
+
+            @Override
+            public void update(int index, UserMessageDetail object, String value) {
+//                MessageTableDisplay obj = (MessageTableDisplay) object;
+                object.setRead(true);
+                eventBus.requestReadStatusUpdate(Arrays.asList(object.getId()), true);
+                if (detailSection == null) {
+                    detailSection = eventBus.addHandler(ConversationWrapperPresenter.class);
+                }
+                eventBus.displayConversation(
+                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
+            }
+        });
+        view.getCreationCol().setFieldUpdater(new FieldUpdater<UserMessageDetail, String>() {
+
+            @Override
+            public void update(int index, UserMessageDetail object,
+                    String value) {
+                object.setRead(true);
+                eventBus.requestReadStatusUpdate(Arrays.asList(object.getId()), true);
+                if (detailSection == null) {
+                    detailSection = eventBus.addHandler(ConversationWrapperPresenter.class);
+                }
+                //for pure display detail action
+                eventBus.displayConversation(
+                        object.getMessageDetail().getThreadRootId(), object.getMessageDetail().getMessageId());
+            }
+        });
+
+        view.getStarColumn().setFieldUpdater(new FieldUpdater<UserMessageDetail, Boolean>() {
+
+            @Override
+            public void update(int index, UserMessageDetail object, Boolean value) {
+//                MessageTableDisplay obj = (MessageTableDisplay) object;
+                object.setStarred(!value);
+                view.getGrid().redraw();
+                Long[] item = new Long[]{object.getId()};
+                eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+            }
+        });
     }
 
     /**
@@ -115,12 +189,12 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
 //
         Storage.setCurrentlyLoadedView("messagesTab");
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgetView());
+        eventBus.displayMain(view.getWidgetView());
         //init wrapper widget
-        if (detailSection == null) {
-            detailSection = eventBus.addHandler(ConversationWrapperPresenter.class);
-            detailSection.initDetailWrapper(view.getWrapperPanel(), type);
-        }
+//        if (detailSection == null) {
+//            detailSection = eventBus.addHandler(ConversationWrapperPresenter.class);
+//            detailSection.initDetailWrapper(view.getWrapper(), type);
+//        }
         initialized = true;
     }
     private final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
@@ -128,7 +202,9 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     public void onInitMessagesTabModuleInbox(SearchModuleDataHolder filter) {
         this.init();
         Storage.setCurrentlyLoadedView("messagesTabInbox");
-        eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
+        //ked kolki opravi svoje opravit aj toto
+//        eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
+        eventBus.getInboxMessages(149L, filter);
     }
 
     public void onInitMessagesTabModuleSent(SearchModuleDataHolder filter) {
@@ -159,11 +235,10 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
      * Used for JRebel correct refresh. It is called from DemandModulePresenter, when removing instance of
      * SupplierListPresenter. it has to remove it's detailWrapper first.
      */
-    public void develRemoveDetailWrapper() {
-        detailSection.develRemoveReplyWidget();
-        eventBus.removeHandler(detailSection);
-    }
-
+//    public void develRemoveDetailWrapper() {
+//        detailSection.develRemoveReplyWidget();
+//        eventBus.removeHandler(detailSection);
+//    }
     /**
      * Response method for onInitSupplierList()
      * @param data
@@ -226,39 +301,5 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
         }
         view.getDataProvider().refresh();
         view.getGrid().redraw();
-    }
-
-    /**
-     * New data are fetched from db.
-     *
-     * @param demandId ID for demand detail
-     * @param messageId ID for demand related conversation
-     * @param userMessageId ID for demand related conversation
-     */
-    public void displayConversation(Long threadRootId, Long subRootId) {
-        //TODO
-        //copy role check from old implementation
-        //
-        //
-
-        //can be solved by enum in future or can be accesed from storage class
-//        detailSection.showLoading(DevelDetailWrapperPresenter.DETAIL);
-//        eventBus.requestDemandDetail(demandId, type);
-
-        //add conversation loading events and so on
-        detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
-        eventBus.requestConversation(threadRootId, subRootId);
-//        eventBus.requestConversation(124L, 124L);
-
-        //init default replyWidget
-        //it is initalized now, because we do not need to have it visible before first demand selection
-        detailSection.initReplyWidget();
-    }
-
-    public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
-        //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(handlingType)) {
-            detailSection.addConversationMessage(sentMessage);
-        }
     }
 }

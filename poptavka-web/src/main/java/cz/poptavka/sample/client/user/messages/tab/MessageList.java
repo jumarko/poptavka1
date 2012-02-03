@@ -1,13 +1,10 @@
 package cz.poptavka.sample.client.user.messages.tab;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -20,14 +17,13 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
-import com.mvp4g.client.view.ReverseViewInterface;
 
+import com.mvp4g.client.view.ReverseViewInterface;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.tab.MessageListPresenter.IListM;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
@@ -39,7 +35,8 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
  * @author beho
  *
  */
-public class MessageList extends Composite implements ReverseViewInterface<MessageListPresenter>, IListM {
+public class MessageList extends Composite implements
+        ReverseViewInterface<MessageListPresenter>, IListM {
 
     private static MessageListUiBinder uiBinder = GWT.create(MessageListUiBinder.class);
 
@@ -49,17 +46,14 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
     private long lastOpenedDemand = -1;
     //table handling buttons
     @UiField
-    Button readBtn, unreadBtn, starBtn, unstarBtn;
+    Button readBtn, unreadBtn, starBtn, unstarBtn, deleteBtn;
     //DataGridattributes
     @UiField(provided = true)
-    MessageListGrid<UserMessageDetail> demandGrid;
+    MessageListGrid<UserMessageDetail> messageGrid;
     @UiField(provided = true)
     SimplePager pager;
     //presenter
     private MessageListPresenter presenter;
-    //detailWrapperPanel
-    @UiField
-    SimplePanel wrapperPanel;
 
     @Override
     public void setPresenter(MessageListPresenter presenter) {
@@ -76,11 +70,11 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
         //demandGrid init
-        demandGrid = new MessageListGrid<UserMessageDetail>(UserMessageDetail.KEY_PROVIDER);
+        messageGrid = new MessageListGrid<UserMessageDetail>(UserMessageDetail.KEY_PROVIDER);
         // Add a selection model so we can select cells.
         final SelectionModel<UserMessageDetail> selectionModel =
                 new MultiSelectionModel<UserMessageDetail>(UserMessageDetail.KEY_PROVIDER);
-        demandGrid.setSelectionModel(selectionModel,
+        messageGrid.setSelectionModel(selectionModel,
                 DefaultSelectionEventManager.<UserMessageDetail>createCheckboxManager());
 
         //init table
@@ -89,7 +83,7 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setDisplay(demandGrid);
+        pager.setDisplay(messageGrid);
 
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -98,15 +92,40 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
     public Widget getWidgetView() {
         return this;
     }
+//**** GRID related methods - START
+    private Column<UserMessageDetail, Boolean> starColumn;
+    private Column<UserMessageDetail, String> userCol;
+    private Column<UserMessageDetail, String> subjectCol;
+    private Column<UserMessageDetail, String> creationCol;
 
     @Override
     public MessageListGrid<UserMessageDetail> getGrid() {
-        return demandGrid;
+        return messageGrid;
     }
 
     @Override
     public ListDataProvider<UserMessageDetail> getDataProvider() {
-        return demandGrid.getDataProvider();
+        return messageGrid.getDataProvider();
+    }
+
+    @Override
+    public Column<UserMessageDetail, String> getCreationCol() {
+        return creationCol;
+    }
+
+    @Override
+    public Column<UserMessageDetail, Boolean> getStarColumn() {
+        return starColumn;
+    }
+
+    @Override
+    public Column<UserMessageDetail, String> getSubjectCol() {
+        return subjectCol;
+    }
+
+    @Override
+    public Column<UserMessageDetail, String> getUserCol() {
+        return userCol;
     }
 
     /**
@@ -118,41 +137,7 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
 
 // **** definition of all needed FieldUpdaters
         //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
-        FieldUpdater<UserMessageDetail, String> action = new FieldUpdater<UserMessageDetail, String>() {
-            @Override
-            public void update(int index, UserMessageDetail object, String value) {
-                MessageTableDisplay obj = (MessageTableDisplay) object;
-                object.setRead(true);
-                demandGrid.redraw();
-                presenter.displayConversation(object.getMessageDetail()
-                        .getThreadRootId(), object.getMessageDetail().getMessageId());
-            }
-        };
-//        //DATE FIELD UPDATER displaying of demand detail. The fieldUpdater 'action' cannot be used,
-//        //because this is working with Date instead of String
-        FieldUpdater<UserMessageDetail, Date> dateAction = new FieldUpdater<UserMessageDetail, Date>() {
 
-            @Override
-            public void update(int index, UserMessageDetail object,
-                    Date value) {
-                //for pure display detail action
-                presenter.displayConversation(object.getMessageDetail()
-                        .getThreadRootId(), object.getMessageDetail().getMessageId());
-            }
-        };
-
-        //STAR COLUMN FIELD UPDATER
-        FieldUpdater<UserMessageDetail, Boolean> starUpdater = new FieldUpdater<UserMessageDetail, Boolean>() {
-
-            @Override
-            public void update(int index, UserMessageDetail object, Boolean value) {
-                MessageTableDisplay obj = (MessageTableDisplay) object;
-                object.setStarred(!value);
-                demandGrid.redraw();
-                Long[] item = new Long[]{object.getId()};
-                presenter.updateStarStatus(Arrays.asList(item), !value);
-            }
-        };
 
 // **** ROW selection column and set it's width to 40px.
         //contains custom header providing selecting all visible items
@@ -162,70 +147,44 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
 
             @Override
             public void update(Boolean value) {
-                List<UserMessageDetail> rows = demandGrid.getVisibleItems();
+                List<UserMessageDetail> rows = messageGrid.getVisibleItems();
                 for (UserMessageDetail row : rows) {
                     selectionModel.setSelected(row, value);
                 }
 
             }
         });
-        demandGrid.addColumn(factory.createCheckboxColumn(selectionModel), header);
-        demandGrid.setColumnWidth(demandGrid.getColumn(MessageColumnFactory.COL_ZERO),
+        messageGrid.addColumn(factory.createCheckboxColumn(selectionModel), header);
+        messageGrid.setColumnWidth(messageGrid.getColumn(MessageColumnFactory.COL_ZERO),
                 MessageColumnFactory.WIDTH_40, Unit.PX);
 
 // **** Star collumn with defined valueUpdater and custom style
-        Column<UserMessageDetail, Boolean> starColumn = factory.createStarColumn();
-        starColumn.setFieldUpdater(starUpdater);
+        starColumn = factory.createStarColumn();
         //TODO
         //testing if assigning style in MessageColumnFactory works - works well 7.11.11 Beho
         //but keep here for reference
         //starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        demandGrid.setColumnWidth(starColumn, MessageColumnFactory.WIDTH_40, Unit.PX);
-        demandGrid.addColumn(starColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        messageGrid.setColumnWidth(starColumn, MessageColumnFactory.WIDTH_40, Unit.PX);
+        messageGrid.addColumn(starColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
 
 // **** user column
-        Column<UserMessageDetail, String> userCol = factory.createUserColumn(demandGrid.getSortHandler());
-        userCol.setFieldUpdater(action);
+        userCol = factory.createUserColumn(messageGrid.getSortHandler());
         //TODO i18
 //        demandGrid.addColumn(userCol, Storage.MSGS.title());
-        demandGrid.addColumn(userCol, "Od koho");
+        messageGrid.addColumn(userCol, "Od koho");
 
 // **** subject column
-        Column<UserMessageDetail, String> subjectCol = factory.createSubjectColumn(demandGrid.getSortHandler(), true);
-        subjectCol.setFieldUpdater(action);
+        subjectCol = factory.createSubjectColumn(messageGrid.getSortHandler(), true);
 //        demandGrid.addColumn(subjectCol, Storage.MSGS.client());
-        demandGrid.addColumn(subjectCol, "Predmet");
-
-
-//// **** urgent column
-//        Column<UserMessageDetail, Date> urgentCol = factory.createUrgentColumn(demandGrid.getSortHandler());
-//        urgentCol.setFieldUpdater(dateAction);
-//        //TODO
-//        //example width, can be different
-//        //widths shall be set automatically in
-//        demandGrid.setColumnWidth(urgentCol, 60, Unit.PX);
-//        demandGrid.addColumn(urgentCol, Storage.MSGS.urgency());
-//
-//// **** client rating column
-//        Column<UserMessageDetail, String> ratingCo = factory.createClientRatingColumn(demandGrid.getSortHandler());
-//        ratingCo.setFieldUpdater(action);
-//        //TODO
-//        //implement img header
-//        demandGrid.addColumn(ratingCo, "img");
-
-//// **** demand price column
-//        Column<UserMessageDetail, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
-//        priceCol.setFieldUpdater(action);
-//        demandGrid.addColumn(priceCol, Storage.MSGS.price());
+        messageGrid.addColumn(subjectCol, "Predmet");
 
 // **** creationDate column
-        Column<UserMessageDetail, Date> creationCol =
-                factory.createDateColumn(demandGrid.getSortHandler(), MessageColumnFactory.DATE_CREATED);
-        creationCol.setFieldUpdater(dateAction);
-        demandGrid.addColumn(creationCol, Storage.MSGS.createdDate());
+        creationCol = factory.createDateColumn(messageGrid.getSortHandler(), MessageColumnFactory.DATE_CREATED);
+        messageGrid.addColumn(creationCol, Storage.MSGS.createdDate());
 
     }
 
+//**** GRID related methods - END
     @Override
     public Button getReadBtn() {
         return readBtn;
@@ -247,6 +206,11 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
     }
 
     @Override
+    public Button getDeleteBtn() {
+        return deleteBtn;
+    }
+
+    @Override
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
         Set<UserMessageDetail> set = getSelectedMessageList();
@@ -261,12 +225,7 @@ public class MessageList extends Composite implements ReverseViewInterface<Messa
     @Override
     public Set<UserMessageDetail> getSelectedMessageList() {
         MultiSelectionModel<UserMessageDetail> model =
-                (MultiSelectionModel<UserMessageDetail>) demandGrid.getSelectionModel();
+                (MultiSelectionModel<UserMessageDetail>) messageGrid.getSelectionModel();
         return model.getSelectedSet();
-    }
-
-    @Override
-    public SimplePanel getWrapperPanel() {
-        return wrapperPanel;
     }
 }

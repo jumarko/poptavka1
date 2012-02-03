@@ -16,10 +16,13 @@
     <g:HTMLPanel ui:field="container" styleName="{style.panel}" >
         <!-- conversation section with always visible header able to display loading and close button -->
         <w:ClickableDiv ui:field="conversationHeader" text="Conversation Section Header"/>
-        <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
+        <g:ScrollPanel>
+            <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
+        </g:ScrollPanel>
         <hr />
         <!-- reply widget -->
         <g:SimplePanel ui:field="replyHolder" />
+        <g:Button ui:field="replyBtn">Reply</g:Button>
         <hr />
     </g:HTMLPanel>
 </ui:UiBinder>

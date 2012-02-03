@@ -36,17 +36,15 @@ import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 public class UserConversationPanel extends Composite {
 
     private static UserConversationPanelUiBinder uiBinder = GWT.create(UserConversationPanelUiBinder.class);
+
     interface UserConversationPanelUiBinder extends UiBinder<Widget, UserConversationPanel> {
     }
-
     private ArrayList<OfferWindowPresenter> offerPresenters = new ArrayList<OfferWindowPresenter>();
-
-    @UiField FlowPanel messagePanel;
-
+    @UiField
+    FlowPanel messagePanel;
     ClickHandler acceptHandler = null;
     ClickHandler replyHandler = null;
     ClickHandler deleteHandler = null;
-
     private int messageCount = 0;
     private MessageDetail replyToMessage;
 
@@ -71,11 +69,15 @@ public class UserConversationPanel extends Composite {
 
         if (messages.size() > 1) {
             for (int i = 1; i < messages.size(); i++) {
-                messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
+                if (i == messages.size() - 1) {
+                    messagePanel.add(new SimpleMessageWindow(messages.get(i), false));
+                } else {
+                    messagePanel.add(new SimpleMessageWindow(messages.get(i), collapsed));
+                }
             }
             ((SimpleMessageWindow) messagePanel.getWidget(0)).setMessageStyle(MessageDisplayType.FIRST);
-            ((SimpleMessageWindow) messagePanel.getWidget(messagePanel.getWidgetCount() - 1))
-                .setMessageStyle(MessageDisplayType.LAST);
+            ((SimpleMessageWindow) messagePanel.getWidget(
+                    messagePanel.getWidgetCount() - 1)).setMessageStyle(MessageDisplayType.LAST);
         }
 
         messageCount = messagePanel.getWidgetCount();
@@ -142,5 +144,4 @@ public class UserConversationPanel extends Composite {
             messagePanel.getElement().getStyle().setDisplay(Display.BLOCK);
         }
     }
-
 }

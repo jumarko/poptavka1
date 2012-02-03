@@ -7,6 +7,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -26,6 +27,7 @@ public class ConversationWrapperView extends Composite
     @UiField ClickableDiv conversationHeader;
     @UiField UserConversationPanel conversationPanel;
     @UiField SimplePanel replyHolder;
+    @UiField Button replyBtn;
 
     @Override
     public void createView() {
@@ -85,6 +87,11 @@ public class ConversationWrapperView extends Composite
     public void toggleConversationLoading() {
         //toggle actual visible state
         conversationHeader.toggleLoading();
+    }
+
+    @Override
+    public Button getReplyBtn() {
+        return replyBtn;
     }
 
 }

@@ -145,6 +145,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onAtAccount() {
         eventBus.setUserMenu();
-        eventBus.initDemandModule();
+//        eventBus.initDemandModule();
+        eventBus.initMessagesModule("displayGrid");
     }
 }

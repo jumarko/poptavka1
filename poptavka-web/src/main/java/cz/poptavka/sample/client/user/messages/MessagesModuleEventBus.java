@@ -12,8 +12,10 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter;
 import cz.poptavka.sample.client.user.messages.tab.ConversationWrapperPresenter;
 import cz.poptavka.sample.client.user.messages.tab.MessageListPresenter;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -35,6 +37,8 @@ public interface MessagesModuleEventBus extends EventBus {
     @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
     void initMessagesTabModuleTrash(SearchModuleDataHolder searchDataHolder);
 
+    @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistory.class)
+    void initMessagesTabComposeMail(UserDetail recipient, String action);
 //    @Event(handlers = MessageListPresenter.class)
 //    void initInbox();
 //
@@ -43,20 +47,25 @@ public interface MessagesModuleEventBus extends EventBus {
 //
 //    @Event(handlers = MessageListPresenter.class)
 //    void initTrash();
+
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by DemandModulePresenter. */
     //init demands module - left user_type menu and initial content
     @Event(handlers = MessagesModulePresenter.class)
-    void initMessagesModule();
+    void initMessagesModule(String action);
 
     //display widget in content area
     @Event(handlers = MessagesModulePresenter.class)
-    void displayView(Widget content);
+    void displayMain(Widget content);
+
+    @Event(handlers = MessagesModulePresenter.class)
+    void displayDetail(Widget content);
 
     /**************************************************************************/
     @Event(forwardToParent = true)
     void setBodyHolderWidget(IsWidget body);
+
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by ALL VIEW presenters. */
@@ -67,12 +76,11 @@ public interface MessagesModuleEventBus extends EventBus {
      * @param type type of handling view
      */
     @Event(handlers = MessagesModuleMessageHandler.class)
-    void sendMessage(MessageDetail messageToSend, ViewType type);
+    void sendMessage(MessageDetail messageToSend, String action);
     //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
 
-    @Event(handlers = MessageListPresenter.class, passive = true)
-    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
-
+//    @Event(handlers = MessageListPresenter.class, passive = true)
+//    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
     @Event(handlers = MessageListPresenter.class)
     void displayMessages(List<UserMessageDetail> messages);
 
@@ -92,6 +100,9 @@ public interface MessagesModuleEventBus extends EventBus {
 
     @Event(handlers = MessagesModuleMessageHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
+    @Event(handlers = MessagesModuleMessageHandler.class)
+    void deleteMessages(List<Long> messagesIds);
 
     /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter. */
@@ -114,6 +125,9 @@ public interface MessagesModuleEventBus extends EventBus {
      * @param userMessageId
      * @param userId
      */
+    @Event(handlers = ConversationWrapperPresenter.class)
+    void displayConversation(Long threadRootId, Long messageId);
+
     @Event(handlers = MessagesModuleMessageHandler.class)
     void requestConversation(Long threadRootId, Long subRootId);
 
