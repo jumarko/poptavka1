@@ -14,13 +14,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.demand.DemandType.Type;
 
-public class AdminDemandsViewView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+public class AdminDemandsViewView extends Composite {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -49,7 +47,6 @@ public class AdminDemandsViewView extends Composite implements
         }
     }
 
-    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initAdminDemands();
@@ -89,22 +86,6 @@ public class AdminDemandsViewView extends Composite implements
         return data;
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public ListBox getCategoryList() {
-        return null;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return null;
-    }
-
-    @Override
     public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
         StringBuilder infoText = new StringBuilder();
         if (data.getAdminDemands().getDemandIdFrom() != null) {

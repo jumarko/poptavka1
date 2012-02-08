@@ -16,11 +16,8 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
 import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter.IComposeMessage;
-import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
-import java.util.HashMap;
-import java.util.Map;
 
 //@Presenter(view = SupplierList.class)
 @Presenter(view = ComposeMessageView.class, multiple = true)
@@ -34,7 +31,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
 
         TextBox getRecipientTextBox();
 
-        MessageDetail getMessage();
+        MessageDetail getMessage(MessageDetail detail);
 
         //control buttons getters
         Button getSendBtn();
@@ -42,6 +39,8 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
         Button getDiscardBtn();
     }
     private String action = null;
+    private MessageDetail messageDetail = null;
+    private UserDetail userDetail = null;
 
     /** Defines button actions. */
     @Override
@@ -51,14 +50,15 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
             @Override
             public void onClick(ClickEvent event) {
                 //TODO Martin - co tam ma byt? aky ViewType?? - USER
-                eventBus.sendMessage(view.getMessage(), action);
+                MessageDetail msgDetail = view.getMessage(messageDetail);
+                eventBus.sendMessage(msgDetail, action);
             }
         });
         view.getDiscardBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                //TODO Martin
+                eventBus.initMessagesTabModuleInbox(null);
             }
         });
     }
@@ -69,20 +69,24 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
      *
      * Associated DetailWrapper widget is created and initialized.
      */
-    public void onInitMessagesTabComposeMail(UserDetail recipient, String action) {
+    public void onInitMessagesTabComposeMail(MessageDetail msgDetail, String action) {
         Storage.setCurrentlyLoadedView(null);
-        this.action = action;
+        this.action = action; // what is that for?
+        messageDetail = msgDetail;
 
-        if (recipient == null) {
+        if (messageDetail == null) {
             //TODO Martin Uzivatel musi vybrat uzivatela z kontaktov
         } else {
             //Ak forwardnuty z kliku na nejakeho uzivatela, uzivatel sa automaticky nastavy ako recipient
-            view.getRecipientTextBox().setValue(recipient.getUserId().toString());
-            view.getRecipientTextBox().setText(recipient.getEmail());
+            eventBus.requestUserInfo(messageDetail.getSenderId());
         }
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayMain(view.getWidgetView());
     }
-    private final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+
+    public void onResponseUserInfo(UserDetail userDetail) {
+        this.userDetail = userDetail;
+        view.getRecipientTextBox().setText(userDetail.getEmail());
+    }
 }

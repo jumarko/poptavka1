@@ -16,6 +16,7 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -56,6 +57,8 @@ public class HomeDemandsPresenter extends BasePresenter<
 
         Widget getWidgetView();
 
+        Button getOfferBtn();
+
         ListBox getPageSizeCombo();
 
         int getPageSize();
@@ -84,9 +87,11 @@ public class HomeDemandsPresenter extends BasePresenter<
                 if (selected != null) {
                     view.getBannerLabel().setVisible(false);
                     view.getDemandDetailPanel().setVisible(true);
+                    view.getOfferBtn().setVisible(true);
                     eventBus.setDemand(selected);
                 } else {
                     view.getDemandDetailPanel().setVisible(false);
+                    view.getOfferBtn().setVisible(false);
                     view.getBannerLabel().setVisible(true);
                 }
             }
@@ -201,6 +206,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
     public void onSetDemand(FullDemandDetail demand) {
         view.getDemandDetailPanel().setVisible(true);
+        view.getOfferBtn().setVisible(true);
         view.getDemandDetail().setDemanDetail(demand);
 //        view.setDemand(demand);
     }

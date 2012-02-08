@@ -7,14 +7,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class MessagesTabViewView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+public class MessagesTabViewView extends Composite {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -25,13 +22,10 @@ public class MessagesTabViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-//    @Override
-//    public void createView() {
     public MessagesTabViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initMessagesTab();
@@ -47,22 +41,6 @@ public class MessagesTabViewView extends Composite implements
         return data;
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public ListBox getCategoryList() {
-        return null;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return null;
-    }
-
-    @Override
     public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
         StringBuilder infoText = new StringBuilder();
         if (data.getMessagesTab().getSender() != null) {

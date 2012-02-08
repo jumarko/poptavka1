@@ -11,6 +11,7 @@ import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -66,6 +67,8 @@ public class HomeSuppliersPresenter
         int getPageSize();
 
         ListBox getPageSizeCombo();
+
+        Button getContactBtn();
 
 //        String getSelectedLocality();
         FlowPanel getPath();

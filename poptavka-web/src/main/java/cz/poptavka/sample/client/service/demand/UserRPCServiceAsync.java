@@ -10,4 +10,5 @@ public interface UserRPCServiceAsync {
 
     void getSignedUser(String sessionId, AsyncCallback<UserDetail> callback);
 
+    void getUserById(Long userId, AsyncCallback<UserDetail> callback);
 }

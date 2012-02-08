@@ -17,17 +17,15 @@ import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 public class DemandDetailView extends Composite {
 
     private static DemandDetailViewUiBinder uiBinder = GWT.create(DemandDetailViewUiBinder.class);
+
     interface DemandDetailViewUiBinder extends UiBinder<Widget, DemandDetailView> {
     }
-
     @UiField
     Label demandName, price, endDate, validTo, type, categories, localities,
     maxNumberOfSuppliers, minSupplierRating, excludedSuppliers, description;
     @UiField
     HTMLPanel detail;
-
     private boolean empty = true;
-
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
 
     public Label getPrice() {
@@ -84,7 +82,6 @@ public class DemandDetailView extends Composite {
     }
 
     private void init(BaseDemandDetail demand) {
-
     }
 
     private void init(FullDemandDetail demand) {
@@ -130,5 +127,4 @@ public class DemandDetailView extends Composite {
             detail.getElement().getStyle().setDisplay(Display.BLOCK);
         }
     }
-
 }

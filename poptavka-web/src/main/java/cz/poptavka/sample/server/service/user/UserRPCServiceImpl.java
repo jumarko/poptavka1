@@ -21,7 +21,6 @@ import cz.poptavka.sample.shared.domain.UserDetail.Role;
 public class UserRPCServiceImpl extends AutoinjectingRemoteService implements UserRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;
-
     private GeneralService generalService;
     private SupplierService supplierService;
 
@@ -39,8 +38,9 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     public String loginUser(UserDetail userDetail) {
 
         final User user = (User) generalService.searchUnique(
-                new Search(User.class).addFilterEqual("email", userDetail.getEmail())
-                    .addFilterEqual("password", userDetail.getPassword()));
+                new Search(User.class).addFilterEqual(
+                    "email", userDetail.getEmail()).addFilterEqual(
+                        "password", userDetail.getPassword()));
         if (user == null) {
             System.out.println("NULL branch");
             return null;
@@ -79,5 +79,10 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         userDetail.setUserId(roles.get(0).getBusinessUser().getId());
 
         return userDetail;
+    }
+
+    @Override
+    public UserDetail getUserById(Long userId) {
+        return UserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
     }
 }

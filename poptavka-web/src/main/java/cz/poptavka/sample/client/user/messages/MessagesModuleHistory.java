@@ -6,7 +6,7 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import java.util.logging.Logger;
 
 /**
@@ -76,7 +76,7 @@ public class MessagesModuleHistory implements HistoryConverter<MessagesModuleEve
         return "onInitMessagesTabModuleTrash";
     }
 
-    public String onInitMessagesTabComposeMail(UserDetail recipient, String action) {
+    public String onInitMessagesTabComposeMail(MessageDetail messageDetail, String action) {
         return "onInitMessagesTabComposeMail";
     }
 }

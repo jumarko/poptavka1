@@ -330,8 +330,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     @Transactional(propagation = Propagation.REQUIRED)
     public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) {
         for (Long userMessageId : userMessageIds) {
-            final UserMessage userMessage = this.userMessageService.getById(602L);
-//            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
+            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
             this.userMessageService.update(userMessage);
         }

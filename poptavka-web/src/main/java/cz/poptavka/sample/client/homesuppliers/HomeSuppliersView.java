@@ -16,23 +16,24 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.client.user.widget.detail.SupplierDetailView;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
+
 
 public class HomeSuppliersView extends OverflowComposite
         implements HomeSuppliersPresenter.SuppliersViewInterface {
@@ -56,17 +57,14 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true)
     ListBox pageSizeCombo;
     @UiField
-    ListBox localities, categories;
-    @UiField
     Label reklama, filterLabel;
     @UiField
-    TextBox overallRating, certified, verification,
-    services, bsuRoles, addresses, businessType, email, companyName,
-    identificationNumber, firstName, lastName, phone;
-    @UiField
-    TextArea description;
-    @UiField
     HTMLPanel detail, child;
+    @UiField
+    SupplierDetailView supplierDetail;
+    @UiField
+    Button contactBtn;
+
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>();
     private SingleSelectionModel<FullSupplierDetail> selectionSupplierModel;
@@ -163,6 +161,11 @@ public class HomeSuppliersView extends OverflowComposite
         return null; //split;
     }
 
+    @Override
+    public Button getContactBtn() {
+        return contactBtn;
+    }
+
 //    @Override
 //    public CellList getCategoryList() {
 //        return categoriesList;
@@ -178,34 +181,7 @@ public class HomeSuppliersView extends OverflowComposite
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        if (supplierDetail.getOverallRating() == -1) {
-            overallRating.setText("");
-        } else {
-            overallRating.setText(Integer.toString(supplierDetail.getOverallRating()));
-        }
-        certified.setText(Boolean.toString(supplierDetail.isCertified()));
-        description.setText(supplierDetail.getDescription());
-//    verification = userDetail.get
-//    services = userDetail.getSupplier().
-        if (supplierDetail.getCategories() != null) {
-            for (String categoryName : supplierDetail.getCategories().values()) {
-                categories.addItem(categoryName);
-            }
-        }
-        if (supplierDetail.getLocalities() != null) {
-            for (String localityName : supplierDetail.getLocalities().values()) {
-                localities.addItem(localityName);
-            }
-        }
-//    bsuRoles = userDetail.getSupplier().
-//        addresses.setText(supplierDetail.Address().toString());
-//    businessType = userDetail.get
-        email.setText(supplierDetail.getEmail());
-        companyName.setText(supplierDetail.getCompanyName());
-        identificationNumber.setText(supplierDetail.getIdentificationNumber());
-        firstName.setText(supplierDetail.getFirstName());
-        lastName.setText(supplierDetail.getLastName());
-        phone.setText(supplierDetail.getPhone());
+        this.supplierDetail.displaySuppliersDetail(supplierDetail);
     }
 
     @Override
@@ -393,7 +369,6 @@ public class HomeSuppliersView extends OverflowComposite
         }
     };
 }
-
 /**
  * Root Category Cell .
  */

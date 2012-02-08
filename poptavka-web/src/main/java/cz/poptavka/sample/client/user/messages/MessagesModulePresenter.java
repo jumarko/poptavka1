@@ -60,11 +60,11 @@ public class MessagesModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                ComposeMessagePresenter composer = eventBus.addHandler(ComposeMessagePresenter.class);
-                composer.onInitMessagesTabComposeMail(null, null);
+                composer = eventBus.addHandler(ComposeMessagePresenter.class);
+                composer.onInitMessagesTabComposeMail(null, "composeNew");
                 view.getWrapperDetail().clear();
 //                view.getWrapperDetail().setVisible(false);
-                view.getSplitPanel().setSize("500px", "0px");
+//                view.getSplitPanel().setSize("500px", "0px");
 //                if (detailSection == null) {
 //                    composer.compose(null, "composeNew");
 //                } else {
@@ -85,6 +85,7 @@ public class MessagesModulePresenter
 //                }
                 messagesList = eventBus.addHandler(MessageListPresenter.class);
                 messagesList.onInitMessagesTabModuleInbox(null);
+                view.getWrapperDetail().clear();
 
                 //production code
 //                eventBus.initInbox();
@@ -103,6 +104,7 @@ public class MessagesModulePresenter
 //                }
                 messagesList = eventBus.addHandler(MessageListPresenter.class);
                 messagesList.onInitMessagesTabModuleSent(null);
+                view.getWrapperDetail().clear();
 
                 //production code
 //                eventBus.initSent();
@@ -121,6 +123,7 @@ public class MessagesModulePresenter
 //                }
                 messagesList = eventBus.addHandler(MessageListPresenter.class);
                 messagesList.onInitMessagesTabModuleTrash(null);
+                view.getWrapperDetail().clear();
 
                 //production code
 //                eventBus.initTrash();

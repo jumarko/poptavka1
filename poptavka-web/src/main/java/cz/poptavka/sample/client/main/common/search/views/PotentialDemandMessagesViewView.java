@@ -13,10 +13,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class PotentialDemandMessagesViewView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+public class PotentialDemandMessagesViewView extends Composite {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -33,8 +31,6 @@ public class PotentialDemandMessagesViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-//    @Override
-//    public void createView() {
     public PotentialDemandMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         urgent.addItem("select urgention");
@@ -44,7 +40,6 @@ public class PotentialDemandMessagesViewView extends Composite implements
         urgent.addItem("urgent");
     }
 
-    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initPotentialDemandMessages();
@@ -81,22 +76,6 @@ public class PotentialDemandMessagesViewView extends Composite implements
         return data;
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public ListBox getCategoryList() {
-        return null;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return null;
-    }
-
-    @Override
     public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
         StringBuilder infoText = new StringBuilder();
         if (data.getPotentialDemandMessages().getSender() != null) {

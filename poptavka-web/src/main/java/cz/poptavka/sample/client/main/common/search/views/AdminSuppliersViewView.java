@@ -13,14 +13,12 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
-public class AdminSuppliersViewView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+public class AdminSuppliersViewView extends Composite {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -33,9 +31,7 @@ public class AdminSuppliersViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    //    @Override
     public AdminSuppliersViewView() {
-//    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         //Rating
         ratingFrom.setText("0");
@@ -59,7 +55,6 @@ public class AdminSuppliersViewView extends Composite implements
         verified.setSelectedIndex(0);
     }
 
-    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initAdminSuppliers();
@@ -104,22 +99,6 @@ public class AdminSuppliersViewView extends Composite implements
         return data;
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public ListBox getCategoryList() {
-        return supplierCategory;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return supplierLocality;
-    }
-
-    @Override
     public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
         StringBuilder infoText = new StringBuilder();
         if (data.getAdminSuppliers().getSupplierName() != null) {

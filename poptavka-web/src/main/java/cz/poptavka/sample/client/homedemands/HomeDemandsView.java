@@ -22,6 +22,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -57,6 +58,9 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     DemandDetailView demandDetail;
     @UiField
     SimplePanel demandDetailPanel;
+    @UiField
+    Button offerBtn;
+
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private final SingleSelectionModel<FullDemandDetail> selectionModel =
             new SingleSelectionModel<FullDemandDetail>();
@@ -76,15 +80,11 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         StyleResource.INSTANCE.layout().ensureInjected();
     }
 
-//    @Override
-//    public ListBox getCategoryList() {
-//        return category;
-//    }
-//
-//    @Override
-//    public ListBox getLocalityList() {
-//        return locality;
-//    }
+    @Override
+    public Button getOfferBtn() {
+        return offerBtn;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

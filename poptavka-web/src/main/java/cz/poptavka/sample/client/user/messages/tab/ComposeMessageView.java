@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 
 import com.mvp4g.client.view.ReverseViewInterface;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter.IComposeMessage;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
@@ -55,9 +56,9 @@ public class ComposeMessageView extends Composite
         this.presenter = presenter;
     }
 
-    public MessageDetail getMessage() {
-        MessageDetail detail = new MessageDetail();
-        detail.setSenderId(Long.parseLong(recipient.getValue()));
+    @Override
+    public MessageDetail getMessage(MessageDetail detail) {
+        detail.setSenderId(Storage.getUser().getUserId());
         detail.setSubject(subject.getText());
         detail.setBody(body.getText());
         return detail;

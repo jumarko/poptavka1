@@ -13,8 +13,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
-public class AdminInvoicesViewView extends Composite implements
-        AdminInvoicesViewPresenter.AdminInvoicesViewInterface {
+public class AdminInvoicesViewView extends Composite {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -34,7 +33,6 @@ public class AdminInvoicesViewView extends Composite implements
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
         data.initAdminInvoices();
@@ -66,17 +64,14 @@ public class AdminInvoicesViewView extends Composite implements
         return data;
     }
 
-    @Override
     public Widget getWidgetView() {
         return this;
     }
 
-    @Override
     public ListBox getPaymentMethodList() {
         return paymentMethod;
     }
 
-    @Override
     public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
         StringBuilder infoText = new StringBuilder();
         if (data.getAdminInvoice().getIdFrom() != null) {

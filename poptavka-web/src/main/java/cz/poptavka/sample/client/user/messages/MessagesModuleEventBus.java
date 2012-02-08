@@ -38,7 +38,7 @@ public interface MessagesModuleEventBus extends EventBus {
     void initMessagesTabModuleTrash(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistory.class)
-    void initMessagesTabComposeMail(UserDetail recipient, String action);
+    void initMessagesTabComposeMail(MessageDetail msgDetail, String action);
 //    @Event(handlers = MessageListPresenter.class)
 //    void initInbox();
 //
@@ -103,6 +103,12 @@ public interface MessagesModuleEventBus extends EventBus {
 
     @Event(handlers = MessagesModuleMessageHandler.class)
     void deleteMessages(List<Long> messagesIds);
+
+    @Event(handlers = MessagesModuleMessageHandler.class)
+    void requestUserInfo(Long receiverId);
+
+    @Event(handlers = ComposeMessagePresenter.class)
+    void responseUserInfo(UserDetail userDetail);
 
     /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter. */

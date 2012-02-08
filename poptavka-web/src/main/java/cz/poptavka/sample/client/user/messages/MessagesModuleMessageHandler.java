@@ -12,6 +12,8 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -24,6 +26,8 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     private MessageRPCServiceAsync messageService;
     @Inject
     private GeneralRPCServiceAsync generalService;
+    @Inject
+    private UserRPCServiceAsync userService;
 
     /**
      * Send message.
@@ -50,6 +54,9 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
                     eventBus.initMessagesTabModuleInbox(null);
                 } else if (action.equals("composeReply")) {
                     //TODO forward to inbox && display relevant conversation with new reply
+                    eventBus.initMessagesTabModuleInbox(null);
+                    eventBus.displayConversation(
+                        sentMessage.getThreadRootId(), sentMessage.getMessageId());
                 }
 //                eventBus.sendMessageResponse(sentMessage, type);
             }
@@ -172,6 +179,21 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
             @Override
             public void onSuccess(List<UserMessageDetail> result) {
                 GWT.log("Messages deleted.");
+            }
+        });
+    }
+
+    public void onRequestUserInfo(Long recipientId) {
+        userService.getUserById(recipientId, new AsyncCallback<UserDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(UserDetail result) {
+                eventBus.responseUserInfo(result);
             }
         });
     }

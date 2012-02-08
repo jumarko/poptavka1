@@ -11,4 +11,6 @@ public interface UserRPCService extends RemoteService {
     String loginUser(UserDetail user);
 
     UserDetail getSignedUser(String sessionId);
+
+    UserDetail getUserById(Long userId);
 }

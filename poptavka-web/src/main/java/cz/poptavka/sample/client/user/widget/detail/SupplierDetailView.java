@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 
 public class SupplierDetailView extends Composite {
 
@@ -22,7 +23,8 @@ public class SupplierDetailView extends Composite {
     @UiField
     Label overallRating, description, localities,
     categories, email, companyName, taxId, identificationNumber, firstName,
-    lastName, phone, website, street, city, zipCode, websiteContactPerson;
+    lastName, phone, website, street, city, zipCode, websiteContactPerson,
+    certified;
     @UiField
     HTMLPanel detail;
 
@@ -148,6 +150,47 @@ public class SupplierDetailView extends Composite {
         zipCode.setText(userDetail.getAddresses().get(0).getZipCode());
         websiteContactPerson.setText(userDetail.getWebsite());
         taxId.setText(userDetail.getTaxId());
+
+    }
+
+    public void displaySuppliersDetail(FullSupplierDetail detail) {
+//        detail.setVisible(true);
+        if (detail.getOverallRating() == -1) {
+            overallRating.setText("");
+        } else {
+            overallRating.setText(Integer.toString(detail.getOverallRating()));
+        }
+        certified.setText(Boolean.toString(detail.isCertified()));
+        description.setText(detail.getDescription());
+//    verification = userDetail.get
+        StringBuilder localitiesBuilder = new StringBuilder();
+        for (String s : detail.getLocalities().values()) {
+            localitiesBuilder.append(s);
+            localitiesBuilder.append("\n");
+        }
+        localities.setText(localitiesBuilder.toString());
+        StringBuilder categoriesBuilder = new StringBuilder();
+        for (String s : detail.getCategories().values()) {
+            categoriesBuilder.append(s);
+            categoriesBuilder.append("\n");
+        }
+        categories.setText(categoriesBuilder.toString());
+//    services = userDetail.getSupplier().
+//    bsuRoles = userDetail.getSupplier().
+
+//    businessType = userDetail.get
+        email.setText(detail.getEmail());
+        companyName.setText(detail.getCompanyName());
+        identificationNumber.setText(detail.getIdentificationNumber());
+        firstName.setText(detail.getFirstName());
+        lastName.setText(detail.getLastName());
+        phone.setText(detail.getPhone());
+//        website.setText(detail.getWebsite());
+        street.setText(detail.getAddresses().get(0).getStreet());
+        city.setText(detail.getAddresses().get(0).getCityName());
+        zipCode.setText(detail.getAddresses().get(0).getZipCode());
+//        websiteContactPerson.setText(detail.getWebsite());
+//        taxId.setText(detail.get);
 
     }
 }

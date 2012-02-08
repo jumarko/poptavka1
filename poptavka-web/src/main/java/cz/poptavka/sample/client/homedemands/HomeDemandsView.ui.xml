@@ -67,6 +67,7 @@ Uncomment this for XHTML entities
                         <g:SimplePanel ui:field="demandDetailPanel">
                             <d:DemandDetailView ui:field="demandDetail"/>
                         </g:SimplePanel>
+                        <g:Button ui:field="offerBtn">Send Offer</g:Button>
                     </g:VerticalPanel>
                 </g:HTMLPanel>
             </g:ScrollPanel>

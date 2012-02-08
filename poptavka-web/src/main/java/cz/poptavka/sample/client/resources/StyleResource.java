@@ -9,16 +9,16 @@ import cz.poptavka.sample.client.resources.images.Images;
 import cz.poptavka.sample.client.resources.richtext.RichTextStyle;
 
 /**
-*
-* Main clientBundle interface. Used to aggregate all Resources
-* (Data, Text, Image, Css)
-* <br /><br />
-* ClientBundle si very powerful
-* <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideClientBundle.html">ClientBundle at com.google.com</a>
-*
-* @author Beho
-*
-*/
+ *
+ * Main clientBundle interface. Used to aggregate all Resources
+ * (Data, Text, Image, Css)
+ * <br /><br />
+ * ClientBundle si very powerful
+ * <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideClientBundle.html">ClientBundle at com.google.com</a>
+ *
+ * @author Beho
+ *
+ */
 public interface StyleResource extends ClientBundle {
 
     StyleResource INSTANCE = GWT.create(StyleResource.class);
@@ -57,4 +57,10 @@ public interface StyleResource extends ClientBundle {
     /** Text Resource **/
     @Source("text/conditions.txt")
     TextResource conditions();
+
+    @Source("mailBox.css")
+    MailBox mailBox();
+
+    @Source("detailViews.css")
+    DetailViews detailViews();
 }

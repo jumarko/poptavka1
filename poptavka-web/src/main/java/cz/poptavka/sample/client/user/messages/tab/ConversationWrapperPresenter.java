@@ -16,6 +16,7 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
 import cz.poptavka.sample.client.user.widget.messaging.OfferQuestionPresenter;
 import cz.poptavka.sample.client.user.widget.messaging.UserConversationPanel;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -50,8 +51,20 @@ public class ConversationWrapperPresenter
             @Override
             public void onClick(ClickEvent event) {
                 ComposeMessagePresenter composer = eventBus.addHandler(ComposeMessagePresenter.class);
-                composer.onInitMessagesTabComposeMail(null, null);
-//                eventBus.initMessagesTabComposeMail(null, null);
+                Long id = null;
+                //in case one sender provide more reply at once -> ids in row are various
+//                for (int i = 0; i < chatMessages.size(); i++) {
+//                    id = chatMessages.get(i).getSenderId();
+                // --> TOD DELETE after kolki finnish refaktoring of UserModule
+                UserDetail u = new UserDetail();
+                u.setUserId(149L);
+                Storage.setUser(u);
+                // <--
+//                    if (id != null && !Storage.getUser().getUserId().equals(id)) {
+//                        break;
+//                    }
+//                }
+                composer.onInitMessagesTabComposeMail(chatMessages.get(chatMessages.size() - 1), "composeReply");
             }
         });
     }
@@ -105,6 +118,7 @@ public class ConversationWrapperPresenter
      * - ... more to come?
      */
     private OfferQuestionPresenter offerQuestionReply = null;
+    private ArrayList<MessageDetail> chatMessages = null;
 //
 //    private OfferQuestionPresenter potentialViewReplyWiget = null;
 //    private QuestionPresenter myDemandsViewReplyWiget = null;
@@ -158,6 +172,7 @@ public class ConversationWrapperPresenter
         //neccessary check for method to be executed only in appropriate presenter
 //        if (type.equals(wrapperType)) {
         //display chat
+        this.chatMessages = chatMessages;
         //boolean param - for collapsed conversation can be fetched from UserDetail object (some kind of setting)
         view.setChat(chatMessages);
         //init replyWidget
