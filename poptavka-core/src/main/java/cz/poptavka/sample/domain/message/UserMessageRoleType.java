@@ -6,12 +6,14 @@
 package cz.poptavka.sample.domain.message;
 
 /**
+ * Represents user role in message. This can express various conditions, e.g. that user is a recipient of message,
+ * sender or it has to
  *
-  * @author Vojtech Hubr
+ * @author Vojtech Hubr
  *         Date 12.4.11
-
+ * @author Juraj Martinka
  */
-public enum MessageUserRoleType {
+public enum UserMessageRoleType {
     SENDER("SENDER"),
 
     TO("TO"),
@@ -22,7 +24,7 @@ public enum MessageUserRoleType {
 
     private final String value;
 
-    MessageUserRoleType(String value) {
+    UserMessageRoleType(String value) {
         this.value = value;
     }
 }

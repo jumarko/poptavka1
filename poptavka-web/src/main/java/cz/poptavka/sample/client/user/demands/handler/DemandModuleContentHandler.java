@@ -69,7 +69,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
                         eventBus.responseSupplierNewDemands(result);
                     }
                 });
-//        messageService.getPotentialDemandsBySearch(Storage.getUser().getUserId(), searchModuleDataHolder,
+//        messageService.getPotentialDemands(Storage.getUser().getUserId(), searchModuleDataHolder,
 //                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
 //                    @Override
 //                    public void onFailure(Throwable caught) {

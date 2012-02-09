@@ -17,8 +17,8 @@ import cz.poptavka.sample.domain.demand.PotentialSupplier;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageState;
-import cz.poptavka.sample.domain.message.MessageUserRole;
-import cz.poptavka.sample.domain.message.MessageUserRoleType;
+import cz.poptavka.sample.domain.message.UserMessageRoleType;
+import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GenericServiceImpl;
@@ -27,12 +27,6 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -41,6 +35,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -270,17 +269,17 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         // TODO ivlcek - chceme aby kazdy dodavatel mal moznost vidiet
         // vsetkych prijemocov spravy s novou poptavkou? Cyklus nizsie to umoznuje
         final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
-        final List<MessageUserRole> messageUserRoles = new ArrayList<MessageUserRole>();
+        final List<UserMessage> userMessages = new ArrayList<UserMessage>();
         for (PotentialSupplier potentialSupplier : potentialSuppliers) {
-            MessageUserRole messageUserRole = new MessageUserRole();
-            messageUserRole.setMessage(message);
-            messageUserRole.setUser(potentialSupplier.getSupplier().getBusinessUser());
-            messageUserRole.setType(MessageUserRoleType.TO);
-            messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-            messageUserRoles.add(messageUserRole);
+            UserMessage userMessage = new UserMessage();
+            userMessage.setMessage(message);
+            userMessage.setUser(potentialSupplier.getSupplier().getBusinessUser());
+            userMessage.setRoleType(UserMessageRoleType.TO);
+            userMessage.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
+            userMessages.add(userMessage);
         }
 
-        message.setRoles(messageUserRoles);
+        message.setUserMessages(userMessages);
 
         message.setMessageState(MessageState.COMPOSED);
 

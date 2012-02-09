@@ -3,18 +3,16 @@ package cz.poptavka.sample.dao.message;
 import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
-import cz.poptavka.sample.domain.message.MessageUserRole;
-import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.domain.message.UserMessageRoleType;
 import cz.poptavka.sample.domain.user.User;
 import java.util.ArrayList;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * @author Juraj Martinka
@@ -29,6 +27,8 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
         // only messages without parent are considered to be thread roots
         userMessagesCriteria.createCriteria("message").add(Restrictions.isNull("parent"));
 
+        // we want to get Message objects, not UserMessage objects, therefore Projection is needed
+        userMessagesCriteria.setProjection(Projections.property("message"));
         return buildResultCriteria(userMessagesCriteria, messageFilter.getResultCriteria()).list();
     }
 
@@ -38,7 +38,11 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
             messageFilter = MessageFilter.EMPTY_FILTER;
         }
 
-        return buildResultCriteria(buildUserMessagesCriteria(user, messageFilter),
+        final Criteria userMessagesCriteria = buildUserMessagesCriteria(user, messageFilter);
+        // we want to get Message objects, not UserMessage objects, therefore Projection is needed
+        userMessagesCriteria.setProjection(Projections.property("message"));
+
+        return buildResultCriteria(userMessagesCriteria,
                 messageFilter.getResultCriteria()).list();
     }
 
@@ -156,30 +160,22 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
      * @return
      */
     private Criteria buildUserMessagesCriteria(User user, MessageFilter messageFilter) {
-        final Criteria userMessagesCriteria;
+        final Criteria userMessagesCriteria = getHibernateSession().createCriteria(UserMessage.class);
+        userMessagesCriteria.add(Restrictions.eq("user", user));
+
         if (messageFilter != null
-                && messageFilter.getMessageUserRoleType() != null
-                && messageFilter.getMessageUserRoleType() != MessageUserRoleType.SENDER) {
-            userMessagesCriteria = getHibernateSession().createCriteria(MessageUserRole.class);
-            userMessagesCriteria.add(Restrictions.eq("user", user));
-            userMessagesCriteria.setProjection(Projections.property("message"));
-            userMessagesCriteria.createCriteria("message").createCriteria("roles")
-                    .add(Restrictions.eq("user", user))
-                    .add(Restrictions.eq("type", messageFilter.getMessageUserRoleType()));
+                && messageFilter.getUserMessageRoleType() != null
+                && messageFilter.getUserMessageRoleType() != UserMessageRoleType.SENDER) {
+            userMessagesCriteria.add(Restrictions.eq("roleType", messageFilter.getUserMessageRoleType()));
             if (messageFilter.getMessageContext() != null) {
                 userMessagesCriteria.add(Restrictions.eq("messageContext", messageFilter.getMessageContext()));
             }
-        } else {
-            userMessagesCriteria = getHibernateSession().createCriteria(UserMessage.class);
-            userMessagesCriteria.add(Restrictions.eq("user", user));
-            userMessagesCriteria.setProjection(Projections.property("message"));
-            if (messageFilter != null
-                    && messageFilter.getMessageUserRoleType() != null
-                    && messageFilter.getMessageUserRoleType() == MessageUserRoleType.SENDER) {
-                userMessagesCriteria.createAlias("message", "msg");
-                userMessagesCriteria.add(Restrictions.eq("msg.sender", user));
-            }
+        } else if (messageFilter != null
+                    && messageFilter.getUserMessageRoleType() != null
+                    && messageFilter.getUserMessageRoleType() == UserMessageRoleType.SENDER) {
+            userMessagesCriteria.createCriteria("message").add(Restrictions.eq("sender", user));
         }
+
         return userMessagesCriteria;
     }
 

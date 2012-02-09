@@ -4,11 +4,6 @@
  */
 package cz.poptavka.sample.server.service.offer;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.OfferRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.demand.Demand;
@@ -30,7 +25,10 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -127,25 +125,26 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     @Override
     public ArrayList<FullOfferDetail> getDemandOffers(long demandId, long threadRootId) {
 //        List<Offer> offers = this.demandService.getById(demandId).getOffers();
-        ArrayList<FullOfferDetail> offerDetails = new ArrayList<FullOfferDetail>();
-        Message threadRoot = this.messageService.getById(threadRootId);
-        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getAllOfferMessagesForDemand(threadRoot);
+        final Message threadRoot = this.messageService.getById(threadRootId);
+        final ArrayList<Message> messages =
+                (ArrayList<Message>) this.messageService.getAllOfferMessagesForDemand(threadRoot);
         // retrieve userMessages for each message
         if (messages.isEmpty()) {
-            return offerDetails;
+            return new ArrayList<FullOfferDetail>(0);
         }
-        List<UserMessage> userMessages = this.userMessageService.getUserMessages(
+        final List<UserMessage> userMessages = this.userMessageService.getUserMessages(
                 messages, (BusinessUser) threadRoot.getSender(), MessageFilter.EMPTY_FILTER);
         userMessages.size();
 
+        final ArrayList<FullOfferDetail> offerDetails = new ArrayList<FullOfferDetail>();
         for (UserMessage userMessage : userMessages) {
-            Message message = userMessage.getMessage();
+            final Message message = userMessage.getMessage();
 
-            FullOfferDetail fullOfferDetail = FullOfferDetail.createOfferDetail(message);
+            final FullOfferDetail fullOfferDetail = FullOfferDetail.createOfferDetail(message);
 
-            List<Number> revisions = auditService.getRevisions(Offer.class, message.getOffer().getId());
-            //get first occurance, should by the oldest
-            Date createdDate = auditService.getRevisionDate(revisions.get(0));
+            final List<Number> revisions = auditService.getRevisions(Offer.class, message.getOffer().getId());
+            //get first occurrence, should by the oldest
+            final Date createdDate = auditService.getRevisionDate(revisions.get(0));
 
             fullOfferDetail.getOfferDetail().setCreatedDate(createdDate);
             // TODO ivlcek what is this?

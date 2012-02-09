@@ -16,7 +16,6 @@ package cz.poptavka.sample.domain.message;
  * </p>
  *
  * @see UserMessage#messageContext
- * @see MessageUserRole#messageContext
  * @author ivan.vlcek
  */
 public enum MessageContext {

@@ -35,9 +35,6 @@ public interface MessageRPCService extends RemoteService {
 
     ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
 
-    ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(long businessUserId,
-            SearchModuleDataHolder searchDataHolder);
-
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId,
             long userMessageId);
 
