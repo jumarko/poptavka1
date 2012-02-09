@@ -195,7 +195,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(PreferenceDetail preferenceDetail);
     }

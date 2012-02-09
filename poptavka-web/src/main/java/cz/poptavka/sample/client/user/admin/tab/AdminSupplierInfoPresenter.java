@@ -84,27 +84,146 @@ public class AdminSupplierInfoPresenter
 
     @Override
     public void bindView() {
-        view.getUpdateBtn().addClickHandler(new ClickHandler() {
+        addUpdateButtonHandler();
+        addEditCategoryButtonHandler();
+        addEditLocalityButtonHandler();
+        addFinishCategoryButtonHandler();
+        addFinnishLocalityButtonHandler();
+        addBackCategoryButtonHandler();
+        addBackLocalityButtonHandler();
+        addEditCategoryListHandler();
+        addEitLocalityListHandler();
+        addCategoryListHandler();
+        addLocalityListHandler();
+        addRootCategoryButtonHandler();
+        addRootLocalityButtonHandler();
+    }
+
+    private void addRootLocalityButtonHandler() {
+        view.getRootLocBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.addSupplierToCommit(view.getUpdatedSupplierDetail());
-                Window.alert("Supplier updated");
+                view.getEditLocList().clear();
+                view.getLocPath().setText("");
+                eventBus.getAdminSupplierRootLocalities();
             }
         });
-        view.getEditCatBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addRootCategoryButtonHandler() {
+        view.getRootCatBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                categoryHistory.clear();
                 view.getEditCatList().clear();
-                view.getEditCatList().setEnabled(true);
-                view.getBackCatBtn().setEnabled(false);
-                categoryHistory.add(new String[]{"root", "root"});
-                view.getEditCatPanel().setVisible(true);
+                view.getCatPath().setText("");
                 eventBus.getAdminSupplierRootCategories();
             }
         });
+    }
+
+    private void addLocalityListHandler() {
+        view.getLocalityList().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getLocalityList().removeItem(view.getLocalityList().getSelectedIndex());
+            }
+        });
+    }
+
+    private void addCategoryListHandler() {
+        view.getCategoryList().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getCategoryList().removeItem(view.getCategoryList().getSelectedIndex());
+            }
+        });
+    }
+
+    private void addEitLocalityListHandler() {
+        view.getEditLocList().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                int idx = view.getEditLocList().getSelectedIndex();
+                localityHistory.add(new String[]{
+                            view.getEditLocList().getValue(idx),
+                            view.getEditLocList().getItemText(idx)});
+                eventBus.getAdminSupplierSubLocalities(view.getEditLocList().getValue(idx));
+            }
+        });
+    }
+
+    private void addEditCategoryListHandler() {
+        view.getEditCatList().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                int idx = view.getEditCatList().getSelectedIndex();
+                categoryHistory.add(new String[]{
+                            view.getEditCatList().getValue(idx),
+                            view.getEditCatList().getItemText(idx)});
+                eventBus.getAdminSupplierSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
+            }
+        });
+    }
+
+    private void addBackLocalityButtonHandler() {
+        view.getBackLocBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                int size = localityHistory.size();
+                if (size < 2) {
+                    return;
+                }
+                localityHistory.remove(size - 1);
+                eventBus.getAdminSupplierParentLocalities(localityHistory.get(size - 2)[0]);
+            }
+        });
+    }
+
+    private void addBackCategoryButtonHandler() {
+        view.getBackCatBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                int size = categoryHistory.size();
+                if (size < 2) {
+                    return;
+                }
+                categoryHistory.remove(size - 1);
+                eventBus.getAdminSupplierParentCategories(Long.parseLong(categoryHistory.get(size - 2)[0]));
+            }
+        });
+    }
+
+    private void addFinnishLocalityButtonHandler() {
+        view.getFinnishLocBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getEditLocList().setEnabled(false);
+                view.getEditLocPanel().setVisible(false);
+            }
+        });
+    }
+
+    private void addFinishCategoryButtonHandler() {
+        view.getFinnishCatBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getEditCatList().setEnabled(false);
+                view.getEditCatPanel().setVisible(false);
+            }
+        });
+    }
+
+    private void addEditLocalityButtonHandler() {
         view.getEditLocBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -118,101 +237,35 @@ public class AdminSupplierInfoPresenter
                 eventBus.getAdminSupplierRootLocalities();
             }
         });
-        view.getFinnishCatBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addEditCategoryButtonHandler() {
+        view.getEditCatBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                view.getEditCatList().setEnabled(false);
-                view.getEditCatPanel().setVisible(false);
-            }
-        });
-        view.getFinnishLocBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                view.getEditLocList().setEnabled(false);
-                view.getEditLocPanel().setVisible(false);
-            }
-        });
-        view.getBackCatBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                int size = categoryHistory.size();
-                if (size < 2) {
-                    return;
-                }
-                categoryHistory.remove(size - 1);
-                eventBus.getAdminSupplierParentCategories(Long.parseLong(categoryHistory.get(size - 2)[0]));
-            }
-        });
-        view.getBackLocBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                int size = localityHistory.size();
-                if (size < 2) {
-                    return;
-                }
-                localityHistory.remove(size - 1);
-                eventBus.getAdminSupplierParentLocalities(localityHistory.get(size - 2)[0]);
-            }
-        });
-        view.getEditCatList().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                int idx = view.getEditCatList().getSelectedIndex();
-                categoryHistory.add(new String[]{
-                            view.getEditCatList().getValue(idx),
-                            view.getEditCatList().getItemText(idx)});
-                eventBus.getAdminSupplierSubCategories(Long.parseLong(view.getEditCatList().getValue(idx)));
-            }
-        });
-        view.getEditLocList().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                int idx = view.getEditLocList().getSelectedIndex();
-                localityHistory.add(new String[]{
-                            view.getEditLocList().getValue(idx),
-                            view.getEditLocList().getItemText(idx)});
-                eventBus.getAdminSupplierSubLocalities(view.getEditLocList().getValue(idx));
-            }
-        });
-        view.getCategoryList().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                view.getCategoryList().removeItem(view.getCategoryList().getSelectedIndex());
-            }
-        });
-        view.getLocalityList().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                view.getLocalityList().removeItem(view.getLocalityList().getSelectedIndex());
-            }
-        });
-        view.getRootCatBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
+                categoryHistory.clear();
                 view.getEditCatList().clear();
-                view.getCatPath().setText("");
+                view.getEditCatList().setEnabled(true);
+                view.getBackCatBtn().setEnabled(false);
+                categoryHistory.add(new String[]{"root", "root"});
+                view.getEditCatPanel().setVisible(true);
                 eventBus.getAdminSupplierRootCategories();
             }
         });
-        view.getRootLocBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addUpdateButtonHandler() {
+        view.getUpdateBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                view.getEditLocList().clear();
-                view.getLocPath().setText("");
-                eventBus.getAdminSupplierRootLocalities();
+                eventBus.addSupplierToCommit(view.getUpdatedSupplierDetail());
+                Window.alert("Supplier updated");
             }
         });
     }
+
     private List<String[]> categoryHistory = new ArrayList<String[]>();
     private List<String[]> localityHistory = new ArrayList<String[]>();
     private Boolean alreadyAdded = false;

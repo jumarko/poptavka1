@@ -289,7 +289,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
     }

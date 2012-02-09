@@ -1,17 +1,5 @@
 package cz.poptavka.sample.server.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-
-import net.sf.gilead.gwt.PersistentRemoteService;
-
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.offer.Offer;
@@ -28,6 +16,15 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import net.sf.gilead.gwt.PersistentRemoteService;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

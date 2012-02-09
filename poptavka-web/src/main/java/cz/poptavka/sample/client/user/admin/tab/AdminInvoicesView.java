@@ -231,7 +231,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(InvoiceDetail invoiceDetail);
     }

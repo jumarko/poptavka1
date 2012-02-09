@@ -1,8 +1,5 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
-import java.util.Date;
-import java.util.List;
-
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -28,9 +25,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-
 import com.mvp4g.client.presenter.LazyPresenter;
-
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
@@ -38,9 +33,12 @@ import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.OfferDetail;
 import cz.poptavka.sample.shared.domain.type.OfferStateType;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Presenter(view = AdminOffersView.class)
@@ -162,88 +160,35 @@ public class AdminOffersPresenter
 
     @Override
     public void bindView() {
-        view.getPriceColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
+        setPriceColumnUpdater();
+        setOfferStatusColumnUpdater();
+        setOfferFinishDateColumnUpdater();
+        addSelectionChangeHandler();
+        addPageChangeHandler();
+        addCommitButtonHandler();
+        addRollbackButtonHandler();
+        addRefreshButtonHandler();
+    }
 
-            @Override
-            public void update(int index, OfferDetail object, String value) {
-                if (!object.getPrice().toString().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new OfferDetail(object));
-                    }
-                    object.setPrice(BigDecimal.valueOf(Long.valueOf(value)));
-                    eventBus.addOfferToCommit(object);
-                }
-            }
-        });
-        view.getOfferStatusColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
-
-            @Override
-            public void update(int index, OfferDetail object, String value) {
-                for (OfferStateType state : OfferStateType.values()) {
-                    if (state.getValue().equals(value)) {
-                        if (!object.getState().equals(state.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getId(), new OfferDetail(object));
-                            }
-                            object.setState(state.name());
-                            eventBus.addOfferToCommit(object);
-                        }
-                    }
-                }
-            }
-        });
-        view.getOfferFinishDateColumn().setFieldUpdater(new FieldUpdater<OfferDetail, Date>() {
-
-            @Override
-            public void update(int index, OfferDetail object, Date value) {
-                if (!object.getFinishDate().equals(object)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getId(), new OfferDetail(object));
-                    }
-                    object.setFinishDate(value);
-                    eventBus.addOfferToCommit(object);
-                }
-            }
-        });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-//                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getOfferId())) {
-//                    eventBus.showAdminDemandDetail(dataToUpdate.get(
-//                            view.getSelectionModel().getSelectedObject().getOfferId()));
-//                } else {
-//                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
-//                }
-//                eventBus.setDetailDisplayedDemand(true);
-            }
-        });
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateOffer(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminOffersCount(searchDataHolder);
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
+    }
+
+    private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -262,22 +207,108 @@ public class AdminOffersPresenter
                 originalData.clear();
             }
         });
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminOffersCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateOffer(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
                 }
             }
         });
     }
+
+    private void addPageChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    private void addSelectionChangeHandler() {
+        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+//                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getOfferId())) {
+//                    eventBus.showAdminDemandDetail(dataToUpdate.get(
+//                            view.getSelectionModel().getSelectedObject().getOfferId()));
+//                } else {
+//                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
+//                }
+//                eventBus.setDetailDisplayedDemand(true);
+            }
+        });
+    }
+
+    private void setOfferFinishDateColumnUpdater() {
+        view.getOfferFinishDateColumn().setFieldUpdater(new FieldUpdater<OfferDetail, Date>() {
+
+            @Override
+            public void update(int index, OfferDetail object, Date value) {
+                if (!object.getFinishDate().equals(object)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getId(), new OfferDetail(object));
+                    }
+                    object.setFinishDate(value);
+                    eventBus.addOfferToCommit(object);
+                }
+            }
+        });
+    }
+
+    private void setOfferStatusColumnUpdater() {
+        view.getOfferStatusColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
+
+            @Override
+            public void update(int index, OfferDetail object, String value) {
+                for (OfferStateType state : OfferStateType.values()) {
+                    if (state.getValue().equals(value)) {
+                        if (!object.getState().equals(state.name())) {
+                            if (!originalData.containsKey(object.getDemandId())) {
+                                originalData.put(object.getId(), new OfferDetail(object));
+                            }
+                            object.setState(state.name());
+                            eventBus.addOfferToCommit(object);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void setPriceColumnUpdater() {
+        view.getPriceColumn().setFieldUpdater(new FieldUpdater<OfferDetail, String>() {
+
+            @Override
+            public void update(int index, OfferDetail object, String value) {
+                if (!object.getPrice().toString().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new OfferDetail(object));
+                    }
+                    object.setPrice(BigDecimal.valueOf(Long.valueOf(value)));
+                    eventBus.addOfferToCommit(object);
+                }
+            }
+        });
+    }
+
     private Map<Long, OfferDetail> dataToUpdate = new HashMap<Long, OfferDetail>();
     private Map<Long, OfferDetail> originalData = new HashMap<Long, OfferDetail>();
 

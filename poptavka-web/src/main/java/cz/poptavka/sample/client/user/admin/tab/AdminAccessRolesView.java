@@ -209,7 +209,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(AccessRoleDetail accessRoleDetail);
     }

@@ -1,12 +1,5 @@
 package cz.poptavka.sample.client.user.demands.tab;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
@@ -26,7 +19,6 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
-
 import com.mvp4g.client.view.ReverseViewInterface;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.demands.tab.SupplierListPresenter.IList;
@@ -34,6 +26,13 @@ import cz.poptavka.sample.client.user.widget.grid.ColumnFactory;
 import cz.poptavka.sample.client.user.widget.grid.UniversalGrid;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.TableDisplay;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * IMPORTANT NOTE: This view is ReverseView. Because of eventBus calls from dataGrid table and these event calls are
@@ -125,59 +124,20 @@ public class SupplierList extends Composite implements //IList {
 
 // **** definition of all needed FieldUpdaters
         //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
-        FieldUpdater<PotentialDemandMessage, String> action = new FieldUpdater<PotentialDemandMessage, String>() {
-
-            @Override
-            public void update(int index, PotentialDemandMessage object,
-                    String value) {
-                TableDisplay obj = object;
-                obj.setRead(true);
-                demandGrid.redraw();
-                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
-            }
-        };
+        FieldUpdater<PotentialDemandMessage, String> action = createCommonDemandUpdater();
 
         //DATE FIELD UPDATER displaying of demand detail. The fieldUpdater 'action' cannot be used,
         //because this is working with Date instead of String
-        FieldUpdater<PotentialDemandMessage, Date> dateAction = new FieldUpdater<PotentialDemandMessage,
-            Date>() {
-
-            @Override
-            public void update(int index, PotentialDemandMessage object,
-                    Date value) {
-                //for pure display detail action
-                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
-            }
-        };
+        FieldUpdater<PotentialDemandMessage, Date> dateAction = createDemandDateUpdater();
 
         //STAR COLUMN FIELD UPDATER
-        FieldUpdater<PotentialDemandMessage, Boolean> starUpdater = new FieldUpdater<PotentialDemandMessage, Boolean>()
-        {
-            @Override
-            public void update(int index, PotentialDemandMessage object, Boolean value) {
-                TableDisplay obj = (TableDisplay) object;
-                obj.setStarred(!value);
-                demandGrid.redraw();
-                Long[] item = new Long[] {object.getUserMessageId()};
-                presenter.updateStarStatus(Arrays.asList(item), !value);
-            }
-        };
+        FieldUpdater<PotentialDemandMessage, Boolean> starUpdater = createDemandStarredUpdater();
 
 // **** ROW selection column and set it's width to 40px.
         //contains custom header providing selecting all visible items
         final Header<Boolean> header = factory.createCheckBoxHeader();
-        //select
-        header.setUpdater(new ValueUpdater<Boolean>() {
+        setHeaderUpdater(selectionModel, header);
 
-            @Override
-            public void update(Boolean value) {
-                List<PotentialDemandMessage> rows = demandGrid.getVisibleItems();
-                for (PotentialDemandMessage row : rows) {
-                    selectionModel.setSelected(row, value);
-                }
-
-            }
-        });
         demandGrid.addColumn(factory.createCheckboxColumn(selectionModel), header);
         demandGrid.setColumnWidth(demandGrid.getColumn(ColumnFactory.COL_ZERO), ColumnFactory.WIDTH_40, Unit.PX);
 
@@ -192,18 +152,13 @@ public class SupplierList extends Composite implements //IList {
         demandGrid.addColumn(starColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
 
 // **** client column
-        Column<PotentialDemandMessage, String> clientCol = factory.createClientColumn(null, true);
-        clientCol.setFieldUpdater(action);
-        demandGrid.addColumn(clientCol, Storage.MSGS.client());
+        setClientColumnUpdater(factory, action);
 
 // **** demand title column
-        Column<PotentialDemandMessage, String> titleCol = factory.createTitleColumn(demandGrid.getSortHandler(), false);
-        titleCol.setFieldUpdater(action);
-        demandGrid.addColumn(titleCol, Storage.MSGS.title());
+        setTitleColumnUpdater(factory, action);
 
 // **** urgent column
-        Column<PotentialDemandMessage, Date> urgentCol = factory.createUrgentColumn(demandGrid.getSortHandler());
-        urgentCol.setFieldUpdater(dateAction);
+        Column<PotentialDemandMessage, Date> urgentCol = setUrgentColumnUpdater(factory, dateAction);
         //TODO
         //example width, can be different
         //widths shall be set automatically in
@@ -211,24 +166,117 @@ public class SupplierList extends Composite implements //IList {
         demandGrid.addColumn(urgentCol, Storage.MSGS.urgency());
 
 // **** client rating column
-        Column<PotentialDemandMessage, String> ratingCo = factory.createClientRatingColumn(
-                demandGrid.getSortHandler());
-        ratingCo.setFieldUpdater(action);
+        Column<PotentialDemandMessage, String> ratingCo = setRatingUpdater(factory, action);
         //TODO
         //implement img header
         demandGrid.addColumn(ratingCo, "img");
 
 // **** demand price column
+        setDemandPriceUpdater(factory, action);
+
+// **** creationDate column
+        setCreationDateUpdater(factory, dateAction);
+
+    }
+
+    private void setHeaderUpdater(final SelectionModel<PotentialDemandMessage> selectionModel, Header<Boolean> header) {
+        //select
+        header.setUpdater(new ValueUpdater<Boolean>() {
+
+            @Override
+            public void update(Boolean value) {
+                List<PotentialDemandMessage> rows = demandGrid.getVisibleItems();
+                for (PotentialDemandMessage row : rows) {
+                    selectionModel.setSelected(row, value);
+                }
+
+            }
+        });
+    }
+
+    private void setClientColumnUpdater(ColumnFactory<PotentialDemandMessage> factory,
+                                        FieldUpdater<PotentialDemandMessage, String> action) {
+        Column<PotentialDemandMessage, String> clientCol = factory.createClientColumn(null, true);
+        clientCol.setFieldUpdater(action);
+        demandGrid.addColumn(clientCol, Storage.MSGS.client());
+    }
+
+    private void setTitleColumnUpdater(ColumnFactory<PotentialDemandMessage> factory,
+                                       FieldUpdater<PotentialDemandMessage, String> action) {
+        Column<PotentialDemandMessage, String> titleCol = factory.createTitleColumn(demandGrid.getSortHandler(), false);
+        titleCol.setFieldUpdater(action);
+        demandGrid.addColumn(titleCol, Storage.MSGS.title());
+    }
+
+    private Column<PotentialDemandMessage, Date> setUrgentColumnUpdater(ColumnFactory<PotentialDemandMessage> factory,
+                FieldUpdater<PotentialDemandMessage, Date> dateAction) {
+        Column<PotentialDemandMessage, Date> urgentCol = factory.createUrgentColumn(demandGrid.getSortHandler());
+        urgentCol.setFieldUpdater(dateAction);
+        return urgentCol;
+    }
+
+    private Column<PotentialDemandMessage, String> setRatingUpdater(ColumnFactory<PotentialDemandMessage> factory,
+                FieldUpdater<PotentialDemandMessage, String> action) {
+        Column<PotentialDemandMessage, String> ratingCo = factory.createClientRatingColumn(
+                demandGrid.getSortHandler());
+        ratingCo.setFieldUpdater(action);
+        return ratingCo;
+    }
+
+    private void setDemandPriceUpdater(ColumnFactory<PotentialDemandMessage> factory,
+                                       FieldUpdater<PotentialDemandMessage, String> action) {
         Column<PotentialDemandMessage, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
         priceCol.setFieldUpdater(action);
         demandGrid.addColumn(priceCol, Storage.MSGS.price());
+    }
 
-// **** creationDate column
+    private void setCreationDateUpdater(ColumnFactory<PotentialDemandMessage> factory,
+                                        FieldUpdater<PotentialDemandMessage, Date> dateAction) {
         Column<PotentialDemandMessage, Date> creationCol =
             factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_CREATED);
         creationCol.setFieldUpdater(dateAction);
         demandGrid.addColumn(creationCol, Storage.MSGS.createdDate());
+    }
 
+    private FieldUpdater<PotentialDemandMessage, Boolean> createDemandStarredUpdater() {
+        return new FieldUpdater<PotentialDemandMessage, Boolean>()
+            {
+                @Override
+                public void update(int index, PotentialDemandMessage object, Boolean value) {
+                    TableDisplay obj = (TableDisplay) object;
+                    obj.setStarred(!value);
+                    demandGrid.redraw();
+                    Long[] item = new Long[] {object.getUserMessageId()};
+                    presenter.updateStarStatus(Arrays.asList(item), !value);
+                }
+            };
+    }
+
+    private FieldUpdater<PotentialDemandMessage, Date> createDemandDateUpdater() {
+        return new FieldUpdater<PotentialDemandMessage,
+                Date>() {
+
+                @Override
+                public void update(int index, PotentialDemandMessage object, Date value) {
+                    //for pure display detail action
+                    presenter.displayDetailContent(object.getDemandId(),
+                            object.getMessageId(), object.getUserMessageId());
+                }
+            };
+    }
+
+    private FieldUpdater<PotentialDemandMessage, String> createCommonDemandUpdater() {
+        return new FieldUpdater<PotentialDemandMessage, String>() {
+
+                @Override
+                public void update(int index, PotentialDemandMessage object, String value) {
+                    TableDisplay obj = object;
+                    obj.setRead(true);
+                    demandGrid.redraw();
+                    presenter.displayDetailContent(object.getDemandId(), object.getMessageId(),
+                            object.getUserMessageId());
+                }
+            };
     }
 
 

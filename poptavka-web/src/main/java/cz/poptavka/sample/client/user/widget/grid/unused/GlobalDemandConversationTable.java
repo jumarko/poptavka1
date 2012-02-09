@@ -1,7 +1,5 @@
 package cz.poptavka.sample.client.user.widget.grid.unused;
 
-import java.util.Random;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
@@ -20,10 +18,11 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
-
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+
+import java.util.Random;
 
 public class GlobalDemandConversationTable extends CellTable<ClientDemandMessageDetail> {
 
@@ -68,7 +67,6 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
                     return object.getDemandTitle() + " (" + object.getUnreadSubmessages() + ")";
                 }
             });
-
         // Demand Price Column
         Column<ClientDemandMessageDetail, String> priceColumn
             = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
@@ -90,7 +88,6 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
                     return dateFormat.format(object.getEndDate());
                 }
             });
-
         // Demand sent Date column
         Column<ClientDemandMessageDetail, String> validToDateColumn
             = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
@@ -99,7 +96,6 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
                     return dateFormat.format(object.getEndDate());
                 }
             });
-
         // TODO rework sorting from offerTable
         // sort methods ****************************
 //        titleColumn.setSortable(true);
@@ -219,7 +215,7 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
      * @param <C>
      *            the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(ClientDemandMessageDetail contact);
     }

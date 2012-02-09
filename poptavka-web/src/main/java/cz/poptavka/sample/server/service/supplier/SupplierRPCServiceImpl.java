@@ -101,47 +101,85 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     public UserDetail createNewSupplier(UserDetail supplier) {
-        Supplier newSupplier = new Supplier();
-        final BusinessUserData businessUserData = new BusinessUserData.Builder().companyName(
-                supplier.getCompanyName()).taxId(supplier.getTaxId()).identificationNumber(
-                supplier.getIdentificationNumber()).phone(supplier.getPhone()).personFirstName(
-                supplier.getFirstName()).personLastName(supplier.getLastName())
+        final Supplier newSupplier = new Supplier();
+        setNewSupplierBusinessUserData(supplier, newSupplier);
+        newSupplier.getBusinessUser().setEmail(supplier.getEmail());
+        newSupplier.getBusinessUser().setPassword(supplier.getPassword());
+        setNewSupplierAddresses(supplier, newSupplier);
+        setNewSupplierLocalities(supplier, newSupplier);
+        setNewSupplierCategories(supplier, newSupplier);
+        setNewSupplierUserServices(supplier, newSupplier);
+        setNewSuppliersNotificationItems(newSupplier);
+        assignBusinessRoleToNewSupplier(newSupplier);
+        /** registration process **/
+        // TODO - verification will be set after activation link has been received
+        newSupplier.setVerification(Verification.UNVERIFIED);
+
+        final Supplier supplierFromDB = createNewSupplier(newSupplier);
+
+        // TODO jumar - WTF ? why new supplier is also a new client?!?
+        /** Brand new supplier has automatically the role of a client as well. **/
+        // TODO VOjto - Client creation should be moved to one client block.
+        // SUpplier creation should be in Supplier block. Zgrupovat kod!
+        final Client client = new Client();
+        client.setBusinessUser(supplierFromDB.getBusinessUser());
+        client.getBusinessUser().getBusinessUserRoles().add(client);
+        client.setVerification(Verification.UNVERIFIED);
+
+        clientService.create(client);
+
+        // TODO Beho+Vojto rework according to GWT Spring Security function.
+        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
+                supplierFromDB.getBusinessUser().getBusinessUserRoles());
+    }
+
+    private Supplier createNewSupplier(Supplier newSupplier) {
+        return supplierService.create(newSupplier);
+    }
+
+    private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
+        newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
+    }
+
+    private void setNewSupplierBusinessUserData(UserDetail supplier, Supplier newSupplier) {
+        final BusinessUserData businessUserData = new BusinessUserData.Builder()
+                .companyName(supplier.getCompanyName())
+                .taxId(supplier.getTaxId())
+                .identificationNumber(supplier.getIdentificationNumber())
+                .phone(supplier.getPhone())
+                .personFirstName(supplier.getFirstName())
+                .personLastName(supplier.getLastName())
                 //.description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
-        newSupplier.getBusinessUser().setEmail(supplier.getEmail());
-        newSupplier.getBusinessUser().setPassword(supplier.getPassword());
-        /** address **/
-        //get locality according to City Name
-        List<Address> addresses = new ArrayList<Address>();
-        for (AddressDetail detail : supplier.getAddresses()) {
-            Locality cityLoc = (Locality) generalService.searchUnique(
-                    new Search(Locality.class).addFilterEqual("name", detail.getCityName()));
+    }
 
-            if (cityLoc != null) {
-                Address address = new Address();
-                address.setCity(cityLoc);
-                address.setStreet(detail.getStreet());
-                address.setZipCode(detail.getZipCode());
-                addresses.add(address);
-            }
-        }
+    private void setNewSupplierAddresses(UserDetail supplier, Supplier newSupplier) {
+        final List<Address> addresses = getAddressesFromSupplierCityName(supplier);
 
         newSupplier.getBusinessUser().setAddresses(addresses);
-        /** localities **/
-        List<Locality> locs = new ArrayList<Locality>();
-        for (String localityCode : supplier.getSupplier().getLocalities()) {
-            locs.add(this.getLocality(localityCode));
-        }
-        newSupplier.setLocalities(locs);
-        /** categories **/
-        List<Category> categories = new ArrayList<Category>();
-        for (String categoryId : supplier.getSupplier().getCategories()) {
-            categories.add(this.getCategory(categoryId));
-        }
-        newSupplier.setCategories(categories);
-        /** Service selection **/
-        List<UserService> us = new ArrayList<UserService>();
+    }
+
+    private void setNewSuppliersNotificationItems(Supplier newSupplier) {
+        final List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
+        NotificationItem notificationItem = new NotificationItem();
+        // TODO ivlcek - create constant for Notifications in DB
+        notificationItem.setNotification(this.generalService.find(Notification.class, 6L));
+        notificationItem.setEnabled(true);
+        notificationItem.setPeriod(Period.INSTANTLY);
+        notificationItems.add(notificationItem);
+        /** This is notification for Client role that is automatically created herein. **/
+        NotificationItem notificationItemClient = new NotificationItem();
+        // TODO ivlcek - create constant for Notifications in DB
+        notificationItemClient.setNotification(this.generalService.find(Notification.class, 10L));
+        notificationItemClient.setEnabled(true);
+        notificationItemClient.setPeriod(Period.INSTANTLY);
+        notificationItems.add(notificationItemClient);
+        newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
+    }
+
+    private void setNewSupplierUserServices(UserDetail supplier, Supplier newSupplier) {
+        final List<UserService> us = new ArrayList<UserService>();
 
         ArrayList<Integer> userServicesId = supplier.getSupplier().getServices();
         for (Integer serviceId : userServicesId) {
@@ -161,50 +199,39 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         us.add(userServiceClient);
 
         newSupplier.getBusinessUser().setUserServices(us);
+    }
 
-        /** Notifications for new Supplier role. **/
-        List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
-        NotificationItem notificationItem = new NotificationItem();
-        // TODO ivlcek - create constant for Notifications in DB
-        notificationItem.setNotification(this.generalService.find(Notification.class, 6L));
-        notificationItem.setEnabled(true);
-        notificationItem.setPeriod(Period.INSTANTLY);
-        notificationItems.add(notificationItem);
-        /** This is notification for Client role that is automatically created herein. **/
-        NotificationItem notificationItemClient = new NotificationItem();
-        // TODO ivlcek - create constant for Notifications in DB
-        notificationItemClient.setNotification(this.generalService.find(Notification.class, 10L));
-        notificationItemClient.setEnabled(true);
-        notificationItemClient.setPeriod(Period.INSTANTLY);
-        notificationItems.add(notificationItemClient);
-        newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
-
-        /** assign business role to the new supplier. **/
-        newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
-        /** registration process **/
-        // TODO - verification will be set after activation link has been received
-        newSupplier.setVerification(Verification.UNVERIFIED);
-
-        Supplier supplierFromDB = supplierService.create(newSupplier);
-
-        /** Brand new supplier has automatically the role of a client as well. **/
-        // TODO VOjto - Client creation should be moved to one client block.
-        // SUpplier creation should be in Supplier block. Zgrupovat kod!
-        Client client = new Client();
-        client.setBusinessUser(supplierFromDB.getBusinessUser());
-        client.getBusinessUser().getBusinessUserRoles().add(client);
-        client.setVerification(Verification.UNVERIFIED);
-
-        // TODO Vojto remove this bullshit. It doesn't do anything
-        if (clientService == null) {
-            System.out.println("service is null");
+    private void setNewSupplierCategories(UserDetail supplier, Supplier newSupplier) {
+        final List<Category> categories = new ArrayList<Category>();
+        for (String categoryId : supplier.getSupplier().getCategories()) {
+            categories.add(this.getCategory(categoryId));
         }
+        newSupplier.setCategories(categories);
+    }
 
-        clientService.create(client);
+    private void setNewSupplierLocalities(UserDetail supplier, Supplier newSupplier) {
+        final List<Locality> localities = new ArrayList<Locality>();
+        for (String localityCode : supplier.getSupplier().getLocalities()) {
+            localities.add(this.getLocality(localityCode));
+        }
+        newSupplier.setLocalities(localities);
+    }
 
-        // TODO Beho+Vojto rework according to GWT Spring Security function.
-        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
-                supplierFromDB.getBusinessUser().getBusinessUserRoles());
+    private List<Address> getAddressesFromSupplierCityName(UserDetail supplier) {
+        List<Address> addresses = new ArrayList<Address>();
+        for (AddressDetail detail : supplier.getAddresses()) {
+            Locality cityLoc = (Locality) generalService.searchUnique(
+                    new Search(Locality.class).addFilterEqual("name", detail.getCityName()));
+
+            if (cityLoc != null) {
+                Address address = new Address();
+                address.setCity(cityLoc);
+                address.setStreet(detail.getStreet());
+                address.setZipCode(detail.getZipCode());
+                addresses.add(address);
+            }
+        }
+        return addresses;
     }
 
     @Override

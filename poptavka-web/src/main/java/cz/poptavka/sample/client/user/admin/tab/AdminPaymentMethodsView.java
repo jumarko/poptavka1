@@ -167,7 +167,7 @@ public class AdminPaymentMethodsView extends Composite
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(PaymentMethodDetail paymentMethodDetail);
     }

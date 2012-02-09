@@ -13,6 +13,7 @@
                 <value>classpath:/messaging.properties</value>
                 <value>classpath:/fulltext.properties</value>
                 <value>classpath:/mail.properties</value>
+                <value>classpath:/social.properties</value>
             </list>
         </property>
     </bean>
@@ -20,6 +21,7 @@
     <import resource="spring-ehcache.xml"/>
     <import resource="beans.xml" />
     <import resource="aspects.xml" />
+    <import resource="spring-social.xml" />
 
     <!-- Task scheduling and asynchronous execution -->
     <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>

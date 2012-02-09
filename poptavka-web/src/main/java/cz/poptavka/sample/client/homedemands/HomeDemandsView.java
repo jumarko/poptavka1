@@ -6,15 +6,12 @@ package cz.poptavka.sample.client.homedemands;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import java.util.Date;
-
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
@@ -28,11 +25,12 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SingleSelectionModel;
-
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+
+import java.util.Date;
 
 /**
  * This view is to replace DemandsView.java.
@@ -285,7 +283,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      * @param <C>
      *            the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(FullDemandDetail contact);
     }

@@ -183,73 +183,13 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
      * Add the columns to the table.
      */
     private void initTableColumns() {
-
-        // ID
-        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getMessageId());
-            }
-        });
-
-        // Demand ID
-        addColumn(new TextCell(), "DID", true, 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getMessageId());
-            }
-        });
-
-        // Parent ID
-        addColumn(new TextCell(), "PID", true, 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getParentId());
-            }
-        });
-
-        // Sender ID
-        addColumn(new TextCell(), "SID", true, 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getSenderId());
-            }
-        });
-
-        // Receiver ID
-        addColumn(new TextCell(), "RID", true, 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getReceiverId());
-            }
-        });
-
-        // MessageTitle
-        subjectColumn = addColumn(new EditTextCell(), "Subject", true, 150, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getSubject();
-            }
-        });
-
-        // State
-        List<String> msgStates = new ArrayList<String>();
-        for (MessageState msgState : MessageState.values()) {
-            msgStates.add(msgState.name());
-        }
-        stateColumn = addColumn(new SelectionCell(msgStates), "State", true, 150, new GetValue<String>() {
-
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getMessageState();
-            }
-        });
+        addIdColumn();
+        addDemandIdColumn();
+        addParentIdColumn();
+        addSenderIdColumn();
+        addReceiverIdColumn();
+        addMessageTitleColumn();
+        addMessageStateColumn();
 
         // type.  TODO musi byt??
 //        List<String> msgTypes = new ArrayList<String>();
@@ -264,28 +204,12 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 //            }
 //        });
 
-        // created date.
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
-                new GetValue<Date>() {
+        DateTimeFormat dateFormat = addCreatedDateColumn();
+        addSentDateColumn(dateFormat);
+        addBodyColumn();
+    }
 
-                    @Override
-                    public Date getValue(MessageDetail messageDetail) {
-                        return messageDetail.getCreated();
-                    }
-                });
-
-        // sent date.
-        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", true, 60,
-                new GetValue<Date>() {
-
-                    @Override
-                    public Date getValue(MessageDetail messageDetail) {
-                        return messageDetail.getSent();
-                    }
-                });
-
-        // body
+    private void addBodyColumn() {
         bodyColumn = addColumn(new EditTextCell(), "Body", true, 200, new GetValue<String>() {
 
             @Override
@@ -295,12 +219,110 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         });
     }
 
+    private void addSentDateColumn(DateTimeFormat dateFormat) {
+        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", true, 60,
+                new GetValue<Date>() {
+
+                    @Override
+                    public Date getValue(MessageDetail messageDetail) {
+                        return messageDetail.getSent();
+                    }
+                });
+    }
+
+    private DateTimeFormat addCreatedDateColumn() {
+        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
+        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
+                new GetValue<Date>() {
+
+                    @Override
+                    public Date getValue(MessageDetail messageDetail) {
+                        return messageDetail.getCreated();
+                    }
+                });
+        return dateFormat;
+    }
+
+    private void addMessageStateColumn() {
+        List<String> msgStates = new ArrayList<String>();
+        for (MessageState msgState : MessageState.values()) {
+            msgStates.add(msgState.name());
+        }
+        stateColumn = addColumn(new SelectionCell(msgStates), "State", true, 150, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return object.getMessageState();
+            }
+        });
+    }
+
+    private void addMessageTitleColumn() {
+        subjectColumn = addColumn(new EditTextCell(), "Subject", true, 150, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return object.getSubject();
+            }
+        });
+    }
+
+    private void addReceiverIdColumn() {
+        addColumn(new TextCell(), "RID", true, 50, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return String.valueOf(object.getReceiverId());
+            }
+        });
+    }
+
+    private void addSenderIdColumn() {
+        addColumn(new TextCell(), "SID", true, 50, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return String.valueOf(object.getSenderId());
+            }
+        });
+    }
+
+    private void addParentIdColumn() {
+        addColumn(new TextCell(), "PID", true, 50, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return String.valueOf(object.getParentId());
+            }
+        });
+    }
+
+    private void addDemandIdColumn() {
+        addColumn(new TextCell(), "DID", true, 50, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return String.valueOf(object.getMessageId());
+            }
+        });
+    }
+
+    private void addIdColumn() {
+        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return String.valueOf(object.getMessageId());
+            }
+        });
+    }
+
     /**
      * Get a cell value from a record.
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(MessageDetail messageDetail);
     }

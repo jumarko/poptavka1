@@ -4,8 +4,6 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
-import java.util.List;
-
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -15,10 +13,10 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -32,17 +30,17 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-
 import com.mvp4g.client.presenter.LazyPresenter;
-
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
+
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -169,77 +167,35 @@ public class AdminAccessRolesPresenter
 
     @Override
     public void bindView() {
-        view.getNameColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
+        setNameFieldUpdater();
+        setDescriptionFieldUpdater();
+        setPermissionColumnUpdater();
+        addSelectionChangeHandler();
+        addPageChangedHandler();
+        addCommitButtonHandler();
+        addRollbackButtonHandler();
+        addRefreshButtonHandler();
+    }
 
-            @Override
-            public void update(int index, AccessRoleDetail object, String value) {
-                if (!object.getName().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new AccessRoleDetail(object));
-                    }
-                    object.setName(value);
-                    eventBus.addAccessRoleToCommit(object);
-                }
-            }
-        });
-        view.getDescriptionColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
-
-            @Override
-            public void update(int index, AccessRoleDetail object, String value) {
-                if (!object.getDescription().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new AccessRoleDetail(object));
-                    }
-                    object.setName(value);
-                    eventBus.addAccessRoleToCommit(object);
-                }
-            }
-        });
-        view.getPermissionsColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
-
-            @Override
-            public void update(int index, AccessRoleDetail object, String value) {
-
-                if (!object.getPermissions().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new AccessRoleDetail(object));
-                    }
-                }
-                eventBus.showDialogBox();
-            }
-        });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-            }
-        });
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateAccessRole(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminAccessRolesCount(searchDataHolder);
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
+    }
+
+    private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -258,18 +214,92 @@ public class AdminAccessRolesPresenter
                 originalData.clear();
             }
         });
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminAccessRolesCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateAccessRole(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
+                }
+            }
+        });
+    }
+
+    private void addPageChangedHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    private void addSelectionChangeHandler() {
+        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+            }
+        });
+    }
+
+    private void setPermissionColumnUpdater() {
+        view.getPermissionsColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
+
+            @Override
+            public void update(int index, AccessRoleDetail object, String value) {
+
+                if (!object.getPermissions().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new AccessRoleDetail(object));
+                    }
+                }
+                eventBus.showDialogBox();
+            }
+        });
+    }
+
+    private void setDescriptionFieldUpdater() {
+        view.getDescriptionColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
+
+            @Override
+            public void update(int index, AccessRoleDetail object, String value) {
+                if (!object.getDescription().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new AccessRoleDetail(object));
+                    }
+                    object.setDescription(value);
+                    eventBus.addAccessRoleToCommit(object);
+                }
+            }
+        });
+    }
+
+    private void setNameFieldUpdater() {
+        view.getNameColumn().setFieldUpdater(new FieldUpdater<AccessRoleDetail, String>() {
+
+            @Override
+            public void update(int index, AccessRoleDetail object, String value) {
+                if (!object.getName().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new AccessRoleDetail(object));
+                    }
+                    object.setName(value);
+                    eventBus.addAccessRoleToCommit(object);
                 }
             }
         });

@@ -4,8 +4,6 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
-import java.util.List;
-
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -15,10 +13,10 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -31,18 +29,18 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-
 import com.mvp4g.client.presenter.LazyPresenter;
-
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.InvoiceDetail;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -180,105 +178,37 @@ public class AdminInvoicesPresenter
 
     @Override
     public void bindView() {
-        view.getIdColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+        setIdColumnUpdater();
+        setInvoiceNumberColumnUpdater();
+        setVariableSymbolColumnUpdater();
+        setPriceColumnUpdater();
+        setPaymentMethodColumnUpdater();
+        addChangeUpdater();
+        addPageChangeHandler();
+        addCommitButtonHandler();
+        addRollbackButtonHandler();
+        addRefreshButtonHandler();
+    }
 
-            @Override
-            public void update(int index, InvoiceDetail object, String value) {
-                eventBus.showAdminInvoicesDetail(object);
-            }
-        });
-        view.getInvoiceNumberColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
-
-            @Override
-            public void update(int index, InvoiceDetail object, String value) {
-                if (!object.getInvoiceNumber().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new InvoiceDetail(object));
-                    }
-                    object.setInvoiceNumber(value);
-                    eventBus.addInvoiceToCommit(object);
-                }
-            }
-        });
-        view.getVariableSymbolColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
-
-            @Override
-            public void update(int index, InvoiceDetail object, String value) {
-                if (!object.getVariableSymbol().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new InvoiceDetail(object));
-                    }
-                    object.setVariableSymbol(value);
-                    eventBus.addInvoiceToCommit(object);
-                }
-            }
-        });
-        view.getPriceColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
-
-            @Override
-            public void update(int index, InvoiceDetail object, String value) {
-                if (!object.getTotalPrice().toString().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new InvoiceDetail(object));
-                    }
-                    object.setTotalPrice(BigDecimal.valueOf(Long.valueOf(value)));
-                    eventBus.addInvoiceToCommit(object);
-                }
-            }
-        });
-        view.getPaymentMethodColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
-
-            @Override
-            public void update(int index, InvoiceDetail object, String value) {
-                if (!object.getPaymentMethod().getName().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new InvoiceDetail(object));
-                    }
-//                    object.setPaymentMethod(value);
-                    eventBus.addInvoiceToCommit(object);
-                }
-            }
-        });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-//                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getId())) {
-//                    eventBus.showAdminDemandDetail(dataToUpdate.get(
-//                            view.getSelectionModel().getSelectedObject().getId()));
-//                } else {
-//                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
-//                }
-//                eventBus.setDetailDisplayedDemand(true);
-            }
-        });
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateInvoice(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    metadataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminInvoicesCount(searchDataHolder);
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
+    }
+
+    private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -298,22 +228,131 @@ public class AdminInvoicesPresenter
                 originalData.clear();
             }
         });
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminInvoicesCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateInvoice(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    metadataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
                 }
             }
         });
     }
+
+    private void addPageChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    private void addChangeUpdater() {
+        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+//                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getId())) {
+//                    eventBus.showAdminDemandDetail(dataToUpdate.get(
+//                            view.getSelectionModel().getSelectedObject().getId()));
+//                } else {
+//                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
+//                }
+//                eventBus.setDetailDisplayedDemand(true);
+            }
+        });
+    }
+
+    private void setPaymentMethodColumnUpdater() {
+        view.getPaymentMethodColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+
+            @Override
+            public void update(int index, InvoiceDetail object, String value) {
+                if (!object.getPaymentMethod().getName().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new InvoiceDetail(object));
+                    }
+//                    object.setPaymentMethod(value);
+                    eventBus.addInvoiceToCommit(object);
+                }
+            }
+        });
+    }
+
+    private void setPriceColumnUpdater() {
+        view.getPriceColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+
+            @Override
+            public void update(int index, InvoiceDetail object, String value) {
+                if (!object.getTotalPrice().toString().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new InvoiceDetail(object));
+                    }
+                    object.setTotalPrice(BigDecimal.valueOf(Long.valueOf(value)));
+                    eventBus.addInvoiceToCommit(object);
+                }
+            }
+        });
+    }
+
+    private void setVariableSymbolColumnUpdater() {
+        view.getVariableSymbolColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+
+            @Override
+            public void update(int index, InvoiceDetail object, String value) {
+                if (!object.getVariableSymbol().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new InvoiceDetail(object));
+                    }
+                    object.setVariableSymbol(value);
+                    eventBus.addInvoiceToCommit(object);
+                }
+            }
+        });
+    }
+
+    private void setInvoiceNumberColumnUpdater() {
+        view.getInvoiceNumberColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+
+            @Override
+            public void update(int index, InvoiceDetail object, String value) {
+                if (!object.getInvoiceNumber().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new InvoiceDetail(object));
+                    }
+                    object.setInvoiceNumber(value);
+                    eventBus.addInvoiceToCommit(object);
+                }
+            }
+        });
+    }
+
+    private void setIdColumnUpdater() {
+        view.getIdColumn().setFieldUpdater(new FieldUpdater<InvoiceDetail, String>() {
+
+            @Override
+            public void update(int index, InvoiceDetail object, String value) {
+                eventBus.showAdminInvoicesDetail(object);
+            }
+        });
+    }
+
     private Boolean detailDisplayed = false;
 
     public void onAddInvoiceToCommit(InvoiceDetail data) {

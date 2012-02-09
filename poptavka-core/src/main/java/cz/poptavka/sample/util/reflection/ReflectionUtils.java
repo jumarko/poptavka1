@@ -55,14 +55,12 @@ public final class ReflectionUtils {
     }
 
     public static boolean hasGetter(Class aClass, String fieldName) {
-        final Method getterMethod = getGetterMethod(aClass, fieldName);
-        return getterMethod != null;
+        return null != getGetterMethod(aClass, fieldName);
     }
 
 
     public static boolean hasSetter(Class aClass, String fieldName) {
-        final Method setterMethod = getSetterMethod(aClass, fieldName);
-        return setterMethod != null;
+        return null != getSetterMethod(aClass, fieldName);
     }
 
 

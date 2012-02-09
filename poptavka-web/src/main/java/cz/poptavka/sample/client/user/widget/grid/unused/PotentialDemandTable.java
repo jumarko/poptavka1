@@ -1,8 +1,5 @@
 package cz.poptavka.sample.client.user.widget.grid.unused;
 
-import java.math.BigDecimal;
-import java.util.Comparator;
-
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -20,10 +17,12 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
-
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+
+import java.math.BigDecimal;
+import java.util.Comparator;
 
 public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
 
@@ -69,48 +68,65 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
             }
         };
 
-        // Demand Title Column
-        Column<PotentialDemandMessage, String> titleColumn
-            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
-                @Override
-                public String getValue(PotentialDemandMessage object) {
-                    return BaseDemandDetail.displayHtml(object.getSubject(), object.isRead());
-                }
-            });
-
-        // Demand Price Column
-        Column<PotentialDemandMessage, String> priceColumn
-            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
-                @Override
-                public String getValue(PotentialDemandMessage object) {
-                    if (object.getDemandPrice().equals(BigDecimal.ZERO)) {
-                        return BaseDemandDetail.displayHtml(msgs.notEntered(), object.isRead());
-                    }
-                    return BaseDemandDetail.displayHtml(object.getDemandPrice().toString(), object.isRead());
-                }
-            });
-
+        final Column<PotentialDemandMessage, String> titleColumn = createDemandTitleColumn(tableTextCell);
+        Column<PotentialDemandMessage, String> priceColumn = createDemandPriceColumn(msgs, tableTextCell);
         final DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-
-        // Demand Finish Column
-        Column<PotentialDemandMessage, String> endDateColumn
-            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
-                @Override
-                public String getValue(PotentialDemandMessage object) {
-                    return BaseDemandDetail.displayHtml(dateFormat.format(object.getEndDate()), object.isRead());
-                }
-            });
-
-        // Demand sent Date column
-        Column<PotentialDemandMessage, String> validToDateColumn
-            = (new Column<PotentialDemandMessage, String>(tableTextCell) {
-                @Override
-                public String getValue(PotentialDemandMessage object) {
-                    return BaseDemandDetail.displayHtml(dateFormat.format(object.getValidToDate()), object.isRead());
-                }
-            });
+        Column<PotentialDemandMessage, String> endDateColumn = createDemandFinishColumn(tableTextCell, dateFormat);
+        Column<PotentialDemandMessage, String> validToDateColumn =
+                createDemandSentDateColumn(tableTextCell, dateFormat);
 
         // sort methods ****************************
+        setupSortingForTitle(sortHandler, titleColumn);
+        setupSortingForPrice(sortHandler, priceColumn);
+        endDateColumn.setSortable(true);
+        validToDateColumn.setSortable(true);
+        setupSortingForEndDate(sortHandler, endDateColumn);
+        setupSortingForValidToDate(sortHandler, validToDateColumn);
+        // add columns into table
+        // this.addColumn(checkBoxColumn);
+        this.addColumn(titleColumn, msgs.title());
+        this.addColumn(priceColumn, msgs.price());
+        this.addColumn(endDateColumn, msgs.endDate());
+        this.addColumn(validToDateColumn, msgs.expireDate());
+    }
+
+    private void setupSortingForValidToDate(ListHandler<PotentialDemandMessage> sortHandler,
+                                            Column<PotentialDemandMessage, String> validToDateColumn) {
+        Comparator<PotentialDemandMessage> validComparator = new Comparator<PotentialDemandMessage>() {
+            @Override
+            public int compare(PotentialDemandMessage o1, PotentialDemandMessage o2) {
+                return o1.getValidToDate().compareTo(o2.getValidToDate());
+            }
+        };
+        sortHandler.setComparator(validToDateColumn, validComparator);
+    }
+
+    private void setupSortingForEndDate(ListHandler<PotentialDemandMessage> sortHandler,
+                                        Column<PotentialDemandMessage, String> endDateColumn) {
+        Comparator<PotentialDemandMessage> endComparator = new Comparator<PotentialDemandMessage>() {
+            @Override
+            public int compare(PotentialDemandMessage o1, PotentialDemandMessage o2) {
+                return o1.getEndDate().compareTo(o2.getEndDate());
+            }
+        };
+        sortHandler.setComparator(endDateColumn, endComparator);
+    }
+
+    private void setupSortingForPrice(ListHandler<PotentialDemandMessage> sortHandler,
+                                      Column<PotentialDemandMessage, String> priceColumn) {
+        priceColumn.setSortable(true);
+        sortHandler.setComparator(priceColumn,
+                new Comparator<PotentialDemandMessage>() {
+                    @Override
+                    public int compare(PotentialDemandMessage o1,
+                            PotentialDemandMessage o2) {
+                        return o1.getDemandPrice().compareTo(o2.getDemandPrice());
+                    }
+                });
+    }
+
+    private void setupSortingForTitle(ListHandler<PotentialDemandMessage> sortHandler,
+                                      Column<PotentialDemandMessage, String> titleColumn) {
         titleColumn.setSortable(true);
         sortHandler.setComparator(titleColumn,
                 new Comparator<PotentialDemandMessage>() {
@@ -129,37 +145,48 @@ public class PotentialDemandTable extends CellTable<PotentialDemandMessage> {
                         return -1;
                     }
                 });
-        priceColumn.setSortable(true);
-        sortHandler.setComparator(priceColumn,
-                new Comparator<PotentialDemandMessage>() {
-                    @Override
-                    public int compare(PotentialDemandMessage o1,
-                            PotentialDemandMessage o2) {
-                        return o1.getDemandPrice().compareTo(o2.getDemandPrice());
-                    }
-                });
-        endDateColumn.setSortable(true);
-        validToDateColumn.setSortable(true);
-        Comparator<PotentialDemandMessage> endComparator = new Comparator<PotentialDemandMessage>() {
+    }
+
+    private Column<PotentialDemandMessage, String> createDemandSentDateColumn(final TextCell tableTextCell,
+                                                                              final DateTimeFormat dateFormat) {
+        return (new Column<PotentialDemandMessage, String>(tableTextCell) {
             @Override
-            public int compare(PotentialDemandMessage o1, PotentialDemandMessage o2) {
-                return o1.getEndDate().compareTo(o2.getEndDate());
+            public String getValue(PotentialDemandMessage object) {
+                return BaseDemandDetail.displayHtml(dateFormat.format(object.getValidToDate()), object.isRead());
             }
-        };
-        Comparator<PotentialDemandMessage> validComparator = new Comparator<PotentialDemandMessage>() {
+        });
+    }
+
+    private Column<PotentialDemandMessage, String> createDemandFinishColumn(final TextCell tableTextCell,
+                                                                            final DateTimeFormat dateFormat) {
+        return (new Column<PotentialDemandMessage, String>(tableTextCell) {
             @Override
-            public int compare(PotentialDemandMessage o1, PotentialDemandMessage o2) {
-                return o1.getValidToDate().compareTo(o2.getValidToDate());
+            public String getValue(PotentialDemandMessage object) {
+                return BaseDemandDetail.displayHtml(dateFormat.format(object.getEndDate()), object.isRead());
             }
-        };
-        sortHandler.setComparator(endDateColumn, endComparator);
-        sortHandler.setComparator(validToDateColumn, validComparator);
-        // add columns into table
-        // this.addColumn(checkBoxColumn);
-        this.addColumn(titleColumn, msgs.title());
-        this.addColumn(priceColumn, msgs.price());
-        this.addColumn(endDateColumn, msgs.endDate());
-        this.addColumn(validToDateColumn, msgs.expireDate());
+        });
+    }
+
+    private Column<PotentialDemandMessage, String> createDemandPriceColumn(final LocalizableMessages msgs,
+                                                                           final TextCell tableTextCell) {
+        return (new Column<PotentialDemandMessage, String>(tableTextCell) {
+            @Override
+            public String getValue(PotentialDemandMessage object) {
+                if (object.getDemandPrice().equals(BigDecimal.ZERO)) {
+                    return BaseDemandDetail.displayHtml(msgs.notEntered(), object.isRead());
+                }
+                return BaseDemandDetail.displayHtml(object.getDemandPrice().toString(), object.isRead());
+            }
+        });
+    }
+
+    private Column<PotentialDemandMessage, String> createDemandTitleColumn(final TextCell tableTextCell) {
+        return (new Column<PotentialDemandMessage, String>(tableTextCell) {
+            @Override
+            public String getValue(PotentialDemandMessage object) {
+                return BaseDemandDetail.displayHtml(object.getSubject(), object.isRead());
+            }
+        });
     }
 
     private static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER = new ProvidesKey<PotentialDemandMessage>() {

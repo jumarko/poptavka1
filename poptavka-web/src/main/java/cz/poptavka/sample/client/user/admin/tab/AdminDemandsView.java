@@ -288,7 +288,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(FullDemandDetail fullDemandDetail);
     }

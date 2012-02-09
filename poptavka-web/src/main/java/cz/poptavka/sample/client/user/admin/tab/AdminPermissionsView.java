@@ -199,7 +199,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(PermissionDetail permissionDetail);
     }

@@ -3,8 +3,6 @@ package cz.poptavka.sample.client.homesuppliers;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
-import java.util.logging.Logger;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -32,7 +30,9 @@ import cz.poptavka.sample.client.user.widget.detail.SupplierDetailView;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
+
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 public class HomeSuppliersView extends OverflowComposite
@@ -329,7 +329,7 @@ public class HomeSuppliersView extends OverflowComposite
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
     }

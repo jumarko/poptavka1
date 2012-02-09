@@ -4,9 +4,6 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
-import java.util.Date;
-import java.util.List;
-
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -16,10 +13,10 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -32,9 +29,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-
 import com.mvp4g.client.presenter.LazyPresenter;
-
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
@@ -44,8 +39,11 @@ import cz.poptavka.sample.shared.domain.PaymentDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.type.ClientDemandType;
 import cz.poptavka.sample.shared.domain.type.DemandStatusType;
+
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -183,118 +181,37 @@ public class AdminOurPaymentDetailsPresenter
 
     @Override
     public void bindView() {
-        view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+        setDemandTitleColumnUpdater();
+        setDemandTypeColumnUpdater();
+        setDemandStatusColumnUpdater();
+        setDemandExpirationColumnUpdater();
+        setDemandEndColumnUpdater();
+        addSelectionChangeHandler();
+        addPageChangeHandler();
+        addCommitButtonHandler();
+        addRollbackButtonHandler();
+        addRefreshButtonHandler();
+    }
 
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                if (!object.getTitle().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
-                    object.setTitle(value);
-//                    eventBus.addOurPaymentDetailToCommit(object, "demand");
-                }
-            }
-        });
-        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                for (ClientDemandType clientDemandType : ClientDemandType.values()) {
-                    if (clientDemandType.getValue().equals(value)) {
-                        if (!object.getDemandType().equals(clientDemandType.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                            }
-                            object.setDemandType(clientDemandType.name());
-//                            eventBus.addOurPaymentDetailToCommit(object, "demand");
-                        }
-                    }
-                }
-            }
-        });
-        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                for (DemandStatusType demandStatusType : DemandStatusType.values()) {
-                    if (demandStatusType.getValue().equals(value)) {
-                        if (!object.getDemandStatus().equals(demandStatusType.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                            }
-                            object.setDemandStatus(demandStatusType.name());
-//                            eventBus.addOurPaymentDetailToCommit(object, "demand");
-                        }
-                    }
-                }
-            }
-        });
-        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-
-            @Override
-            public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getValidToDate().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
-                    object.setValidToDate(value);
-//                    eventBus.addOurPaymentDetailToCommit(Commit(object, "other");
-                }
-            }
-        });
-        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-
-            @Override
-            public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getEndDate().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
-                    object.setEndDate(value);
-//                    eventBus.addOurPaymentDetailToCommit(object, "other");
-                }
-            }
-        });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getDemandId())) {
-                    eventBus.showAdminDemandDetail(dataToUpdate.get(
-                            view.getSelectionModel().getSelectedObject().getDemandId()));
-                } else {
-                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
-                }
-                eventBus.setDetailDisplayedDemand(true);
-            }
-        });
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-//                        eventBus.updateOurPaymentDetail(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminDemandsCount(searchDataHolder);
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
+    }
+
+    private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -313,22 +230,144 @@ public class AdminOurPaymentDetailsPresenter
                 originalData.clear();
             }
         });
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    }
+
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+//                        eventBus.updateOurPaymentDetail(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
                 }
             }
         });
     }
+
+    private void addPageChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    private void addSelectionChangeHandler() {
+        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getDemandId())) {
+                    eventBus.showAdminDemandDetail(dataToUpdate.get(
+                            view.getSelectionModel().getSelectedObject().getDemandId()));
+                } else {
+                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
+                }
+                eventBus.setDetailDisplayedDemand(true);
+            }
+        });
+    }
+
+    private void setDemandEndColumnUpdater() {
+        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, Date value) {
+                if (!object.getEndDate().equals(value)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                    }
+                    object.setEndDate(value);
+//                    eventBus.addOurPaymentDetailToCommit(object, "other");
+                }
+            }
+        });
+    }
+
+    private void setDemandExpirationColumnUpdater() {
+        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, Date value) {
+                if (!object.getValidToDate().equals(value)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                    }
+                    object.setValidToDate(value);
+//                    eventBus.addOurPaymentDetailToCommit(Commit(object, "other");
+                }
+            }
+        });
+    }
+
+    private void setDemandStatusColumnUpdater() {
+        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                for (DemandStatusType demandStatusType : DemandStatusType.values()) {
+                    if (demandStatusType.getValue().equals(value)) {
+                        if (!object.getDemandStatus().equals(demandStatusType.name())) {
+                            if (!originalData.containsKey(object.getDemandId())) {
+                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                            }
+                            object.setDemandStatus(demandStatusType.name());
+//                            eventBus.addOurPaymentDetailToCommit(object, "demand");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void setDemandTypeColumnUpdater() {
+        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                for (ClientDemandType clientDemandType : ClientDemandType.values()) {
+                    if (clientDemandType.getValue().equals(value)) {
+                        if (!object.getDemandType().equals(clientDemandType.name())) {
+                            if (!originalData.containsKey(object.getDemandId())) {
+                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                            }
+                            object.setDemandType(clientDemandType.name());
+//                            eventBus.addOurPaymentDetailToCommit(object, "demand");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void setDemandTitleColumnUpdater() {
+        view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                if (!object.getTitle().equals(value)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                    }
+                    object.setTitle(value);
+//                    eventBus.addOurPaymentDetailToCommit(object, "demand");
+                }
+            }
+        });
+    }
+
     private Boolean detailDisplayed = false;
 
     public void onAddOurPaymentDetailToCommit(PaymentDetail data) {

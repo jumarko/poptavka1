@@ -10,6 +10,7 @@
     <url>http://maven.apache.org</url>
     <modules>
         <module>poptavka-core</module>
+        <module>poptavka-rest-api</module>
         <module>poptavka-web</module>
     </modules>
 
@@ -64,7 +65,7 @@
         <maven-surefire-plugin.version>2.7.1</maven-surefire-plugin.version>
         <spring.amqp.version>1.0.0.RC1</spring.amqp.version>
         <rabbitmq.version>2.2.0</rabbitmq.version>
-        <jackson.version>1.8.0</jackson.version>
+        <jackson.version>1.8.5</jackson.version>
         <gwt-syncproxy.version>2.0</gwt-syncproxy.version>
         <javax-mail.version>1.4.4</javax-mail.version>
     </properties>

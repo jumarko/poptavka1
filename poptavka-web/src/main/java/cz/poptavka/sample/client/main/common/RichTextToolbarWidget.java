@@ -1,7 +1,5 @@
 package cz.poptavka.sample.client.main.common;
 
-import java.util.HashMap;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.dom.client.Element;
@@ -26,9 +24,10 @@ import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RichTextArea.Formatter;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.resources.richtext.RichTextStrings;
+
+import java.util.HashMap;
 
 public class RichTextToolbarWidget extends Composite implements HasValue {
     /** Local CONSTANTS **/
@@ -168,124 +167,200 @@ public class RichTextToolbarWidget extends Composite implements HasValue {
     private class EventHandler implements ClickHandler, KeyUpHandler, ChangeHandler {
         public void onClick(ClickEvent event) {
             if (event.getSource().equals(bold)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_BOLD, HTML_STYLE_CLOSE_SPAN);
-                } else {
-                    styleTextFormatter.toggleBold();
-                }
+                setBoldStyle();
             } else if (event.getSource().equals(italic)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_ITALIC, HTML_STYLE_CLOSE_SPAN);
-                } else {
-                    styleTextFormatter.toggleItalic();
-                }
+                setItalicStyle();
             } else if (event.getSource().equals(underline)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_UNDERLINE, HTML_STYLE_CLOSE_SPAN);
-                } else {
-                    styleTextFormatter.toggleUnderline();
-                }
+                setUnderlineStyle();
             } else if (event.getSource().equals(stroke)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_LINETHROUGH, HTML_STYLE_CLOSE_SPAN);
-                } else {
-                    styleTextFormatter.toggleStrikethrough();
-                }
+                setStrokeStyle();
             } else if (event.getSource().equals(subscript)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_SUBSCRIPT, HTML_STYLE_CLOSE_SUBSCRIPT);
-                } else {
-                    styleTextFormatter.toggleSubscript();
-                }
+                setSubscriptStyle();
             } else if (event.getSource().equals(superscript)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_SUPERSCRIPT, HTML_STYLE_CLOSE_SUPERSCRIPT);
-                } else {
-                    styleTextFormatter.toggleSuperscript();
-                }
+                setSuperscriptStyle();
             } else if (event.getSource().equals(alignleft)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_ALIGNLEFT, HTML_STYLE_CLOSE_DIV);
-                } else {
-                    styleTextFormatter.setJustification(RichTextArea.Justification.LEFT);
-                }
+                setLeftAlign();
             } else if (event.getSource().equals(alignmiddle)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_ALIGNCENTER, HTML_STYLE_CLOSE_DIV);
-                } else {
-                    styleTextFormatter.setJustification(RichTextArea.Justification.CENTER);
-                }
+                setMiddleAlign();
             } else if (event.getSource().equals(alignright)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_ALIGNRIGHT, HTML_STYLE_CLOSE_DIV);
-                } else {
-                    styleTextFormatter.setJustification(RichTextArea.Justification.RIGHT);
-                }
+                setRightAlign();
             } else if (event.getSource().equals(orderlist)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_ORDERLIST, HTML_STYLE_CLOSE_ORDERLIST);
-                } else {
-                    styleTextFormatter.insertOrderedList();
-                }
+                setOrderedListStyle();
             } else if (event.getSource().equals(unorderlist)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_UNORDERLIST, HTML_STYLE_CLOSE_UNORDERLIST);
-                } else {
-                    styleTextFormatter.insertUnorderedList();
-                }
+                setUnorderedListStyle();
             } else if (event.getSource().equals(indentright)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_OPEN_INDENTRIGHT, HTML_STYLE_CLOSE_DIV);
-                } else {
-                    styleTextFormatter.rightIndent();
-                }
+                setRightIndent();
             } else if (event.getSource().equals(indentleft)) {
-                if (!isHTMLMode()) {
-                    styleTextFormatter.leftIndent();
-                }
+                setLeftIndent();
             } else if (event.getSource().equals(generatelink)) {
-                String url = Window.prompt(msgs.linkURL(), "http://");
-                if (url != null) {
-                    if (isHTMLMode()) {
-                        changeHtmlStyle("<a href=\"" + url + "\">", "</a>");
-                    } else {
-                        styleTextFormatter.createLink(url);
-                    }
-                }
+                generateLink();
             } else if (event.getSource().equals(breaklink)) {
-                if (!isHTMLMode()) {
-                    styleTextFormatter.removeLink();
-                }
+                removeLink();
             } else if (event.getSource().equals(insertimage)) {
-                String url = Window.prompt(msgs.imageURL(), "http://");
-                if (url != null) {
-                    if (isHTMLMode()) {
-                        changeHtmlStyle("<img src=\"" + url + "\">", "");
-                    } else {
-                        styleTextFormatter.insertImage(url);
-                    }
-                }
+                insertImage();
             }  else if (event.getSource().equals(insertline)) {
-                if (isHTMLMode()) {
-                    changeHtmlStyle(HTML_STYLE_HLINE, "");
-                } else {
-                    styleTextFormatter.insertHorizontalRule();
-                }
+                setInsertLineStyle();
             } else if (event.getSource().equals(removeformatting)) {
-                if (!isHTMLMode()) {
-                    styleTextFormatter.removeFormat();
-                }
+                removeFormatting();
             } else if (event.getSource().equals(texthtml)) {
-                if (texthtml.isDown()) {
-                    styleText.setText(styleText.getHTML());
-                } else {
-                    styleText.setHTML(styleText.getText());
-                }
+                setTextHtmlStyle();
             } else if (event.getSource().equals(styleText)) {
                 //Change invoked by the richtextArea
             }
 
             updateStatus();
+        }
+
+        private void setBoldStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_BOLD, HTML_STYLE_CLOSE_SPAN);
+            } else {
+                styleTextFormatter.toggleBold();
+            }
+        }
+
+        private void setItalicStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_ITALIC, HTML_STYLE_CLOSE_SPAN);
+            } else {
+                styleTextFormatter.toggleItalic();
+            }
+        }
+
+        private void setUnderlineStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_UNDERLINE, HTML_STYLE_CLOSE_SPAN);
+            } else {
+                styleTextFormatter.toggleUnderline();
+            }
+        }
+
+        private void setStrokeStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_LINETHROUGH, HTML_STYLE_CLOSE_SPAN);
+            } else {
+                styleTextFormatter.toggleStrikethrough();
+            }
+        }
+
+        private void setSubscriptStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_SUBSCRIPT, HTML_STYLE_CLOSE_SUBSCRIPT);
+            } else {
+                styleTextFormatter.toggleSubscript();
+            }
+        }
+
+        private void setSuperscriptStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_SUPERSCRIPT, HTML_STYLE_CLOSE_SUPERSCRIPT);
+            } else {
+                styleTextFormatter.toggleSuperscript();
+            }
+        }
+
+        private void setLeftAlign() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_ALIGNLEFT, HTML_STYLE_CLOSE_DIV);
+            } else {
+                styleTextFormatter.setJustification(RichTextArea.Justification.LEFT);
+            }
+        }
+
+        private void setMiddleAlign() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_ALIGNCENTER, HTML_STYLE_CLOSE_DIV);
+            } else {
+                styleTextFormatter.setJustification(RichTextArea.Justification.CENTER);
+            }
+        }
+
+        private void setRightAlign() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_ALIGNRIGHT, HTML_STYLE_CLOSE_DIV);
+            } else {
+                styleTextFormatter.setJustification(RichTextArea.Justification.RIGHT);
+            }
+        }
+
+        private void setOrderedListStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_ORDERLIST, HTML_STYLE_CLOSE_ORDERLIST);
+            } else {
+                styleTextFormatter.insertOrderedList();
+            }
+        }
+
+        private void setUnorderedListStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_UNORDERLIST, HTML_STYLE_CLOSE_UNORDERLIST);
+            } else {
+                styleTextFormatter.insertUnorderedList();
+            }
+        }
+
+        private void setRightIndent() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_OPEN_INDENTRIGHT, HTML_STYLE_CLOSE_DIV);
+            } else {
+                styleTextFormatter.rightIndent();
+            }
+        }
+
+        private void setLeftIndent() {
+            if (!isHTMLMode()) {
+                styleTextFormatter.leftIndent();
+            }
+        }
+
+        private void generateLink() {
+            String url = Window.prompt(msgs.linkURL(), "http://");
+            if (url != null) {
+                if (isHTMLMode()) {
+                    changeHtmlStyle("<a href=\"" + url + "\">", "</a>");
+                } else {
+                    styleTextFormatter.createLink(url);
+                }
+            }
+        }
+
+        private void removeLink() {
+            if (!isHTMLMode()) {
+                styleTextFormatter.removeLink();
+            }
+        }
+
+        private void insertImage() {
+            String url = Window.prompt(msgs.imageURL(), "http://");
+            if (url != null) {
+                if (isHTMLMode()) {
+                    changeHtmlStyle("<img src=\"" + url + "\">", "");
+                } else {
+                    styleTextFormatter.insertImage(url);
+                }
+            }
+        }
+
+        private void setInsertLineStyle() {
+            if (isHTMLMode()) {
+                changeHtmlStyle(HTML_STYLE_HLINE, "");
+            } else {
+                styleTextFormatter.insertHorizontalRule();
+            }
+        }
+
+        private void removeFormatting() {
+            if (!isHTMLMode()) {
+                styleTextFormatter.removeFormat();
+            }
+        }
+
+        private void setTextHtmlStyle() {
+            if (texthtml.isDown()) {
+                styleText.setText(styleText.getHTML());
+            } else {
+                styleText.setHTML(styleText.getText());
+            }
         }
 
         public void onKeyUp(KeyUpEvent event) {

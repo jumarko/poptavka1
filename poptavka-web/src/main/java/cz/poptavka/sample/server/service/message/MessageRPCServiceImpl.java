@@ -6,16 +6,6 @@ package cz.poptavka.sample.server.service.message;
 
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.exception.MessageException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -27,6 +17,7 @@ import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.common.TreeItemService;
@@ -41,11 +32,19 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.TreeMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -644,7 +643,48 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         /****/
         recipients.addAll(generalService.search(messageUserRoleSearch));
 
-//        Search recipientMessagesSearch = new Search(MessageUserRole.class);
+        todoDeleteOrRefactor();
+
+
+        //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
+
+        /**///Ziskaj UserMessage (read/unread , starred/unstarred)
+        List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
+        Search userMessagesSearch = new Search(UserMessage.class);
+//        for (Message msg : rootMessages) {
+
+        userMessagesSearch.addFilterEqual("user", sender);
+        userMessagesSearch.addFilterIn("message", senderMessages.values());
+        /**/ inboxMessages.addAll(generalService.search(userMessagesSearch));
+//        }
+
+        //Create details
+        List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
+//        for (MessageUserRole)
+        for (UserMessage userMessage : inboxMessages) {
+//            rootMessages.contains(userMessage.getMessage());
+//            senderMessages.containsValue(userMessage.getMessage());
+//            userMessage.getMessage().equals(this);
+            for (MessageUserRole mur : recipients) {
+                if (mur.getMessage().equals(userMessage.getMessage())) {
+                    try {
+                        userMessage.getMessage().setSender(mur.getMessage().getSender());
+                    } catch (MessageException ex) {
+                        Logger.getLogger(MessageRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+        }
+
+        return inboxMessagesDetail;
+//        return this.getMessages(senderId, searchDataHolder, Arrays.asList(MessageUserRoleType.SENDER));
+    }
+
+    // TODO - check this method
+    private void todoDeleteOrRefactor() {
+        //        Search recipientMessagesSearch = new Search(MessageUserRole.class);
 //        recipientMessagesSearch.addFilterEqual("user", sender);
 //        recipientMessagesSearch.addFilterIn("type", roles);
 //        if (searchDataHolder != null) {
@@ -691,40 +731,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 //                rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
 //            }
 //        }
-        //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
-
-        /**///Ziskaj UserMessage (read/unread , starred/unstarred)
-        List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
-        Search userMessagesSearch = new Search(UserMessage.class);
-//        for (Message msg : rootMessages) {
-
-        userMessagesSearch.addFilterEqual("user", sender);
-        userMessagesSearch.addFilterIn("message", senderMessages.values());
-        /**/ inboxMessages.addAll(generalService.search(userMessagesSearch));
-//        }
-
-        //Create details
-        List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
-//        for (MessageUserRole)
-        for (UserMessage userMessage : inboxMessages) {
-//            rootMessages.contains(userMessage.getMessage());
-//            senderMessages.containsValue(userMessage.getMessage());
-//            userMessage.getMessage().equals(this);
-            for (MessageUserRole mur : recipients) {
-                if (mur.getMessage().equals(userMessage.getMessage())) {
-                    try {
-                        userMessage.getMessage().setSender(mur.getMessage().getSender());
-                    } catch (MessageException ex) {
-                        Logger.getLogger(MessageRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-
-            inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
-        }
-
-        return inboxMessagesDetail;
-//        return this.getMessages(senderId, searchDataHolder, Arrays.asList(MessageUserRoleType.SENDER));
     }
 
     private List<UserMessageDetail> getMessages(Long recipientId, SearchModuleDataHolder searchDataHolder,

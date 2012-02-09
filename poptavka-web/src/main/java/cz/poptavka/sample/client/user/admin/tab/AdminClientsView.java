@@ -232,7 +232,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
      *
      * @param <C> the cell type
      */
-    private static interface GetValue<C> {
+    private interface GetValue<C> {
 
         C getValue(ClientDetail clientDetail);
     }
