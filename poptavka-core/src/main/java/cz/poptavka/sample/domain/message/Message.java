@@ -138,7 +138,7 @@ public class Message extends DomainObject {
 
     @OneToMany(mappedBy = "message")
     @Cascade(value = CascadeType.ALL)
-    private List<UserMessage> userMessages;
+    private List<MessageUserRole> roles;
 
     /* a demand to which this message pertains */
     @ManyToOne
@@ -267,12 +267,12 @@ public class Message extends DomainObject {
         this.problem = problem;
     }
 
-    public List<UserMessage> getUserMessages() {
-        return userMessages;
+    public List<MessageUserRole> getRoles() {
+        return roles;
     }
 
-    public void setUserMessages(List<UserMessage> userMessages) {
-        this.userMessages = userMessages;
+    public void setRoles(List<MessageUserRole> roles) {
+        this.roles = roles;
     }
 
     public Date getSent() {

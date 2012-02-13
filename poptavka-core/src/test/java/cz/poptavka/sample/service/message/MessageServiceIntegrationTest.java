@@ -5,8 +5,9 @@ import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageState;
+import cz.poptavka.sample.domain.message.MessageUserRole;
+import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.domain.message.UserMessageRoleType;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.service.GeneralService;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,20 +63,19 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 MessageFilter.EMPTY_FILTER);
 
         Assert.assertEquals(5, messageThreads.size());
-        checkMessageExists(1L, messageThreads);
-        checkMessageExists(200L, messageThreads);
-        checkMessageExists(300L, messageThreads);
-        checkMessageExists(400L, messageThreads);
-        checkMessageExists(501L, messageThreads);
+        checkUserMessageExists(1L, messageThreads);
+        checkUserMessageExists(200L, messageThreads);
+        checkUserMessageExists(300L, messageThreads);
+        checkUserMessageExists(400L, messageThreads);
 
         // one reply to the thread root message
         Assert.assertEquals(1, messageThreads.get(0).getChildren().size());
-        checkMessageExists(3L, messageThreads.get(0).getChildren());
+        checkUserMessageExists(3L, messageThreads.get(0).getChildren());
 
         // two replies to the reply to the thread root message
         Assert.assertEquals(2, messageThreads.get(0).getChildren().get(0).getChildren().size());
-        checkMessageExists(2L, messageThreads.get(0).getChildren().get(0).getChildren());
-        checkMessageExists(4L, messageThreads.get(0).getChildren().get(0).getChildren());
+        checkUserMessageExists(2L, messageThreads.get(0).getChildren().get(0).getChildren());
+        checkUserMessageExists(4L, messageThreads.get(0).getChildren().get(0).getChildren());
     }
 
 
@@ -84,17 +83,16 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
         Assert.assertEquals(11, allUserMessages.size());
-        checkMessageExists(1L, allUserMessages);
-        checkMessageExists(2L, allUserMessages);
-        checkMessageExists(3L, allUserMessages);
-        checkMessageExists(4L, allUserMessages);
-        checkMessageExists(200L, allUserMessages);
-        checkMessageExists(300L, allUserMessages);
-        checkMessageExists(301L, allUserMessages);
-        checkMessageExists(400L, allUserMessages);
-        checkMessageExists(401L, allUserMessages);
-        checkMessageExists(402L, allUserMessages);
-        checkMessageExists(501L, allUserMessages);
+        checkUserMessageExists(1L, allUserMessages);
+        checkUserMessageExists(2L, allUserMessages);
+        checkUserMessageExists(3L, allUserMessages);
+        checkUserMessageExists(4L, allUserMessages);
+        checkUserMessageExists(200L, allUserMessages);
+        checkUserMessageExists(300L, allUserMessages);
+        checkUserMessageExists(301L, allUserMessages);
+        checkUserMessageExists(400L, allUserMessages);
+        checkUserMessageExists(401L, allUserMessages);
+        checkUserMessageExists(402L, allUserMessages);
     }
 
     @Test
@@ -102,17 +100,15 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final List<Message> allUserReceivedMessages = this.messageService.getAllMessages(
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
-                        .withUserMessageRoleType(UserMessageRoleType.TO).build());
-        Assert.assertEquals(9, allUserReceivedMessages.size());
-        checkMessageExists(1L, allUserReceivedMessages);
-        checkMessageExists(2L, allUserReceivedMessages);
-        checkMessageExists(3L, allUserReceivedMessages);
-        checkMessageExists(4L, allUserReceivedMessages);
-        checkMessageExists(200L, allUserReceivedMessages);
-        checkMessageExists(300L, allUserReceivedMessages);
-        checkMessageExists(301L, allUserReceivedMessages);
-        checkMessageExists(400L, allUserReceivedMessages);
-        checkMessageExists(501L, allUserReceivedMessages);
+                        .withMessageUserRoleType(MessageUserRoleType.TO).build());
+        Assert.assertEquals(7, allUserReceivedMessages.size());
+        checkUserMessageExists(1L, allUserReceivedMessages);
+        checkUserMessageExists(2L, allUserReceivedMessages);
+        checkUserMessageExists(4L, allUserReceivedMessages);
+        checkUserMessageExists(200L, allUserReceivedMessages);
+        checkUserMessageExists(300L, allUserReceivedMessages);
+        checkUserMessageExists(400L, allUserReceivedMessages);
+        checkUserMessageExists(402L, allUserReceivedMessages);
     }
 
     @Test
@@ -120,11 +116,11 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         final List<Message> allUserReceivedMessages = this.messageService.getAllMessages(
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
-                        .withUserMessageRoleType(UserMessageRoleType.SENDER).build());
+                        .withMessageUserRoleType(MessageUserRoleType.SENDER).build());
         Assert.assertEquals(3, allUserReceivedMessages.size());
-        checkMessageExists(3L, allUserReceivedMessages);
-        checkMessageExists(301L, allUserReceivedMessages);
-        checkMessageExists(401L, allUserReceivedMessages);
+        checkUserMessageExists(3L, allUserReceivedMessages);
+        checkUserMessageExists(301L, allUserReceivedMessages);
+        checkUserMessageExists(401L, allUserReceivedMessages);
     }
 
 
@@ -137,10 +133,10 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
 
         Assert.assertEquals(4, potentialDemandConversation.size());
         // check if all expected messages are in conversation
-        checkMessageExists(1L, potentialDemandConversation);
-        checkMessageExists(2L, potentialDemandConversation);
-        checkMessageExists(3L, potentialDemandConversation);
-        checkMessageExists(4L, potentialDemandConversation);
+        checkUserMessageExists(1L, potentialDemandConversation);
+        checkUserMessageExists(2L, potentialDemandConversation);
+        checkUserMessageExists(3L, potentialDemandConversation);
+        checkUserMessageExists(4L, potentialDemandConversation);
     }
 
     @Test
@@ -154,13 +150,13 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
                 3, listOfClientDemandMessages.size());
 
-        checkMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
                 (Object) 4, (Object) listOfClientDemandMessages.get(threadRoot1));
-        checkMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
                 (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot200));
-        checkMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of subMessages selected",
                 (Object) 2, (Object) listOfClientDemandMessages.get(threadRoot300));
     }
@@ -176,13 +172,13 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
                 3, listOfClientDemandMessages.size());
 
-        checkMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageExists(threadRoot1.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
                 (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot1));
-        checkMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageExists(threadRoot200.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
                 (Object) 1, (Object) listOfClientDemandMessages.get(threadRoot200));
-        checkMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
+        checkUserMessageExists(threadRoot300.getId(), listOfClientDemandMessages.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
                 (Object) 0, (Object) listOfClientDemandMessages.get(threadRoot300));
     }
@@ -196,9 +192,9 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals("Inacurrate number of descendants selected",
                 3, descendants.size());
 
-        checkMessageExists(2L, descendants);
-        checkMessageExists(3L, descendants);
-        checkMessageExists(4L, descendants);
+        checkUserMessageExists(2L, descendants);
+        checkUserMessageExists(3L, descendants);
+        checkUserMessageExists(4L, descendants);
 
         threadRoot = this.messageService.getById(5L);
         descendants =
@@ -206,7 +202,7 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals("Inacurrate number of descendants selected",
                 1, descendants.size());
 
-        checkMessageExists(6L, descendants);
+        checkUserMessageExists(6L, descendants);
     }
 
     @Test
@@ -316,28 +312,28 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals("Incorrect sender set to newly created message.",
                 user, message.getSender());
 
-        testUserMessagePresent(message, user, UserMessageRoleType.SENDER);
+        testUserMessagePresent(message, user);
         testUserMessageNull(message, user2);
         message.setSubject("Hello");
         message.setBody("Chtěl bych zadat poptávku na sexuální služby,"
                 + " ale nevím jak se to dělá.");
-        final UserMessage userMessage = new UserMessage();
-        userMessage.setMessage(message);
-        userMessage.setUser(user2);
-        userMessage.setRoleType(UserMessageRoleType.TO);
-        final List<UserMessage> userMessages = new ArrayList<UserMessage>();
-        userMessages.add(userMessage);
-        message.setUserMessages(userMessages);
+        MessageUserRole messageUserRole = new MessageUserRole();
+        messageUserRole.setMessage(message);
+        messageUserRole.setUser(user2);
+        messageUserRole.setType(MessageUserRoleType.TO);
+        List<MessageUserRole> messageUserRoles = new ArrayList();
+        messageUserRoles.add(messageUserRole);
+        message.setRoles(messageUserRoles);
         messageService.send(message);
         Assert.assertEquals("MessageState of a message after sending"
                 + " should be SENT, but was" + message.getMessageState()
                 + ".", MessageState.SENT, message.getMessageState());
-        testUserMessagePresent(message, user2, UserMessageRoleType.TO);
+        testUserMessagePresent(message, user2);
 
         Message reply = messageService.newReply(message, user2);
 
-        testUserMessagePresent(reply, user2, UserMessageRoleType.SENDER);
-        testUserMessagePresent(reply, user, UserMessageRoleType.TO);
+        testUserMessagePresent(reply, user2);
+        testUserMessageNull(reply, user);
 
         Assert.assertEquals("MessageState of a newly creted reply"
                 + " should be COMPOSED, but was" + reply.getMessageState()
@@ -354,6 +350,9 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertEquals("MessageState of a reply after sending"
                 + " should be SENT, but was" + reply.getMessageState()
                 + ".", MessageState.SENT, reply.getMessageState());
+
+        testUserMessagePresent(reply, user);
+
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
@@ -361,12 +360,12 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
      * Checks if message with given id <code>messageId</code> exists in collection <code>allUserMessages</code>.
      *
      * @param messageId
-     * @param allMessages
+     * @param allUserMessages
      */
-    private void checkMessageExists(final Long messageId, Collection<Message> allMessages) {
+    private void checkUserMessageExists(final Long messageId, Collection<Message> allUserMessages) {
         Assert.assertTrue(
-                "Message [id=" + messageId + "] expected to be in collection [" + allMessages + "] is not there.",
-                CollectionUtils.exists(allMessages, new Predicate() {
+                "Message [id=" + messageId + "] expected to be in collection [" + allUserMessages + "] is not there.",
+                CollectionUtils.exists(allUserMessages, new Predicate() {
                     @Override
                     public boolean evaluate(Object object) {
                         return messageId.equals(((Message) object).getId());
@@ -374,7 +373,7 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
                 }));
     }
 
-    private void testUserMessagePresent(Message message, User user, UserMessageRoleType roleType) {
+    private void testUserMessagePresent(Message message, User user) {
         UserMessage userMessage = userMessageService.getUserMessage(message,
                 user);
         Assert.assertNotNull("A proper UserMessage wasn't created.",
@@ -382,9 +381,8 @@ public class MessageServiceIntegrationTest extends DBUnitBaseTest {
 
         Assert.assertEquals("User of the UserMessage is improperly set.",
                 user, userMessage.getUser());
-        Assert.assertThat("Message of the UserMessage is improperly set.",
-                message, is(userMessage.getMessage()));
-        Assert.assertThat("Incorrect roleType", userMessage.getRoleType(), is(roleType));
+        Assert.assertEquals("Message of the UserMessage is improperly set.",
+                message, userMessage.getMessage());
 
     }
 

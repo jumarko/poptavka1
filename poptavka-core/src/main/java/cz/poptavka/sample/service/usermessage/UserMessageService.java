@@ -7,7 +7,6 @@ package cz.poptavka.sample.service.usermessage;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.dao.usermessage.UserMessageDao;
 import cz.poptavka.sample.domain.message.Message;
-import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
@@ -42,14 +41,6 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
     UserMessage getUserMessage(Message message, User user);
 
     /**
-     * Load all user messages for given {@code user} which have messages with context {@code messageContext}
-     * @param user user which messages will be taken into account
-     * @param messageContext relevant message context
-     * @return all {@code UserMessage}-s for given user and message context
-     */
-    List<UserMessage> getUserMessages(BusinessUser user, MessageContext messageContext);
-
-    /**
      * Load all potential demands for given supplier.
      * Those are all messages which ware sent by the Poptavka system to the given supplier
      * when some client created new Demand suitable for given supplier.
@@ -71,16 +62,4 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
-
-    /**
-     * Loads all user messages that represents offer to potential client.
-     * This practically means all {@code UserMessage} objects that have:
-     * <ul>
-     *     <li>roleType == TO</li>
-     *     <li>messageContext == POTENTIAL_CLIENTS_OFFER</li>
-     * </ul>
-     * @param user user represents the client for which we want to get all offers
-     * @return all user messages representing offers to {@code user}
-     */
-    List<UserMessage> getOffersUserMessages(BusinessUser user);
 }

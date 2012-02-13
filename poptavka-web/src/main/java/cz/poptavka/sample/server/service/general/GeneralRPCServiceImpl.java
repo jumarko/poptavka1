@@ -685,11 +685,9 @@ public class GeneralRPCServiceImpl extends AutoinjectingRemoteService implements
         if (searchDataHolder.getAdminMessages().getType() != null) {
             search.addFilterEqual("messageState", MessageState.valueOf(searchDataHolder.getAdminMessages().getType()));
         }
-        // TODO jumar - what exactly is represented by "state" ??
-        // probably replace search class - Message.class -> UserMessage.class
         //TODO skontrolovat, v message totiz list roli + ci je to rovnaky typ triedy
         if (searchDataHolder.getAdminMessages().getState() != null) {
-            search.addFilterIn("userMessages.MessageUserRole.MessageUserRoleType",
+            search.addFilterIn("roles.MessageUserRole.MessageUserRoleType",
                     MessageType.valueOf(searchDataHolder.getAdminMessages().getState()));
         }
         return search;

@@ -50,10 +50,6 @@ import javax.persistence.NamedQuery;
                         + "where userMessage.user = :user"
                         + " and userMessage.message = :message") }
 )
-// TODO jumar - add another roles types or new attribute representing old approach to UserMessage
-// if there is a necessity to store UserMessage to allow admin find all unprocessed demands, then
-// add new boolean flag (or enum or even first class object for representation of Message state - processed, unprocess,
-// review by admin, etc.)
 public class UserMessage extends DomainObject {
     @ManyToOne
     private Message message;
@@ -62,7 +58,7 @@ public class UserMessage extends DomainObject {
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
-    private UserMessageRoleType roleType;
+    private MessageUserRoleType roleType;
 
     @Enumerated(value = EnumType.ORDINAL)
     @Column(length = OrmConstants.ENUM_SHORTINT_FIELD_LENGTH)
@@ -89,11 +85,11 @@ public class UserMessage extends DomainObject {
         this.user = user;
     }
 
-    public UserMessageRoleType getRoleType() {
+    public MessageUserRoleType getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(UserMessageRoleType roleType) {
+    public void setRoleType(MessageUserRoleType roleType) {
         this.roleType = roleType;
     }
 

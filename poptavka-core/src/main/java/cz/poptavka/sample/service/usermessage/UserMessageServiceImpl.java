@@ -10,7 +10,7 @@ import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.dao.usermessage.UserMessageDao;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
-import cz.poptavka.sample.domain.message.UserMessageRoleType;
+import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
@@ -54,27 +54,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
      */
     @Override
     public List<UserMessage> getPotentialDemands(BusinessUser supplier) {
-        return getUserMessages(supplier, MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-    }
-
-
-    @Override
-    public List<UserMessage> getOffersUserMessages(BusinessUser potentialClient) {
-        return getUserMessages(potentialClient, MessageContext.POTENTIAL_CLIENTS_OFFER);
-    }
-
-    @Override
-    public List<UserMessage> getUserMessages(BusinessUser user, MessageContext messageContext) {
-        Preconditions.checkNotNull("Client must be specified", user);
-        Preconditions.checkNotNull("Client's user id must be specified for finding offers",
-                user.getId());
+        Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
+        Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
+                supplier.getId());
 
         final Search potentialDemandsSearch = new Search(UserMessage.class);
-        potentialDemandsSearch.addFilterEqual("user.id", user.getId());
-        potentialDemandsSearch.addFilterEqual("roleType", UserMessageRoleType.TO);
-
-        potentialDemandsSearch.addFilterEqual("messageContext", messageContext);
+        potentialDemandsSearch.addFilterEqual("user.id", supplier.getId());
+        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
+        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
 
         return this.generalService.search(potentialDemandsSearch);
     }
+
 }
