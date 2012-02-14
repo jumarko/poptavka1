@@ -19,7 +19,6 @@ import cz.poptavka.sample.client.home.creation.DemandCreationModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
 import cz.poptavka.sample.client.homeWelcome.HomeWelcomeModule;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
-import cz.poptavka.sample.client.homesettings.HomeSettingsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
@@ -34,6 +33,7 @@ import cz.poptavka.sample.client.user.admin.AdminModule;
 import cz.poptavka.sample.client.user.demands.DemandModule;
 import cz.poptavka.sample.client.user.menu.UserMenuPresenter;
 import cz.poptavka.sample.client.user.messages.MessagesModule;
+import cz.poptavka.sample.client.user.settings.SettingsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -49,7 +49,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
         @ChildModule(moduleClass = SearchModule.class, async = false, autoDisplay = true),
         @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = false),
-        @ChildModule(moduleClass = HomeSettingsModule.class, async = true, autoDisplay = false),
+        @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false) })
 public interface RootEventBus extends EventBus {
     @Start
@@ -186,7 +186,7 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = DemandModule.class)
     void initDemandModule();
 
-    @Event(modulesToLoad = HomeSettingsModule.class)
+    @Event(modulesToLoad = SettingsModule.class)
     void initSettings();
 
     @Event(modulesToLoad = SupplierCreationModule.class)

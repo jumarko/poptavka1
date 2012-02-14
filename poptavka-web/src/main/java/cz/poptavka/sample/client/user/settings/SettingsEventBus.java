@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.homesettings;
+package cz.poptavka.sample.client.user.settings;
 
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -9,16 +9,16 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = HomeSettingsView.class, module = HomeSettingsModule.class)
-public interface HomeSettingsEventBus extends EventBus {
+@Events(startView = SettingsView.class, module = SettingsModule.class)
+public interface SettingsEventBus extends EventBus {
 
-    @Event(handlers = HomeSettingsPresenter.class)
+    @Event(handlers = SettingsPresenter.class)
     void initSettings();
 
-    @Event(handlers = HomeSettingsPresenter.class)
+    @Event(handlers = SettingsPresenter.class)
     void setSettings(SettingsDetail detail);
 
-    @Event(handlers = HomeSettingsHandler.class)
+    @Event(handlers = SettingsHandler.class)
     void getLoggedUser(long userId);
 
 }

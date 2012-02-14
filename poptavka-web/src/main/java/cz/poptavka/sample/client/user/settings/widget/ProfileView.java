@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.homesettings.widget;
+package cz.poptavka.sample.client.user.settings.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

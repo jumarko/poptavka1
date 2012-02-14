@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.homesettings;
+package cz.poptavka.sample.client.user.settings;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -12,10 +12,10 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
-@Presenter(view = HomeSettingsView.class)
-public class HomeSettingsPresenter
+@Presenter(view = SettingsView.class)
+public class SettingsPresenter
         extends
-        BasePresenter<HomeSettingsPresenter.HomeSettingsViewInterface, HomeSettingsEventBus> {
+        BasePresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus> {
 
     public interface HomeSettingsViewInterface {
 

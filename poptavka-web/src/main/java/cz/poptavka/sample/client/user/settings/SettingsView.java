@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.homesettings;
+package cz.poptavka.sample.client.user.settings;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,17 +10,18 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HomeSettingsView extends Composite implements
-        HomeSettingsPresenter.HomeSettingsViewInterface {
+
+public class SettingsView extends Composite implements
+        SettingsPresenter.HomeSettingsViewInterface {
 
     private static HomeSettingsViewUiBinder uiBinder = GWT
             .create(HomeSettingsViewUiBinder.class);
 
     interface HomeSettingsViewUiBinder extends
-            UiBinder<Widget, HomeSettingsView> {
+            UiBinder<Widget, SettingsView> {
     }
 
-    public HomeSettingsView() {
+    public SettingsView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 

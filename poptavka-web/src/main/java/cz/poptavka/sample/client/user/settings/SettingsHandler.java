@@ -1,4 +1,4 @@
-package cz.poptavka.sample.client.homesettings;
+package cz.poptavka.sample.client.user.settings;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -10,7 +10,7 @@ import cz.poptavka.sample.client.service.demand.SettingsRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 @EventHandler
-public class HomeSettingsHandler extends BaseEventHandler<HomeSettingsEventBus> {
+public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
     @Inject
     SettingsRPCServiceAsync settingsService;
