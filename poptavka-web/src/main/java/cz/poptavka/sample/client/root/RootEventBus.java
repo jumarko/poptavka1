@@ -30,7 +30,6 @@ import cz.poptavka.sample.client.root.footer.FooterPresenter;
 import cz.poptavka.sample.client.root.header.HeaderPresenter;
 import cz.poptavka.sample.client.root.menu.MenuPresenter;
 import cz.poptavka.sample.client.root.searchBar.SearchBarPresenter;
-import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.client.user.admin.AdminModule;
 import cz.poptavka.sample.client.user.demands.DemandModule;
 import cz.poptavka.sample.client.user.menu.UserMenuPresenter;
@@ -43,7 +42,6 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
         @ChildModule(moduleClass = HomeWelcomeModule.class, async = false, autoDisplay = true),
-        @ChildModule(moduleClass = UserModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = false),
         @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
         @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = false),
@@ -122,10 +120,10 @@ public interface RootEventBus extends EventBus {
 
     @Event(handlers = HeaderPresenter.class)
     void setPublicLayout();
-
+    /*
     @Event(modulesToLoad = UserModule.class, passive = true)
     void clearUserOnUnload();
-
+    */
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget);
@@ -167,13 +165,13 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = HomeWelcomeModule.class)
     void initHomeWelcomeModule(SearchModuleDataHolder filter);
 
-    @Event(modulesToLoad = UserModule.class)
+    @Event(modulesToLoad = MessagesModule.class)
     void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
 
-    @Event(modulesToLoad = UserModule.class)
+    @Event(modulesToLoad = MessagesModule.class)
     void initMessagesTabModuleSent(SearchModuleDataHolder filter);
 
-    @Event(modulesToLoad = UserModule.class)
+    @Event(modulesToLoad = MessagesModule.class)
     void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = SearchModule.class)

@@ -78,7 +78,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     }
 
     public void onSetPublicLayout() {
-        eventBus.clearUserOnUnload();
+        //eventBus.clearUserOnUnload();
         view.toggleMainLayout(false);
         view.getLoginLink().setText(MSGS.logIn());
         this.loggedIn = false;

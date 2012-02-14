@@ -20,7 +20,11 @@ import cz.poptavka.sample.client.user.UserModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-
+/**
+ * !!!! NOT USED ANYMORE !!!!!
+ * @author kolkar
+ *
+ */
 @Events(startView = MainView.class, historyOnStart = true, module = MainModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface MainEventBus extends EventBus {

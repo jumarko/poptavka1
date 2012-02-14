@@ -33,6 +33,7 @@ import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 /**
+ * !!!! NOT USED ANYMORE !!!!!
  * Module loaded after user's log in. Default view is summary of his new
  * messages, new demands for him.
  *
