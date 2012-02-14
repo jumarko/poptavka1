@@ -21,67 +21,36 @@ import cz.poptavka.sample.shared.domain.ClientDetail;
  *
  * @author Martin Slavkovsky
  */
-public class AdminClientInfoView extends Composite implements
-        AdminClientInfoPresenter.AdminClientInfoInterface {
+public class AdminClientInfoView extends Composite implements AdminClientsPresenter.AdminClientInfoInterface {
 
     private static AdminClientInfoViewUiBinder uiBinder = GWT.create(AdminClientInfoViewUiBinder.class);
 
-    interface AdminClientInfoViewUiBinder extends
-            UiBinder<Widget, AdminClientInfoView> {
+    interface AdminClientInfoViewUiBinder extends UiBinder<Widget, AdminClientInfoView> {
     }
-    // Supplier detail input fields
     @UiField
     TextArea descriptionBox;
     @UiField
     TextBox companyName, firstName, lastName, email, phone, overalRating, identifNumber, id;
     @UiField
     ListBox verification;
-    // Supplier detail button fields
     @UiField
     Button createButton, updateButton;
     private ClientDetail clientInfo;
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public Button getUpdateBtn() {
-        return updateButton;
-    }
-
-    @Override
-    public void createView() {
+//    @Override
+//    public void createView() {
+    public AdminClientInfoView() {
         initWidget(uiBinder.createAndBindUi(this));
-        initClientInfoForm();
     }
+    //
+    //******************* SETTER METHODS (defined by interface) ****************
+    //
 
-    public ClientDetail getUpdatedClientDetail() {
-        if (clientInfo == null) {
-            return null;
-        }
-        // Update the client object.
-        clientInfo.getUserDetail().setCompanyName(companyName.getText());
-        clientInfo.getUserDetail().setDescription(descriptionBox.getText());
-        clientInfo.getUserDetail().setFirstName(firstName.getText());
-        clientInfo.getUserDetail().setLastName(lastName.getText());
-        clientInfo.setVerification(verification.getItemText(verification.getSelectedIndex()));
-        clientInfo.getUserDetail().setEmail(email.getText());
-        clientInfo.getUserDetail().setPhone(phone.getText());
-        clientInfo.setOveralRating(Integer.valueOf(overalRating.getText()));
-        clientInfo.getUserDetail().setIdentificationNumber(identifNumber.getText());
-
-        return clientInfo;
-    }
-
-    private void initClientInfoForm() {
-        // initWidget(uiBinder.createAndBindUi(this));
-
-        // Initialize the contact to null.
-        setClientDetail(null);
-    }
-
+    /**
+     * Displays given detail object.
+     * @param detail
+     */
+    @Override
     public void setClientDetail(ClientDetail detail) {
         this.clientInfo = detail;
         updateButton.setEnabled(detail != null);
@@ -113,5 +82,52 @@ public class AdminClientInfoView extends Composite implements
             identifNumber.setText(detail.getUserDetail().getIdentificationNumber());
             id.setText(Long.toString(detail.getId()));
         }
+    }
+    //
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+
+    /**
+     * Returns updated early given detail object.
+     * @return updated detail object
+     */
+    @Override
+    public ClientDetail getUpdatedClientDetail() {
+        if (clientInfo == null) {
+            return null;
+        }
+        // Update the client object.
+        clientInfo.getUserDetail().setCompanyName(companyName.getText());
+        clientInfo.getUserDetail().setDescription(descriptionBox.getText());
+        clientInfo.getUserDetail().setFirstName(firstName.getText());
+        clientInfo.getUserDetail().setLastName(lastName.getText());
+        clientInfo.setVerification(verification.getItemText(verification.getSelectedIndex()));
+        clientInfo.getUserDetail().setEmail(email.getText());
+        clientInfo.getUserDetail().setPhone(phone.getText());
+        clientInfo.setOveralRating(Integer.valueOf(overalRating.getText()));
+        clientInfo.getUserDetail().setIdentificationNumber(identifNumber.getText());
+
+        return clientInfo;
+    }
+
+    /**
+     * @return UPDATE button
+     */
+    @Override
+    public Button getUpdateBtn() {
+        return updateButton;
+    }
+
+    @Override
+    public Button getCreateBtn() {
+        return createButton;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

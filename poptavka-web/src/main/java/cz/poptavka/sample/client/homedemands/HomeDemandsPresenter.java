@@ -135,7 +135,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
         if (location.equals("home")) {
             Storage.setCurrentlyLoadedView("homeDemands");
-            eventBus.setBodyHolderWidget(view.getWidgetView());
+            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         } else if (location.equals("user")) {
             Storage.setCurrentlyLoadedView("userDemands");
             eventBus.setUserBodyHolderWidget(view.getWidgetView());

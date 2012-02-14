@@ -199,25 +199,42 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
     }
     private final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
 
-    public void onInitMessagesTabModuleInbox(SearchModuleDataHolder filter) {
+    public void onInitMailBox(String type, SearchModuleDataHolder filter) {
         this.init();
-        Storage.setCurrentlyLoadedView("messagesTabInbox");
-        //ked kolki opravi svoje opravit aj toto
-//        eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
-        eventBus.getInboxMessages(149L, filter);
+        if (type.equals("inbox")) {
+            // vsade adv search view rovnaky, ale metody treba volat ine
+            Storage.setCurrentlyLoadedView("messagesTabInbox");
+            eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
+        } else if (type.equals("sent")) {
+            Storage.setCurrentlyLoadedView("messagesTabSent");
+            eventBus.getSentMessages(Storage.getUser().getUserId(), filter);
+        } else if (type.equals("trash")) {
+            Storage.setCurrentlyLoadedView("messagesTabTrash");
+            eventBus.getDeletedMessages(Storage.getUser().getUserId(), filter);
+        } else if (type.equals("draft")) {
+            Storage.setCurrentlyLoadedView("messagesTabDraft");
+        }
     }
 
-    public void onInitMessagesTabModuleSent(SearchModuleDataHolder filter) {
-        this.init();
-        Storage.setCurrentlyLoadedView("messagesTabSent");
-        eventBus.getSentMessages(Storage.getUser().getUserId(), filter);
-    }
-
-    public void onInitMessagesTabModuleTrash(SearchModuleDataHolder filter) {
-        this.init();
-        Storage.setCurrentlyLoadedView("messagesTabTrash");
-        eventBus.getDeletedMessages(Storage.getUser().getUserId(), filter);
-    }
+//    public void onInitMessagesTabModuleInbox(SearchModuleDataHolder filter) {
+//        this.init();
+//        Storage.setCurrentlyLoadedView("messagesTabInbox");
+//        //ked kolki opravi svoje opravit aj toto
+////        eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
+//        eventBus.getInboxMessages(149L, filter);
+//    }
+//
+//    public void onInitMessagesTabModuleSent(SearchModuleDataHolder filter) {
+//        this.init();
+//        Storage.setCurrentlyLoadedView("messagesTabSent");
+//        eventBus.getSentMessages(Storage.getUser().getUserId(), filter);
+//    }
+//
+//    public void onInitMessagesTabModuleTrash(SearchModuleDataHolder filter) {
+//        this.init();
+//        Storage.setCurrentlyLoadedView("messagesTabTrash");
+//        eventBus.getDeletedMessages(Storage.getUser().getUserId(), filter);
+//    }
 
     public void onDisplayMessages(List<UserMessageDetail> messages) {
         List<UserMessageDetail> list = view.getDataProvider().getList();

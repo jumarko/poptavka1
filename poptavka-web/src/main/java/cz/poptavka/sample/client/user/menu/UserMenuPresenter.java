@@ -11,9 +11,9 @@ import cz.poptavka.sample.client.user.IUserMenuView.IUserMenuPresenter;
 import cz.poptavka.sample.client.user.interfaces.IUserMenuView;
 
 @Presenter(view = UserMenuView.class)
-public class UserMenuPresenter extends
-        BasePresenter<IUserMenuView, RootEventBus> implements
-        IUserMenuPresenter {
+public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus>
+        implements IUserMenuPresenter {
+
     public void onStart() {
         bindView();
         GWT.log("User menu module loaded");
@@ -23,7 +23,7 @@ public class UserMenuPresenter extends
     public void onSetUserMenu() {
         bindView();
         GWT.log("user menu loaded");
-        eventBus.setMenu(view.getWidgetView());
+        eventBus.setMenu(view);
     }
 
     public void bindView() {
@@ -37,7 +37,7 @@ public class UserMenuPresenter extends
         view.getMessagesButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initMessagesModule("displayGrid");
+                eventBus.initMessagesModule(null, "displayGrid");
             }
         });
         view.getSettingsButton().addClickHandler(new ClickHandler() {

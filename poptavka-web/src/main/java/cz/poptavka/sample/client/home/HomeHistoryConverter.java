@@ -29,7 +29,7 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
     public void convertFromToken(String historyName, String param, HomeEventBus eventBus) {
         Window.alert(historyName);
         eventBus.setHistoryStoredForNextOne(false);
-        eventBus.displayMenu();
+//        eventBus.displayMenu();
 
         if (historyName.contains("user")) {
             eventBus.atAccount();

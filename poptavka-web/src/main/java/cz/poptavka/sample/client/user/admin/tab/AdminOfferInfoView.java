@@ -18,7 +18,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 
 public class AdminOfferInfoView extends Composite implements
-        AdminOfferInfoPresenter.AdminOfferInfoInterface {
+        AdminOffersPresenter.AdminOfferInfoInterface {
 
     private static AdminOfferInfoViewUiBinder uiBinder = GWT
             .create(AdminOfferInfoViewUiBinder.class);

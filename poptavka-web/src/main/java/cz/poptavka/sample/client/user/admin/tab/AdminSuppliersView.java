@@ -43,34 +43,18 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
     interface AdminSuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<FullSupplierDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    /**
-     * The list of cells that are editable.
-     */
-//    private List<AbstractEditableCell<?, ?>> editableCells;
-    /**
-     * Detail of selected Supplier.
-     */
-    @UiField
-    SimplePanel adminSupplierDetail;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // DETAIL
+    @UiField SimplePanel adminSupplierDetail;
+    // TABLE
+    @UiField(provided = true) DataGrid<FullSupplierDetail> dataGrid;
     private SingleSelectionModel<FullSupplierDetail> selectionModel;
     /** Editable Columns in dataGrid. **/
     private Column<FullSupplierDetail, String> idColumn;
@@ -78,109 +62,20 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
-    private AdminSuppliersPresenter presenter;
+    // The key provider that provides the unique ID of a FullSupplierDetail.
+    private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
 
+        @Override
+        public Object getKey(FullSupplierDetail item) {
+            return item == null ? null : item.getSupplierId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
     /**
-     * @return the Supplier Id
+     * creates WIDGET view.
      */
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierIdColumn() {
-        return idColumn;
-    }
-
-    /**
-     * @return the SupplierNameColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierNameColumn() {
-        return supplierNameColumn;
-    }
-
-    /**
-     * @return the SupplierTypeColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, String> getSupplierTypeColumn() {
-        return supplierTypeColumn;
-    }
-
-    /**
-     * @return the SupplierTypeColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, Boolean> getCertifiedColumn() {
-        return certifiedColumn;
-    }
-
-    /**
-     * @return the SupplierTypeColumn
-     */
-    @Override
-    public Column<FullSupplierDetail, String> getVerificationColumn() {
-        return verificationColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<FullSupplierDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    @Override
-    public ListBox getPageSizeCombo() {
-        return pageSizeCombo;
-    }
-
-    @Override
-    public SimplePager getPager() {
-        return pager;
-    }
-
-    @Override
-    public int getPageSize() {
-        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
-    }
-
-    @Override
-    public Button getCommitBtn() {
-        return commit;
-    }
-
-    @Override
-    public Button getRollbackBtn() {
-        return rollback;
-    }
-
-    @Override
-    public Button getRefreshBtn() {
-        return refresh;
-    }
-
-    @Override
-    public Label getChangesLabel() {
-        return changesLabel;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<FullSupplierDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminSupplierDetail
-     */
-    @Override
-    public SimplePanel getAdminSupplierDetail() {
-        return adminSupplierDetail;
-    }
-
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -195,34 +90,30 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         changesLabel.setText("0");
     }
 
-//    @Override
-//    public void createView() {
-//        initDataGrid();
-//        initWidget(uiBinder.createAndBindUi(this));
-//    }
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("Admin Suppliers initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
+        GWT.log("init AdminSuppliers DataGrid initialized");
+
+        // TABLE
         dataGrid = new DataGrid<FullSupplierDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-        // Add a selection model to handle user selection.
+        // SELECTION MODEL
         selectionModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<FullSupplierDetail>createCheckboxManager());
 
-        // Initialize the columns.
+        // COLUMNS
         initGridColumns();
     }
 
@@ -318,14 +209,139 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
-    /**
-     * The key provider that provides the unique ID of a FullSupplierDetail.
-     */
-    private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
 
-        @Override
-        public Object getKey(FullSupplierDetail item) {
-            return item == null ? null : item.getSupplierId();
-        }
-    };
+    /**
+     * @return TABLE (DataGrid)
+     */
+    @Override
+    public DataGrid<FullSupplierDetail> getDataGrid() {
+        return dataGrid;
+    }
+
+    /**
+     * @return table column: ID
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getSupplierIdColumn() {
+        return idColumn;
+    }
+
+    /**
+     * @return table column: NAME
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getSupplierNameColumn() {
+        return supplierNameColumn;
+    }
+
+    /**
+     * @return table column: TYPE
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getSupplierTypeColumn() {
+        return supplierTypeColumn;
+    }
+
+    /**
+     * @return table column: CERTIFIED
+     */
+    @Override
+    public Column<FullSupplierDetail, Boolean> getCertifiedColumn() {
+        return certifiedColumn;
+    }
+
+    /**
+     * @return table column: VERIFIED
+     */
+    @Override
+    public Column<FullSupplierDetail, String> getVerificationColumn() {
+        return verificationColumn;
+
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<FullSupplierDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
+    @Override
+    public SimplePager getPager() {
+        return pager;
+    }
+
+    /**
+     * @return table/pager size: COMBO
+     */
+    @Override
+    public ListBox getPageSizeCombo() {
+        return pageSizeCombo;
+    }
+
+    /**
+     * @return table/pager size: VALUE
+     */
+    @Override
+    public int getPageSize() {
+        return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
+    }
+
+    //                          *** BUTTONS ***
+    /**
+     * @return COMMIT button
+     */
+    @Override
+    public Button getCommitBtn() {
+        return commit;
+    }
+
+    /**
+     * @return ROLLBACK button
+     */
+    @Override
+    public Button getRollbackBtn() {
+        return rollback;
+    }
+
+    /**
+     * @return REFRESH button
+     */
+    @Override
+    public Button getRefreshBtn() {
+        return refresh;
+    }
+
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
+    @Override
+    public Label getChangesLabel() {
+        return changesLabel;
+    }
+
+    /**
+     * @return widget AdminSupplierInfoView as it is
+     */
+    @Override
+    public SimplePanel getAdminSupplierDetail() {
+        return adminSupplierDetail;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
 }

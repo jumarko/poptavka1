@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -34,107 +33,45 @@ import cz.poptavka.sample.shared.domain.ClientDetail;
 public class AdminClientsView extends Composite implements AdminClientsPresenter.AdminClientsInterface {
 
     private static AdminClientsViewUiBinder uiBinder = GWT.create(AdminClientsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the companyColumn
-     */
-    @Override
-    public Column<ClientDetail, String> getIdColumn() {
-        return idColumn;
-    }
-
-    /**
-     * @return the companyColumn
-     */
-    @Override
-    public Column<ClientDetail, String> getCompanyColumn() {
-        return companyColumn;
-    }
-
-    /**
-     * @return the firstNameColumn
-     */
-    @Override
-    public Column<ClientDetail, String> getFirstNameColumn() {
-        return firstNameColumn;
-    }
-
-    /**
-     * @return the lastNameColumn
-     */
-    @Override
-    public Column<ClientDetail, String> getLastNameColumn() {
-        return lastNameColumn;
-    }
-
-    /**
-     * @return the ratingColumn
-     */
-    @Override
-    public Column<ClientDetail, String> getRatingColumn() {
-        return ratingColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<ClientDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<ClientDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminClientDetail
-     */
-    @Override
-    public SimplePanel getAdminClientDetail() {
-        return adminClientDetail;
-    }
 
     interface AdminClientsViewUiBinder extends UiBinder<Widget, AdminClientsView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<ClientDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Detail of selected Client.
-     */
-    @UiField
-    SimplePanel adminClientDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // DETAIL
+    @UiField AdminClientInfoView adminClientDetail;
+//    @UiField DemandDetailView demandDetail;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // TABLE
+    @UiField(provided = true) DataGrid<ClientDetail> dataGrid;
     private SingleSelectionModel<ClientDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns
     private Column<ClientDetail, String> idColumn;
     private Column<ClientDetail, String> companyColumn;
     private Column<ClientDetail, String> firstNameColumn;
     private Column<ClientDetail, String> lastNameColumn;
     private Column<ClientDetail, String> ratingColumn;
+    // The key provider that provides the unique ID of a ClientDetail.
+    private static final ProvidesKey<ClientDetail> KEY_PROVIDER = new ProvidesKey<ClientDetail>() {
 
+        @Override
+        public Object getKey(ClientDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+
+    /**
+     * creates WIDGET view.
+     */
+    @Override
     public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
@@ -148,27 +85,29 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
+        GWT.log("init AdminClientsView DataGrid initialized");
+
+        // TABLE
         dataGrid = new DataGrid<ClientDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
+        // SELECTION MODEL
         selectionModel = new SingleSelectionModel<ClientDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
@@ -261,49 +200,138 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
     /**
-     * The key provider that provides the unique ID of a ClientDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<ClientDetail> KEY_PROVIDER = new ProvidesKey<ClientDetail>() {
+    @Override
+    public DataGrid<ClientDetail> getDataGrid() {
+        return dataGrid;
+    }
 
-        @Override
-        public Object getKey(ClientDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
+    /**
+     * @return table column: ID
+     */
+    @Override
+    public Column<ClientDetail, String> getIdColumn() {
+        return idColumn;
+    }
 
+    /**
+     * @return table column: COMPANY
+     */
+    @Override
+    public Column<ClientDetail, String> getCompanyColumn() {
+        return companyColumn;
+    }
+
+    /**
+     * @return table column: FIRST NAME
+     */
+    @Override
+    public Column<ClientDetail, String> getFirstNameColumn() {
+        return firstNameColumn;
+    }
+
+    /**
+     * @return table column: LAST NAME
+     */
+    @Override
+    public Column<ClientDetail, String> getLastNameColumn() {
+        return lastNameColumn;
+    }
+
+    /**
+     * @return table column: RATING
+     */
+    @Override
+    public Column<ClientDetail, String> getRatingColumn() {
+        return ratingColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<ClientDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
+    //                          *** BUTTONS ***
 
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
+    //                          *** OTHER ***
 
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return widget AdminClientDetailView as it is
+     */
+    @Override
+    public AdminClientInfoView getAdminClientDetail() {
+        return adminClientDetail;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

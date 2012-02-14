@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -40,7 +39,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -49,26 +47,32 @@ import java.util.logging.Logger;
 @Presenter(view = AdminDemandsView.class)
 public class AdminDemandsPresenter
         extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, AdminModuleEventBus> {
-//        implements HasValueChangeHandlers<String> {
 
-    private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");
+    //history of changes
     private Map<Long, FullDemandDetail> dataToUpdate = new HashMap<Long, FullDemandDetail>();
     private Map<Long, FullDemandDetail> originalData = new HashMap<Long, FullDemandDetail>();
+    //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder;
+    //for asynch data retrieving
+    private AsyncDataProvider dataProvider = null;
+    private int start = 0;
+    //for asynch data sorting
+    private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    //list of grid columns, used to sort them. First must by blank (checkbox in table)
+    private final String[] columnNames = new String[]{
+        "id", "client.id", "title", "type", "status", "validTo", "endDate"
+    };
+    private List<String> gridColumns = Arrays.asList(columnNames);
+    //detail related
+    private Boolean detailDisplayed = false;
 
-//    @Override
-//    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
-//
-//    @Override
-//    public void fireEvent(GwtEvent<?> event) {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
-
+    /**
+     * Interface for widget AdminMessagesView.
+     */
     public interface AdminDemandsInterface extends LazyView {
 
-        Widget getWidgetView();
-
+        //TABLE
         DataGrid<FullDemandDetail> getDataGrid();
 
         Column<FullDemandDetail, String> getIdColumn();
@@ -87,12 +91,14 @@ public class AdminDemandsPresenter
 
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
 
-        SimplePanel getAdminDemandDetail();
-
+        // PAGER
         SimplePager getPager();
+
+        ListBox getPageSizeCombo();
 
         int getPageSize();
 
+        // BUTTONS
         Button getCommitBtn();
 
         Button getRollbackBtn();
@@ -101,19 +107,43 @@ public class AdminDemandsPresenter
 
         Label getChangesLabel();
 
-        ListBox getPageSizeCombo();
-    }
-    private AsyncDataProvider dataProvider = null;
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "id", "client.id", "title", "type", "status", "validTo", "endDate"
-    };
-    private int start = 0;
-    private List<String> gridColumns = Arrays.asList(columnNames);
-    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
+        // DETAIL
+        SimplePanel getAdminDemandDetail();
 
+        Widget getWidgetView();
+    }
+
+    /*** INIT ***
+     *
+     * Initial methods for handling starting.
+     * @param filter
+     */
+    public void onInitDemands(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView("adminDemands");
+        eventBus.clearSearchContent();
+        searchDataHolder = filter;
+        eventBus.getAdminDemandsCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
+        eventBus.displayView(view.getWidgetView());
+    }
+
+    /*** DISPLAY ***
+     *
+     * Displays retrieved data.
+     * @param accessRoles -- list to display
+     */
+    public void onDisplayAdminTabDemands(List<FullDemandDetail> demands) {
+        dataProvider.updateRowData(start, demands);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
+        Storage.hideLoading();
+    }
+
+    /*** DATA PROVIDER ***
+     *
+     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
+     * @param totalFound - count of all data in DB displayed in pager
+     */
     public void onCreateAdminDemandsAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
@@ -133,6 +163,10 @@ public class AdminDemandsPresenter
         createAsyncSortHandler();
     }
 
+    /*** SORTING HANDLER ***
+     *
+     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
+     */
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
@@ -157,28 +191,37 @@ public class AdminDemandsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitDemands(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminDemands");
-        eventBus.clearSearchContent();
-        searchDataHolder = filter;
-        eventBus.getAdminDemandsCount(searchDataHolder);
-        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onDisplayAdminTabDemands(List<FullDemandDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    /*** DATA CHANGE ***
+     *
+     * Store changes made in table data.
+     */
+    public void onAddDemandToCommit(FullDemandDetail data) {
+        dataToUpdate.remove(data.getDemandId());
+        dataToUpdate.put(data.getDemandId(), data);
+        if (detailDisplayed) {
+            eventBus.showAdminDemandDetail(data);
+        }
+        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        Storage.hideLoading();
     }
 
     public void onResponseAdminDemandDetail(Widget widget) {
         view.getAdminDemandDetail().setWidget(widget);
     }
 
+    public void onSetDetailDisplayedDemand(Boolean displayed) {
+        detailDisplayed = displayed;
+    }
+
+    /*** ACTION HANDLERS ***
+     *
+     * Register handlers for widget actions.
+     */
     @Override
     public void bindView() {
+        addPageChangeHandler();
+        //
         setIdColumnUpdater();
         setCidColumnUpdater();
         setDemandTitleColumnUpdater();
@@ -186,32 +229,185 @@ public class AdminDemandsPresenter
         setDemandStatusColumnUpdater();
         setDemandExpirationColumnUpdater();
         setDemandEndColumnUpdater();
-        addSeleectionChangeHandler();
-        addPageChangeHandler();
+        //
         addCommitButtonHandler();
         addRollbackButtonHandler();
         addRefreshButtonHandler();
     }
 
-    private void addRefreshButtonHandler() {
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    /**
+     * TABLE PAGE CHANGER.
+     */
+    private void addPageChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
             @Override
-            public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - END COLUMN.
+     */
+    private void setDemandEndColumnUpdater() {
+        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, Date value) {
+                if (!object.getEndDate().equals(value)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                    }
+                    object.setEndDate(value);
+                    eventBus.addDemandToCommit(object);
                 }
             }
         });
     }
 
+    /**
+     * COLUMN UPDATER - EXPIRATION.
+     */
+    private void setDemandExpirationColumnUpdater() {
+        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, Date value) {
+                if (!object.getValidToDate().equals(value)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                    }
+                    object.setValidToDate(value);
+                    eventBus.addDemandToCommit(object);
+                }
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - STATUS.
+     */
+    private void setDemandStatusColumnUpdater() {
+        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                for (DemandStatusType demandStatusType : DemandStatusType.values()) {
+                    if (demandStatusType.getValue().equals(value)) {
+                        if (!object.getDemandStatus().equals(demandStatusType.name())) {
+                            if (!originalData.containsKey(object.getDemandId())) {
+                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                            }
+                            object.setDemandStatus(demandStatusType.name());
+                            eventBus.addDemandToCommit(object);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - TYPE.
+     */
+    private void setDemandTypeColumnUpdater() {
+        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                for (ClientDemandType clientDemandType : ClientDemandType.values()) {
+                    if (clientDemandType.getValue().equals(value)) {
+                        if (!object.getDemandType().equals(clientDemandType.name())) {
+                            if (!originalData.containsKey(object.getDemandId())) {
+                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                            }
+                            object.setDemandType(clientDemandType.name());
+                            eventBus.addDemandToCommit(object);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - TITLE.
+     */
+    private void setDemandTitleColumnUpdater() {
+        view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                if (!object.getTitle().equals(value)) {
+                    if (!originalData.containsKey(object.getDemandId())) {
+                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
+                    }
+                    object.setTitle(value);
+                    eventBus.addDemandToCommit(object);
+                }
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - CID.
+     */
+    private void setCidColumnUpdater() {
+        view.getCidColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                eventBus.showAdminDemandDetail(object);
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - ID.
+     */
+    private void setIdColumnUpdater() {
+        view.getIdColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
+
+            @Override
+            public void update(int index, FullDemandDetail object, String value) {
+                eventBus.showAdminDemandDetail(object);
+            }
+        });
+    }
+
+    /**
+     * COMMIT.
+     */
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateDemand(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
+                }
+            }
+        });
+    }
+
+    /**
+     * ROLLBACK.
+     */
     private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -230,166 +426,24 @@ public class AdminDemandsPresenter
         });
     }
 
-    private void addCommitButtonHandler() {
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    /**
+     * REFRESH.
+     */
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateDemand(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
-                }
-            }
-        });
-    }
-
-    private void addPageChangeHandler() {
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
-    }
-
-    private void addSeleectionChangeHandler() {
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getDemandId())) {
-                    eventBus.showAdminDemandDetail(dataToUpdate.get(
-                            view.getSelectionModel().getSelectedObject().getDemandId()));
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminDemandsCount(searchDataHolder);
                 } else {
-                    eventBus.showAdminDemandDetail(view.getSelectionModel().getSelectedObject());
-                }
-                eventBus.setDetailDisplayedDemand(true);
-            }
-        });
-    }
-
-    private void setDemandEndColumnUpdater() {
-        view.getDemandEndColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-            @Override
-            public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getEndDate().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
-                    object.setEndDate(value);
-                    eventBus.addDemandToCommit(object);
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
-    }
-
-    private void setDemandExpirationColumnUpdater() {
-        view.getDemandExpirationColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, Date>() {
-            @Override
-            public void update(int index, FullDemandDetail object, Date value) {
-                if (!object.getValidToDate().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
-                    object.setValidToDate(value);
-                    eventBus.addDemandToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setDemandStatusColumnUpdater() {
-        view.getDemandStatusColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                for (DemandStatusType demandStatusType : DemandStatusType.values()) {
-                    if (demandStatusType.getValue().equals(value)) {
-                        if (!object.getDemandStatus().equals(demandStatusType.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                            }
-                            object.setDemandStatus(demandStatusType.name());
-                            eventBus.addDemandToCommit(object);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void setDemandTypeColumnUpdater() {
-        view.getDemandTypeColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                for (ClientDemandType clientDemandType : ClientDemandType.values()) {
-                    if (clientDemandType.getValue().equals(value)) {
-                        if (!object.getDemandType().equals(clientDemandType.name())) {
-                            if (!originalData.containsKey(object.getDemandId())) {
-                                originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                            }
-                            object.setDemandType(clientDemandType.name());
-                            eventBus.addDemandToCommit(object);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void setDemandTitleColumnUpdater() {
-        view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                if (!object.getTitle().equals(value)) {
-                    if (!originalData.containsKey(object.getDemandId())) {
-                        originalData.put(object.getDemandId(), new FullDemandDetail(object));
-                    }
-                    object.setTitle(value);
-                    eventBus.addDemandToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setCidColumnUpdater() {
-        view.getCidColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                eventBus.showAdminDemandDetail(object);
-            }
-        });
-    }
-
-    private void setIdColumnUpdater() {
-        view.getIdColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
-            @Override
-            public void update(int index, FullDemandDetail object, String value) {
-                eventBus.showAdminDemandDetail(object);
-            }
-        });
-    }
-
-    private Boolean detailDisplayed = false;
-
-    public void onAddDemandToCommit(FullDemandDetail data) {
-        dataToUpdate.remove(data.getDemandId());
-        dataToUpdate.put(data.getDemandId(), data);
-        if (detailDisplayed) {
-            eventBus.showAdminDemandDetail(data);
-        }
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
-    }
-
-    public void onSetDetailDisplayedDemand(Boolean displayed) {
-        detailDisplayed = displayed;
     }
 }

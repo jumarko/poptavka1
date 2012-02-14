@@ -21,10 +21,10 @@ import java.math.BigDecimal;
 
 /**
  *
- * @author ivan.vlcek, jarko
+ * @author Martin Slavkovsky
  */
 public class AdminInvoiceInfoView extends Composite implements
-        AdminInvoiceInfoPresenter.AdminInvoiceInfoInterface {
+        AdminInvoicesPresenter.AdminInvoiceInfoInterface {
 
     private static AdminInvoiceInfoViewUiBinder uiBinder = GWT.create(AdminInvoiceInfoViewUiBinder.class);
 
@@ -43,20 +43,20 @@ public class AdminInvoiceInfoView extends Composite implements
     Button updateButton;
     private InvoiceDetail invoiceInfo;
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public Button getUpdateBtn() {
-        return updateButton;
-    }
-
-    @Override
-    public void createView() {
+    public AdminInvoiceInfoView() {
         initWidget(uiBinder.createAndBindUi(this));
         initInvoiceInfoForm();
+    }
+
+    private void initInvoiceInfoForm() {
+        // initWidget(uiBinder.createAndBindUi(this));
+        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
+        dueDate.setFormat(new DateBox.DefaultFormat(dateFormat));
+        issueDate.setFormat(new DateBox.DefaultFormat(dateFormat));
+        shipmentDate.setFormat(new DateBox.DefaultFormat(dateFormat));
+
+        // Initialize the contact to null.
+        setInvoiceDetail(null);
     }
 
     @Override
@@ -90,17 +90,6 @@ public class AdminInvoiceInfoView extends Composite implements
         return invoiceInfo;
     }
 
-    private void initInvoiceInfoForm() {
-        // initWidget(uiBinder.createAndBindUi(this));
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
-        dueDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-        issueDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-        shipmentDate.setFormat(new DateBox.DefaultFormat(dateFormat));
-
-        // Initialize the contact to null.
-        setInvoiceDetail(null);
-    }
-
     @Override
     public void setInvoiceDetail(InvoiceDetail invoice) {
         this.invoiceInfo = invoice;
@@ -121,5 +110,15 @@ public class AdminInvoiceInfoView extends Composite implements
             vat.setText(Long.toString(invoice.getVat().longValue()));
             vatRate.setText(Integer.toString(invoice.getVatRate()));
         }
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    @Override
+    public Button getUpdateBtn() {
+        return updateButton;
     }
 }

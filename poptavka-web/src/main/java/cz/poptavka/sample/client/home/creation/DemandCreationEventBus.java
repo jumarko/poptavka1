@@ -47,7 +47,7 @@ public interface DemandCreationEventBus extends EventBus {
     void goToCreateDemand(String location);
 
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(IsWidget body);
+    void setHomeBodyHolderWidget(IsWidget body);
 
     @Event(forwardToParent = true)
     void setUserBodyHolderWidget(Widget body);

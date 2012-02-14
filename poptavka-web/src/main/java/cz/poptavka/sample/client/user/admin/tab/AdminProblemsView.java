@@ -21,11 +21,11 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
+import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.ProblemDetail;
 
-import java.util.Date;
 
 /**
  *
@@ -34,58 +34,36 @@ import java.util.Date;
 public class AdminProblemsView extends Composite implements AdminProblemsPresenter.AdminProblemsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    @Override
-    public Column<ProblemDetail, String> getTextColumn() {
-        return textColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<ProblemDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<ProblemDetail> getSelectionModel() {
-        return selectionModel;
-    }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminProblemsView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<ProblemDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // TABLE
+    @UiField(provided = true) DataGrid<ProblemDetail> dataGrid;
     private SingleSelectionModel<ProblemDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns
     private Column<ProblemDetail, String> textColumn;
-    private Column<ProblemDetail, String> priceColumn;
-    private Column<ProblemDetail, String> stateColumn;
-    private Column<ProblemDetail, Date> dateColumn;
+    // The key provider that provides the unique ID of a ProblemDetail.
+    private static final ProvidesKey<ProblemDetail> KEY_PROVIDER = new ProvidesKey<ProblemDetail>() {
 
+        @Override
+        public Object getKey(ProblemDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -100,30 +78,30 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
-//        dataGrid = new DataGrid<ProblemDetail>(KEY_PROVIDER);
-        dataGrid = new DataGrid<ProblemDetail>();
+        GWT.log("init AdminProblems DataGrid initialized");
+
+        // TABLE
+        dataGrid = new DataGrid<ProblemDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-//        selectionModel = new SingleSelectionModel<ProblemDetail>(KEY_PROVIDER);
-        selectionModel = new SingleSelectionModel<ProblemDetail>();
+        // SELECTION MODEL
+        selectionModel = new SingleSelectionModel<ProblemDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<ProblemDetail>createCheckboxManager());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
@@ -182,49 +160,99 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
-//    /**
-//     * The key provider that provides the unique ID of a ProblemDetail.
-//     */
-//    private static final ProvidesKey<ProblemDetail> KEY_PROVIDER = new ProvidesKey<ProblemDetail>() {
-//
-//        @Override
-//        public Object getKey(ProblemDetail item) {
-//            return item == null ? null : item.getDemandId();
-//        }
-//    };
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
+    /**
+     * @return TABLE (DataGrid)
+     */
+    @Override
+    public DataGrid<ProblemDetail> getDataGrid() {
+        return dataGrid;
+    }
+    /*
+     * @return table column: TEXT
+     */
+
+    @Override
+    public Column<ProblemDetail, String> getTextColumn() {
+        return textColumn;
+    }
+
+    /**
+     * @return the selectionModel
+     */
+    @Override
+    public SingleSelectionModel<ProblemDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
 
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
+    //                          *** BUTTONS ***
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
 
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

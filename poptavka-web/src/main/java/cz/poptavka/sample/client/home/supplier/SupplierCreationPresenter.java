@@ -113,15 +113,15 @@ public class SupplierCreationPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onGoToCreateSupplier() {
-        this.onAtRegisterSupplier();
+    public void onGoToCreateSupplier(String location) {
+        this.onAtRegisterSupplier(location);
     }
 
     /**
      * Init method call.
      * TODO decide WHEN other parts should be built.
      */
-    public void onAtRegisterSupplier() {
+    public void onAtRegisterSupplier(String location) {
         LOGGER.info("Initializing Supplier Registration Widget ... ");
 //        eventBus.setBodyWidget(view.getWidgetView());
         //init parts
@@ -133,6 +133,12 @@ public class SupplierCreationPresenter
         eventBus.initLocalityWidget(view.getLocalityHolder());
         LOGGER.info(" -> init Service Form supplierService");
         initServices();
+
+        if (location.equals("home")) {
+            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+        } else if (location.equals("user")) {
+            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+        }
     }
 
     private void registerSupplier() {

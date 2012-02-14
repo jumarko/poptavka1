@@ -15,7 +15,7 @@ public class HomeWelcomePresenter extends
 
     public void onStart() {
         GWT.log("Home welcome module loaded");
-        eventBus.setBodyHolderWidget(view.getWidgetView());
+        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
     }
 
     public void onInitHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {

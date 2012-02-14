@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -33,7 +34,7 @@ public class DemandModuleView extends Composite
 
     // CLI menu
     @UiField Button cliNewDemands, cliOffers, cliAssignedDemands, cliCreateDemand,
-    allDemands, allSuppliers;
+    allDemands, allSuppliers, cliCreateSupplier;
     // SUP menu
     @UiField Button supNewDemands, supOffers, supAssignedDemands;
     // hidden or displayed according to the role
@@ -52,7 +53,7 @@ public class DemandModuleView extends Composite
     }
 
     @Override
-    public void setContent(Widget contentWidget) {
+    public void setContent(IsWidget contentWidget) {
         contentPanel.setWidget(contentWidget);
     }
 
@@ -106,6 +107,11 @@ public class DemandModuleView extends Composite
     @Override
     public Button getCliCreateDemand() {
         return cliCreateDemand;
+    }
+
+    @Override
+    public Button getCliCreateSupplier() {
+        return cliCreateSupplier;
     }
 
     @Override

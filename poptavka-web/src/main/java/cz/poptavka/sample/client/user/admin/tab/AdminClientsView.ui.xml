@@ -3,24 +3,15 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-  xmlns:lsv="cz.poptavka.sample.client.main.common.locality"
-  ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-  ui:generateLocales='default'>
-
+  xmlns:detail="urn:import:cz.poptavka.sample.client.user.admin.tab"
+  xmlns:d="urn:import:cz.poptavka.sample.client.user.widget.detail">
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <ui:style>
-    .cellTable {
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-      margin-bottom: 4px;
-    }
-    </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="700">
             <g:DockLayoutPanel unit="PX">
-                <g:south size="50">
+                <g:north size="50">
                     <g:HorizontalPanel>
                         <g:Button ui:field="refresh">Refresh</g:Button>
                         <g:Button ui:field="commit">Commit changes</g:Button>
@@ -28,7 +19,7 @@
                         <g:Label>Clients changed: </g:Label>
                         <g:Label ui:field="changesLabel"></g:Label>
                     </g:HorizontalPanel>
-                </g:south>
+                </g:north>
                 <g:south size="35">
                     <g:HorizontalPanel>
                         <c:SimplePager ui:field='pager' />
@@ -36,13 +27,13 @@
                     </g:HorizontalPanel>
                 </g:south>
                 <g:center>
-                    <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
+                    <c:DataGrid ui:field='dataGrid' />
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>
         <g:center>
             <g:ScrollPanel>
-                <g:SimplePanel ui:field="adminClientDetail"></g:SimplePanel>
+                <detail:AdminClientInfoView ui:field="adminClientDetail"/>
             </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>

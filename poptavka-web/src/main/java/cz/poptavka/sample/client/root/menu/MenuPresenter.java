@@ -20,6 +20,12 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         eventBus.setMenu(view);
     }
 
+    public void onSetHomeMenu() {
+        bindView();
+        GWT.log("set menu after log out");
+        eventBus.setMenu(view);
+    }
+
     public void bindView() {
         GWT.log("Binding menu view");
         view.getDemandsButton().addClickHandler(new ClickHandler() {
@@ -37,7 +43,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplier();
+                eventBus.goToCreateSupplier("home");
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
@@ -47,11 +53,5 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             }
         });
 
-    }
-
-    public void onSetHomeMenu() {
-        bindView();
-        GWT.log("set menu after log out");
-        eventBus.setMenu(view);
     }
 }

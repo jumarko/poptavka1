@@ -55,7 +55,7 @@ public interface HomeDemandsEventBus extends EventBus {
     void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(IsWidget body);
+    void setHomeBodyHolderWidget(IsWidget body);
 
     @Event(forwardToParent = true)
     void setUserBodyHolderWidget(Widget body);

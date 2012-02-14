@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
@@ -36,80 +35,37 @@ import cz.poptavka.sample.shared.domain.PreferenceDetail;
 public class AdminPreferencesView extends Composite implements AdminPreferencesPresenter.AdminPreferencesInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<PreferenceDetail, String> getValueColumn() {
-        return valueColumn;
-    }
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<PreferenceDetail, String> getDescriptionColumn() {
-        return descriptionColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<PreferenceDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<PreferenceDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminPreferencesView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<PreferenceDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // TABLE
+    @UiField(provided = true) DataGrid<PreferenceDetail> dataGrid;
     private SingleSelectionModel<PreferenceDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns
     private Column<PreferenceDetail, String> valueColumn;
     private Column<PreferenceDetail, String> descriptionColumn;
+    // The key provider that provides the unique ID of a PreferenceDetail.
+    private static final ProvidesKey<PreferenceDetail> KEY_PROVIDER = new ProvidesKey<PreferenceDetail>() {
 
+        @Override
+        public Object getKey(PreferenceDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -124,28 +80,30 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
+        GWT.log("init AdminPreferences DataGrid initialized");
+
+        // TABLE
         dataGrid = new DataGrid<PreferenceDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
+        // SELECTION MODEL
         selectionModel = new SingleSelectionModel<PreferenceDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<PreferenceDetail>createCheckboxManager());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
@@ -226,49 +184,106 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
     /**
-     * The key provider that provides the unique ID of a PreferenceDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<PreferenceDetail> KEY_PROVIDER = new ProvidesKey<PreferenceDetail>() {
+    @Override
+    public DataGrid<PreferenceDetail> getDataGrid() {
+        return dataGrid;
+    }
+    /*
+     * @return table column: VALUE
+     */
 
-        @Override
-        public Object getKey(PreferenceDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
+    @Override
+    public Column<PreferenceDetail, String> getValueColumn() {
+        return valueColumn;
+    }
 
+    /*
+     * @return table column: DESCRIPTION
+     */
+    @Override
+    public Column<PreferenceDetail, String> getDescriptionColumn() {
+        return descriptionColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<PreferenceDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
+    //                          *** BUTTONS ***
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
 
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

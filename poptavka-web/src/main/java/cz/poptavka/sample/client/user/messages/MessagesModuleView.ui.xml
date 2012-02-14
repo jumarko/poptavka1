@@ -14,7 +14,7 @@
                 <ul>
                     <li>
                         <g:Button ui:field="composeButton">
-                            <ui:msg key="composeButton">Composer</ui:msg>
+                            <ui:msg key="composeButton">Compose new</ui:msg>
                         </g:Button>
                     </li>
                     <li>
@@ -25,6 +25,11 @@
                     <li>
                         <g:Button ui:field="sentButton">
                             <ui:msg key="sent">Sent</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="draftButton">
+                            <ui:msg key="draft">Sent</ui:msg>
                         </g:Button>
                     </li>
                     <li>

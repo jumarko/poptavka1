@@ -9,10 +9,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -22,7 +18,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -40,7 +35,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -48,27 +42,33 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminClientsView.class)
 public class AdminClientsPresenter
-        extends LazyPresenter<AdminClientsPresenter.AdminClientsInterface, AdminModuleEventBus>
-        implements HasValueChangeHandlers<String> {
+        extends LazyPresenter<AdminClientsPresenter.AdminClientsInterface, AdminModuleEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("AdminClientsPresenter");
+    //history of changes
     private Map<Long, ClientDetail> dataToUpdate = new HashMap<Long, ClientDetail>();
     private Map<Long, ClientDetail> originalData = new HashMap<Long, ClientDetail>();
+    //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder;
+    //for asynch data retrieving
+    private AsyncDataProvider dataProvider = null;
+    private int start = 0;
+    //for asynch data sorting
+    private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    private final String[] columnNames = new String[]{
+        "id", "businessUser.businessUserData.companyName", "businessUser.businessUserData.firstName",
+        "businessUser.businessUserData.lastName", "overalRating"
+    };
+    private List<String> gridColumns = Arrays.asList(columnNames);
+    //detail related
+    private Boolean detailDisplayed = false;
 
-    @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    /**
+     * Interface for widget AdminClientsView.
+     */
     public interface AdminClientsInterface extends LazyView {
 
-        Widget getWidgetView();
-
+        // TABLE
         DataGrid<ClientDetail> getDataGrid();
 
         Column<ClientDetail, String> getIdColumn();
@@ -83,12 +83,14 @@ public class AdminClientsPresenter
 
         SingleSelectionModel<ClientDetail> getSelectionModel();
 
-        SimplePanel getAdminClientDetail();
+        // PAGET
+        ListBox getPageSizeCombo();
 
         SimplePager getPager();
 
         int getPageSize();
 
+        // BUTTONS
         Button getCommitBtn();
 
         Button getRollbackBtn();
@@ -97,20 +99,60 @@ public class AdminClientsPresenter
 
         Label getChangesLabel();
 
-        ListBox getPageSizeCombo();
-    }
-    private AsyncDataProvider dataProvider = null;
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "id", "businessUser.businessUserData.companyName", "businessUser.businessUserData.firstName",
-        "businessUser.businessUserData.lastName", "overalRating"
-    };
-    private int start = 0;
-    private List<String> gridColumns = Arrays.asList(columnNames);
-    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
+        // WIDGETS
+        AdminClientInfoView getAdminClientDetail();
 
+        Widget getWidgetView();
+    }
+
+    /**
+     * Interface for widget AdminClientsInfoView.
+     */
+    public interface AdminClientInfoInterface { //extends LazyView {
+
+        void setClientDetail(ClientDetail contact);
+
+        ClientDetail getUpdatedClientDetail();
+
+        Button getUpdateBtn();
+
+        Button getCreateBtn();
+
+        Widget getWidgetView();
+    }
+
+    /*** INIT ***
+     *
+     * Initial methods for handling starting.
+     * @param filter
+     */
+    public void onInitClients(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView("adminClients");
+        eventBus.clearSearchContent();
+        searchDataHolder = filter;
+        eventBus.getAdminClientsCount(searchDataHolder);
+        view.getAdminClientDetail().setVisible(false);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
+        eventBus.displayView(view.getWidgetView());
+    }
+
+    /*** DISPLAY ***
+     *
+     * Displays retrieved data.
+     * @param accessRoles -- list to display
+     */
+    public void onDisplayAdminTabClients(List<ClientDetail> clients) {
+        dataProvider.updateRowData(start, clients);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
+        Storage.hideLoading();
+    }
+
+    /*** DATA PROVIDER ***
+     *
+     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
+     * @param totalFound - count of all data in DB displayed in pager
+     */
     public void onCreateAdminClientsAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
@@ -131,6 +173,10 @@ public class AdminClientsPresenter
         createAsyncSortHandler();
     }
 
+    /*** SORTING HANDLER ***
+     *
+     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
+     */
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
@@ -154,58 +200,175 @@ public class AdminClientsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitClients(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminClients");
-        eventBus.clearSearchContent();
-        searchDataHolder = filter;
-        eventBus.getAdminClientsCount(searchDataHolder);
-        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onDisplayAdminTabClients(List<ClientDetail> clients) {
-        dataProvider.updateRowData(start, clients);
+    /*** DATA CHANGE ***
+     *
+     * Store changes made in table data.
+     */
+    public void onAddClientToCommit(ClientDetail data) {
+        dataToUpdate.remove(data.getId());
+        dataToUpdate.put(data.getId(), data);
+        if (detailDisplayed) {
+            view.getAdminClientDetail().setClientDetail(data);
+        }
+        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        Storage.hideLoading();
     }
 
-    public void onResponseAdminClientDetail(Widget widget) {
-        view.getAdminClientDetail().setWidget(widget);
-    }
-
+    /*** ACTION HANDLERS ***
+     *
+     * Register handlers for widget actions.
+     */
     @Override
     public void bindView() {
+        addPageChangeHandler();
+        //
         setIdColumntUpdater();
         setCompanyColumnUpdater();
         setFirstNameColumnUpdater();
         setLastNameColumnUpdater();
         setRatingColumnUpdater();
-        addPageChangeHandler();
+        //
         addCommitButtonHandler();
         addRollbackButtonHandler();
         addRefreshButtonHandler();
+        addDetailUpdateBtnHandler();
     }
 
-    private void addRefreshButtonHandler() {
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    /*
+     * TABLE PAGE CHANGER
+     */
+    private void addPageChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
             @Override
-            public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminClientsCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - ID
+     */
+    private void setIdColumntUpdater() {
+        view.getIdColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
+
+            @Override
+            public void update(int index, ClientDetail object, String value) {
+                view.getAdminClientDetail().setVisible(true);
+                detailDisplayed = true;
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - RATING
+     */
+    private void setRatingColumnUpdater() {
+        view.getRatingColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
+
+            @Override
+            public void update(int index, ClientDetail object, String value) {
+                if (!Integer.toString(object.getOveralRating()).equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new ClientDetail(object));
+                    }
+                    object.setOveralRating(Integer.valueOf(value));
+                    eventBus.addClientToCommit(object);
                 }
             }
         });
     }
 
+    /*
+     * COLUMN UPDATER - LAST NAME
+     */
+    private void setLastNameColumnUpdater() {
+        view.getLastNameColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
+
+            @Override
+            public void update(int index, ClientDetail object, String value) {
+                if (!object.getUserDetail().getLastName().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new ClientDetail(object));
+                    }
+                    object.getUserDetail().setLastName(value);
+                    eventBus.addClientToCommit(object);
+                }
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - FIRST NAME
+     */
+    private void setFirstNameColumnUpdater() {
+        view.getFirstNameColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
+
+            @Override
+            public void update(int index, ClientDetail object, String value) {
+                if (!object.getUserDetail().getFirstName().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new ClientDetail(object));
+                    }
+                    object.getUserDetail().setFirstName(value);
+                    eventBus.addClientToCommit(object);
+                }
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - COMPANY
+     */
+    private void setCompanyColumnUpdater() {
+        view.getCompanyColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
+
+            @Override
+            public void update(int index, ClientDetail object, String value) {
+                if (!object.getUserDetail().getCompanyName().equals(value)) {
+                    if (!originalData.containsKey(object.getId())) {
+                        originalData.put(object.getId(), new ClientDetail(object));
+                    }
+                    object.getUserDetail().setCompanyName(value);
+                    eventBus.addClientToCommit(object);
+                }
+            }
+        });
+    }
+
+    /*
+     * COMMIT
+     */
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateClient(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
+                }
+            }
+        });
+    }
+
+    /*
+     * ROLLBACK
+     */
     private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -224,119 +387,38 @@ public class AdminClientsPresenter
         });
     }
 
-    private void addCommitButtonHandler() {
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    /*
+     * REFRESH
+     */
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateClient(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminClientsCount(searchDataHolder);
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
     }
 
-    private void addPageChangeHandler() {
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+    /*
+     * UPDATE (in detail widget)
+     */
+    private void addDetailUpdateBtnHandler() {
+        view.getAdminClientDetail().getUpdateBtn().addClickHandler(new ClickHandler() {
+
             @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
+            public void onClick(ClickEvent event) {
+                eventBus.addClientToCommit(view.getAdminClientDetail().getUpdatedClientDetail());
+                Window.alert("Client updated TODO. It's not acctualy doing it.");
             }
         });
-    }
-
-    private void setRatingColumnUpdater() {
-        view.getRatingColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-            @Override
-            public void update(int index, ClientDetail object, String value) {
-                if (!Integer.toString(object.getOveralRating()).equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new ClientDetail(object));
-                    }
-                    object.setOveralRating(Integer.valueOf(value));
-                    eventBus.addClientToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setLastNameColumnUpdater() {
-        view.getLastNameColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-            @Override
-            public void update(int index, ClientDetail object, String value) {
-                if (!object.getUserDetail().getLastName().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new ClientDetail(object));
-                    }
-                    object.getUserDetail().setLastName(value);
-                    eventBus.addClientToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setFirstNameColumnUpdater() {
-        view.getFirstNameColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-            @Override
-            public void update(int index, ClientDetail object, String value) {
-                if (!object.getUserDetail().getFirstName().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new ClientDetail(object));
-                    }
-                    object.getUserDetail().setFirstName(value);
-                    eventBus.addClientToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setCompanyColumnUpdater() {
-        view.getCompanyColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-            @Override
-            public void update(int index, ClientDetail object, String value) {
-                if (!object.getUserDetail().getCompanyName().equals(value)) {
-                    if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new ClientDetail(object));
-                    }
-                    object.getUserDetail().setCompanyName(value);
-                    eventBus.addClientToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setIdColumntUpdater() {
-        view.getIdColumn().setFieldUpdater(new FieldUpdater<ClientDetail, String>() {
-            @Override
-            public void update(int index, ClientDetail object, String value) {
-                eventBus.showAdminClientDetail(object);
-            }
-        });
-    }
-
-    private Boolean detailDisplayed = false;
-
-    public void onAddClientToCommit(ClientDetail data) {
-        dataToUpdate.remove(data.getId());
-        dataToUpdate.put(data.getId(), data);
-        if (detailDisplayed) {
-            eventBus.showAdminClientDetail(data);
-        }
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
-    }
-
-    public void onSetDetailDisplayedClient(Boolean displayed) {
-        detailDisplayed = displayed;
     }
 }

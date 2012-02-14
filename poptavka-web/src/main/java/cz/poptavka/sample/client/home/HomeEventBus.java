@@ -41,6 +41,12 @@ public interface HomeEventBus extends EventBus {
     @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
     String atHome();
 
+    @Event(forwardToParent = true)
+    void atAccount();
+
+    @Event(forwardToParent = true)
+    void initHomeWelcomeModule(Object object);
+
     @Event(modulesToLoad = HomeSuppliersModule.class)
     void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
@@ -48,13 +54,20 @@ public interface HomeEventBus extends EventBus {
     void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = SupplierCreationModule.class)
-    void goToCreateSupplier();
+    void goToCreateSupplier(String location);
 
     @Event(modulesToLoad = DemandCreationModule.class)
-    void goToCreateDemand();
+    void goToCreateDemand(String location);
 
     @Event(modulesToLoad = SearchModule.class)
     void initSearchModule(SimplePanel panel);
+
+    /**************************************************************************/
+    @DisplayChildModuleView({HomeSuppliersModule.class,
+        HomeDemandsModule.class, DemandCreationModule.class,
+        SupplierCreationModule.class })
+    @Event(handlers = HomePresenter.class)
+    void setBodyWidget(Widget content);
 
     /**************************************************************************/
     /* Parent events. */
@@ -66,7 +79,7 @@ public interface HomeEventBus extends EventBus {
      * Display HomeView - parent Widget for public section.
      */
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(Widget body);
+    void setHomeBodyHolderWidget(Widget body);
 
     /**
      * Method for setting public UI layout.
@@ -116,9 +129,8 @@ public interface HomeEventBus extends EventBus {
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by Presenters. */
-    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
-    void displayMenu();
-
+//    @Event(handlers = HomePresenter.class, historyConverter = HomeHistoryConverter.class)
+//    void displayMenu();
     /**
      * Assign widget to selected part and automatically removes previous widget.
      * Optionally can remove widgets from others anchors TODO praso - rename
@@ -126,12 +138,6 @@ public interface HomeEventBus extends EventBus {
      *
      * @param content
      */
-    @DisplayChildModuleView({ HomeSuppliersModule.class,
-            HomeDemandsModule.class, DemandCreationModule.class,
-            SupplierCreationModule.class })
-    @Event(handlers = HomePresenter.class)
-    void setBodyWidget(Widget content);
-
     // @Event(handlers = SearchModulePresenter.class)
     // void setSearchPanelBody(Widget body);
     @LoadChildModuleError
@@ -148,10 +154,6 @@ public interface HomeEventBus extends EventBus {
 
     // <<<<<<< .mine
     //
-
-    @Event(forwardToParent = true)
-    void atAccount();
-
     /** demand creation related events. **/
     // @Event(handlers = FormLoginPresenter.class)
     // void initLoginForm(SimplePanel holderWidget);
@@ -187,22 +189,4 @@ public interface HomeEventBus extends EventBus {
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
     /* Business events handled by Handlers. */
-    /********* SEARCH PANEL **********************/
-    @Event(handlers = HomePresenter.class)
-    void showHideAdvancedSearchPanel(String content, int whereIdx, int catIdx,
-            int locIdx);
-    @Event(forwardToParent = true)
-    void initHomeWelcomeModule(Object object);
-
-    // TODO Martin presunut do SearchModuleHandlera
-    // @Event(handlers = SearchModuleHandler.class)
-    // void getCategories();
-    //
-    // @Event(handlers = SearchModuleHandler.class)
-    // void getLocalities();
-    // @Event(handlers = HomePresenter.class)
-    // void setCategoryData(ArrayList<CategoryDetail> list);
-
-    // @Event(handlers = HomePresenter.class)
-    // void setLocalityData(ArrayList<LocalityDetail> list);
 }

@@ -13,11 +13,9 @@ import cz.poptavka.sample.client.root.ReverseCompositeView;
 import cz.poptavka.sample.client.user.IUserMenuView.IUserMenuPresenter;
 import cz.poptavka.sample.client.user.interfaces.IUserMenuView;
 
-public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter>
-        implements IUserMenuView {
+public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> implements IUserMenuView {
 
-    private static UserMenuViewUiBinder uiBinder = GWT
-            .create(UserMenuViewUiBinder.class);
+    private static UserMenuViewUiBinder uiBinder = GWT.create(UserMenuViewUiBinder.class);
 
     interface UserMenuViewUiBinder extends UiBinder<Widget, UserMenuView> {
     }
@@ -28,7 +26,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter>
     UListElement menuList;
 
     public UserMenuView() {
-        uiBinder.createAndBindUi(this);
+        initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
     }
 
@@ -62,9 +60,9 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter>
 
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
+//    @Override
+//    public Widget getWidgetView() {
+//        return this;
+//    }
 
 }

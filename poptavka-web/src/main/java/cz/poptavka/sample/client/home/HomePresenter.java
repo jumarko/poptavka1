@@ -63,50 +63,15 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
         view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplier();
+                eventBus.goToCreateSupplier("home");
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemand();
+                eventBus.goToCreateDemand("home");
             }
         });
-//        view.getSearchView().getSearchAdvBtn().addClickHandler(new ClickHandler() {
-//
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                eventBus.showHideAdvancedSearchPanel(view.getSearchView().getContent(),
-//                        view.getSearchView().getWhere().getSelectedIndex(),
-//                        view.getSearchView().getCategory().getSelectedIndex(),
-//                        view.getSearchView().getLocality().getSelectedIndex());
-//            }
-//        });
-//        view.getSearchView().getSearchBtn().addClickHandler(new ClickHandler() {
-//
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                SearchModuleDataHolder searchDataHolder = new SearchModuleDataHolder();
-//                if (view.getAdvancedSearchView().isVisible()) {
-//                    searchDataHolder = view.getAdvancedSearchView().getFilter();
-//                } else {
-//                    searchDataHolder = view.getSearchView().getFilter();
-//                }
-//                if (view.getSearchView().getFilter().getWhere() == 0) {
-//                    eventBus.goToHomeDemands(searchDataHolder);
-//                } else {
-//                    eventBus.goToHomeSuppliers(searchDataHolder);
-//                }
-//            }
-//        });
-//        view.getSearchView().getWhere().addChangeHandler(new ChangeHandler() {
-//
-//            @Override
-//            public void onChange(ChangeEvent event) {
-//                view.getAdvancedSearchView().setBaseInfo(view.getSearchView().getContent(),
-//                        view.getSearchView().getWhere().getSelectedIndex()); //, catIdx, locIdx);
-//            }
-//        });
     }
 
     public void onStart() {
@@ -119,22 +84,28 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 
     public void onAtHome() {
         LOGGER.info("INIT Home Widget");
-//        eventBus.getCategories();
-//        eventBus.getLocalities();
+
+        // DISPLAY SEARCH PANEL
         eventBus.initSearchModule(view.getSearchPanel());
+
+//        onDisplayMenu();
+        // DISPLAY MENU
+        eventBus.setPublicLayout();
+        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+
+        // WELCOME MODULE
         eventBus.initHomeWelcomeModule(null);
-        onDisplayMenu();
         // TODO initial homepage widget compilation
     }
 
     public void onSetBodyWidget(Widget content) {
         view.setBody(content);
     }
-
-    public void onDisplayMenu() {
-        eventBus.setPublicLayout();
-        eventBus.setBodyHolderWidget(view.getWidgetView());
-    }
+//
+//    public void onDisplayMenu() {
+//        eventBus.setPublicLayout();
+//        eventBus.setBodyHolderWidget(view.getWidgetView());
+//    }
 
     /* Business events for child modules loading */
     public void onErrorOnLoad(Throwable reason) {

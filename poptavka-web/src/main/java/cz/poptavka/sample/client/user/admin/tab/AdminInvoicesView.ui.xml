@@ -3,20 +3,12 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-  xmlns:lsv="cz.poptavka.sample.client.main.common.locality"
+  xmlns:detail="urn:import:cz.poptavka.sample.client.user.admin.tab"
   ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
   ui:generateLocales='default'>
 
-
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <ui:style>
-    .cellTable {
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-      margin-bottom: 4px;
-    }
-    </ui:style>
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:west size="700">
             <g:DockLayoutPanel unit="PX">
@@ -36,13 +28,13 @@
                     </g:HorizontalPanel>
                 </g:south>
                 <g:center>
-                    <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
+                    <c:DataGrid ui:field='dataGrid' />
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>
         <g:center>
             <g:ScrollPanel>
-                <g:SimplePanel ui:field="adminInvoiceDetail"></g:SimplePanel>
+                <detail:AdminInvoiceInfoView ui:field="adminInvoiceDetail"/>
             </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>

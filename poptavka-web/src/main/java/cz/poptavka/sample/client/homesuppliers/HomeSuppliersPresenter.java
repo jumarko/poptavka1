@@ -228,7 +228,7 @@ public class HomeSuppliersPresenter
 
         if (location.equals("home")) {
             Storage.setCurrentlyLoadedView("homeSuppliers");
-            eventBus.setBodyHolderWidget(view.getWidgetView());
+            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         } else if (location.equals("user")) {
             Storage.setCurrentlyLoadedView("userSuppliers");
             eventBus.setUserBodyHolderWidget(view.getWidgetView());

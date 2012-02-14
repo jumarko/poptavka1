@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
@@ -41,80 +40,38 @@ public class AdminEmailActivationsView extends Composite
         implements AdminEmailActivationsPresenter.AdminEmailActivationsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<EmailActivationDetail, Date> getTimeoutColumn() {
-        return timeoutColumn;
-    }
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<EmailActivationDetail, String> getActivationLinkColumn() {
-        return activationColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<EmailActivationDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<EmailActivationDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminEmailActivationsView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<EmailActivationDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
-    private SingleSelectionModel<EmailActivationDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // TABLE
+    @UiField(provided = true) DataGrid<EmailActivationDetail> dataGrid;
+    // Editable Columns
     private Column<EmailActivationDetail, String> activationColumn;
     private Column<EmailActivationDetail, Date> timeoutColumn;
+    private SingleSelectionModel<EmailActivationDetail> selectionModel;
+    // The key provider that provides the unique ID of a EmailActivationDetail.
+    private static final ProvidesKey<EmailActivationDetail> KEY_PROVIDER = new ProvidesKey<EmailActivationDetail>() {
 
+        @Override
+        public Object getKey(EmailActivationDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -129,28 +86,30 @@ public class AdminEmailActivationsView extends Composite
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
+        GWT.log("init AdminEmailActivations DataGrid initialized");
+
+        // TABLE
         dataGrid = new DataGrid<EmailActivationDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
+        //SELECTION MODEL
         selectionModel = new SingleSelectionModel<EmailActivationDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<EmailActivationDetail>createCheckboxManager());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
@@ -220,49 +179,106 @@ public class AdminEmailActivationsView extends Composite
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
     /**
-     * The key provider that provides the unique ID of a EmailActivationDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<EmailActivationDetail> KEY_PROVIDER = new ProvidesKey<EmailActivationDetail>() {
+    @Override
+    public DataGrid<EmailActivationDetail> getDataGrid() {
+        return dataGrid;
+    }
 
-        @Override
-        public Object getKey(EmailActivationDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
+    /**
+     * @return table column: TIMEOUT
+     */
+    @Override
+    public Column<EmailActivationDetail, Date> getTimeoutColumn() {
+        return timeoutColumn;
+    }
 
+    /**
+     * @return table column: ACTIVATION LINK
+     */
+    @Override
+    public Column<EmailActivationDetail, String> getActivationLinkColumn() {
+        return activationColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<EmailActivationDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
+//                          *** BUTTONS ***
+    /*
+     * @return COMMIT button
+     */
 
     @Override
     public Button getCommitBtn() {
         return commit;
     }
+    /*
+     * @return ROLLBACK button
+     */
 
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
+    /*
+     * @return REFRESH button
+     */
 
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
+//                          *** OTHER ***
 
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

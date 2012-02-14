@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.AccessRoleDetail;
@@ -34,81 +34,44 @@ import cz.poptavka.sample.shared.domain.PermissionDetail;
 public class AdminAccessRolesView extends Composite implements AdminAccessRolesPresenter.AdminAccessRolesInterface {
 
     private static AdminAccessRolesViewUiBinder uiBinder = GWT.create(AdminAccessRolesViewUiBinder.class);
+
+    interface AdminAccessRolesViewUiBinder extends UiBinder<Widget, AdminAccessRolesView> {
+    }
+    //
+    //                          ***** ATTRIBUTES *****
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
     Label changesLabel;
-
-    /**
-     * @return the nameColumn
-     */
-    @Override
-    public Column<AccessRoleDetail, String> getNameColumn() {
-        return nameColumn;
-    }
-
-    /**
-     * @return the descriptionColumn
-     */
-    @Override
-    public Column<AccessRoleDetail, String> getDescriptionColumn() {
-        return descriptionColumn;
-    }
-
-    /**
-     * @return the permissionsColumn
-     */
-    @Override
-    public Column<AccessRoleDetail, String> getPermissionsColumn() {
-        return permissionsColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<AccessRoleDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<AccessRoleDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    interface AdminAccessRolesViewUiBinder extends UiBinder<Widget, AdminAccessRolesView> {
-    }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<AccessRoleDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
+    // PAGER
     @UiField(provided = true)
     SimplePager pager;
     @UiField(provided = true)
     ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
+    // TABLE
+    @UiField(provided = true)
+    DataGrid<AccessRoleDetail> dataGrid;
     private SingleSelectionModel<AccessRoleDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns
     private Column<AccessRoleDetail, String> nameColumn;
     private Column<AccessRoleDetail, String> descriptionColumn;
     private Column<AccessRoleDetail, String> permissionsColumn;
+    // The key provider that provides the unique ID of a AccessRoleDetail.
+    private static final ProvidesKey<AccessRoleDetail> KEY_PROVIDER = new ProvidesKey<AccessRoleDetail>() {
 
+        @Override
+        public Object getKey(AccessRoleDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+
+    /**
+     * creates WIDGET view
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -123,32 +86,34 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
-        dataGrid = new DataGrid<AccessRoleDetail>();
+        GWT.log("init AdminAccessRoles DataGrid initialized");
+
+        // TABLE
+        dataGrid = new DataGrid<AccessRoleDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-        selectionModel = new SingleSelectionModel<AccessRoleDetail>();
+        // SELECTION MODEL
+        selectionModel = new SingleSelectionModel<AccessRoleDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
     /**
-     * Add the columns to the table.
+     * Add columns to the table.
      */
     private void initTableColumns() {
 
@@ -240,38 +205,113 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
         return column;
     }
 
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
+    /**
+     * @return TABLE (DataGrid)
+     */
+    @Override
+    public DataGrid<AccessRoleDetail> getDataGrid() {
+        return dataGrid;
+    }
+
+    /*
+     * @return table column: NAME
+     */
+    @Override
+    public Column<AccessRoleDetail, String> getNameColumn() {
+        return nameColumn;
+    }
+
+    /**
+     * @return table column: DESCRIPTION
+     */
+    @Override
+    public Column<AccessRoleDetail, String> getDescriptionColumn() {
+        return descriptionColumn;
+    }
+
+    /**
+     * @return table column: PERMISSIONS
+     */
+    @Override
+    public Column<AccessRoleDetail, String> getPermissionsColumn() {
+        return permissionsColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<AccessRoleDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
+    //                          *** BUTTONS ***
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
 
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

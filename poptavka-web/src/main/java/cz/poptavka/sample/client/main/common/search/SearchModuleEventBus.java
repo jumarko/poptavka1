@@ -28,13 +28,16 @@ public interface SearchModuleEventBus extends EventBus {
     void initAdminModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
+    void initMessagesModule(SearchModuleDataHolder filter, String action);
 
-    @Event(forwardToParent = true)
-    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
-
-    @Event(forwardToParent = true)
-    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
+//
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
+//
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
 
     @Event(handlers = SearchModulePresenter.class)
     void clearSearchContent();

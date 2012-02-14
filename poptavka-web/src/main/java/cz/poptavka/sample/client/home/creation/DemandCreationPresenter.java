@@ -129,7 +129,7 @@ public class DemandCreationPresenter
         });
 
         if (location.equals("home")) {
-            eventBus.setBodyHolderWidget(view.getWidgetView());
+            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         } else if (location.equals("user")) {
             eventBus.setUserBodyHolderWidget(view.getWidgetView());
         }

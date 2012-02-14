@@ -20,23 +20,16 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
 
     interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }
+    @UiField
+    Hyperlink linkHome;
+    @UiField
+    Button demands, suppliers, createSupplier, createDemand;
+    @UiField
+    UListElement menuList;
 
     public MenuView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
-
-    @UiField
-    UListElement menuList;
-    @UiField
-    Hyperlink linkHome;
-    @UiField
-    Button demands;
-    @UiField
-    Button suppliers;
-    @UiField
-    Button createSupplier;
-    @UiField
-    Button createDemand;
 
     public MenuView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
@@ -67,5 +60,4 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     public void setHomeToken(String token) {
         linkHome.setTargetHistoryToken(token);
     }
-
 }

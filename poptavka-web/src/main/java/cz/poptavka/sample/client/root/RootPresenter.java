@@ -2,7 +2,14 @@ package cz.poptavka.sample.client.root;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -10,12 +17,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.root.interfaces.IRootView;
 import cz.poptavka.sample.client.root.interfaces.IRootView.IRootPresenter;
+import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 @Presenter(view = RootView.class)
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
@@ -24,6 +34,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private PopupPanel popup = null;
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
+    private UserDetail user = null;
 
     public void onSetMenu(IsWidget menu) {
         GWT.log("Menu widget set");
@@ -56,7 +67,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         eventBus.initSearchModule(view.getSearchBar());
     }
 
-    public void onSetBodyHolderWidget(IsWidget content) {
+    public void onSetHomeBodyHolderWidget(IsWidget content) {
         view.setBody(content);
     }
 
@@ -144,8 +155,91 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtAccount() {
+        GWT.log("Root Presenter AtAccount");
+        Cookies.setCookie("user-presenter", "loaded");
+        if (Storage.getUser() == null) {
+            eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
+            eventBus.getUser();
+        } else {
+            onSetUser(Storage.getUser());
+        }
+//        eventBus.setUserLayout();
         eventBus.setUserMenu();
         eventBus.initDemandModule();
 //        eventBus.initMessagesModule("displayGrid");
+//        eventBus.initAdminModule(null);
+    }
+
+    /* For logging */
+    public void onSetUser(UserDetail userDetail) {
+        Storage.setUser(userDetail);
+        //this should be removed and all references replaces by Storage calls
+        user = userDetail;
+
+        showDevelUserInfoPopupThatShouldBedeletedAfter();
+
+//        eventBus.setUserLayout();
+//        eventBus.setHomeBodyHolderWidget(new Label("TA CO"));
+//        eventBus.setHeader(new Label("TA CO HEADER?"));
+//        eventBus.setMenu(view);
+//        eventBus.initDemandModule();
+
+        eventBus.loadingHide();
+    }
+
+    // TODO delete for production
+    private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
+        final DialogBox userInfoPanel = new DialogBox(false, false);
+        userInfoPanel.setText("User Info Box");
+        userInfoPanel.setWidth("200px");
+        String br = "<br />";
+        StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
+        user = Storage.getUser();
+        sb.append("ID: " + user.getUserId() + br);
+
+        sb.append("<i>-- user roles --</i>" + br);
+        if (user.getRoleList().contains(Role.CLIENT)) {
+            sb.append("<b><i>CLIENT</i></b>" + br);
+            sb.append("ClientID: " + user.getClientId() + br);
+            sb.append("Demand Count: " + user.getDemandsId().size() + br);
+            sb.append("Demands Messages: " + "n/a" + " / " + "n/a" + br);
+            sb.append("Demands Offers: " + "n/a" + " / " + "n/a" + br);
+            sb.append("<i>-- -- -- --</i>" + br);
+        }
+        if (user.getRoleList().contains(Role.SUPPLIER)) {
+            sb.append("<b><i>SUPPLIER</i></b>" + br);
+            sb.append("SupplierID: " + user.getSupplierId() + br);
+            sb.append("Potentional Demands: " + "n/a" + " / " + "n/a" + br);
+            sb.append("<i>-- -- -- --</i>" + br);
+        }
+        if (user.getRoleList().contains(Role.PARTNER)) {
+            sb.append("<b><i>PARTNER</i></b>" + br);
+            sb.append("<i>-- -- -- --</i>" + br);
+        }
+        if (user.getRoleList().contains(Role.OPERATOR)) {
+            sb.append("<b><i>OPERATOR</i></b>" + br);
+            sb.append("<i>-- -- -- --</i>" + br);
+        }
+        if (user.getRoleList().contains(Role.ADMIN)) {
+            sb.append("<b><i>ADMIN</i></b>" + br);
+            sb.append("<i>-- -- -- --</i>" + br);
+        }
+        sb.append("Messages: " + "n/a" + " / " + "n/a" + br);
+
+        HTML content = new HTML(sb.toString());
+        Button closeButton = new Button("Close");
+        closeButton.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                userInfoPanel.hide();
+            }
+        });
+        FlowPanel m = new FlowPanel();
+        m.add(content);
+        m.add(closeButton);
+        userInfoPanel.add(m);
+        userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
+        userInfoPanel.show();
     }
 }

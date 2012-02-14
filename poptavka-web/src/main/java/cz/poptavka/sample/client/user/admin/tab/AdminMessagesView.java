@@ -43,103 +43,42 @@ import java.util.List;
 public class AdminMessagesView extends Composite implements AdminMessagesPresenter.AdminMessagesInterface {
 
     private static AdminMessagesViewUiBinder uiBinder = GWT.create(AdminMessagesViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the message stateColumn
-     */
-    @Override
-    public Column<MessageDetail, String> getStateColumn() {
-        return stateColumn;
-    }
-
-    /**
-     * @return the message subjectColumn
-     */
-    @Override
-    public Column<MessageDetail, String> getSubjectColumn() {
-        return subjectColumn;
-    }
-
-    /**
-     * @return the message bodyColumn
-     */
-    @Override
-    public Column<MessageDetail, String> getBodyColumn() {
-        return bodyColumn;
-    }
-
-    /**
-     * @return the message TypeColumn
-     */
-    @Override
-    public Column<MessageDetail, String> getTypeColumn() {
-        return typeColumn;
-    }
-
-    /**
-     * @return the message createdColumn
-     */
-    @Override
-    public Column<MessageDetail, Date> getCreatedColumn() {
-        return createdColumn;
-    }
-
-    /**
-     * @return the message sentColumn
-     */
-    @Override
-    public Column<MessageDetail, Date> getSentColumn() {
-        return sentColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<MessageDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<MessageDetail> getSelectionModel() {
-        return selectionModel;
-    }
 
     interface AdminMessagesViewUiBinder extends UiBinder<Widget, AdminMessagesView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<MessageDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // TABLE
+    @UiField(provided = true) DataGrid<MessageDetail> dataGrid;
     private SingleSelectionModel<MessageDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns
     private Column<MessageDetail, String> subjectColumn;
     private Column<MessageDetail, String> bodyColumn;
     private Column<MessageDetail, String> stateColumn;
     private Column<MessageDetail, String> typeColumn;
     private Column<MessageDetail, Date> createdColumn;
     private Column<MessageDetail, Date> sentColumn;
+    // The key provider that provides the unique ID of a MessageDetail.
+    private static final ProvidesKey<MessageDetail> KEY_PROVIDER = new ProvidesKey<MessageDetail>() {
 
+        @Override
+        public Object getKey(MessageDetail item) {
+            return item == null ? null : item.getMessageId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -154,6 +93,9 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
         // Create a dataGrid.
         GWT.log("initDataGrid initialized");
@@ -190,21 +132,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         addReceiverIdColumn();
         addMessageTitleColumn();
         addMessageStateColumn();
-
-        // type.  TODO musi byt??
-//        List<String> msgTypes = new ArrayList<String>();
-//        for (MessageType msgType : MessageType.values()) {
-//            msgTypes.add(msgType.getValue());
-//        }
-//        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", true, 120, new GetValue<String>() {
-//
-//            @Override
-//            public String getValue(MessageDetail object) {
-//                return object.getMessageType();
-//            }
-//        });
-
-        DateTimeFormat dateFormat = addCreatedDateColumn();
+        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
+        addCreatedDateColumn(dateFormat);
         addSentDateColumn(dateFormat);
         addBodyColumn();
     }
@@ -230,8 +159,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                 });
     }
 
-    private DateTimeFormat addCreatedDateColumn() {
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
+    private void addCreatedDateColumn(DateTimeFormat dateFormat) {
         createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
                 new GetValue<Date>() {
 
@@ -240,7 +168,6 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
                         return messageDetail.getCreated();
                     }
                 });
-        return dateFormat;
     }
 
     private void addMessageStateColumn() {
@@ -351,49 +278,138 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
-    /**
-     * The key provider that provides the unique ID of a MessageDetail.
-     */
-    private static final ProvidesKey<MessageDetail> KEY_PROVIDER = new ProvidesKey<MessageDetail>() {
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
 
-        @Override
-        public Object getKey(MessageDetail item) {
-            return item == null ? null : item.getMessageId();
-        }
-    };
+    /**
+     * @return TABLE (DataGrid)
+     */
+    @Override
+    public DataGrid<MessageDetail> getDataGrid() {
+        return dataGrid;
+    }
+
+    /**
+     * @return table column: STATE
+     */
+    @Override
+    public Column<MessageDetail, String> getStateColumn() {
+        return stateColumn;
+    }
+
+    /**
+     * @return table column: SUBJECT
+     */
+    @Override
+    public Column<MessageDetail, String> getSubjectColumn() {
+        return subjectColumn;
+    }
+
+    /**
+     * @return table column: BODY
+     */
+    @Override
+    public Column<MessageDetail, String> getBodyColumn() {
+        return bodyColumn;
+    }
+
+    /**
+     * @return table column: TYPE
+     */
+    @Override
+    public Column<MessageDetail, String> getTypeColumn() {
+        return typeColumn;
+    }
+
+    /**
+     * @return table column: CREATED
+     */
+    @Override
+    public Column<MessageDetail, Date> getCreatedColumn() {
+        return createdColumn;
+    }
+
+    /**
+     * @return table column: SENT
+     */
+    @Override
+    public Column<MessageDetail, Date> getSentColumn() {
+        return sentColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<MessageDetail> getSelectionModel() {
+        return selectionModel;
+    }
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
 
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
+    //                          *** BUTTONS ***
+    /*
+     * @return COMMIT button
+     */
 
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
+    //                          *** OTHER ***
 
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

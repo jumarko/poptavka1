@@ -12,12 +12,10 @@ import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminClientInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminClientsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminDemandsPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminEmailActivationsPresenter;
-import cz.poptavka.sample.client.user.admin.tab.AdminInvoiceInfoPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminInvoicesPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminMessagesPresenter;
 import cz.poptavka.sample.client.user.admin.tab.AdminOffersPresenter;
@@ -103,7 +101,7 @@ public interface AdminModuleEventBus extends EventBus {
     void clearSearchContent();
 
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(IsWidget body);
+    void setHomeBodyHolderWidget(IsWidget body);
 
     /**********************************************************************************************
      *********************** SUBWIDGETS SECTION *******************************************************
@@ -329,12 +327,6 @@ public interface AdminModuleEventBus extends EventBus {
     @Event(handlers = AdminSupplierInfoPresenter.class)
     void showAdminSupplierDetail(FullSupplierDetail selectedObject);
 
-    @Event(handlers = AdminClientInfoPresenter.class)
-    void showAdminClientDetail(ClientDetail clientDetail);
-
-    @Event(handlers = AdminInvoiceInfoPresenter.class)
-    void showAdminInvoicesDetail(InvoiceDetail clientDetail);
-
     @Event(handlers = AdminOurPaymentDetailsPresenter.class)
     void showAdminTabOurPaymentDetails(List<PaymentDetail> clients);
 
@@ -348,12 +340,6 @@ public interface AdminModuleEventBus extends EventBus {
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void responseAdminSupplierDetail(Widget widget);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void responseAdminClientDetail(Widget widget);
-
-    @Event(handlers = AdminInvoicesPresenter.class)
-    void responseAdminInvoiceDetail(Widget widget);
 
     /*********************** COMMIT **************************************************************/
     @Event(handlers = AdminDemandsPresenter.class)
@@ -401,12 +387,6 @@ public interface AdminModuleEventBus extends EventBus {
 
     @Event(handlers = AdminSuppliersPresenter.class)
     void setDetailDisplayedSupplier(Boolean displayed);
-
-    @Event(handlers = AdminClientsPresenter.class)
-    void setDetailDisplayedClient(Boolean value);
-
-    @Event(handlers = AdminInvoicesPresenter.class)
-    void setDetailDisplayedInvoices(Boolean value);
 
     /*********************** CATEGORIES **********************************************************/
     //GET ROOT

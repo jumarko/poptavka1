@@ -154,7 +154,7 @@ public class AdminModulePresenter
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
         // panel.setWidget(view.getWidgetView());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
-        eventBus.setBodyHolderWidget(view.getWidgetView());
+        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
 
         Storage.hideLoading();
 

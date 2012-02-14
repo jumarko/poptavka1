@@ -58,7 +58,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initMessagesTabModuleInbox(null);
+                eventBus.initMailBox("inbox", null);
             }
         });
     }

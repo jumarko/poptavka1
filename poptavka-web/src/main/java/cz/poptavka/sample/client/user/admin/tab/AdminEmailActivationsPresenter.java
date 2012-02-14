@@ -12,10 +12,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
@@ -25,11 +21,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 
@@ -44,7 +38,6 @@ import cz.poptavka.sample.shared.domain.EmailActivationDetail;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -52,27 +45,31 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminEmailActivationsView.class)
 public class AdminEmailActivationsPresenter
-        extends LazyPresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, AdminModuleEventBus>
-        implements HasValueChangeHandlers<String> {
+        extends LazyPresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, AdminModuleEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("AdminEmailActivationPresenter");
+    //history of changes
     private Map<Long, EmailActivationDetail> dataToUpdate = new HashMap<Long, EmailActivationDetail>();
     private Map<Long, EmailActivationDetail> originalData = new HashMap<Long, EmailActivationDetail>();
+    //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder;
+    //for asynch data retrieving
+    private AsyncDataProvider dataProvider = null;
+    private int start = 0;
+    //for asynch data sorting
+    private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    //list of grid columns, used to sort them. First must by blank (checkbox in table)
+    private final String[] columnNames = new String[]{
+        "id", "activationLink", "timeout"
+    };
+    private List<String> gridColumns = Arrays.asList(columnNames);
 
-    @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    /**
+     * Interface for widget AdminEmailActivationsView.
+     */
     public interface AdminEmailActivationsInterface extends LazyView {
 
-        Widget getWidgetView();
-
+        // TABLE
         DataGrid<EmailActivationDetail> getDataGrid();
 
         Column<EmailActivationDetail, String> getActivationLinkColumn();
@@ -81,12 +78,14 @@ public class AdminEmailActivationsPresenter
 
         SingleSelectionModel<EmailActivationDetail> getSelectionModel();
 
-        SimplePanel getAdminDemandDetail();
-
+        // PAGER
         SimplePager getPager();
+
+        ListBox getPageSizeCombo();
 
         int getPageSize();
 
+        // BUTTONS
         Button getCommitBtn();
 
         Button getRollbackBtn();
@@ -95,19 +94,41 @@ public class AdminEmailActivationsPresenter
 
         Label getChangesLabel();
 
-        ListBox getPageSizeCombo();
+        // WIDGETS
+        Widget getWidgetView();
     }
-    private AsyncDataProvider dataProvider = null;
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "id", "activationLink", "timeout"
-    };
-    private int start = 0;
-    private List<String> gridColumns = Arrays.asList(columnNames);
-    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
+    /*** INIT ***
+     *
+     * Initial methods for handling starting.
+     * @param filter
+     */
+    public void onInitEmailsActivation(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView("adminEmailsActivation");
+        eventBus.clearSearchContent();
+        searchDataHolder = filter;
+        eventBus.getAdminEmailsActivationCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
+        eventBus.displayView(view.getWidgetView());
+    }
+
+    /*** DISPLAY ***
+     *
+     * Displays retrieved data.
+     * @param accessRoles -- list to display
+     */
+    public void onDisplayAdminTabEmailsActivation(List<EmailActivationDetail> demands) {
+        dataProvider.updateRowData(start, demands);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
+        Storage.hideLoading();
+    }
+
+    /*** DATA PROVIDER ***
+     *
+     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
+     * @param totalFound - count of all data in DB displayed in pager
+     */
     public void onCreateAdminEmailsActivationAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
@@ -127,6 +148,10 @@ public class AdminEmailActivationsPresenter
         createAsyncSortHandler();
     }
 
+    /*** SORTING HANDLER ***
+     *
+     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
+     */
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
@@ -152,28 +177,53 @@ public class AdminEmailActivationsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitEmailsActivation(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminEmailsActivation");
-        eventBus.clearSearchContent();
-        searchDataHolder = filter;
-        eventBus.getAdminEmailsActivationCount(searchDataHolder);
-        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onDisplayAdminTabEmailsActivation(List<EmailActivationDetail> demands) {
-        dataProvider.updateRowData(start, demands);
+    /*** DATA CHANGE ***
+     *
+     * Store changes made in table data.
+     */
+    public void onAddEmailActivationToCommit(EmailActivationDetail data) {
+        dataToUpdate.remove(data.getId());
+        dataToUpdate.put(data.getId(), data);
+        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        Storage.hideLoading();
     }
 
-    public void onResponseAdminDemandDetail(Widget widget) {
-        view.getAdminDemandDetail().setWidget(widget);
-    }
-
+    /*** ACTION HANDLERS ***
+     *
+     * Register handlers for widget actions.
+     */
     @Override
     public void bindView() {
+        addPageChangedHandler();
+        //
+        setActivationLinkColumnUpdater();
+        setTimeoutColumnUpdater();
+        //
+        addCommitButtonHandler();
+        addRollbackButtonHandler();
+        addRefreshButtonHandler();
+    }
+
+    /**
+     * TABLE PAGE CHANGER.
+     */
+    private void addPageChangedHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    /**
+     * COLUMN UPDATER - ACTIVATIONLINK.
+     */
+    private void setActivationLinkColumnUpdater() {
         view.getActivationLinkColumn().setFieldUpdater(new FieldUpdater<EmailActivationDetail, String>() {
 
             @Override
@@ -187,6 +237,12 @@ public class AdminEmailActivationsPresenter
                 }
             }
         });
+    }
+
+    /**
+     * COLUMN UPDATER - TIMEOUT.
+     */
+    private void setTimeoutColumnUpdater() {
         view.getTimeoutColumn().setFieldUpdater(new FieldUpdater<EmailActivationDetail, Date>() {
 
             @Override
@@ -200,21 +256,12 @@ public class AdminEmailActivationsPresenter
                 }
             }
         });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+    }
 
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-            }
-        });
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
+    /**
+     * COMMIT.
+     */
+    private void addCommitButtonHandler() {
         view.getCommitBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -232,6 +279,12 @@ public class AdminEmailActivationsPresenter
                 }
             }
         });
+    }
+
+    /**
+     * ROLLBACK.
+     */
+    private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -250,6 +303,12 @@ public class AdminEmailActivationsPresenter
                 originalData.clear();
             }
         });
+    }
+
+    /**
+     * REFRESH.
+     */
+    private void addRefreshButtonHandler() {
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -265,13 +324,5 @@ public class AdminEmailActivationsPresenter
                 }
             }
         });
-    }
-
-    public void onAddEmailActivationToCommit(EmailActivationDetail data) {
-        dataToUpdate.remove(data.getId());
-        dataToUpdate.put(data.getId(), data);
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
     }
 }

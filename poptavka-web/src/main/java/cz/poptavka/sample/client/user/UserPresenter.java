@@ -41,25 +41,25 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initDemandModule();
+//                eventBus.initDemandModule();
             }
         });
         view.getMessagesButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initMessagesModule("displayGrid");
+//                eventBus.initMessagesModule("displayGrid");
             }
         });
         view.getSettingsButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initSettings();
+//                eventBus.initSettings();
             }
         });
         view.getAdministrationButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null);
+//                eventBus.initAdminModule(null);
             }
         });
 
@@ -98,10 +98,10 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         showDevelUserInfoPopupThatShouldBedeletedAfter();
 
 //        eventBus.setUserLayout();
-//        eventBus.setBodyHolderWidget(new Label("TA CO"));
+//        eventBus.setHomeBodyHolderWidget(new Label("TA CO"));
 //        eventBus.setHeader(new Label("TA CO HEADER?"));
         eventBus.setMenu(view);
-        eventBus.initDemandModule();
+//        eventBus.initDemandModule();
 
         eventBus.loadingHide();
     }

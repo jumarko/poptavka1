@@ -33,6 +33,10 @@
                             <ui:msg key="createDemandLink">Create Demand</ui:msg>
                         </g:Button>
                     </li>
+                    <li><g:Button ui:field="cliCreateSupplier">
+                            <ui:msg key="createSupplierLink">Create supplier</ui:msg>
+                        </g:Button>
+                    </li>
                     <li>
                         <g:Button ui:field="allDemands">
                             <ui:msg key="allDemandsLink">All Demands</ui:msg>

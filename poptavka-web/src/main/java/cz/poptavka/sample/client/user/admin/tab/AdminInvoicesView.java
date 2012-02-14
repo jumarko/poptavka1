@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
@@ -36,107 +35,41 @@ import cz.poptavka.sample.shared.domain.InvoiceDetail;
 public class AdminInvoicesView extends Composite implements AdminInvoicesPresenter.AdminInvoicesInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the ID Column
-     */
-    @Override
-    public Column<InvoiceDetail, String> getIdColumn() {
-        return idColumn;
-    }
-
-    /**
-     * @return the price Column
-     */
-    @Override
-    public Column<InvoiceDetail, String> getPriceColumn() {
-        return priceColumn;
-    }
-
-    /**
-     * @return the invoice number Column
-     */
-    @Override
-    public Column<InvoiceDetail, String> getInvoiceNumberColumn() {
-        return invoiceNumberColumn;
-    }
-
-    /**
-     * @return the variable symbol Column
-     */
-    @Override
-    public Column<InvoiceDetail, String> getVariableSymbolColumn() {
-        return varSymbolColumn;
-    }
-
-    /**
-     * @return the payment method sColumn
-     */
-    @Override
-    public Column<InvoiceDetail, String> getPaymentMethodColumn() {
-        return payMethodColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<InvoiceDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<InvoiceDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminInvoiceDetail() {
-        return adminInvoiceDetail;
-    }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminInvoicesView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<InvoiceDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminInvoiceDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
-    private SingleSelectionModel<InvoiceDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // DETAIL
+    @UiField AdminInvoiceInfoView adminInvoiceDetail;
+    // TABLE
+    @UiField(provided = true) DataGrid<InvoiceDetail> dataGrid;
+    // Editable Columns
     private Column<InvoiceDetail, String> idColumn;
     private Column<InvoiceDetail, String> priceColumn;
     private Column<InvoiceDetail, String> varSymbolColumn;
     private Column<InvoiceDetail, String> payMethodColumn;
     private Column<InvoiceDetail, String> invoiceNumberColumn;
+    private SingleSelectionModel<InvoiceDetail> selectionModel;
+    // The key provider that provides the unique ID of a InvoiceDetail.
+    private static final ProvidesKey<InvoiceDetail> KEY_PROVIDER = new ProvidesKey<InvoiceDetail>() {
 
+        @Override
+        public Object getKey(InvoiceDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+
+    /**
+     * creates WIDGET view
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -151,6 +84,9 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model
+     */
     private void initDataGrid() {
         // Create a dataGrid.
         GWT.log("initDataGrid initialized");
@@ -258,49 +194,138 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
     /**
-     * The key provider that provides the unique ID of a InvoiceDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<InvoiceDetail> KEY_PROVIDER = new ProvidesKey<InvoiceDetail>() {
+    @Override
+    public DataGrid<InvoiceDetail> getDataGrid() {
+        return dataGrid;
+    }
 
-        @Override
-        public Object getKey(InvoiceDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
+    /**
+     * @return table column: TIMEOUT
+     */
+    @Override
+    public Column<InvoiceDetail, String> getIdColumn() {
+        return idColumn;
+    }
 
+    /**
+     * @return table column: TIMEOUT
+     */
+    @Override
+    public Column<InvoiceDetail, String> getPriceColumn() {
+        return priceColumn;
+    }
+
+    /**
+     * @return table column: TIMEOUT
+     */
+    @Override
+    public Column<InvoiceDetail, String> getInvoiceNumberColumn() {
+        return invoiceNumberColumn;
+    }
+
+    /**
+     * @return table column: TIMEOUT
+     */
+    @Override
+    public Column<InvoiceDetail, String> getVariableSymbolColumn() {
+        return varSymbolColumn;
+    }
+
+    /**
+     * @return table column: TIMEOUT
+     */
+    @Override
+    public Column<InvoiceDetail, String> getPaymentMethodColumn() {
+        return payMethodColumn;
+    }
+
+    /**
+     * @return the selectionModel
+     */
+    @Override
+    public SingleSelectionModel<InvoiceDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
+    //                          *** BUTTONS ***
 
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
+    //                          *** OTHER ***
 
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return widget AdminClientInfoView as it is
+     */
+    @Override
+    public AdminInvoiceInfoView getAdminInvoiceDetail() {
+        return adminInvoiceDetail;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

@@ -2,36 +2,13 @@
 <ui:UiBinder
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
-  xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-  xmlns:lsv="cz.poptavka.sample.client.main.common.locality"
-  ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-  ui:generateLocales='default'>
+  xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <ui:style>
-    .cellTable {
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-      margin-bottom: 4px;
-    }
-    </ui:style>
     <g:HTMLPanel>
         <table cellspacing='0' cellpadding='0'>
-            <tr>
-                <td valign='top'>
-                    <c:DataGrid addStyleNames='{style.cellTable}' ui:field='dataGrid' />
-                </td>
-            </tr>
-            <tr>
-                <td align='center'>
-                    <g:HorizontalPanel>
-                        <c:SimplePager ui:field='pager' />
-                        <g:ListBox ui:field='pageSizeCombo'/>
-                    </g:HorizontalPanel>
-                </td>
-            </tr>
             <tr>
                 <td  align='left'>
                     <g:HorizontalPanel>
@@ -40,6 +17,19 @@
                         <g:Button ui:field="rollback">Rollback changes</g:Button>
                         <g:Label>Messages changed: </g:Label>
                         <g:Label ui:field="changesLabel"></g:Label>
+                    </g:HorizontalPanel>
+                </td>
+            </tr>
+            <tr>
+                <td valign='top'>
+                    <c:DataGrid ui:field='dataGrid' />
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
+                    <g:HorizontalPanel>
+                        <c:SimplePager ui:field='pager' />
+                        <g:ListBox ui:field='pageSizeCombo'/>
                     </g:HorizontalPanel>
                 </td>
             </tr>

@@ -11,10 +11,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
@@ -27,7 +23,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 
@@ -42,7 +37,6 @@ import cz.poptavka.sample.shared.domain.ProblemDetail;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -50,23 +44,28 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminProblemsView.class)
 public class AdminProblemsPresenter
-        extends LazyPresenter<AdminProblemsPresenter.AdminProblemsInterface, AdminModuleEventBus>
-        implements HasValueChangeHandlers<String> {
+        extends LazyPresenter<AdminProblemsPresenter.AdminProblemsInterface, AdminModuleEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("AdminProblemsPresenter");
+    //history of changes
     private Map<Long, ProblemDetail> dataToUpdate = new HashMap<Long, ProblemDetail>();
     private Map<Long, ProblemDetail> originalData = new HashMap<Long, ProblemDetail>();
+    //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder;
+    //for asynch data retrieving
+    private AsyncDataProvider dataProvider = null;
+    private int start = 0;
+    //for asynch data sorting
+    private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    //list of grid columns, used to sort them. First must by blank (checkbox in table)
+    private final String[] columnNames = new String[]{
+        "id", "text"
+    };
+    private List<String> gridColumns = Arrays.asList(columnNames);
 
-    @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    /**
+     * Interface for widget AdminProblemsView.
+     */
     public interface AdminProblemsInterface extends LazyView {
 
         Widget getWidgetView();
@@ -91,17 +90,37 @@ public class AdminProblemsPresenter
 
         ListBox getPageSizeCombo();
     }
-    private AsyncDataProvider dataProvider = null;
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "id", "text"
-    };
-    private int start = 0;
-    private List<String> gridColumns = Arrays.asList(columnNames);
-    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
+    /*** INIT ***
+     *
+     * Initial methods for handling starting.
+     * @param filter
+     */
+    public void onInitProblems(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView("adminProblems");
+        eventBus.clearSearchContent();
+        searchDataHolder = filter;
+        eventBus.getAdminProblemsCount(searchDataHolder);
+        eventBus.displayView(view.getWidgetView());
+    }
+
+    /*** DISPLAY ***
+     *
+     * Displays retrieved data.
+     * @param accessRoles -- list to display
+     */
+    public void onDisplayAdminTabProblems(List<ProblemDetail> problems) {
+        dataProvider.updateRowData(start, problems);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
+        Storage.hideLoading();
+    }
+
+    /*** DATA PROVIDER ***
+     *
+     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
+     * @param totalFound - count of all data in DB displayed in pager
+     */
     public void onCreateAdminProblemAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
@@ -121,6 +140,10 @@ public class AdminProblemsPresenter
         createAsyncSortHandler();
     }
 
+    /*** SORTING HANDLER ***
+     *
+     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
+     */
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
@@ -146,23 +169,52 @@ public class AdminProblemsPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitProblems(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminProblems");
-        eventBus.clearSearchContent();
-        searchDataHolder = filter;
-        eventBus.getAdminProblemsCount(searchDataHolder);
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onDisplayAdminTabProblems(List<ProblemDetail> problems) {
-        dataProvider.updateRowData(start, problems);
+    /*** DATA CHANGE ***
+     *
+     * Store changes made in table data
+     */
+    public void onAddProblemToCommit(ProblemDetail data) {
+        dataToUpdate.remove(data.getId());
+        dataToUpdate.put(data.getId(), data);
+        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        Storage.hideLoading();
     }
 
+    /*** ACTION HANDLERS ***
+     *
+     * Register handlers for widget actions
+     */
     @Override
     public void bindView() {
+        addPageChangedHandler();
+        //
+        setTextColumnUpdater();
+        //
+        addCommitButtonHandler();
+        addRollbackButtonHandler();
+        addRefreshButtonHandler();
+    }
+
+    /*
+     * TABLE SELECTION
+     */
+    private void addPageChangedHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - TEXT
+     */
+    private void setTextColumnUpdater() {
         view.getTextColumn().setFieldUpdater(new FieldUpdater<ProblemDetail, String>() {
 
             @Override
@@ -176,28 +228,12 @@ public class AdminProblemsPresenter
                 }
             }
         });
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+    }
 
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-//                if (dataToUpdate.containsKey(view.getSelectionModel().getSelectedObject().getId())) {
-//                    eventBus.showAdminProblemDetail(dataToUpdate.get(
-//                            view.getSelectionModel().getSelectedObject().getId()));
-//                } else {
-//                    eventBus.showAdminProblemDetail(view.getSelectionModel().getSelectedObject());
-//                }
-//                eventBus.setDetailDisplayedProblem(true);
-            }
-        });
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
+    /*
+     * COMMIT
+     */
+    private void addCommitButtonHandler() {
         view.getCommitBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -215,6 +251,12 @@ public class AdminProblemsPresenter
                 }
             }
         });
+    }
+
+    /*
+     * ROLLBACK
+     */
+    public void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -233,6 +275,12 @@ public class AdminProblemsPresenter
                 originalData.clear();
             }
         });
+    }
+
+    /*
+     * REFRESH
+     */
+    private void addRefreshButtonHandler() {
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
 
             @Override
@@ -248,21 +296,5 @@ public class AdminProblemsPresenter
                 }
             }
         });
-    }
-//    private Boolean detailDisplayed = false;
-
-    public void onAddProblemToCommit(ProblemDetail data) {
-        dataToUpdate.remove(data.getId());
-        dataToUpdate.put(data.getId(), data);
-//        if (detailDisplayed) {
-//            eventBus.showAdminProblemDetail(data);
-//        }
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
-    }
-
-    public void onSetDetailDisplayedProblem(Boolean displayed) {
-//        detailDisplayed = displayed;
     }
 }

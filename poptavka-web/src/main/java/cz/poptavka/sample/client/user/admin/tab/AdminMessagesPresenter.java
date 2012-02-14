@@ -9,10 +9,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -25,7 +21,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -43,7 +38,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -51,27 +45,31 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminMessagesView.class)
 public class AdminMessagesPresenter
-        extends LazyPresenter<AdminMessagesPresenter.AdminMessagesInterface, AdminModuleEventBus>
-        implements HasValueChangeHandlers<String> {
+        extends LazyPresenter<AdminMessagesPresenter.AdminMessagesInterface, AdminModuleEventBus> {
 
-    private final static Logger LOGGER = Logger.getLogger("AdminMessagesPresenter");
+    //history of changes
     private Map<Long, MessageDetail> dataToUpdate = new HashMap<Long, MessageDetail>();
     private Map<Long, MessageDetail> originalData = new HashMap<Long, MessageDetail>();
+    //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder;
+    //for asynch data retrieving
+    private AsyncDataProvider dataProvider = null;
+    private int start = 0;
+    //for asynch data sorting
+    private AsyncHandler sortHandler = null;
+    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
+    //list of grid columns, used to sort them. First must by blank (checkbox in table)
+    private final String[] columnNames = new String[]{
+        "id", "demand.id", "parent.id", "sender.id", "receiver.id", "subject", "messageState", "", "sent", "body"
+    };
+    private List<String> gridColumns = Arrays.asList(columnNames);
 
-    @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void fireEvent(GwtEvent<?> event) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    /**
+     * Interface for widget AdminMessagesView.
+     */
     public interface AdminMessagesInterface extends LazyView {
 
-        Widget getWidgetView();
-
+        // TABLE
         DataGrid<MessageDetail> getDataGrid();
 
         Column<MessageDetail, String> getStateColumn();
@@ -88,10 +86,14 @@ public class AdminMessagesPresenter
 
         SingleSelectionModel<MessageDetail> getSelectionModel();
 
+        // PAGER
         SimplePager getPager();
+
+        ListBox getPageSizeCombo();
 
         int getPageSize();
 
+        // BUTTONS
         Button getCommitBtn();
 
         Button getRollbackBtn();
@@ -100,19 +102,41 @@ public class AdminMessagesPresenter
 
         Label getChangesLabel();
 
-        ListBox getPageSizeCombo();
+        // WIDGETS
+        Widget getWidgetView();
     }
-    private AsyncDataProvider dataProvider = null;
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "id", "demand.id", "parent.id", "sender.id", "receiver.id", "subject", "messageState", "", "sent", "body"
-    };
-    private int start = 0;
-    private List<String> gridColumns = Arrays.asList(columnNames);
-    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
+    /*** INIT ***
+     *
+     * Initial methods for handling starting.
+     * @param filter
+     */
+    public void onInitMessages(SearchModuleDataHolder filter) {
+        Storage.setCurrentlyLoadedView("adminMessages");
+        eventBus.clearSearchContent();
+        searchDataHolder = filter;
+        eventBus.getAdminMessagesCount(searchDataHolder);
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
+        eventBus.displayView(view.getWidgetView());
+    }
+
+    /*** DISPLAY ***
+     *
+     * Displays retrieved data.
+     * @param accessRoles -- list to display
+     */
+    public void onDisplayAdminTabMessages(List<MessageDetail> messages) {
+        dataProvider.updateRowData(start, messages);
+        view.getDataGrid().flush();
+        view.getDataGrid().redraw();
+        Storage.hideLoading();
+    }
+
+    /*** DATA PROVIDER ***
+     *
+     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
+     * @param totalFound - count of all data in DB displayed in pager
+     */
     public void onCreateAdminMessagesAsyncDataProvider(final int totalFound) {
         this.start = 0;
         orderColumns.clear();
@@ -132,6 +156,10 @@ public class AdminMessagesPresenter
         createAsyncSortHandler();
     }
 
+    /*** SORTING HANDLER ***
+     *
+     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
+     */
     public void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(view.getDataGrid()) {
@@ -156,56 +184,204 @@ public class AdminMessagesPresenter
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
 
-    public void onInitMessages(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminMessages");
-        eventBus.clearSearchContent();
-        searchDataHolder = filter;
-        eventBus.getAdminMessagesCount(searchDataHolder);
-        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgetView());
-    }
-
-    public void onDisplayAdminTabMessages(List<MessageDetail> messages) {
-        dataProvider.updateRowData(start, messages);
+    /*** DATA CHANGE ***
+     *
+     * Store changes made in table data.
+     */
+    public void onAddMessageToCommit(MessageDetail data) {
+        dataToUpdate.remove(data.getMessageId());
+        dataToUpdate.put(data.getMessageId(), data);
+        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        Storage.hideLoading();
     }
 
+    /*** ACTION HANDLERS ***
+     *
+     * Register handlers for widget actions.
+     */
     @Override
     public void bindView() {
+        addPageChangeHandler();
+        //
         setSubjectColumnUpdater();
         setBodyColumnUpdater();
         setStateColumnUpdater();
         setTypeColumnUpdater();
         setCreatedColumnUpdater();
         setSentColumnUpdater();
-        addSelectionChangeHandler();
-        addPageChangeHandler();
+        //
         addCommitButtonHandler();
         addRollbackButtonHandler();
         addRefreshButtonHandler();
     }
 
-    private void addRefreshButtonHandler() {
-        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+    /*
+     * TABLE PAGE CHANGER
+     */
+    private void addPageChangeHandler() {
+        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
+
             @Override
-            public void onClick(ClickEvent event) {
-                if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminMessagesCount(searchDataHolder);
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
+            public void onChange(ChangeEvent arg0) {
+                int page = view.getPager().getPageStart() / view.getPageSize();
+                view.getPager().setPageStart(page * view.getPageSize());
+                view.getPager().setPageSize(view.getPageSize());
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - SENT
+     */
+    private void setSentColumnUpdater() {
+        view.getSentColumn().setFieldUpdater(new FieldUpdater<MessageDetail, Date>() {
+
+            @Override
+            public void update(int index, MessageDetail object, Date value) {
+                if (!object.getSent().equals(object)) {
+                    if (!originalData.containsKey(object.getMessageId())) {
+                        originalData.put(object.getMessageId(), new MessageDetail(object));
+                    }
+                    object.setSent(value);
+                    eventBus.addMessageToCommit(object);
                 }
             }
         });
     }
 
+    /*
+     * COLUMN UPDATER - CREATED
+     */
+    private void setCreatedColumnUpdater() {
+        view.getCreatedColumn().setFieldUpdater(new FieldUpdater<MessageDetail, Date>() {
+
+            @Override
+            public void update(int index, MessageDetail object, Date value) {
+                if (!object.getCreated().equals(value)) {
+                    if (!originalData.containsKey(object.getMessageId())) {
+                        originalData.put(object.getMessageId(), new MessageDetail(object));
+                    }
+                    object.setCreated(value);
+                    eventBus.addMessageToCommit(object);
+                }
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - TYPE
+     */
+    private void setTypeColumnUpdater() {
+        view.getTypeColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
+
+            @Override
+            public void update(int index, MessageDetail object, String value) {
+                for (MessageType msgType : MessageType.values()) {
+                    if (msgType.getValue().equals(value)) {
+                        if (!object.getMessageType().equals(msgType.name())) {
+                            if (!originalData.containsKey(object.getMessageId())) {
+                                originalData.put(object.getMessageId(), new MessageDetail(object));
+                            }
+                            object.setMessageType(msgType.name());
+                            eventBus.addMessageToCommit(object);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - STATE
+     */
+    private void setStateColumnUpdater() {
+        view.getStateColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
+
+            @Override
+            public void update(int index, MessageDetail object, String value) {
+                for (MessageState msgState : MessageState.values()) {
+                    if (msgState.name().equals(value)) {
+                        if (!object.getMessageState().equals(msgState.name())) {
+                            if (!originalData.containsKey(object.getMessageId())) {
+                                originalData.put(object.getMessageId(), new MessageDetail(object));
+                            }
+                            object.setMessageState(msgState.name());
+                            eventBus.addMessageToCommit(object);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - BODY
+     */
+    private void setBodyColumnUpdater() {
+        view.getBodyColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
+
+            @Override
+            public void update(int index, MessageDetail object, String value) {
+                if (!object.getBody().equals(value)) {
+                    if (!originalData.containsKey(object.getMessageId())) {
+                        originalData.put(object.getMessageId(), new MessageDetail(object));
+                    }
+                    object.setBody(value);
+                    eventBus.addMessageToCommit(object);
+                }
+            }
+        });
+    }
+
+    /*
+     * COLUMN UPDATER - SUBJECT
+     */
+    private void setSubjectColumnUpdater() {
+        view.getSubjectColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
+
+            @Override
+            public void update(int index, MessageDetail object, String value) {
+                if (!object.getSubject().equals(value)) {
+                    if (!originalData.containsKey(object.getMessageId())) {
+                        originalData.put(object.getMessageId(), new MessageDetail(object));
+                    }
+                    object.setSubject(value);
+                    eventBus.addMessageToCommit(object);
+                }
+            }
+        });
+    }
+
+    /*
+     * COMMIT
+     */
+    private void addCommitButtonHandler() {
+        view.getCommitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Window.confirm("Realy commit changes?")) {
+                    view.getDataGrid().setFocus(true);
+                    Storage.showLoading(Storage.MSGS.commit());
+                    for (Long idx : dataToUpdate.keySet()) {
+                        eventBus.updateMessage(dataToUpdate.get(idx));
+                    }
+                    Storage.hideLoading();
+                    dataToUpdate.clear();
+                    originalData.clear();
+                    Window.alert("Changes commited");
+                }
+            }
+        });
+    }
+
+    /*
+     * ROLLBACK
+     */
     private void addRollbackButtonHandler() {
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 dataToUpdate.clear();
@@ -224,147 +400,24 @@ public class AdminMessagesPresenter
         });
     }
 
-    private void addCommitButtonHandler() {
-        view.getCommitBtn().addClickHandler(new ClickHandler() {
+    /*
+     * REFRESH
+     */
+    private void addRefreshButtonHandler() {
+        view.getRefreshBtn().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
-                if (Window.confirm("Realy commit changes?")) {
-                    view.getDataGrid().setFocus(true);
-                    Storage.showLoading(Storage.MSGS.commit());
-                    for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateMessage(dataToUpdate.get(idx));
-                    }
-                    Storage.hideLoading();
-                    dataToUpdate.clear();
-                    originalData.clear();
-                    Window.alert("Changes commited");
+                if (dataToUpdate.isEmpty()) {
+                    dataProvider.updateRowCount(0, true);
+                    dataProvider = null;
+                    view.getDataGrid().flush();
+                    view.getDataGrid().redraw();
+                    eventBus.getAdminMessagesCount(searchDataHolder);
+                } else {
+                    Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
             }
         });
-    }
-
-    private void addPageChangeHandler() {
-        view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                int page = view.getPager().getPageStart() / view.getPageSize();
-                view.getPager().setPageStart(page * view.getPageSize());
-                view.getPager().setPageSize(view.getPageSize());
-            }
-        });
-    }
-
-    private void addSelectionChangeHandler() {
-        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-            }
-        });
-    }
-
-    private void setSentColumnUpdater() {
-        view.getSentColumn().setFieldUpdater(new FieldUpdater<MessageDetail, Date>() {
-            @Override
-            public void update(int index, MessageDetail object, Date value) {
-                if (!object.getSent().equals(object)) {
-                    if (!originalData.containsKey(object.getMessageId())) {
-                        originalData.put(object.getMessageId(), new MessageDetail(object));
-                    }
-                    object.setSent(value);
-                    eventBus.addMessageToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setCreatedColumnUpdater() {
-        view.getCreatedColumn().setFieldUpdater(new FieldUpdater<MessageDetail, Date>() {
-            @Override
-            public void update(int index, MessageDetail object, Date value) {
-                if (!object.getCreated().equals(value)) {
-                    if (!originalData.containsKey(object.getMessageId())) {
-                        originalData.put(object.getMessageId(), new MessageDetail(object));
-                    }
-                    object.setCreated(value);
-                    eventBus.addMessageToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setTypeColumnUpdater() {
-        view.getTypeColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
-            @Override
-            public void update(int index, MessageDetail object, String value) {
-                for (MessageType msgType : MessageType.values()) {
-                    if (msgType.getValue().equals(value)) {
-                        if (!object.getMessageType().equals(msgType.name())) {
-                            if (!originalData.containsKey(object.getMessageId())) {
-                                originalData.put(object.getMessageId(), new MessageDetail(object));
-                            }
-                            object.setMessageType(msgType.name());
-                            eventBus.addMessageToCommit(object);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void setStateColumnUpdater() {
-        view.getStateColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
-            @Override
-            public void update(int index, MessageDetail object, String value) {
-                for (MessageState msgState : MessageState.values()) {
-                    if (msgState.name().equals(value)) {
-                        if (!object.getMessageState().equals(msgState.name())) {
-                            if (!originalData.containsKey(object.getMessageId())) {
-                                originalData.put(object.getMessageId(), new MessageDetail(object));
-                            }
-                            object.setMessageState(msgState.name());
-                            eventBus.addMessageToCommit(object);
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void setBodyColumnUpdater() {
-        view.getBodyColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
-            @Override
-            public void update(int index, MessageDetail object, String value) {
-                if (!object.getBody().equals(value)) {
-                    if (!originalData.containsKey(object.getMessageId())) {
-                        originalData.put(object.getMessageId(), new MessageDetail(object));
-                    }
-                    object.setBody(value);
-                    eventBus.addMessageToCommit(object);
-                }
-            }
-        });
-    }
-
-    private void setSubjectColumnUpdater() {
-        view.getSubjectColumn().setFieldUpdater(new FieldUpdater<MessageDetail, String>() {
-            @Override
-            public void update(int index, MessageDetail object, String value) {
-                if (!object.getSubject().equals(value)) {
-                    if (!originalData.containsKey(object.getMessageId())) {
-                        originalData.put(object.getMessageId(), new MessageDetail(object));
-                    }
-                    object.setSubject(value);
-                    eventBus.addMessageToCommit(object);
-                }
-            }
-        });
-    }
-
-    public void onAddMessageToCommit(MessageDetail data) {
-        dataToUpdate.remove(data.getMessageId());
-        dataToUpdate.put(data.getMessageId(), data);
-        view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
     }
 }

@@ -71,7 +71,7 @@ public interface MainEventBus extends EventBus {
      * @param body
      */
     @Event(handlers = MainPresenter.class)
-    void setBodyHolderWidget(Widget body);
+    void setHomeBodyHolderWidget(Widget body);
 
     @BeforeLoadChildModule
     @Event(handlers = MainPresenter.class)

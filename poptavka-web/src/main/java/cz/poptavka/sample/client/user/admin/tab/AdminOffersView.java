@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
@@ -34,54 +33,47 @@ import java.util.Date;
 
 /**
  *
- * @author ivan.vlcek
+ * @author Martin Slavkovsky
  */
-public class AdminOffersView extends Composite implements
-        AdminOffersPresenter.AdminOffersInterface {
+public class AdminOffersView extends Composite implements AdminOffersPresenter.AdminOffersInterface {
 
-    private static AdministrationViewUiBinder uiBinder =
-            GWT.create(AdministrationViewUiBinder.class);
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-    @UiField
-    SimplePanel adminOfferDetail;
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public SimplePanel getAdminSupplierDetail() {
-        return adminOfferDetail;
-    }
+    private static AdministrationViewUiBinder uiBinder = GWT.create(AdministrationViewUiBinder.class);
 
     interface AdministrationViewUiBinder extends UiBinder<Widget, AdminOffersView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<OfferDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // DETAIL
+    @UiField AdminOfferInfoView adminOfferDetail;
+    // TABLE
+    @UiField(provided = true) DataGrid<OfferDetail> dataGrid;
     private SingleSelectionModel<OfferDetail> selectionModel;
-    /** Editable Columns in CellTable. **/
+    // Editable Columns
     private Column<OfferDetail, String> priceColumn;
     private Column<OfferDetail, String> offerStatusColumn;
     private Column<OfferDetail, Date> offerCreationDateColumn;
     private Column<OfferDetail, Date> offerFinishDateColumn;
+    // The key provider that provides the unique ID of a DemandDetail.
+    private static final ProvidesKey<OfferDetail> KEY_PROVIDER = new ProvidesKey<OfferDetail>() {
 
+        @Override
+        public Object getKey(OfferDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+    //
+    //                          ***** INITIALIZATION *****
+    //
+
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -96,26 +88,9 @@ public class AdminOffersView extends Composite implements
         changesLabel.setText("0");
     }
 
-    @Override
-    public Column<OfferDetail, String> getPriceColumn() {
-        return priceColumn;
-    }
-
-    @Override
-    public Column<OfferDetail, String> getOfferStatusColumn() {
-        return offerStatusColumn;
-    }
-
-    @Override
-    public Column<OfferDetail, Date> getOfferCreationDateColumn() {
-        return offerCreationDateColumn;
-    }
-
-    @Override
-    public Column<OfferDetail, Date> getOfferFinishDateColumn() {
-        return offerFinishDateColumn;
-    }
-
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
         // Create a dataGrid.
         GWT.log("Admin Offers initDataGrid initialized");
@@ -244,62 +219,130 @@ public class AdminOffersView extends Composite implements
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
     /**
-     * The key provider that provides the unique ID of a DemandDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<OfferDetail> KEY_PROVIDER = new ProvidesKey<OfferDetail>() {
-
-        @Override
-        public Object getKey(OfferDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
-
     @Override
     public DataGrid<OfferDetail> getDataGrid() {
         return dataGrid;
     }
+    /*
+     * @return table column: PRICE
+     */
 
     @Override
-    public ListBox getPageSizeCombo() {
-        return pageSizeCombo;
+    public Column<OfferDetail, String> getPriceColumn() {
+        return priceColumn;
+    }
+    /*
+     * @return table column: STATUS
+     */
+
+    @Override
+    public Column<OfferDetail, String> getOfferStatusColumn() {
+        return offerStatusColumn;
+    }
+    /*
+     * @return table column: CREATION DATE
+     */
+
+    @Override
+    public Column<OfferDetail, Date> getOfferCreationDateColumn() {
+        return offerCreationDateColumn;
+    }
+    /*
+     * @return table column: FINNIDH DATE
+     */
+
+    @Override
+    public Column<OfferDetail, Date> getOfferFinishDateColumn() {
+        return offerFinishDateColumn;
     }
 
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<OfferDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
+    @Override
+    public ListBox getPageSizeCombo() {
+        return pageSizeCombo;
+    }
+
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
+    //                          *** BUTTONS ***
+    /*
+     * @return COMMIT button
+     */
 
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
 
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
     }
 
     /**
-     * @return the selectionModel
+     * @return widget AdminOfferDetailView as it is
      */
     @Override
-    public SingleSelectionModel<OfferDetail> getSelectionModel() {
-        return selectionModel;
+    public AdminOfferInfoView getAdminOfferDetail() {
+        return adminOfferDetail;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

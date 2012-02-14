@@ -18,7 +18,7 @@ public interface HomeWelcomeEventBus extends EventBus {
     void start();
 
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(IsWidget view);
+    void setHomeBodyHolderWidget(IsWidget view);
 
     @Event(handlers = HomeWelcomePresenter.class)
     void initHomeWelcomeModule(SearchModuleDataHolder filter);

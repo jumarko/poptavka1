@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.demands;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -29,13 +30,14 @@ public class DemandModulePresenter
 
         Widget getWidgetView();
 
-        void setContent(Widget contentWidget);
+        void setContent(IsWidget contentWidget);
 
         //client menu part
         Button getCliNewDemandsButton();
         Button getCliOffersButton();
         Button getCliAssignedDemandsButton();
         Button getCliCreateDemand();
+        Button getCliCreateSupplier();
         Button getAllDemands();
         Button getAllSuppliers();
 
@@ -71,6 +73,12 @@ public class DemandModulePresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateDemand("user");
+            }
+        });
+        view.getCliCreateSupplier().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateSupplier("user");
             }
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {
@@ -149,9 +157,9 @@ public class DemandModulePresenter
 //            eventBus.getPotentialDemands(user.getId());
 //        }
 
-//        panel.setWidget(view.getWidgetView());
+        // STYLE
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
-        eventBus.setBodyHolderWidget(view.getWidgetView());
+        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();
@@ -163,7 +171,7 @@ public class DemandModulePresenter
         view.setContent(content);
     }
 
-    public void onSetUserBodyHolderWidget(Widget body) {
+    public void onSetUserBodyHolderWidget(IsWidget body) {
 //        view.getContentPanel().add(body);
         view.setContent(body);
 //        view.getContentPanel().add(new Label("TA COCO CO"));

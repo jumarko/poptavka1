@@ -102,11 +102,11 @@ public class SearchModulePresenter
                 } else if (Storage.getCurrentlyLoadedView().equals("potentialDemandMessages")) {
 //                    eventBus.initDemandsTabModule(view.getFilter());
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabInbox")) {
-                    eventBus.initMessagesTabModuleInbox(view.getFilter());
+                    eventBus.initMessagesModule(view.getFilter(), "inbox");
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabSent")) {
-                    eventBus.initMessagesTabModuleSent(view.getFilter());
+                    eventBus.initMessagesModule(view.getFilter(), "sent");
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabTrash")) {
-                    eventBus.initMessagesTabModuleTrash(view.getFilter());
+                    eventBus.initMessagesModule(view.getFilter(), "trash");
                 } else { //Admin...whatever
                     eventBus.initAdminModule(view.getFilter());
                 }

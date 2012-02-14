@@ -27,7 +27,7 @@ public class MessagesModuleView extends Composite
     @UiField
     SimplePanel wrapperMain, wrapperDetail;
     @UiField
-    Button inboxButton, sentButton, trashButton, composeButton;
+    Button inboxButton, sentButton, trashButton, composeButton, draftButton;
     @UiField
     SplitLayoutPanel splitPanelSouth;
 
@@ -69,6 +69,11 @@ public class MessagesModuleView extends Composite
     @Override
     public Button getTrashButton() {
         return trashButton;
+    }
+
+    @Override
+    public Button getDraftButton() {
+        return draftButton;
     }
 
     @Override

@@ -98,7 +98,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
      *
      * @param body widget to be inserted
      */
-    public void onSetBodyHolderWidget(Widget body) {
+    public void onSetHomeBodyHolderWidget(Widget body) {
         view.setBodyWidget(body);
     }
 

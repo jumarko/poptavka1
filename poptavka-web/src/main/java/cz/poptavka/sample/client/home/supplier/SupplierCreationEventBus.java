@@ -6,7 +6,9 @@
  */
 package cz.poptavka.sample.client.home.supplier;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -42,7 +44,13 @@ public interface SupplierCreationEventBus extends EventBus {
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
     @Event(handlers = SupplierCreationPresenter.class)
-    void goToCreateSupplier();
+    void goToCreateSupplier(String location);
+
+    @Event(forwardToParent = true)
+    void setHomeBodyHolderWidget(IsWidget body);
+
+    @Event(forwardToParent = true)
+    void setUserBodyHolderWidget(Widget body);
 
     /**************************************************************************/
     /* Parent events. */

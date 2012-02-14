@@ -21,14 +21,12 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import cz.poptavka.sample.shared.domain.PermissionDetail;
 
-import java.util.Date;
 
 /**
  *
@@ -37,83 +35,38 @@ import java.util.Date;
 public class AdminPermissionsView extends Composite implements AdminPermissionsPresenter.AdminPermissionsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<PermissionDetail, String> getDescriptionColumn() {
-        return descriptionColumn;
-    }
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<PermissionDetail, String> getNameColumn() {
-        return nameColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<PermissionDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<PermissionDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminPermissionsView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<PermissionDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // TABLE
+    @UiField(provided = true) DataGrid<PermissionDetail> dataGrid;
     private SingleSelectionModel<PermissionDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns
     private Column<PermissionDetail, String> descriptionColumn;
     private Column<PermissionDetail, String> nameColumn;
-    private Column<PermissionDetail, String> demandStatusColumn;
-    private Column<PermissionDetail, Date> demandExpirationColumn;
-    private Column<PermissionDetail, Date> demandEndColumn;
+    // The key provider that provides the unique ID of a PermissionDetail.
+    private static final ProvidesKey<PermissionDetail> KEY_PROVIDER = new ProvidesKey<PermissionDetail>() {
 
+        @Override
+        public Object getKey(PermissionDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+
+    //
+    //                          ***** INITIALIZATION *****
+    //
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -128,27 +81,29 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
+        GWT.log("init AdminPermissions DataGrid initialized");
+
+        // TABLE
         dataGrid = new DataGrid<PermissionDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
+        // SELECTION MODEL
         selectionModel = new SingleSelectionModel<PermissionDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
@@ -230,49 +185,108 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
+
     /**
-     * The key provider that provides the unique ID of a PermissionDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<PermissionDetail> KEY_PROVIDER = new ProvidesKey<PermissionDetail>() {
+    @Override
+    public DataGrid<PermissionDetail> getDataGrid() {
+        return dataGrid;
+    }
 
-        @Override
-        public Object getKey(PermissionDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
+    /**
+     * @return table column: DESCRIPTION
+     */
+    @Override
+    public Column<PermissionDetail, String> getDescriptionColumn() {
+        return descriptionColumn;
+    }
 
+    /**
+     * @return table column: NAME
+     */
+    @Override
+    public Column<PermissionDetail, String> getNameColumn() {
+        return nameColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<PermissionDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: VALUE
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
+    //                          *** BUTTONS ***
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
 
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

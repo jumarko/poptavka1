@@ -10,6 +10,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter;
 import cz.poptavka.sample.client.user.messages.tab.MessageListPresenter;
 
@@ -35,6 +36,8 @@ public class MessagesModulePresenter
         Button getInboxButton();
 
         Button getSentButton();
+
+        Button getDraftButton();
 
         Button getTrashButton();
     }
@@ -84,7 +87,7 @@ public class MessagesModulePresenter
 //                    view.getWrapperMain().remove(view.getWrapperMain().getWidget());
 //                }
                 messagesList = eventBus.addHandler(MessageListPresenter.class);
-                messagesList.onInitMessagesTabModuleInbox(null);
+                messagesList.onInitMailBox("inbox", null);
                 view.getWrapperDetail().clear();
 
                 //production code
@@ -103,7 +106,7 @@ public class MessagesModulePresenter
 //                    view.getWrapperMain().remove(view.getWrapperMain().getWidget());
 //                }
                 messagesList = eventBus.addHandler(MessageListPresenter.class);
-                messagesList.onInitMessagesTabModuleSent(null);
+                messagesList.onInitMailBox("sent", null);
                 view.getWrapperDetail().clear();
 
                 //production code
@@ -122,7 +125,26 @@ public class MessagesModulePresenter
 //                    view.getWrapperMain().remove(view.getWrapperMain().getWidget());
 //                }
                 messagesList = eventBus.addHandler(MessageListPresenter.class);
-                messagesList.onInitMessagesTabModuleTrash(null);
+                messagesList.onInitMailBox("trash", null);
+                view.getWrapperDetail().clear();
+
+                //production code
+//                eventBus.initTrash();
+            }
+        });
+        view.getDraftButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent arg0) {
+                //devel code
+//                if (messagesList != null) {
+//                    detailSection.develRemoveReplyWidget();
+//                    eventBus.removeHandler(messagesList);
+//                    messagesList = null;
+//                    view.getWrapperMain().remove(view.getWrapperMain().getWidget());
+//                }
+                messagesList = eventBus.addHandler(MessageListPresenter.class);
+                messagesList.onInitMailBox("draft", null);
                 view.getWrapperDetail().clear();
 
                 //production code
@@ -137,34 +159,18 @@ public class MessagesModulePresenter
      *
      * @param action - composeNew, composeNewForwarded, composeReply, displayGrid
      */
-    public void onInitMessagesModule(String action) {
-        // hiding window for this is after succesfull Userhandler call
+    public void onInitMessagesModule(SearchModuleDataHolder filter, String action) {
         Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
-//        if (user.getRoleList().contains(Role.CLIENT)) {
-        // TODO execute client specific demands init methods/calls
-//        }
-//        if (user.getRoleList().contains(Role.SUPPLIER)) {
-        // TODO using businessUserId and NOT supplier ID
-        // DEBUGING popup
-        // TODO Maybe do nothing
-//            PopupPanel panel = new PopupPanel(true);
-//            panel.getElement().setInnerHTML("<br/>Getting SupplierDemands<")
-//            panel.center();
-//            eventBus.getPotentialDemands(user.getId());
-//        }
 
-//        panel.setWidget(view.getWidgetView());\
-
-        //Set Styles
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
 
-//        if (action.contains("composeNew")) { // composeNew, composeNewForwarded
+        if (action.contains("composeNew")) { // composeNew, composeNewForwarded
 //            if (composer == null) {
 //                composer = eventBus.addHandler(ComposeMessagePresenter.class);
 //                view.getWrapperMain().setWidget(composer.getView());// mozno treba opacne ako inde
 //            }
 //            view.getWrapperDetail().setWidth("0"); // ktore lepsie pouzit?
-//        } else if (action.equals("composeReply")) {
+        } else if (action.equals("composeReply")) {
 //            if (composer == null) {
 //                composer = eventBus.addHandler(ComposeMessagePresenter.class);
 //                view.getWrapperMain().setWidget(composer.getView());
@@ -174,7 +180,7 @@ public class MessagesModulePresenter
 //                view.getWrapperDetail().setWidget(detailSection.getView());
 //                view.getWrapperDetail().setWidth("500");
 //            }
-//        } else if (action.equals("displayGrid")) {
+        } else if (action.equals("displayGrid")) {
 //            //Load MessageList
 //            if (messagesList == null) {
 //                messagesList = eventBus.addHandler(MessageListPresenter.class);
@@ -185,14 +191,13 @@ public class MessagesModulePresenter
 //                view.getWrapperDetail().setWidget(detailSection.getView());
 //                view.getWrapperDetail().setWidth("500");
 //            }
-//        }
+        } else { // inbox, sent, trash, draft
+            eventBus.initMailBox(action, filter);
+        }
 
-        eventBus.setBodyHolderWidget(view.getWidgetView());
+        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+
         Storage.hideLoading();
-//        eventBus.setTabWidget(view.getWidgetView());
-//        eventBus.fireMarkedEvent();
-//
-//        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
     public void onDisplayMain(Widget content) {

@@ -45,117 +45,23 @@ import java.util.List;
 public class AdminDemandsView extends Composite implements AdminDemandsPresenter.AdminDemandsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
-    @UiField
-    Button commit, rollback, refresh;
-    @UiField
-    Label changesLabel;
-
-    /**
-     * @return the demand id column
-     */
-    @Override
-    public Column<FullDemandDetail, String> getIdColumn() {
-        return idColumn;
-    }
-
-    /**
-     * @return the client id column
-     */
-    @Override
-    public Column<FullDemandDetail, String> getCidColumn() {
-        return cidColumn;
-    }
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getDemandTypeColumn() {
-        return demandTypeColumn;
-    }
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getDemandTitleColumn() {
-        return demandTitleColumn;
-    }
-
-    /**
-     * @return the demandStatusColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getDemandStatusColumn() {
-        return statusColumn;
-    }
-
-    /**
-     * @return the demandExpirationColumn
-     */
-    @Override
-    public Column<FullDemandDetail, Date> getDemandExpirationColumn() {
-        return demandExpirationColumn;
-    }
-
-    /**
-     * @return the demandEndColumn
-     */
-    @Override
-    public Column<FullDemandDetail, Date> getDemandEndColumn() {
-        return demandEndColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<FullDemandDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminDemandsView> {
     }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<FullDemandDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    SimplePager pager;
-    @UiField(provided = true)
-    ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
+    //
+    //                          ***** ATTRIBUTES *****
+    //
+    @UiField Button commit, rollback, refresh;
+    @UiField Label changesLabel;
+    // PAGER
+    @UiField(provided = true) SimplePager pager;
+    @UiField(provided = true) ListBox pageSizeCombo;
+    // DETAIL
+    @UiField SimplePanel adminDemandDetail;
+    // TABLE
+    @UiField(provided = true) DataGrid<FullDemandDetail> dataGrid;
     private SingleSelectionModel<FullDemandDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    // Editable Columns in dataGrid
     private Column<FullDemandDetail, String> idColumn;
     private Column<FullDemandDetail, String> cidColumn;
     private Column<FullDemandDetail, String> demandTypeColumn;
@@ -163,7 +69,21 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private Column<FullDemandDetail, String> statusColumn;
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
+    // The key provider that provides the unique ID of a FullDemandDetail.
+    private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
 
+        @Override
+        public Object getKey(FullDemandDetail item) {
+            return item == null ? null : item.getDemandId();
+        }
+    };
+
+    //
+    //                          ***** INITIALIZATION *****
+    //
+    /**
+     * creates WIDGET view.
+     */
     @Override
     public void createView() {
         pageSizeCombo = new ListBox();
@@ -178,27 +98,29 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         changesLabel.setText("0");
     }
 
+    /**
+     * Creates table with accessories - columns, pager, selection model.
+     */
     private void initDataGrid() {
-        // Create a dataGrid.
-        GWT.log("initDataGrid initialized");
-        // Set a key provider that provides a unique key for each contact. If key is
-        // used to identify contacts when fields (such as the name and address)
-        // change.
+        GWT.log("init AdminDemands DataGrid initialized");
+
+        // TABLE
         dataGrid = new DataGrid<FullDemandDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
 
-        // Create a Pager to control the table.
+        // PAGER
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
+        // SELECTION MODEL
         selectionModel = new SingleSelectionModel<FullDemandDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
                 DefaultSelectionEventManager.<FullDemandDetail>createCheckboxManager());
 
-        // Initialize the columns.
+        // COLUMNS
         initTableColumns();
     }
 
@@ -317,49 +239,155 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
+    //******************* GETTER METHODS (defined by interface) ****************
+    //
+    //                          *** TABLE ***
     /**
-     * The key provider that provides the unique ID of a FullDemandDetail.
+     * @return TABLE (DataGrid)
      */
-    private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
+    @Override
+    public DataGrid<FullDemandDetail> getDataGrid() {
+        return dataGrid;
+    }
 
-        @Override
-        public Object getKey(FullDemandDetail item) {
-            return item == null ? null : item.getDemandId();
-        }
-    };
+    /**
+     * @return table column: ID
+     */
+    @Override
+    public Column<FullDemandDetail, String> getIdColumn() {
+        return idColumn;
+    }
 
+    /**
+     * @return table column: CID
+     */
+    @Override
+    public Column<FullDemandDetail, String> getCidColumn() {
+        return cidColumn;
+    }
+
+    /**
+     * @return table column: TYPE
+     */
+    @Override
+    public Column<FullDemandDetail, String> getDemandTypeColumn() {
+        return demandTypeColumn;
+    }
+
+    /**
+     * @return table column: TITLE
+     */
+    @Override
+    public Column<FullDemandDetail, String> getDemandTitleColumn() {
+        return demandTitleColumn;
+    }
+
+    /**
+     * @return table column: STATUS
+     */
+    @Override
+    public Column<FullDemandDetail, String> getDemandStatusColumn() {
+        return statusColumn;
+    }
+
+    /**
+     * @return table column: EXPIRATION
+     */
+    @Override
+    public Column<FullDemandDetail, Date> getDemandExpirationColumn() {
+        return demandExpirationColumn;
+    }
+
+    /**
+     * @return table column: END DATE
+     */
+    @Override
+    public Column<FullDemandDetail, Date> getDemandEndColumn() {
+        return demandEndColumn;
+    }
+
+    /**
+     * @return table's selection model
+     */
+    @Override
+    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+
+    //                         *** PAGER ***
+    /*
+     * @return pager
+     */
     @Override
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return table/pager size: COMBO
+     */
     @Override
     public ListBox getPageSizeCombo() {
         return pageSizeCombo;
     }
 
+    /**
+     * @return table/pager size: value
+     */
     @Override
     public int getPageSize() {
         return Integer.valueOf(pageSizeCombo.getItemText(pageSizeCombo.getSelectedIndex()));
     }
 
+    //                          *** BUTTONS ***
+    /**
+     * @return COMMIT button
+     */
     @Override
     public Button getCommitBtn() {
         return commit;
     }
 
+    /**
+     * @return ROLLBACK button
+     */
     @Override
     public Button getRollbackBtn() {
         return rollback;
     }
 
+    /**
+     * @return REFRESH button
+     */
     @Override
     public Button getRefreshBtn() {
         return refresh;
     }
 
+    //                          *** OTHER ***
+    /**
+     * @return label for displaying informations for user
+     */
     @Override
     public Label getChangesLabel() {
         return changesLabel;
+    }
+
+    /**
+     * @return widget AdminDemandInfoView as it is
+     */
+    @Override
+    public SimplePanel getAdminDemandDetail() {
+        return adminDemandDetail;
+    }
+
+    /**
+     * @return this widget as it is
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

@@ -202,7 +202,7 @@ public interface UserEventBus extends EventBusWithLookup {
     // @DisplayChildModuleView({DemandModule.class,
     // AdminModule.class, MessagesModule.class })
     @Event(forwardToParent = true)
-    void setBodyHolderWidget(IsWidget body);
+    void setHomeBodyHolderWidget(IsWidget body);
 
     @Event(forwardToParent = true)
     void setUserBodyHolderWidget(Widget body);
@@ -236,14 +236,14 @@ public interface UserEventBus extends EventBusWithLookup {
             OffersPresenter.class, MyDemandsPresenter.class }, historyConverter = DemandsHistoryConverter.class)
     String invokePotentialDemands();
 
-    @Event(forwardToParent = true)
-    void initMessagesTabModuleInbox(SearchModuleDataHolder searchDataHolder);
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModuleInbox(SearchModuleDataHolder searchDataHolder);
 
-    @Event(forwardToParent = true)
-    void initMessagesTabModuleSent(SearchModuleDataHolder searchDataHolder);
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModuleSent(SearchModuleDataHolder searchDataHolder);
 
-    @Event(forwardToParent = true)
-    void initMessagesTabModuleTrash(SearchModuleDataHolder searchDataHolder);
+//    @Event(forwardToParent = true)
+//    void initMessagesTabModuleTrash(SearchModuleDataHolder searchDataHolder);
     /***********************************************************************************************
      ************************* Navigation Events section END ***************************************
      **********************************************************************************************/
@@ -401,8 +401,8 @@ public interface UserEventBus extends EventBusWithLookup {
      * methods for Supplier new demands
      */
     // init demands module
-    @Event(forwardToParent = true)
-    void initDemandModule();
+//    @Event(forwardToParent = true)
+//    void initDemandModule();
 
     @Event(forwardToParent = true)
     void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
@@ -410,17 +410,17 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(forwardToParent = true)
     void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
-    @Event(forwardToParent = true)
-    void goToCreateDemand(String location);
+//    @Event(forwardToParent = true)
+//    void eegoToCreateDemand(String location);
 
     // added by Martin
     // init demands module
 
-    @Event(forwardToParent = true)
-    void initMessagesModule(String action);
+//    @Event(forwardToParent = true)
+//    void initMessagesModule(SearchModuleDataHolder filter, String action);
 
-    @Event(forwardToParent = true)
-    void initAdminModule(SearchModuleDataHolder filter);
+//    @Event(forwardToParent = true)
+//    void initAdminModule(SearchModuleDataHolder filter);
 
     // @Event(forwardToParent = true)
     // void initSearchModule(SimplePanel panel);
@@ -430,6 +430,6 @@ public interface UserEventBus extends EventBusWithLookup {
     /**
      * ********************* End corner ************************
      */
-    @Event(forwardToParent = true)
-    void initSettings();
+//    @Event(forwardToParent = true)
+//    void initSettings();
 }
