@@ -9,6 +9,7 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.NotFoundHistory;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
@@ -60,6 +61,10 @@ public interface RootEventBus extends EventBus {
             SearchBarPresenter.class, FooterPresenter.class,
             HeaderPresenter.class })
     void start();
+
+    @NotFoundHistory
+    @Event(handlers = RootPresenter.class)
+    void notFound();
 
     @Event(handlers = RootHandler.class)
     void getUser();

@@ -50,7 +50,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
     @UiField(provided = true) SimplePager pager;
     @UiField(provided = true) ListBox pageSizeCombo;
     // DETAIL
-    @UiField AdminOfferInfoView adminOfferDetail;
+//    @UiField AdminOfferInfoView adminOfferDetail;
     // TABLE
     @UiField(provided = true) DataGrid<OfferDetail> dataGrid;
     private SingleSelectionModel<OfferDetail> selectionModel;
@@ -328,14 +328,6 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
     @Override
     public Label getChangesLabel() {
         return changesLabel;
-    }
-
-    /**
-     * @return widget AdminOfferDetailView as it is
-     */
-    @Override
-    public AdminOfferInfoView getAdminOfferDetail() {
-        return adminOfferDetail;
     }
 
     /**

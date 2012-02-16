@@ -5,58 +5,68 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
-import java.util.logging.Logger;
 
 @History(type = HistoryConverterType.SIMPLE, name = "homeSuppliers")
 public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppliersEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger(HomeSuppliersHistoryConverter.class.getName());
-
-    public String convertToToken(String tokenName) {
-        return tokenName;
-    }
-    public String convertToToken(String historyName, CategoryDetail category) {
-        return Long.toString(category.getId());
-    }
-
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    @Override
-    public void convertFromToken(String historyName, String param, HomeSuppliersEventBus eventBus) {
-        eventBus.setHistoryStoredForNextOne(false);
-//        eventBus.displayMenu();
-//
-//        if (historyName.equals("atHome")) {
-//            eventBus.atHome();
-//        }
-        if (historyName.equals("addToPath")) {
-            eventBus.loadingShow(MSGS.loading());
-            if (param.equals("root")) {
-                eventBus.rootWithSearchDataHolder(); //goToHomeSuppliers(null);
-            } else {
-                eventBus.setCategoryID(Long.valueOf(param));
-                eventBus.removeFromPath(Long.valueOf(param));
-                eventBus.getSubCategories(Long.valueOf(param));
-            }
+    /**
+     * To convert token for initHomeSuppliersModule method
+     * @param searchDataHolder
+     * @param location
+     * @return token string like homeRoot or userRoot
+     */
+    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String location) {
+        if (methodName.equals("initHomeSuppliersModule")) {
+            return location + "Root";
         }
-//        if (historyName.equals("atCreateSupplier")) {
-//            eventBus.atCreateSupplier();
-//        }
-//        if (historyName.equals("atSuppliers")) {
-//            eventBus.atSuppliers();
-//        }
-//        if (historyName.equals("atSuppliers")) {
-//            eventBus.atSuppliers();
-//        }
-//        if (historyName.equals("atRegisterSupplier")) {
-//            eventBus.atRegisterSupplier();
-//        }
+        return "";
+    }
+
+    /**
+     * To convert token for addToPath method
+     * @param methodName
+     * @param category
+     * @param location
+     * @return token string like categoryId=333
+     */
+    public String convertToToken(String methodName, CategoryDetail category) {
+        if (methodName.equals("updatePath")) {
+            return "categoryId=" + Long.toString(category.getId());
+        }
+        return "";
+    }
+
+    /**
+     *
+     * @param methodName - name of the called method
+     * @param param
+     * @param eventBus
+     */
+    @Override
+    public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
+        eventBus.setHistoryStoredForNextOne(false);
+
+        if (methodName.equals("initHomeSuppliersModule")) {
+            // ktore spravne??
+            eventBus.initHomeSuppliersModule(null, param.replace("Root", ""));
+//            eventBus.rootWithSearchDataHolder(); //goToHomeSuppliers(null);
+        }
+        if (methodName.equals("updatePath")) {
+            eventBus.loadingShow(MSGS.loading());
+            param = param.replace("categoryId=", "");
+//                eventBus.setCategoryID(Long.valueOf(param));
+            eventBus.updatePath(new CategoryDetail(Long.valueOf(param), null));
+            eventBus.getSubCategories(Long.valueOf(param));
+        }
     }
 
     @Override
     public boolean isCrawlable() {
         // TODO Auto-generated method stub
-        return true;
+        return false;
     }
 }

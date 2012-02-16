@@ -7,10 +7,10 @@
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
-        <g:west size="700">
-            <g:DockLayoutPanel unit="PX">
-                <g:north size="50">
+    <g:HTMLPanel>
+        <table cellspacing='0' cellpadding='0'>
+            <tr>
+                <td  align='left'>
                     <g:HorizontalPanel>
                         <g:Button ui:field="refresh">Refresh</g:Button>
                         <g:Button ui:field="commit">Commit changes</g:Button>
@@ -18,24 +18,23 @@
                         <g:Label>Demands changed: </g:Label>
                         <g:Label ui:field="changesLabel"></g:Label>
                     </g:HorizontalPanel>
-                </g:north>
-                <g:south size="35">
+                </td>
+            </tr>
+            <tr>
+                <td valign='top'>
+                    <c:DataGrid ui:field='dataGrid' />
+                </td>
+            </tr>
+            <tr>
+                <td align='center'>
                     <g:HorizontalPanel>
                         <c:SimplePager ui:field='pager' />
-                        <g:ListBox ui:field='pageSizeCombo' />
+                        <g:ListBox ui:field='pageSizeCombo'/>
                     </g:HorizontalPanel>
-                </g:south>
-                <g:center>
-                    <c:DataGrid ui:field='dataGrid' />
-                </g:center>
-            </g:DockLayoutPanel>
-        </g:west>
-        <g:center>
-            <g:ScrollPanel>
-                <detail:AdminOfferInfoView ui:field="adminOfferDetail"/>
-            </g:ScrollPanel>
-        </g:center>
-    </g:SplitLayoutPanel>
+                </td>
+            </tr>
+        </table>
+    </g:HTMLPanel>
 </ui:UiBinder>
 
 

@@ -155,6 +155,7 @@ public class AdminDemandsPresenter
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
+                //TODO Martin - start+length - ak to ma byt count, ako pozaduje metoda, tak je to zle
                 eventBus.getAdminDemands(start, start + length, searchDataHolder, orderColumns);
                 Storage.hideLoading();
             }

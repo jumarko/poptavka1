@@ -43,96 +43,89 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = HomeSuppliersPresenter.class)
     void forward();
 
-    /* Navigation events. */
-    /**
-     * The only entry point to this module due to code-splitting and exclusive
-     * fragment.
-     */
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void initHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
-
+    //
+    //                      Navigation events.
+    //
+    // PARENT EVENTS
     @Event(forwardToParent = true)
     void setHomeBodyHolderWidget(IsWidget body);
 
     @Event(forwardToParent = true)
     void setUserBodyHolderWidget(Widget body);
 
-    /**
-     * Display root categories.
-     */
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void atSuppliers();
-
-    /**
-     * Display sub-categories, suppliers of selected category and detail of
-     * selected supplier.
-     */
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void atDisplaySuppliers(CategoryDetail categoryDetail);
-
-    /* Parent events. */
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
     @Event(forwardToParent = true)
     void loadingHide();
 
-    /* Business events. */
-    /* Business events handled by Presenters. */
+    /**
+     * The only entry point to this module due to code-splitting and exclusive
+     * fragment.
+     */
+    // INIT
+    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
+    String initHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
+
+    //
+    //                  **** DISPLAY ****
+    //
+    // ROOT CATEGORIES
     @Event(handlers = HomeSuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
 
+    // SUB CATEGORIES
     @Event(handlers = HomeSuppliersPresenter.class)
     void displaySubCategories(ArrayList<CategoryDetail> list,
             Long parentCategory);
 
+    // SUPPLIERS
     @Event(handlers = HomeSuppliersPresenter.class)
     void displaySuppliers(List<FullSupplierDetail> list);
 
-//    @Event(handlers = HomeSuppliersPresenter.class)
-//    void setLocalityData(ArrayList<LocalityDetail> list);
+    /**
+     * Display sub-categories, suppliers of selected category and detail of
+     * selected supplier.
+     */
+    // CHILD WIDGET
     @Event(handlers = HomeSuppliersPresenter.class)
-    void addToPath(CategoryDetail category);
+    void displayChildWidget(CategoryDetail categoryDetail);
 
+    //
+    //                  **** PATH ****
+    //
+    // UPDATE
+    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
+    String updatePath(CategoryDetail category);
+
+    /**
+     * Retrieve category for displaying ({@link addToPath}) its name in path.
+     * @param categoryId
+     */
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getCategoryName(Long categoryId);
+
+    /**
+     * After retrieving category, add its name to path
+     * @param categoryDetail
+     */
     @Event(handlers = HomeSuppliersPresenter.class)
-    void removeFromPath(Long code);
+    void addToPath(CategoryDetail categoryDetail);
 
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void setCategoryID(Long categoryCode);
-
-//    @Event(handlers = HomeSuppliersPresenter.class)
-//    void resetDisplaySuppliersPager(int totalFoundNew);
     @Event(handlers = HomeSuppliersPresenter.class)
     void createAsyncDataProvider(final int totalFound);
 
-    /* Business events handled by Handlers. */
-    @Event(handlers = HomeSuppliersHandler.class)
-    void getSubCategories(Long category);
-
+    //
+    //              Business events handled by Handlers.
+    //
+    // CATEGORIES
     @Event(handlers = HomeSuppliersHandler.class)
     void getCategories();
 
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void rootWithSearchDataHolder();
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getLocalities();
-//
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getSuppliersByCategoryLocality(int start, int count, Long category,
-//            String locality);
-//
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getSuppliersByCategory(int start, int count, Long category);
-//
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getSuppliersCount(Long category, String locality);
-//
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getSuppliersCountByCategory(Long category);
-//
-//    @Event(handlers = HomeSuppliersHandler.class)
-//    void getSuppliersCountByCategoryLocality(Long category, String locality);
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getSubCategories(Long category);
 
+    // SUPPLIERS
     @Event(handlers = HomeSuppliersHandler.class)
     void getSuppliersCount(SearchModuleDataHolder detail);
 

@@ -32,6 +32,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
+import cz.poptavka.sample.shared.domain.type.MessageType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,13 +50,18 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     //
     //                          ***** ATTRIBUTES *****
     //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<MessageDetail> dataGrid;
+    @UiField(provided = true)
+    DataGrid<MessageDetail> dataGrid;
     private SingleSelectionModel<MessageDetail> selectionModel;
     // Editable Columns
     private Column<MessageDetail, String> subjectColumn;
@@ -132,6 +138,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         addReceiverIdColumn();
         addMessageTitleColumn();
         addMessageStateColumn();
+        addMessageTypeColumn();
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
         addCreatedDateColumn(dateFormat);
         addSentDateColumn(dateFormat);
@@ -180,6 +187,20 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
             @Override
             public String getValue(MessageDetail object) {
                 return object.getMessageState();
+            }
+        });
+    }
+
+    private void addMessageTypeColumn() {
+        List<String> msgTypes = new ArrayList<String>();
+        for (MessageType msgState : MessageType.values()) {
+            msgTypes.add(msgState.name());
+        }
+        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", true, 150, new GetValue<String>() {
+
+            @Override
+            public String getValue(MessageDetail object) {
+                return object.getMessageType();
             }
         });
     }

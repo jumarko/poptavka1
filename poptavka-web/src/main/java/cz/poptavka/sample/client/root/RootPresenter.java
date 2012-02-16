@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -65,6 +66,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         GWT.log("Root module loaded");
         eventBus.initHomeWelcomeModule(null);
         eventBus.initSearchModule(view.getSearchBar());
+    }
+
+    public void onNotFound() {
+        eventBus.start();
+        view.setBody(new Label("Page not found"));
     }
 
     public void onSetHomeBodyHolderWidget(IsWidget content) {

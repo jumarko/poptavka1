@@ -70,6 +70,21 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 //    }
     // *** GET CATEGORIES
     // ***************************************************************************
+    public void onGetCategoryName(Long categoryId) {
+        categoryService.getCategory(categoryId, new AsyncCallback<CategoryDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void onSuccess(CategoryDetail result) {
+                eventBus.addToPath(result);
+            }
+        });
+    }
+
     /**
      * Get all categories. Used for display in listBox categories.
      */

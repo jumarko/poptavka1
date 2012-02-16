@@ -26,7 +26,6 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.OfferStateType;
 
 import java.math.BigDecimal;
@@ -92,18 +91,7 @@ public class AdminOffersPresenter
         Label getChangesLabel();
 
         // WIDGETS
-        AdminOfferInfoView getAdminOfferDetail();
-
         Widget getWidgetView();
-    }
-
-    public interface AdminOfferInfoInterface extends LazyView {
-
-        Widget getWidgetView();
-
-        void setOfferDetail(FullOfferDetail contact);
-
-        Button getUpdateBtn();
     }
 
     /*** INIT ***
@@ -236,7 +224,7 @@ public class AdminOffersPresenter
 
             @Override
             public void update(int index, OfferDetail object, Date value) {
-                if (!object.getFinishDate().equals(object)) {
+                if (!object.getFinishDate().equals(value)) {
                     if (!originalData.containsKey(object.getDemandId())) {
                         originalData.put(object.getId(), new OfferDetail(object));
                     }
