@@ -1,28 +1,27 @@
-package cz.poptavka.sample.client.homedemands;
+package cz.poptavka.sample.client.home.supplier;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
 /**
  * @author slavkovsky.martin
  */
-@History(type = HistoryConverterType.SIMPLE, name = "homeDemands")
-public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemandsEventBus> {
+@History(type = HistoryConverterType.SIMPLE, name = "supplierCreation")
+public class SupplierCreationHistoryConverter implements HistoryConverter<SupplierCreationEventBus> {
 
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     /**
-     * To convert token for initHomeDemandsModule method
+     * To convert token for initCreateSupplier method
      * @param searchDataHolder
      * @param location
      * @return token string like module/method?param, where param = home or user
      */
-    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String location) {
-        if (methodName.equals("initHomeDemandsModule")) {
+    public String convertToToken(String methodName, String location) {
+        if (methodName.equals("initCreateSupplierModule")) {
             return location;
         }
         return "";
@@ -37,9 +36,9 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      * @param eventBus
      */
     @Override
-    public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
-        if (methodName.equals("initHomeDemandsModule")) {
-            eventBus.initHomeDemandsModule(null, param);
+    public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
+        if (methodName.equals("initCreateSupplierModule")) {
+            eventBus.initCreateSupplierModule(param);
         }
     }
 

@@ -54,10 +54,10 @@ public interface DemandModuleEventBus extends EventBus {
     void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void goToCreateDemand(String location);
+    void initCreateDemandModule(String location);
 
     @Event(forwardToParent = true)
-    void goToCreateSupplier(String location);
+    void initCreateSupplierModule(String location);
 
     //display widget in content area
     @Event(handlers = DemandModulePresenter.class)

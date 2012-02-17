@@ -43,13 +43,13 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplier("home");
+                eventBus.initCreateSupplierModule("home");
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemand("home");
+                eventBus.initCreateDemandModule("home");
             }
         });
 

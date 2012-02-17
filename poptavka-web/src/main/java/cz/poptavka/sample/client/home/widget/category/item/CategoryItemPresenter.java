@@ -12,12 +12,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.home.HomeEventBus;
+import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 @Presenter(view = CategoryItemView.class)
 public class CategoryItemPresenter
-    extends BasePresenter<CategoryItemPresenter.CategoryItemInterface, HomeEventBus> {
+    extends BasePresenter<CategoryItemPresenter.CategoryItemInterface, RootEventBus> {
 
     public interface CategoryItemInterface  {
 
@@ -30,6 +30,7 @@ public class CategoryItemPresenter
 
     private static final Logger LOGGER = Logger.getLogger(CategoryItemPresenter.class.getName());
 
+    @Override
     public void bind() {
 
     }

@@ -43,8 +43,8 @@ public interface DemandCreationEventBus extends EventBus {
     /**
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
-    @Event(handlers = DemandCreationPresenter.class)
-    void goToCreateDemand(String location);
+    @Event(handlers = DemandCreationPresenter.class, historyConverter = DemandCreationHistoryConverter.class)
+    String initCreateDemandModule(String location);
 
     @Event(forwardToParent = true)
     void setHomeBodyHolderWidget(IsWidget body);

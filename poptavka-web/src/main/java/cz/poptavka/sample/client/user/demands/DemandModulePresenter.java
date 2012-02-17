@@ -49,6 +49,7 @@ public class DemandModulePresenter
         SimplePanel getContentPanel();
     }
 
+    @Override
     public void bind() {
         // MENU - CLIENT
         view.getCliNewDemandsButton().addClickHandler(new ClickHandler() {
@@ -72,13 +73,13 @@ public class DemandModulePresenter
         view.getCliCreateDemand().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemand("user");
+                eventBus.initCreateDemandModule("user");
             }
         });
         view.getCliCreateSupplier().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplier("user");
+                eventBus.initCreateSupplierModule("user");
             }
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {

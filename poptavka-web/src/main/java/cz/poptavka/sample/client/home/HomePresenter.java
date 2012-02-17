@@ -1,138 +1,130 @@
 package cz.poptavka.sample.client.home;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.ui.SimplePanel;
-import java.util.logging.Logger;
 
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 
 
 import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
-import cz.poptavka.sample.client.home.creation.DemandCreationPresenter;
 
 @Presenter(view = HomeView.class)
 public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, HomeEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger("HomePresenter");
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+//    private static final Logger LOGGER = Logger.getLogger("HomePresenter");
+//    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface HomeInterface extends LazyView {
 
 //        SearchModuleView getSearchView();
 //        AdvancedSearchView getAdvancedSearchView();
-        Widget getWidgetView();
-
-        void setHomeToken(String token);
-
-        void setBody(Widget content);
-
-        SimplePanel getSearchPanel();
-
-        HasClickHandlers getDemandsButton();
-
-        HasClickHandlers getSuppliersButton();
-
-        HasClickHandlers getCreateSupplierButton();
-
-        HasClickHandlers getCreateDemandButton();
-    }
-    private DemandCreationPresenter demandCreation;
-
-    public void bindView() {
-        view.setHomeToken(getTokenGenerator().atHome());
-
-        view.getDemandsButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                eventBus.initHomeDemandsModule(null, "home");
-            }
-        });
-        view.getSuppliersButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                eventBus.initHomeSuppliersModule(null, "home");
-            }
-        });
-        view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplier("home");
-            }
-        });
-        view.getCreateDemandButton().addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemand("home");
-            }
-        });
-    }
-
-    public void onStart() {
-        // for now do nothing...
-    }
-
-    public void onForward() {
-        // for now do nothing...
-    }
-
-    public void onAtHome() {
-        LOGGER.info("INIT Home Widget");
-
-        // DISPLAY SEARCH PANEL
-        eventBus.initSearchModule(view.getSearchPanel());
-
-//        onDisplayMenu();
-        // DISPLAY MENU
-        eventBus.setPublicLayout();
-        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-
-        // WELCOME MODULE
-        eventBus.initHomeWelcomeModule(null);
-        // TODO initial homepage widget compilation
-    }
-
-    public void onSetBodyWidget(Widget content) {
-        view.setBody(content);
-    }
+//        Widget getWidgetView();
 //
-//    public void onDisplayMenu() {
-//        eventBus.setPublicLayout();
-//        eventBus.setBodyHolderWidget(view.getWidgetView());
+//        void setHomeToken(String token);
+//
+//        void setBody(Widget content);
+//
+//        SimplePanel getSearchPanel();
+//
+//        HasClickHandlers getDemandsButton();
+//
+//        HasClickHandlers getSuppliersButton();
+//
+//        HasClickHandlers getCreateSupplierButton();
+//
+//        HasClickHandlers getCreateDemandButton();
+    }
+//    private DemandCreationPresenter demandCreation;
+
+    @Override
+    public void bindView() {
+//        view.setHomeToken(getTokenGenerator().atHome());
+//
+//        view.getDemandsButton().addClickHandler(new ClickHandler() {
+//
+//            public void onClick(ClickEvent event) {
+//                eventBus.initHomeDemandsModule(null, "home");
+//            }
+//        });
+//        view.getSuppliersButton().addClickHandler(new ClickHandler() {
+//
+//            public void onClick(ClickEvent event) {
+//                eventBus.initHomeSuppliersModule(null, "home");
+//            }
+//        });
+//        view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
+//
+//            public void onClick(ClickEvent event) {
+//                eventBus.goToCreateSupplier("home");
+//            }
+//        });
+//        view.getCreateDemandButton().addClickHandler(new ClickHandler() {
+//
+//            public void onClick(ClickEvent event) {
+//                eventBus.goToCreateDemand("home");
+//            }
+//        });
+    }
+
+//    public void onStart() {
+//        // for now do nothing...
 //    }
-
-    /* Business events for child modules loading */
-    public void onErrorOnLoad(Throwable reason) {
-        // TODO praso - display error message if child modules doesn't load successfully
-//view.displayErrorMessage( reason.getMessage() );
-    }
-
-    public void onBeforeLoad() {
-        // TODO praso - display wait loop
-//view.setWaitVisible( true );
-    }
-
-    public void onAfterLoad() {
-        // TODO praso -  hide wait loop
-//view.setWaitVisible( false );
-    }
-
-    /******** SEARCH PANEL ***********/
-    public void onShowHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx) {
-//        if (view.getAdvancedSearchView().isVisible()) {
-//            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0); //, 0, 0);
-//            view.getAdvancedSearchView().setVisible(false);
-//        } else {
-//            view.getAdvancedSearchView().setBaseInfo(content, whereIdx); //, catIdx, locIdx);
-//            view.getAdvancedSearchView().setVisible(true);
-//        }
-    }
+//
+//    public void onForward() {
+//        // for now do nothing...
+//    }
+//
+//    public void onAtHome() {
+//        LOGGER.info("INIT Home Widget");
+//
+//        // DISPLAY SEARCH PANEL
+//        eventBus.initSearchModule(view.getSearchPanel());
+//
+////        onDisplayMenu();
+//        // DISPLAY MENU
+//        eventBus.setPublicLayout();
+//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+//
+//        // WELCOME MODULE
+//        eventBus.initHomeWelcomeModule(null);
+//        // TODO initial homepage widget compilation
+//    }
+//
+//    public void onSetBodyWidget(Widget content) {
+//        view.setBody(content);
+//    }
+////
+////    public void onDisplayMenu() {
+////        eventBus.setPublicLayout();
+////        eventBus.setBodyHolderWidget(view.getWidgetView());
+////    }
+//
+//    /* Business events for child modules loading */
+//    public void onErrorOnLoad(Throwable reason) {
+//        // TODO praso - display error message if child modules doesn't load successfully
+////view.displayErrorMessage( reason.getMessage() );
+//    }
+//
+//    public void onBeforeLoad() {
+//        // TODO praso - display wait loop
+////view.setWaitVisible( true );
+//    }
+//
+//    public void onAfterLoad() {
+//        // TODO praso -  hide wait loop
+////view.setWaitVisible( false );
+//    }
+//
+//    /******** SEARCH PANEL ***********/
+//    public void onShowHideAdvancedSearchPanel(String content, int whereIdx, int catIdx, int locIdx) {
+////        if (view.getAdvancedSearchView().isVisible()) {
+////            view.getAdvancedSearchView().setBaseInfo(MSGS.searchContent(), 0); //, 0, 0);
+////            view.getAdvancedSearchView().setVisible(false);
+////        } else {
+////            view.getAdvancedSearchView().setBaseInfo(content, whereIdx); //, catIdx, locIdx);
+////            view.getAdvancedSearchView().setVisible(true);
+////        }
+//    }
 
     /**
      * Fills category listBox with given list of localities.

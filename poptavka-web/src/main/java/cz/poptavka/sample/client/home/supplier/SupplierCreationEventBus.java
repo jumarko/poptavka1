@@ -43,8 +43,8 @@ public interface SupplierCreationEventBus extends EventBus {
     /**
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
-    @Event(handlers = SupplierCreationPresenter.class)
-    void goToCreateSupplier(String location);
+    @Event(handlers = SupplierCreationPresenter.class, historyConverter = SupplierCreationHistoryConverter.class)
+    String initCreateSupplierModule(String location);
 
     @Event(forwardToParent = true)
     void setHomeBodyHolderWidget(IsWidget body);

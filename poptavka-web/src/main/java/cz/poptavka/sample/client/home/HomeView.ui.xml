@@ -6,7 +6,7 @@
 	<ui:with field='res'
 		type='cz.poptavka.sample.client.resources.StyleResource' />
 
-	<ui:style>
+<!--	<ui:style>
 		.home-container {
 			width: 1075px;
 			margin: auto;
@@ -31,13 +31,13 @@
 			background: url(/images/content_bg.gif) no-repeat top left #ffffff;
 			padding: 2px 18px 0;
 		}
-	</ui:style>
+	</ui:style>-->
 
 	<g:HTMLPanel ui:field="container" styleName='{style.home-container}'>
-		<g:DockLayoutPanel ui:field="homeLayoutHolder" unit="PX"
+<!--		<g:DockLayoutPanel ui:field="homeLayoutHolder" unit="PX"
 			styleName='{style.home-layout-holder}'>
 			<g:north size="38">
-				<!-- menu -->
+				 menu 
 				<g:HorizontalPanel>
 					<g:HTMLPanel>
 						<div ui:field="homeMenu">
@@ -68,20 +68,16 @@
 									</g:Button>
 								</li>
 							</ul>
-							<!-- <t:SearchView ui:field="searchView"/> -->
-							<!-- <t:SearchView ui:field="searchView" styleName='{res.layout.searchView}' 
-								/> -->
-							<!-- <t:AdvancedSearchView ui:field="advancedSearchView" /> -->
 						</div>
 					</g:HTMLPanel>
 				</g:HorizontalPanel>
-				<!-- menu END -->
+				 menu END 
 			</g:north>
 
 			<g:center>
 				<g:SimplePanel ui:field="contentHolder" styleName='{style.content-holder}' />
 			</g:center>
-		</g:DockLayoutPanel>
+		</g:DockLayoutPanel>-->
 	</g:HTMLPanel>
 
 </ui:UiBinder>

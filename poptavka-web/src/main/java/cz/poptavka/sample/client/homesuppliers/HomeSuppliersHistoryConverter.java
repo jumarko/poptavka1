@@ -8,6 +8,9 @@ import com.mvp4g.client.history.HistoryConverter;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
+/**
+ * @author slavkovsky.martin
+ */
 @History(type = HistoryConverterType.SIMPLE, name = "homeSuppliers")
 public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppliersEventBus> {
 
@@ -17,7 +20,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      * To convert token for initHomeSuppliersModule method
      * @param searchDataHolder
      * @param location
-     * @return token string like homeRoot or userRoot
+     * @return token string like module/method?param, where param = homeRoot or userRoot
      */
     public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String location) {
         if (methodName.equals("initHomeSuppliersModule")) {
@@ -41,24 +44,22 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     }
 
     /**
+     * Called when browser action <b>back</b> or <b>forward</b> is evocated.
+     * Or by clicking on <b>hyperlink</b> with set token.
      *
      * @param methodName - name of the called method
-     * @param param
+     * @param param - string behind '?' in url (module/method?param). Url generates convertToToken method.
      * @param eventBus
      */
+
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
-        eventBus.setHistoryStoredForNextOne(false);
-
         if (methodName.equals("initHomeSuppliersModule")) {
-            // ktore spravne??
             eventBus.initHomeSuppliersModule(null, param.replace("Root", ""));
-//            eventBus.rootWithSearchDataHolder(); //goToHomeSuppliers(null);
         }
         if (methodName.equals("updatePath")) {
             eventBus.loadingShow(MSGS.loading());
             param = param.replace("categoryId=", "");
-//                eventBus.setCategoryID(Long.valueOf(param));
             eventBus.updatePath(new CategoryDetail(Long.valueOf(param), null));
             eventBus.getSubCategories(Long.valueOf(param));
         }

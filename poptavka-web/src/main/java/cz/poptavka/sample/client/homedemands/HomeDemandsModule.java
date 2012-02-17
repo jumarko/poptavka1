@@ -10,13 +10,13 @@
 package cz.poptavka.sample.client.homedemands;
 
 import com.mvp4g.client.Mvp4gModule;
+import com.mvp4g.client.annotation.module.HistoryName;
 
 /**
  *
- * TODO praso - Add history name.
  * @author praso
  */
-//@HistoryName("homeDemands")
+@HistoryName("homeDemands")
 public interface HomeDemandsModule extends Mvp4gModule {
 
 }

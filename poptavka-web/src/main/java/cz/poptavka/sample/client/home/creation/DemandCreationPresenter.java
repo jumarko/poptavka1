@@ -100,7 +100,7 @@ public class DemandCreationPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onGoToCreateDemand(String location) {
+    public void onInitCreateDemandModule(String location) {
         this.onAtCreateDemand(location);
     }
 

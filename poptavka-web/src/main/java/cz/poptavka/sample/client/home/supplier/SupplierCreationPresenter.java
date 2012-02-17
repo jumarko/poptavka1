@@ -113,7 +113,7 @@ public class SupplierCreationPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onGoToCreateSupplier(String location) {
+    public void onInitCreateSupplierModule(String location) {
         this.onAtRegisterSupplier(location);
     }
 

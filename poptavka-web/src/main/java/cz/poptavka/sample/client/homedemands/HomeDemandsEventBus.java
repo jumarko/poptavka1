@@ -23,8 +23,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.Map;
 
 /**
- * TODO praso - Add history management.
- * @author praso
+ * @author Martin Slavkovsky
  */
 @Events(startView = HomeDemandsView.class, module = HomeDemandsModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -51,8 +50,8 @@ public interface HomeDemandsEventBus extends EventBus {
     /**
      * The only entry point to this module due to code-splitting and exclusive fragment.
      */
-    @Event(handlers = HomeDemandsPresenter.class)
-    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    @Event(handlers = HomeDemandsPresenter.class, historyConverter = HomeDemandsHistoryConverter.class)
+    String initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
     void setHomeBodyHolderWidget(IsWidget body);

@@ -18,6 +18,7 @@ import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.creation.DemandCreationModule;
 import cz.poptavka.sample.client.home.supplier.SupplierCreationModule;
+import cz.poptavka.sample.client.home.widget.category.CategoryDisplayPresenter;
 import cz.poptavka.sample.client.homeWelcome.HomeWelcomeModule;
 import cz.poptavka.sample.client.homedemands.HomeDemandsModule;
 import cz.poptavka.sample.client.homesuppliers.HomeSuppliersModule;
@@ -97,7 +98,7 @@ public interface RootEventBus extends EventBus {
     void setUserBodyHolderWidget(IsWidget body);
 
     @Event(handlers = HeaderPresenter.class, historyConverter = RootHistoryConverter.class)
-    void atHome();
+    String atHome();
 
     @Event(handlers = {HeaderPresenter.class, RootPresenter.class })
     void atAccount();
@@ -175,8 +176,18 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = UserMenuPresenter.class)
     void setUserMenu();
 
-    @Event(handlers = RootPresenter.class, historyConverter = RootHistoryConverter.class)
+    @Event(handlers = RootPresenter.class)//, historyConverter = RootHistoryConverter.class)
     void displayMenu();
+
+    /** Home category display widget and related call. */
+    @Event(handlers = CategoryDisplayPresenter.class)
+    void initCategoryDisplay(SimplePanel holderWidget);
+
+    @Event(handlers = CategoryDisplayPresenter.class)
+    void displayRootCategories(ArrayList<CategoryDetail> list);
+
+    @Event(handlers = CategoryDisplayPresenter.class)
+    void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
     /** Menu control section */
     // HOME
@@ -190,10 +201,10 @@ public interface RootEventBus extends EventBus {
     void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = SupplierCreationModule.class)
-    void goToCreateSupplier(String location);
+    void initCreateSupplierModule(String location);
 
     @Event(modulesToLoad = DemandCreationModule.class)
-    void goToCreateDemand(String location);
+    void initCreateDemandModule(String location);
 
     // USER
 //    @Event(modulesToLoad = UserModule.class)

@@ -9,26 +9,26 @@ import com.mvp4g.client.history.HistoryConverter;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 
+/**
+ * @author slavkovsky.martin
+ */
 @History(type = HistoryConverterType.SIMPLE, name = "root")
 public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
 
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+
     public String convertToToken(String tokenName) {
-        return "";
+        return "Home";
     }
 
     public String convertToToken(String historyName, CategoryDetail category) {
         return Long.toString(category.getId());
     }
 
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
-
     @Override
     public void convertFromToken(String historyName, String param,
             RootEventBus eventBus) {
         Window.alert(historyName);
-        eventBus.setHistoryStoredForNextOne(false);
-        eventBus.displayMenu();
 
         if (historyName.contains("user")) {
             eventBus.atAccount();
@@ -37,13 +37,10 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
         if (historyName.equals("atHome")) {
             eventBus.atHome();
         }
-        if (historyName.equals("addToPath")) {
-            eventBus.loadingShow(MSGS.loading());
-            if (param.equals("root")) {
-                eventBus.initHomeSuppliersModule(null, "home"); //TODO ako dorobit obe moznosti
-            }
-        }
 
+        if (historyName.equals("initHomeSuppliersModule")) {
+            eventBus.initHomeSuppliersModule(null, param.replace("Root", ""));
+        }
     }
 
     @Override
