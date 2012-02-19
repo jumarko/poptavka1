@@ -33,7 +33,14 @@
 
      <NOTIFICATION  ID="11" DESCRIPTION="Notifikácia o aktualizáciach a novinkách systému"
                 NAME="Nová správa od systému" NOTIFICATIONTYPE="CLIENT" CODE="new.info.client" />
+    <NOTIFICATION  ID="12" DESCRIPTION="Notifikácia o novej správe pre klienta od operátora systému "
+                   NAME="Nová správa od operátora" NOTIFICATIONTYPE="CLIENT" CODE="new.operator.client" />
 
+
+    <!--see real DB for more information on SERVICEs-->
+    <SERVICE ID="1" CODE="validity.1month" VALID="1" />
+    <SERVICE ID="2" CODE="validity.3month" VALID="1" />
+    <SERVICE ID="3" CODE="validity.1year" VALID="1" />
     <SERVICE ID="4" CODE="classic" VALID="1" />
 
 

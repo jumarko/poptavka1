@@ -1,13 +1,19 @@
 package cz.poptavka.sample.service.user;
 
+import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import cz.poptavka.sample.dao.user.SupplierDao;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.register.Registers;
+import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.demand.DemandService;
+import cz.poptavka.sample.service.register.RegisterService;
+import cz.poptavka.sample.util.notification.NotificationUtils;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +26,20 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, SupplierDao> implements SupplierService {
 
+    private final NotificationUtils notificationUtils;
 
-    public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao) {
-        super(generalService);
+    public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
+            RegisterService registerService) {
+        super(generalService, registerService);
+        Preconditions.checkNotNull(supplierDao);
         setDao(supplierDao);
+        this.notificationUtils = new NotificationUtils(registerService);
+    }
+
+    @Override
+    public Supplier create(Supplier businessUserRole) {
+        createDefaultNotifications(businessUserRole);
+        return super.create(businessUserRole);
     }
 
 
@@ -184,6 +200,28 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Transactional(readOnly = true)
     public long getSuppliersCountWithoutChildren(Category category) {
         return this.getDao().getSuppliersCountWithoutChildren(category);
+    }
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    private void createDefaultNotifications(Supplier businessUserRole) {
+        final List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
+        notificationItems.add(
+                this.notificationUtils.createInstantNotificationItem(
+                        Registers.Notification.SUPPLIER_NEW_DEMAND, true));
+        notificationItems.add(
+                this.notificationUtils.createInstantNotificationItem(
+                        Registers.Notification.SUPPLIER_NEW_MESSAGE, true));
+        notificationItems.add(
+                this.notificationUtils.createInstantNotificationItem(
+                        Registers.Notification.SUPPLIER_NEW_OPERATOR, true));
+        notificationItems.add(
+                this.notificationUtils.createInstantNotificationItem(
+                        Registers.Notification.SUPPLIER_NEW_INFO, false));
+        notificationItems.add(
+                this.notificationUtils.createInstantNotificationItem(
+                        Registers.Notification.SUPPLIER_OFFER_STATUS_CHANGED, false));
+
+        businessUserRole.getBusinessUser().getSettings().setNotificationItems(notificationItems);
     }
 
 }

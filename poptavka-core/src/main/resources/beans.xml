@@ -57,6 +57,7 @@
 
     <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">
         <constructor-arg ref="generalService" />
+        <constructor-arg ref="registerService" />
         <property name="dao" ref="clientDao"/>
     </bean>
 
@@ -98,6 +99,7 @@
     <bean id="supplierService" class="cz.poptavka.sample.service.user.SupplierServiceImpl">
         <constructor-arg ref="generalService" />
         <constructor-arg ref="supplierDao" />
+        <constructor-arg ref="registerService" />
     </bean>
 
     <bean id="messageService" class="cz.poptavka.sample.service.message.MessageServiceImpl">
@@ -120,6 +122,8 @@
         <constructor-arg ref="demandConverter" />
         <constructor-arg ref="demandService" />
     </bean>
+    
+    <bean id="notificationItemService" class="cz.poptavka.sample.service.message.settings.NotificationItemServiceImpl" />
 
     <!-- Jobs -->
     <bean id="additionalInfoFiller" class="cz.poptavka.sample.service.jobs.AdditionalInfoFiller">

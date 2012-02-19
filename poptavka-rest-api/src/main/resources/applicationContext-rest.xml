@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <import resource="classpath:applicationContext.xml" />
+    <context:component-scan base-package="cz.poptavka.sample.rest" />
+    <!--support Jackson-->
+    <mvc:annotation-driven />
+
+    <!--common-->
+    <bean id="businessUserSerializer" class="cz.poptavka.sample.rest.common.serializer.BusinessUserSerializer" />
+    <bean id="businessUserDeserializer" class="cz.poptavka.sample.rest.common.serializer.BusinessUserDeserializer" />
+
+    <!--category-->
+    <bean id="categorySerializer" class="cz.poptavka.sample.rest.category.CategorySerializer" />
+    <bean class="cz.poptavka.sample.rest.category.CategoryResource">
+        <constructor-arg ref="categoryService" />
+        <constructor-arg ref="categorySerializer" />
+    </bean>
+
+    <!--locality-->
+    <bean id="localitySerializer" class="cz.poptavka.sample.rest.locality.LocalitySerializer" />
+    <bean class="cz.poptavka.sample.rest.locality.LocalityResource">
+        <constructor-arg ref="localityService" />
+        <constructor-arg ref="localitySerializer" />
+    </bean>
+
+    <!--demand-->
+    <bean id="demandSerializer" class="cz.poptavka.sample.rest.demand.DemandSerializer" />
+    <bean id="demandDeserializer" class="cz.poptavka.sample.rest.demand.DemandDeserializer" />
+    <bean class="cz.poptavka.sample.rest.demand.DemandResource">
+        <constructor-arg ref="demandService" />
+        <constructor-arg ref="demandSerializer" />
+        <constructor-arg ref="demandDeserializer" />
+    </bean>
+
+    <!--supplier-->
+    <bean id="supplierSerializer" class="cz.poptavka.sample.rest.supplier.SupplierSerializer">
+        <constructor-arg ref="businessUserSerializer" />
+    </bean>
+    <bean id="supplierDeserializer" class="cz.poptavka.sample.rest.supplier.SupplierDeserializer">
+        <constructor-arg ref="businessUserDeserializer" />
+    </bean>
+    <bean class="cz.poptavka.sample.rest.supplier.SupplierResource">
+        <constructor-arg ref="supplierService" />
+        <constructor-arg ref="supplierSerializer" />
+        <constructor-arg ref="supplierDeserializer" />
+    </bean>
+    
+</beans>
+

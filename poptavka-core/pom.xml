@@ -4,13 +4,12 @@
     <groupId>cz.poptavka</groupId>
     <artifactId>poptavka-core</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
     <name>poptavka-core</name>
     <url>http://maven.apache.org</url>
     <parent>
         <groupId>cz.poptavka</groupId>
         <artifactId>poptavka</artifactId>
-        <version>0.1-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <dependencies>
 

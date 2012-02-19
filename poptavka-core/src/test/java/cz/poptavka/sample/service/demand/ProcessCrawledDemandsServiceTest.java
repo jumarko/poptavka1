@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:cz/poptavka/sample/domain/address/LocalityDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/CategoryDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/register/RegisterDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")

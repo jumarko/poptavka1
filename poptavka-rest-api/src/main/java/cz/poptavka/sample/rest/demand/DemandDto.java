@@ -1,17 +1,19 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package cz.poptavka.sample.rest.demand.dto;
+package cz.poptavka.sample.rest.demand;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
-public class DemandDto extends AbstractDto {
+public class DemandDto {
     private String title;
     private String description;
     private BigDecimal price;
     private Date createdDate;
     private Date endDate;
+    private Map<String, String> links;
 
 
     public String getTitle() {
@@ -52,5 +54,26 @@ public class DemandDto extends AbstractDto {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Map<String, String> getLinks() {
+        return links;
+    }
+
+    public void setLinks(Map<String, String> links) {
+        this.links = links;
+    }
+
+
+    @Override
+    public String toString() {
+        return "DemandDto{"
+                + "title='" + title + '\''
+                + ", description='" + description + '\''
+                + ", price=" + price
+                + ", createdDate=" + createdDate
+                + ", endDate=" + endDate
+                + ", links=" + links
+                + '}';
     }
 }

@@ -5,11 +5,12 @@
     <parent>
         <artifactId>poptavka</artifactId>
         <groupId>cz.poptavka</groupId>
-        <version>0.1-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>cz.poptavka</groupId>
     <artifactId>poptavka-rest-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
 
     <dependencies>
@@ -69,8 +70,7 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
         </dependency>
-
-
     </dependencies>
+
 
 </project>

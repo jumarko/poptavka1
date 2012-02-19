@@ -19,27 +19,14 @@ public class UserMessageServiceDbTest extends RealDbTest {
     @Autowired
     private GeneralService generalService;
 
-
-    @Ignore // DO NOT update concrete User message in live DB every time this test is run
-    // - that record even might not be exist!
     @Test
+    @Ignore // DO NOT update concrete User message in live DB every time this test is run
+            // - that record even might not be exist!
     @Transactional(propagation = Propagation.REQUIRED)
     public void testSetMessageReadStatus() {
         final UserMessage unreadUserMessage = this.userMessageService.getById(602L);
         unreadUserMessage.setRead(false);
         this.userMessageService.update(unreadUserMessage);
-        System.out.println(unreadUserMessage);
-    }
-
-
-    @Ignore // DO NOT update concrete User message in live DB every time this test is run
-    // - that record even might not be exist!
-    @Test
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void testSetMessageReadStatusWithGeneralService() {
-        final UserMessage unreadUserMessage = this.generalService.find(UserMessage.class, 602L);
-        unreadUserMessage.setRead(true);
-        this.generalService.save(unreadUserMessage);
         System.out.println(unreadUserMessage);
     }
 

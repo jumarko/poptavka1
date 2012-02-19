@@ -113,9 +113,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         assignBusinessRoleToNewSupplier(newSupplier);
         /** registration process **/
         // TODO - verification will be set after activation link has been received
-        newSupplier.setVerification(Verification.UNVERIFIED);
 
-        final Supplier supplierFromDB = createNewSupplier(newSupplier);
+        final Supplier supplierFromDB = supplierService.create(newSupplier);
 
         // TODO jumar - WTF ? why new supplier is also a new client?!?
         /** Brand new supplier has automatically the role of a client as well. **/
@@ -124,7 +123,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         final Client client = new Client();
         client.setBusinessUser(supplierFromDB.getBusinessUser());
         client.getBusinessUser().getBusinessUserRoles().add(client);
-        client.setVerification(Verification.UNVERIFIED);
 
         clientService.create(client);
 
@@ -133,9 +131,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
-    private Supplier createNewSupplier(Supplier newSupplier) {
-        return supplierService.create(newSupplier);
-    }
 
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
@@ -190,13 +185,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
             userService.setUser(newSupplier.getBusinessUser());
             us.add(userService);
         }
-        /** Set service for new client as well **/
-        UserService userServiceClient = new UserService();
-        userServiceClient.setUser(newSupplier.getBusinessUser());
-        userServiceClient.setStatus(Status.INACTIVE);
-        // TODO nacitanie hodnot z ciselnikov
-        userServiceClient.setService(this.generalService.find(Service.class, 4L));
-        us.add(userServiceClient);
 
         newSupplier.getBusinessUser().setUserServices(us);
     }

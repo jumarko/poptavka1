@@ -2,10 +2,17 @@ package cz.poptavka.sample.service.user;
 
 import com.google.common.base.Preconditions;
 import cz.poptavka.sample.dao.user.BusinessUserRoleDao;
+import cz.poptavka.sample.domain.common.Status;
+import cz.poptavka.sample.domain.product.Service;
+import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.register.Registers;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
+import cz.poptavka.sample.service.register.RegisterService;
+import java.util.Arrays;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,10 +38,14 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         extends GenericServiceImpl<BUR, BURDao>
         implements BusinessUserRoleService<BUR, BURDao> {
 
-    private GeneralService generalService;
+    private final GeneralService generalService;
+    private final RegisterService registerService;
 
-    public BusinessUserRoleServiceImpl(GeneralService generalService) {
+    public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService) {
+        Preconditions.checkNotNull(generalService);
+        Preconditions.checkNotNull(registerService);
         this.generalService = generalService;
+        this.registerService = registerService;
     }
 
     @Override
@@ -58,7 +69,24 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     @Override
     @Transactional
     public BUR create(BUR businessUserRole) {
-        Preconditions.checkArgument(businessUserRole != null, "Null client cannot be created.");
+        Preconditions.checkNotNull(businessUserRole, "Null client cannot be created.");
+
+        // set common stuff when creating new business user
+        final UserService classicClient = new UserService();
+        classicClient.setUser(businessUserRole.getBusinessUser());
+        classicClient.setService(this.registerService.getValue(Registers.Service.CLASSIC, Service.class));
+        classicClient.setStatus(Status.INACTIVE);
+        if (businessUserRole.getBusinessUser().getUserServices() == null) {
+            // no services have been assigned to the business user, it is safe to set completely new list
+            businessUserRole.getBusinessUser().setUserServices(Arrays.asList(classicClient));
+        } else {
+            // some services can be assigned to the user, instead of set new list of services, only add classic client
+            businessUserRole.getBusinessUser().getUserServices().add(classicClient);
+        }
+
+        businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
+        businessUserRole.setVerification(Verification.UNVERIFIED);
+
         createBusinessUserIfNotExist(businessUserRole);
         return super.create(businessUserRole);
     }
@@ -83,6 +111,15 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
                 return object.getClass().equals(userRoleClass);
             }
         });
+    }
+
+
+    protected GeneralService getGeneralService() {
+        return generalService;
+    }
+
+    protected RegisterService getRegisterService() {
+        return registerService;
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------

@@ -25,13 +25,13 @@ public class RegisterServiceIntegrationTest extends DBUnitBaseTest {
     public void testGetAllValuesForRegister() {
         final List<Notification> allNotifications = this.registerService.getAllValues(Notification.class);
         Assert.assertNotNull(allNotifications);
-        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(11));
+        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(12));
 
     }
 
     @Test
     public void testGetRegisterValueByCode() {
-        final Notification newMessageClient = this.registerService.getValue(Registers.Notification.NEW_MESSAGE_CLIENT,
+        final Notification newMessageClient = this.registerService.getValue(Registers.Notification.CLIENT_NEW_MESSAGE,
                 Notification.class);
         checkRegister(newMessageClient, 10L, "new.message.client");
 

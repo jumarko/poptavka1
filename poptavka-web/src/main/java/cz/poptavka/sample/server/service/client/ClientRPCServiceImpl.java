@@ -8,13 +8,6 @@ import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.common.Status;
-import cz.poptavka.sample.domain.product.Service;
-import cz.poptavka.sample.domain.product.UserService;
-import cz.poptavka.sample.domain.register.Registers;
-import cz.poptavka.sample.domain.settings.Notification;
-import cz.poptavka.sample.domain.settings.NotificationItem;
-import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
@@ -118,32 +111,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         // TODO Vojto - skontrolovat ci je password sifrovany. ako sa uklada do DB?
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
-        /** Set service for new client **/
-        UserService userService = new UserService();
-        userService.setUser(newClient.getBusinessUser());
-        userService.setStatus(Status.INACTIVE);
-        // TODO ivlcek - nastavit datum vytvorenia UserService aby sme mohli
-        // objednannu service zrusit ak client neaktivuje svoj ucet do 14 dni
-        // budeme to ziskavat cez AUD entitu alebo novy atribut. AUD entitu pre
-        // UserService nemame a je urcite nutna
-        // TODO ivlcek - create constants for ciselnik Services or use Constants class
-        userService.setService(this.registerService.getValue(Registers.Service.CLASSIC, Service.class));
-        List<UserService> userServices = new ArrayList<UserService>();
-        userServices.add(userService);
-        newClient.getBusinessUser().setUserServices(userServices);
-        /** Notifications for new client. **/
-        List<NotificationItem> notificationItems = new ArrayList<NotificationItem>();
-        NotificationItem notificationItem = new NotificationItem();
-        // TODO ivlcek - create constant for Notifications in DB
-        notificationItem.setNotification(this.registerService.getValue(Registers.Notification.NEW_MESSAGE_CLIENT,
-                Notification.class));
-        notificationItem.setEnabled(true);
-        notificationItem.setPeriod(Period.INSTANTLY);
-        notificationItems.add(notificationItem);
-        newClient.getBusinessUser().getSettings().setNotificationItems(notificationItems);
-        newClient.getBusinessUser().getBusinessUserRoles().add(newClient);
-        newClient.setVerification(Verification.UNVERIFIED);
-        /** TODO ivlcek - email activation. **/
         Client newClientFromDB = clientService.create(newClient);
         return this.toUserDetail(newClientFromDB.getBusinessUser().getId(),
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());

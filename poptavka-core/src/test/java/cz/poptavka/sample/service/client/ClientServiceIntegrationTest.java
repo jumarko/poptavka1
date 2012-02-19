@@ -1,12 +1,21 @@
 package cz.poptavka.sample.service.client;
 
+import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
+import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.register.Registers;
+import cz.poptavka.sample.domain.settings.Notification;
+import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
+import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
+import cz.poptavka.sample.util.user.UserTestUtils;
+import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +27,20 @@ import java.util.List;
  * @author Juraj Martinka
  *         Date: 20.12.10
  */
-@DataSet(path = "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml", dtd = "classpath:test.dtd")
+@DataSet(path = {
+        "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/register/RegisterDataSet.xml" },
+         dtd = "classpath:test.dtd")
 public class ClientServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private GeneralService generalService;
+
+    @Autowired
+    private RegisterService registerService;
 
 
     @Test
@@ -115,13 +133,47 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         newClient.getBusinessUser().setSettings(new Settings());
         this.clientService.create(newClient);
 
-        final List<Client> persistedClient = this.clientService.searchByCriteria(
+        final List<Client> persistedClients = this.clientService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
                         .withName("New")
                         .withSurName("Client")
                         .build());
-        Assert.assertNotNull(persistedClient);
-        Assert.assertNotNull(persistedClient.get(0).getId());
-        Assert.assertEquals("new@client.com", persistedClient.get(0).getBusinessUser().getEmail());
+        Assert.assertNotNull(persistedClients);
+        final Client createdClient = persistedClients.get(0);
+        Assert.assertNotNull(createdClient.getId());
+        Assert.assertEquals("new@client.com", createdClient.getBusinessUser().getEmail());
+
+        // check BusinessUserRole-s
+        Assert.assertFalse(createdClient.getBusinessUser().getBusinessUserRoles().isEmpty());
+        Assert.assertThat(createdClient.getBusinessUser().getBusinessUserRoles().get(0).getId(),
+                is(createdClient.getId()));
+
+        // check if new client has automatically assigned service "classic client" with status unverified
+        final Search userServiceSearch = new Search(UserService.class);
+        userServiceSearch.addFilterEqual("user", createdClient.getBusinessUser());
+        final List<UserService> serviceAssignedToClient = this.generalService.search(userServiceSearch);
+        Assert.assertNotNull(serviceAssignedToClient.get(0));
+        Assert.assertThat(serviceAssignedToClient.get(0).getUser().getEmail(), is("new@client.com"));
+        Assert.assertThat(serviceAssignedToClient.get(0).getService().getCode(), is(Registers.Service.CLASSIC));
+
+        // check if new client has also all client notifications set to the sensible values
+        Assert.assertNotNull(createdClient.getBusinessUser().getSettings());
+        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.CLIENT_NEW_MESSAGE, Notification.class),
+                true, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.CLIENT_NEW_OPERATOR, Notification.class),
+                true, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.CLIENT_NEW_INFO, Notification.class),
+                false, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.CLIENT_NEW_OFFER, Notification.class),
+                false, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.CLIENT_DEMAND_STATUS_CHANGED, Notification.class),
+                false, Period.INSTANTLY);
     }
+
+
 }

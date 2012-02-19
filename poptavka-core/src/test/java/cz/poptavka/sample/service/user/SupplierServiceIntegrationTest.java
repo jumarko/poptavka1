@@ -1,15 +1,24 @@
 package cz.poptavka.sample.service.user;
 
+import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.demand.Category;
+import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.domain.register.Registers;
+import cz.poptavka.sample.domain.settings.Notification;
+import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
+import cz.poptavka.sample.service.register.RegisterService;
+import cz.poptavka.sample.util.user.UserTestUtils;
+import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +39,8 @@ import java.util.Set;
         "classpath:cz/poptavka/sample/domain/demand/RatingDataSet.xml",
         "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml",
         "classpath:cz/poptavka/sample/domain/demand/DemandDataSet.xml",
-        "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml" },
+        "classpath:cz/poptavka/sample/domain/user/SupplierDataSet.xml",
+        "classpath:cz/poptavka/sample/domain/register/RegisterDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
 
@@ -42,6 +52,12 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private GeneralService generalService;
+
+    @Autowired
+    private RegisterService registerService;
 
 
     @Test
@@ -179,14 +195,46 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
         newSupplier.getBusinessUser().setSettings(new Settings());
         this.supplierService.create(newSupplier);
 
-        final List<Supplier> persistedSupplier = this.supplierService.searchByCriteria(
+        final List<Supplier> persistedSuppliers = this.supplierService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria()
                         .withName("New")
                         .withSurName("Supplier")
                         .build());
-        Assert.assertNotNull(persistedSupplier);
-        Assert.assertNotNull(persistedSupplier.get(0).getId());
-        Assert.assertEquals("new@supplier.com", persistedSupplier.get(0).getBusinessUser().getEmail());
+        Assert.assertNotNull(persistedSuppliers);
+        final Supplier createdSupplier = persistedSuppliers.get(0);
+        Assert.assertNotNull(createdSupplier.getId());
+        Assert.assertEquals("new@supplier.com", createdSupplier.getBusinessUser().getEmail());
+
+        // check BusinessUserRole-s
+        Assert.assertFalse(createdSupplier.getBusinessUser().getBusinessUserRoles().isEmpty());
+        Assert.assertThat(createdSupplier.getBusinessUser().getBusinessUserRoles().get(0).getId(),
+                is(createdSupplier.getId()));
+
+
+        final Search userServiceSearch = new Search(UserService.class);
+        userServiceSearch.addFilterEqual("user", createdSupplier.getBusinessUser());
+        final List<UserService> serviceAssignedToClient = this.generalService.search(userServiceSearch);
+        Assert.assertNotNull(serviceAssignedToClient.get(0));
+        Assert.assertThat(serviceAssignedToClient.get(0).getUser().getEmail(), is("new@supplier.com"));
+        Assert.assertThat(serviceAssignedToClient.get(0).getService().getCode(), is(Registers.Service.CLASSIC));
+
+        // check if new supplier has also all supplier notifications set to the sensible values
+        Assert.assertNotNull(createdSupplier.getBusinessUser().getSettings());
+        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_DEMAND, Notification.class),
+                true, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_MESSAGE, Notification.class),
+                true, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_OPERATOR, Notification.class),
+                true, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.SUPPLIER_NEW_INFO, Notification.class),
+                false, Period.INSTANTLY);
+        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.SUPPLIER_OFFER_STATUS_CHANGED, Notification.class),
+                false, Period.INSTANTLY);
     }
 
 
