@@ -97,15 +97,15 @@ public class MessagesModulePresenter
         this.filter = filter;
 
         //Need for search module. To have one entry point.
-        if (loadWidget.equals("composeNew")) {
+        if (loadWidget.equalsIgnoreCase("composeNew")) {
             eventBus.initComposeNew();
-        } else if (loadWidget.equals("composeReply")) {
+        } else if (loadWidget.equalsIgnoreCase("composeReply")) {
             Window.alert("I shouldn't be here. do I?");
-        } else if (loadWidget.equals("sent")) {
+        } else if (loadWidget.equalsIgnoreCase("sent")) {
             eventBus.initSent(filter);
-        } else if (loadWidget.equals("trash")) {
+        } else if (loadWidget.equalsIgnoreCase("trash")) {
             eventBus.initTrash(filter);
-        } else if (loadWidget.equals("draft")) {
+        } else if (loadWidget.equalsIgnoreCase("draft")) {
             eventBus.initDraft(filter);
         } else {
             eventBus.initInbox(filter);

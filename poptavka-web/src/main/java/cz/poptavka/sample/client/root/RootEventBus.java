@@ -216,7 +216,7 @@ public interface RootEventBus extends EventBus {
 //    @Event(modulesToLoad = UserModule.class)
 //    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
     @Event(modulesToLoad = DemandModule.class)
-    void initDemandModule();
+    void initDemandModule(SearchModuleDataHolder filter, String loadWidget);
 
     /**
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid

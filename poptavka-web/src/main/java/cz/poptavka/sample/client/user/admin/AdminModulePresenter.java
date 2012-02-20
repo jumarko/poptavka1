@@ -163,7 +163,7 @@ public class AdminModulePresenter
         eventBus.setHomeBodyHolderWidget(view.getWidgetView());
 
         Storage.hideLoading();
-//
+
         if (loadWidget.equals("initAccessRoles")) {
             eventBus.initAccessRoles(filter);
         } else if (loadWidget.equals("initClients")) {
@@ -188,7 +188,7 @@ public class AdminModulePresenter
             eventBus.initProblems(filter);
         } else if (loadWidget.equals("initSuppliers")) {
             eventBus.initSuppliers(filter);
-        } else {
+        } else { //welcome
             view.setContent(new AdminModuleWelcomeView());
         }
     }

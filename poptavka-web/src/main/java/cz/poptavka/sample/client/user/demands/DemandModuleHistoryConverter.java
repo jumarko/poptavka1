@@ -1,52 +1,34 @@
 package cz.poptavka.sample.client.user.demands;
 
-import com.google.gwt.user.client.Window;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
-@History(type = HistoryConverterType.DEFAULT, name = "demands")
+@History(type = HistoryConverterType.SIMPLE, name = "demands")
 public class DemandModuleHistoryConverter implements HistoryConverter<DemandModuleEventBus> {
 
-    public String onInitDemandModule() {
-        return "initDemandModule";
+    /**
+     * To convert token for initHomeSuppliersModule method
+     * @param searchDataHolder
+     * @param location
+     * @return token string like module/method?param, where param = welcome, potentialDemands, myClients ...
+     */
+    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String loadWidget) {
+        return loadWidget;
     }
 
-    public String onInitClientList(SearchModuleDataHolder filter) {
-        return "initClientList";
-    }
-
-    public String onInitSupplierList(SearchModuleDataHolder filter) {
-        return "initSupplierList";
-    }
-
+    /**
+     * Called when browser action <b>back</b> or <b>forward</b> is evocated.
+     * Or by clicking on <b>hyperlink</b> with set token.
+     *
+     * @param methodName - name of the called method
+     * @param param - string behind '?' in url (module/method?param). Url generates convertToToken method.
+     * @param eventBus
+     */
     @Override
     public void convertFromToken(String historyName, String param, DemandModuleEventBus eventBus) {
-        if (historyName.equals("initDemandModule")) {
-            //TODO Martin -- vypitat prihlasenie ak nie je prihlaseny, co by uz ale mal byt ... este overit
-            if (Storage.getUser() == null) {
-                Window.alert("Please first log in");
-            } else {
-                eventBus.initDemandModule();
-            }
-        }
-
-        if (historyName.equals("initClientList")) {
-            eventBus.initClientList(null);
-        }
-
-        if (historyName.equals("initSupplierList")) {
-            eventBus.initSupplierList(null);
-        }
-
-//        if (historyName.equals("new")) {
-//            eventBus.initSupplierList(null);
-//        } else {
-//            Window.alert(">" + historyName + "<\n" + param);
-//        }
-
+        eventBus.initDemandModule(null, param);
     }
 
     @Override

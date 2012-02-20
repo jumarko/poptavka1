@@ -48,24 +48,7 @@ public class MessagesModuleHistoryConverter implements HistoryConverter<Messages
      */
     @Override
     public void convertFromToken(String historyName, String param, MessagesModuleEventBus eventBus) {
-        if (historyName.equals("initComposeNew")) {
-            eventBus.initComposeNew();
-        }
-        if (historyName.equals("initComposeReply")) {
-            eventBus.initComposeReply(null);
-        }
-        if (historyName.equals("initInbox")) {
-            eventBus.initInbox(null);
-        }
-        if (historyName.equals("initSent")) {
-            eventBus.initSent(null);
-        }
-        if (historyName.equals("initTrash")) {
-            eventBus.initTrash(null);
-        }
-        if (historyName.equals("initDraft")) {
-            eventBus.initDraft(null);
-        }
+        eventBus.initMessagesModule(null, historyName.replace("init", ""));
     }
 
     @Override

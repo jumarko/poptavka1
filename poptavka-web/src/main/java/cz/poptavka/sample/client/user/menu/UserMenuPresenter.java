@@ -32,7 +32,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initDemandModule();
+                eventBus.initDemandModule(null, "welcome");
             }
         });
         view.getMessagesButton().addClickHandler(new ClickHandler() {
