@@ -20,7 +20,7 @@ public interface HomeWelcomeEventBus extends EventBus {
     @Event(forwardToParent = true)
     void setHomeBodyHolderWidget(IsWidget view);
 
-    @Event(handlers = HomeWelcomePresenter.class)
-    void initHomeWelcomeModule(SearchModuleDataHolder filter);
+    @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class)
+    String initHomeWelcomeModule(SearchModuleDataHolder filter);
 
 }

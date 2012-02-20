@@ -77,6 +77,7 @@ public class SettingsPresenter
     }
 
     public void onInitSettings() {
+        Storage.setCurrentlyLoadedModule("settings");
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
         // eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
         view.getNewMessageOptions().addItem("immediately");

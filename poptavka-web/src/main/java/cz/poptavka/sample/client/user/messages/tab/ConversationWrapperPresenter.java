@@ -16,11 +16,10 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
 import cz.poptavka.sample.client.user.widget.messaging.OfferQuestionPresenter;
 import cz.poptavka.sample.client.user.widget.messaging.UserConversationPanel;
-import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
-@Presenter(view = ConversationWrapperView.class, multiple = true)
+@Presenter(view = ConversationWrapperView.class)
 public class ConversationWrapperPresenter
         extends LazyPresenter<ConversationWrapperPresenter.IDetailWrapper, MessagesModuleEventBus> {
 
@@ -50,21 +49,7 @@ public class ConversationWrapperPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                ComposeMessagePresenter composer = eventBus.addHandler(ComposeMessagePresenter.class);
-                Long id = null;
-                //in case one sender provide more reply at once -> ids in row are various
-//                for (int i = 0; i < chatMessages.size(); i++) {
-//                    id = chatMessages.get(i).getSenderId();
-                // --> TOD DELETE after kolki finnish refaktoring of UserModule
-                UserDetail u = new UserDetail();
-                u.setUserId(149L);
-                Storage.setUser(u);
-                // <--
-//                    if (id != null && !Storage.getUser().getUserId().equals(id)) {
-//                        break;
-//                    }
-//                }
-                composer.onInitMessagesTabComposeMail(chatMessages.get(chatMessages.size() - 1), "composeReply");
+                eventBus.initComposeReply(chatMessages.get(chatMessages.size() - 1));
             }
         });
     }
@@ -245,6 +230,10 @@ public class ConversationWrapperPresenter
         if (value == CHAT) {
             view.toggleConversationLoading();
         }
+    }
+
+    public ArrayList<MessageDetail> getChatMessages() {
+        return chatMessages;
     }
     /**
      * Response when user click demand to see the details. DemandDetails widget,

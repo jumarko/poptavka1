@@ -124,6 +124,7 @@ public class HomeSuppliersPresenter
 
     public void onInitHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
         Storage.setCurrentlyLoadedView("homeSuppliers");
+        Storage.setCurrentlyLoadedModule("homeSuppliers");
         view.getPath().clear();
         if (!historyTokens.isEmpty()) {
             view.getSelectionRootModel().setSelected(new CategoryDetail(historyTokens.get(0), null), false);

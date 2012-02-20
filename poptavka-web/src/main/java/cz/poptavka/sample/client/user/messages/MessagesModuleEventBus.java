@@ -26,29 +26,29 @@ public interface MessagesModuleEventBus extends EventBus {
 
     /**************************************************************************/
     /* Navigation | Initialization events. */
-    //production init method
-    //during development used multiple instancing
-    @Event(handlers = MessageListPresenter.class) //, historyConverter = MessagesModuleHistory.class)
-    void initMailBox(String type, SearchModuleDataHolder filter);
+    @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String initComposeNew();
 
-//    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
-//    void initMessagesTabModuleInbox(SearchModuleDataHolder searchDataHolder);
-//
-//    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
-//    void initMessagesTabModuleSent(SearchModuleDataHolder searchDataHolder);
-//
-//    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistory.class)
-//    void initMessagesTabModuleTrash(SearchModuleDataHolder searchDataHolder);
-//
-//    @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistory.class)
-//    void initMessagesTabComposeMail(MessageDetail msgDetail, String action);
+    @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String initComposeReply(MessageDetail msgDetail);
+
+    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String initInbox(SearchModuleDataHolder searchDataHolder);
+
+    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String initSent(SearchModuleDataHolder searchDataHolder);
+
+    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String initTrash(SearchModuleDataHolder searchDataHolder);
+
+    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String initDraft(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by DemandModulePresenter. */
-    //init demands module - left user_type menu and initial content
     @Event(handlers = MessagesModulePresenter.class)
-    void initMessagesModule(SearchModuleDataHolder searchDataHolder, String action);
+    void initMessagesModule(SearchModuleDataHolder searchDataHolder, String loadWidget);
 
     //display widget in content area
     @Event(handlers = MessagesModulePresenter.class)

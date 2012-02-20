@@ -51,7 +51,6 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      * @param param - string behind '?' in url (module/method?param). Url generates convertToToken method.
      * @param eventBus
      */
-
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
         if (methodName.equals("initHomeSuppliersModule")) {

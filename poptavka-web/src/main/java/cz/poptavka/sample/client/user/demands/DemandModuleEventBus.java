@@ -33,20 +33,21 @@ public interface DemandModuleEventBus extends EventBus {
 
     //production init method
     //during development used multiple instancing
-    @Event(handlers = ClientListPresenter.class)
-    void initClientList();
+    @Event(handlers = ClientListPresenter.class, historyConverter = DemandModuleHistoryConverter.class)
+    String initClientList(SearchModuleDataHolder filter);
 
-    @Event(handlers = SupplierListPresenter.class, historyConverter = DemandModuleHistory.class)
-    void initSupplierList(SearchModuleDataHolder filter);
+    @Event(handlers = SupplierListPresenter.class, historyConverter = DemandModuleHistoryConverter.class)
+    String initSupplierList(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by DemandModulePresenter. */
 
     //init demands module - left user_type menu and initial content
-    @Event(handlers = DemandModulePresenter.class)
-    void initDemandModule();
+    @Event(handlers = DemandModulePresenter.class, historyConverter = DemandModuleHistoryConverter.class)
+    String initDemandModule();
 
+    // Forward methods don't need history converter because they have its owns
     @Event(forwardToParent = true)
     void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 

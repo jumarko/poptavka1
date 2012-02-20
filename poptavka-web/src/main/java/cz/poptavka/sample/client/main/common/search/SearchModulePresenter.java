@@ -108,7 +108,8 @@ public class SearchModulePresenter
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabTrash")) {
                     eventBus.initMessagesModule(view.getFilter(), "trash");
                 } else { //Admin...whatever
-                    eventBus.initAdminModule(view.getFilter());
+                    eventBus.initAdminModule(view.getFilter(),
+                            Storage.getCurrentlyLoadedView().replace("admin", "init"));
                 }
 
                 ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).displayAdvSearchDataInfo(

@@ -23,27 +23,20 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 
-import com.mvp4g.client.view.ReverseViewInterface;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.user.messages.tab.MessageListPresenter.IListM;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 
 /**
- * IMPORTANT NOTE: This view is ReverseView. Because of eventBus calls from dataGrid table and these event calls are
- * defined in view, not in presenter.
  *
- * @author beho
+ * @author martin slavkovsky
  *
  */
-public class MessageList extends Composite implements
-        ReverseViewInterface<MessageListPresenter>, IListM {
+public class MessageList extends Composite implements MessageListPresenter.IListM {
 
     private static MessageListUiBinder uiBinder = GWT.create(MessageListUiBinder.class);
 
     interface MessageListUiBinder extends UiBinder<Widget, MessageList> {
     }
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastOpenedDemand = -1;
     //table handling buttons
     @UiField
     Button readBtn, unreadBtn, starBtn, unstarBtn, deleteBtn;
@@ -52,18 +45,6 @@ public class MessageList extends Composite implements
     MessageListGrid<UserMessageDetail> messageGrid;
     @UiField(provided = true)
     SimplePager pager;
-    //presenter
-    private MessageListPresenter presenter;
-
-    @Override
-    public void setPresenter(MessageListPresenter presenter) {
-        this.presenter = presenter;
-    }
-
-    @Override
-    public MessageListPresenter getPresenter() {
-        return presenter;
-    }
 
     @Override
     public void createView() {

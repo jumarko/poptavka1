@@ -127,6 +127,8 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
     public void onInitHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
+        Storage.setCurrentlyLoadedView("homeDemands");
+        Storage.setCurrentlyLoadedModule("homeDemands");
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
         eventBus.filterDemandsCount(searchDataHolder, orderColumns);
@@ -134,10 +136,8 @@ public class HomeDemandsPresenter extends BasePresenter<
         this.searchDataHolder = searchDataHolder;
 
         if (location.equals("home")) {
-            Storage.setCurrentlyLoadedView("homeDemands");
             eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         } else if (location.equals("user")) {
-            Storage.setCurrentlyLoadedView("userDemands");
             eventBus.setUserBodyHolderWidget(view.getWidgetView());
         }
     }

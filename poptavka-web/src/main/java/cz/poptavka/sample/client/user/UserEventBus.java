@@ -11,13 +11,11 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.demands.DemandsHistoryConverter;
 import cz.poptavka.sample.client.user.demands.tab.old.MyDemandsPresenter;
 import cz.poptavka.sample.client.user.demands.tab.old.OffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.old.PotentialDemandsPresenter;
 import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
-import cz.poptavka.sample.client.user.problems.MyProblemsHistoryConverter;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
 import cz.poptavka.sample.shared.domain.OfferDetail;
@@ -220,21 +218,22 @@ public interface UserEventBus extends EventBusWithLookup {
      ************ Navigation events section. /* Presenters do NOT listen to events when
      * deactivated ----------------------- DEMANDS SECTION
      */
-    @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, PotentialDemandsPresenter.class }, historyConverter = DemandsHistoryConverter.class)
-    String invokeMyDemands();
-
-    @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
-    String invokeMyProblems();
-
-    @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
-            MyDemandsPresenter.class, PotentialDemandsPresenter.class },
-            historyConverter = DemandsHistoryConverter.class)
-    String invokeOffers();
-
-    @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
-            OffersPresenter.class, MyDemandsPresenter.class }, historyConverter = DemandsHistoryConverter.class)
-    String invokePotentialDemands();
+//    @Event(handlers = MyDemandsPresenter.class, activate = MyDemandsPresenter.class, deactivate = {
+//            OffersPresenter.class, PotentialDemandsPresenter.class },
+//            historyConverter = DemandsHistoryConverter.class)
+//    String invokeMyDemands();
+//
+//    @Event(handlers = MyProblemsPresenter.class, historyConverter = MyProblemsHistoryConverter.class)
+//    String invokeMyProblems();
+//
+//    @Event(handlers = OffersPresenter.class, activate = OffersPresenter.class, deactivate = {
+//            MyDemandsPresenter.class, PotentialDemandsPresenter.class },
+//            historyConverter = DemandsHistoryConverter.class)
+//    String invokeOffers();
+//
+//    @Event(handlers = PotentialDemandsPresenter.class, activate = PotentialDemandsPresenter.class, deactivate = {
+//            OffersPresenter.class, MyDemandsPresenter.class }, historyConverter = DemandsHistoryConverter.class)
+//    String invokePotentialDemands();
 
 //    @Event(forwardToParent = true)
 //    void initMessagesTabModuleInbox(SearchModuleDataHolder searchDataHolder);

@@ -51,10 +51,10 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
                     // TODO forward back where I was when forwarded to Compose Message widget
                 } else if (action.equals("composeNew")) {
                     //TODO forward to inbox
-                    eventBus.initMailBox("inbox", null);
+                    eventBus.initInbox(null);
                 } else if (action.equals("composeReply")) {
                     //TODO forward to inbox && display relevant conversation with new reply
-                    eventBus.initMailBox("inbox", null);
+                    eventBus.initInbox(null);
                     eventBus.displayConversation(
                         sentMessage.getThreadRootId(), sentMessage.getMessageId());
                 }

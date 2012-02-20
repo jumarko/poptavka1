@@ -12,15 +12,14 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.user.admin.tab.AdminModuleWelcomeView;
 import cz.poptavka.sample.client.user.widget.LoadingDiv;
 
 @Presenter(view = AdminModuleView.class, multiple = true)
 public class AdminModulePresenter
-        extends
-        BasePresenter<AdminModulePresenter.AdminModuleInterface, AdminModuleEventBus> {
+        extends BasePresenter<AdminModulePresenter.AdminModuleInterface, AdminModuleEventBus> {
 
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface AdminModuleInterface {
 
@@ -54,7 +53,6 @@ public class AdminModulePresenter
 
         SimplePanel getContentPanel();
     }
-
     private LoadingDiv loading = null;
 
     public void bind() {
@@ -62,130 +60,136 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initDemands(null);
+                eventBus.initAdminModule(null, "initDemands");
             }
         });
         view.getClientsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initClients(null);
+                eventBus.initAdminModule(null, "initClients");
+//                eventBus.initClients(null);
             }
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initSuppliers(null);
+                eventBus.initAdminModule(null, "initSuppliers");
+//                eventBus.initSuppliers(null);
             }
         });
         view.getOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initOffers(null);
+                eventBus.initAdminModule(null, "initOffers");
+//                eventBus.initOffers(null);
             }
         });
         view.getAccessRoleButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAccessRoles(null);
+                eventBus.initAdminModule(null, "initAccessRoles");
+//                eventBus.initAccessRoles(null);
             }
         });
         view.getEmailActivationButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initEmailsActivation(null);
+                eventBus.initAdminModule(null, "initEmailsActivation");
+//                eventBus.initEmailsActivation(null);
             }
         });
         view.getInvoiceButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initInvoices(null);
+                eventBus.initAdminModule(null, "initInvoices");
+//                eventBus.initInvoices(null);
             }
         });
         view.getMessageButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initMessages(null);
+                eventBus.initAdminModule(null, "initMessages");
+//                eventBus.initMessages(null);
             }
         });
         view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initPaymentMethods(null);
+                eventBus.initAdminModule(null, "initPaymentMethods");
+//                eventBus.initPaymentMethods(null);
             }
         });
         view.getPermissionButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initPermissions(null);
+                eventBus.initAdminModule(null, "initPermissions");
+//                eventBus.initPermissions(null);
             }
         });
         view.getPreferenceButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initPreferences(null);
+                eventBus.initAdminModule(null, "initPreferences");
+//                eventBus.initPreferences(null);
             }
         });
         view.getProblemButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initProblems(null);
+                eventBus.initAdminModule(null, "initProblems");
+//                eventBus.initProblems(null);
             }
         });
     }
 
-    public void onInitAdminModule(SearchModuleDataHolder filter) {
+    public void onInitAdminModule(SearchModuleDataHolder filter, String loadWidget) {
+        Storage.setCurrentlyLoadedModule("admin");
         GWT.log("onInitAdminModule - som tu");
-        // eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
-        // eventBus.setTabAdminWidget(view.getWidgetView());
-        // eventBus.fireMarkedEvent();
-        // eventBus.setUserInteface((StyleInterface) view.getWidgetView());
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
-        // panel.setWidget(view.getWidgetView());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+
         eventBus.setHomeBodyHolderWidget(view.getWidgetView());
 
         Storage.hideLoading();
-
-        if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
+//
+        if (loadWidget.equals("initAccessRoles")) {
             eventBus.initAccessRoles(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
+        } else if (loadWidget.equals("initClients")) {
             eventBus.initClients(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {
+        } else if (loadWidget.equals("initDemands")) {
             eventBus.initDemands(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals(
-                "adminEmailsActivation")) {
+        } else if (loadWidget.equals("initEmailsActivation")) {
             eventBus.initEmailsActivation(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminInvoices")) {
+        } else if (loadWidget.equals("initInvoices")) {
             eventBus.initInvoices(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminMessages")) {
+        } else if (loadWidget.equals("initMessages")) {
             eventBus.initMessages(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminOffers")) {
+        } else if (loadWidget.equals("initOffers")) {
             eventBus.initOffers(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals(
-                "adminPaymentMethods")) {
+        } else if (loadWidget.equals("initPaymentMethods")) {
             eventBus.initPaymentMethods(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminPermissions")) {
+        } else if (loadWidget.equals("initPermissions")) {
             eventBus.initPermissions(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminPreferences")) {
+        } else if (loadWidget.equals("initPreferences")) {
             eventBus.initPreferences(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminProblems")) {
+        } else if (loadWidget.equals("initProblems")) {
             eventBus.initProblems(filter);
-        } else if (Storage.getCurrentlyLoadedView().equals("adminSuppliers")) {
+        } else if (loadWidget.equals("initSuppliers")) {
             eventBus.initSuppliers(filter);
         } else {
-            return;
+            view.setContent(new AdminModuleWelcomeView());
         }
     }
 

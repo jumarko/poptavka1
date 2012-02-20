@@ -100,7 +100,7 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = HeaderPresenter.class, historyConverter = RootHistoryConverter.class)
     String atHome();
 
-    @Event(handlers = {HeaderPresenter.class, RootPresenter.class })
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class })//, historyConverter = RootHistoryConverter.class)
     void atAccount();
 
     @Event(handlers = LoginPopupPresenter.class)
@@ -223,13 +223,13 @@ public interface RootEventBus extends EventBus {
      * @param filter - provided by search module
      */
     @Event(modulesToLoad = MessagesModule.class)
-    void initMessagesModule(SearchModuleDataHolder filter, String action);
+    void initMessagesModule(SearchModuleDataHolder filter, String loadWidget);
 
     @Event(modulesToLoad = SettingsModule.class)
     void initSettings();
 
     @Event(modulesToLoad = AdminModule.class)
-    void initAdminModule(SearchModuleDataHolder filter);
+    void initAdminModule(SearchModuleDataHolder filter, String loadWidget);
 
     // BOTH
     @Event(modulesToLoad = SearchModule.class)

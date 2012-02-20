@@ -23,6 +23,10 @@ public final class Storage {
 
     private static final Storage INSTANCE = new Storage();
     private static String currentlyLoadedView = "";
+    //For history orientation
+    // Lebo ak mam zobrazenu tabulku, potom naloadujem iny modul a dam spat
+    // tabulka na loaduje ale modul nie je naloadovany, teda nevidno naloadovanu tabulku
+    private static String currentlyLoadedModule = "";
 
     public static Storage get() {
         return INSTANCE;
@@ -94,8 +98,21 @@ public final class Storage {
         return currentlyLoadedView;
     }
 
+    /**
+     * Set value currentlyLoadedView to actual loaded widget table. Used for SearchModule.
+     * If widget contains no table, set value to NULL.
+     * @param currentlyLoadedView
+     */
     public static void setCurrentlyLoadedView(String currentlyLoadedView) {
         Storage.currentlyLoadedView = currentlyLoadedView;
+    }
+
+    public static String getCurrentlyLoadedModule() {
+        return currentlyLoadedModule;
+    }
+
+    public static void setCurrentlyLoadedModule(String currentlyLoadedModule) {
+        Storage.currentlyLoadedModule = currentlyLoadedModule;
     }
     // ID constants
     public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";

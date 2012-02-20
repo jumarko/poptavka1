@@ -143,6 +143,7 @@ public class DemandModulePresenter
     //TODO
     //later add UserDetail as parameter
     public void onInitDemandModule() {
+        Storage.setCurrentlyLoadedModule("demands");
         // hiding window for this is after succesfull Userhandler call
         Storage.showLoading(Storage.MSGS.progressDemandsLayoutInit());
 //        if (user.getRoleList().contains(Role.CLIENT)) {
@@ -160,6 +161,7 @@ public class DemandModulePresenter
 
         // STYLE
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+        view.setContent(new DemandsModuleWelcomeView());
         eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());

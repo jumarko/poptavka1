@@ -25,7 +25,7 @@ public interface SearchModuleEventBus extends EventBus {
     void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void initAdminModule(SearchModuleDataHolder filter);
+    void initAdminModule(SearchModuleDataHolder filter, String loadWidget);
 
     @Event(forwardToParent = true)
     void initMessagesModule(SearchModuleDataHolder filter, String action);

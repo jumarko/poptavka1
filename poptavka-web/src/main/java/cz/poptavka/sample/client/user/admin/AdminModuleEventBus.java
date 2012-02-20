@@ -50,46 +50,46 @@ public interface AdminModuleEventBus extends EventBus {
 
     /**************************************************************************/
     /* Submodule widget init methods */
-    @Event(handlers = AdminDemandsPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminDemandsPresenter.class)
     void initDemands(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminClientsPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminClientsPresenter.class)
     void initClients(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminSuppliersPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminSuppliersPresenter.class)
     void initSuppliers(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminOffersPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminOffersPresenter.class)
     void initOffers(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminAccessRolesPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminAccessRolesPresenter.class)
     void initAccessRoles(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminEmailActivationsPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminEmailActivationsPresenter.class)
     void initEmailsActivation(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminInvoicesPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminInvoicesPresenter.class)
     void initInvoices(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminMessagesPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminMessagesPresenter.class)
     void initMessages(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminPaymentMethodsPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminPaymentMethodsPresenter.class)
     void initPaymentMethods(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminPermissionsPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminPermissionsPresenter.class)
     void initPermissions(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminPreferencesPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminPreferencesPresenter.class)
     void initPreferences(SearchModuleDataHolder filter);
 
-    @Event(handlers = AdminProblemsPresenter.class, historyConverter = AdminModuleHistory.class)
+    @Event(handlers = AdminProblemsPresenter.class)
     void initProblems(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Admin module init section */
-    @Event(handlers = AdminModulePresenter.class)
-    void initAdminModule(SearchModuleDataHolder filter);
+    @Event(handlers = AdminModulePresenter.class, historyConverter = AdminModuleHistoryConverter.class)
+    String initAdminModule(SearchModuleDataHolder filter, String loadWidget);
 
     //display widget in content area
     @Event(handlers = AdminModulePresenter.class)

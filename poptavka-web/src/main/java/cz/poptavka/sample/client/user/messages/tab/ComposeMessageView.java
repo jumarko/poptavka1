@@ -11,28 +11,20 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 
-import com.mvp4g.client.view.ReverseViewInterface;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter.IComposeMessage;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 /**
- * IMPORTANT NOTE: This view is ReverseView. Because of eventBus calls from dataGrid table and these event calls are
- * defined in view, not in presenter.
  *
- * @author beho
+ * @author martin slavkovsky
  *
  */
-public class ComposeMessageView extends Composite
-        implements ReverseViewInterface<ComposeMessagePresenter>, IComposeMessage {
-//extends ReverseCompositeView<IComposeMessagePresenter> implements IComposeMessage {
+public class ComposeMessageView extends Composite implements ComposeMessagePresenter.IComposeMessage {
 
     private static ComposeMessageViewUiBinder uiBinder = GWT.create(ComposeMessageViewUiBinder.class);
 
     interface ComposeMessageViewUiBinder extends UiBinder<Widget, ComposeMessageView> {
     }
-    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
-    private long lastSelectedMail = -1;
     //table handling buttons
     @UiField
     Button sendBtn, discardBtn;
@@ -42,18 +34,12 @@ public class ComposeMessageView extends Composite
     TextArea body;
     @UiField
     HTMLPanel wrapper;
-    //presenter
-    private ComposeMessagePresenter presenter;
-    //detailWrapperPanel
 
     @Override
-    public ComposeMessagePresenter getPresenter() {
-        return presenter;
-    }
-
-    @Override
-    public void setPresenter(ComposeMessagePresenter presenter) {
-        this.presenter = presenter;
+    public void clearMessage() {
+        recipient.setText("");
+        subject.setText("");
+        body.setText("");
     }
 
     @Override

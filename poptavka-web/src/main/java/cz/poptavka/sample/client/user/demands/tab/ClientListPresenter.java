@@ -16,6 +16,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.client.user.widget.grid.UniversalGrid;
@@ -106,7 +107,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
      *
      * Associated DetailWrapper widget is created and initialized.
      */
-    public void onInitClientList() {
+    public void onInitClientList(SearchModuleDataHolder searchModuleDataHolder) {
 //        commented code is from production code
 //        if (!initialized) {
         eventBus.requestClientsDemands();

@@ -23,6 +23,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
@@ -122,6 +123,7 @@ public class SupplierCreationPresenter
      * TODO decide WHEN other parts should be built.
      */
     public void onAtRegisterSupplier(String location) {
+        Storage.setCurrentlyLoadedModule("createSupplier");
         LOGGER.info("Initializing Supplier Registration Widget ... ");
 //        eventBus.setBodyWidget(view.getWidgetView());
         //init parts

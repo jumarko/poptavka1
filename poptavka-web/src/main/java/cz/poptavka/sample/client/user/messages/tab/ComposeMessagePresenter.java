@@ -19,8 +19,7 @@ import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter.IComp
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
-//@Presenter(view = SupplierList.class)
-@Presenter(view = ComposeMessageView.class, multiple = true)
+@Presenter(view = ComposeMessageView.class)
 public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, MessagesModuleEventBus> {
 
     public interface IComposeMessage extends LazyView, IsWidget {
@@ -32,6 +31,8 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
         TextBox getRecipientTextBox();
 
         MessageDetail getMessage(MessageDetail detail);
+
+        void clearMessage();
 
         //control buttons getters
         Button getSendBtn();
@@ -49,7 +50,6 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
 
             @Override
             public void onClick(ClickEvent event) {
-                //TODO Martin - co tam ma byt? aky ViewType?? - USER
                 MessageDetail msgDetail = view.getMessage(messageDetail);
                 eventBus.sendMessage(msgDetail, action);
             }
@@ -58,28 +58,29 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initMailBox("inbox", null);
+                eventBus.initInbox(null);
             }
         });
     }
 
-    /**
-     * Init view and fetch new supplier's demands. Demand request
-     * is sent ONLY for the first time - when view is loaded.
-     *
-     * Associated DetailWrapper widget is created and initialized.
-     */
-    public void onInitMessagesTabComposeMail(MessageDetail msgDetail, String action) {
+    public void onInitComposeNew() {
         Storage.setCurrentlyLoadedView(null);
-        this.action = action; // what is that for?
-        messageDetail = msgDetail;
 
-        if (messageDetail == null) {
-            //TODO Martin Uzivatel musi vybrat uzivatela z kontaktov
-        } else {
-            //Ak forwardnuty z kliku na nejakeho uzivatela, uzivatel sa automaticky nastavy ako recipient
-            eventBus.requestUserInfo(messageDetail.getSenderId());
+        //TODO Martin Uzivatel musi vybrat uzivatela z kontaktov
+
+        view.clearMessage();
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
+        eventBus.displayMain(view.getWidgetView());
+    }
+
+    public void onInitComposeReply(MessageDetail msgDetail) {
+        Storage.setCurrentlyLoadedView(null);
+
+        if (msgDetail != null) {
+            messageDetail = msgDetail;
         }
+        //Ak forwardnuty z kliku na nejakeho uzivatela, uzivatel sa automaticky nastavy ako recipient
+        eventBus.requestUserInfo(messageDetail.getSenderId());
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayMain(view.getWidgetView());

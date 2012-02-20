@@ -30,24 +30,28 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
         GWT.log("Binding user menu view");
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 eventBus.initDemandModule();
             }
         });
         view.getMessagesButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
-                eventBus.initMessagesModule(null, "displayGrid");
+                eventBus.initMessagesModule(null, "inbox");
             }
         });
         view.getSettingsButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 eventBus.initSettings();
             }
         });
         view.getContactsButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
             }
         });
@@ -55,7 +59,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null);
+                eventBus.initAdminModule(null, "initAdminModule");
 
             }
         });
