@@ -1,7 +1,14 @@
 <!DOCTYPE aspectj PUBLIC
         "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
 <aspectj>
+    <weaver>
+        <include within="cz.poptavka.sample..*" />
+    </weaver>
+
     <aspects>
         <!-- aspects are configured in aspects.xml exclusively -->
+        <aspect name="cz.poptavka.sample.application.logging.ExceptionLogger" />
+        <aspect name="cz.poptavka.sample.application.logging.ExecutionTimeLogger" />
+        <aspect name="cz.poptavka.sample.application.security.aspects.EncryptorAspect" />
     </aspects>
 </aspectj>

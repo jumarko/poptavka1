@@ -2,25 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <aop:config>
-        <!-- pointcuts -->
-        <aop:pointcut id="allProjectClasses" expression="execution(* cz.poptavka.sample..*.*(..))" />
-        <aop:pointcut id="jobs" expression="execution(* cz.poptavka.sample.service.jobs..JobTask+.execute())" />
-
-        <!-- aspects -->
-        <aop:aspect id="exceptionLoggerAspect" ref="exceptionLogger">
-            <aop:after-throwing  throwing="exception"  pointcut-ref="allProjectClasses" method="logExceptionMethod" />
-        </aop:aspect>
-        <!-- Log execution of jobs -->
-        <aop:aspect id="executionTimeLoggerAspect" ref="executionTimeLogger">
-            <aop:around pointcut-ref="jobs" method="logTimeMethod" />
-        </aop:aspect>
-
-    </aop:config>
+    <!--Aspects are defined via annotations and in aop.xml file-->
 
     <!-- aspects' beans' -->
     <bean id="exceptionLogger" class="cz.poptavka.sample.application.logging.ExceptionLogger">
@@ -34,6 +22,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     </bean>
 
     <bean id="executionTimeLogger" class="cz.poptavka.sample.application.logging.ExecutionTimeLogger" />
-
+    <bean id="encryptorAspect" class="cz.poptavka.sample.application.security.aspects.EncryptorAspect"
+            factory-method="aspectOf">
+        <property name="encryptor" ref="passwordEncryptor" />
+    </bean>
 
 </beans>

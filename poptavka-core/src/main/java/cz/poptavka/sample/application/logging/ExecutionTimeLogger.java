@@ -1,6 +1,9 @@
 package cz.poptavka.sample.application.logging;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
@@ -17,12 +20,14 @@ import org.springframework.util.StopWatch;
  * @author Juraj Martinka
  *         Date: 10.4.11
  */
-//@Aspect
+@Aspect
 public class ExecutionTimeLogger {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionTimeLogger.class);
 
-//    @Around("execution(* cz.poptavka.sample..*.*(..)) "
-//            + " && ! execution(* cz.poptavka.sample.application.logging.*.*(..))")
+    @Pointcut("execution(* cz.poptavka.sample.service.jobs..JobTask+.execute())")
+    private void jobs() { }
+
+    @Around("jobs()")
     public Object logTimeMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 
         final StopWatch stopWatch = new StopWatch();

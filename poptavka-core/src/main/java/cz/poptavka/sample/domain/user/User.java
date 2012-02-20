@@ -1,5 +1,6 @@
 package cz.poptavka.sample.domain.user;
 
+import cz.poptavka.sample.application.security.aspects.Encrypted;
 import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.settings.Settings;
@@ -69,6 +70,7 @@ public class User extends DomainObject {
         return password;
     }
 
+    @Encrypted
     public void setPassword(String password) {
         this.password = password;
     }

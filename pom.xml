@@ -68,6 +68,7 @@
         <jackson.version>1.8.5</jackson.version>
         <gwt-syncproxy.version>2.0</gwt-syncproxy.version>
         <javax-mail.version>1.4.4</javax-mail.version>
+        <jasypt.version>1.9.0</jasypt.version>
     </properties>
 
     <pluginRepositories>
@@ -458,7 +459,7 @@
                 <version>${aspectj.version}</version>
             </dependency>
 
-            <!-- Spring Security -->
+            <!-- Security -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
@@ -474,7 +475,17 @@
                 <artifactId>spring-security-web</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-
+            <!--Jasypt-->
+            <dependency>
+                <groupId>org.jasypt</groupId>
+                <artifactId>jasypt</artifactId>
+                <version>${jasypt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jasypt</groupId>
+                <artifactId>jasypt-spring31</artifactId>
+                <version>${jasypt.version}</version>
+            </dependency>
 
 
             <!-- Google Web Toolkit -->
@@ -826,6 +837,7 @@
                             <goal>compile</goal>
                             <goal>test-compile</goal>
                         </goals>
+                        <phase>compile</phase>
                     </execution>
                 </executions>
             </plugin>

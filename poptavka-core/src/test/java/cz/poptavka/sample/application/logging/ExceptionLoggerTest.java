@@ -66,6 +66,6 @@ public class ExceptionLoggerTest extends BasicIntegrationTest {
 //        this.address.getCity();
 //        Mockito.verify(executionTimeLoggerSpy).logTimeMethod(Mockito.<ProceedingJoinPoint>any());
 
-        new Address().getCity();
+//        new Address().getCity().getChildren();
     }
 }

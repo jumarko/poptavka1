@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailException;
@@ -69,6 +71,10 @@ public class ExceptionLogger {
     }
 
 
+    @Pointcut("execution(* cz.poptavka.sample..*.*(..))")
+    private void exceptionAware() { }
+
+    @AfterThrowing(pointcut = "exceptionAware()", throwing = "exception")
     public void logExceptionMethod(Exception exception) {
         LOGGER.error("An exception has been thrown.", exception);
         sendNotificationMail(exception);
