@@ -17,30 +17,13 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     /**
-     * To convert token for initHomeSuppliersModule method
+     * To convert token for addToPath method.
      * @param searchDataHolder
      * @param location
-     * @return token string like module/method?param, where param = homeRoot or userRoot
+     * @return token string like module/method?param
      */
-    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String location) {
-        if (methodName.equals("initHomeSuppliersModule")) {
-            return location + "Root";
-        }
-        return "";
-    }
-
-    /**
-     * To convert token for addToPath method
-     * @param methodName
-     * @param category
-     * @param location
-     * @return token string like categoryId=333
-     */
-    public String convertToToken(String methodName, CategoryDetail category) {
-        if (methodName.equals("updatePath")) {
-            return "categoryId=" + Long.toString(category.getId());
-        }
-        return "";
+    public String convertToString(String methodName, CategoryDetail categoryDetail, String location) {
+        return "location=" + location + ";categoryId=" + Long.toString(categoryDetail.getId());
     }
 
     /**
@@ -53,20 +36,23 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
-        if (methodName.equals("initHomeSuppliersModule")) {
-            eventBus.initHomeSuppliersModule(null, param.replace("Root", ""));
-        }
-        if (methodName.equals("updatePath")) {
-            eventBus.loadingShow(MSGS.loading());
-            param = param.replace("categoryId=", "");
-            eventBus.updatePath(new CategoryDetail(Long.valueOf(param), null));
-            eventBus.getSubCategories(Long.valueOf(param));
+        String[] params = param.split(";");
+        String location = params[0].replace("location=", "");
+        CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(params[1].replace("categoryId=", "")), null);
+
+        //ROOT
+        if (categoryDetail.getId() == 0) {
+            eventBus.initHomeSuppliersModule(null, location);
+        } else {
+            SearchModuleDataHolder searchModuleDataHolder = new SearchModuleDataHolder();
+            searchModuleDataHolder.initHomeSuppliers();
+            searchModuleDataHolder.getHomeSuppliers().setSupplierCategory(categoryDetail);
+            eventBus.initHomeSuppliersModule(searchModuleDataHolder, location);
         }
     }
 
     @Override
     public boolean isCrawlable() {
-        // TODO Auto-generated method stub
         return false;
     }
 }

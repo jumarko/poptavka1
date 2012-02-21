@@ -9,14 +9,13 @@ import cz.poptavka.sample.shared.domain.CategoryDetail;
 
 public interface CategoryRPCServiceAsync {
 
-//    void getCategory(String code, AsyncCallback<CategoryDetail> callback);
-
     void getCategory(long id, AsyncCallback<CategoryDetail> callback);
 
     void getAllRootCategories(AsyncCallback<List<CategoryDetail>> callback);
 
     void getCategories(AsyncCallback<ArrayList<CategoryDetail>> callback);
 
-    void getCategoryChildren(Long category,
-            AsyncCallback<ArrayList<CategoryDetail>> callback);
+    void getCategoryParents(Long category, AsyncCallback<ArrayList<CategoryDetail>> callback);
+
+    void getCategoryChildren(Long category, AsyncCallback<ArrayList<CategoryDetail>> callback);
 }

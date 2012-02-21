@@ -4,9 +4,11 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface IMenuView extends IsWidget {
-    public interface IMenuPresenter {
 
+    public interface IMenuPresenter {
     }
+
+    HasClickHandlers getHomeButton();
 
     HasClickHandlers getDemandsButton();
 
@@ -15,7 +17,4 @@ public interface IMenuView extends IsWidget {
     HasClickHandlers getCreateSupplierButton();
 
     HasClickHandlers getCreateDemandButton();
-
-    void setHomeToken(String token);
-
 }

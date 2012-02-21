@@ -100,7 +100,7 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = HeaderPresenter.class, historyConverter = RootHistoryConverter.class)
     String atHome();
 
-    @Event(handlers = {HeaderPresenter.class, RootPresenter.class })//, historyConverter = RootHistoryConverter.class)
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class })
     void atAccount();
 
     @Event(handlers = LoginPopupPresenter.class)

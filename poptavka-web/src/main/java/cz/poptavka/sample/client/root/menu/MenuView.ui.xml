@@ -17,9 +17,9 @@
 			<div ui:field="homeMenu">
 				<ul ui:field="menuList">
 					<li>
-						<g:Hyperlink ui:field="linkHome" styleName='{res.layout.homeMenu}'>
+						<g:Button ui:field="home" styleName='{res.layout.homeMenu}'>
 							<ui:msg key="homeLink">Home</ui:msg>
-						</g:Hyperlink>
+						</g:Button>
 					</li>
 					<li>
 						<g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>

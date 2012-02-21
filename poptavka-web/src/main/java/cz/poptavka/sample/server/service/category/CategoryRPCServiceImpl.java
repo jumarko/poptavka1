@@ -34,10 +34,6 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
     }
-//    @Override
-//    public CategoryDetail getCategory(String code) {
-//        return createCategoryDetail(categoryService.getCategory(code));
-//    }
 
     @Override
     public ArrayList<CategoryDetail> getAllRootCategories() {
@@ -48,6 +44,26 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     public ArrayList<CategoryDetail> getCategories() {
         final List<Category> categories = categoryService.getRootCategories();
         return createCategoryDetailList(categories);
+    }
+
+    /**
+     * Return all parents of given category within given category.
+     * @param category - given category id
+     * @return list of parents and given category
+     */
+    @Override
+    public ArrayList<CategoryDetail> getCategoryParents(Long category) {
+        System.out.println("Getting parent categories");
+        Category cat = categoryService.getById(category);
+        List<Category> parents = new ArrayList<Category>();
+        //add cat itself
+        parents.add(cat);
+        while (cat.getParent() != null) {
+            parents.add(cat.getParent());
+            cat = cat.getParent();
+        }
+
+        return createCategoryDetailList(parents);
     }
 
     @Override
@@ -90,5 +106,4 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         }
         return detail;
     }
-
 }

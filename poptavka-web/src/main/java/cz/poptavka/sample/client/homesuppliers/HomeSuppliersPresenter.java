@@ -87,12 +87,7 @@ public class HomeSuppliersPresenter
 
         void hideSuppliersDetail();
     }
-
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    //for history
-    //remember categories (ids) used to form path to better removal used by backward funkcionality
-    private List<Long> historyTokens = new ArrayList<Long>();
-    private int pointer = 0;
     //differ if category was selected from menu, or from path
     private Boolean wasSelection = false;
     //for asynch data retrieving
@@ -109,6 +104,7 @@ public class HomeSuppliersPresenter
     //others
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
+    private String location = null; //home, user
 
     //Must be here??
     public void onStart() {
@@ -123,43 +119,43 @@ public class HomeSuppliersPresenter
     private SearchModuleDataHolder searchDataHolder = null;
 
     public void onInitHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
-        Storage.setCurrentlyLoadedView("homeSuppliers");
-        Storage.setCurrentlyLoadedModule("homeSuppliers");
-        view.getPath().clear();
-        if (!historyTokens.isEmpty()) {
-            view.getSelectionRootModel().setSelected(new CategoryDetail(historyTokens.get(0), null), false);
-        }
-        historyTokens.clear();
-        pointer = 0;
-        view.addPath(new Hyperlink("root", getTokenGenerator().initHomeSuppliersModule(null, location)));
-        this.searchDataHolder = searchDataHolder;
         eventBus.loadingShow(MSGS.loading());
+        this.location = location;
+        this.searchDataHolder = searchDataHolder;
 
+        //ROOT section
         if (searchDataHolder == null) {
 
             view.getChildSection().setVisible(false);
             view.getRootSection().setVisible(true);
             //display root categories on whole page
             view.getFilterLabel().setVisible(false);
+            // add root to path
+            eventBus.addToPath(new CategoryDetail(0L, ""), location);
+            //get Root Categories
             eventBus.getCategories();
+            //CHILD section
         } else {
             view.getFilterLabel().setVisible(true);
             view.getChildSection().setVisible(true);
             view.getRootSection().setVisible(false);
-
-            if (searchDataHolder.getHomeSuppliers().getSupplierCategory() == null) {
-                eventBus.getSubCategories(null);
-            } else {
-                eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
-            }
+            // create path
+            eventBus.getCategoryParents(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId(), location);
+            // get Sub Categories
+            eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
         }
 
-        if (location.equals("home")) {
+        //If module not loaded, do it.
+        if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
+            Storage.setCurrentlyLoadedModule("homeSuppliers");
             Storage.setCurrentlyLoadedView("homeSuppliers");
-            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-        } else if (location.equals("user")) {
-            Storage.setCurrentlyLoadedView("userSuppliers");
-            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+            if (location.equals("home")) {
+                Storage.setCurrentlyLoadedView("homeSuppliers");
+                eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+            } else if (location.equals("user")) {
+                Storage.setCurrentlyLoadedView("userSuppliers");
+                eventBus.setUserBodyHolderWidget(view.getWidgetView());
+            }
         }
     }
 
@@ -221,14 +217,14 @@ public class HomeSuppliersPresenter
 
                 if (selected != null) {
                     wasSelection = true;
-                    eventBus.displayChildWidget(selected);
+                    eventBus.displayChildWidget(selected.getId());
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
                         searchDataHolder.initHomeSuppliers();
                     }
                     searchDataHolder.getHomeSuppliers().setSupplierCategory(
                             new CategoryDetail(selected.getId(), selected.getName()));
-                    eventBus.updatePath(selected);
+                    eventBus.addToPath(selected, location);
                 }
             }
         });
@@ -252,7 +248,7 @@ public class HomeSuppliersPresenter
                     searchDataHolder.getHomeSuppliers().setSupplierCategory(
                             new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.getSubCategories(selected.getId());
-                    eventBus.updatePath(selected);
+                    eventBus.addToPath(selected, location);
                 }
             }
         });
@@ -287,18 +283,6 @@ public class HomeSuppliersPresenter
 
     }
 
-//    public void onRootWithSearchDataHolder() {
-//        view.getFilterLabel().setVisible(true);
-//        view.getChildSection().setVisible(true);
-//        view.getRootSection().setVisible(false);
-//
-//        if (searchDataHolder.getHomeSuppliers().getSupplierCategory() == null) {
-//            eventBus.getSubCategories(null);
-//        } else {
-//            eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
-//        }
-//    }
-
     //
     //                      **** DISPLAY ****
     //
@@ -319,9 +303,9 @@ public class HomeSuppliersPresenter
         view.displaySubCategories(COLUMNS, subcategories);
 
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
-            searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, null));
+            searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));
         }
-        eventBus.getSuppliersCount(searchDataHolder);
+//        eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
         eventBus.loadingHide();
     }
@@ -342,13 +326,13 @@ public class HomeSuppliersPresenter
      * @param category selected from root categories in parent widget
      */
     /* CHILD WIDGET */
-    public void onDisplayChildWidget(CategoryDetail categoryDetail) {
-        eventBus.loadingShow(MSGS.loading());
+    public void onDisplayChildWidget(Long id) {
+//        eventBus.loadingShow(MSGS.loading());
 
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);
 
-        eventBus.getSubCategories(categoryDetail.getId());
+        eventBus.getSubCategories(id);
     }
 
     //
@@ -358,49 +342,47 @@ public class HomeSuppliersPresenter
      * Manages path and history calls. Adds and removes items from path according to history.
      * @param categoryDetail - category from url to be loaded
      */
-    public void onUpdatePath(CategoryDetail categoryDetail) {
-        List<Long> tmp = historyTokens.subList(0, pointer);
-        if (tmp.indexOf(categoryDetail.getId()) == -1) {
-            if (categoryDetail.getName() == null) {
-                int idx = historyTokens.indexOf(categoryDetail.getId()) + 1;
-                for (int i = pointer; i < idx; i++) {
-                    eventBus.getCategoryName(historyTokens.get(i));
-                }
-            } else {
-                historyTokens.add(categoryDetail.getId());
-                this.onAddToPath(categoryDetail);
-            }
-        } else {
-            this.removeFromPath(tmp, categoryDetail);
+    public void onUpdatePath(ArrayList<CategoryDetail> categories, String location) {
+        view.getPath().clear();
+
+        //Root
+        Hyperlink rootLink = new Hyperlink("root",
+                getTokenGenerator().addToPath(new CategoryDetail(0L, ""), location));
+        rootLink.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
+        view.addPath(rootLink);
+
+        //Anything else
+        for (int i = categories.size() - 1; i > 0; i--) {
+            String token = getTokenGenerator().addToPath(categories.get(i), location);
+            Hyperlink subLink = new Hyperlink(" -> " + categories.get(i).getName(), token);
+            subLink.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
+            view.addPath(subLink);
         }
+
+        //Last
+        // for last user addToPath method to generate token
+        eventBus.addToPath(categories.get(0), location);
     }
 
     /**
      * Adds hyperlink to path.
      * @param categoryDetail
      */
-    public void onAddToPath(CategoryDetail categoryDetail) {
-        pointer++;
-
-        String token = getTokenGenerator().updatePath(categoryDetail);
-        Hyperlink link = new Hyperlink(" -> " + categoryDetail.getName(), token);
+    public void onAddToPath(CategoryDetail categoryDetail, String location) {
+//        pointer++;
+        String symbol = "";
+        //Root
+        if (categoryDetail.getId() == 0) {
+            view.getPath().clear();
+            symbol = "root";
+        } else {
+            symbol = " -> ";
+        }
+        //Anything else
+        String token = getTokenGenerator().addToPath(categoryDetail, location);
+        Hyperlink link = new Hyperlink(symbol + categoryDetail.getName(), token);
 
         link.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
         view.addPath(link);
-    }
-
-    /**
-     * Remove hyperlink from path.
-     * @param tmpHistory
-     * @param detail
-     */
-    private void removeFromPath(List<Long> tmpHistory, CategoryDetail detail) {
-        int delete = tmpHistory.size() - tmpHistory.indexOf(detail.getId()) - 1;
-
-        for (int i = delete; i > 0; i--) {
-            // remove the least item
-            view.getPath().remove(view.getPath().getWidgetCount() - 1);
-            pointer--;
-        }
     }
 }

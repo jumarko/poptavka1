@@ -23,7 +23,7 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      */
     public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String location) {
         if (methodName.equals("initHomeDemandsModule")) {
-            return location;
+            return "location=" + location;
         }
         return "";
     }
@@ -39,7 +39,7 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
         if (methodName.equals("initHomeDemandsModule")) {
-            eventBus.initHomeDemandsModule(null, param);
+            eventBus.initHomeDemandsModule(null, param.replace("location=", ""));
         }
     }
 

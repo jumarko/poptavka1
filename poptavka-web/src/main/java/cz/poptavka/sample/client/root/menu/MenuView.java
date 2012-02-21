@@ -6,7 +6,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -21,9 +20,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }
     @UiField
-    Hyperlink linkHome;
-    @UiField
-    Button demands, suppliers, createSupplier, createDemand;
+    Button home, demands, suppliers, createSupplier, createDemand;
     @UiField
     UListElement menuList;
 
@@ -34,6 +31,11 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     public MenuView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
+    }
+
+    @Override
+    public HasClickHandlers getHomeButton() {
+        return home;
     }
 
     @Override
@@ -54,10 +56,5 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     @Override
     public HasClickHandlers getCreateDemandButton() {
         return createDemand;
-    }
-
-    @Override
-    public void setHomeToken(String token) {
-        linkHome.setTargetHistoryToken(token);
     }
 }

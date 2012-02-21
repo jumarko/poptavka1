@@ -28,26 +28,37 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
 
     public void bindView() {
         GWT.log("Binding menu view");
+        view.getHomeButton().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.atHome();
+            }
+        });
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 eventBus.initHomeDemandsModule(null, "home");
             }
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 eventBus.initHomeSuppliersModule(null, "home");
             }
         });
         view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 eventBus.initCreateSupplierModule("home");
             }
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
 
+            @Override
             public void onClick(ClickEvent event) {
                 eventBus.initCreateDemandModule("home");
             }

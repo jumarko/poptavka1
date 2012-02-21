@@ -24,7 +24,7 @@ import java.util.Map;
 
 /**
  *
- * @author ivan.vlcek
+ * @author martin.slavkovsky
  */
 @Events(startView = HomeSuppliersView.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -43,8 +43,16 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = HomeSuppliersPresenter.class)
     void forward();
 
+    /**
+     * The only entry point to this module due to code-splitting and exclusive
+     * fragment.
+     */
+    // INIT
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void initHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
+
     //
-    //                      Navigation events.
+    //                 **** Navigation events ****
     //
     // PARENT EVENTS
     @Event(forwardToParent = true)
@@ -58,14 +66,6 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void loadingHide();
-
-    /**
-     * The only entry point to this module due to code-splitting and exclusive
-     * fragment.
-     */
-    // INIT
-    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
-    String initHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
 
     //
     //                  **** DISPLAY ****
@@ -89,38 +89,35 @@ public interface HomeSuppliersEventBus extends EventBus {
      */
     // CHILD WIDGET
     @Event(handlers = HomeSuppliersPresenter.class)
-    void displayChildWidget(CategoryDetail categoryDetail);
+    void displayChildWidget(Long id);
 
     //
     //                  **** PATH ****
     //
     // UPDATE
-    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
-    String updatePath(CategoryDetail category);
+    @Event(handlers = HomeSuppliersPresenter.class)//, historyConverter = HomeSuppliersHistoryConverter.class)
+    void updatePath(ArrayList<CategoryDetail> categories, String location);
 
     /**
-     * Retrieve category for displaying ({@link addToPath}) its name in path.
-     * @param categoryId
-     */
-    @Event(handlers = HomeSuppliersHandler.class)
-    void getCategoryName(Long categoryId);
-
-    /**
-     * After retrieving category, add its name to path
+     * After retrieving category, add its name to path.
      * @param categoryDetail
      */
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void addToPath(CategoryDetail categoryDetail);
+    @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
+    String addToPath(CategoryDetail categoryDetail, String location);
 
+    //
+    //                  **** DATA ****
+    //
+    // PROVIDER
     @Event(handlers = HomeSuppliersPresenter.class)
     void createAsyncDataProvider(final int totalFound);
 
-    //
-    //              Business events handled by Handlers.
-    //
     // CATEGORIES
     @Event(handlers = HomeSuppliersHandler.class)
     void getCategories();
+
+    @Event(handlers = HomeSuppliersHandler.class)
+    void getCategoryParents(Long categoryId, final String location);
 
     @Event(handlers = HomeSuppliersHandler.class)
     void getSubCategories(Long category);
