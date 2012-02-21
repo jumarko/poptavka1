@@ -22,7 +22,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      * @param location
      * @return token string like module/method?param
      */
-    public String convertToString(String methodName, CategoryDetail categoryDetail, String location) {
+    public String convertToToken(String methodName, CategoryDetail categoryDetail, String location) {
         return "location=" + location + ";categoryId=" + Long.toString(categoryDetail.getId());
     }
 
