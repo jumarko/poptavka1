@@ -305,7 +305,7 @@ public class HomeSuppliersPresenter
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
             searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));
         }
-//        eventBus.getSuppliersCount(searchDataHolder);
+        eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
         eventBus.loadingHide();
     }

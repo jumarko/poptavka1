@@ -63,7 +63,7 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.initDemandModule(null, "clientMyDemands");
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
@@ -171,8 +171,8 @@ public class DemandModulePresenter
          * Therefore need to specify, which widget to load.
          */
         //Client
-        if (loadWidget.equals("myDemands")) {
-            //
+        if (loadWidget.equals("clientMyDemands")) {
+            eventBus.initClientList(filter);
         } else if (loadWidget.equals("clientOffers")) {
             //
         } else if (loadWidget.equals("clientAssignedDemands")) {
