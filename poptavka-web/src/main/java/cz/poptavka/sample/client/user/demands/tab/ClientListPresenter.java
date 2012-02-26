@@ -112,6 +112,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
 //        if (!initialized) {
         eventBus.requestClientsDemands();
 //        }
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (detailSection == null) {

@@ -171,8 +171,16 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
         for (UserMessage userMessage : userMessages) {
             ClientDemandMessageDetail detail = ClientDemandMessageDetail.createDetail(userMessage);
-            detail.setMessageCount(submessageCounts.get(userMessage.getMessage()));
-            detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage()));
+            if (submessageCounts.get(userMessage.getMessage()) == null) {
+                detail.setMessageCount(0);
+            } else {
+                detail.setMessageCount(submessageCounts.get(userMessage.getMessage()).intValue());
+            }
+            if (unreadSubmessageCounts.get(userMessage.getMessage()) == null) {
+                detail.setUnreadSubmessages(0);
+            } else {
+                detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage()));
+            }
         }
         return result;
     }
@@ -690,7 +698,6 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 //        if (searchDataHolder != null) {
 //            recipientMessagesSearch.addFilterIn("message", generalService.search(messageSearch));
 //        }
-
         //ziskaj prvotne spravy na vypis v tabulke
 //        List<Message> rootMessages = new ArrayList<Message>();
 //        List<Long> threadIds = new ArrayList<Long>();
@@ -715,14 +722,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 //                }
 //            }
 //        }
-
 //        Search firstBornRecipientMessagesSearch = new Search(Message.class);
 //        List<Message> firstBornRecipientMessages = new ArrayList<Message>();
 //        for (MessageUserRole mur : recipientMessages) {
 //            firstBornRecipientMessagesSearch.addFilterEqual("id", mur.getMessage().getId());
 //            firstBornRecipientMessages = generalService.search(firstBornRecipientMessagesSearch);
 //        }
-
 //        Map<Long, Message> rootRecipientMessages = new TreeMap<Long, Message>();
 //        for (MessageUserRole mur : senderMessages) {
 //            if (mur.getMessage().getParent() == null) {

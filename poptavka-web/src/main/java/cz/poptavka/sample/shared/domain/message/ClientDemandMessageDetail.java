@@ -27,8 +27,14 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
     public static DemandMessageDetail fillMessageDetail(ClientDemandMessageDetail detail,
             UserMessage userMessage) {
         MessageDetail.fillMessageDetail(detail, userMessage);
-        detail.setClientName(userMessage.getMessage().getDemand().getClient()
-                .getBusinessUser().getBusinessUserData().getDisplayName());
+        if (userMessage.getMessage() != null
+                && userMessage.getMessage().getDemand() != null
+                && userMessage.getMessage().getDemand().getClient() != null
+                && userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
+                && userMessage.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData() != null) {
+            detail.setClientName(userMessage.getMessage().getDemand().getClient()
+                    .getBusinessUser().getBusinessUserData().getDisplayName());
+        }
         return detail;
     }
 
@@ -37,7 +43,6 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
         ClientDemandMessageDetail.fillMessageDetail(detail, userMessage);
         return detail;
     }
-
 
     @Override
     public String toString() {
@@ -52,14 +57,14 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 + ",\n validToDate=" + getValidToDate()
                 + ",\n price=" + getPrice() + "}\n\n";
     }
-
     public static final ProvidesKey<ClientDemandMessageDetail> KEY_PROVIDER =
-        new ProvidesKey<ClientDemandMessageDetail>() {
-            @Override
-            public Object getKey(ClientDemandMessageDetail item) {
-                return item == null ? null : item.getDemandId();
-            }
-        };
+            new ProvidesKey<ClientDemandMessageDetail>() {
+
+                @Override
+                public Object getKey(ClientDemandMessageDetail item) {
+                    return item == null ? null : item.getDemandId();
+                }
+            };
 
     public String getClientName() {
         return clientName;
