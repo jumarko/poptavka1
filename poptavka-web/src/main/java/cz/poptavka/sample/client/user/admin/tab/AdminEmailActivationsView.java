@@ -28,7 +28,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.EmailActivationDetail;
+import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 
 import java.util.Date;
 

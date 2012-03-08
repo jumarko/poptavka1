@@ -1,6 +1,6 @@
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.adminModule;
 
-import cz.poptavka.sample.domain.invoice.PaymentMethod;
+import cz.poptavka.sample.domain.user.rights.Permission;
 import java.io.Serializable;
 
 /**
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Beho
  *
  */
-public class PaymentMethodDetail implements Serializable {
+public class PermissionDetail implements Serializable, Comparable<PermissionDetail> {
 
     /**
      * Generated serialVersionUID.
@@ -19,35 +19,38 @@ public class PaymentMethodDetail implements Serializable {
     private Long id;
     private String name;
     private String description;
+    private String code;
 
     /** for serialization. **/
-    public PaymentMethodDetail() {
+    public PermissionDetail() {
     }
 
-    public PaymentMethodDetail(PaymentMethodDetail demand) {
-        this.updateWholePaymentMethod(demand);
+    public PermissionDetail(PermissionDetail prem) {
+        this.updateWholePermission(prem);
     }
 
     /**
      * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
+     * @param perm
      * @return DemandDetail
      */
-    public static PaymentMethodDetail createPaymentMethodDetail(PaymentMethod demand) {
-        PaymentMethodDetail detail = new PaymentMethodDetail();
+    public static PermissionDetail createPermissionsDetail(Permission perm) {
+        PermissionDetail detail = new PermissionDetail();
 
-        detail.setId(demand.getId());
-        detail.setName(demand.getName());
-        detail.setDescription(demand.getDescription());
+        detail.setId(perm.getId());
+        detail.setName(perm.getName());
+        detail.setDescription(perm.getDescription());
+        detail.setCode(perm.getCode());
 
         return detail;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholePaymentMethod(PaymentMethodDetail paymentMethodDetail) {
-        id = paymentMethodDetail.getId();
-        name = paymentMethodDetail.getName();
-        description = paymentMethodDetail.getDescription();
+    public void updateWholePermission(PermissionDetail permissionsDetail) {
+        id = permissionsDetail.getId();
+        name = permissionsDetail.getName();
+        description = permissionsDetail.getDescription();
+        code = permissionsDetail.getCode();
     }
 
     public String getDescription() {
@@ -74,14 +77,23 @@ public class PaymentMethodDetail implements Serializable {
         this.name = name;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     @Override
     public String toString() {
 
-        return "\nGlobal PaymentMethod Detail Info:"
-                + "\n    demandTypeId="
+        return "\nGlobal Permissions Detail Info:"
+                + "\n    Id="
                 + id + "\n     name="
                 + name + "\n    Description="
-                + description;
+                + description + "\n    Code="
+                + code;
     }
 
     @Override
@@ -92,7 +104,7 @@ public class PaymentMethodDetail implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final PaymentMethodDetail other = (PaymentMethodDetail) obj;
+        final PermissionDetail other = (PermissionDetail) obj;
         if (this.id != other.getId()) {
             return false;
         }
@@ -104,5 +116,10 @@ public class PaymentMethodDetail implements Serializable {
         int hash = 7;
         hash = 11 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
+    }
+
+    @Override
+    public int compareTo(PermissionDetail t) {
+        return name.compareTo(t.getName());
     }
 }

@@ -1,7 +1,8 @@
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.adminModule;
 
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.product.UserService;
+import cz.poptavka.sample.shared.domain.UserServiceDetail;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;

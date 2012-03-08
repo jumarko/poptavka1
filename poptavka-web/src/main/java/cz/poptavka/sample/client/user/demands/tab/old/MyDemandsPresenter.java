@@ -21,6 +21,7 @@ import cz.poptavka.sample.client.user.UserEventBus;
 import cz.poptavka.sample.client.user.widget.grid.unused.GlobalDemandConversationTable;
 import cz.poptavka.sample.client.user.widget.grid.unused.SingleDemandConversationTable;
 import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.DemandMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
@@ -94,14 +95,14 @@ public class MyDemandsPresenter extends
     }
 
     // PARENT TABLE
-    public void onSetClientDemandWithConversations(ArrayList<ClientDemandMessageDetail> demandMessageList) {
-        List<ClientDemandMessageDetail> list = view.getDemandProvider().getList();
-        list.clear();
-        for (ClientDemandMessageDetail m : demandMessageList) {
-            list.add(m);
-        }
-        GWT.log("DATA SIZE: " + list.size());
-        refreshDisplays();
+    public void onSetClientDemandWithConversations(ArrayList<ClientDemandDetail> demandMessageList) {
+//        List<ClientDemandMessageDetail> list = view.getDemandProvider().getList();
+//        list.clear();
+//        for (ClientDemandMessageDetail m : demandMessageList) {
+//            list.add(m);
+//        }
+//        GWT.log("DATA SIZE: " + list.size());
+//        refreshDisplays();
 
 //        eventBus.displayContent(view.getWidgetView());
     }

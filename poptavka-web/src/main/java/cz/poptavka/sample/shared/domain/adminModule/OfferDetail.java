@@ -1,4 +1,4 @@
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.adminModule;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

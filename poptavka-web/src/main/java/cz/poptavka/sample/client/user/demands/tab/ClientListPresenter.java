@@ -20,7 +20,7 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.client.user.widget.grid.UniversalGrid;
-import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -42,13 +42,13 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
         Button getUnstarBtn();
 
         //table getters
-        UniversalGrid<ClientDemandMessageDetail> getGrid();
+        UniversalGrid<ClientDemandDetail> getGrid();
 
-        ListDataProvider<ClientDemandMessageDetail> getDataProvider();
+        ListDataProvider<ClientDemandDetail> getDataProvider();
 
         List<Long> getSelectedIdList();
 
-        Set<ClientDemandMessageDetail> getSelectedMessageList();
+        Set<ClientDemandDetail> getSelectedMessageList();
 
         //detail wrapper
         SimplePanel getWrapperPanel();
@@ -137,13 +137,13 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onResponseClientsDemands(ArrayList<ClientDemandMessageDetail> data) {
+    public void onResponseClientsDemands(ArrayList<ClientDemandDetail> data) {
         GWT.log("++ onResponseClientsDemands");
 
         if (data.size() > 0) {
-            List<ClientDemandMessageDetail> list = view.getDataProvider().getList();
+            List<ClientDemandDetail> list = view.getDataProvider().getList();
             list.clear();
-            for (ClientDemandMessageDetail d : data) {
+            for (ClientDemandDetail d : data) {
                 list.add(d);
             }
             view.getDataProvider().refresh();

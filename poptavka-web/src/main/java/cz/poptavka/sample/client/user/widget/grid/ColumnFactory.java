@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -17,6 +18,7 @@ import com.google.gwt.view.client.SelectionModel;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.widget.grid.cell.ClickableDateCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.StarCell;
+import cz.poptavka.sample.client.user.widget.grid.cell.StateCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.StatusImageCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.UrgentImageCell;
 import cz.poptavka.sample.domain.demand.DemandStatus;
@@ -43,21 +45,23 @@ public class ColumnFactory<T> {
     public static final int COL_FIVE = 5;
     public static final int COL_SIX = 6;
     public static final int COL_SEVEN = 7;
-
     public static final int DATE_CREATED = 0;
     public static final int DATE_FINISHED = 1;
     public static final int DATE_EXPIRE = 2;
-
+    public static final int DATE_VALIDTO = 3;
+    public static final int DATE_RECEIVED = 4;
+    public static final int DATE_ACCEPTED = 5;
     //widths
     public static final int WIDTH_40 = 40;
-
     // for EVERY text display
     // providing HTML safe display
     private ClickableTextCell tableTextCell = new ClickableTextCell(new SafeHtmlRenderer<String>() {
+
         @Override
         public SafeHtml render(String object) {
             return SafeHtmlUtils.fromTrustedString(object);
         }
+
         @Override
         public void render(String object, SafeHtmlBuilder builder) {
             builder.appendHtmlConstant(object);
@@ -80,16 +84,34 @@ public class ColumnFactory<T> {
     }
 
     /**
+     * Image header for rating column.
+     *
+     * @return new header
+     */
+    public Header<ImageResource> createRatingImgHeader() {
+
+//        return new Header<ImageResource>(new AbstractCell<ImageResource>()) {
+//
+//            @Override
+//            public ImageResource getValue() {
+//                return Storage.RSCS.images().urgent();
+//            }
+//        };
+        return null;
+    }
+
+    /**
      * Create checkbox column providing selecting whole row/rows.
      *
      * @param selectionModel
      * @return checkColumn
      */
     public Column<T, Boolean> createCheckboxColumn(final SelectionModel<T> selectionModel) {
-        Column<T, Boolean> checkColumn =  new Column<T, Boolean>(new CheckboxCell(true, false)) {
+        Column<T, Boolean> checkColumn = new Column<T, Boolean>(new CheckboxCell(true, false)) {
+
             @Override
             public Boolean getValue(T object) {
-              // Get the value from the selection model.
+                // Get the value from the selection model.
                 return selectionModel.isSelected(object);
             }
         };
@@ -115,13 +137,36 @@ public class ColumnFactory<T> {
                 TableDisplay obj = (TableDisplay) object;
                 return obj.isStarred();
             }
-
         };
         //set column style
         col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
         return col;
     }
 
+    /**
+     * Creates star-column depending on messages' isRead value. By clicking this cell, STAR attribute is immediately
+     * updated in database.
+     *
+     * NOTE:
+     * Sorting is not implemented now.
+     * //TODO
+     * Implement sorting according to star status
+     *
+     * @return star column
+     */
+    public Column<T, DemandStatus> createStateColumn() {
+        Column<T, DemandStatus> col = new Column<T, DemandStatus>(new StateCell()) {
+
+            @Override
+            public DemandStatus getValue(T object) {
+                TableDisplay obj = (TableDisplay) object;
+                return obj.getDemandStatus();
+            }
+        };
+        //set column style
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+        return col;
+    }
 
     /**
      * Create title column.
@@ -140,20 +185,21 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return BaseDemandDetail.displayHtml(obj.getDemandTitle()
+                    return BaseDemandDetail.displayHtml(obj.getTitle()
                             + " " + obj.getFormattedMessageCount(), obj.isRead());
                 } else {
-                    return BaseDemandDetail.displayHtml(obj.getDemandTitle(), obj.isRead());
+                    return BaseDemandDetail.displayHtml(obj.getTitle(), obj.isRead());
                 }
             }
         });
         if (sortHandler != null) {
             titleColumn.setSortable(true);
             sortHandler.setComparator(titleColumn, new Comparator<T>() {
+
                 @Override
                 public int compare(T o1, T o2) {
 
-                    return ((TableDisplay) o1).getDemandTitle().compareTo(((TableDisplay) o2).getDemandTitle());
+                    return ((TableDisplay) o1).getTitle().compareTo(((TableDisplay) o2).getTitle());
                 }
             });
         }
@@ -168,18 +214,20 @@ public class ColumnFactory<T> {
      */
     public Column<T, String> createPriceColumn(ListHandler<T> sortHandler) {
         Column<T, String> titleColumn = (new Column<T, String>(tableTextCell) {
+
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return BaseDemandDetail.displayHtml(obj.getDemandPrice(), obj.isRead());
+                return BaseDemandDetail.displayHtml(obj.getPrice(), obj.isRead());
             }
         });
         if (sortHandler != null) {
             titleColumn.setSortable(true);
             sortHandler.setComparator(titleColumn, new Comparator<T>() {
+
                 @Override
                 public int compare(T o1, T o2) {
-                    return ((TableDisplay) o1).getDemandPrice().compareTo(((TableDisplay) o2).getDemandPrice());
+                    return ((TableDisplay) o1).getPrice().compareTo(((TableDisplay) o2).getPrice());
                 }
             });
         }
@@ -223,15 +271,14 @@ public class ColumnFactory<T> {
      * @param sortHandler
      * @return ratingColumn
      */
-    public Column<T, String> createClientRatingColumn(ListHandler<T> sortHandler) {
+    public Column<T, String> createRatingColumn(ListHandler<T> sortHandler) {
         Column<T, String> ratingColumn = new Column<T, String>(tableTextCell) {
 
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return obj.getClientRating() + "%";
+                return obj.getRating() + "%";
             }
-
         };
         if (sortHandler != null) {
             ratingColumn.setSortable(true);
@@ -239,8 +286,8 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    Integer count1 = ((TableDisplay) o1).getClientRating();
-                    Integer count2 = ((TableDisplay) o2).getClientRating();
+                    Integer count1 = ((TableDisplay) o1).getRating();
+                    Integer count2 = ((TableDisplay) o2).getRating();
                     return count1.compareTo(count2);
                 }
             });
@@ -259,8 +306,8 @@ public class ColumnFactory<T> {
      * @param displayMessageCount
      * @return clientName column
      */
-    public Column<T, String> createClientColumn(ListHandler<T> sortHandler, final boolean displayMessageCount) {
-        Column<T, String> clientColumn = new Column<T, String>(tableTextCell) {
+    public Column<T, String> createSenderColumn(ListHandler<T> sortHandler, final boolean displayMessageCount) {
+        Column<T, String> nameColumn = new Column<T, String>(tableTextCell) {
 
             private boolean displayMessages = displayMessageCount;
 
@@ -268,16 +315,15 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return obj.getClientName() + " " + obj.getFormattedMessageCount();
+                    return obj.getSender() + " " + obj.getFormattedMessageCount();
                 } else {
-                    return obj.getClientName();
+                    return obj.getSender();
                 }
             }
-
         };
         if (sortHandler != null) {
-            clientColumn.setSortable(true);
-            sortHandler.setComparator(clientColumn, new Comparator<T>() {
+            nameColumn.setSortable(true);
+            sortHandler.setComparator(nameColumn, new Comparator<T>() {
 
                 @Override
                 public int compare(T o1, T o2) {
@@ -287,7 +333,7 @@ public class ColumnFactory<T> {
                 }
             });
         }
-        return clientColumn;
+        return nameColumn;
     }
 
     /**
@@ -311,16 +357,26 @@ public class ColumnFactory<T> {
                 switch (type) {
                     case DATE_CREATED:
                         date = obj.getCreated();
+                        break;
                     case DATE_EXPIRE:
                         date = obj.getExpireDate();
+                        break;
                     case DATE_FINISHED:
                         date = obj.getEndDate();
+                        break;
+                    case DATE_VALIDTO:
+                        date = obj.getValidToDate();
+                        break;
+                    case DATE_RECEIVED:
+                        date = obj.getReceivedDate();
+                        break;
+                    case DATE_ACCEPTED:
+                        date = obj.getAcceptedDate();
                     default:
                         break;
                 }
                 return date;
             }
-
         };
         if (sortHandler != null) {
             ratingColumn.setSortable(true);
@@ -343,7 +399,6 @@ public class ColumnFactory<T> {
                 TableDisplay obj = (TableDisplay) object;
                 return obj.getDemandStatus();
             }
-
         };
         if (sortHandler != null) {
             statusColumn.setSortable(true);
@@ -357,6 +412,4 @@ public class ColumnFactory<T> {
         }
         return statusColumn;
     }
-
-
 }

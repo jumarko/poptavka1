@@ -34,7 +34,7 @@ import cz.poptavka.sample.client.main.common.search.views.PotentialDemandMessage
 import cz.poptavka.sample.client.user.widget.LoadingDiv;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
+import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.ArrayList;
 import java.util.List;
 

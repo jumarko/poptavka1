@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.google.gwt.core.client.GWT;
 
 import cz.poptavka.sample.domain.message.Message;
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 
 public class FullOfferDetail implements Serializable {

@@ -19,7 +19,7 @@ import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.AddressDetail;
-import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.ArrayList;
 import java.util.Collection;

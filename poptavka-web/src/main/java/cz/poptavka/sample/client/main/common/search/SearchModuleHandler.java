@@ -13,7 +13,7 @@ import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
+import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.List;
 
 //@SuppressWarnings("deprecation")

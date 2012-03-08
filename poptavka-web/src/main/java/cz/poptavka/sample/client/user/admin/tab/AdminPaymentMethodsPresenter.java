@@ -33,7 +33,7 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.PaymentMethodDetail;
+import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

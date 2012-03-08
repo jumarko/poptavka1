@@ -28,7 +28,7 @@ import cz.poptavka.sample.client.user.demands.tab.ClientListPresenter.IList;
 import cz.poptavka.sample.client.user.widget.grid.ColumnFactory;
 import cz.poptavka.sample.client.user.widget.grid.UniversalGrid;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
 import cz.poptavka.sample.shared.domain.message.TableDisplay;
 
 /**
@@ -53,7 +53,7 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
 
     //DataGridattributes
     @UiField(provided = true)
-    UniversalGrid<ClientDemandMessageDetail> demandGrid;
+    UniversalGrid<ClientDemandDetail> demandGrid;
     @UiField(provided = true)
     SimplePager pager;
 
@@ -78,12 +78,12 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
         //demandGrid init
-        demandGrid = new UniversalGrid<ClientDemandMessageDetail>(ClientDemandMessageDetail.KEY_PROVIDER);
+        demandGrid = new UniversalGrid<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         // Add a selection model so we can select cells.
-        final SelectionModel<ClientDemandMessageDetail> selectionModel =
-            new MultiSelectionModel<ClientDemandMessageDetail>(ClientDemandMessageDetail.KEY_PROVIDER);
+        final SelectionModel<ClientDemandDetail> selectionModel =
+            new MultiSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         demandGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager
-            .<ClientDemandMessageDetail>createCheckboxManager());
+            .<ClientDemandDetail>createCheckboxManager());
 
         //init table
         initTableColumns(selectionModel);
@@ -102,79 +102,75 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
     }
 
     @Override
-    public UniversalGrid<ClientDemandMessageDetail> getGrid() {
+    public UniversalGrid<ClientDemandDetail> getGrid() {
         return demandGrid;
     }
 
     @Override
-    public ListDataProvider<ClientDemandMessageDetail> getDataProvider() {
+    public ListDataProvider<ClientDemandDetail> getDataProvider() {
         return demandGrid.getDataProvider();
     }
 
     /**
      * Create all columns to the grid and define click actions.
      */
-    public void initTableColumns(final SelectionModel<ClientDemandMessageDetail> selectionModel) {
+    public void initTableColumns(final SelectionModel<ClientDemandDetail> selectionModel) {
         //init column factory
-        ColumnFactory<ClientDemandMessageDetail> factory = new ColumnFactory<ClientDemandMessageDetail>();
+        ColumnFactory<ClientDemandDetail> factory = new ColumnFactory<ClientDemandDetail>();
 
 // **** definition of all needed FieldUpdaters
         //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
-        FieldUpdater<ClientDemandMessageDetail, String> action = new FieldUpdater<ClientDemandMessageDetail, String>() {
+        FieldUpdater<ClientDemandDetail, String> action = new FieldUpdater<ClientDemandDetail, String>() {
 
             @Override
-            public void update(int index, ClientDemandMessageDetail object,
+            public void update(int index, ClientDemandDetail object,
                     String value) {
                 TableDisplay obj = (TableDisplay) object;
                 obj.setRead(true);
                 demandGrid.redraw();
-                /*
-                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
-                */
+//presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
             }
         };
 
         //DATE FIELD UPDATER displaying of demand detail. The fieldUpdater 'action' cannot be used,
         //because this is working with Date instead of String
-        FieldUpdater<ClientDemandMessageDetail, Date> dateAction = new FieldUpdater<ClientDemandMessageDetail,
+        FieldUpdater<ClientDemandDetail, Date> dateAction = new FieldUpdater<ClientDemandDetail,
             Date>() {
 
             @Override
-            public void update(int index, ClientDemandMessageDetail object,
+            public void update(int index, ClientDemandDetail object,
                     Date value) {
                 //for pure display detail action
-                /*
-                presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
-                */
+//presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
             }
         };
 
-        Column<ClientDemandMessageDetail, DemandStatus> statusColumn =
+        Column<ClientDemandDetail, DemandStatus> statusColumn =
             factory.createStatusColumn(demandGrid.getSortHandler());
         demandGrid.addColumn(statusColumn, Storage.MSGS.status());
 
 // **** demand title column
-        Column<ClientDemandMessageDetail, String> titleCol =
+        Column<ClientDemandDetail, String> titleCol =
             factory.createTitleColumn(demandGrid.getSortHandler(), true);
         titleCol.setFieldUpdater(action);
         demandGrid.addColumn(titleCol, Storage.MSGS.title());
 
 // **** demand price column
-        Column<ClientDemandMessageDetail, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
+        Column<ClientDemandDetail, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
         priceCol.setFieldUpdater(action);
         demandGrid.addColumn(priceCol, Storage.MSGS.price());
 
  // **** finishDate column
-        Column<ClientDemandMessageDetail, Date> finishCol =
+        Column<ClientDemandDetail, Date> finishCol =
             factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_FINISHED);
         finishCol.setFieldUpdater(dateAction);
         demandGrid.addColumn(finishCol, Storage.MSGS.finnishDate());
 
 // **** expireDate column
-        Column<ClientDemandMessageDetail, Date> expireCol =
-            factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_EXPIRE);
+        Column<ClientDemandDetail, Date> expireCol =
+            factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_VALIDTO);
         expireCol.setFieldUpdater(dateAction);
-        demandGrid.addColumn(expireCol, Storage.MSGS.expireDate());
+        demandGrid.addColumn(expireCol, Storage.MSGS.validTo());
     }
 
     @Override
@@ -200,8 +196,8 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
     @Override
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
-        Set<ClientDemandMessageDetail> set = getSelectedMessageList();
-        Iterator<ClientDemandMessageDetail> it = set.iterator();
+        Set<ClientDemandDetail> set = getSelectedMessageList();
+        Iterator<ClientDemandDetail> it = set.iterator();
         while (it.hasNext()) {
 //            idList.add(it.next().getUserMessageId());
         }
@@ -210,9 +206,9 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
 
     @SuppressWarnings("unchecked")
     @Override
-    public Set<ClientDemandMessageDetail> getSelectedMessageList() {
-        MultiSelectionModel<ClientDemandMessageDetail> model
-            = (MultiSelectionModel<ClientDemandMessageDetail>) demandGrid.getSelectionModel();
+    public Set<ClientDemandDetail> getSelectedMessageList() {
+        MultiSelectionModel<ClientDemandDetail> model
+            = (MultiSelectionModel<ClientDemandDetail>) demandGrid.getSelectionModel();
         return model.getSelectedSet();
     }
 

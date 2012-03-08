@@ -18,11 +18,11 @@ import cz.poptavka.sample.client.user.handler.MessageHandler;
 import cz.poptavka.sample.client.user.handler.UserHandler;
 import cz.poptavka.sample.client.user.problems.MyProblemsPresenter;
 import cz.poptavka.sample.client.user.widget.unused.OldDetailWrapperPresenter;
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
@@ -312,8 +312,7 @@ public interface UserEventBus extends EventBusWithLookup {
     void getClientDemandWithConversations(Long userId, Long clientId);
 
     @Event(handlers = MyDemandsPresenter.class)
-    void setClientDemandWithConversations(
-            ArrayList<ClientDemandMessageDetail> result);
+    void setClientDemandWithConversations(ArrayList<ClientDemandDetail> result);
 
     @Event(handlers = MessageHandler.class)
     void requestDemandConversations(long messageId);

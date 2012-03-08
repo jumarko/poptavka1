@@ -70,7 +70,7 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.initDemandModule(null, "clientOffers");
             }
         });
         view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
@@ -174,7 +174,7 @@ public class DemandModulePresenter
         if (loadWidget.equals("clientMyDemands")) {
             eventBus.initClientList(filter);
         } else if (loadWidget.equals("clientOffers")) {
-            //
+            eventBus.initClientOffers(filter);
         } else if (loadWidget.equals("clientAssignedDemands")) {
             //
         //Supplier

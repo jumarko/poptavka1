@@ -41,11 +41,11 @@ public class DemandMessageDetail extends MessageDetail implements
         return detail;
     }
 
-    public String getDemandTitle() {
+    public String getTitle() {
         return demandTitle;
     }
 
-    public void setDemandTitle(String demandTitle) {
+    public void setTitle(String demandTitle) {
         this.demandTitle = demandTitle;
     }
 
@@ -77,8 +77,8 @@ public class DemandMessageDetail extends MessageDetail implements
         }
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getPrice() {
+        return price.toString();
     }
 
     public long getDemandId() {

@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.widget.detail.OfferDetailView;
-import cz.poptavka.sample.shared.domain.OfferDetail;
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 // TODO beho delete after making sure, it can't be used.

@@ -34,7 +34,7 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.EmailActivationDetail;
+import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

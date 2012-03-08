@@ -1,0 +1,67 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:s="urn:import:cz.poptavka.sample.client.user.widget.grid"
+        xmlns:d="urn:import:cz.poptavka.sample.client.user.demands.tab">
+
+    <ui:with field='res'
+		type='cz.poptavka.sample.client.resources.StyleResource' />
+
+    <ui:style>
+		
+    </ui:style>
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:east size="500">
+            <g:SimplePanel ui:field="wrapperPanel">
+                <g:HTMLPanel>
+                    <div>
+                        <strong>Defail detail panel</strong>
+                        <br />
+                        <br />
+                        <div>
+							Default content....can contain some advertisements.
+                        </div>
+                    </div>
+                </g:HTMLPanel>
+            </g:SimplePanel>
+        </g:east>
+        <g:center>
+            <g:VerticalPanel>
+                <g:DockLayoutPanel unit="EM" ui:field="demandsPanel">
+                    <g:north size="5">
+                        <g:HorizontalPanel>
+                            <g:Label>Vypis klientovych poptaviek</g:Label>
+                            <g:ListBox ui:field="pageSizeComboDemands"/>
+                            <c:SimplePager ui:field='demandPager' />
+                        </g:HorizontalPanel>
+                    </g:north>
+                    <g:center>
+<!--                    <s:UniversalGrid ui:field="demandGrid" />-->
+                        <c:DataGrid ui:field="demandGrid"/>
+                    </g:center>
+                </g:DockLayoutPanel>
+                <g:DockLayoutPanel unit="EM" ui:field="offersPanel">
+                    <g:north size="5">
+                        <g:VerticalPanel>
+                            <g:Button ui:field="backBtn">Spat na vypis poptaviek s ponukami</g:Button>
+                            <g:Label ui:field="chosenDemandTitle">Nazov zvolenej poptavky</g:Label>
+                            <g:HorizontalPanel>
+                                <g:Button ui:field="acceptBtn">Accept</g:Button>
+                                <g:Button ui:field="denyBtn">Deny</g:Button>
+                                <g:Button ui:field="replyBtn">Reply</g:Button>
+                                <g:ListBox ui:field="actionList"/>
+                                <g:ListBox ui:field="pageSizeComboOfferMessages"/>
+                                <c:SimplePager ui:field='offersPager' />
+                            </g:HorizontalPanel>
+                        </g:VerticalPanel>
+                    </g:north>
+                    <g:center>
+                        <s:UniversalGrid ui:field="offerGrid" />
+<!--                    <c:DataGrid ui:field="offerGrid"/>-->
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:VerticalPanel>
+        </g:center>
+    </g:SplitLayoutPanel>
+</ui:UiBinder>

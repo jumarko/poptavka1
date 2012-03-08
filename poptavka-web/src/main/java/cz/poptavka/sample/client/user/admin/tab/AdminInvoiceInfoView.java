@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import cz.poptavka.sample.shared.domain.InvoiceDetail;
+import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 import java.math.BigDecimal;
 
 /**

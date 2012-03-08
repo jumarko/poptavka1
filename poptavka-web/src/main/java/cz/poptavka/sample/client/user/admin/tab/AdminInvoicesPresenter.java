@@ -29,7 +29,7 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.InvoiceDetail;
+import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

@@ -20,7 +20,6 @@
                     </li>
                     <li>
                         <g:Button ui:field="cliOffers">
-                            ** INACTIVE **
                             <ui:msg key="offers">Offers</ui:msg>
                         </g:Button>
                     </li>

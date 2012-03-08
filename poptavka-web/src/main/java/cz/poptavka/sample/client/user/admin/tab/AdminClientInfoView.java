@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.domain.user.Verification;
-import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
 
 /**
  *

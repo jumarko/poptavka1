@@ -12,8 +12,8 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.OfferDetail;
-import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
@@ -30,37 +30,38 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // Beho: ??? needed ???
     public void onGetClientDemands(Long userId, int fakeParameter) {
-        messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<MessageDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("MessageHandler: onGetClientDemands:\n\n" + caught.getMessage());
-            }
-
-            @Override
-            public void onSuccess(ArrayList<MessageDetail> result) {
-//                eventBus.responseClientDemands(result);
-            }
-        });
+//        messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<ClientDemandDetail>>() {
+//            @Override
+//            public void onFailure(Throwable caught) {
+//                Window.alert("MessageHandler: onGetClientDemands:\n\n" + caught.getMessage());
+//            }
+//
+//            @Override
+//            public void onSuccess(ArrayList<ClientDemandDetail> result) {
+////                eventBus.responseClientDemands(result);
+//            }
+//        });
     }
 
     public void onGetClientDemandWithConversations(Long userId, Long clientId) {
-        messageService.getListOfClientDemandMessages(userId, clientId,
-                new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
+        messageService.getClientDemands(userId, clientId,
+                new AsyncCallback<ArrayList<ClientDemandDetail>>() {
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
-                }
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
+                    }
 
-                @Override
-                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
-                    eventBus.setClientDemandWithConversations(result);
-                }
-            });
+                    @Override
+                    public void onSuccess(ArrayList<ClientDemandDetail> result) {
+                        eventBus.setClientDemandWithConversations(result);
+                    }
+                });
     }
 
     public void onRequestDemandConversations(long messageId) {
         messageService.getClientDemandConversations(messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
+
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("MessageHandler: onRequestDemandConversations:\n\n" + caught.getMessage());
@@ -76,6 +77,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     public void onRequestSingleConversation(long threadRootId, long messageId) {
         messageService.getConversationMessages(threadRootId, messageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
+
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("MessageHandler: onRequestSingleConversation:\n\n" + caught.getMessage());
@@ -146,6 +148,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     public void onRequestPotentialDemandReadStatusChange(ArrayList<Long> messagesId, boolean isRead) {
         messageService.setMessageReadStatus(messagesId, isRead, new AsyncCallback<Void>() {
+
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Auto-generated method stub
@@ -184,6 +187,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     public void onGetPotentialDemands(long businessUserId) {
         messageService.getPotentialDemands(businessUserId,
                 new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
+
                     @Override
                     public void onFailure(Throwable caught) {
                         Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList"

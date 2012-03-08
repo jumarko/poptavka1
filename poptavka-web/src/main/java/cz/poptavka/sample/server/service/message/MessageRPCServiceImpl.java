@@ -8,7 +8,9 @@ import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
+import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageState;
@@ -27,11 +29,15 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientOfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
+import java.math.BigDecimal;
+import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -160,28 +166,68 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return ClientDemandMessageDetail
      */
     @Override
-    public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(
+    public ArrayList<ClientDemandDetail> getClientDemands(
             long businessUserId, long clientId) {
-        ArrayList<ClientDemandMessageDetail> result = new ArrayList();
-        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
-        Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
-        Map<Message, Integer> unreadSubmessageCounts =
-                this.messageService.getListOfClientDemandMessagesUnread(businessUser);
-        List<UserMessage> userMessages = userMessageService.getUserMessages(
-                new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
-        for (UserMessage userMessage : userMessages) {
-            ClientDemandMessageDetail detail = ClientDemandMessageDetail.createDetail(userMessage);
-            if (submessageCounts.get(userMessage.getMessage()) == null) {
-                detail.setMessageCount(0);
-            } else {
-                detail.setMessageCount(submessageCounts.get(userMessage.getMessage()).intValue());
-            }
-            if (unreadSubmessageCounts.get(userMessage.getMessage()) == null) {
-                detail.setUnreadSubmessages(0);
-            } else {
-                detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage()));
-            }
-        }
+        ArrayList<ClientDemandDetail> result = new ArrayList();
+        //Fake Data
+        ClientDemandDetail clientDemandDetail1 = new ClientDemandDetail();
+        clientDemandDetail1.setDemandId(1L);
+        clientDemandDetail1.setDemandStatus(DemandStatus.ASSIGNED);
+        clientDemandDetail1.setTitle("Poptavam vytvorenie a spravu elektronick   ");
+        clientDemandDetail1.setMessageCount(3);
+        clientDemandDetail1.setPrice(BigDecimal.valueOf(9000));
+        clientDemandDetail1.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail1.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail1);
+
+        ClientDemandDetail clientDemandDetail2 = new ClientDemandDetail();
+        clientDemandDetail2.setDemandId(2L);
+        clientDemandDetail2.setDemandStatus(DemandStatus.ACTIVE);
+        clientDemandDetail2.setTitle("Poptavam 6 ton zeleza");
+        clientDemandDetail2.setMessageCount(2);
+        clientDemandDetail2.setPrice(BigDecimal.valueOf(54500));
+        clientDemandDetail2.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail2.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail2);
+
+        ClientDemandDetail clientDemandDetail3 = new ClientDemandDetail();
+        clientDemandDetail3.setDemandId(3L);
+        clientDemandDetail3.setDemandStatus(DemandStatus.CANCELED);
+        clientDemandDetail3.setTitle("Poptavam vyvoj SW");
+        clientDemandDetail3.setMessageCount(4);
+        clientDemandDetail3.setPrice(BigDecimal.valueOf(46600));
+        clientDemandDetail3.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail3.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail3);
+
+        ClientDemandDetail clientDemandDetail4 = new ClientDemandDetail();
+        clientDemandDetail4.setDemandId(4L);
+        clientDemandDetail4.setDemandStatus(DemandStatus.NEW);
+        clientDemandDetail4.setTitle("Poptavam vyvoj webstranky");
+        clientDemandDetail4.setMessageCount(5);
+        clientDemandDetail4.setPrice(BigDecimal.valueOf(12000));
+        clientDemandDetail4.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail4.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail4);
+//        BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
+//        Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
+//        Map<Message, Integer> unreadSubmessageCounts =
+//                this.messageService.getListOfClientDemandMessagesUnread(businessUser);
+//        List<UserMessage> userMessages = userMessageService.getUserMessages(
+//                new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
+//        for (UserMessage userMessage : userMessages) {
+//            ClientDemandMessageDetail detail = ClientDemandMessageDetail.createDetail(userMessage);
+//            if (submessageCounts.get(userMessage.getMessage()) == null) {
+//                detail.setMessageCount(0);
+//            } else {
+//                detail.setMessageCount(submessageCounts.get(userMessage.getMessage()).intValue());
+//            }
+//            if (unreadSubmessageCounts.get(userMessage.getMessage()) == null) {
+//                detail.setUnreadSubmessages(0);
+//            } else {
+//                detail.setUnreadSubmessages(unreadSubmessageCounts.get(userMessage.getMessage()));
+//            }
+//        }
         return result;
     }
 
@@ -356,6 +402,81 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
     }
 
+    @Override
+    public Long filterClientOffersCount(SearchModuleDataHolder detail) {
+        return 4L;
+    }
+
+    @Override
+    public ArrayList<ClientDemandDetail> filterClientOffers(int start, int count,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+        ArrayList<ClientDemandDetail> result = new ArrayList<ClientDemandDetail>();
+        //Fake Data
+        ClientDemandDetail clientDemandDetail1 = new ClientDemandDetail();
+        clientDemandDetail1.setDemandId(1L);
+        clientDemandDetail1.setTitle("Poptavam vytvorenie a spravu elektronick   ");
+        clientDemandDetail1.setMessageCount(5);
+        clientDemandDetail1.setPrice(BigDecimal.valueOf(12000));
+        clientDemandDetail1.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail1.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail1);
+
+        ClientDemandDetail clientDemandDetail2 = new ClientDemandDetail();
+        clientDemandDetail2.setDemandId(2L);
+        clientDemandDetail2.setTitle("Poptavam 6 ton zeleza");
+        clientDemandDetail2.setMessageCount(5);
+        clientDemandDetail2.setPrice(BigDecimal.valueOf(12000));
+        clientDemandDetail2.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail2.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail2);
+
+        ClientDemandDetail clientDemandDetail3 = new ClientDemandDetail();
+        clientDemandDetail3.setDemandId(3L);
+        clientDemandDetail3.setTitle("Poptavam vyvoj SW");
+        clientDemandDetail3.setMessageCount(5);
+        clientDemandDetail3.setPrice(BigDecimal.valueOf(12000));
+        clientDemandDetail3.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail3.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail3);
+
+        ClientDemandDetail clientDemandDetail4 = new ClientDemandDetail();
+        clientDemandDetail4.setDemandId(4L);
+        clientDemandDetail4.setTitle("Poptavam vyvoj webstranky");
+        clientDemandDetail4.setMessageCount(5);
+        clientDemandDetail4.setPrice(BigDecimal.valueOf(12000));
+        clientDemandDetail4.setEndDate(Date.valueOf("2011-01-12"));
+        clientDemandDetail4.setValidToDate(Date.valueOf("2011-01-01"));
+        result.add(clientDemandDetail4);
+        return result;
+    }
+
+    @Override
+    public ArrayList<ClientOfferDetail> getClientOfferMessages(long clientDemandId) {
+        ArrayList<ClientOfferDetail> result = new ArrayList<ClientOfferDetail>();
+        //Fake Data
+        ClientOfferDetail clientOfferDetail1 = new ClientOfferDetail();
+        clientOfferDetail1.setOfferId(1L);
+        clientOfferDetail1.setSender("Good Data s.r.o.");
+        clientOfferDetail1.setMessageCount(3);
+        clientOfferDetail1.setPrice(BigDecimal.valueOf(9000));
+        clientOfferDetail1.setReceivedDate(Date.valueOf("2011-06-23"));
+        clientOfferDetail1.setAcceptedDate(Date.valueOf("2011-06-23"));
+        clientOfferDetail1.setRating(90);
+        result.add(clientOfferDetail1);
+
+        ClientOfferDetail clientOfferDetail2 = new ClientOfferDetail();
+        clientOfferDetail2.setOfferId(2L);
+        clientOfferDetail2.setSender("T-Mobile");
+        clientOfferDetail2.setMessageCount(3);
+        clientOfferDetail2.setPrice(BigDecimal.valueOf(10000));
+        clientOfferDetail2.setReceivedDate(Date.valueOf("2011-04-30"));
+        clientOfferDetail2.setAcceptedDate(Date.valueOf("2011-04-30"));
+        clientOfferDetail2.setRating(34);
+        result.add(clientOfferDetail2);
+
+        return result;
+    }
+
     /**
      *
      * TODO - remove this garbage and call {@link UserMessageService#getPotentialDemands)
@@ -496,8 +617,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 //            search.addFilterLessOrEqual("demand.client.overalRating",
 //                    searchDataHolder.getPotentialDemandMessages().getRatingTo());
 //        }
-//        if (searchDataHolder.getPotentialDemandMessages().getDemandTitle() != null) {
-//            search.addFilterLike("demand.title", searchDataHolder.getPotentialDemandMessages().getDemandTitle());
+//        if (searchDataHolder.getPotentialDemandMessages().getSender() != null) {
+//            search.addFilterLike("demand.title", searchDataHolder.getPotentialDemandMessages().getSender());
 //        }
 //        //TODO demand.price alebo offer.price???
 //        if (searchDataHolder.getPotentialDemandMessages().getPriceFrom() != null) {

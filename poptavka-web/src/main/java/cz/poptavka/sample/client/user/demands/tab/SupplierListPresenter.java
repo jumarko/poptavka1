@@ -67,6 +67,7 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
     private SearchModuleDataHolder searchDataHolder;
 
     /** Defines button actions. */
+    @Override
     public void bindView() {
         view.getReadBtn().addClickHandler(new ClickHandler() {
 

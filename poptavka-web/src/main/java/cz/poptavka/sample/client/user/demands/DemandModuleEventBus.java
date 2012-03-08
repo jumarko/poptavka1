@@ -15,26 +15,31 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.handler.DemandModuleContentHandler;
 import cz.poptavka.sample.client.user.demands.handler.DemandModuleMessageHandler;
 import cz.poptavka.sample.client.user.demands.tab.ClientListPresenter;
+import cz.poptavka.sample.client.user.demands.tab.ClientOffersPresenter;
 import cz.poptavka.sample.client.user.demands.tab.SupplierListPresenter;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientOfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
+import java.util.Map;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startView = DemandModuleView.class, module = DemandModule.class)
 public interface DemandModuleEventBus extends EventBus {
 
-
     /**************************************************************************/
     /* Navigation | Initialization events. */
-
     //production init method
     //during development used multiple instancing
     @Event(handlers = ClientListPresenter.class)//, historyConverter = DemandModuleHistoryConverter.class)
     void initClientList(SearchModuleDataHolder filter);
+
+    @Event(handlers = ClientOffersPresenter.class)//, historyConverter = DemandModuleHistoryConverter.class)
+    void initClientOffers(SearchModuleDataHolder filter);
 
     @Event(handlers = SupplierListPresenter.class)//, historyConverter = DemandModuleHistoryConverter.class)
     void initSupplierList(SearchModuleDataHolder filter);
@@ -42,7 +47,6 @@ public interface DemandModuleEventBus extends EventBus {
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by DemandModulePresenter. */
-
     //init demands module - left user_type menu and initial content
     @Event(handlers = DemandModulePresenter.class, historyConverter = DemandModuleHistoryConverter.class)
     String initDemandModule(SearchModuleDataHolder filter, String loadWidget);
@@ -70,10 +74,10 @@ public interface DemandModuleEventBus extends EventBus {
 
     @Event(handlers = DemandModulePresenter.class)
     void setUserBodyHolderWidget(IsWidget body);
+
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by ALL VIEW presenters. */
-
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.
@@ -83,9 +87,19 @@ public interface DemandModuleEventBus extends EventBus {
     @Event(handlers = DemandModuleMessageHandler.class)
     void sendMessage(MessageDetail messageToSend, ViewType type);
     //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
-    @Event(handlers = {SupplierListPresenter.class }, passive = true)
+
+    @Event(handlers = SupplierListPresenter.class, passive = true)
     void sendMessageResponse(MessageDetail sentMessage, ViewType type);
 
+    /**************************************************************************/
+    @Event(handlers = DemandModuleContentHandler.class)
+    void filterClientOffersCount(SearchModuleDataHolder detail);
+
+    @Event(handlers = DemandModuleContentHandler.class)
+    void filterClientOffers(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+
+    @Event(handlers = ClientOffersPresenter.class)
+    void createAsyncClientDemandDataProvider(final int resultCount);
 
     /**************************************************************************/
     /* Business events handled by SupplierListPresenter. */
@@ -96,10 +110,26 @@ public interface DemandModuleEventBus extends EventBus {
      */
     @Event(handlers = DemandModuleContentHandler.class)
     void requestClientsDemands();
-    @Event(handlers = ClientListPresenter.class)
-    void responseClientsDemands(ArrayList<ClientDemandMessageDetail> result);
 
-    /**************************************************************************/
+    @Event(handlers = ClientListPresenter.class)
+    void responseClientsDemands(ArrayList<ClientDemandDetail> result);
+    /*
+     * Request/Response Method pair
+     * Offers for CLIENT - his offers
+     */
+
+    @Event(handlers = DemandModuleContentHandler.class)
+    void requestClientsOffers();
+
+    @Event(handlers = ClientOffersPresenter.class)
+    void responseClientsOffers(ArrayList<ClientDemandDetail> result);
+
+    @Event(handlers = DemandModuleContentHandler.class)
+    void requestClientsOfferMessages(Long clienDemandId);
+
+    @Event(handlers = ClientOffersPresenter.class)
+    void responseClientsOfferMessages(ArrayList<ClientOfferDetail> result);
+
     /* Business events handled by SupplierListPresenter. */
 
     /*
@@ -108,10 +138,11 @@ public interface DemandModuleEventBus extends EventBus {
      */
     @Event(handlers = DemandModuleContentHandler.class)
     void requestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder);
+
     @Event(handlers = SupplierListPresenter.class)
     void responseSupplierNewDemands(ArrayList<PotentialDemandMessage> result);
 
-
+    /**************************************************************************/
     @Event(handlers = DemandModuleContentHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
 
@@ -129,8 +160,20 @@ public interface DemandModuleEventBus extends EventBus {
      */
     @Event(handlers = DemandModuleContentHandler.class)
     void requestDemandDetail(Long demandId, ViewType type);
+
     @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
     void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
+
+    /*
+     * Request/Response Method pair
+     * DemandDetail for detail section
+     * @param demandId
+     * @param type
+     */
+    @Event(handlers = DemandModuleContentHandler.class)
+    void requestOfferDetail(Long offerId, ViewType type);
+//    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+//    void responseOfferDetail(OfferDetail offerDetail, ViewType type);
 
     /*
      * Request/Response method pair
@@ -141,12 +184,7 @@ public interface DemandModuleEventBus extends EventBus {
      */
     @Event(handlers = DemandModuleMessageHandler.class)
     void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
+
     @Event(handlers = DevelDetailWrapperPresenter.class)
     void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
-
-
-
-
-
-
 }

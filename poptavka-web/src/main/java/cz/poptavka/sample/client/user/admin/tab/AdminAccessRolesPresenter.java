@@ -31,7 +31,7 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.AccessRoleDetail;
+import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 
 import java.util.Arrays;
 import java.util.HashMap;

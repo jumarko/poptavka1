@@ -11,12 +11,15 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
+import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
+import cz.poptavka.sample.shared.domain.demandsModule.ClientOfferDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
+import java.util.Map;
 
 /**
  *
@@ -25,12 +28,24 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 @RemoteServiceRelativePath("service/messages")
 public interface MessageRPCService extends RemoteService {
 
+    // DEMAND MODULE
+    // Client Demands
     ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam);
 
-    ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId);
+    ArrayList<ClientDemandDetail> getClientDemands(long businessUserId, long clientId);
 
     ArrayList<MessageDetail> getClientDemandConversations(long threadRootId);
 
+    // Client Offers
+    Long filterClientOffersCount(SearchModuleDataHolder detail);
+
+    ArrayList<ClientDemandDetail> filterClientOffers(int start, int count,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+
+    ArrayList<ClientOfferDetail> getClientOfferMessages(long clientDemandId);
+
+    //
+//    ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId);
     ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId);
 
     ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);

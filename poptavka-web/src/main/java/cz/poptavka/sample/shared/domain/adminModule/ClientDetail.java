@@ -1,8 +1,9 @@
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.adminModule;
 
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.shared.domain.UserDetail;
 import java.io.Serializable;
 
 import java.util.ArrayList;

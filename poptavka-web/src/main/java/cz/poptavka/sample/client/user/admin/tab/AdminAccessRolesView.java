@@ -24,8 +24,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.AccessRoleDetail;
-import cz.poptavka.sample.shared.domain.PermissionDetail;
+import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
+import cz.poptavka.sample.shared.domain.adminModule.PermissionDetail;
 
 /**
  *

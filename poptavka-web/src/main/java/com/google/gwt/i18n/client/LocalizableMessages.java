@@ -144,4 +144,8 @@ public interface LocalizableMessages extends Messages {
     String getProblemData();
     String commit();
 
+    //Demand module
+    String received();
+    String accepted();
+
 }

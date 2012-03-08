@@ -1,4 +1,4 @@
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.adminModule;
 
 import cz.poptavka.sample.domain.invoice.OurPaymentDetails;
 import java.io.Serializable;

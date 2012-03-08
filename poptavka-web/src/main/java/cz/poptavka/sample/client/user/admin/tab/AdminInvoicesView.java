@@ -26,7 +26,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.InvoiceDetail;
+import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 
 /**
  *

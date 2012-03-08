@@ -9,8 +9,11 @@ import java.io.Serializable;
 import com.google.gwt.view.client.ProvidesKey;
 
 import cz.poptavka.sample.domain.message.UserMessage;
+import java.util.Date;
 
 /**
+ * Used in DemandModule in client -> MyDemands section.
+ * Holds information about demands created by Client.
  *
  * @author ivan.vlcek
  */
@@ -32,8 +35,8 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 && userMessage.getMessage().getDemand().getClient() != null
                 && userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
                 && userMessage.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData() != null) {
-            detail.setClientName(userMessage.getMessage().getDemand().getClient()
-                    .getBusinessUser().getBusinessUserData().getDisplayName());
+            detail.setSender(userMessage.getMessage().getDemand()
+                    .getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         }
         return detail;
     }
@@ -51,7 +54,7 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 + ",\n demandId=" + getDemandId()
                 + ",\n senderId=" + getSenderId()
                 + ",\n unreadSubmessages=" + getUnreadSubmessages()
-                + ",\n demandTitle=" + getDemandTitle()
+                + ",\n demandTitle=" + getSender()
                 + ",\n demandStatus=" + getDemandStatus()
                 + ",\n endDate=" + getEndDate()
                 + ",\n validToDate=" + getValidToDate()
@@ -66,19 +69,41 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 }
             };
 
-    public String getClientName() {
+    @Override
+    public String getSender() {
         return clientName;
     }
 
-    public void setClientName(String clientName) {
+    public void setSender(String clientName) {
         this.clientName = clientName;
     }
 
-    public int getClientRating() {
+    @Override
+    public int getRating() {
         return clientRating;
     }
 
-    public void setClientRating(int clientRating) {
+    public void setRating(int clientRating) {
         this.clientRating = clientRating;
     }
+
+    @Override
+    public Date getReceivedDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Date getAcceptedDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getTitle() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+//    @Override
+//    public String getPrice() {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 }

@@ -1,6 +1,6 @@
-package cz.poptavka.sample.shared.domain;
+package cz.poptavka.sample.shared.domain.adminModule;
 
-import cz.poptavka.sample.domain.settings.Preference;
+import cz.poptavka.sample.domain.invoice.PaymentMethod;
 import java.io.Serializable;
 
 /**
@@ -10,47 +10,44 @@ import java.io.Serializable;
  * @author Beho
  *
  */
-public class PreferenceDetail implements Serializable {
+public class PaymentMethodDetail implements Serializable {
 
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
     private Long id;
-    private String key;
-    private String value;
+    private String name;
     private String description;
 
     /** for serialization. **/
-    public PreferenceDetail() {
+    public PaymentMethodDetail() {
     }
 
-    public PreferenceDetail(PreferenceDetail pref) {
-        this.updateWholePreference(pref);
+    public PaymentMethodDetail(PaymentMethodDetail demand) {
+        this.updateWholePaymentMethod(demand);
     }
 
     /**
      * Method created FullDemandDetail from provided Demand domain object.
-     * @param pref
+     * @param demand
      * @return DemandDetail
      */
-    public static PreferenceDetail createPreferenceDetail(Preference pref) {
-        PreferenceDetail detail = new PreferenceDetail();
+    public static PaymentMethodDetail createPaymentMethodDetail(PaymentMethod demand) {
+        PaymentMethodDetail detail = new PaymentMethodDetail();
 
-        detail.setId(pref.getId());
-        detail.setKey(pref.getKey());
-        detail.setValue(pref.getValue());
-        detail.setDescription(pref.getDescription());
+        detail.setId(demand.getId());
+        detail.setName(demand.getName());
+        detail.setDescription(demand.getDescription());
 
         return detail;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholePreference(PreferenceDetail preferenceDetail) {
-        id = preferenceDetail.getId();
-        key = preferenceDetail.getKey();
-        value = preferenceDetail.getValue();
-        description = preferenceDetail.getDescription();
+    public void updateWholePaymentMethod(PaymentMethodDetail paymentMethodDetail) {
+        id = paymentMethodDetail.getId();
+        name = paymentMethodDetail.getName();
+        description = paymentMethodDetail.getDescription();
     }
 
     public String getDescription() {
@@ -69,30 +66,21 @@ public class PreferenceDetail implements Serializable {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
-    public void setKey(String name) {
-        this.key = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
 
-        return "\nGlobal Preference Detail Info:"
+        return "\nGlobal PaymentMethod Detail Info:"
                 + "\n    demandTypeId="
-                + id + "\n     key="
-                + key + "\n    value="
-                + key + "\n    Description="
+                + id + "\n     name="
+                + name + "\n    Description="
                 + description;
     }
 
@@ -104,7 +92,7 @@ public class PreferenceDetail implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final PreferenceDetail other = (PreferenceDetail) obj;
+        final PaymentMethodDetail other = (PaymentMethodDetail) obj;
         if (this.id != other.getId()) {
             return false;
         }

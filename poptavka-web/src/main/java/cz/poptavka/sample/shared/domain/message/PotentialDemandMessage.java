@@ -13,7 +13,6 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
      *
      */
     private static final long serialVersionUID = -6105359783491407143L;
-
     private String clientName;
     private Integer clientRating;
 
@@ -24,31 +23,13 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
     public static PotentialDemandMessage fillMessageDetail(PotentialDemandMessage detail,
             UserMessage userMessage) {
         DemandMessageDetail.fillMessageDetail(detail, userMessage);
-        detail.setClientName(userMessage.getMessage().getDemand().getClient()
-                .getBusinessUser().getBusinessUserData().getDisplayName());
+        detail.setSender(userMessage.getMessage().getDemand()
+                .getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         detail.setClientRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
         return detail;
     }
-
-    @Override
-    public int getClientRating() {
-        return (clientRating == null ? 0 : clientRating.intValue());
-    }
-
-    public void setClientRating(Integer clientRating) {
-        this.clientRating = clientRating;
-    }
-
-    @Override
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
     public static final ProvidesKey<PotentialDemandMessage> KEY_PROVIDER = new ProvidesKey<PotentialDemandMessage>() {
+
         @Override
         public Object getKey(PotentialDemandMessage item) {
             return item == null ? null : item.getDemandId();
@@ -60,4 +41,31 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
         return null;
     }
 
+    @Override
+    public Date getReceivedDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Date getAcceptedDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getSender() {
+        return clientName;
+    }
+
+    public void setSender(String name) {
+        this.clientName = name;
+    }
+
+    @Override
+    public int getRating() {
+        return (clientRating == null ? 0 : clientRating.intValue());
+    }
+
+    public void setClientRating(Integer clientRating) {
+        this.clientRating = clientRating;
+    }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.ClientDetail;
+import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.util.Map;
 
