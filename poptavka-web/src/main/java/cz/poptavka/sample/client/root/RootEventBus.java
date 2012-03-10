@@ -1,3 +1,13 @@
+/*
+ * RootEventBus servers all events for foot module. This is the starting
+ * EventBus that handled the very first event in the app.
+ *
+ * Root Module countains all child modules, and all initial presenters like
+ * Header, HomeMenu, UserMenu, SearchPanel, HomeBody, UserBody, Footer.
+ *
+ * Specification:
+ * Wireframe: http://www.webgres.cz/axure/
+ */
 package cz.poptavka.sample.client.root;
 
 import java.util.ArrayList;
@@ -56,19 +66,78 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
     @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false) })
 public interface RootEventBus extends EventBus {
 
+    /**
+     * First event to be handled
+     */
     @Start
     @InitHistory
-    @Event(handlers = {RootPresenter.class, MenuPresenter.class,
-            SearchBarPresenter.class, FooterPresenter.class,
-            HeaderPresenter.class })
+    @Event(handlers = { RootPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
+            FooterPresenter.class, HeaderPresenter.class })
     void start();
 
+    /**************************************************************************/
+    /* Navigation events. */
+    // TODO praso - place all navigation events to this section and separate them
+    // into parent class
+
+    /* Home menu control section */
+    @Event(modulesToLoad = HomeWelcomeModule.class)
+    void initHomeWelcomeModule(SearchModuleDataHolder filter);
+
+    @Event(modulesToLoad = HomeDemandsModule.class)
+    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+
+    @Event(modulesToLoad = HomeSuppliersModule.class)
+    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+
+    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
+    // pohladoch. Alebo je tam nejaky default filter?
+    @Event(modulesToLoad = SupplierCreationModule.class)
+    void initCreateSupplierModule(String location);
+
+    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
+    // pohladoch. Alebo je tam nejaky default filter?
+    @Event(modulesToLoad = DemandCreationModule.class)
+    void initCreateDemandModule(String location);
+
+    /* User menu control section */
+    @Event(modulesToLoad = DemandModule.class)
+    void initDemandModule(SearchModuleDataHolder filter, String loadWidget);
+
+    /**
+     * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
+     * @param filter - provided by search module
+     */
+    @Event(modulesToLoad = MessagesModule.class)
+    void initMessagesModule(SearchModuleDataHolder filter, String loadWidget);
+
+    @Event(modulesToLoad = SettingsModule.class)
+    void initSettings();
+
+    @Event(modulesToLoad = AdminModule.class)
+    void initAdminModule(SearchModuleDataHolder filter, String loadWidget);
+
+    /* Both Home and User menut control section */
+    @Event(modulesToLoad = SearchModule.class)
+    void initSearchModule(SimplePanel panel);
+
+    @Event(modulesToLoad = SearchModule.class)
+    void clearSearchContent();
+
+    // TODO praso - preco pouzivame setUserBodyHolderWidget a este aj initDemandModule na inicializaciu
+    // demand modulu? Mali by sme mat len jednu navigation event ktora bude inicializovat modul
+    // To iste pre SearchModule, ktory sa inicializuje vo viacerych roznych eventoch
+    @Event(modulesToLoad = DemandModule.class)
+    void setUserBodyHolderWidget(IsWidget body);
+
+    /**************************************************************************/
+    /* Parent events */
+    /* There are no parent events for RootModule */
+    /**************************************************************************/
+    /* Business events handled by Presenters. */
     @NotFoundHistory
     @Event(handlers = RootPresenter.class)
     void notFound();
-
-    @Event(handlers = RootHandler.class)
-    void getUser();
 
     @Event(handlers = RootPresenter.class)
     void setUser(UserDetail user);
@@ -77,30 +146,25 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void setSearchBar(IsWidget searchBar);
 
-    @Event(modulesToLoad = SearchModule.class)
-    void clearSearchContent();
-
     @Event(handlers = RootPresenter.class)
     void setFooter(IsWidget footer);
 
     @Event(handlers = RootPresenter.class)
     void setHeader(IsWidget header);
 
-    @DisplayChildModuleView({HomeWelcomeModule.class })
+    @DisplayChildModuleView({ HomeWelcomeModule.class })
     //SupplierCreationModule.class})
     // DemandCreationModule.class, SupplierCreationModule.class })//,
     // HomeDemandsModule.class, HomeSuppliersModule.class })
     // UserModule.class })
+    // TODO praso - preco ste toto zakomentovali???
     @Event(handlers = RootPresenter.class)
     void setHomeBodyHolderWidget(IsWidget body);
-
-    @Event(modulesToLoad = DemandModule.class)
-    void setUserBodyHolderWidget(IsWidget body);
 
     @Event(handlers = HeaderPresenter.class, historyConverter = RootHistoryConverter.class)
     String atHome();
 
-    @Event(handlers = {HeaderPresenter.class, RootPresenter.class })
+    @Event(handlers = { HeaderPresenter.class, RootPresenter.class })
     void atAccount();
 
     @Event(handlers = LoginPopupPresenter.class)
@@ -119,9 +183,6 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void loadingHide();
     // Afer login
-
-    @Event(handlers = RootHandler.class)
-    void createDemand(FullDemandDetail detail, Long clientId);
 
     @Event(handlers = RootPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
@@ -142,12 +203,6 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = CategorySelectorPresenter.class)
     void setCategoryListData(int newListPosition, ArrayList<CategoryDetail> list);
 
-    @Event(handlers = RootHandler.class)
-    void getRootCategories();
-
-    @Event(handlers = RootHandler.class)
-    void getChildListCategories(int newListPosition, String categoryId);
-
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget);
@@ -156,17 +211,11 @@ public interface RootEventBus extends EventBus {
     void setLocalityData(int localityType,
             ArrayList<LocalityDetail> localityList);
 
-    @Event(handlers = RootHandler.class)
-    void getChildLocalities(int localityType, String locCode);
-
-    @Event(handlers = RootHandler.class)
-    void getRootLocalities();
-
     /** Demand Creation common method calls. */
     @Event(handlers = RootPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
 
-    /** Menu section */
+    /** Menu section. */
     @Event(handlers = RootPresenter.class)
     void setMenu(IsWidget menu);
 
@@ -189,23 +238,6 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
-    /** Menu control section */
-    // HOME
-    @Event(modulesToLoad = HomeWelcomeModule.class)
-    void initHomeWelcomeModule(SearchModuleDataHolder filter);
-
-    @Event(modulesToLoad = HomeDemandsModule.class)
-    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
-
-    @Event(modulesToLoad = HomeSuppliersModule.class)
-    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
-
-    @Event(modulesToLoad = SupplierCreationModule.class)
-    void initCreateSupplierModule(String location);
-
-    @Event(modulesToLoad = DemandCreationModule.class)
-    void initCreateDemandModule(String location);
-
     // USER
 //    @Event(modulesToLoad = UserModule.class)
 //    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
@@ -215,23 +247,23 @@ public interface RootEventBus extends EventBus {
 //
 //    @Event(modulesToLoad = UserModule.class)
 //    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
-    @Event(modulesToLoad = DemandModule.class)
-    void initDemandModule(SearchModuleDataHolder filter, String loadWidget);
+    /**************************************************************************/
+    /* Business events handled by Handlers. */
+    @Event(handlers = RootHandler.class)
+    void createDemand(FullDemandDetail detail, Long clientId);
 
-    /**
-     * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
-     * @param filter - provided by search module
-     */
-    @Event(modulesToLoad = MessagesModule.class)
-    void initMessagesModule(SearchModuleDataHolder filter, String loadWidget);
+    @Event(handlers = RootHandler.class)
+    void getUser();
 
-    @Event(modulesToLoad = SettingsModule.class)
-    void initSettings();
+    @Event(handlers = RootHandler.class)
+    void getRootCategories();
 
-    @Event(modulesToLoad = AdminModule.class)
-    void initAdminModule(SearchModuleDataHolder filter, String loadWidget);
+    @Event(handlers = RootHandler.class)
+    void getChildListCategories(int newListPosition, String categoryId);
 
-    // BOTH
-    @Event(modulesToLoad = SearchModule.class)
-    void initSearchModule(SimplePanel panel);
+    @Event(handlers = RootHandler.class)
+    void getChildLocalities(int localityType, String locCode);
+
+    @Event(handlers = RootHandler.class)
+    void getRootLocalities();
 }

@@ -15,6 +15,10 @@ public class SearchBarPresenter extends
 
     public void onStart() {
         GWT.log("Search bar module loaded");
+        // TODO praso - preco je toto zakomentovane? Je to kvoli tomu, ze search bar view
+        // sa nasetuje do widgetu az na zaklade vybraneho pohladu? Podobne ako sa nasetuje
+        // menu podla Home / User casti. Alebo je to tym, ze je nastaveny autodisplay pre
+        // tento search module?
         // eventBus.setSearchBar(view);
     }
 }

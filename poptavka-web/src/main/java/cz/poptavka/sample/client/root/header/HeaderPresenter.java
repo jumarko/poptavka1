@@ -19,6 +19,8 @@ import cz.poptavka.sample.client.root.interfaces.IHeaderView.IHeaderPresenter;
 public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         implements IHeaderPresenter {
 
+    // TODO praso - Nemali by sme mat LocalizablaMessages ako static instanciu v Storage?
+    // Preco ju vytvarame znovu na tomto mieste?
     private static final LocalizableMessages MSGS = GWT
             .create(LocalizableMessages.class);
 

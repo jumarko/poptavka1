@@ -15,12 +15,18 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         implements IMenuPresenter {
 
     public void onStart() {
+        // TODO praso - preco volame bindView a neprepisujeme defaultnu bind() metodu
+        // ktora sa vola defaultne pri prvom spusteni presentera?
         bindView();
         GWT.log("Menu module loaded");
         eventBus.setMenu(view);
     }
 
     public void onSetHomeMenu() {
+        // TODO praso - preco tu volame znovu bind metod. Nestaci prvy krat v onStart()?
+        // vid docs
+        // if presenter is activated and if it's the first event handled by the presenter,
+        // it calls the bind method.
         bindView();
         GWT.log("set menu after log out");
         eventBus.setMenu(view);
@@ -30,6 +36,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         GWT.log("Binding menu view");
         view.getHomeButton().addClickHandler(new ClickHandler() {
 
+            // TODO praso na co je tato metoda? Ma odhlasovat alebo co?
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.atHome();

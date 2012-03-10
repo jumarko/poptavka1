@@ -79,6 +79,7 @@ public class SearchModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
+                // TODO praso - Preco pouzivame text a nie konstantu pre text retazce v equals?
                 if (Storage.getCurrentlyLoadedView().equals("homeDemands")) {
                     eventBus.initHomeDemandsModule(view.getFilter(), "home");
                 } else if (Storage.getCurrentlyLoadedView().equals("userDemands")) {
