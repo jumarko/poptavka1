@@ -19,7 +19,7 @@ public class MyDemandsView extends Composite {
 //
 //    @UiField
 //    Button button;
-//
+// upravicka
 //    public MyDemandsView(String firstName) {
 //        initWidget(uiBinder.createAndBindUi(this));
 //        button.setText(firstName);
