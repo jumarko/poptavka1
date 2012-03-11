@@ -80,7 +80,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      */
     public UserDetail createNewClient(UserDetail clientDetail) {
         Preconditions.checkNotNull(clientDetail);
-        Client newClient = new Client();
+        final Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
                 .companyName(clientDetail.getCompanyName()).
@@ -92,7 +92,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 taxId(clientDetail.getTaxId()).build();
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
         /** Address. **/
-        List<Address> addresses = new ArrayList<Address>();
+        final List<Address> addresses = new ArrayList<Address>();
         // TODO are addresses really required - if yes add check for not null,
         // otherwise following for-each throws NPE if clienDetail#getAddresses returns null
         if (clientDetail.getAddresses() != null) {
@@ -109,9 +109,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setAddresses(addresses);
         /** Login & pwd information. **/
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
-        // TODO Vojto - skontrolovat ci je password sifrovany. ako sa uklada do DB?
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
-        Client newClientFromDB = clientService.create(newClient);
+        final Client newClientFromDB = clientService.create(newClient);
         return this.toUserDetail(newClientFromDB.getBusinessUser().getId(),
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
@@ -127,7 +126,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         if (clientFromDB.isEmpty()) {
             return new UserDetail();
         } else {
-            Client user = clientFromDB.get(0);
+            final Client user = clientFromDB.get(0);
             return toUserDetail(user.getBusinessUser().getId(), user.getBusinessUser().getBusinessUserRoles());
         }
     }
