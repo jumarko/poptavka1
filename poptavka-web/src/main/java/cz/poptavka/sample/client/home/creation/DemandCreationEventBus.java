@@ -6,9 +6,7 @@
  */
 package cz.poptavka.sample.client.home.creation;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -26,6 +24,10 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface DemandCreationEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
     @Start
     @Event(handlers = DemandCreationPresenter.class)
     void start();
@@ -33,27 +35,27 @@ public interface DemandCreationEventBus extends EventBus {
     /**
      * Forward event is called only if it is configured here. It there is nothing to carry out
      * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
      */
     @Forward
     @Event(handlers = DemandCreationPresenter.class)
     void forward();
 
     /**************************************************************************/
-    /* Navigation events. */
+    /* Navigation events.                                                     */
+    /**************************************************************************/
     /**
-     * The only entry point to this module due to code-splitting and exclusive fragment.
+     * The only entry point to this module due to code-spliting feature.
+     *
+     * @param location - defines loacation of view
      */
     @Event(handlers = DemandCreationPresenter.class, historyConverter = DemandCreationHistoryConverter.class)
-    String initCreateDemandModule(String location);
-
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
-
-    @Event(forwardToParent = true)
-    void setUserBodyHolderWidget(Widget body);
+    String goToCreateDemandModule(String location);
 
     /**************************************************************************/
-    /* Parent events. */
+    /* Parent events                                                          */
+    /**************************************************************************/
+    // TODO Praso - GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
@@ -67,8 +69,8 @@ public interface DemandCreationEventBus extends EventBus {
     void initLocalityWidget(SimplePanel holderWidget);
 
     /**************************************************************************/
-    /* Business events. */
-    /* Business events handled by Presenters. */
+    /* Business events handled by Presenters.                                 */
+    /**************************************************************************/
     @Event(handlers = DemandCreationPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
 
@@ -98,7 +100,9 @@ public interface DemandCreationEventBus extends EventBus {
     @Event(handlers = FormUserRegistrationPresenter.class)
     void checkFreeEmailResponse(Boolean result);
 
-    /* Business events handled by Handlers. */
+    /**************************************************************************/
+    /* Business events handled by Handlers.                                   */
+    /**************************************************************************/
     @Event(handlers = DemandCreationHandler.class)
     void registerNewClient(UserDetail newClient);
 
@@ -115,4 +119,5 @@ public interface DemandCreationEventBus extends EventBus {
 
     @Event(handlers = DemandCreationHandler.class)
     void checkFreeEmail(String value);
+
 }

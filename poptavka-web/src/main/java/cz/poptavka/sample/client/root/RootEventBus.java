@@ -40,10 +40,10 @@ import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.root.footer.FooterPresenter;
 import cz.poptavka.sample.client.root.header.HeaderPresenter;
 import cz.poptavka.sample.client.root.menu.MenuPresenter;
+import cz.poptavka.sample.client.root.menu.UserMenuPresenter;
 import cz.poptavka.sample.client.root.searchBar.SearchBarPresenter;
 import cz.poptavka.sample.client.user.admin.AdminModule;
 import cz.poptavka.sample.client.user.demands.DemandModule;
-import cz.poptavka.sample.client.user.menu.UserMenuPresenter;
 import cz.poptavka.sample.client.user.messages.MessagesModule;
 import cz.poptavka.sample.client.user.settings.SettingsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -55,86 +55,93 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
     @ChildModule(moduleClass = HomeWelcomeModule.class, async = false, autoDisplay = true),
-    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = SearchModule.class, async = false, autoDisplay = true),
-    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false) })
+    @ChildModule(moduleClass = DemandCreationModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = SupplierCreationModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = true) })
 public interface RootEventBus extends EventBus {
 
     /**
-     * First event to be handled
+     * First event that loads the layout.
      */
     @Start
     @InitHistory
-    @Event(handlers = { RootPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
-            FooterPresenter.class, HeaderPresenter.class })
+    @Event(handlers = { HeaderPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
+            RootPresenter.class, FooterPresenter.class })
     void start();
 
     /**************************************************************************/
-    /* Navigation events. */
+    /* Navigation events.                                                     */
+    /**************************************************************************/
     // TODO praso - place all navigation events to this section and separate them
     // into parent class
+    @Event(handlers = RootPresenter.class)
+    void goToPage1(String string);
+
+    @Event(handlers = RootPresenter.class)
+    void goToPage2(String string);
 
     /* Home menu control section */
+    // TODO praso - nechyba tu nahodou historyConverter?
     @Event(modulesToLoad = HomeWelcomeModule.class)
-    void initHomeWelcomeModule(SearchModuleDataHolder filter);
+    void goToHomeWelcomeModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = HomeDemandsModule.class)
-    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(modulesToLoad = HomeSuppliersModule.class)
-    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?
     @Event(modulesToLoad = SupplierCreationModule.class)
-    void initCreateSupplierModule(String location);
+    void goToCreateSupplierModule(String location);
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?
     @Event(modulesToLoad = DemandCreationModule.class)
-    void initCreateDemandModule(String location);
+    void goToCreateDemandModule(String location);
 
     /* User menu control section */
     @Event(modulesToLoad = DemandModule.class)
-    void initDemandModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToDemandModule(SearchModuleDataHolder filter, String loadWidget);
 
     /**
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
      * @param filter - provided by search module
      */
     @Event(modulesToLoad = MessagesModule.class)
-    void initMessagesModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToMessagesModule(SearchModuleDataHolder filter, String loadWidget);
 
     @Event(modulesToLoad = SettingsModule.class)
-    void initSettings();
+    void goToSettingsModule();
 
     @Event(modulesToLoad = AdminModule.class)
-    void initAdminModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToAdminModule(SearchModuleDataHolder filter, String loadWidget);
 
     /* Both Home and User menut control section */
     @Event(modulesToLoad = SearchModule.class)
-    void initSearchModule(SimplePanel panel);
+    void goToSearchModule(SimplePanel panel);
 
     @Event(modulesToLoad = SearchModule.class)
     void clearSearchContent();
 
-    // TODO praso - preco pouzivame setUserBodyHolderWidget a este aj initDemandModule na inicializaciu
+    // TODO praso - preco pouzivame setUserBodyHolderWidget a este aj goToDemandModule na inicializaciu
     // demand modulu? Mali by sme mat len jednu navigation event ktora bude inicializovat modul
     // To iste pre SearchModule, ktory sa inicializuje vo viacerych roznych eventoch
-    @Event(modulesToLoad = DemandModule.class)
-    void setUserBodyHolderWidget(IsWidget body);
-
+//    @Event(modulesToLoad = DemandModule.class)
+//    void setUserBodyHolderWidget(IsWidget body);
     /**************************************************************************/
-    /* Parent events */
-    /* There are no parent events for RootModule */
+    /* Parent events - no events for RootModule                               */
     /**************************************************************************/
-    /* Business events handled by Presenters. */
+    /**************************************************************************/
+    /* Business events handled by Presenters.                                 */
+    /**************************************************************************/
     @NotFoundHistory
     @Event(handlers = RootPresenter.class)
     void notFound();
@@ -142,29 +149,62 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void setUser(UserDetail user);
 
+    /**************************************************************************/
+    /* Layout events. */
+    @Event(handlers = RootPresenter.class)
+    void setHeader(IsWidget header);
+
+    @Event(handlers = RootPresenter.class)
+    void setMenu(IsWidget menu);
+
     @DisplayChildModuleView(SearchModule.class)
     @Event(handlers = RootPresenter.class)
     void setSearchBar(IsWidget searchBar);
 
+    /**
+     * Pouzitie autodisplay funkcie v RootModule ma za nasledok, ze kazdy modul sa
+     * automaticky nastavi do RootPresentera cez metodu setBody(), ktora reprezentuje
+     * hlavne telo webstranky. Je nutne anotovat tuto metody aby RootModul vedel,
+     * ktora metoda ma nahrat pohlad ChildModulu a zobrazit na webstranke
+     */
+    @DisplayChildModuleView({
+        HomeWelcomeModule.class,
+        HomeDemandsModule.class,
+        HomeSuppliersModule.class,
+        SupplierCreationModule.class,
+        DemandCreationModule.class,
+        DemandModule.class,
+        MessagesModule.class,
+        SettingsModule.class,
+        AdminModule.class })
+    @Event(handlers = RootPresenter.class)
+    void setBody(IsWidget body);
+
     @Event(handlers = RootPresenter.class)
     void setFooter(IsWidget footer);
 
-    @Event(handlers = RootPresenter.class)
-    void setHeader(IsWidget header);
-
-    @DisplayChildModuleView({ HomeWelcomeModule.class })
+//    @DisplayChildModuleView({ HomeWelcomeModule.class })
     //SupplierCreationModule.class})
     // DemandCreationModule.class, SupplierCreationModule.class })//,
     // HomeDemandsModule.class, HomeSuppliersModule.class })
     // UserModule.class })
-    // TODO praso - preco ste toto zakomentovali???
-    @Event(handlers = RootPresenter.class)
-    void setHomeBodyHolderWidget(IsWidget body);
+    // TODO praso - preco ste toto zakomentovali??? Mozeme to odstarnit uz mame setBody() hotovu
+//    @Event(handlers = RootPresenter.class)
+//    void setHomeBodyHolderWidget(IsWidget body);
 
-    @Event(handlers = HeaderPresenter.class, historyConverter = RootHistoryConverter.class)
+    /**
+     * login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
+     */
+    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
+            historyConverter = RootHistoryConverter.class)
     String atHome();
 
-    @Event(handlers = { HeaderPresenter.class, RootPresenter.class })
+    /**
+     * logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka, cookies
+     *
+     * TODO praso - chyba tu zrejme historyConverter
+     */
+    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
     void atAccount();
 
     @Event(handlers = LoginPopupPresenter.class)
@@ -216,15 +256,11 @@ public interface RootEventBus extends EventBus {
     void initDemandBasicForm(SimplePanel holderWidget);
 
     /** Menu section. */
-    @Event(handlers = RootPresenter.class)
-    void setMenu(IsWidget menu);
-
-    @Event(handlers = MenuPresenter.class)
-    void setHomeMenu();
-
-    @Event(handlers = UserMenuPresenter.class)
-    void setUserMenu();
-
+    // TODO I moved this events into atAccount and AtHome. They are handled by menu presenters
+//    @Event(handlers = MenuPresenter.class)
+//    void setHomeMenu();
+//    @Event(handlers = UserMenuPresenter.class)
+//    void setUserMenu();
     @Event(handlers = RootPresenter.class)//, historyConverter = RootHistoryConverter.class)
     void displayMenu();
 
@@ -238,17 +274,9 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
-    // USER
-//    @Event(modulesToLoad = UserModule.class)
-//    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
-//
-//    @Event(modulesToLoad = UserModule.class)
-//    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
-//
-//    @Event(modulesToLoad = UserModule.class)
-//    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
     /**************************************************************************/
-    /* Business events handled by Handlers. */
+    /* Business events handled by Handlers.                                   */
+    /**************************************************************************/
     @Event(handlers = RootHandler.class)
     void createDemand(FullDemandDetail detail, Long clientId);
 
@@ -266,4 +294,14 @@ public interface RootEventBus extends EventBus {
 
     @Event(handlers = RootHandler.class)
     void getRootLocalities();
+
+    // USER
+//    @Event(modulesToLoad = UserModule.class)
+//    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
+//
+//    @Event(modulesToLoad = UserModule.class)
+//    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
+//
+//    @Event(modulesToLoad = UserModule.class)
+//    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
 }

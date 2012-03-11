@@ -31,7 +31,7 @@ public class FooterView extends ReverseCompositeView<IFooterPresenter>
 
     public FooterView(String firstName) {
         initWidget(uiBinder.createAndBindUi(this));
-        button.setText(firstName);
+        button.setTitle(firstName);
     }
 
     @UiHandler("button")

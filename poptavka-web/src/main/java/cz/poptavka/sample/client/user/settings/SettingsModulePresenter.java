@@ -12,10 +12,9 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
-@Presenter(view = SettingsView.class)
-public class SettingsPresenter
-        extends
-        BasePresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus> {
+@Presenter(view = SettingsModuleView.class)
+public class SettingsModulePresenter
+        extends BasePresenter<SettingsModulePresenter.HomeSettingsViewInterface, SettingsModuleEventBus> {
 
     public interface HomeSettingsViewInterface {
 
@@ -74,9 +73,19 @@ public class SettingsPresenter
         CheckBox getDemandStateChangeButton();
 
         ListBox getDemandStateChangeOptions();
+
     }
 
-    public void onInitSettings() {
+    public void onStart() {
+        // TODO praso - probably history initialization will be here
+    }
+
+    public void onForward() {
+        // TODO praso - here we can switch css for selected menu button
+        //eventBus.selectHomeDemandsMenuButton();
+    }
+
+    public void onGoToSettingsModule() {
         Storage.setCurrentlyLoadedModule("settings");
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
         // eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
@@ -141,9 +150,9 @@ public class SettingsPresenter
         view.getPhone().setText(detail.getPhone());
         view.getFirstName().setText(detail.getFirstName());
         view.getLastName().setText(detail.getLastName());
-        view.getIdentificationNumber()
-                .setText(detail.getIdentificationNumber());
+        view.getIdentificationNumber().setText(detail.getIdentificationNumber());
         view.getTaxNumber().setText(detail.getTaxId());
         view.getDescriptionBox().setText(detail.getDescription());
     }
+
 }

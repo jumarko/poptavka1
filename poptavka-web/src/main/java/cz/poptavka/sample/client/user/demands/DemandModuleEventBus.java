@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.demands;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,8 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
@@ -31,8 +32,57 @@ import java.util.Map;
 @Events(startView = DemandModuleView.class, module = DemandModule.class)
 public interface DemandModuleEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
+    @Start
+    @Event(handlers = DemandModulePresenter.class)
+    void start();
+
+    /**
+     * Forward event is called only if it is configured here. It there is nothing to carry out
+     * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
+     */
+    @Forward
+    @Event(handlers = DemandModulePresenter.class)
+    void forward();
+
     /**************************************************************************/
-    /* Navigation | Initialization events. */
+    /* Navigation events.                                                     */
+    /**************************************************************************/
+    /**
+     * The only entry point to this module due to code-spliting feature.
+     * init demands module - left user_type menu and initial content
+     *
+     * @param filter - defines data holder to be displayed in advanced search bar
+     * @param loadWidget - doplnit prosim ???
+     */
+    @Event(handlers = DemandModulePresenter.class, historyConverter = DemandModuleHistoryConverter.class)
+    String goToDemandModule(SearchModuleDataHolder filter, String loadWidget);
+
+    @Event(forwardToParent = true)
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
+
+    @Event(forwardToParent = true)
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+
+    @Event(forwardToParent = true)
+    void goToCreateDemandModule(String location);
+
+    @Event(forwardToParent = true)
+    void goToCreateSupplierModule(String location);
+
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+//    /**************************************************************************/
+//    @Event(forwardToParent = true)
+//    void setHomeBodyHolderWidget(IsWidget body);
+//
+//    @Event(handlers = DemandModulePresenter.class)
+//    void setUserBodyHolderWidget(IsWidget body);
     //production init method
     //during development used multiple instancing
     @Event(handlers = ClientListPresenter.class)//, historyConverter = DemandModuleHistoryConverter.class)
@@ -45,38 +95,14 @@ public interface DemandModuleEventBus extends EventBus {
     void initSupplierList(SearchModuleDataHolder filter);
 
     /**************************************************************************/
-    /* Business events. */
-    /* Business events handled by DemandModulePresenter. */
-    //init demands module - left user_type menu and initial content
-    @Event(handlers = DemandModulePresenter.class, historyConverter = DemandModuleHistoryConverter.class)
-    String initDemandModule(SearchModuleDataHolder filter, String loadWidget);
-
+    /* Business events handled by DemandModulePresenter.                      */
+    /**************************************************************************/
     // Forward methods don't need history converter because they have its owns
-    @Event(forwardToParent = true)
-    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
-
-    @Event(forwardToParent = true)
-    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
-
-    @Event(forwardToParent = true)
-    void initCreateDemandModule(String location);
-
-    @Event(forwardToParent = true)
-    void initCreateSupplierModule(String location);
-
     //display widget in content area
     @Event(handlers = DemandModulePresenter.class)
     void displayView(Widget content);
 
     /**************************************************************************/
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
-
-    @Event(handlers = DemandModulePresenter.class)
-    void setUserBodyHolderWidget(IsWidget body);
-
-    /**************************************************************************/
-    /* Business events. */
     /* Business events handled by ALL VIEW presenters. */
     /**
      * Send/Response method pair
@@ -187,4 +213,5 @@ public interface DemandModuleEventBus extends EventBus {
 
     @Event(handlers = DevelDetailWrapperPresenter.class)
     void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+
 }

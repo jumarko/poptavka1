@@ -126,7 +126,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     }
     private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
 
-    public void onInitHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
+    public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
         Storage.setCurrentlyLoadedView("homeDemands");
         Storage.setCurrentlyLoadedModule("homeDemands");
         orderColumns.clear();
@@ -135,11 +135,12 @@ public class HomeDemandsPresenter extends BasePresenter<
 //        }
         this.searchDataHolder = searchDataHolder;
 
-        if (location.equals("home")) {
-            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-        } else if (location.equals("user")) {
-            eventBus.setUserBodyHolderWidget(view.getWidgetView());
-        }
+        // TODO praso zrejme mozeme zakomentovat.
+//        if (location.equals("home")) {
+//            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+//        } else if (location.equals("user")) {
+//            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+//        }
     }
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
@@ -202,6 +203,7 @@ public class HomeDemandsPresenter extends BasePresenter<
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
         eventBus.loadingHide();
+//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
     }
 
     public void onSetDemand(FullDemandDetail demand) {

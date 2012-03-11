@@ -21,7 +21,7 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
      * @return token string like module/method?param, where param = home or user
      */
     public String convertToToken(String methodName, String location) {
-        if (methodName.equals("initCreateSupplierModule")) {
+        if (methodName.equals("goToCreateSupplierModule")) {
             return location;
         }
         return "";
@@ -37,8 +37,8 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
      */
     @Override
     public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
-        if (methodName.equals("initCreateSupplierModule")) {
-            eventBus.initCreateSupplierModule(param);
+        if (methodName.equals("goToCreateSupplierModule")) {
+            eventBus.goToCreateSupplierModule(param);
         }
     }
 

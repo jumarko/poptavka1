@@ -24,16 +24,16 @@ public interface SearchModuleEventBus extends EventBus {
     // zadani vyhladavacich kriterii do search panelu. Po kliknuti search uzivatelia
     // presmerujeme na jeden z pohladov suppliers/demands/messages
     @Event(forwardToParent = true)
-    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void initAdminModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToAdminModule(SearchModuleDataHolder filter, String loadWidget);
 
     @Event(forwardToParent = true)
-    void initMessagesModule(SearchModuleDataHolder filter, String action);
+    void goToMessagesModule(SearchModuleDataHolder filter, String action);
 
 //    @Event(forwardToParent = true)
 //    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
@@ -52,7 +52,7 @@ public interface SearchModuleEventBus extends EventBus {
     /* Business events handled by DemandModulePresenter. */
     //init demands module - left user_type menu and initial content
     @Event(handlers = SearchModulePresenter.class)
-    void initSearchModule(SimplePanel panel);
+    void goToSearchModule(SimplePanel panel);
     //display widget in content area
 //    @Event(handlers = SearchModulePresenter.class)
 //    void displayView(Widget content);

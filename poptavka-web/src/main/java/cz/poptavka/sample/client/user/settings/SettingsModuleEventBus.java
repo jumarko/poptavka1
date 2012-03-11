@@ -1,49 +1,44 @@
-/*
- * HomeWelcomEventBus is very first home page to be loaded.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/
- */
-package cz.poptavka.sample.client.homeWelcome;
+package cz.poptavka.sample.client.user.settings;
 
 import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
-@Events(startView = HomeWelcomeView.class, module = HomeWelcomeModule.class)
-@Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeWelcomeEventBus extends EventBus {
+@Debug(logLevel = LogLevel.DETAILED)
+@Events(startView = SettingsModuleView.class, module = SettingsModule.class)
+public interface SettingsModuleEventBus extends EventBus {
 
     /**
-     * First event to be handled.
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = HomeWelcomePresenter.class)
+    @Event(handlers = SettingsModulePresenter.class)
     void start();
 
     /**
-     * Forward event is called only if it is configured here. If there is nothing to carry out
+     * Forward event is called only if it is configured here. It there is nothing to carry out
      * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = HomeWelcomePresenter.class)
+    @Event(handlers = SettingsModulePresenter.class)
     void forward();
 
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
     /**
-     * The only entry point to this module. This module is not asynchronous.
-     *
-     * @param filter - defines data holder to be displayed in advanced search bar
+     * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class)
-    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
+    @Event(handlers = SettingsModulePresenter.class)
+    void goToSettingsModule();
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -51,7 +46,13 @@ public interface HomeWelcomeEventBus extends EventBus {
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
+    @Event(handlers = SettingsModulePresenter.class)
+    void setSettings(SettingsDetail detail);
+
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
+    @Event(handlers = SettingsModuleHandler.class)
+    void getLoggedUser(long userId);
+
 }

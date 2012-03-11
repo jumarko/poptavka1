@@ -7,8 +7,9 @@ import com.google.gwt.user.client.ui.Widget;
 public interface IRootView extends IsWidget {
 
     public interface IRootPresenter {
-
     }
+
+    void setHeader(IsWidget header);
 
     void setMenu(IsWidget menu);
 
@@ -18,8 +19,7 @@ public interface IRootView extends IsWidget {
 
     void setFooter(IsWidget footer);
 
-    void setHeader(IsWidget header);
-
+    // TODO praso - tieto metody by sa mali odstranit pozri na mvp4g layout tutorial part1
     IsWidget getHeader();
 
     SimplePanel getSearchBar();
@@ -27,5 +27,4 @@ public interface IRootView extends IsWidget {
     Widget getBody();
 
     Widget getMenu();
-
 }

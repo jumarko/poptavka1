@@ -13,7 +13,10 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
         implements IFooterPresenter {
 
     public void onStart() {
-        GWT.log("Footer module loaded");
+        // TODO praso toto je zrejme staticky pohlad takze ho mozeme optimalizovat podla
+        // http://mvp4g.blogspot.com/2011/04/mvp-pattern-associated-with-event-bus.html
+        // part 2
+        GWT.log("Footer presenter loaded");
         eventBus.setFooter(view);
     }
 }

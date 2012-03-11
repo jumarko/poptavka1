@@ -41,7 +41,6 @@ public class DemandCreationPresenter
 
     private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-
     // TODO praso - All this presenters should be moved into this particular
     // module otherwise they will fall in left-over fragment
     private FormDemandBasicPresenter demandBasicForm = null;
@@ -60,8 +59,10 @@ public class DemandCreationPresenter
         SimplePanel getHolderPanel(int order);
 
         HasClickHandlers getCreateDemandButton();
+
     }
 
+    @Override
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
 
@@ -79,6 +80,7 @@ public class DemandCreationPresenter
                     }
                 }
             }
+
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
 
@@ -88,6 +90,7 @@ public class DemandCreationPresenter
                     registerNewCient();
                 }
             }
+
         });
 
     }
@@ -101,10 +104,10 @@ public class DemandCreationPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onInitCreateDemandModule(String location) {
+    public void onGoToCreateDemandModule(String location) {
+        // TODO praso - refactoring je nutny nech nevolame zbytocne cez jednu metodu
         this.onAtCreateDemand(location);
     }
-
 
     /**
      * Init method call. TODO decide when other parts should be built.
@@ -128,13 +131,15 @@ public class DemandCreationPresenter
                 eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
                 eventBus.initLoginForm(view.getHolderPanel(LOGIN));
             }
-        });
 
-        if (location.equals("home")) {
-            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-        } else if (location.equals("user")) {
-            eventBus.setUserBodyHolderWidget(view.getWidgetView());
-        }
+        });
+        // TODO praso - nebudeme rozlisovat mediz user a home castou aspon tym prinutime
+        // uzivatela neklikat na menu v user casti pocas procesu vytvarania poptavky.
+//        if (location.equals("home")) {
+//            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+//        } else if (location.equals("user")) {
+//            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+//        }
     }
 
     private void registerNewCient() {
@@ -205,6 +210,7 @@ public class DemandCreationPresenter
         view.getStatusLabel(LOGIN).setStyleState(StyleResource.INSTANCE.common().errorMessage(), State.ERROR_16);
         view.getStatusLabel(LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
+
     private static final int BASIC = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;

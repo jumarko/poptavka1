@@ -38,7 +38,7 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
         }
 
         //Ak zoberiem do uvahy && chcem aby po prihlaseni bol naloadovany Demand Module
-        //znamena, ze ulozene tokeny su:   atHome, atAccount, initDemandModule
+        //znamena, ze ulozene tokeny su:   atHome, atAccount, goToDemandModule
         // a ked dam v browseri spat, tak sa chce naloadovat atAccount, kt automaticku loaduje DemandModule, takze
         // sa prakticky nikdy nedostanem na atHome
 //        if (historyName.contains("atAccount")) {

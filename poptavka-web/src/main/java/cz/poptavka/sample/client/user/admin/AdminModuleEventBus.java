@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.admin;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -8,6 +7,8 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
@@ -48,8 +49,52 @@ import java.util.Map;
 @Events(startView = AdminModuleView.class, module = AdminModule.class)
 public interface AdminModuleEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
+    @Start
+    @Event(handlers = AdminModulePresenter.class)
+    void start();
+
+    /**
+     * Forward event is called only if it is configured here. It there is nothing to carry out
+     * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
+     */
+    @Forward
+    @Event(handlers = AdminModulePresenter.class)
+    void forward();
+
     /**************************************************************************/
-    /* Submodule widget init methods */
+    /* Navigation events.                                                     */
+    /**************************************************************************/
+    /**
+     * The only entry point to this module due to code-spliting feature.
+     *
+     * @param filter - defines data holder to be displayed in advanced search bar
+     * @param loadWidget - prosim doplnit ???
+     */
+    @Event(handlers = AdminModulePresenter.class, historyConverter = AdminModuleHistoryConverter.class)
+    String goToAdminModule(SearchModuleDataHolder filter, String loadWidget);
+
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+    /* Admin module forward section - comunication with parent widget*/
+    @Event(forwardToParent = true)
+    void clearSearchContent();
+
+    /**************************************************************************/
+    /* Business Initialization events                                         */
+    /**************************************************************************/
+
+    /** Module Initializatin section **/
+    //display widget in content area
+    @Event(handlers = AdminModulePresenter.class)
+    void displayView(Widget content);
+
+    /** Submodule Initializatin section **/
     @Event(handlers = AdminDemandsPresenter.class)
     void initDemands(SearchModuleDataHolder filter);
 
@@ -87,22 +132,8 @@ public interface AdminModuleEventBus extends EventBus {
     void initProblems(SearchModuleDataHolder filter);
 
     /**************************************************************************/
-    /* Admin module init section */
-    @Event(handlers = AdminModulePresenter.class, historyConverter = AdminModuleHistoryConverter.class)
-    String initAdminModule(SearchModuleDataHolder filter, String loadWidget);
-
-    //display widget in content area
-    @Event(handlers = AdminModulePresenter.class)
-    void displayView(Widget content);
-
+    /* Business events handled by handlers                                    */
     /**************************************************************************/
-    /* Admin module forward section - comunication with parent widget*/
-    @Event(forwardToParent = true)
-    void clearSearchContent();
-
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
-
     /**********************************************************************************************
      *********************** SUBWIDGETS SECTION *******************************************************
      **********************************************************************************************/
@@ -459,4 +490,5 @@ public interface AdminModuleEventBus extends EventBus {
 
     @Event(handlers = AdminSupplierInfoPresenter.class)
     void doBackSupplierLocalities(List<LocalityDetail> list);
+
 }

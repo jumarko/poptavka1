@@ -9,7 +9,7 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 public class AdminModuleHistoryConverter implements HistoryConverter<AdminModuleEventBus> {
 
     /**
-     * To convert token for initHomeSuppliersModule method
+     * To convert token for goToHomeSuppliersModule method
      * @param searchDataHolder
      * @param location
      * @return token string like module/method?param, where param = initAdminAccess, ....
@@ -28,7 +28,7 @@ public class AdminModuleHistoryConverter implements HistoryConverter<AdminModule
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminModuleEventBus eventBus) {
-        eventBus.initAdminModule(null, param);
+        eventBus.goToAdminModule(null, param);
     }
 
     @Override

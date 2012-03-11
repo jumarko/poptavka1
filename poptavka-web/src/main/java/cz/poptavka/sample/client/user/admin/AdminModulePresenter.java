@@ -55,19 +55,20 @@ public class AdminModulePresenter
     }
     private LoadingDiv loading = null;
 
+    @Override
     public void bind() {
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initDemands");
+                eventBus.goToAdminModule(null, "initDemands");
             }
         });
         view.getClientsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initClients");
+                eventBus.goToAdminModule(null, "initClients");
 //                eventBus.initClients(null);
             }
         });
@@ -75,7 +76,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initSuppliers");
+                eventBus.goToAdminModule(null, "initSuppliers");
 //                eventBus.initSuppliers(null);
             }
         });
@@ -83,7 +84,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initOffers");
+                eventBus.goToAdminModule(null, "initOffers");
 //                eventBus.initOffers(null);
             }
         });
@@ -91,7 +92,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initAccessRoles");
+                eventBus.goToAdminModule(null, "initAccessRoles");
 //                eventBus.initAccessRoles(null);
             }
         });
@@ -99,7 +100,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initEmailsActivation");
+                eventBus.goToAdminModule(null, "initEmailsActivation");
 //                eventBus.initEmailsActivation(null);
             }
         });
@@ -107,7 +108,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initInvoices");
+                eventBus.goToAdminModule(null, "initInvoices");
 //                eventBus.initInvoices(null);
             }
         });
@@ -115,7 +116,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initMessages");
+                eventBus.goToAdminModule(null, "initMessages");
 //                eventBus.initMessages(null);
             }
         });
@@ -123,7 +124,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initPaymentMethods");
+                eventBus.goToAdminModule(null, "initPaymentMethods");
 //                eventBus.initPaymentMethods(null);
             }
         });
@@ -131,7 +132,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initPermissions");
+                eventBus.goToAdminModule(null, "initPermissions");
 //                eventBus.initPermissions(null);
             }
         });
@@ -139,7 +140,7 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initPreferences");
+                eventBus.goToAdminModule(null, "initPreferences");
 //                eventBus.initPreferences(null);
             }
         });
@@ -147,20 +148,30 @@ public class AdminModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initProblems");
+                eventBus.goToAdminModule(null, "initProblems");
 //                eventBus.initProblems(null);
             }
         });
     }
 
-    public void onInitAdminModule(SearchModuleDataHolder filter, String loadWidget) {
+    public void onStart() {
+        // TODO praso - probably history initialization will be here
+    }
+
+    public void onForward() {
+        // TODO praso - here we can switch css for selected menu button
+        //eventBus.selectHomeDemandsMenuButton();
+    }
+
+    public void onGoToAdminModule(SearchModuleDataHolder filter, String loadWidget) {
         Storage.setCurrentlyLoadedModule("admin");
-        GWT.log("onInitAdminModule - som tu");
+        GWT.log("onGoToAdminModule - som tu");
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
 
-        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+        // TODO praso - tuto metodu som zakomentoval pretoze pouzivame autodisplay
+//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
 
         Storage.hideLoading();
 

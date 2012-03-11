@@ -37,6 +37,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private LocalitySelectorPresenter localitySelector = null;
     private UserDetail user = null;
 
+    /**************************************************************************/
+    /* Layout events. */
+    public void onSetHeader(IsWidget header) {
+        GWT.log("Header widget set");
+        view.setHeader(header);
+    }
+
     public void onSetMenu(IsWidget menu) {
         GWT.log("Menu widget set");
         view.setMenu(menu);
@@ -57,15 +64,22 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setFooter(footer);
     }
 
-    public void onSetHeader(IsWidget header) {
-        GWT.log("Header widget set");
-        view.setHeader(header);
+    public void onGoToPage1(String text) {
+        GWT.log("onGoToPage1:" + text);
     }
 
+    public void onGoToPage2(String text) {
+        GWT.log("onGoToPage2:" + text);
+    }
+
+    /**************************************************************************/
+    /* Other business events. */
     public void onStart() {
-        GWT.log("Root module loaded");
-        eventBus.initHomeWelcomeModule(null);
-        eventBus.initSearchModule(view.getSearchBar());
+        GWT.log("Root presenter loaded");
+        // TODO Praso - Musime manualne volat tieto eventy? HomeWelcomModule a SearchModule
+        // by sa predsa mali naloadovat ihned ako sa spusti aplikacia mozno cez anotacie.
+        eventBus.goToHomeWelcomeModule(null);
+        eventBus.goToSearchModule(view.getSearchBar());
     }
 
     public void onNotFound() {
@@ -73,7 +87,10 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setBody(new Label("Page not found"));
     }
 
+    // TODO praso - tato metoda zrejme pojde prec. Zatial som nevidel rozumne vyuzitie.
+    // na vsetko staci metoda setBody()
     public void onSetHomeBodyHolderWidget(IsWidget content) {
+        GWT.log("RootPresenter.onSetHomeBodyHolderWidget");
         view.setBody(content);
     }
 
@@ -124,6 +141,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
     }
+
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
 
@@ -161,7 +179,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtAccount() {
-        GWT.log("Root Presenter AtAccount");
+        GWT.log("User has logged in and his user data are about to be retrieved");
         Cookies.setCookie("user-presenter", "loaded");
         if (Storage.getUser() == null) {
             eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
@@ -170,10 +188,13 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             onSetUser(Storage.getUser());
         }
 //        eventBus.setUserLayout();
-        eventBus.setUserMenu();
-        eventBus.initDemandModule(null, "welcome");
-//        eventBus.initMessagesModule("displayGrid");
-//        eventBus.initAdminModule(null);
+//        eventBus.setUserMenu();
+        eventBus.goToDemandModule(null, "welcome");
+    }
+
+    public void onAtHome() {
+        GWT.log("User has logged out");
+        eventBus.goToHomeWelcomeModule(null);
     }
 
     /* For logging */
@@ -240,6 +261,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             public void onClick(ClickEvent event) {
                 userInfoPanel.hide();
             }
+
         });
         FlowPanel m = new FlowPanel();
         m.add(content);
@@ -248,4 +270,5 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
     }
+
 }

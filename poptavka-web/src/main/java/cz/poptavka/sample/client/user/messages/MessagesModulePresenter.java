@@ -87,11 +87,20 @@ public class MessagesModulePresenter
         });
     }
 
+    public void onStart() {
+        // TODO praso - probably history initialization will be here
+    }
+
+    public void onForward() {
+        // TODO praso - here we can switch css for selected menu button
+        //eventBus.selectHomeDemandsMenuButton();
+    }
+
     /**
      * Initialize view for message module.
      * @param filter
      */
-    public void onInitMessagesModule(SearchModuleDataHolder filter, String loadWidget) {
+    public void onGoToMessagesModule(SearchModuleDataHolder filter, String loadWidget) {
         Storage.setCurrentlyLoadedModule("messages");
         Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
         this.filter = filter;
@@ -112,7 +121,8 @@ public class MessagesModulePresenter
         }
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
-        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+        // TODO praso - pouzil som autodisplay takze tuto metodu komentujem.
+        //        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
 
         Storage.hideLoading();
     }

@@ -65,10 +65,11 @@ public class SupplierCreationPresenter
         void showConditions();
 
         boolean isValid();
-    }
 
+    }
     private SupplierInfoPresenter presenter = null;
 
+    @Override
     public void bindView() {
         view.getMainPanel().addBeforeSelectionHandler(new BeforeSelectionHandler<Integer>() {
 
@@ -83,6 +84,7 @@ public class SupplierCreationPresenter
                     }
                 }
             }
+
         });
         view.getRegisterButton().addClickHandler(new ClickHandler() {
 
@@ -95,6 +97,7 @@ public class SupplierCreationPresenter
                     LOGGER.fine("cannot continue");
                 }
             }
+
         });
         view.getConditionLink().addClickHandler(new ClickHandler() {
 
@@ -102,6 +105,7 @@ public class SupplierCreationPresenter
             public void onClick(ClickEvent arg0) {
                 view.showConditions();
             }
+
         });
     }
 
@@ -114,7 +118,8 @@ public class SupplierCreationPresenter
         //eventBus.selectCompanyMenu();
     }
 
-    public void onInitCreateSupplierModule(String location) {
+    public void onGoToCreateSupplierModule(String location) {
+        // TODO praso - refactoring nutny
         this.onAtRegisterSupplier(location);
     }
 
@@ -124,7 +129,7 @@ public class SupplierCreationPresenter
      */
     public void onAtRegisterSupplier(String location) {
         Storage.setCurrentlyLoadedModule("createSupplier");
-        LOGGER.info("Initializing Supplier Registration Widget ... ");
+        LOGGER.info("SupplierCreationPresenter loaded");
 //        eventBus.setBodyWidget(view.getWidgetView());
         //init parts
         LOGGER.info(" -> Supplier Info Form");
@@ -135,12 +140,14 @@ public class SupplierCreationPresenter
         eventBus.initLocalityWidget(view.getLocalityHolder());
         LOGGER.info(" -> init Service Form supplierService");
         initServices();
-
-        if (location.equals("home")) {
-            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-        } else if (location.equals("user")) {
-            eventBus.setUserBodyHolderWidget(view.getWidgetView());
-        }
+        // TODO Praso - nebudeme rozlisovat medzi user a home pohladom. V user pohlade
+        // aspo uzivatel nebude mat moznot klikat na lave menu v procese vytvarania
+        // poptavky
+//        if (location.equals("home")) {
+//            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+//        } else if (location.equals("user")) {
+//            eventBus.setUserBodyHolderWidget(view.getWidgetView());
+//        }
     }
 
     private void registerSupplier() {
@@ -158,6 +165,7 @@ public class SupplierCreationPresenter
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
     }
+
     private static final int INFO = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;
@@ -185,6 +193,7 @@ public class SupplierCreationPresenter
         //can't reach
         return false;
     }
+
     @Inject
     private SupplierRPCServiceAsync supplierRpcService = null;
 
@@ -212,8 +221,10 @@ public class SupplierCreationPresenter
                 view.getServiceHolder().setWidget(serviceWidget);
                 serviceWidget.setData(data);
             }
+
         });
     }
+
     private SupplierServicePresenter supplierService = null;
     private SupplierInfoPresenter supplierInfo = null;
 
@@ -232,4 +243,5 @@ public class SupplierCreationPresenter
         supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
         supplierInfo.onInitSupplierForm(supplierInfoHolder);
     }
+
 }

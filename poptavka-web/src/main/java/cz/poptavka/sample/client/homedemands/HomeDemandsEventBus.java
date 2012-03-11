@@ -6,8 +6,6 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
 
 import com.mvp4g.client.annotation.Debug;
@@ -46,27 +44,49 @@ public interface HomeDemandsEventBus extends EventBus {
     @Event(handlers = HomeDemandsPresenter.class)
     void forward();
 
-    /* Navigation events. */
+    /**************************************************************************/
+    /* Navigation events.                                                     */
+    /**************************************************************************/
     /**
-     * The only entry point to this module due to code-splitting and exclusive fragment.
+     * The only entry point to this module due to code-spliting feature.
+     *
+     * @param filter - defines data holder to be displayed in advanced search bar
      */
     @Event(handlers = HomeDemandsPresenter.class, historyConverter = HomeDemandsHistoryConverter.class)
-    String initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    String goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
-
-    @Event(forwardToParent = true)
-    void setUserBodyHolderWidget(Widget body);
-
-    /* Parent events. */
-    /* GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE. */
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+    // TODO Praso - GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
     @Event(forwardToParent = true)
     void loadingHide();
 
+    /**************************************************************************/
+    /* Business events handled by Presenters.                                 */
+    /**************************************************************************/
+    @Event(handlers = HomeDemandsPresenter.class)
+    void createAsyncDataProvider(final int resultCount);
+
+    @Event(handlers = HomeDemandsPresenter.class)
+    void displayDemands(List<FullDemandDetail> result);
+
+    @Event(handlers = HomeDemandsPresenter.class)
+    void setDemand(FullDemandDetail demand);
+
+    /**************************************************************************/
+    /* Business events handled by Handlers.                                   */
+    /**************************************************************************/
+    @Event(handlers = HomeDemandsHandler.class)
+    void filterDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+
+    @Event(handlers = HomeDemandsHandler.class)
+    void filterDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+
+    // TODO Praso - co s tymito komentarmi? Treba ich odstranit. Je tam nieco dolezite?
     /* Business events. */
     /* Business events handled by Presenters. */
 //    @Event(handlers = HomeDemandsPresenter.class)
@@ -78,15 +98,6 @@ public interface HomeDemandsEventBus extends EventBus {
 //    void setResultSource(String resultSource);
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void setResultCount(long resultCount);
-    @Event(handlers = HomeDemandsPresenter.class)
-    void createAsyncDataProvider(final int resultCount);
-
-    @Event(handlers = HomeDemandsPresenter.class)
-    void displayDemands(List<FullDemandDetail> result);
-
-    @Event(handlers = HomeDemandsPresenter.class)
-    void setDemand(FullDemandDetail demand);
-
 //    @Event(handlers = HomeDemandsPresenter.class)
 //    void filter();
 
@@ -94,8 +105,6 @@ public interface HomeDemandsEventBus extends EventBus {
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getAllDemandsCount();
 //
-    @Event(handlers = HomeDemandsHandler.class)
-    void filterDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 //
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getSortedDemandsCount(Map<String, OrderType> orderColumns);
@@ -114,9 +123,6 @@ public interface HomeDemandsEventBus extends EventBus {
 //
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getDemands(int fromResult, int toResult);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void filterDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 //    @Event(handlers = HomeDemandsHandler.class)
 //    void getDemandsByCategories(int fromResult, int toResult, long id);
 //    @Event(handlers = HomeDemandsHandler.class)

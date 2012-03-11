@@ -2,10 +2,10 @@ package cz.poptavka.sample.client.root.menu;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.UListElement;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
 
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -20,8 +20,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     interface MenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }
     @UiField
-    Button home, demands, suppliers, createSupplier, createDemand;
-    @UiField
     UListElement menuList;
 
     public MenuView() {
@@ -33,28 +31,38 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
     }
 
-    @Override
-    public HasClickHandlers getHomeButton() {
-        return home;
+    @UiHandler("home")
+    public void onClickHome(ClickEvent e) {
+        presenter.goToHomeWelcome();
     }
 
-    @Override
-    public HasClickHandlers getDemandsButton() {
-        return demands;
+    @UiHandler("demands")
+    public void onClickDemands(ClickEvent e) {
+        presenter.goToHomeDemands();
     }
 
-    @Override
-    public HasClickHandlers getSuppliersButton() {
-        return suppliers;
+    @UiHandler("suppliers")
+    public void onClickSuppliers(ClickEvent e) {
+        presenter.goToHomeSuppliers();
     }
 
-    @Override
-    public HasClickHandlers getCreateSupplierButton() {
-        return createSupplier;
+    @UiHandler("createSupplier")
+    public void onClickCreateSupplier(ClickEvent e) {
+        presenter.goToCreateSupplier();
     }
 
-    @Override
-    public HasClickHandlers getCreateDemandButton() {
-        return createDemand;
+    @UiHandler("createDemand")
+    public void onClickCreateDemand(ClickEvent e) {
+        presenter.goToCreateDemand();
+    }
+
+    @UiHandler("page1")
+    public void onClickPage1(ClickEvent e) {
+        presenter.goToPage1();
+    }
+
+    @UiHandler("page2")
+    public void onClickPage2(ClickEvent e) {
+        presenter.goToPage2();
     }
 }

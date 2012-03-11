@@ -8,42 +8,54 @@
 		.important {
 			font-weight: bold;
 		}
-		
+
 		.background {
 			background-color: red;
 		}
     </ui:style>
-    <g:HorizontalPanel>
-        <g:HTMLPanel styleName="style.background">
-            <div ui:field="homeMenu">
-                <ul ui:field="menuList">
-                    <li>
-                        <g:Button ui:field="home" styleName='{res.layout.homeMenu}'>Home
+    <g:DecoratorPanel>
+        <g:HorizontalPanel>
+            <g:HTMLPanel styleName="style.background">
+                <div ui:field="homeMenu">
+                    <ul ui:field="menuList">
+                        <li>
+                            <g:Button ui:field="home" styleName='{res.layout.homeMenu}'>Home
 <!--							<ui:msg key="homeLink">Home</ui:msg>-->
-                        </g:Button>
-                    </li>
-                    <li>
-                        <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>Demands
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>Demands
 <!--							<ui:msg key="demands">Demands</ui:msg>-->
-                        </g:Button>
-                    </li>
-                    <li>
-                        <g:Button ui:field="suppliers" styleName='{res.layout.homeMenu}'>Suppliers
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="suppliers" styleName='{res.layout.homeMenu}'>Suppliers
 <!--							<ui:msg key="suppliers">Suppliers</ui:msg>-->
-                        </g:Button>
-                    </li>
-                    <li>
-                        <g:Button ui:field="createSupplier" styleName='{res.layout.homeMenu}'>Create Supplier
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="createSupplier" styleName='{res.layout.homeMenu}'>Create Supplier
 <!--							<ui:msg key="createSupplier">createSupplier</ui:msg>-->
-                        </g:Button>
-                    </li>
-                    <li>
-                        <g:Button ui:field="createDemand" styleName='{res.layout.homeMenu}'>Create Demands
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="createDemand" styleName='{res.layout.homeMenu}'>Create Demands
 <!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
-                        </g:Button>
-                    </li>
-                </ul>
-            </div>
-        </g:HTMLPanel>
-    </g:HorizontalPanel>
-</ui:UiBinder> 
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="page1" styleName='{res.layout.homeMenu}'>page1
+<!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
+                            </g:Button>
+                        </li>
+                        <li>
+                            <g:Button ui:field="page2" styleName='{res.layout.homeMenu}'>page2
+<!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
+                            </g:Button>
+                        </li>
+                    </ul>
+                </div>
+            </g:HTMLPanel>
+        </g:HorizontalPanel>
+    </g:DecoratorPanel>
+</ui:UiBinder>

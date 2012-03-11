@@ -80,14 +80,15 @@ public class SearchModulePresenter
             @Override
             public void onClick(ClickEvent event) {
                 // TODO praso - Preco pouzivame text a nie konstantu pre text retazce v equals?
+                // TODO praso - myslim, ze rozlisovanie medzi user a home mozeme odstanit nie?
                 if (Storage.getCurrentlyLoadedView().equals("homeDemands")) {
-                    eventBus.initHomeDemandsModule(view.getFilter(), "home");
+                    eventBus.goToHomeDemandsModule(view.getFilter(), "home");
                 } else if (Storage.getCurrentlyLoadedView().equals("userDemands")) {
-                    eventBus.initHomeDemandsModule(view.getFilter(), "user");
+                    eventBus.goToHomeDemandsModule(view.getFilter(), "user");
                 } else if (Storage.getCurrentlyLoadedView().equals("homeSuppliers")) {
-                    eventBus.initHomeSuppliersModule(view.getFilter(), "home");
+                    eventBus.goToHomeSuppliersModule(view.getFilter(), "home");
                 } else if (Storage.getCurrentlyLoadedView().equals("userSuppliers")) {
-                    eventBus.initHomeSuppliersModule(view.getFilter(), "user");
+                    eventBus.goToHomeSuppliersModule(view.getFilter(), "user");
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminAccessRoles")) {
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminClients")) {
 //                } else if (Storage.getCurrentlyLoadedView().equals("adminDemands")) {
@@ -103,13 +104,13 @@ public class SearchModulePresenter
                 } else if (Storage.getCurrentlyLoadedView().equals("potentialDemandMessages")) {
 //                    eventBus.initDemandsTabModule(view.getFilter());
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabInbox")) {
-                    eventBus.initMessagesModule(view.getFilter(), "inbox");
+                    eventBus.goToMessagesModule(view.getFilter(), "inbox");
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabSent")) {
-                    eventBus.initMessagesModule(view.getFilter(), "sent");
+                    eventBus.goToMessagesModule(view.getFilter(), "sent");
                 } else if (Storage.getCurrentlyLoadedView().equals("messagesTabTrash")) {
-                    eventBus.initMessagesModule(view.getFilter(), "trash");
+                    eventBus.goToMessagesModule(view.getFilter(), "trash");
                 } else { //Admin...whatever
-                    eventBus.initAdminModule(view.getFilter(),
+                    eventBus.goToAdminModule(view.getFilter(),
                             Storage.getCurrentlyLoadedView().replace("admin", "init"));
                 }
 
@@ -169,8 +170,8 @@ public class SearchModulePresenter
         });
     }
 
-    public void onInitSearchModule(SimplePanel panel) {
-        GWT.log("onInitSearchModule - som tu");
+    public void onGoToSearchModule(SimplePanel panel) {
+        GWT.log("onGoToSearchModule - som tu");
         //eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
 //        eventBus.setTabAdminWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();

@@ -9,7 +9,7 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 public class DemandModuleHistoryConverter implements HistoryConverter<DemandModuleEventBus> {
 
     /**
-     * To convert token for initHomeSuppliersModule method
+     * To convert token for goToHomeSuppliersModule method
      * @param searchDataHolder
      * @param location
      * @return token string like module/method?param, where param = welcome, potentialDemands, myClients ...
@@ -28,7 +28,7 @@ public class DemandModuleHistoryConverter implements HistoryConverter<DemandModu
      */
     @Override
     public void convertFromToken(String historyName, String param, DemandModuleEventBus eventBus) {
-        eventBus.initDemandModule(null, param);
+        eventBus.goToDemandModule(null, param);
     }
 
     @Override

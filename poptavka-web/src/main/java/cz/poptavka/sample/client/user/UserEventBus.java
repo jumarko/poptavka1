@@ -403,10 +403,10 @@ public interface UserEventBus extends EventBusWithLookup {
 //    void initDemandModule();
 
     @Event(forwardToParent = true)
-    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
 
     @Event(forwardToParent = true)
-    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 
 //    @Event(forwardToParent = true)
 //    void eegoToCreateDemand(String location);

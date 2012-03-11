@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.user.messages;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,8 @@ import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.Forward;
+import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
@@ -24,8 +25,41 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 @Events(startView = MessagesModuleView.class, module = MessagesModule.class)
 public interface MessagesModuleEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
+    @Start
+    @Event(handlers = MessagesModulePresenter.class)
+    void start();
+
+    /**
+     * Forward event is called only if it is configured here. It there is nothing to carry out
+     * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
+     */
+    @Forward
+    @Event(handlers = MessagesModulePresenter.class)
+    void forward();
+
     /**************************************************************************/
-    /* Navigation | Initialization events. */
+    /* Navigation events.                                                     */
+    /**************************************************************************/
+    /**
+     * The only entry point to this module due to code-spliting feature.
+     *
+     * @param filter - defines data holder to be displayed in advanced search bar
+     * @param loadWidget - prosim doplnit ???
+     */
+    @Event(handlers = MessagesModulePresenter.class)
+    void goToMessagesModule(SearchModuleDataHolder searchDataHolder, String loadWidget);
+
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+    /**************************************************************************/
+    /* Business Initialization events                                         */
+    /**************************************************************************/
     @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
     String initComposeNew();
 
@@ -45,11 +79,8 @@ public interface MessagesModuleEventBus extends EventBus {
     String initDraft(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
-    /* Business events. */
-    /* Business events handled by DemandModulePresenter. */
-    @Event(handlers = MessagesModulePresenter.class)
-    void initMessagesModule(SearchModuleDataHolder searchDataHolder, String loadWidget);
-
+    /* Business events handled by presenters                                  */
+    /**************************************************************************/
     //display widget in content area
     @Event(handlers = MessagesModulePresenter.class)
     void displayMain(Widget content);
@@ -57,13 +88,33 @@ public interface MessagesModuleEventBus extends EventBus {
     @Event(handlers = MessagesModulePresenter.class)
     void displayDetail(Widget content);
 
-    /**************************************************************************/
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
+//    @Event(handlers = MessageListPresenter.class, passive = true)
+//    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
+    @Event(handlers = MessageListPresenter.class)
+    void displayMessages(List<UserMessageDetail> messages);
+
+    @Event(handlers = ComposeMessagePresenter.class)
+    void responseUserInfo(UserDetail userDetail);
 
     /**************************************************************************/
-    /* Business events. */
-    /* Business events handled by ALL VIEW presenters. */
+    /* Business events handled by ConversationWrapperPresenter.               */
+    /**************************************************************************/
+    /*
+     * Request/Response method pair
+     * Fetch and display chat(conversation) for supplier new demands list
+     * @param messageId
+     * @param userMessageId
+     * @param userId
+     */
+    @Event(handlers = ConversationWrapperPresenter.class)
+    void displayConversation(Long threadRootId, Long messageId);
+
+    @Event(handlers = ConversationWrapperPresenter.class)
+    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+
+    /**************************************************************************/
+    /* Business events handled by MessagesModuleMessageHandler                      */
+    /**************************************************************************/
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.
@@ -74,13 +125,6 @@ public interface MessagesModuleEventBus extends EventBus {
     void sendMessage(MessageDetail messageToSend, String action);
     //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
 
-//    @Event(handlers = MessageListPresenter.class, passive = true)
-//    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
-    @Event(handlers = MessageListPresenter.class)
-    void displayMessages(List<UserMessageDetail> messages);
-
-    /**************************************************************************/
-    /* Business events handled by SupplierListPresenter. */
     @Event(handlers = MessagesModuleMessageHandler.class)
     void getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
 
@@ -102,12 +146,6 @@ public interface MessagesModuleEventBus extends EventBus {
     @Event(handlers = MessagesModuleMessageHandler.class)
     void requestUserInfo(Long receiverId);
 
-    @Event(handlers = ComposeMessagePresenter.class)
-    void responseUserInfo(UserDetail userDetail);
-
-    /**************************************************************************/
-    /* Business events handled by DevelDetailWrapperPresenter. */
-
     /*
      * Request/Response Method pair
      * DemandDetail for detail section
@@ -118,20 +156,7 @@ public interface MessagesModuleEventBus extends EventBus {
 //    void requestDemandDetail(Long demandId, ViewType type);
 //    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
 //    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
-
-    /*
-     * Request/Response method pair
-     * Fetch and display chat(conversation) for supplier new demands list
-     * @param messageId
-     * @param userMessageId
-     * @param userId
-     */
-    @Event(handlers = ConversationWrapperPresenter.class)
-    void displayConversation(Long threadRootId, Long messageId);
-
     @Event(handlers = MessagesModuleMessageHandler.class)
     void requestConversation(Long threadRootId, Long subRootId);
 
-    @Event(handlers = ConversationWrapperPresenter.class)
-    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
 }

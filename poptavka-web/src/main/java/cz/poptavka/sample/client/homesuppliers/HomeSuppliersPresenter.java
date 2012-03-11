@@ -86,6 +86,7 @@ public class HomeSuppliersPresenter
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
         void hideSuppliersDetail();
+
     }
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     //differ if category was selected from menu, or from path
@@ -116,9 +117,10 @@ public class HomeSuppliersPresenter
         // TODO praso - switch css to selected menu button.
         //eventBus.selectCompanyMenu();
     }
+
     private SearchModuleDataHolder searchDataHolder = null;
 
-    public void onInitHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
+    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
         eventBus.loadingShow(MSGS.loading());
         this.location = location;
         this.searchDataHolder = searchDataHolder;
@@ -149,13 +151,15 @@ public class HomeSuppliersPresenter
         if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
             Storage.setCurrentlyLoadedModule("homeSuppliers");
             Storage.setCurrentlyLoadedView("homeSuppliers");
-            if (location.equals("home")) {
-                Storage.setCurrentlyLoadedView("homeSuppliers");
-                eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-            } else if (location.equals("user")) {
-                Storage.setCurrentlyLoadedView("userSuppliers");
-                eventBus.setUserBodyHolderWidget(view.getWidgetView());
-            }
+            // TODO praso - nebudeme rozlisovat medzi user a home castou. Aspon dame uzivatelovi
+            // menej moznosti ako sa pohybovat po webovom rozhrani
+//            if (location.equals("home")) {
+//                Storage.setCurrentlyLoadedView("homeSuppliers");
+//                eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+//            } else if (location.equals("user")) {
+//                Storage.setCurrentlyLoadedView("userSuppliers");
+//                eventBus.setUserBodyHolderWidget(view.getWidgetView());
+//            }
         }
     }
 
@@ -178,6 +182,7 @@ public class HomeSuppliersPresenter
 
                 eventBus.loadingHide();
             }
+
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
         this.createAsyncSortHandler();
@@ -202,6 +207,7 @@ public class HomeSuppliersPresenter
 
                 eventBus.getSuppliers(start, start + length, searchDataHolder, orderColumns);
             }
+
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
@@ -227,6 +233,7 @@ public class HomeSuppliersPresenter
                     eventBus.addToPath(selected, location);
                 }
             }
+
         });
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
@@ -251,6 +258,7 @@ public class HomeSuppliersPresenter
                     eventBus.addToPath(selected, location);
                 }
             }
+
         });
         view.getSelectionSupplierModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
@@ -262,6 +270,7 @@ public class HomeSuppliersPresenter
                     view.displaySuppliersDetail(selected);
                 }
             }
+
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
 
@@ -279,6 +288,7 @@ public class HomeSuppliersPresenter
                 view.getPager().setPageStart(page * newPage);
                 view.getPager().setPageSize(newPage);
             }
+
         });
 
     }
@@ -385,4 +395,5 @@ public class HomeSuppliersPresenter
         link.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
         view.addPath(link);
     }
+
 }

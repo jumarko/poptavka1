@@ -6,8 +6,6 @@
  */
 package cz.poptavka.sample.client.homesuppliers;
 
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -30,6 +28,10 @@ import java.util.Map;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeSuppliersEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
     @Start
     @Event(handlers = HomeSuppliersPresenter.class)
     void start();
@@ -43,33 +45,32 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = HomeSuppliersPresenter.class)
     void forward();
 
+    /**************************************************************************/
+    /* Navigation events.                                                     */
+    /**************************************************************************/
     /**
      * The only entry point to this module due to code-splitting and exclusive
      * fragment.
      */
-    // INIT
     @Event(handlers = HomeSuppliersPresenter.class)
-    void initHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
 
-    //
-    //                 **** Navigation events ****
-    //
-    // PARENT EVENTS
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
-
-    @Event(forwardToParent = true)
-    void setUserBodyHolderWidget(Widget body);
-
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+    // TODO Praso - GENERAL PARENT EVENTS WILL BE LATER SEPARATED WITHIN BASECHILDEVENTBUS TO SAVE CODE
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
     @Event(forwardToParent = true)
     void loadingHide();
 
-    //
-    //                  **** DISPLAY ****
-    //
+    /**************************************************************************/
+    /* Business events handled by Presenters.                                 */
+    /**************************************************************************/
+    /**************************************************************************/
+    /* Display events                                                         */
+    /**************************************************************************/
     // ROOT CATEGORIES
     @Event(handlers = HomeSuppliersPresenter.class)
     void displayRootcategories(ArrayList<CategoryDetail> list);
@@ -91,9 +92,9 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = HomeSuppliersPresenter.class)
     void displayChildWidget(Long id);
 
-    //
-    //                  **** PATH ****
-    //
+    /**************************************************************************/
+    /* Path events                                                            */
+    /**************************************************************************/
     // UPDATE
     @Event(handlers = HomeSuppliersPresenter.class)//, historyConverter = HomeSuppliersHistoryConverter.class)
     void updatePath(ArrayList<CategoryDetail> categories, String location);
@@ -105,13 +106,16 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
     String addToPath(CategoryDetail categoryDetail, String location);
 
-    //
-    //                  **** DATA ****
-    //
+    /**************************************************************************/
+    /* Data events                                                            */
+    /**************************************************************************/
     // PROVIDER
     @Event(handlers = HomeSuppliersPresenter.class)
     void createAsyncDataProvider(final int totalFound);
 
+    /**************************************************************************/
+    /* Business events handled by Handlers.                                   */
+    /**************************************************************************/
     // CATEGORIES
     @Event(handlers = HomeSuppliersHandler.class)
     void getCategories();
@@ -128,4 +132,5 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     @Event(handlers = HomeSuppliersHandler.class)
     void getSuppliers(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+
 }

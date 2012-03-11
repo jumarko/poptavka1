@@ -14,6 +14,8 @@ import cz.poptavka.sample.client.user.interfaces.IUserMenuView;
 public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus>
         implements IUserMenuPresenter {
 
+
+    //TODO praso tento userMenu mozeme cely odstranit. Nahrada je v baliku root.UserMenu
     public void onStart() {
         bindView();
         GWT.log("User menu module loaded");
@@ -32,21 +34,21 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initDemandModule(null, "welcome");
+                eventBus.goToDemandModule(null, "welcome");
             }
         });
         view.getMessagesButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initMessagesModule(null, "inbox");
+                eventBus.goToMessagesModule(null, "inbox");
             }
         });
         view.getSettingsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initSettings();
+                eventBus.goToSettingsModule();
             }
         });
         view.getContactsButton().addClickHandler(new ClickHandler() {
@@ -59,7 +61,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initAdminModule(null, "initAdminModule");
+                eventBus.goToAdminModule(null, "initAdminModule");
 
             }
         });

@@ -29,7 +29,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     private LoginPopupPresenter login;
 
     public void onStart() {
-        GWT.log("Header module loaded");
+        GWT.log("Header presenter loaded");
         eventBus.setHeader(view);
     }
 
@@ -63,9 +63,8 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     public void onAtHome() {
         this.loggedIn = false;
         view.getLoginLink().setText(MSGS.logIn());
+        // TODO Praso - Potrujeme tuto metodu?
         eventBus.displayMenu();
-        eventBus.initHomeWelcomeModule(null);
-        eventBus.setHomeMenu();
     }
 
     public void onAtAccount() {

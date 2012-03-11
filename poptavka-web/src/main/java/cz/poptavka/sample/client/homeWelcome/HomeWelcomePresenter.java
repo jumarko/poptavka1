@@ -17,7 +17,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     public void onStart() {
         GWT.log("HomeWelcome module loaded");
-        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
     }
 
     public void onForward() {
@@ -25,7 +25,8 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
         // TODO praso - check MVP4G blog to lear best practicies for forward event
     }
 
-    public void onInitHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
+    public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
+        // TODO martin - dopln si loadedView v ostatnych presenteroch to mavas vzdy vyplnene
         Storage.setCurrentlyLoadedModule("welcome");
         this.searchDataHolder = searchDataHolder;
     }

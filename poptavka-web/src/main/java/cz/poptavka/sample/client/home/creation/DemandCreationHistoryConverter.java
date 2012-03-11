@@ -21,7 +21,7 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
      * @return token string like module/method?param, where param = home or user
      */
     public String convertToToken(String methodName, String location) {
-        if (methodName.equals("initCreateDemandModule")) {
+        if (methodName.equals("goToCreateDemandModule")) {
             return location;
         }
         return "";
@@ -37,8 +37,8 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
      */
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
-        if (methodName.equals("initCreateDemandModule")) {
-            eventBus.initCreateDemandModule(param);
+        if (methodName.equals("goToCreateDemandModule")) {
+            eventBus.goToCreateDemandModule(param);
         }
     }
 

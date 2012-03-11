@@ -11,6 +11,7 @@
 			font-weight: bold;
 		}
 	</ui:style>
+        <g:DecoratorPanel>
 	<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
 		<!-- old type -->
 		<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
@@ -36,4 +37,5 @@
 			</div>
 		</div>
 	</g:HTMLPanel>
-</ui:UiBinder> 
+        </g:DecoratorPanel>
+</ui:UiBinder>

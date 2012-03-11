@@ -1,8 +1,6 @@
 package cz.poptavka.sample.client.root.menu;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -15,61 +13,61 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         implements IMenuPresenter {
 
     public void onStart() {
-        // TODO praso - preco volame bindView a neprepisujeme defaultnu bind() metodu
-        // ktora sa vola defaultne pri prvom spusteni presentera?
-        bindView();
-        GWT.log("Menu module loaded");
+        GWT.log("Menu presenter loaded");
         eventBus.setMenu(view);
     }
 
-    public void onSetHomeMenu() {
-        // TODO praso - preco tu volame znovu bind metod. Nestaci prvy krat v onStart()?
-        // vid docs
-        // if presenter is activated and if it's the first event handled by the presenter,
-        // it calls the bind method.
-        bindView();
-        GWT.log("set menu after log out");
+//    // TODO tuto metodu mozeme odstranit. Nahradil som ju metodou onAtHome tj.
+//    // po odhlaseni sa nastavi znovu Home menu
+//    public void onSetHomeMenu() {
+//        // TODO tuto metodu zrejme budeme volat ked budeme chciet nastavit home menu
+//        // ked sa uzivatel ohlasi z user casti
+//        GWT.log("set Home menu after user's logout");
+//        eventBus.setMenu(view);
+//    }
+
+    /**
+     * This method will set up home menu after user is logged out.
+     */
+    public void onAtHome() {
+        GWT.log("set Home menu after user's logout");
         eventBus.setMenu(view);
     }
 
-    public void bindView() {
-        GWT.log("Binding menu view");
-        view.getHomeButton().addClickHandler(new ClickHandler() {
-
-            // TODO praso na co je tato metoda? Ma odhlasovat alebo co?
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.atHome();
-            }
-        });
-        view.getDemandsButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.initHomeDemandsModule(null, "home");
-            }
-        });
-        view.getSuppliersButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.initHomeSuppliersModule(null, "home");
-            }
-        });
-        view.getCreateSupplierButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.initCreateSupplierModule("home");
-            }
-        });
-        view.getCreateDemandButton().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.initCreateDemandModule("home");
-            }
-        });
-
+    // TODO praso - zistit ako mam nastavit SearchFilter pre moduly. A vyvtovirt konstanty "home"
+    @Override
+    public void goToHomeWelcome() {
+        eventBus.goToHomeWelcomeModule(null);
     }
+
+    @Override
+    public void goToHomeDemands() {
+        eventBus.goToHomeDemandsModule(null, "home");
+    }
+
+    @Override
+    public void goToHomeSuppliers() {
+        eventBus.goToHomeSuppliersModule(null, "home");
+    }
+
+    @Override
+    public void goToCreateSupplier() {
+        eventBus.goToCreateSupplierModule("home");
+    }
+
+    @Override
+    public void goToCreateDemand() {
+        eventBus.goToCreateDemandModule("home");
+    }
+
+    @Override
+    public void goToPage1() {
+        eventBus.goToPage1("You clicked the menu");
+    }
+
+    @Override
+    public void goToPage2() {
+        eventBus.goToPage2("You clicked the menu.");
+    }
+
 }

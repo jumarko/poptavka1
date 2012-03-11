@@ -6,9 +6,7 @@
  */
 package cz.poptavka.sample.client.home.supplier;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -26,6 +24,10 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface SupplierCreationEventBus extends EventBus {
 
+    /**
+     * Start event is called only when module is instantiated first time.
+     * We can use it for history initialization.
+     */
     @Start
     @Event(handlers = SupplierCreationPresenter.class)
     void start();
@@ -33,27 +35,27 @@ public interface SupplierCreationEventBus extends EventBus {
     /**
      * Forward event is called only if it is configured here. It there is nothing to carry out
      * in this method we should remove forward event to save the number of method invocations.
+     * We can use forward event to switch css style for selected menu button.
      */
     @Forward
     @Event(handlers = SupplierCreationPresenter.class)
     void forward();
 
     /**************************************************************************/
-    /* Navigation events. */
+    /* Navigation events.                                                     */
+    /**************************************************************************/
     /**
-     * The only entry point to this module due to code-splitting and exclusive fragment.
+     * The only entry point to this module due to code-spliting feature.
+     *
+     * @param location - defines location of view I think
      */
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = SupplierCreationHistoryConverter.class)
-    String initCreateSupplierModule(String location);
-
-    @Event(forwardToParent = true)
-    void setHomeBodyHolderWidget(IsWidget body);
-
-    @Event(forwardToParent = true)
-    void setUserBodyHolderWidget(Widget body);
+    String goToCreateSupplierModule(String location);
 
     /**************************************************************************/
-    /* Parent events. */
+    /* Parent events                                                          */
+    /**************************************************************************/
+    // TODO praso - odstranit eventy, ktore niesu potrebne a vlozit ich do predka
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
 
@@ -67,8 +69,8 @@ public interface SupplierCreationEventBus extends EventBus {
     void initLocalityWidget(SimplePanel holderWidget);
 
     /**************************************************************************/
-    /* Business events. */
-    /* Business events handled by Presenters. */
+    /* Business events handled by Presenters.                                 */
+    /**************************************************************************/
     @Event(handlers = SupplierCreationPresenter.class)
     void initServiceForm(SimplePanel serviceHolder);
 
@@ -77,11 +79,14 @@ public interface SupplierCreationEventBus extends EventBus {
 
     @Event(handlers = SupplierInfoPresenter.class)
     void checkFreeEmailResponse(Boolean result);
-    /* Business events handled by Handlers. */
 
+    /**************************************************************************/
+    /* Business events handled by Handlers.                                   */
+    /**************************************************************************/
     @Event(handlers = SupplierCreationHandler.class)
     void registerSupplier(UserDetail newSupplier);
 
     @Event(handlers = SupplierCreationHandler.class)
     void checkFreeEmail(String value);
+
 }

@@ -22,7 +22,7 @@ public class HomeWelcomeHistoryConverter implements HistoryConverter<HomeWelcome
      * @return token string like module/method?param, where param = welcome
      */
     public String convertToToken(String methodName, SearchModuleDataHolder filter) {
-        if (methodName.equals("initHomeWelcomeModule")) {
+        if (methodName.equals("goToHomeWelcomeModule")) {
             return "welcome";
         }
         return "";
@@ -38,8 +38,8 @@ public class HomeWelcomeHistoryConverter implements HistoryConverter<HomeWelcome
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeWelcomeEventBus eventBus) {
-        if (methodName.equals("initHomeWelcomeModule")) {
-            eventBus.initHomeWelcomeModule(null);
+        if (methodName.equals("goToHomeWelcomeModule")) {
+            eventBus.goToHomeWelcomeModule(null);
         }
     }
 

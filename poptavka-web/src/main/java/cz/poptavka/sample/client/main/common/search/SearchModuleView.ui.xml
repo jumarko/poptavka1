@@ -10,8 +10,8 @@
     </ui:style>
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
-        
-    <g:HTMLPanel ui:field="container">
+    <g:DecoratorPanel>
+        <g:HTMLPanel ui:field="container">
         <!-- menu -->
 <!--        <div ui:field="searchMenu">
             <ul>
@@ -35,22 +35,23 @@
                 </li>
             </ul>
         </div>-->
-        <div ui:field="searchMenu">
-            <g:HorizontalPanel>
-                <g:TextBox ui:field="searchContent" width="250px">
-                    <ui:msg key="searchContent">search...</ui:msg>
-                </g:TextBox>
+            <div ui:field="searchMenu">
+                <g:HorizontalPanel>
+                    <g:TextBox ui:field="searchContent" width="250px">
+                        <ui:msg key="searchContent">search...</ui:msg>
+                    </g:TextBox>
 <!--                <li>
                     <g:ListBox ui:field="listbox"/>
                 </li>-->
-                
+
 <!--                <g:DecoratedPopupPanel ui:field="popupPanel"/>-->
-                <g:Button ui:field="advSearchBtn" styleName='{res.layout.homeMenu}'>|*|</g:Button>
-                <g:Button ui:field="searchBtn" styleName='{res.layout.homeMenu}'>
-                    <ui:msg key="search">Search</ui:msg>
-                </g:Button>
-            </g:HorizontalPanel>
-            <g:PopupPanel ui:field="popupPanel"/>
-        </div>
-    </g:HTMLPanel>
+                    <g:Button ui:field="advSearchBtn" styleName='{res.layout.homeMenu}'>|*|</g:Button>
+                    <g:Button ui:field="searchBtn" styleName='{res.layout.homeMenu}'>
+                        <ui:msg key="search">Search</ui:msg>
+                    </g:Button>
+                </g:HorizontalPanel>
+                <g:PopupPanel ui:field="popupPanel"/>
+            </div>
+        </g:HTMLPanel>
+    </g:DecoratorPanel>
 </ui:UiBinder>

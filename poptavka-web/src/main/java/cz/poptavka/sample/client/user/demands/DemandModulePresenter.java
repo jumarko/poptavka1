@@ -63,14 +63,14 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initDemandModule(null, "clientMyDemands");
+                eventBus.goToDemandModule(null, "clientMyDemands");
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initDemandModule(null, "clientOffers");
+                eventBus.goToDemandModule(null, "clientOffers");
             }
         });
         view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
@@ -84,28 +84,28 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initCreateDemandModule("user");
+                eventBus.goToCreateDemandModule("user");
             }
         });
         view.getCliCreateSupplier().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initCreateSupplierModule("user");
+                eventBus.goToCreateSupplierModule("user");
             }
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initHomeDemandsModule(null, "user");
+                eventBus.goToHomeDemandsModule(null, "user");
             }
         });
         view.getAllSuppliers().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initHomeSuppliersModule(null, "user");
+                eventBus.goToHomeSuppliersModule(null, "user");
             }
         });
 
@@ -114,7 +114,7 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.initDemandModule(null, "potentialDemands");
+                eventBus.goToDemandModule(null, "potentialDemands");
             }
         });
         view.getSupOffersButton().addClickHandler(new ClickHandler() {
@@ -157,9 +157,19 @@ public class DemandModulePresenter
          */
     }
 
+    public void onStart() {
+        // TODO praso - probably history initialization will be here
+    }
+
+    public void onForward() {
+        // TODO praso - here we can switch css for selected menu button
+        //eventBus.selectHomeDemandsMenuButton();
+    }
+
+
     //TODO
     //later add UserDetail as parameter
-    public void onInitDemandModule(SearchModuleDataHolder filter, String loadWidget) {
+    public void onGoToDemandModule(SearchModuleDataHolder filter, String loadWidget) {
         Storage.setCurrentlyLoadedModule("demands");
         // hiding window for this is after succesfull Userhandler call
         Storage.showLoading(Storage.MSGS.progressDemandsLayoutInit());
@@ -167,7 +177,7 @@ public class DemandModulePresenter
         // TODO execute client specific demands init methods/calls
 //        }
         /*
-         * InitDemandModule is just one entry point for initialization because of history.
+         * goToDemandModule is just one entry point for initialization because of history.
          * Therefore need to specify, which widget to load.
          */
         //Client
@@ -201,7 +211,8 @@ public class DemandModulePresenter
         // STYLE
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
 
-        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+        // TODO praso - method bellow is commented since I used autodisplay feature
+//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();
@@ -213,9 +224,10 @@ public class DemandModulePresenter
         view.setContent(content);
     }
 
-    public void onSetUserBodyHolderWidget(IsWidget body) {
-//        view.getContentPanel().add(body);
-        view.setContent(body);
-//        view.getContentPanel().add(new Label("TA COCO CO"));
-    }
+    // TODO praso - this method is commented since I used autodisplay feature to laod view
+//    public void onSetUserBodyHolderWidget(IsWidget body) {
+////        view.getContentPanel().add(body);
+//        view.setContent(body);
+////        view.getContentPanel().add(new Label("TA COCO CO"));
+//    }
 }

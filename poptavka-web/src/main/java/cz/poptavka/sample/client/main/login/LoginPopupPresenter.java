@@ -65,7 +65,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 @Override
                 public void onSuccess(String sessionId) {
                     if (sessionId != null) {
-                        setSessionID(sessionId);
+                        // TODO workaround for developoment purposes
+//                        setSessionID(sessionId);
+                        setSessionID("id=149");
                         eventBus.atAccount();
                         hideView();
                     } else {
@@ -74,9 +76,10 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 }
             });
             //DEVEL ONLY FOR FAST SUPPLIER LOGIN
-            setSessionID("id=149");
-            eventBus.atAccount();
-            hideView();
+//            This is the reason why the atAccountMethod is called twice
+//            setSessionID("id=149");
+//            eventBus.atAccount();
+//            hideView();
         }
     }
 
