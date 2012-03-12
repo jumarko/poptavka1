@@ -15,22 +15,30 @@ public enum DemandStatus {
      * and he must confirm email activation link. The other meaning is when Demand came from external system
      * and we are waiting for approval to show Demand from non-registered Client.
      * Until we receive link confirmation/approval this Demand is in state TEMPORARY.
+     *
+     * TODO vojto - zmazat tento stav
      */
     TEMPORARY("TEMPORARY"),
 
     /**
      * Registered/non-registered Client confirmed/approved TEMPORARY Demand.
      * Operator must check this Demand and switch it to another state.
+     *
+     * TODO vojto - nahradit temporary tymto stavom v rpc servisach. Toto je  1. stav pri vytvarani poptavky
      */
     TO_BE_CHECKED("TO_BE_CHECKED"),
 
     /**
      * Operator checked the Demand which needs to be changed. Either some information is missing or it is a spam.
+     *
+     * Stav 2
      */
     INVALID("INVALID"),
 
     /**
      * Demand is properly described by Client and Operator switched it to ACTIVE state.
+     *
+     * Stav 3
      */
     ACTIVE("ACTIVE"),
 
@@ -38,6 +46,8 @@ public enum DemandStatus {
      * No supplier were chosen for this demand and the validity of the Demand has expired.
      * This Demand can be re-activated by Client.
      * After Client re-activates the Demand it will go to the state of TO_BE_CHECKED.
+     *
+     * Stav
      */
     INACTIVE("INACTIVE"),
 
