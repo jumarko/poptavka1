@@ -193,14 +193,14 @@ public interface RootEventBus extends EventBus {
 //    void setHomeBodyHolderWidget(IsWidget body);
 
     /**
-     * login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
+     * logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
      */
     @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
             historyConverter = RootHistoryConverter.class)
     String atHome();
 
     /**
-     * logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka, cookies
+     * login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka, cookies
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
