@@ -17,7 +17,7 @@
         <g:HorizontalPanel>
             <g:HTMLPanel styleName="style.background">
                 <div ui:field="homeMenu">
-                    <ul ui:field="menuList">
+                    <ul ui:field="menuList" styleName='{res.layout.homeMenu}'>
                         <li>
                             <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>
 <!--                                        <ui:msg key="demands">Demands</ui:msg>-->Demands

@@ -2,10 +2,11 @@ package cz.poptavka.sample.shared.domain.demandsModule;
 
 import com.google.gwt.view.client.ProvidesKey;
 
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 
 import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.shared.domain.message.TableDisplay;
+import cz.poptavka.sample.domain.offer.OfferState;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,41 +16,67 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientDemandDetail implements Serializable, TableDisplay {
+public class ClientDemandDetail implements Serializable { //, TableDisplay {
 
     /**
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
-    private long userMessageId;
     private long demandId;
+    private long messageId;
+    private long userMessageId;
     private DemandStatus demandStatus;
     private String demandTitle; //title
-    private BigDecimal price;
+    private BigDecimal price = null;
     private Date endDate;
     private Date validToDate;
-    private boolean read;
-    private boolean starred;
-    private int messageCount;
-    private int unreadSubmessages;
+    private boolean read = false;
+    private boolean starred = false;
+    private int messageCount = -1;
+    private int unreadSubmessages = -1;
+
+    public static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER =
+            new ProvidesKey<ClientDemandDetail>() {
+
+                @Override
+                public Object getKey(ClientDemandDetail item) {
+                    return item == null ? null : item.getDemandId();
+                }
+            };
 
     /**
      * Method created FullDemandDetail from provided Demand domain object.
      *
      * @param demand
-     * @return DemandDetail
+     * @return ClientDemandDetail
      */
     public static ClientDemandDetail createDemandDetail(UserMessage userMessage) {
         ClientDemandDetail detail = new ClientDemandDetail();
         detail.setUserMessageId(userMessage.getId());
-        detail.setDemandId(userMessage.getMessage().getDemand().getId());
-        detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
-        detail.setTitle(userMessage.getMessage().getDemand().getTitle());
-        detail.setPrice(userMessage.getMessage().getDemand().getPrice());
-        detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
-        detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
+        if (userMessage.getMessage() != null && userMessage.getMessage().getDemand() != null) {
+            detail.setDemandId(userMessage.getMessage().getDemand().getId());
+            detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
+            detail.setTitle(userMessage.getMessage().getDemand().getTitle());
+            detail.setPrice(userMessage.getMessage().getDemand().getPrice());
+            detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
+            detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
+        }
         detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
+        return detail;
+    }
+
+    public static ClientDemandDetail createDemandDetail(Demand demand) {
+        ClientDemandDetail detail = new ClientDemandDetail();
+        detail.setUserMessageId(-1);
+        detail.setDemandId(demand.getId());
+        detail.setDemandStatus(demand.getStatus());
+        detail.setTitle(demand.getTitle());
+        detail.setPrice(demand.getPrice());
+        detail.setEndDate(demand.getEndDate());
+        detail.setValidToDate(demand.getValidTo());
+        detail.setRead(false);
+        detail.setStarred(false);
         return detail;
     }
 
@@ -78,7 +105,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.userMessageId = userMessageId;
     }
 
-    @Override
     public DemandStatus getDemandStatus() {
         return demandStatus;
     }
@@ -87,7 +113,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.demandStatus = demandStatus;
     }
 
-    @Override
     public Date getEndDate() {
         return endDate;
     }
@@ -96,7 +121,6 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.endDate = endDate;
     }
 
-    @Override
     public Date getValidToDate() {
         return validToDate;
     }
@@ -105,34 +129,22 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.validToDate = validToDate;
     }
 
-    @Override
     public boolean isRead() {
         return read;
     }
 
-    @Override
     public void setRead(boolean read) {
         this.read = read;
     }
 
-    @Override
     public boolean isStarred() {
         return starred;
     }
 
-    @Override
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
-    public static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER = new ProvidesKey<ClientDemandDetail>() {
 
-        @Override
-        public Object getKey(ClientDemandDetail item) {
-            return item == null ? null : item.getDemandId();
-        }
-    };
-
-    @Override
     public long getMessageId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -141,21 +153,18 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
 //    public String getTitle() {
 //        throw new UnsupportedOperationException("Not supported yet.");
 //    }
-    @Override
     public Date getCreated() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public String getPrice() {
-        return price.toString();
+        return price == null ? "N/A" : price.toString();
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -172,42 +181,39 @@ public class ClientDemandDetail implements Serializable, TableDisplay {
         this.unreadSubmessages = unreadSubmessages;
     }
 
-    @Override
     public String getFormattedMessageCount() {
         return "(" + getMessageCount() + "/" + getUnreadSubmessages() + ")";
     }
 
-    @Override
     public String getSender() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public int getRating() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public Date getExpireDate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public Date getReceivedDate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public Date getAcceptedDate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public String getTitle() {
         return demandTitle;
     }
 
     public void setTitle(String title) {
         demandTitle = title;
+    }
+
+    public OfferState.Type getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

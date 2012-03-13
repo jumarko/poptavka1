@@ -43,6 +43,9 @@ public class DemandModuleView extends Composite
     //BEHO devel button, delete after work is done
 
     public DemandModuleView() {
+        //Zaisti pridanie stylu - zeleny backgroud + horizontalne menu
+        StyleResource.INSTANCE.layout().ensureInjected();
+        //Zaisti pridanie styl - pre nastavenie velkosti body po prohlaseni
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }

@@ -17,9 +17,8 @@ import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.widget.grid.cell.ClickableDateCell;
+import cz.poptavka.sample.client.user.widget.grid.cell.DemandStatusImageCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.StarCell;
-import cz.poptavka.sample.client.user.widget.grid.cell.StateCell;
-import cz.poptavka.sample.client.user.widget.grid.cell.StatusImageCell;
 import cz.poptavka.sample.client.user.widget.grid.cell.UrgentImageCell;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
@@ -154,8 +153,8 @@ public class ColumnFactory<T> {
      *
      * @return star column
      */
-    public Column<T, DemandStatus> createStateColumn() {
-        Column<T, DemandStatus> col = new Column<T, DemandStatus>(new StateCell()) {
+    public Column<T, DemandStatus> createStatusColumn() {
+        Column<T, DemandStatus> col = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
 
             @Override
             public DemandStatus getValue(T object) {
@@ -185,10 +184,10 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return BaseDemandDetail.displayHtml(obj.getTitle()
+                    return BaseDemandDetail.displayHtml(obj.getDemandTitle()
                             + " " + obj.getFormattedMessageCount(), obj.isRead());
                 } else {
-                    return BaseDemandDetail.displayHtml(obj.getTitle(), obj.isRead());
+                    return BaseDemandDetail.displayHtml(obj.getDemandTitle(), obj.isRead());
                 }
             }
         });
@@ -199,7 +198,7 @@ public class ColumnFactory<T> {
                 @Override
                 public int compare(T o1, T o2) {
 
-                    return ((TableDisplay) o1).getTitle().compareTo(((TableDisplay) o2).getTitle());
+                    return ((TableDisplay) o1).getDemandTitle().compareTo(((TableDisplay) o2).getDemandTitle());
                 }
             });
         }
@@ -218,7 +217,7 @@ public class ColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return BaseDemandDetail.displayHtml(obj.getPrice(), obj.isRead());
+                return BaseDemandDetail.displayHtml(obj.getClientName(), obj.isRead());
             }
         });
         if (sortHandler != null) {
@@ -227,7 +226,7 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    return ((TableDisplay) o1).getPrice().compareTo(((TableDisplay) o2).getPrice());
+                    return ((TableDisplay) o1).getDemandPrice().compareTo(((TableDisplay) o2).getDemandPrice());
                 }
             });
         }
@@ -277,7 +276,7 @@ public class ColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return obj.getRating() + "%";
+                return obj.getClientRating() + "%";
             }
         };
         if (sortHandler != null) {
@@ -286,8 +285,8 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    Integer count1 = ((TableDisplay) o1).getRating();
-                    Integer count2 = ((TableDisplay) o2).getRating();
+                    Integer count1 = ((TableDisplay) o1).getClientRating();
+                    Integer count2 = ((TableDisplay) o2).getClientRating();
                     return count1.compareTo(count2);
                 }
             });
@@ -306,7 +305,7 @@ public class ColumnFactory<T> {
      * @param displayMessageCount
      * @return clientName column
      */
-    public Column<T, String> createSenderColumn(ListHandler<T> sortHandler, final boolean displayMessageCount) {
+    public Column<T, String> createClientColumn(ListHandler<T> sortHandler, final boolean displayMessageCount) {
         Column<T, String> nameColumn = new Column<T, String>(tableTextCell) {
 
             private boolean displayMessages = displayMessageCount;
@@ -315,9 +314,9 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return obj.getSender() + " " + obj.getFormattedMessageCount();
+                    return obj.getClientName() + " " + obj.getFormattedMessageCount();
                 } else {
-                    return obj.getSender();
+                    return obj.getClientName();
                 }
             }
         };
@@ -364,14 +363,6 @@ public class ColumnFactory<T> {
                     case DATE_FINISHED:
                         date = obj.getEndDate();
                         break;
-                    case DATE_VALIDTO:
-                        date = obj.getValidToDate();
-                        break;
-                    case DATE_RECEIVED:
-                        date = obj.getReceivedDate();
-                        break;
-                    case DATE_ACCEPTED:
-                        date = obj.getAcceptedDate();
                     default:
                         break;
                 }
@@ -392,7 +383,7 @@ public class ColumnFactory<T> {
     }
 
     public Column<T, DemandStatus> createStatusColumn(ListHandler<T> sortHandler) {
-        Column<T, DemandStatus> statusColumn = new Column<T, DemandStatus>(new StatusImageCell()) {
+        Column<T, DemandStatus> statusColumn = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
 
             @Override
             public DemandStatus getValue(T object) {

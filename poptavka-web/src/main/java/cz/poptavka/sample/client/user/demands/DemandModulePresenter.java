@@ -166,7 +166,6 @@ public class DemandModulePresenter
         //eventBus.selectHomeDemandsMenuButton();
     }
 
-
     //TODO
     //later add UserDetail as parameter
     public void onGoToDemandModule(SearchModuleDataHolder filter, String loadWidget) {
@@ -184,10 +183,10 @@ public class DemandModulePresenter
         if (loadWidget.equals("clientMyDemands")) {
             eventBus.initClientList(filter);
         } else if (loadWidget.equals("clientOffers")) {
-            eventBus.initClientOffers(filter);
+//            eventBus.initClientOffers(filter);
         } else if (loadWidget.equals("clientAssignedDemands")) {
             //
-        //Supplier
+            //Supplier
         } else if (loadWidget.equals("potentialDemands")) {
             eventBus.initSupplierList(filter);
         } else if (loadWidget.equals("supplierOffers")) {
@@ -223,7 +222,6 @@ public class DemandModulePresenter
     public void onDisplayView(Widget content) {
         view.setContent(content);
     }
-
     // TODO praso - this method is commented since I used autodisplay feature to laod view
 //    public void onSetUserBodyHolderWidget(IsWidget body) {
 ////        view.getContentPanel().add(body);

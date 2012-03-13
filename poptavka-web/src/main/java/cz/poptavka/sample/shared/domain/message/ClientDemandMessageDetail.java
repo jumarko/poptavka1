@@ -9,11 +9,8 @@ import java.io.Serializable;
 import com.google.gwt.view.client.ProvidesKey;
 
 import cz.poptavka.sample.domain.message.UserMessage;
-import java.util.Date;
 
 /**
- * Used in DemandModule in client -> MyDemands section.
- * Holds information about demands created by Client.
  *
  * @author ivan.vlcek
  */
@@ -35,7 +32,7 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 && userMessage.getMessage().getDemand().getClient() != null
                 && userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
                 && userMessage.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData() != null) {
-            detail.setSender(userMessage.getMessage().getDemand()
+            detail.setClientName(userMessage.getMessage().getDemand()
                     .getClient().getBusinessUser().getBusinessUserData().getDisplayName());
         }
         return detail;
@@ -54,7 +51,7 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 + ",\n demandId=" + getDemandId()
                 + ",\n senderId=" + getSenderId()
                 + ",\n unreadSubmessages=" + getUnreadSubmessages()
-                + ",\n demandTitle=" + getSender()
+                + ",\n demandTitle=" + getDemandTitle()
                 + ",\n demandStatus=" + getDemandStatus()
                 + ",\n endDate=" + getEndDate()
                 + ",\n validToDate=" + getValidToDate()
@@ -69,41 +66,19 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
                 }
             };
 
-    @Override
-    public String getSender() {
+    public String getClientName() {
         return clientName;
     }
 
-    public void setSender(String clientName) {
+    public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
-    @Override
-    public int getRating() {
+    public int getClientRating() {
         return clientRating;
     }
 
-    public void setRating(int clientRating) {
+    public void setClientRating(int clientRating) {
         this.clientRating = clientRating;
     }
-
-    @Override
-    public Date getReceivedDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Date getAcceptedDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String getTitle() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-//    @Override
-//    public String getPrice() {
-//        throw new UnsupportedOperationException("Not supported yet.");
-//    }
 }

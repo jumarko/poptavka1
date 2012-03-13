@@ -67,7 +67,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                     if (sessionId != null) {
                         // TODO workaround for developoment purposes
 //                        setSessionID(sessionId);
+                        //Martin: Change id = 149 to id = 613248 for testing new user and his demands
                         setSessionID("id=149");
+//                        setSessionID("id=613248");
                         eventBus.atAccount();
                         hideView();
                     } else {

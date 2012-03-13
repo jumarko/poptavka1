@@ -1,26 +1,26 @@
 package cz.poptavka.sample.shared.domain.demandsModule;
 
 import com.google.gwt.view.client.ProvidesKey;
-import cz.poptavka.sample.domain.demand.DemandStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import cz.poptavka.sample.domain.message.UserMessage;
-import cz.poptavka.sample.shared.domain.message.TableDisplay;
+import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
-public class ClientOfferDetail implements Serializable, TableDisplay {
+public class ClientOfferDetail implements Serializable {
 
     private static final long serialVersionUID = 2349565802701324033L;
     //
+    private boolean read;
+    private boolean starred;
+    private OfferState.Type offerStateType;
     private String sender;
+    private int clientRating;
     private BigDecimal offerPrice;
     private Date received;
     private Date accepted;
-    private int clientRating;
-    private boolean read;
-    private boolean starred;
     private int messageCount = 0;
     private int unreadSubmessages;
     //
@@ -29,6 +29,14 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
     private long demandId;
     private long offerId;
     private long supplierId;
+    public static final ProvidesKey<ClientOfferDetail> KEY_PROVIDER =
+            new ProvidesKey<ClientOfferDetail>() {
+
+                @Override
+                public Object getKey(ClientOfferDetail item) {
+                    return item == null ? null : item.getOfferId();
+                }
+            };
 
     public static ClientOfferDetail createMessageDetail(UserMessage message) {
         ClientOfferDetail detail = new ClientOfferDetail();
@@ -75,40 +83,27 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
     public MessageType getMessageType() {
         return MessageType.OFFER;
     }
-    public static final ProvidesKey<ClientOfferDetail> KEY_PROVIDER = new ProvidesKey<ClientOfferDetail>() {
 
-        @Override
-        public Object getKey(ClientOfferDetail item) {
-            return item == null ? null : item.getOfferId();
-        }
-    };
-
-    @Override
     public long getMessageId() {
         return messageId;
     }
 
-    @Override
     public boolean isRead() {
         return read;
     }
 
-    @Override
     public void setRead(boolean read) {
         this.read = read;
     }
 
-    @Override
     public boolean isStarred() {
         return starred;
     }
 
-    @Override
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
 
-    @Override
     public String getPrice() {
         return offerPrice.toString();
     }
@@ -117,7 +112,14 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
         this.offerPrice = price;
     }
 
-    @Override
+    public OfferState.Type getOfferState() {
+        return offerStateType;
+    }
+
+    public void setOfferState(OfferState.Type offerState) {
+        this.offerStateType = offerState;
+    }
+
     public String getFormattedMessageCount() {
         return "(" + getMessageCount() + "/" + getUnreadSubmessages() + ")";
     }
@@ -130,7 +132,6 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
         this.unreadSubmessages = unreadSubmessages;
     }
 
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -139,7 +140,6 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
         this.messageCount = messageCount;
     }
 
-    @Override
     public String getSender() {
         return sender;
     }
@@ -148,7 +148,6 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
         sender = name;
     }
 
-    @Override
     public Date getReceivedDate() {
         return received;
     }
@@ -157,7 +156,6 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
         this.received = receivedDate;
     }
 
-    @Override
     public Date getAcceptedDate() {
         return accepted;
     }
@@ -166,42 +164,11 @@ public class ClientOfferDetail implements Serializable, TableDisplay {
         this.accepted = acceptedDate;
     }
 
-    @Override
     public int getRating() {
         return clientRating;
     }
 
     public void setRating(int rating) {
         clientRating = rating;
-    }
-
-    @Override
-    public Date getValidToDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String getTitle() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Date getCreated() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Date getEndDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public DemandStatus getDemandStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Date getExpireDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -26,7 +26,6 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 
 
 @Presenter(view = ClientList.class)
-//@Presenter(view = SupplierList.class, multiple = true)
 public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList, DemandModuleEventBus> {
 
     public interface IList extends LazyView {
@@ -63,6 +62,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
     //remove this annotation for production
     @SuppressWarnings("unused")
     private boolean initialized = false;
+    private SearchModuleDataHolder searchDataHolder;
 
     /** Defines button actions. */
     public void bindView() {
@@ -110,7 +110,9 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
     public void onInitClientList(SearchModuleDataHolder searchModuleDataHolder) {
 //        commented code is from production code
 //        if (!initialized) {
-        eventBus.requestClientsDemands();
+        Storage.setCurrentlyLoadedView("potentialDemandMessages");
+        searchDataHolder = searchModuleDataHolder;
+        eventBus.requestClientsDemands(searchDataHolder);
 //        }
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());

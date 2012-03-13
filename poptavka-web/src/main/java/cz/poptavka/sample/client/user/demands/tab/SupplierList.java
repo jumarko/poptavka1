@@ -196,7 +196,7 @@ public class SupplierList extends Composite implements //IList {
 
     private void setClientColumnUpdater(ColumnFactory<PotentialDemandMessage> factory,
                                         FieldUpdater<PotentialDemandMessage, String> action) {
-        Column<PotentialDemandMessage, String> clientCol = factory.createSenderColumn(null, true);
+        Column<PotentialDemandMessage, String> clientCol = factory.createClientColumn(null, true);
         clientCol.setFieldUpdater(action);
         demandGrid.addColumn(clientCol, Storage.MSGS.client());
     }

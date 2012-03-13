@@ -9,17 +9,15 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.domain.demand.DemandStatus;
+import cz.poptavka.sample.domain.offer.OfferState;
 
-public class StatusImageCell extends AbstractCell<DemandStatus> {
+public class OfferStateImageCell extends AbstractCell<OfferState.Type> {
 
     private static ImageResourceRenderer renderer;
-
     private PopupPanel popup = new PopupPanel(true);
-
     private boolean displayed;
 
-    public StatusImageCell() {
+    public OfferStateImageCell() {
         super("click", "keydown", "mouseover", "mouseout");
         if (renderer == null) {
             renderer = new ImageResourceRenderer();
@@ -28,48 +26,23 @@ public class StatusImageCell extends AbstractCell<DemandStatus> {
 
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
-            DemandStatus value, SafeHtmlBuilder sb) {
+            OfferState.Type value, SafeHtmlBuilder sb) {
 
-        switch (value) {
-            case ACTIVE:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case ASSIGNED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case CANCELED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case CLOSED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case FINISHED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case INACTIVE:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case INVALID:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case NEW:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case TEMPORARY:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            case TO_BE_CHECKED:
-                sb.append(renderer.render(Storage.RSCS.images().statusWork()));
-                break;
-            default:
-                break;
+        if (value.getValue().equals("ACCEPTED")) {
+            sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+        }
+        if (value.getValue().equals("PENDING")) {
+            sb.append(renderer.render(Storage.RSCS.images().statusWork()));
+        }
+        if (value.getValue().equals("DECLINED")) {
+            sb.append(renderer.render(Storage.RSCS.images().statusWork()));
         }
     }
 
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-            Element parent, DemandStatus value, NativeEvent event,
-            ValueUpdater<DemandStatus> valueUpdater) {
+            Element parent, OfferState.Type value, NativeEvent event,
+            ValueUpdater<OfferState.Type> valueUpdater) {
         if (("click".equals(event.getType())) || ("keydown".equals(event.getType()))) {
             onEnterKeyDown(context, parent, value, event, valueUpdater);
         }
@@ -84,7 +57,7 @@ public class StatusImageCell extends AbstractCell<DemandStatus> {
     @Override
     protected void onEnterKeyDown(
             com.google.gwt.cell.client.Cell.Context context, Element parent,
-            DemandStatus value, NativeEvent event, ValueUpdater<DemandStatus> valueUpdater) {
+            OfferState.Type value, NativeEvent event, ValueUpdater<OfferState.Type> valueUpdater) {
         if (valueUpdater != null) {
             valueUpdater.update(value);
         }
@@ -108,5 +81,4 @@ public class StatusImageCell extends AbstractCell<DemandStatus> {
         displayed = false;
         popup.hide();
     }
-
 }

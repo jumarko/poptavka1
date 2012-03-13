@@ -167,8 +167,9 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
         demandGrid.addColumn(finishCol, Storage.MSGS.finnishDate());
 
 // **** expireDate column
+        //Martin uncoment if ColumnFactory.DATE_VALIDTO is implemented
         Column<ClientDemandDetail, Date> expireCol =
-            factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_VALIDTO);
+            factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_EXPIRE);
         expireCol.setFieldUpdater(dateAction);
         demandGrid.addColumn(expireCol, Storage.MSGS.validTo());
     }

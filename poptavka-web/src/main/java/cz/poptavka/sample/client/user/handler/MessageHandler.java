@@ -12,8 +12,8 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
-import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
@@ -44,19 +44,19 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetClientDemandWithConversations(Long userId, Long clientId) {
-        messageService.getClientDemands(userId, clientId,
-                new AsyncCallback<ArrayList<ClientDemandDetail>>() {
+        messageService.getListOfClientDemandMessages(userId, clientId,
+                new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
-                    }
+                @Override
+                public void onFailure(Throwable caught) {
+                    Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
+                }
 
-                    @Override
-                    public void onSuccess(ArrayList<ClientDemandDetail> result) {
-                        eventBus.setClientDemandWithConversations(result);
-                    }
-                });
+                @Override
+                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
+                    eventBus.setClientDemandWithConversations(result);
+                }
+            });
     }
 
     public void onRequestDemandConversations(long messageId) {

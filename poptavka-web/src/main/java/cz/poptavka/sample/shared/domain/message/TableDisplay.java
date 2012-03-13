@@ -4,15 +4,12 @@ import java.util.Date;
 
 import cz.poptavka.sample.domain.demand.DemandStatus;
 
+
 public interface TableDisplay {
 
     long getMessageId();
 
-    //demandTitle,
-    String getTitle();
-
-    //supplierName, clientName
-    String getSender();
+    String getDemandTitle();
 
     boolean isRead();
 
@@ -26,7 +23,7 @@ public interface TableDisplay {
 
     Date getEndDate();
 
-    String getPrice();
+    String getDemandPrice();
 
     String getFormattedMessageCount();
 
@@ -35,19 +32,11 @@ public interface TableDisplay {
      */
     int getMessageCount();
 
+    String getClientName();
 
-    int getRating();
+    int getClientRating();
 
     DemandStatus getDemandStatus();
 
     Date getExpireDate();
-
-    /**
-     * @return demand-related conversation messages
-     */
-    Date getValidToDate();
-
-    Date getReceivedDate();
-
-    Date getAcceptedDate();
 }

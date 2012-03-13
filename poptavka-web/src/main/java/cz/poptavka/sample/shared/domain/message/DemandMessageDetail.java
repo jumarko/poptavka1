@@ -33,6 +33,7 @@ public class DemandMessageDetail extends MessageDetail implements
             UserMessage userMessage) {
         MessageDetail.fillMessageDetail(detail, userMessage);
         detail.setDemandId(userMessage.getMessage().getDemand().getId());
+        detail.setDemandTitle(userMessage.getMessage().getDemand().getTitle());
         detail.setPrice(userMessage.getMessage().getDemand().getPrice());
         detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
         detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
@@ -41,11 +42,11 @@ public class DemandMessageDetail extends MessageDetail implements
         return detail;
     }
 
-    public String getTitle() {
+    public String getDemandTitle() {
         return demandTitle;
     }
 
-    public void setTitle(String demandTitle) {
+    public void setDemandTitle(String demandTitle) {
         this.demandTitle = demandTitle;
     }
 
@@ -77,8 +78,8 @@ public class DemandMessageDetail extends MessageDetail implements
         }
     }
 
-    public String getPrice() {
-        return price.toString();
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public long getDemandId() {
@@ -108,5 +109,4 @@ public class DemandMessageDetail extends MessageDetail implements
     public Date getExpireDate() {
         return null;
     }
-
 }

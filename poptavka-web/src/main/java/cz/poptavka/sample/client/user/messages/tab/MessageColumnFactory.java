@@ -16,7 +16,7 @@ import com.google.gwt.view.client.SelectionModel;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.widget.grid.cell.StarCell;
-import cz.poptavka.sample.shared.domain.message.MessageDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 
 /**
  * Factory class for creating DataGrid columns including optional sorting ability.
@@ -127,7 +127,7 @@ public class MessageColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
-                return MessageDetail.displayHtml(obj.getSenderEmail(), obj.isRead());
+                return BaseDemandDetail.displayHtml(obj.getSenderEmail(), obj.isRead());
             }
         });
         if (sortHandler != null) {
@@ -165,10 +165,10 @@ public class MessageColumnFactory<T> {
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
                 if (displayMessages) {
-                    return MessageDetail.displayHtml(
+                    return BaseDemandDetail.displayHtml(
                             obj.getMessageDetail().getSubject() + " " + obj.getFormattedMessageCount(), obj.isRead());
                 } else {
-                    return MessageDetail.displayHtml(obj.getMessageDetail().getSubject(), obj.isRead());
+                    return BaseDemandDetail.displayHtml(obj.getMessageDetail().getSubject(), obj.isRead());
                 }
             }
         };
@@ -204,7 +204,7 @@ public class MessageColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
-                return MessageDetail.displayHtml(
+                return BaseDemandDetail.displayHtml(
                         DateTimeFormat.getFormat("MM/dd/yy").format(obj.getMessageDetail().getCreated()),
                         obj.isRead());
             }
