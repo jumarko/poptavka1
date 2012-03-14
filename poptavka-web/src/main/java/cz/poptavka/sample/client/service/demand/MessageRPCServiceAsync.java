@@ -6,9 +6,7 @@ package cz.poptavka.sample.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
-import cz.poptavka.sample.shared.domain.demandsModule.ClientOfferDetail;
+import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
@@ -17,7 +15,6 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -36,25 +33,13 @@ public interface MessageRPCServiceAsync {
 
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 
-    // DEMAND MODULE
-    // Client Demands
     void getClientDemands(long businessUserId, int fakeParam, AsyncCallback<ArrayList<MessageDetail>> callback);
 
-    void getClientDemands(long businessUserId, long clientId, AsyncCallback<ArrayList<ClientDemandDetail>> callback);
+    void getListOfClientDemandMessages(long businessUserId, long clientId,
+            AsyncCallback<ArrayList<ClientDemandMessageDetail>> callback);
 
     void getClientDemandConversations(long threadRootId, AsyncCallback<ArrayList<MessageDetail>> callback);
 
-    // Client Offers
-    void filterClientOffersCount(SearchModuleDataHolder detail, AsyncCallback<Long> callback);
-
-    void filterClientOffers(int start, int count, SearchModuleDataHolder detail,
-            Map<String, OrderType> orderColumns, AsyncCallback<ArrayList<ClientDemandDetail>> callback);
-
-    void getClientOfferMessages(long clientDemandId, AsyncCallback<ArrayList<ClientOfferDetail>> callback);
-
-    //
-//    void getListOfClientDemandMessages(long businessUserId, long clientId,
-//            AsyncCallback<ArrayList<ClientDemandMessageDetail>> callback);
     void getConversationMessages(long threadRootId, long subRootId,
             AsyncCallback<ArrayList<MessageDetail>> callback);
 

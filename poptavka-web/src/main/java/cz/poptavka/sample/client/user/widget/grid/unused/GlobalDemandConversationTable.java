@@ -64,7 +64,7 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
             = (new Column<ClientDemandMessageDetail, String>(new TextCell()) {
                 @Override
                 public String getValue(ClientDemandMessageDetail object) {
-                    return object.getSender() + " (" + object.getUnreadSubmessages() + ")";
+                    return object.getClientName() + " (" + object.getUnreadSubmessages() + ")";
                 }
             });
         // Demand Price Column
