@@ -1,17 +1,23 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
+
     <ui:style>
 		.important {
 			font-weight: bold;
 		}
     </ui:style>
     <g:DecoratorPanel>
-        <g:HTMLPanel>
-            <div style="margin: auto; width: 1075px; position: relative; height: 40px;">
+        <g:HTMLPanel styleName='{res.layout.fullSize}'>
+<!--            <div style="margin: auto; width: 1075px; position: relative; height: 40px;">
                 <p>Footer je treba nastylovat - TODO pre Jara</p>
                 <g:Button styleName="{style.important}" ui:field="button" />
-            </div>
+            </div>-->
+
+            <p>Footer je treba nastylovat - TODO pre Jara</p>
+            <g:Button styleName="{style.important}" ui:field="button" />
 
         </g:HTMLPanel>
     </g:DecoratorPanel>

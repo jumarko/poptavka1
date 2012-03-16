@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.root.interfaces.IRootView;
 import cz.poptavka.sample.client.root.interfaces.IRootView.IRootPresenter;
 
@@ -28,6 +29,7 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         // TODO praso - otestovat na online poptavke ci sa zobrazuje tato loading show/hide hlaska
         wait.add(new Label("Wait until requested module code is downloaded from server."));
         initWidget(uiBinder.createAndBindUi(this));
+        StyleResource.INSTANCE.layout().ensureInjected();
 
     }
 
