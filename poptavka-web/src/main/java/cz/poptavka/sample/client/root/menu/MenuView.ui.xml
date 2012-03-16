@@ -16,40 +16,40 @@
     <g:DecoratorPanel>
         <g:HorizontalPanel>
             <g:HTMLPanel styleName="style.background">
-                <div ui:field="homeMenu">
+                <div ui:field="homeMenu" styleName='{res.layout.homeMenu}'>
                     <ul ui:field="menuList">
                         <li>
-                            <g:Button ui:field="home" styleName='{res.layout.homeMenu}'>Home
+                            <g:Button ui:field="home">Home
 <!--							<ui:msg key="homeLink">Home</ui:msg>-->
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>Demands
+                            <g:Button ui:field="demands">Demands
 <!--							<ui:msg key="demands">Demands</ui:msg>-->
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="suppliers" styleName='{res.layout.homeMenu}'>Suppliers
+                            <g:Button ui:field="suppliers">Suppliers
 <!--							<ui:msg key="suppliers">Suppliers</ui:msg>-->
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="createSupplier" styleName='{res.layout.homeMenu}'>Create Supplier
+                            <g:Button ui:field="createSupplier">Create Supplier
 <!--							<ui:msg key="createSupplier">createSupplier</ui:msg>-->
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="createDemand" styleName='{res.layout.homeMenu}'>Create Demands
+                            <g:Button ui:field="createDemand">Create Demands
 <!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="page1" styleName='{res.layout.homeMenu}'>page1
+                            <g:Button ui:field="page1">page1
 <!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="page2" styleName='{res.layout.homeMenu}'>page2
+                            <g:Button ui:field="page2">page2
 <!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
                             </g:Button>
                         </li>

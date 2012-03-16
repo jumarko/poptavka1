@@ -146,14 +146,14 @@ body {
 *	Home Menu Styles
 *
 */
-.home-menu {
+.home-menu ul {
 	list-style-type: square;
 	display: inline;
 	padding: 0;
 	margin: 0;
 }
 
-.home-menu li {
+.home-menu ul, li {
 	display: inline;
 }
 
@@ -219,6 +219,5 @@ div.stackLayoutPanelHeader:hover {
 /** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/
 
 .selected {
-	background: #92C1F0;
-        border: 10px solid #bbbbbb;
+	font-weight: bold;        
 }

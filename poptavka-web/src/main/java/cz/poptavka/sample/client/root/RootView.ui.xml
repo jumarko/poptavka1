@@ -11,7 +11,7 @@
                 <g:SimplePanel ui:field="searchBar" />
             </g:HorizontalPanel>
         </g:DecoratorPanel>
-        <g:SimplePanel ui:field="body" styleName="body" />
-        <g:SimplePanel ui:field="footer" styleName="body" />
+        <g:SimplePanel ui:field="body"/>
+        <g:SimplePanel ui:field="footer"/>
     </g:HTMLPanel>
 </ui:UiBinder>

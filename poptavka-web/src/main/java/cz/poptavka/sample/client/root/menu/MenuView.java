@@ -39,7 +39,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     @UiHandler("home")
     public void onClickHome(ClickEvent e) {
         presenter.goToHomeWelcome();
-        home.setStyleName(StyleResource.INSTANCE.layout().selected());
+        home.addStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -52,7 +52,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     public void onClickDemands(ClickEvent e) {
         presenter.goToHomeDemands();
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.setStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.addStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -65,7 +65,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         presenter.goToHomeSuppliers();
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.setStyleName(StyleResource.INSTANCE.layout().selected());
+        suppliers.addStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
         page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -78,7 +78,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.setStyleName(StyleResource.INSTANCE.layout().selected());
+        createSupplier.addStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
         page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
         page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -91,7 +91,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.setStyleName(StyleResource.INSTANCE.layout().selected());
+        createDemand.addStyleName(StyleResource.INSTANCE.layout().selected());
         page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
         page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
@@ -105,7 +105,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.setStyleName(StyleResource.INSTANCE.layout().selected());
+        page1.addStyleName(StyleResource.INSTANCE.layout().selected());
         page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
@@ -119,6 +119,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
         page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.setStyleName(StyleResource.INSTANCE.layout().selected());
+        page2.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
 }
