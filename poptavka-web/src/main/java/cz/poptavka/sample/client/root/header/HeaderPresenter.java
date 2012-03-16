@@ -21,11 +21,8 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
 
     // TODO praso - Nemali by sme mat LocalizablaMessages ako static instanciu v Storage?
     // Preco ju vytvarame znovu na tomto mieste?
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
-
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private boolean loggedIn = false;
-
     private LoginPopupPresenter login;
 
     public void onStart() {
@@ -36,6 +33,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     @Override
     public void bind() {
         view.getLoginLink().addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 GWT.log("Logged in? " + loggedIn);
@@ -48,6 +46,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
             }
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
+
             @Override
             public void onWindowClosing(ClosingEvent event) {
                 Cookies.setCookie("user-presenter", "unloaded");
@@ -73,12 +72,14 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     }
 
     public void onSetUserLayout() {
+        GWT.log("HeaderPresenter - onSetUserLayout !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         view.toggleMainLayout(true);
         view.getLoginLink().setText(MSGS.logOut());
         this.loggedIn = true;
     }
 
     public void onSetPublicLayout() {
+        GWT.log("HeaderPresenter - onSetUserLayout !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //eventBus.clearUserOnUnload();
         view.toggleMainLayout(false);
         view.getLoginLink().setText(MSGS.logIn());

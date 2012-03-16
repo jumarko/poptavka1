@@ -215,3 +215,10 @@ div.stackLayoutPanelHeader:hover {
 		-1464px;
 }
 /** DELETE AFTER THIS LINE **/
+
+/** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/
+
+.selected {
+	background: #92C1F0;
+        border: 10px solid #bbbbbb;
+}

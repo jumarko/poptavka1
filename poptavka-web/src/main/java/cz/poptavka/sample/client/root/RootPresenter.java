@@ -90,6 +90,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     // TODO praso - tato metoda zrejme pojde prec. Zatial som nevidel rozumne vyuzitie.
     // na vsetko staci metoda setBody()
     public void onSetHomeBodyHolderWidget(IsWidget content) {
+        GWT.log("RootPresenter - onSetHomeBodyHolderWidget !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         GWT.log("RootPresenter.onSetHomeBodyHolderWidget");
         view.setBody(content);
     }
@@ -141,7 +142,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
     }
-
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
 
@@ -173,6 +173,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onDisplayMenu() {
+        GWT.log("RootPresenter - onDisplayMenu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         eventBus.setPublicLayout();
         view.getMenu().getElement().getStyle().setDisplay(Display.BLOCK);
         view.getSearchBar().getElement().getStyle().setDisplay(Display.BLOCK);
@@ -261,7 +262,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             public void onClick(ClickEvent event) {
                 userInfoPanel.hide();
             }
-
         });
         FlowPanel m = new FlowPanel();
         m.add(content);
@@ -270,5 +270,4 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
     }
-
 }

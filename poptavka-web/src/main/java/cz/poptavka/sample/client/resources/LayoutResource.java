@@ -58,8 +58,10 @@ public interface LayoutResource extends CssResource {
     @ClassName("search-view")
     String searchView();
 
-    /** DELETE AFTER THIS LINE **/
+    @ClassName("selected")
+    String selected();
 
+    /** DELETE AFTER THIS LINE **/
 
 
 }
