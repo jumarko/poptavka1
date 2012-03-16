@@ -4,6 +4,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -13,17 +15,20 @@ import cz.poptavka.sample.client.root.interfaces.IRootView.IRootPresenter;
 public class RootView extends ReverseCompositeView<IRootPresenter> implements
         IRootView {
 
-    private static RootViewUiBinder uiBinder = GWT
-            .create(RootViewUiBinder.class);
-
+    private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
     @UiField
     SimplePanel header, body, menu, searchBar, footer;
+    private PopupPanel wait = new PopupPanel();
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {
     }
 
     public RootView() {
+
+        // TODO praso - otestovat na online poptavke ci sa zobrazuje tato loading show/hide hlaska
+        wait.add(new Label("Wait until requested module code is downloaded from server."));
         initWidget(uiBinder.createAndBindUi(this));
+
     }
 
     @Override
@@ -79,6 +84,19 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     @Override
     public Widget getMenu() {
         return this.menu;
+    }
+
+    @Override
+    public void setWaitVisible(boolean visible) {
+        if (visible) {
+            GWT.log("Show loading popup");
+            wait.setPopupPosition(body.getAbsoluteLeft(), body.getAbsoluteTop());
+            wait.setPixelSize(body.getOffsetWidth(), body.getOffsetHeight());
+            wait.show();
+        } else {
+            GWT.log("Hide loading popup");
+            wait.hide();
+        }
     }
 
 }

@@ -27,4 +27,6 @@ public interface IRootView extends IsWidget {
     Widget getBody();
 
     Widget getMenu();
+
+    void setWaitVisible(boolean visible);
 }

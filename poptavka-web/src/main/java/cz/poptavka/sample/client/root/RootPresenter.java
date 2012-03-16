@@ -38,7 +38,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private UserDetail user = null;
 
     /**************************************************************************/
-    /* Layout events. */
+    /* Layout events.                                                         */
+    /**************************************************************************/
     public void onSetHeader(IsWidget header) {
         GWT.log("Header widget set");
         view.setHeader(header);
@@ -73,13 +74,49 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /**************************************************************************/
-    /* Other business events. */
+    /* General Module events                                                  */
+    /**************************************************************************/
+    /**
+     * When your application starts, you may want to automatically fire an event
+     * so that actions needed at first can occur.
+     */
     public void onStart() {
         GWT.log("Root presenter loaded");
         // TODO Praso - Musime manualne volat tieto eventy? HomeWelcomModule a SearchModule
         // by sa predsa mali naloadovat ihned ako sa spusti aplikacia mozno cez anotacie.
+        // HomeWelcomModule sa musi volat manualne. Ale pohlad pre SearchModule sa moze
+        // nastavit automaticky pomocou autodisplay feature. Toto je treba dorobit
         eventBus.goToHomeWelcomeModule(null);
         eventBus.goToSearchModule(view.getSearchBar());
+    }
+
+    /**
+     * This event will be called in case an error occurs while loading the
+     * ChildModule code.
+     *
+     * @param reason - An object may be fired for the event used in case of
+     * error but the type of this object must be compatible with
+     * java.lang.Throwable. In this case, the error returned by the
+     * RunAsync object is passed to the event.
+     */
+    public void onErrorOnLoad(Throwable reason) {
+        // TODO praso doplnit. Napriklad poslat email s notifikaciou o chybe
+    }
+
+    /**
+     * This event will be called before starting to load the ChildModule code.
+     * You can for example decide to display a wait popup.
+     */
+    public void onBeforeLoad() {
+        view.setWaitVisible(true);
+    }
+
+    /**
+     * This event will be called after the code is done loading.
+     * You can for example decide to hide a wait popup.
+     */
+    public void onAfterLoad() {
+        view.setWaitVisible(false);
     }
 
     public void onNotFound() {
@@ -183,6 +220,9 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         GWT.log("User has logged in and his user data are about to be retrieved");
         Cookies.setCookie("user-presenter", "loaded");
         if (Storage.getUser() == null) {
+            // TODO praso - zakomentovane kvoli refaktorinu na standarny wait loading
+            // cez onBefore, onAfter eventy v Root module. Potom to bude treba znovu
+            // upravit aby sa volal cakacia smycka aj pri logovani.
             eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
             eventBus.getUser();
         } else {

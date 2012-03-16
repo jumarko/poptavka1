@@ -24,6 +24,7 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.module.ChildModule;
 import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
+import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.home.creation.DemandCreationModule;
@@ -67,7 +68,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 public interface RootEventBus extends EventBus {
 
     /**
-     * First event that loads the layout.
+     * When your application starts, you may want to automatically fire an event
+     * so that actions needed at first can occur.
      */
     @Start
     @InitHistory
@@ -131,6 +133,39 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = SearchModule.class)
     void clearSearchContent();
 
+    /**
+     * This event will be called in case an error occurs while loading the
+     * ChildModule code.
+     *
+     * @param reason - An object may be fired for the event used in case of
+     * error but the type of this object must be compatible with
+     * java.lang.Throwable. In this case, the error returned by the
+     * RunAsync object is passed to the event.
+     */
+    @LoadChildModuleError
+    @Event(handlers = RootPresenter.class)
+    void errorOnLoad(Throwable reason);
+
+    /**
+     * This event will be called before starting to load the ChildModule code.
+     * You can for example decide to display a wait popup.
+     *
+     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
+     */
+//    @BeforeLoadChildModule
+//    @Event(handlers = RootPresenter.class)
+//    void beforeLoad();
+
+    /**
+     * This event will be called after the code is done loading.
+     * You can for example decide to hide a wait popup.
+     *
+     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
+     */
+//    @AfterLoadChildModule
+//    @Event(handlers = RootPresenter.class)
+//    void afterLoad();
+
     // TODO praso - preco pouzivame setUserBodyHolderWidget a este aj goToDemandModule na inicializaciu
     // demand modulu? Mali by sme mat len jednu navigation event ktora bude inicializovat modul
     // To iste pre SearchModule, ktory sa inicializuje vo viacerych roznych eventoch
@@ -191,12 +226,11 @@ public interface RootEventBus extends EventBus {
     // TODO praso - preco ste toto zakomentovali??? Mozeme to odstarnit uz mame setBody() hotovu
 //    @Event(handlers = RootPresenter.class)
 //    void setHomeBodyHolderWidget(IsWidget body);
-
     /**
      * logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
      */
     @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
-            historyConverter = RootHistoryConverter.class)
+    historyConverter = RootHistoryConverter.class)
     String atHome();
 
     /**
@@ -210,6 +244,7 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
+
     @Event(handlers = HeaderPresenter.class)
     void initLoginWindow();
 
@@ -220,6 +255,8 @@ public interface RootEventBus extends EventBus {
     void loadingShowWithAnchor(String progressGettingDemandDataring,
             Widget anchor);
 
+    // TODO praso - zakomentoval som tieto dve metody na loadovanie cakacieho popupu
+    // Chcem pouzit standardnu funkciu cez onBefore, onAfter
     @Event(handlers = RootPresenter.class)
     void loadingHide();
     // Afer login
