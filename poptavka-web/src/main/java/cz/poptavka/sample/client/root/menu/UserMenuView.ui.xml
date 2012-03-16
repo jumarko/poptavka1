@@ -16,25 +16,25 @@
     <g:DecoratorPanel>
         <g:HorizontalPanel>
             <g:HTMLPanel styleName="style.background">
-                <div ui:field="homeMenu">
-                    <ul ui:field="menuList" styleName='{res.layout.homeMenu}'>
+                <div ui:field="homeMenu" styleName='{res.layout.homeMenu}'>
+                    <ul ui:field="menuList">
                         <li>
-                            <g:Button ui:field="demands" styleName='{res.layout.homeMenu}'>
+                            <g:Button ui:field="demands">
 <!--                                        <ui:msg key="demands">Demands</ui:msg>-->Demands
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="messages" styleName='{res.layout.homeMenu}'>
+                            <g:Button ui:field="messages">
 <!--                                        <ui:msg key='messages'>Messages</ui:msg>-->Messages
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="settings" styleName='{res.layout.homeMenu}'>
+                            <g:Button ui:field="settings">
 <!--                                        <ui:msg key='settings'>Settings</ui:msg>-->Settings
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="administration" styleName='{res.layout.homeMenu}'>
+                            <g:Button ui:field="administration">
 <!--                                        <ui:msg key='administration'>Admistration</ui:msg>-->Admistration
                             </g:Button>
                         </li>
