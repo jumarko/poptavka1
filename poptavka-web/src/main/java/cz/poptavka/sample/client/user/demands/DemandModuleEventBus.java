@@ -73,12 +73,6 @@ public interface DemandModuleEventBus extends EventBus {
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
-//    /**************************************************************************/
-//    @Event(forwardToParent = true)
-//    void setHomeBodyHolderWidget(IsWidget body);
-//
-//    @Event(handlers = DemandModulePresenter.class)
-//    void setUserBodyHolderWidget(IsWidget body);
     //production init method
     //during development used multiple instancing
     @Event(handlers = ClientListPresenter.class)//, historyConverter = DemandModuleHistoryConverter.class)
@@ -96,7 +90,8 @@ public interface DemandModuleEventBus extends EventBus {
     void displayView(Widget content);
 
     /**************************************************************************/
-    /* Business events handled by ALL VIEW presenters. */
+    /* Business events handled by ALL VIEW presenters.                        */
+    /**************************************************************************/
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.
@@ -111,8 +106,8 @@ public interface DemandModuleEventBus extends EventBus {
     void sendMessageResponse(MessageDetail sentMessage, ViewType type);
 
     /**************************************************************************/
-    /* Business events handled by SupplierListPresenter. */
-
+    /* Business events handled by ListPresenters.                             */
+    /**************************************************************************/
     /*
      * Request/Response Method pair
      * Demands for CLIENT - his demands
@@ -122,8 +117,6 @@ public interface DemandModuleEventBus extends EventBus {
 
     @Event(handlers = ClientListPresenter.class)
     void responseClientsDemands(ArrayList<ClientDemandMessageDetail> result);
-
-    /* Business events handled by SupplierListPresenter. */
 
     /*
      * Request/Response Method pair
@@ -143,8 +136,8 @@ public interface DemandModuleEventBus extends EventBus {
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
     /**************************************************************************/
-    /* Business events handled by DevelDetailWrapperPresenter. */
-
+    /* Business events handled by DevelDetailWrapperPresenter.                */
+    /**************************************************************************/
     /*
      * Request/Response Method pair
      * DemandDetail for detail section
@@ -169,4 +162,5 @@ public interface DemandModuleEventBus extends EventBus {
 
     @Event(handlers = DevelDetailWrapperPresenter.class)
     void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+
 }

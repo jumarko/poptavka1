@@ -6,10 +6,6 @@ public interface IMenuView extends IsWidget {
 
     public interface IMenuPresenter {
 
-        void goToPage1();
-
-        void goToPage2();
-
         void goToHomeWelcome();
 
         void goToHomeDemands();
@@ -19,5 +15,6 @@ public interface IMenuView extends IsWidget {
         void goToCreateSupplier();
 
         void goToCreateDemand();
+
     }
 }

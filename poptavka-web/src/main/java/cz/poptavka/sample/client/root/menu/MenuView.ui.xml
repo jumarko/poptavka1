@@ -39,17 +39,7 @@
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="createDemand">Create Demands
-<!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="page1">page1
-<!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="page2">page2
+                            <g:Button ui:field="createDemand">Create Demand
 <!--							<ui:msg key="createDemand">createDemand</ui:msg>-->
                             </g:Button>
                         </li>

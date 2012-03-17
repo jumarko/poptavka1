@@ -44,6 +44,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                     onInitLoginWindow();
                 }
             }
+
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
 
@@ -51,6 +52,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
             public void onWindowClosing(ClosingEvent event) {
                 Cookies.setCookie("user-presenter", "unloaded");
             }
+
         });
     }
 
@@ -62,8 +64,6 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     public void onAtHome() {
         this.loggedIn = false;
         view.getLoginLink().setText(MSGS.logIn());
-        // TODO Praso - Potrujeme tuto metodu?
-        eventBus.displayMenu();
     }
 
     public void onAtAccount() {
@@ -71,19 +71,4 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getLoginLink().setText(MSGS.logOut());
     }
 
-    public void onSetUserLayout() {
-        GWT.log("HeaderPresenter - onSetUserLayout !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        view.toggleMainLayout(true);
-        view.getLoginLink().setText(MSGS.logOut());
-        this.loggedIn = true;
-    }
-
-    public void onSetPublicLayout() {
-        GWT.log("HeaderPresenter - onSetUserLayout !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //eventBus.clearUserOnUnload();
-        view.toggleMainLayout(false);
-        view.getLoginLink().setText(MSGS.logIn());
-        this.loggedIn = false;
-
-    }
 }

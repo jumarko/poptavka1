@@ -41,6 +41,7 @@ public class MessagesModulePresenter
         Button getDraftButton();
 
         Button getTrashButton();
+
     }
 
     @Override
@@ -52,6 +53,7 @@ public class MessagesModulePresenter
                 eventBus.initComposeNew();
                 view.getWrapperDetail().clear();
             }
+
         });
         view.getInboxButton().addClickHandler(new ClickHandler() {
 
@@ -60,6 +62,7 @@ public class MessagesModulePresenter
                 eventBus.initInbox(filter);
                 view.getWrapperDetail().clear();
             }
+
         });
         view.getSentButton().addClickHandler(new ClickHandler() {
 
@@ -68,6 +71,7 @@ public class MessagesModulePresenter
                 eventBus.initSent(filter);
                 view.getWrapperDetail().clear();
             }
+
         });
         view.getTrashButton().addClickHandler(new ClickHandler() {
 
@@ -76,6 +80,7 @@ public class MessagesModulePresenter
                 eventBus.initTrash(filter);
                 view.getWrapperDetail().clear();
             }
+
         });
         view.getDraftButton().addClickHandler(new ClickHandler() {
 
@@ -84,18 +89,24 @@ public class MessagesModulePresenter
                 eventBus.initDraft(filter);
                 view.getWrapperDetail().clear();
             }
+
         });
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // TODO praso - probably history initialization will be here
+        // nothing
     }
 
     public void onForward() {
-        // TODO praso - here we can switch css for selected menu button
-        //eventBus.selectHomeDemandsMenuButton();
+        // nothing
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     /**
      * Initialize view for message module.
      * @param filter
@@ -121,12 +132,12 @@ public class MessagesModulePresenter
         }
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
-        // TODO praso - pouzil som autodisplay takze tuto metodu komentujem.
-        //        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-
         Storage.hideLoading();
     }
 
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     /**
      * MessageModule widget is divided into Main and Detail parts. This sets the main widgets.
      * @param content - widget to bet set as main part
@@ -142,4 +153,5 @@ public class MessagesModulePresenter
     public void onDisplayDetail(Widget content) {
         view.getWrapperDetail().setWidget(content);
     }
+
 }

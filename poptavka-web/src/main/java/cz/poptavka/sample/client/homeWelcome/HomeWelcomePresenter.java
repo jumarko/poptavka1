@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.homeWelcome;
 
-import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
@@ -15,19 +14,30 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
 
     private SearchModuleDataHolder searchDataHolder = null;
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        GWT.log("HomeWelcome module loaded");
-//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
+        // nothing
     }
 
     public void onForward() {
-        // Here we can handle actions like change CSS in menus etc.
-        // TODO praso - check MVP4G blog to lear best practicies for forward event
+        // nothing
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
         // TODO martin - dopln si loadedView v ostatnych presenteroch to mavas vzdy vyplnene
         Storage.setCurrentlyLoadedModule("welcome");
         this.searchDataHolder = searchDataHolder;
     }
+
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
+    /**************************************************************************/
+    /* Business events handled by eventbus or RPC                             */
+    /**************************************************************************/
 }

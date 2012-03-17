@@ -13,7 +13,6 @@
     </ui:style>
     <g:DecoratorPanel>
         <g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
-		<!-- old type -->
 		<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
 
 		<!-- new type -->

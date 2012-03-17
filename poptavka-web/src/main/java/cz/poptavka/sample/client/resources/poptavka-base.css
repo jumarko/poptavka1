@@ -115,7 +115,7 @@ body {
 	border-bottom: 1px solid #07545A;
 }
 .submenu-list a:hover {
-	cursor: pointer;	
+	cursor: pointer;
 	background: #15676d;
 }
 
@@ -219,5 +219,5 @@ div.stackLayoutPanelHeader:hover {
 /** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/
 
 .selected {
-	font-weight: bold;        
+	font-weight: bold;
 }

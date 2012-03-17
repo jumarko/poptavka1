@@ -107,17 +107,20 @@ public class HomeSuppliersPresenter
     private static final int COLUMNS = 4;
     private String location = null; //home, user
 
-    //Must be here??
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // TODO praso
+        // nothing
     }
 
-    //Must be here??
     public void onForward() {
-        // TODO praso - switch css to selected menu button.
-        //eventBus.selectCompanyMenu();
+        // nothing
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     private SearchModuleDataHolder searchDataHolder = null;
 
     public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
@@ -151,18 +154,12 @@ public class HomeSuppliersPresenter
         if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
             Storage.setCurrentlyLoadedModule("homeSuppliers");
             Storage.setCurrentlyLoadedView("homeSuppliers");
-            // TODO praso - nebudeme rozlisovat medzi user a home castou. Aspon dame uzivatelovi
-            // menej moznosti ako sa pohybovat po webovom rozhrani
-//            if (location.equals("home")) {
-//                Storage.setCurrentlyLoadedView("homeSuppliers");
-//                eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-//            } else if (location.equals("user")) {
-//                Storage.setCurrentlyLoadedView("userSuppliers");
-//                eventBus.setUserBodyHolderWidget(view.getWidgetView());
-//            }
         }
     }
 
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     public void onCreateAsyncDataProvider(final int totalFound) {
         this.start = 0;
         this.dataProvider = new AsyncDataProvider<SupplierDetail>() {

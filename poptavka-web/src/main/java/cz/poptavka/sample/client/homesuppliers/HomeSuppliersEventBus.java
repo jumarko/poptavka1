@@ -69,7 +69,7 @@ public interface HomeSuppliersEventBus extends EventBus {
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     /**************************************************************************/
-    /* Display events                                                         */
+    /* Business events handled by Presenters - Display events                 */
     /**************************************************************************/
     // ROOT CATEGORIES
     @Event(handlers = HomeSuppliersPresenter.class)
@@ -93,7 +93,7 @@ public interface HomeSuppliersEventBus extends EventBus {
     void displayChildWidget(Long id);
 
     /**************************************************************************/
-    /* Path events                                                            */
+    /* Business events handled by Presenters - Path events                    */
     /**************************************************************************/
     // UPDATE
     @Event(handlers = HomeSuppliersPresenter.class)//, historyConverter = HomeSuppliersHistoryConverter.class)
@@ -107,7 +107,7 @@ public interface HomeSuppliersEventBus extends EventBus {
     String addToPath(CategoryDetail categoryDetail, String location);
 
     /**************************************************************************/
-    /* Data events                                                            */
+    /* Business events handled by Presenters - Data events                    */
     /**************************************************************************/
     // PROVIDER
     @Event(handlers = HomeSuppliersPresenter.class)

@@ -11,13 +11,10 @@
     </ui:style>
     <g:DecoratorPanel>
         <g:HTMLPanel styleName='{res.layout.fullSize}'>
-<!--            <div style="margin: auto; width: 1075px; position: relative; height: 40px;">
+            <div style="margin: auto; width: 1075px; position: relative;">
                 <p>Footer je treba nastylovat - TODO pre Jara</p>
                 <g:Button styleName="{style.important}" ui:field="button" />
-            </div>-->
-
-            <p>Footer je treba nastylovat - TODO pre Jara</p>
-            <g:Button styleName="{style.important}" ui:field="button" />
+            </div>
 
         </g:HTMLPanel>
     </g:DecoratorPanel>

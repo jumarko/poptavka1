@@ -109,28 +109,23 @@ public class SupplierCreationPresenter
         });
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // TODO praso
+        // nothing
     }
 
     public void onForward() {
-        // TODO praso - switch css to selected menu button.
-        //eventBus.selectCompanyMenu();
+        // nothing
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     public void onGoToCreateSupplierModule(String location) {
-        // TODO praso - refactoring nutny
-        this.onAtRegisterSupplier(location);
-    }
-
-    /**
-     * Init method call.
-     * TODO decide WHEN other parts should be built.
-     */
-    public void onAtRegisterSupplier(String location) {
         Storage.setCurrentlyLoadedModule("createSupplier");
         LOGGER.info("SupplierCreationPresenter loaded");
-//        eventBus.setBodyWidget(view.getWidgetView());
         //init parts
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
@@ -140,16 +135,33 @@ public class SupplierCreationPresenter
         eventBus.initLocalityWidget(view.getLocalityHolder());
         LOGGER.info(" -> init Service Form supplierService");
         initServices();
-        // TODO Praso - nebudeme rozlisovat medzi user a home pohladom. V user pohlade
-        // aspo uzivatel nebude mat moznot klikat na lave menu v procese vytvarania
-        // poptavky
-//        if (location.equals("home")) {
-//            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-//        } else if (location.equals("user")) {
-//            eventBus.setUserBodyHolderWidget(view.getWidgetView());
-//        }
     }
 
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
+    private SupplierServicePresenter supplierService = null;
+    private SupplierInfoPresenter supplierInfo = null;
+
+    public void onInitServiceForm(SimplePanel serviceHolder) {
+        if (supplierService != null) {
+            eventBus.removeHandler(supplierService);
+        }
+        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
+        supplierService.initServiceForm(serviceHolder);
+    }
+
+    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
+        if (supplierInfo != null) {
+            eventBus.removeHandler(supplierInfo);
+        }
+        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
+        supplierInfo.onInitSupplierForm(supplierInfoHolder);
+    }
+
+    /**************************************************************************/
+    /* Business events handled by eventbus or RPC                             */
+    /**************************************************************************/
     private void registerSupplier() {
         SupplierInfoInterface info = (SupplierInfoInterface) view.getSupplierInfoHolder().getWidget();
         LocalitySelectorInterface locs = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
@@ -223,25 +235,6 @@ public class SupplierCreationPresenter
             }
 
         });
-    }
-
-    private SupplierServicePresenter supplierService = null;
-    private SupplierInfoPresenter supplierInfo = null;
-
-    public void onInitServiceForm(SimplePanel serviceHolder) {
-        if (supplierService != null) {
-            eventBus.removeHandler(supplierService);
-        }
-        supplierService = eventBus.addHandler(SupplierServicePresenter.class);
-        supplierService.initServiceForm(serviceHolder);
-    }
-
-    public void onInitSupplierForm(SimplePanel supplierInfoHolder) {
-        if (supplierInfo != null) {
-            eventBus.removeHandler(supplierInfo);
-        }
-        supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
-        supplierInfo.onInitSupplierForm(supplierInfoHolder);
     }
 
 }

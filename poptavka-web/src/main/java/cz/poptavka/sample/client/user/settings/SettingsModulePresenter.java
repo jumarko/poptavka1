@@ -76,15 +76,20 @@ public class SettingsModulePresenter
 
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // TODO praso - probably history initialization will be here
+        // nothing
     }
 
     public void onForward() {
-        // TODO praso - here we can switch css for selected menu button
-        //eventBus.selectHomeDemandsMenuButton();
+        // noting
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     public void onGoToSettingsModule() {
         Storage.setCurrentlyLoadedModule("settings");
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
@@ -115,6 +120,9 @@ public class SettingsModulePresenter
 
     }
 
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     public void onSetSettings(SettingsDetail detail) {
         GWT.log("SettingsDetail company name" + detail.getCompanyName());
         view.getCompanyName().setText(detail.getCompanyName());

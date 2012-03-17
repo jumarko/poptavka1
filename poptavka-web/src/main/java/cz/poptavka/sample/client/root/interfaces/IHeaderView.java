@@ -10,5 +10,4 @@ public interface IHeaderView extends IsWidget {
 
     Anchor getLoginLink();
 
-    void toggleMainLayout(boolean switchToUserLayout);
 }

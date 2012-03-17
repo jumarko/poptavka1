@@ -54,6 +54,7 @@ public class DemandModulePresenter
         Button getSupAssignedButton();
 
         SimplePanel getContentPanel();
+
     }
 
     @Override
@@ -65,6 +66,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToDemandModule(null, "clientMyDemands");
             }
+
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
 
@@ -72,6 +74,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToDemandModule(null, "clientOffers");
             }
+
         });
         view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
@@ -79,6 +82,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
             }
+
         });
         view.getCliCreateDemand().addClickHandler(new ClickHandler() {
 
@@ -86,6 +90,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateDemandModule("user");
             }
+
         });
         view.getCliCreateSupplier().addClickHandler(new ClickHandler() {
 
@@ -93,6 +98,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateSupplierModule("user");
             }
+
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {
 
@@ -100,6 +106,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeDemandsModule(null, "user");
             }
+
         });
         view.getAllSuppliers().addClickHandler(new ClickHandler() {
 
@@ -107,6 +114,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeSuppliersModule(null, "user");
             }
+
         });
 
         //MENU - SUPPLIER
@@ -116,6 +124,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent arg0) {
                 eventBus.goToDemandModule(null, "potentialDemands");
             }
+
         });
         view.getSupOffersButton().addClickHandler(new ClickHandler() {
 
@@ -123,6 +132,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
             }
+
         });
         view.getSupAssignedButton().addClickHandler(new ClickHandler() {
 
@@ -130,6 +140,7 @@ public class DemandModulePresenter
             public void onClick(ClickEvent event) {
                 // TODO Auto-generated method stub
             }
+
         });
 
         //DEVEl - BEHO
@@ -157,17 +168,25 @@ public class DemandModulePresenter
          */
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    /**
+     * When your application starts, you may want to automatically fire an event
+     * so that actions needed at first can occur.
+     */
     public void onStart() {
-        // TODO praso - probably history initialization will be here
+        // nothing
     }
 
     public void onForward() {
-        // TODO praso - here we can switch css for selected menu button
-        //eventBus.selectHomeDemandsMenuButton();
+        // nothing
     }
 
-    //TODO
-    //later add UserDetail as parameter
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
+    //Todo Beho - later add UserDetail as parameter
     public void onGoToDemandModule(SearchModuleDataHolder filter, String loadWidget) {
         Storage.setCurrentlyLoadedModule("demands");
         // hiding window for this is after succesfull Userhandler call
@@ -210,8 +229,6 @@ public class DemandModulePresenter
         // STYLE
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
 
-        // TODO praso - method bellow is commented since I used autodisplay feature
-//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
         Storage.hideLoading();
 //        eventBus.setTabWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();
@@ -219,13 +236,11 @@ public class DemandModulePresenter
 //        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
     }
 
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     public void onDisplayView(Widget content) {
         view.setContent(content);
     }
-    // TODO praso - this method is commented since I used autodisplay feature to laod view
-//    public void onSetUserBodyHolderWidget(IsWidget body) {
-////        view.getContentPanel().add(body);
-//        view.setContent(body);
-////        view.getContentPanel().add(new Label("TA COCO CO"));
-//    }
+
 }

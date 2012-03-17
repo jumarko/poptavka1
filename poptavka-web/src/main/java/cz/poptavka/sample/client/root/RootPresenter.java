@@ -64,14 +64,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setFooter(footer);
     }
 
-    public void onGoToPage1(String text) {
-        GWT.log("onGoToPage1:" + text);
-    }
-
-    public void onGoToPage2(String text) {
-        GWT.log("onGoToPage2:" + text);
-    }
-
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
@@ -114,17 +106,35 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setWaitVisible(false);
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
+    public void onAtAccount() {
+        GWT.log("User has logged in and his user data are about to be retrieved");
+        Cookies.setCookie("user-presenter", "loaded");
+        if (Storage.getUser() == null) {
+            // TODO praso - zakomentovane kvoli refaktorinu na standarny wait loading
+            // cez onBefore, onAfter eventy v Root module. Potom to bude treba znovu
+            // upravit aby sa volal cakacia smycka aj pri logovani.
+            eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
+            eventBus.getUser();
+        } else {
+            onSetUser(Storage.getUser());
+        }
+        eventBus.goToDemandModule(null, "welcome");
+    }
+
+    public void onAtHome() {
+        GWT.log("User has logged out");
+        eventBus.goToHomeWelcomeModule(null);
+    }
+
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     public void onNotFound() {
         eventBus.start();
         view.setBody(new Label("Page not found"));
-    }
-
-    // TODO praso - tato metoda zrejme pojde prec. Zatial som nevidel rozumne vyuzitie.
-    // na vsetko staci metoda setBody()
-    public void onSetHomeBodyHolderWidget(IsWidget content) {
-        GWT.log("RootPresenter - onSetHomeBodyHolderWidget !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        GWT.log("RootPresenter.onSetHomeBodyHolderWidget");
-        view.setBody(content);
     }
 
     public void onLoadingShow(String loadingMessage) {
@@ -203,36 +213,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         popup.setPopupPosition((Window.getClientWidth() / 2) - OFFSET_X,
                 (Window.getClientHeight() / 2) - OFFSET_Y);
         popup.show();
-    }
-
-    public void onDisplayMenu() {
-        GWT.log("RootPresenter - onDisplayMenu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        // TODO Praso - túto metódu môžem odstrániť. Nepoužíva sa.
-//        eventBus.setPublicLayout();
-//        view.getMenu().getElement().getStyle().setDisplay(Display.BLOCK);
-//        view.getSearchBar().getElement().getStyle().setDisplay(Display.BLOCK);
-    }
-
-    public void onAtAccount() {
-        GWT.log("User has logged in and his user data are about to be retrieved");
-        Cookies.setCookie("user-presenter", "loaded");
-        if (Storage.getUser() == null) {
-            // TODO praso - zakomentovane kvoli refaktorinu na standarny wait loading
-            // cez onBefore, onAfter eventy v Root module. Potom to bude treba znovu
-            // upravit aby sa volal cakacia smycka aj pri logovani.
-            eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
-            eventBus.getUser();
-        } else {
-            onSetUser(Storage.getUser());
-        }
-//        eventBus.setUserLayout();
-//        eventBus.setUserMenu();
-        eventBus.goToDemandModule(null, "welcome");
-    }
-
-    public void onAtHome() {
-        GWT.log("User has logged out");
-        eventBus.goToHomeWelcomeModule(null);
     }
 
     /* For logging */

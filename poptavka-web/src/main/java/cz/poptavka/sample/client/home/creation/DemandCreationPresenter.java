@@ -95,32 +95,26 @@ public class DemandCreationPresenter
 
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // TODO praso
+        // nothing
     }
 
     public void onForward() {
-        // TODO praso - switch css to selected menu button.
-        //eventBus.selectCompanyMenu();
+        // nothing
     }
 
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
     public void onGoToCreateDemandModule(String location) {
-        // TODO praso - refactoring je nutny nech nevolame zbytocne cez jednu metodu
-        this.onAtCreateDemand(location);
-    }
-
-    /**
-     * Init method call. TODO decide when other parts should be built.
-     */
-    public void onAtCreateDemand(String location) {
         Storage.setCurrentlyLoadedModule("createDemand");
         LOGGER.info("  INIT DemandCreation Widget");
         view.getMainPanel().showWidget(0);
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
         eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
-
-//        eventBus.setBodyWidget(view.getWidgetView());
-
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
             @Override
@@ -133,23 +127,25 @@ public class DemandCreationPresenter
             }
 
         });
-        // TODO praso - nebudeme rozlisovat mediz user a home castou aspon tym prinutime
-        // uzivatela neklikat na menu v user casti pocas procesu vytvarania poptavky.
-//        if (location.equals("home")) {
-//            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-//        } else if (location.equals("user")) {
-//            eventBus.setUserBodyHolderWidget(view.getWidgetView());
-//        }
     }
 
-    private void registerNewCient() {
-        //signal event
-        eventBus.loadingShow(MSGS.progressRegisterClient());
-        // ClientDetail instance
-        FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
-        UserDetail newClient = registerWidget.getNewClient();
-        eventBus.registerNewClient(newClient);
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
+    public void onInitDemandBasicForm(SimplePanel holderWidget) {
+        if (demandBasicForm != null) {
+            eventBus.removeHandler(demandBasicForm);
+        }
+        demandBasicForm = eventBus.addHandler(FormDemandBasicPresenter.class);
+        demandBasicForm.initDemandBasicForm(holderWidget);
+    }
 
+    public void onInitDemandAdvForm(SimplePanel holderWidget) {
+        if (demandAdvForm != null) {
+            eventBus.removeHandler(demandAdvForm);
+        }
+        demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
+        demandAdvForm.initDemandAdvForm(holderWidget);
     }
 
     /**
@@ -211,6 +207,19 @@ public class DemandCreationPresenter
         view.getStatusLabel(LOGIN).setTexts(MSGS.wrongLoginMessage(), MSGS.wrongLoginDescription());
     }
 
+    /**************************************************************************/
+    /* Business events handled by eventbus or RPC                             */
+    /**************************************************************************/
+    private void registerNewCient() {
+        //signal event
+        eventBus.loadingShow(MSGS.progressRegisterClient());
+        // ClientDetail instance
+        FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
+        UserDetail newClient = registerWidget.getNewClient();
+        eventBus.registerNewClient(newClient);
+
+    }
+
     private static final int BASIC = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;
@@ -221,22 +230,6 @@ public class DemandCreationPresenter
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
         LOGGER.fine(widget.getClass().getName());
         return widget.isValid();
-    }
-
-    public void onInitDemandBasicForm(SimplePanel holderWidget) {
-        if (demandBasicForm != null) {
-            eventBus.removeHandler(demandBasicForm);
-        }
-        demandBasicForm = eventBus.addHandler(FormDemandBasicPresenter.class);
-        demandBasicForm.initDemandBasicForm(holderWidget);
-    }
-
-    public void onInitDemandAdvForm(SimplePanel holderWidget) {
-        if (demandAdvForm != null) {
-            eventBus.removeHandler(demandAdvForm);
-        }
-        demandAdvForm = eventBus.addHandler(FormDemandAdvPresenter.class);
-        demandAdvForm.initDemandAdvForm(holderWidget);
     }
 
 }

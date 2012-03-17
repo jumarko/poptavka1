@@ -78,114 +78,8 @@ public interface RootEventBus extends EventBus {
     void start();
 
     /**************************************************************************/
-    /* Navigation events.                                                     */
+    /* Layout events.                                                         */
     /**************************************************************************/
-    // TODO praso - place all navigation events to this section and separate them
-    // into parent class
-    @Event(handlers = RootPresenter.class)
-    void goToPage1(String string);
-
-    @Event(handlers = RootPresenter.class)
-    void goToPage2(String string);
-
-    /* Home menu control section */
-    // TODO praso - nechyba tu nahodou historyConverter?
-    @Event(modulesToLoad = HomeWelcomeModule.class)
-    void goToHomeWelcomeModule(SearchModuleDataHolder filter);
-
-    @Event(modulesToLoad = HomeDemandsModule.class)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
-
-    @Event(modulesToLoad = HomeSuppliersModule.class)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
-
-    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
-    // pohladoch. Alebo je tam nejaky default filter?
-    @Event(modulesToLoad = SupplierCreationModule.class)
-    void goToCreateSupplierModule(String location);
-
-    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
-    // pohladoch. Alebo je tam nejaky default filter?
-    @Event(modulesToLoad = DemandCreationModule.class)
-    void goToCreateDemandModule(String location);
-
-    /* User menu control section */
-    @Event(modulesToLoad = DemandModule.class)
-    void goToDemandModule(SearchModuleDataHolder filter, String loadWidget);
-
-    /**
-     * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
-     * @param filter - provided by search module
-     */
-    @Event(modulesToLoad = MessagesModule.class)
-    void goToMessagesModule(SearchModuleDataHolder filter, String loadWidget);
-
-    @Event(modulesToLoad = SettingsModule.class)
-    void goToSettingsModule();
-
-    @Event(modulesToLoad = AdminModule.class)
-    void goToAdminModule(SearchModuleDataHolder filter, String loadWidget);
-
-    /* Both Home and User menut control section */
-    @Event(modulesToLoad = SearchModule.class)
-    void goToSearchModule();
-
-    @Event(modulesToLoad = SearchModule.class)
-    void clearSearchContent();
-
-    /**
-     * This event will be called in case an error occurs while loading the
-     * ChildModule code.
-     *
-     * @param reason - An object may be fired for the event used in case of
-     * error but the type of this object must be compatible with
-     * java.lang.Throwable. In this case, the error returned by the
-     * RunAsync object is passed to the event.
-     */
-    @LoadChildModuleError
-    @Event(handlers = RootPresenter.class)
-    void errorOnLoad(Throwable reason);
-
-    /**
-     * This event will be called before starting to load the ChildModule code.
-     * You can for example decide to display a wait popup.
-     *
-     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
-     */
-//    @BeforeLoadChildModule
-//    @Event(handlers = RootPresenter.class)
-//    void beforeLoad();
-
-    /**
-     * This event will be called after the code is done loading.
-     * You can for example decide to hide a wait popup.
-     *
-     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
-     */
-//    @AfterLoadChildModule
-//    @Event(handlers = RootPresenter.class)
-//    void afterLoad();
-
-    // TODO praso - preco pouzivame setUserBodyHolderWidget a este aj goToDemandModule na inicializaciu
-    // demand modulu? Mali by sme mat len jednu navigation event ktora bude inicializovat modul
-    // To iste pre SearchModule, ktory sa inicializuje vo viacerych roznych eventoch
-//    @Event(modulesToLoad = DemandModule.class)
-//    void setUserBodyHolderWidget(IsWidget body);
-    /**************************************************************************/
-    /* Parent events - no events for RootModule                               */
-    /**************************************************************************/
-    /**************************************************************************/
-    /* Business events handled by Presenters.                                 */
-    /**************************************************************************/
-    @NotFoundHistory
-    @Event(handlers = RootPresenter.class)
-    void notFound();
-
-    @Event(handlers = RootPresenter.class)
-    void setUser(UserDetail user);
-
-    /**************************************************************************/
-    /* Layout events. */
     @Event(handlers = RootPresenter.class)
     void setHeader(IsWidget header);
 
@@ -218,32 +112,126 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void setFooter(IsWidget footer);
 
-//    @DisplayChildModuleView({ HomeWelcomeModule.class })
-    //SupplierCreationModule.class})
-    // DemandCreationModule.class, SupplierCreationModule.class })//,
-    // HomeDemandsModule.class, HomeSuppliersModule.class })
-    // UserModule.class })
-    // TODO praso - preco ste toto zakomentovali??? Mozeme to odstarnit uz mame setBody() hotovu
-//    @Event(handlers = RootPresenter.class)
-//    void setHomeBodyHolderWidget(IsWidget body);
+    /**************************************************************************/
+    /* Navigation events.                                                     */
+    /**************************************************************************/
+    /**************************************************************************/
+    /* Navigation events - Home menu control section                          */
+    /**************************************************************************/
+    // TODO praso - nechyba tu nahodou historyConverter?
+    @Event(modulesToLoad = HomeWelcomeModule.class)
+    void goToHomeWelcomeModule(SearchModuleDataHolder filter);
+
+    @Event(modulesToLoad = HomeDemandsModule.class)
+    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
+
+    @Event(modulesToLoad = HomeSuppliersModule.class)
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+
+    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
+    // pohladoch. Alebo je tam nejaky default filter?
+    @Event(modulesToLoad = SupplierCreationModule.class)
+    void goToCreateSupplierModule(String location);
+
+    // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
+    // pohladoch. Alebo je tam nejaky default filter?
+    @Event(modulesToLoad = DemandCreationModule.class)
+    void goToCreateDemandModule(String location);
+
+    /**************************************************************************/
+    /* Navigation events - User menu control section                          */
+    /**************************************************************************/
+    @Event(modulesToLoad = DemandModule.class)
+    void goToDemandModule(SearchModuleDataHolder filter, String loadWidget);
+
     /**
-     * logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
+     * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
+     * @param filter - provided by search module
+     */
+    @Event(modulesToLoad = MessagesModule.class)
+    void goToMessagesModule(SearchModuleDataHolder filter, String loadWidget);
+
+    @Event(modulesToLoad = SettingsModule.class)
+    void goToSettingsModule();
+
+    @Event(modulesToLoad = AdminModule.class)
+    void goToAdminModule(SearchModuleDataHolder filter, String loadWidget);
+
+    /* Both Home and User menut control section */
+    @Event(modulesToLoad = SearchModule.class)
+    void goToSearchModule();
+
+    @Event(modulesToLoad = SearchModule.class)
+    void clearSearchContent();
+
+    /**************************************************************************/
+    /* Navigation events - Other control sections                             */
+    /**************************************************************************/
+    /**
+     * Logout usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka
+     * a defaultny modul po prihlaseni.
+     *
+     * TODO praso - chyba tu zrejme historyConverter
      */
     @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
     historyConverter = RootHistoryConverter.class)
     String atHome();
 
     /**
-     * login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka, cookies
+     * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
+     * cookies a defaultny modul po odhlaseni
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
     @Event(handlers = { HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
     void atAccount();
 
+    /**
+     * This event will be called in case an error occurs while loading the
+     * ChildModule code.
+     *
+     * @param reason - An object may be fired for the event used in case of
+     * error but the type of this object must be compatible with
+     * java.lang.Throwable. In this case, the error returned by the
+     * RunAsync object is passed to the event.
+     */
+    @LoadChildModuleError
+    @Event(handlers = RootPresenter.class)
+    void errorOnLoad(Throwable reason);
+
+    /**
+     * This event will be called before starting to load the ChildModule code.
+     * You can for example decide to display a wait popup.
+     *
+     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
+     */
+//    @BeforeLoadChildModule
+//    @Event(handlers = RootPresenter.class)
+//    void beforeLoad();
+    /**
+     * This event will be called after the code is done loading.
+     * You can for example decide to hide a wait popup.
+     *
+     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
+     */
+//    @AfterLoadChildModule
+//    @Event(handlers = RootPresenter.class)
+//    void afterLoad();
+    /**************************************************************************/
+    /* Parent events - no events for RootModule                               */
+    /**************************************************************************/
+    /**************************************************************************/
+    /* Business events handled by Presenters.                                 */
+    /**************************************************************************/
+    @NotFoundHistory
+    @Event(handlers = RootPresenter.class)
+    void notFound();
+
+    @Event(handlers = RootPresenter.class)
+    void setUser(UserDetail user);
+
     @Event(handlers = LoginPopupPresenter.class)
     void login();
-
 
     @Event(handlers = HeaderPresenter.class)
     void initLoginWindow();
@@ -264,15 +252,6 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
 
-    @Event(handlers = HeaderPresenter.class)
-    void setPublicLayout();
-
-    @Event(handlers = HeaderPresenter.class)
-    void setUserLayout();
-
-//    @Event(modulesToLoad = UserModule.class, passive = true)
-//    void clearUserOnUnload();
-//    */
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget);
@@ -291,15 +270,6 @@ public interface RootEventBus extends EventBus {
     /** Demand Creation common method calls. */
     @Event(handlers = RootPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
-
-    /** Menu section. */
-    // TODO I moved this events into atAccount and AtHome. They are handled by menu presenters
-//    @Event(handlers = MenuPresenter.class)
-//    void setHomeMenu();
-//    @Event(handlers = UserMenuPresenter.class)
-//    void setUserMenu();
-    @Event(handlers = RootPresenter.class)//, historyConverter = RootHistoryConverter.class)
-    void displayMenu();
 
     /** Home category display widget and related call. */
     @Event(handlers = CategoryDisplayPresenter.class)

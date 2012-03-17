@@ -23,17 +23,10 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     @UiField
     UListElement menuList;
     @UiField
-    Button home, demands, suppliers, createSupplier, createDemand, page1, page2;
+    Button home, demands, suppliers, createSupplier, createDemand;
 
     public MenuView() {
         initWidget(uiBinder.createAndBindUi(this));
-        // TODO Praso - zistit, ktory z tychto 2 konstruktorov MainView sa pouziva.
-        // Jeden z nich mozeme asi zmazat
-    }
-
-    public MenuView(String firstName) {
-        initWidget(uiBinder.createAndBindUi(this));
-        menuList.addClassName(StyleResource.INSTANCE.layout().homeMenu());
     }
 
     @UiHandler("home")
@@ -44,8 +37,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
     @UiHandler("demands")
@@ -56,8 +47,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
     @UiHandler("suppliers")
@@ -68,8 +57,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         suppliers.addStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
     @UiHandler("createSupplier")
@@ -80,8 +67,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.addStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
     @UiHandler("createDemand")
@@ -92,33 +77,6 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
         createDemand.addStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    // TODO Praso - toto je len ukazka pre Jarinka ako treba pracovat s Menu tlacitkami
-    @UiHandler("page1")
-    public void onClickPage1(ClickEvent e) {
-        presenter.goToPage1();
-        home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.addStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.removeStyleName(StyleResource.INSTANCE.layout().selected());
-    }
-
-    // TODO Praso - toto je len ukazka pre Jarinka ako treba pracovat s Menu tlacitkami
-    @UiHandler("page2")
-    public void onClickPage2(ClickEvent e) {
-        presenter.goToPage2();
-        home.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createSupplier.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page1.removeStyleName(StyleResource.INSTANCE.layout().selected());
-        page2.addStyleName(StyleResource.INSTANCE.layout().selected());
-    }
 }

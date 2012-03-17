@@ -71,6 +71,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
 //        HTMLPanel getDemandView();
         SingleSelectionModel<FullDemandDetail> getSelectionModel();
+
     }
 
     /**
@@ -95,6 +96,7 @@ public class HomeDemandsPresenter extends BasePresenter<
                     view.getBannerLabel().setVisible(true);
                 }
             }
+
         });
 
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
@@ -113,18 +115,26 @@ public class HomeDemandsPresenter extends BasePresenter<
                 view.getPager().setPageStart(page * newPage);
                 view.getPager().setPageSize(newPage);
             }
+
         });
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
         // TODO praso - probably history initialization will be here
     }
 
     public void onForward() {
-        // TODO praso - here we can switch css for selected menu button
-        //eventBus.selectHomeDemandsMenuButton();
+        // nothing for now.
     }
-    private SearchModuleDataHolder searchDataHolder; //need to remember for asynchDataProvider if asking for more data
+
+    /**************************************************************************/
+    /* Navigation events                                                      */
+    /**************************************************************************/
+    //need to remember for asynchDataProvider if asking for more data
+    private SearchModuleDataHolder searchDataHolder;
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
         Storage.setCurrentlyLoadedView("homeDemands");
@@ -134,14 +144,11 @@ public class HomeDemandsPresenter extends BasePresenter<
         eventBus.filterDemandsCount(searchDataHolder, orderColumns);
 //        }
         this.searchDataHolder = searchDataHolder;
-
-        // TODO praso zrejme mozeme zakomentovat.
-//        if (location.equals("home")) {
-//            eventBus.setHomeBodyHolderWidget(view.getWidgetView());
-//        } else if (location.equals("user")) {
-//            eventBus.setUserBodyHolderWidget(view.getWidgetView());
-//        }
     }
+
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
 
@@ -161,10 +168,12 @@ public class HomeDemandsPresenter extends BasePresenter<
 
                 eventBus.loadingHide();
             }
+
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
         this.createAsyncSortHandler();
     }
+
     private AsyncHandler sortHandler = null;
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
     //list of grid columns, used to sort them. First must by blank (checkbox in table)
@@ -193,6 +202,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
                 eventBus.filterDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
+
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
@@ -203,7 +213,6 @@ public class HomeDemandsPresenter extends BasePresenter<
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
         eventBus.loadingHide();
-//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
     }
 
     public void onSetDemand(FullDemandDetail demand) {
@@ -212,4 +221,5 @@ public class HomeDemandsPresenter extends BasePresenter<
         view.getDemandDetail().setDemanDetail(demand);
 //        view.setDemand(demand);
     }
+
 }

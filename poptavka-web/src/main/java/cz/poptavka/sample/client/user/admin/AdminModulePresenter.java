@@ -52,6 +52,7 @@ public class AdminModulePresenter
         Button getProblemButton();
 
         SimplePanel getContentPanel();
+
     }
     private LoadingDiv loading = null;
 
@@ -63,6 +64,7 @@ public class AdminModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, "initDemands");
             }
+
         });
         view.getClientsButton().addClickHandler(new ClickHandler() {
 
@@ -71,6 +73,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initClients");
 //                eventBus.initClients(null);
             }
+
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
 
@@ -79,6 +82,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initSuppliers");
 //                eventBus.initSuppliers(null);
             }
+
         });
         view.getOffersButton().addClickHandler(new ClickHandler() {
 
@@ -87,6 +91,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initOffers");
 //                eventBus.initOffers(null);
             }
+
         });
         view.getAccessRoleButton().addClickHandler(new ClickHandler() {
 
@@ -95,6 +100,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initAccessRoles");
 //                eventBus.initAccessRoles(null);
             }
+
         });
         view.getEmailActivationButton().addClickHandler(new ClickHandler() {
 
@@ -103,6 +109,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initEmailsActivation");
 //                eventBus.initEmailsActivation(null);
             }
+
         });
         view.getInvoiceButton().addClickHandler(new ClickHandler() {
 
@@ -111,6 +118,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initInvoices");
 //                eventBus.initInvoices(null);
             }
+
         });
         view.getMessageButton().addClickHandler(new ClickHandler() {
 
@@ -119,6 +127,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initMessages");
 //                eventBus.initMessages(null);
             }
+
         });
         view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
 
@@ -127,6 +136,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initPaymentMethods");
 //                eventBus.initPaymentMethods(null);
             }
+
         });
         view.getPermissionButton().addClickHandler(new ClickHandler() {
 
@@ -135,6 +145,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initPermissions");
 //                eventBus.initPermissions(null);
             }
+
         });
         view.getPreferenceButton().addClickHandler(new ClickHandler() {
 
@@ -143,6 +154,7 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initPreferences");
 //                eventBus.initPreferences(null);
             }
+
         });
         view.getProblemButton().addClickHandler(new ClickHandler() {
 
@@ -151,27 +163,30 @@ public class AdminModulePresenter
                 eventBus.goToAdminModule(null, "initProblems");
 //                eventBus.initProblems(null);
             }
+
         });
     }
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // TODO praso - probably history initialization will be here
+        // nothing
     }
 
     public void onForward() {
-        // TODO praso - here we can switch css for selected menu button
-        //eventBus.selectHomeDemandsMenuButton();
+        // nothing
     }
 
+    /**************************************************************************/
+    /* Navigation events.                                                     */
+    /**************************************************************************/
     public void onGoToAdminModule(SearchModuleDataHolder filter, String loadWidget) {
         Storage.setCurrentlyLoadedModule("admin");
         GWT.log("onGoToAdminModule - som tu");
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
-
-        // TODO praso - tuto metodu som zakomentoval pretoze pouzivame autodisplay
-//        eventBus.setHomeBodyHolderWidget(view.getWidgetView());
 
         Storage.hideLoading();
 
@@ -204,6 +219,9 @@ public class AdminModulePresenter
         }
     }
 
+    /**************************************************************************/
+    /* Business events handled by presenter                                   */
+    /**************************************************************************/
     public void onToggleLoading() {
         if (loading == null) {
             GWT.log("  - loading created");
@@ -218,4 +236,5 @@ public class AdminModulePresenter
     public void onDisplayView(Widget content) {
         view.setContent(content);
     }
+
 }
