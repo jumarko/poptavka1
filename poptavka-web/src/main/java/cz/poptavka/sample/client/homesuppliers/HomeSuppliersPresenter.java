@@ -124,7 +124,7 @@ public class HomeSuppliersPresenter
     private SearchModuleDataHolder searchDataHolder = null;
 
     public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
-        eventBus.loadingShow(MSGS.loading());
+//        eventBus.loadingShow(MSGS.loading());
         this.location = location;
         this.searchDataHolder = searchDataHolder;
 
@@ -177,7 +177,7 @@ public class HomeSuppliersPresenter
                 orderColumns.put(gridColumns.get(0), OrderType.ASC);
                 eventBus.getSuppliers(start, start + length, searchDataHolder, orderColumns);
 
-                eventBus.loadingHide();
+//                eventBus.loadingHide();
             }
 
         };
@@ -215,7 +215,7 @@ public class HomeSuppliersPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                eventBus.loadingShow(MSGS.loading());
+//                eventBus.loadingShow(MSGS.loading());
                 CategoryDetail selected = (CategoryDetail) view.getSelectionRootModel().getSelectedObject();
 
                 if (selected != null) {
@@ -236,7 +236,7 @@ public class HomeSuppliersPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                eventBus.loadingShow(MSGS.loading());
+//                eventBus.loadingShow(MSGS.loading());
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
@@ -296,7 +296,7 @@ public class HomeSuppliersPresenter
     /* ROOT CATEGORIES */
     public void onDisplayRootcategories(ArrayList<CategoryDetail> rootCategories) {
         view.displayRootCategories(COLUMNS, rootCategories);
-        eventBus.loadingHide();
+//        eventBus.loadingHide();
     }
 
     /**
@@ -314,7 +314,7 @@ public class HomeSuppliersPresenter
         }
         eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
-        eventBus.loadingHide();
+//        eventBus.loadingHide();
     }
 
     /**
@@ -323,6 +323,8 @@ public class HomeSuppliersPresenter
      */
     /* SUPPLIERS */
     public void onDisplaySuppliers(List<FullSupplierDetail> list) {
+        // TODO Praso - neviem ci tu musi byt ten flush alebo nie? Aky ma vyznam?
+        view.getDataGrid().flush();
         view.getDataGrid().redraw();
         view.getDataGrid().setRowData(start, list);
     }

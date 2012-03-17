@@ -117,6 +117,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         dataGrid.setWidth("800px");
         dataGrid.setHeight("500px");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
+//        dataGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
         dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setSelectionModel(selectionModel);

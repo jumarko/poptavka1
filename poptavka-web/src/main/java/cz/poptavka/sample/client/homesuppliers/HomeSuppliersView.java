@@ -34,7 +34,6 @@ import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-
 public class HomeSuppliersView extends OverflowComposite
         implements HomeSuppliersPresenter.SuppliersViewInterface {
 
@@ -64,7 +63,6 @@ public class HomeSuppliersView extends OverflowComposite
     SupplierDetailView supplierDetail;
     @UiField
     Button contactBtn;
-
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>();
     private SingleSelectionModel<FullSupplierDetail> selectionSupplierModel;
@@ -227,6 +225,7 @@ public class HomeSuppliersView extends OverflowComposite
             }
             CellList cellList = null;
             cellList = new CellList<CategoryDetail>(new RootCategoryCell());
+            cellList.setLoadingIndicator(new Label("Loading root categories..."));
             cellList.setRowCount(subSize, true);
             cellList.setSelectionModel(selectionRootModel);
             cellList.setRowData(rootCategories.subList(startIdx, startIdx + subSize));
@@ -240,12 +239,14 @@ public class HomeSuppliersView extends OverflowComposite
     private void initDataGrid() {
         categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
         categoriesList.setSelectionModel(selectionCategoryModel);
+        categoriesList.setLoadingIndicator(new Label("Loading categories..."));
         // Create a DataGrid.
         GWT.log("Admin Suppliers initDataGrid initialized");
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
         dataGrid = new DataGrid<FullSupplierDetail>();
+        dataGrid.setLoadingIndicator(new Label("Loading suppliers..."));
         selectionSupplierModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(selectionSupplierModel);
 
@@ -257,6 +258,7 @@ public class HomeSuppliersView extends OverflowComposite
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
         pager.setPageSize(this.getPageSize());
+        StyleResource.INSTANCE.layout().ensureInjected();
 
         // Initialize the columns.
         initTableColumns(getSelectionSupplierModel());
@@ -274,6 +276,7 @@ public class HomeSuppliersView extends OverflowComposite
             public String getValue(FullSupplierDetail object) {
                 return object.getCompanyName();
             }
+
         });
 
         // SupplierRating.
@@ -287,6 +290,7 @@ public class HomeSuppliersView extends OverflowComposite
                     return Integer.toString(object.getOverallRating());
                 }
             }
+
         });
 
         // Address.
@@ -302,6 +306,7 @@ public class HomeSuppliersView extends OverflowComposite
                 }
                 return str.toString();
             }
+
         });
 
         // Locality.
@@ -321,6 +326,7 @@ public class HomeSuppliersView extends OverflowComposite
                 }
                 return str.toString();
             }
+
         });
     }
 
@@ -332,6 +338,7 @@ public class HomeSuppliersView extends OverflowComposite
     private interface GetValue<C> {
 
         C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
+
     }
 
     /**
@@ -350,6 +357,7 @@ public class HomeSuppliersView extends OverflowComposite
             public C getValue(FullSupplierDetail demand) {
                 return getter.getValue(demand);
             }
+
         };
         if (sort) {
             column.setSortable(true);
@@ -358,6 +366,7 @@ public class HomeSuppliersView extends OverflowComposite
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
+
     /**
      * The key provider that provides the unique ID of a FullSupplierDetail.
      */
@@ -367,8 +376,10 @@ public class HomeSuppliersView extends OverflowComposite
         public Object getKey(FullSupplierDetail item) {
             return item == null ? null : item.getSupplierId();
         }
+
     };
 }
+
 /**
  * Root Category Cell .
  */
@@ -395,6 +406,7 @@ class RootCategoryCell extends AbstractCell<CategoryDetail> {
         sb.appendEscaped(text.toString());
 //        sb.appendHtmlConstant("</div>");
     }
+
 }
 
 /**
@@ -423,4 +435,5 @@ class SubCategoryCell extends AbstractCell<CategoryDetail> {
         sb.appendEscaped(text.toString());
 //        sb.appendHtmlConstant("</div>");
     }
+
 }

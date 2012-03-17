@@ -137,6 +137,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchModuleDataHolder searchDataHolder;
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
+//        eventBus.loadingShow(MSGS.loading());
         Storage.setCurrentlyLoadedView("homeDemands");
         Storage.setCurrentlyLoadedModule("homeDemands");
         orderColumns.clear();
@@ -166,7 +167,8 @@ public class HomeDemandsPresenter extends BasePresenter<
                 orderColumns.put(gridColumns.get(0), OrderType.DESC);
                 eventBus.filterDemands(start, start + length, searchDataHolder, orderColumns);
 
-                eventBus.loadingHide();
+                // TODO praso - testo cakacej smycky od MVP4G
+//                eventBus.loadingHide();
             }
 
         };
