@@ -29,6 +29,9 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         // TODO praso - otestovat na online poptavke ci sa zobrazuje tato loading show/hide hlaska
         wait.add(new Label("Wait until requested module code is downloaded from server."));
         initWidget(uiBinder.createAndBindUi(this));
+        /* Táto metóda, zaistí, že sa načíta CSS štýl. Bez nej by sa štýl nahral až pri prepnutí do
+         * ďalšieho modulu.
+         */
         StyleResource.INSTANCE.layout().ensureInjected();
 
     }
@@ -66,26 +69,6 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         GWT.log("Header widget view set");
         this.header.setWidget(header);
 
-    }
-
-    @Override
-    public IsWidget getHeader() {
-        return this.header.getWidget();
-    }
-
-    @Override
-    public SimplePanel getSearchBar() {
-        return this.searchBar;
-    }
-
-    @Override
-    public Widget getBody() {
-        return this.body;
-    }
-
-    @Override
-    public Widget getMenu() {
-        return this.menu;
     }
 
     @Override

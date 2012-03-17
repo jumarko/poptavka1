@@ -128,7 +128,7 @@ public interface RootEventBus extends EventBus {
 
     /* Both Home and User menut control section */
     @Event(modulesToLoad = SearchModule.class)
-    void goToSearchModule(SimplePanel panel);
+    void goToSearchModule();
 
     @Event(modulesToLoad = SearchModule.class)
     void clearSearchContent();

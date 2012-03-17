@@ -1,7 +1,6 @@
 package cz.poptavka.sample.client.root;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Cookies;
@@ -82,12 +81,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      */
     public void onStart() {
         GWT.log("Root presenter loaded");
-        // TODO Praso - Musime manualne volat tieto eventy? HomeWelcomModule a SearchModule
-        // by sa predsa mali naloadovat ihned ako sa spusti aplikacia mozno cez anotacie.
-        // HomeWelcomModule sa musi volat manualne. Ale pohlad pre SearchModule sa moze
-        // nastavit automaticky pomocou autodisplay feature. Toto je treba dorobit
         eventBus.goToHomeWelcomeModule(null);
-        eventBus.goToSearchModule(view.getSearchBar());
+        eventBus.goToSearchModule();
     }
 
     /**
@@ -179,6 +174,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
     }
+
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
 
@@ -211,9 +207,10 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onDisplayMenu() {
         GWT.log("RootPresenter - onDisplayMenu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        eventBus.setPublicLayout();
-        view.getMenu().getElement().getStyle().setDisplay(Display.BLOCK);
-        view.getSearchBar().getElement().getStyle().setDisplay(Display.BLOCK);
+        // TODO Praso - túto metódu môžem odstrániť. Nepoužíva sa.
+//        eventBus.setPublicLayout();
+//        view.getMenu().getElement().getStyle().setDisplay(Display.BLOCK);
+//        view.getSearchBar().getElement().getStyle().setDisplay(Display.BLOCK);
     }
 
     public void onAtAccount() {
@@ -302,6 +299,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             public void onClick(ClickEvent event) {
                 userInfoPanel.hide();
             }
+
         });
         FlowPanel m = new FlowPanel();
         m.add(content);
@@ -310,4 +308,5 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
     }
+
 }

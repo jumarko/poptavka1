@@ -8,7 +8,6 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -170,15 +169,15 @@ public class SearchModulePresenter
         });
     }
 
-    public void onGoToSearchModule(SimplePanel panel) {
-        GWT.log("onGoToSearchModule - som tu");
+    public void onGoToSearchModule() {
+        GWT.log("SearchModule loaded");
         //eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
 //        eventBus.setTabAdminWidget(view.getWidgetView());
 //        eventBus.fireMarkedEvent();
 //        eventBus.setUserInteface((StyleInterface) view.getWidgetView());
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());
-        panel.setWidget(view.getWidgetView());
+//        panel.setWidget(view.getWidgetView());
         Storage.hideLoading();
     }
 

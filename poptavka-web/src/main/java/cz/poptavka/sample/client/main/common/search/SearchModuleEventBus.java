@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.main.common.search;
 
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -52,7 +51,7 @@ public interface SearchModuleEventBus extends EventBus {
     /* Business events handled by DemandModulePresenter. */
     //init demands module - left user_type menu and initial content
     @Event(handlers = SearchModulePresenter.class)
-    void goToSearchModule(SimplePanel panel);
+    void goToSearchModule();
     //display widget in content area
 //    @Event(handlers = SearchModulePresenter.class)
 //    void displayView(Widget content);
