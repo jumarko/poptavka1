@@ -12,8 +12,6 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.domain.address.LocalityType;
@@ -29,10 +27,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     @Inject
     private CategoryRPCServiceAsync categoryService = null;
-    @Inject
-    private DemandRPCServiceAsync demandService = null;
-    @Inject
-    private ClientRPCServiceAsync clientService = null;
     @Inject
     private UserRPCServiceAsync userService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
@@ -50,6 +44,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     public void onFailure(Throwable arg0) {
                         // TODO empty
                     }
+
                 });
     }
 
@@ -66,6 +61,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     public void onSuccess(ArrayList<LocalityDetail> list) {
                         eventBus.setLocalityData(localityType, list);
                     }
+
                 });
     }
 
@@ -84,6 +80,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 Window.alert("fix this method return value"
                         + "onGetRootCategories() - MainHandler.class");
             }
+
         });
     }
 
@@ -103,6 +100,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 public void onSuccess(ArrayList<CategoryDetail> list) {
                     eventBus.setCategoryListData(newListPosition, list);
                 }
+
             });
         } else {
             LOGGER.info(" --> child categories");
@@ -118,6 +116,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                         public void onFailure(Throwable arg0) {
                             // TODO Auto-generated method stub
                         }
+
                     });
         }
         LOGGER.info("ending category service call");
@@ -150,6 +149,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 eventBus.loadingShow(Storage.MSGS.progressCreatingUserInterface());
                 eventBus.setUser(result);
             }
+
         });
     }
 
@@ -163,13 +163,4 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         categoryService = service;
     }
 
-    @Inject
-    void setDemandService(DemandRPCServiceAsync service) {
-        demandService = service;
-    }
-
-    @Inject
-    void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
-        clientService = service;
-    }
 }
