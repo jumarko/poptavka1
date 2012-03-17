@@ -40,13 +40,19 @@
                     <g:TextBox ui:field="searchContent" width="250px">
                         <ui:msg key="searchContent">search...</ui:msg>
                     </g:TextBox>
+                    <g:TextBox ui:field="searchCategory" width="250px">
+                        <ui:msg key="searchCategory">choose category...</ui:msg>
+                    </g:TextBox>
+                    <g:TextBox ui:field="searchLocality" width="250px">
+                        <ui:msg key="searchLocality">choose locality...</ui:msg>
+                    </g:TextBox>
 <!--                <li>
                     <g:ListBox ui:field="listbox"/>
                 </li>-->
 
 <!--                <g:DecoratedPopupPanel ui:field="popupPanel"/>-->
-                    <g:Button ui:field="advSearchBtn" styleName='{res.layout.homeMenu}'>|*|</g:Button>
-                    <g:Button ui:field="searchBtn" styleName='{res.layout.homeMenu}'>
+                    <g:Button ui:field="advSearchBtn">Advanced</g:Button>
+                    <g:Button ui:field="searchBtn">
                         <ui:msg key="search">Search</ui:msg>
                     </g:Button>
                 </g:HorizontalPanel>

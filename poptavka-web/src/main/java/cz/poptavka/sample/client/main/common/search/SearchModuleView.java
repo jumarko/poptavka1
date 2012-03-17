@@ -28,7 +28,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @UiField
     Button searchBtn, advSearchBtn;
     @UiField
-    TextBox searchContent;
+    TextBox searchContent, searchCategory, searchLocality;
     @UiField(provided = true)
 //    DecoratedPopupPanel popupPanel;
     PopupPanel popupPanel = new PopupPanel(true);
