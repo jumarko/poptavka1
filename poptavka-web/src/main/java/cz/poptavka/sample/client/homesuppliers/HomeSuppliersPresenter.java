@@ -86,7 +86,6 @@ public class HomeSuppliersPresenter
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
         void hideSuppliersDetail();
-
     }
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     //differ if category was selected from menu, or from path
@@ -117,13 +116,13 @@ public class HomeSuppliersPresenter
     public void onForward() {
         // nothing
     }
-
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
     private SearchModuleDataHolder searchDataHolder = null;
 
-    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location) {
+    public void onGoToHomeSuppliersModule(
+            SearchModuleDataHolder searchDataHolder, String location) {
 //        eventBus.loadingShow(MSGS.loading());
         this.location = location;
         this.searchDataHolder = searchDataHolder;
@@ -167,9 +166,9 @@ public class HomeSuppliersPresenter
             @Override
             protected void onRangeChanged(HasData<SupplierDetail> display) {
                 display.setRowCount(totalFound);
-                if (totalFound == 0) {
-                    return;
-                }
+//                if (totalFound == 0) {
+//                    return;
+//                }
                 start = display.getVisibleRange().getStart();
                 length = display.getVisibleRange().getLength();
 
@@ -179,7 +178,6 @@ public class HomeSuppliersPresenter
 
 //                eventBus.loadingHide();
             }
-
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
         this.createAsyncSortHandler();
@@ -204,7 +202,6 @@ public class HomeSuppliersPresenter
 
                 eventBus.getSuppliers(start, start + length, searchDataHolder, orderColumns);
             }
-
         };
         view.getDataGrid().addColumnSortHandler(sortHandler);
     }
@@ -230,7 +227,6 @@ public class HomeSuppliersPresenter
                     eventBus.addToPath(selected, location);
                 }
             }
-
         });
         view.getSelectionCategoryModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
@@ -255,7 +251,6 @@ public class HomeSuppliersPresenter
                     eventBus.addToPath(selected, location);
                 }
             }
-
         });
         view.getSelectionSupplierModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
@@ -267,7 +262,6 @@ public class HomeSuppliersPresenter
                     view.displaySuppliersDetail(selected);
                 }
             }
-
         });
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
 
@@ -285,7 +279,6 @@ public class HomeSuppliersPresenter
                 view.getPager().setPageStart(page * newPage);
                 view.getPager().setPageSize(newPage);
             }
-
         });
 
     }
@@ -296,7 +289,6 @@ public class HomeSuppliersPresenter
     /* ROOT CATEGORIES */
     public void onDisplayRootcategories(ArrayList<CategoryDetail> rootCategories) {
         view.displayRootCategories(COLUMNS, rootCategories);
-//        eventBus.loadingHide();
     }
 
     /**
@@ -314,7 +306,7 @@ public class HomeSuppliersPresenter
         }
         eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
-        dataProvider.updateRowCount(0, false);
+
 //        eventBus.loadingHide();
     }
 
@@ -325,10 +317,10 @@ public class HomeSuppliersPresenter
     /* SUPPLIERS */
     public void onDisplaySuppliers(List<FullSupplierDetail> list) {
         // TODO Praso - neviem ci tu musi byt ten flush alebo nie? Aky ma vyznam?
+//        dataProvider.updateRowCount(list.size(), true);
+        dataProvider.updateRowData(start, list);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        dataProvider.updateRowCount(list.size(), true);
-
     }
 
     /**
@@ -338,10 +330,11 @@ public class HomeSuppliersPresenter
      */
     /* CHILD WIDGET */
     public void onDisplayChildWidget(Long id) {
-//        eventBus.loadingShow(MSGS.loading());
 
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);
+
+        view.getDataGrid().redraw();
 
         eventBus.getSubCategories(id);
     }
@@ -396,5 +389,4 @@ public class HomeSuppliersPresenter
         link.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
         view.addPath(link);
     }
-
 }

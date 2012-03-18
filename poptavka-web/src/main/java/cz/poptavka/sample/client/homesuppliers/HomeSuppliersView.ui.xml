@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
     xmlns:c="urn:import:com.google.gwt.user.cellview.client"
     xmlns:d="urn:import:cz.poptavka.sample.client.user.widget.detail">
 
@@ -18,29 +18,14 @@
             <!--<g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="split">
                 <g:west size="300" >-->
                 <g:ScrollPanel>
-                    <g:HTMLPanel>
-                        <table width="600px">
-                            <tr>
-                                <td>
-<!--                                    <g:HorizontalPanel>-->
-                                    <g:Label ui:field="filterLabel">Search panel set, additional filters will by used.</g:Label>
-<!--                                        <g:ListBox ui:field="localityList" />-->
-<!--                                    </g:HorizontalPanel>-->
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <c:DataGrid ui:field="dataGrid" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <c:SimplePager ui:field="pager" />
-                                    <g:ListBox ui:field='pageSizeCombo'/>
-                                </td>
-                            </tr>
-                        </table>                        
-                    </g:HTMLPanel>
+                    <g:VerticalPanel width="600px">
+                        <g:Label ui:field="filterLabel">Search panel set, additional filters will by used.</g:Label>
+                        <c:DataGrid ui:field="dataGrid" />
+                        <g:HorizontalPanel>
+                            <c:SimplePager ui:field="pager" />
+                            <g:ListBox ui:field='pageSizeCombo'/>
+                        </g:HorizontalPanel>
+                    </g:VerticalPanel>
                 </g:ScrollPanel>
                 <!--</g:west>
                 <g:center >

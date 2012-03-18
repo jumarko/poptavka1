@@ -246,7 +246,7 @@ public class HomeSuppliersView extends OverflowComposite
         // used to identify contacts when fields (such as the name and address)
         // change.
         dataGrid = new DataGrid<FullSupplierDetail>();
-        dataGrid.setLoadingIndicator(new Label("Loading suppliers..."));
+//        dataGrid.setLoadingIndicator(new Label("Loading suppliers..."));
         selectionSupplierModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(selectionSupplierModel);
 

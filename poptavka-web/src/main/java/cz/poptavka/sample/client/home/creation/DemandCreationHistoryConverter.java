@@ -1,7 +1,5 @@
 package cz.poptavka.sample.client.home.creation;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -12,10 +10,8 @@ import com.mvp4g.client.history.HistoryConverter;
 @History(type = HistoryConverterType.SIMPLE, name = "demandCreation")
 public class DemandCreationHistoryConverter implements HistoryConverter<DemandCreationEventBus> {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-
     /**
-     * To convert token for initCreateDemand method
+     * To convert token for initCreateDemand method.
      * @param searchDataHolder
      * @param location
      * @return token string like module/method?param, where param = home or user
@@ -44,7 +40,6 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
 
     @Override
     public boolean isCrawlable() {
-        // TODO Auto-generated method stub
         return false;
     }
 }
