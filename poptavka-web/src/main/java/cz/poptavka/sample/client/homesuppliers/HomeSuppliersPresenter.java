@@ -314,6 +314,7 @@ public class HomeSuppliersPresenter
         }
         eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
+        dataProvider.updateRowCount(0, false);
 //        eventBus.loadingHide();
     }
 
@@ -326,7 +327,8 @@ public class HomeSuppliersPresenter
         // TODO Praso - neviem ci tu musi byt ten flush alebo nie? Aky ma vyznam?
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
-        view.getDataGrid().setRowData(start, list);
+        dataProvider.updateRowCount(list.size(), true);
+
     }
 
     /**
