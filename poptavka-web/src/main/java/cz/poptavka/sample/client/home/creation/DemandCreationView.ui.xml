@@ -10,7 +10,7 @@
 
     <g:HTMLPanel>
     <g:StackLayoutPanel ui:field='mainPanel'
-        styleName='{res.layout.stackLayout}' height="55%">
+        styleName='{res.layout.stackLayout}' height="100%">
         <g:stack>
             <g:customHeader size="19">
                 <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
