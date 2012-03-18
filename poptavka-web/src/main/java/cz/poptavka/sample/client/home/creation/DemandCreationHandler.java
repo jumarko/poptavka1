@@ -13,7 +13,7 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 /**
- * Handler for RPC calls for localities & categories.
+ * Handler for RPC calls for DemandCreationModule
  *
  * @author Beho
  *
@@ -21,42 +21,14 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @EventHandler
 public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventBus> {
 
-//    private LocalityRPCServiceAsync localityService = null;
-//    private CategoryRPCServiceAsync categoryService = null;
-//    private DemandRPCServiceAsync demandService = null;
-//    private ClientRPCServiceAsync clientService = null;
     private DemandCreationModuleRPCServiceAsync demandCreationService = null;
-//    private SupplierRPCServiceAsync supplierService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
-
-//    @Inject
-//    public void setLocalityService(LocalityRPCServiceAsync service) {
-//        localityService = service;
-//    }
-//
-//    @Inject
-//    public void setCategoryService(CategoryRPCServiceAsync service) {
-//        categoryService = service;
-//    }
-//    @Inject
-//    void setDemandService(DemandRPCServiceAsync service) {
-//        demandService = service;
-//    }
-//
-//    @Inject
-//    void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
-//        clientService = service;
-//    }
 
     @Inject
     void setDemandCreationModuleRPCServiceAsync(DemandCreationModuleRPCServiceAsync service) {
         demandCreationService = service;
     }
 
-//    @Inject
-//    void setSupplierRPCService(SupplierRPCServiceAsync service) {
-//        supplierService = service;
-//    }
     /**
      * Verify identity of user, if exists in the system.
      * If so, new demand is created.
@@ -111,21 +83,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
             }
         });
     }
-//    public void onRegisterSupplier(UserDetail newSupplier) {
-//        supplierService.createNewSupplier(newSupplier, new AsyncCallback<UserDetail>() {
-//            @Override
-//            public void onFailure(Throwable arg0) {
-//                eventBus.loadingHide();
-//                Window.alert("Unexpected error occured! \n" + arg0.getMessage());
-//            }
-//
-//            @Override
-//            public void onSuccess(UserDetail supplier) {
-//                // TODO forward to user/atAccount
-//                eventBus.loadingHide();
-//            }
-//        });
-//    }
 
     /**
      * Creates new demand.

@@ -59,7 +59,6 @@ public class DemandCreationPresenter
         SimplePanel getHolderPanel(int order);
 
         HasClickHandlers getCreateDemandButton();
-
     }
 
     @Override
@@ -80,7 +79,6 @@ public class DemandCreationPresenter
                     }
                 }
             }
-
         });
         view.getCreateDemandButton().addClickHandler(new ClickHandler() {
 
@@ -90,7 +88,6 @@ public class DemandCreationPresenter
                     registerNewCient();
                 }
             }
-
         });
 
     }
@@ -115,6 +112,7 @@ public class DemandCreationPresenter
         view.getMainPanel().showWidget(0);
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));
         eventBus.initCategoryWidget(view.getHolderPanel(CATEGORY));
+        // TODO Praso - what is this method supposed to do? Does it loads widgets in advance?
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
             @Override
@@ -125,7 +123,6 @@ public class DemandCreationPresenter
                 eventBus.initDemandAdvForm(view.getHolderPanel(ADVANCED));
                 eventBus.initLoginForm(view.getHolderPanel(LOGIN));
             }
-
         });
     }
 
@@ -149,9 +146,13 @@ public class DemandCreationPresenter
     }
 
     /**
-     * Called from HomeHandler after successful login/registration.
+     * Called from DemandCreationHandler after successful login or registration
+     * of new client. As first a new client is created through DemandCreationHandler
+     * and after successful registration (or login of existing client) this method
+     * is initiated by DemandCreationHandler to create new Demand for this client.
      *
-     * @param client detail of newly created client
+     * @param client detail object that was either created (if new client) or
+     * retried from database (if existing client)
      */
     public void onPrepareNewDemandForNewClient(UserDetail client) {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
@@ -165,6 +166,7 @@ public class DemandCreationPresenter
         FormDemandAdvViewInterface advValues =
                 (FormDemandAdvViewInterface) view.getHolderPanel(ADVANCED).getWidget();
 
+        // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
         demand.setBasicInfo(basicValues.getValues());
 
@@ -188,8 +190,8 @@ public class DemandCreationPresenter
         demand.setCategories(categories);
 
         demand.setAdvInfo(advValues.getValues());
-
         eventBus.createDemand(demand, client.getClientId());
+        // TODO Praso - improve loaging method. We can for example show some message to client while waiting
         eventBus.loadingShow(MSGS.progressCreatingDemand());
 
     }
@@ -210,6 +212,12 @@ public class DemandCreationPresenter
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
+    /**
+     * In the process of creating a new demand by brand new client the method
+     * registerNewClient() is called as first. When the registration of new client
+     * is successful the demand will be created in the next step. See method
+     * onPrepareNewDemandForNewClient().
+     */
     private void registerNewCient() {
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
@@ -219,7 +227,6 @@ public class DemandCreationPresenter
         eventBus.registerNewClient(newClient);
 
     }
-
     private static final int BASIC = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;
@@ -231,5 +238,4 @@ public class DemandCreationPresenter
         LOGGER.fine(widget.getClass().getName());
         return widget.isValid();
     }
-
 }

@@ -72,13 +72,11 @@ public class DemandCreationModuleRPCServiceImpl extends AutoinjectingRemoteServi
     }
 
     /**
-     * Dorobit komentar.
+     * Create new entity Demand based on the passed FullDemandDetail object.
      *
-     * TODO - skontrolovat ci si butbe musime predavat parametre ako Long clientId.
-     * BOlo by lepsie optimalizovat toto riesenie s vyuzitim GWT SPRING Security?
-     *
-     * @param detail
-     * @param cliendId
+     * @param detail object created by user in DemandCreation view
+     * @param cliendId is used in case the Demand is created by registered and
+     * logged in client
      * @return
      */
     @Override
@@ -155,6 +153,18 @@ public class DemandCreationModuleRPCServiceImpl extends AutoinjectingRemoteServi
         }
     }
 
+    /**
+     * Method is supposed the check whether email passed as argument does exist
+     * in our database.
+     *
+     * TODO BACKEND - please guys I believe there is more effective way how to
+     * carry out this simple method. I think we don't need to create Search
+     * object for such an easy task and we definitely don't need to retrieve
+     * the whole BusinessUser entity from database. (praso)
+     *
+     * @param email to be checked in our database
+     * @return true if email is available to use
+     */
     @Override
     public boolean checkFreeEmail(String email) {
         // try to find user with given email
@@ -219,5 +229,4 @@ public class DemandCreationModuleRPCServiceImpl extends AutoinjectingRemoteServi
             return toUserDetail(user.getBusinessUser().getId(), user.getBusinessUser().getBusinessUserRoles());
         }
     }
-
 }
