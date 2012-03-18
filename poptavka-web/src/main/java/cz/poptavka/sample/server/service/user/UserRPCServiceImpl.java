@@ -37,10 +37,15 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Override
     public String loginUser(UserDetail userDetail) {
 
+        // TODO BACKEND - pripravit novu servisu, ktora nam overi aj usernam a password. Predany Password sa musi na
+        // backende enkryptovat jednosmernou encryptovacou funkcionu a potom sa porovna s passwordom z DB. Zatial je
+        // overovanie hesla vypnute a overuje sa len username
+//        final User user = (User) generalService.searchUnique(
+//                new Search(User.class).addFilterEqual(
+//                    "email", userDetail.getEmail()).addFilterEqual(
+//                        "password", userDetail.getPassword()));
         final User user = (User) generalService.searchUnique(
-                new Search(User.class).addFilterEqual(
-                    "email", userDetail.getEmail()).addFilterEqual(
-                        "password", userDetail.getPassword()));
+                new Search(User.class).addFilterEqual("email", userDetail.getEmail()));
         if (user == null) {
             System.out.println("NULL branch");
             return null;
