@@ -8,9 +8,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandCreationModuleRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
@@ -25,8 +23,8 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 
 //    private LocalityRPCServiceAsync localityService = null;
 //    private CategoryRPCServiceAsync categoryService = null;
-    private DemandRPCServiceAsync demandService = null;
-    private ClientRPCServiceAsync clientService = null;
+//    private DemandRPCServiceAsync demandService = null;
+//    private ClientRPCServiceAsync clientService = null;
     private DemandCreationModuleRPCServiceAsync demandCreationService = null;
 //    private SupplierRPCServiceAsync supplierService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
@@ -40,15 +38,15 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 //    public void setCategoryService(CategoryRPCServiceAsync service) {
 //        categoryService = service;
 //    }
-    @Inject
-    void setDemandService(DemandRPCServiceAsync service) {
-        demandService = service;
-    }
-
-    @Inject
-    void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
-        clientService = service;
-    }
+//    @Inject
+//    void setDemandService(DemandRPCServiceAsync service) {
+//        demandService = service;
+//    }
+//
+//    @Inject
+//    void setClientRPCServiceAsync(ClientRPCServiceAsync service) {
+//        clientService = service;
+//    }
 
     @Inject
     void setDemandCreationModuleRPCServiceAsync(DemandCreationModuleRPCServiceAsync service) {
