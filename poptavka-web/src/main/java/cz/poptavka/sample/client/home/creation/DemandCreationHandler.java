@@ -9,6 +9,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.DemandCreationModuleRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -26,6 +27,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 //    private CategoryRPCServiceAsync categoryService = null;
     private DemandRPCServiceAsync demandService = null;
     private ClientRPCServiceAsync clientService = null;
+    private DemandCreationModuleRPCServiceAsync demandCreationService = null;
 //    private SupplierRPCServiceAsync supplierService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
@@ -48,6 +50,11 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
         clientService = service;
     }
 
+    @Inject
+    void setDemandCreationModuleRPCServiceAsync(DemandCreationModuleRPCServiceAsync service) {
+        demandCreationService = service;
+    }
+
 //    @Inject
 //    void setSupplierRPCService(SupplierRPCServiceAsync service) {
 //        supplierService = service;
@@ -60,7 +67,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      */
     public void onVerifyExistingClient(UserDetail client) {
         LOGGER.fine("verify start");
-        clientService.verifyClient(client, new AsyncCallback<UserDetail>() {
+        demandCreationService.verifyClient(client, new AsyncCallback<UserDetail>() {
 
             @Override
             public void onFailure(Throwable arg0) {
@@ -91,7 +98,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      * @param client newly created client
      */
     public void onRegisterNewClient(UserDetail client) {
-        clientService.createNewClient(client, new AsyncCallback<UserDetail>() {
+        demandCreationService.createNewClient(client, new AsyncCallback<UserDetail>() {
 
             @Override
             public void onFailure(Throwable arg0) {
@@ -131,7 +138,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      *            client id
      */
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
-        demandService.createNewDemand(detail, clientId,
+        demandCreationService.createNewDemand(detail, clientId,
                 new AsyncCallback<FullDemandDetail>() {
 
                     @Override
@@ -152,7 +159,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     }
 
     public void onCheckFreeEmail(String email) {
-        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+        demandCreationService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
 
             @Override
             public void onFailure(Throwable arg0) {
