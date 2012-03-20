@@ -2,9 +2,7 @@ package cz.poptavka.sample.client.homesuppliers;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -24,7 +22,8 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -41,9 +40,9 @@ import java.util.Map;
 
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
-        extends BasePresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
+        extends LazyPresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
 
-    public interface SuppliersViewInterface { //extends LazyView {
+    public interface SuppliersViewInterface extends LazyView {
         //******** ROOT SECTION **********
 
         HorizontalPanel getRootSection();
@@ -81,13 +80,12 @@ public class HomeSuppliersPresenter
 
         SplitLayoutPanel getSplitter();
 
-        void displaySubCategories(int columns, ArrayList<CategoryDetail> categories);
+        void displaySubCategories(ArrayList<CategoryDetail> categories);
 
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
         void hideSuppliersDetail();
     }
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     //differ if category was selected from menu, or from path
     private Boolean wasSelection = false;
     //for asynch data retrieving
@@ -105,6 +103,7 @@ public class HomeSuppliersPresenter
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
     private String location = null; //home, user
+    private SearchModuleDataHolder searchDataHolder = null;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -116,33 +115,45 @@ public class HomeSuppliersPresenter
     public void onForward() {
         // nothing
     }
+
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    private SearchModuleDataHolder searchDataHolder = null;
-
+    /**
+     * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
+     *                               - it's also used as pointer to differ root and child sections
+     * @param moduleLocation - tells where is module used - home / user section
+     */
     public void onGoToHomeSuppliersModule(
-            SearchModuleDataHolder searchDataHolder, String location) {
-//        eventBus.loadingShow(MSGS.loading());
-        this.location = location;
-        this.searchDataHolder = searchDataHolder;
+            SearchModuleDataHolder searchModuleDataHolder, String moduleLocation) {
+        this.location = moduleLocation;
+        this.searchDataHolder = searchModuleDataHolder;
 
         //ROOT section
         if (searchDataHolder == null) {
-
-            view.getChildSection().setVisible(false);
-            view.getRootSection().setVisible(true);
             //display root categories on whole page
             view.getFilterLabel().setVisible(false);
+            view.getChildSection().setVisible(false);
+            view.getRootSection().setVisible(true);
+
             // add root to path
             eventBus.addToPath(new CategoryDetail(0L, ""), location);
             //get Root Categories
-            eventBus.getCategories();
-            //CHILD section
+            //If root categories already loaded and returned by history -> no need to load again
+            if (view.getRootSection().getWidgetCount() == 0) {
+                view.getRootSection().add(new Label(Storage.MSGS.loadingRootCategories()));
+                eventBus.getCategories();
+            } else {
+                //Cancel selection of root categories if returned by history, otherwise "SelectionChangeHandler"
+                //event won't be fired (user won't be able to choose the same category).
+                view.getSelectionRootModel().setSelected(view.getSelectionRootModel().getSelectedObject(), false);
+            }
+        //CHILD section
         } else {
             view.getFilterLabel().setVisible(true);
             view.getChildSection().setVisible(true);
             view.getRootSection().setVisible(false);
+            dataProvider.updateRowCount(0, false);
             // create path
             eventBus.getCategoryParents(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId(), location);
             // get Sub Categories
@@ -166,17 +177,15 @@ public class HomeSuppliersPresenter
             @Override
             protected void onRangeChanged(HasData<SupplierDetail> display) {
                 display.setRowCount(totalFound);
-//                if (totalFound == 0) {
-//                    return;
-//                }
+                if (totalFound == 0) {
+                    return;
+                }
                 start = display.getVisibleRange().getStart();
                 length = display.getVisibleRange().getLength();
 
                 orderColumns.clear();
                 orderColumns.put(gridColumns.get(0), OrderType.ASC);
                 eventBus.getSuppliers(start, start + length, searchDataHolder, orderColumns);
-
-//                eventBus.loadingHide();
             }
         };
         this.dataProvider.addDataDisplay(view.getDataGrid());
@@ -207,12 +216,15 @@ public class HomeSuppliersPresenter
     }
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getSelectionRootModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-//                eventBus.loadingShow(MSGS.loading());
+                if (dataProvider != null) {
+                    dataProvider.updateRowCount(0, false);
+                }
+
                 CategoryDetail selected = (CategoryDetail) view.getSelectionRootModel().getSelectedObject();
 
                 if (selected != null) {
@@ -232,7 +244,8 @@ public class HomeSuppliersPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-//                eventBus.loadingShow(MSGS.loading());
+                dataProvider.updateRowCount(0, false);
+
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
@@ -283,10 +296,15 @@ public class HomeSuppliersPresenter
 
     }
 
-    //
-    //                      **** DISPLAY ****
-    //
+    /**************************************************************************/
+    /* Additional events used to display data                                 */
+    /**************************************************************************/
     /* ROOT CATEGORIES */
+    /**
+     * Methods displays root categories. These categories are divided into cellLists (columns),
+     * where number of columns depends on constant: COLUMNS.
+     * @param rootCategories - root categories to be displayed
+     */
     public void onDisplayRootcategories(ArrayList<CategoryDetail> rootCategories) {
         view.displayRootCategories(COLUMNS, rootCategories);
     }
@@ -299,15 +317,14 @@ public class HomeSuppliersPresenter
      */
     /* SUB CATEGORIES */
     public void onDisplaySubCategories(ArrayList<CategoryDetail> subcategories, Long parentCategory) {
-        view.displaySubCategories(COLUMNS, subcategories);
+        //Force Loading indicator to show up when new data is retrieving
+        view.displaySubCategories(subcategories);
 
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
             searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));
         }
         eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
-
-//        eventBus.loadingHide();
     }
 
     /**
@@ -317,9 +334,10 @@ public class HomeSuppliersPresenter
     /* SUPPLIERS */
     public void onDisplaySuppliers(List<FullSupplierDetail> list) {
         // TODO Praso - neviem ci tu musi byt ten flush alebo nie? Aky ma vyznam?
-//        dataProvider.updateRowCount(list.size(), true);
+        // TODO Martin - zakomentovane flush, zatial nerobi problemi pri zobrazovani,
+        //               ak ok, moze sa to vyhodic uplne.
         dataProvider.updateRowData(start, list);
-        view.getDataGrid().flush();
+//        view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
 
@@ -339,13 +357,11 @@ public class HomeSuppliersPresenter
         eventBus.getSubCategories(id);
     }
 
-    //
-    //                  **** PATH ****
-    //
     /**
      * Manages path and history calls. Adds and removes items from path according to history.
      * @param categoryDetail - category from url to be loaded
      */
+    /* PATH UPDATE */
     public void onUpdatePath(ArrayList<CategoryDetail> categories, String location) {
         view.getPath().clear();
 
@@ -372,8 +388,8 @@ public class HomeSuppliersPresenter
      * Adds hyperlink to path.
      * @param categoryDetail
      */
+    /* PATH ADD */
     public void onAddToPath(CategoryDetail categoryDetail, String location) {
-//        pointer++;
         String symbol = "";
         //Root
         if (categoryDetail.getId() == 0) {

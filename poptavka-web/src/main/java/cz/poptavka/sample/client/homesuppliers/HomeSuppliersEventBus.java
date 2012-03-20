@@ -77,8 +77,7 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     // SUB CATEGORIES
     @Event(handlers = HomeSuppliersPresenter.class)
-    void displaySubCategories(ArrayList<CategoryDetail> list,
-            Long parentCategory);
+    void displaySubCategories(ArrayList<CategoryDetail> list, Long parentCategory);
 
     // SUPPLIERS
     @Event(handlers = HomeSuppliersPresenter.class)

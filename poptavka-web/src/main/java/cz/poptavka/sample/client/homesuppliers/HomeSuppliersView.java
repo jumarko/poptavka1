@@ -5,7 +5,6 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -24,6 +23,7 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.widget.detail.SupplierDetailView;
@@ -41,8 +41,14 @@ public class HomeSuppliersView extends OverflowComposite
 
     interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
     }
+    //Table constants
+    private static final int SUPPLIER_NAME_COL_WIDTH = 100;
+    private static final int RATING_COL_WIDTH = 30;
+    private static final int ADDRESS_COL_WIDTH = 60;
+    private static final int LOCALITY_COL_WIDTH = 50;
+    private static final int TABLE_HEIGHT = 300;
+    //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     @UiField(provided = true)
     CellList categoriesList;
     @UiField(provided = true)
@@ -69,7 +75,8 @@ public class HomeSuppliersView extends OverflowComposite
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>();
 
-    public HomeSuppliersView() {
+    @Override
+    public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
         pageSizeCombo.addItem("15");
@@ -100,18 +107,6 @@ public class HomeSuppliersView extends OverflowComposite
     public Label getFilterLabel() {
         return filterLabel;
     }
-//    @Override
-//    public ListBox getLocalityList() {
-//        return localityList;
-//    }
-//    @Override
-//    public String getSelectedLocality() {
-//        if (localityList.getSelectedIndex() == 0) {
-//            return null;
-//        } else {
-//            return localityList.getValue(localityList.getSelectedIndex());
-//        }
-//    }
 
     @Override
     public Widget getWidgetView() {
@@ -164,22 +159,18 @@ public class HomeSuppliersView extends OverflowComposite
         return contactBtn;
     }
 
-//    @Override
-//    public CellList getCategoryList() {
-//        return categoriesList;
-//    }
     @Override
-    public void displaySubCategories(int columns, ArrayList<CategoryDetail> subCategories) {
+    public void displaySubCategories(ArrayList<CategoryDetail> subCategories) {
         categoriesList.setRowCount(subCategories.size(), true);
         categoriesList.setRowData(0, subCategories);
     }
 
     @Override
-    public void displaySuppliersDetail(FullSupplierDetail supplierDetail) {
+    public void displaySuppliersDetail(FullSupplierDetail fullSupplierDetail) {
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        this.supplierDetail.displaySuppliersDetail(supplierDetail);
+        supplierDetail.displaySuppliersDetail(fullSupplierDetail);
     }
 
     @Override
@@ -225,7 +216,9 @@ public class HomeSuppliersView extends OverflowComposite
             }
             CellList cellList = null;
             cellList = new CellList<CategoryDetail>(new RootCategoryCell());
-            cellList.setLoadingIndicator(new Label("Loading root categories..."));
+            //TOTO Martin - loading indikator nepomoze, pretoze tieto cellListy sa vytvaraju
+            //tu v case, ked su data uz k dispozicii
+            cellList.setLoadingIndicator(new Label(Storage.MSGS.loadingRootCategories()));
             cellList.setRowCount(subSize, true);
             cellList.setSelectionModel(selectionRootModel);
             cellList.setRowData(rootCategories.subList(startIdx, startIdx + subSize));
@@ -239,19 +232,20 @@ public class HomeSuppliersView extends OverflowComposite
     private void initDataGrid() {
         categoriesList = new CellList<CategoryDetail>(new SubCategoryCell());
         categoriesList.setSelectionModel(selectionCategoryModel);
-        categoriesList.setLoadingIndicator(new Label("Loading categories..."));
+        categoriesList.setLoadingIndicator(new Label(Storage.MSGS.loadingCategories()));
         // Create a DataGrid.
         GWT.log("Admin Suppliers initDataGrid initialized");
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
         dataGrid = new DataGrid<FullSupplierDetail>();
-//        dataGrid.setLoadingIndicator(new Label("Loading suppliers..."));
+        dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         selectionSupplierModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(selectionSupplierModel);
 
-        dataGrid.setMinimumTableWidth(400, Unit.PX);
-        dataGrid.setHeight("300px");
+        dataGrid.setMinimumTableWidth(SUPPLIER_NAME_COL_WIDTH + RATING_COL_WIDTH
+                + ADDRESS_COL_WIDTH + LOCALITY_COL_WIDTH, Unit.PX);
+        dataGrid.setHeight(Integer.toString(TABLE_HEIGHT) + "px");
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -261,73 +255,73 @@ public class HomeSuppliersView extends OverflowComposite
         StyleResource.INSTANCE.layout().ensureInjected();
 
         // Initialize the columns.
-        initTableColumns(getSelectionSupplierModel());
+        initTableColumns();
     }
 
     /**
-     * Add the columns to the table.
+     * Add columns to the table.
      */
-    private void initTableColumns(final SingleSelectionModel<FullSupplierDetail> selectionModel) {
+    private void initTableColumns() {
 
         // Company name.
-        addColumn(new TextCell(), "Name", true, 100, new GetValue<String>() {
+        addColumn(new TextCell(), Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return object.getCompanyName();
-            }
-
-        });
+                    @Override
+                    public String getValue(FullSupplierDetail object) {
+                        return object.getCompanyName();
+                    }
+                });
 
         // SupplierRating.
-        addColumn(new TextCell(), "Rate", true, 30, new GetValue() {
+        addColumn(new TextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
+                new GetValue() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                if (object.getOverallRating() == -1) {
-                    return "";
-                } else {
-                    return Integer.toString(object.getOverallRating());
-                }
-            }
-
-        });
+                    @Override
+                    public String getValue(FullSupplierDetail object) {
+                        if (object.getOverallRating() == -1) {
+                            return "";
+                        } else {
+                            return Integer.toString(object.getOverallRating());
+                        }
+                    }
+                });
 
         // Address.
-        addColumn(new TextCell(), "Address", false, 60, new GetValue() {
+        addColumn(new TextCell(), Storage.MSGS.address(), false, ADDRESS_COL_WIDTH,
+                new GetValue() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                StringBuilder str = new StringBuilder();
-                if (object.getAddresses() != null) {
-                    for (AddressDetail addr : object.getAddresses()) {
-                        str.append(addr.toString());
+                    @Override
+                    public String getValue(FullSupplierDetail object) {
+                        StringBuilder str = new StringBuilder();
+                        if (object.getAddresses() != null) {
+                            for (AddressDetail addr : object.getAddresses()) {
+                                str.append(addr.toString());
+                            }
+                        }
+                        return str.toString();
                     }
-                }
-                return str.toString();
-            }
-
-        });
+                });
 
         // Locality.
-        addColumn(new TextCell(), "Locality", false, 50, new GetValue() {
+        addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
+                new GetValue() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                StringBuilder str = new StringBuilder();
-                if (object.getLocalities() != null) {
-                    for (String loc : object.getLocalities().values()) {
-                        str.append(loc);
-                        str.append(", ");
+                    @Override
+                    public String getValue(FullSupplierDetail object) {
+                        StringBuilder str = new StringBuilder();
+                        if (object.getLocalities() != null) {
+                            for (String loc : object.getLocalities().values()) {
+                                str.append(loc);
+                                str.append(", ");
+                            }
+                            if (str.length() > 2) {
+                                str.delete(str.length() - 2, str.length());
+                            }
+                        }
+                        return str.toString();
                     }
-                    if (str.length() > 2) {
-                        str.delete(str.length() - 2, str.length());
-                    }
-                }
-                return str.toString();
-            }
-
-        });
+                });
     }
 
     /**
@@ -338,7 +332,6 @@ public class HomeSuppliersView extends OverflowComposite
     private interface GetValue<C> {
 
         C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
-
     }
 
     /**
@@ -357,7 +350,6 @@ public class HomeSuppliersView extends OverflowComposite
             public C getValue(FullSupplierDetail demand) {
                 return getter.getValue(demand);
             }
-
         };
         if (sort) {
             column.setSortable(true);
@@ -366,7 +358,6 @@ public class HomeSuppliersView extends OverflowComposite
         dataGrid.setColumnWidth(column, width, Unit.PX);
         return column;
     }
-
     /**
      * The key provider that provides the unique ID of a FullSupplierDetail.
      */
@@ -376,7 +367,6 @@ public class HomeSuppliersView extends OverflowComposite
         public Object getKey(FullSupplierDetail item) {
             return item == null ? null : item.getSupplierId();
         }
-
     };
 }
 
@@ -404,9 +394,7 @@ class RootCategoryCell extends AbstractCell<CategoryDetail> {
         text.append(")");
 
         sb.appendEscaped(text.toString());
-//        sb.appendHtmlConstant("</div>");
     }
-
 }
 
 /**
@@ -433,7 +421,5 @@ class SubCategoryCell extends AbstractCell<CategoryDetail> {
         text.append(")");
 
         sb.appendEscaped(text.toString());
-//        sb.appendHtmlConstant("</div>");
     }
-
 }

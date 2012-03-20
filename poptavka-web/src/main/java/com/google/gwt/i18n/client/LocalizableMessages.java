@@ -93,6 +93,9 @@ public interface LocalizableMessages extends Messages {
     String duration();
     String from();
     String to();
+    String noData();
+    String rating();
+    String address();
 
     String month();
     String fewMonths();
@@ -102,6 +105,9 @@ public interface LocalizableMessages extends Messages {
     String pass();
     String email();
     String loading();
+    String loadingRootCategories();
+    String loadingCategories();
+    String loadingLocalities();
     String progressGetUserDetail();
     String progressCreatingUserInterface();
     String progressDemandsLayoutInit();
