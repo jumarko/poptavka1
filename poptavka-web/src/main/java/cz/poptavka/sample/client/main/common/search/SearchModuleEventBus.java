@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.main.common.search;
 
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -42,6 +43,8 @@ public interface SearchModuleEventBus extends EventBus {
 //
 //    @Event(forwardToParent = true)
 //    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
+    @Event(forwardToParent = true)
+    void initCategoryWidget(SimplePanel holder);
 
     @Event(handlers = SearchModulePresenter.class)
     void clearSearchContent();

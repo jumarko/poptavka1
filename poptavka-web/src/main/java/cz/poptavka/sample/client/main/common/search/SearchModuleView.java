@@ -2,21 +2,30 @@ package cz.poptavka.sample.client.main.common.search;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter.SearchModulesViewInterface;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    private Map<Long, String> categories = new HashMap<Long, String>();
 
     @Override
     public PopupPanel getPopupPanel() {
@@ -29,17 +38,13 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     Button searchBtn, advSearchBtn;
     @UiField
     TextBox searchContent, searchCategory, searchLocality;
-    @UiField(provided = true)
-//    DecoratedPopupPanel popupPanel;
-    PopupPanel popupPanel = new PopupPanel(true);
-//    @UiField
-//    ListBox listbox;
+    @UiField
+    PopupPanel popupPanel;
 
     public SearchModuleView() {
         initWidget(uiBinder.createAndBindUi(this));
-//        listbox.setSize("200px", "200px");
-//        listbox.setLayoutData(new HomeDemandViewView());
-//        listbox.set
+        popupPanel.setAutoHideEnabled(true);
+        popupPanel.setAnimationEnabled(true);
     }
 
     @Override
@@ -69,8 +74,23 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     @Override
-    public TextBox getSerachContent() {
+    public TextBox getSearchContent() {
         return searchContent;
+    }
+
+    @Override
+    public TextBox getSearchCategory() {
+        return searchCategory;
+    }
+
+    @Override
+    public TextBox getSearchLocality() {
+        return searchLocality;
+    }
+
+    @Override
+    public void setCategories(Map<Long, String> categories) {
+        this.categories = categories;
     }
 
     // Handlers
@@ -103,5 +123,49 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 //    }
     @UiHandler("searchContent")
     void handleListBoxClick(ClickEvent event) {
+    }
+    private PopupPanel categoryTooltip = new PopupPanel();
+
+    @UiHandler("searchCategory")
+    void handlerSearchContentMouserOverEvent(MouseOverEvent event) {
+        if (categories.isEmpty()) {
+            return;
+        }
+        Widget source = (Widget) event.getSource();
+        int left = source.getAbsoluteLeft();
+        int top = source.getAbsoluteTop();
+        categoryTooltip.setPopupPosition(left + 30, top + 30);
+
+        VerticalPanel list = new VerticalPanel();
+        list.add(new Label("Filter categories:"));
+        for (String cat : categories.values()) {
+            list.add(new Label(cat));
+        }
+        categoryTooltip.setWidget(list);
+        categoryTooltip.show();
+    }
+
+    @UiHandler("searchCategory")
+    void handlerSearchContentMouserOutEvent(MouseOutEvent event) {
+        categoryTooltip.hide();
+    }
+
+    @UiHandler("popupPanel")
+    void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
+        categories.clear();
+        CategorySelectorInterface categoryValues =
+                (CategorySelectorInterface) popupPanel.getWidget();
+
+        //categories
+        for (int i = 0; i < categoryValues.getSelectedList().getItemCount(); i++) {
+            categories.put(Long.valueOf(
+                    categoryValues.getSelectedList().getValue(i)),
+                    //                    categorySelector.getSelectedCategoryCodes().get(i)),
+                    categoryValues.getSelectedList().getItemText(i));
+
+        }
+        if (!categories.isEmpty()) {
+            searchCategory.setText("filter:" + categories.values().toString());
+        }
     }
 }
