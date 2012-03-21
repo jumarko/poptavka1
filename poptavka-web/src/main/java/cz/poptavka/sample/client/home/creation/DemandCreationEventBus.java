@@ -50,7 +50,7 @@ public interface DemandCreationEventBus extends EventBus {
      * @param location - defines loacation of view
      */
     @Event(handlers = DemandCreationPresenter.class, historyConverter = DemandCreationHistoryConverter.class)
-    String goToCreateDemandModule(String location);
+    String goToCreateDemandModule();
 
     /**************************************************************************/
     /* Parent events                                                          */

@@ -19,6 +19,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter.FormRegistrationInterface;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
@@ -106,8 +107,10 @@ public class DemandCreationPresenter
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onGoToCreateDemandModule(String location) {
+    public void onGoToCreateDemandModule() {
         Storage.setCurrentlyLoadedModule("createDemand");
+        Storage.setCurrentlyLoadedView(Constants.NONE);
+
         LOGGER.info("  INIT DemandCreation Widget");
         view.getMainPanel().showWidget(0);
         eventBus.initDemandBasicForm(view.getHolderPanel(BASIC));

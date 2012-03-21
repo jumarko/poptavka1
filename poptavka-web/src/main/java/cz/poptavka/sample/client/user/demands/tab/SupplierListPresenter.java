@@ -16,6 +16,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
@@ -113,7 +114,7 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
     public void onInitSupplierList(SearchModuleDataHolder filter) {
 //        commented code is from production code
 //        if (!initialized) {
-        Storage.setCurrentlyLoadedView("potentialDemandMessages");
+        Storage.setCurrentlyLoadedView(Constants.DEMANDS_SUPPLIER_MY_DEMANDS);
         searchDataHolder = filter;
         eventBus.requestSupplierNewDemands(searchDataHolder);
 //        }

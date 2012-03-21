@@ -56,19 +56,19 @@ public interface DemandModuleEventBus extends EventBus {
      * @param loadWidget - doplnit prosim ???
      */
     @Event(handlers = DemandModulePresenter.class, historyConverter = DemandModuleHistoryConverter.class)
-    String goToDemandModule(SearchModuleDataHolder filter, String loadWidget);
+    String goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(forwardToParent = true)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void goToCreateDemandModule(String location);
+    void goToCreateDemandModule();
 
     @Event(forwardToParent = true)
-    void goToCreateSupplierModule(String location);
+    void goToCreateSupplierModule();
 
     /**************************************************************************/
     /* Parent events                                                          */

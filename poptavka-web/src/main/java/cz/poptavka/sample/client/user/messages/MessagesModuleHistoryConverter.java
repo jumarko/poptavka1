@@ -48,7 +48,7 @@ public class MessagesModuleHistoryConverter implements HistoryConverter<Messages
      */
     @Override
     public void convertFromToken(String historyName, String param, MessagesModuleEventBus eventBus) {
-        eventBus.goToMessagesModule(null, historyName.replace("init", ""));
+        eventBus.goToMessagesModule(null, Integer.valueOf(historyName));
     }
 
     @Override

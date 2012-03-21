@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.user.IUserMenuView.IUserMenuPresenter;
 import cz.poptavka.sample.client.user.interfaces.IUserMenuView;
@@ -34,14 +35,14 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, "welcome");
+                eventBus.goToDemandModule(null, Constants.NONE);
             }
         });
         view.getMessagesButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToMessagesModule(null, "inbox");
+                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
             }
         });
         view.getSettingsButton().addClickHandler(new ClickHandler() {
@@ -61,7 +62,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, "initAdminModule");
+                eventBus.goToAdminModule(null, Constants.NONE);
 
             }
         });

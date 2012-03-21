@@ -13,6 +13,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 
 import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
 import cz.poptavka.sample.client.user.messages.tab.ComposeMessagePresenter.IComposeMessage;
@@ -64,7 +65,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
     }
 
     public void onInitComposeNew() {
-        Storage.setCurrentlyLoadedView(null);
+        Storage.setCurrentlyLoadedView(Constants.MESSAGES_COMPOSE_NEW);
 
         //TODO Martin Uzivatel musi vybrat uzivatela z kontaktov
 
@@ -74,7 +75,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
     }
 
     public void onInitComposeReply(MessageDetail msgDetail) {
-        Storage.setCurrentlyLoadedView(null);
+        Storage.setCurrentlyLoadedView(Constants.MESSAGES_COMPOSE_REPLY);
 
         if (msgDetail != null) {
             messageDetail = msgDetail;

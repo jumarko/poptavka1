@@ -42,12 +42,13 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
 
         //ROOT
         if (categoryDetail.getId() == 0) {
-            eventBus.goToHomeSuppliersModule(null, location);
+//            eventBus.goToHomeSuppliersModule(null, location);
+            eventBus.goToHomeSuppliersModule(null);
         } else {
             SearchModuleDataHolder searchModuleDataHolder = new SearchModuleDataHolder();
             searchModuleDataHolder.initHomeSuppliers();
             searchModuleDataHolder.getHomeSuppliers().setSupplierCategory(categoryDetail);
-            eventBus.goToHomeSuppliersModule(searchModuleDataHolder, location);
+            eventBus.goToHomeSuppliersModule(searchModuleDataHolder);
         }
     }
 

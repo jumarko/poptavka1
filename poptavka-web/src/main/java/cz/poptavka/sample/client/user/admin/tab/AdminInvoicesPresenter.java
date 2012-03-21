@@ -25,6 +25,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
@@ -127,7 +128,7 @@ public class AdminInvoicesPresenter
      * @param filter
      */
     public void onInitInvoices(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminInvoices");
+        Storage.setCurrentlyLoadedView(Constants.ADMIN_INVOICES);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminInvoicesCount(searchDataHolder);

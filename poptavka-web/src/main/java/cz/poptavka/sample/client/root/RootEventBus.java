@@ -123,39 +123,39 @@ public interface RootEventBus extends EventBus {
     void goToHomeWelcomeModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = HomeDemandsModule.class)
-    void goToHomeDemandsModule(SearchModuleDataHolder filter, String location);
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = HomeSuppliersModule.class)
-    void goToHomeSuppliersModule(SearchModuleDataHolder filter, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?
     @Event(modulesToLoad = SupplierCreationModule.class)
-    void goToCreateSupplierModule(String location);
+    void goToCreateSupplierModule();
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?
     @Event(modulesToLoad = DemandCreationModule.class)
-    void goToCreateDemandModule(String location);
+    void goToCreateDemandModule();
 
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
     /**************************************************************************/
     @Event(modulesToLoad = DemandModule.class)
-    void goToDemandModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
     /**
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
      * @param filter - provided by search module
      */
     @Event(modulesToLoad = MessagesModule.class)
-    void goToMessagesModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToMessagesModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(modulesToLoad = SettingsModule.class)
     void goToSettingsModule();
 
     @Event(modulesToLoad = AdminModule.class)
-    void goToAdminModule(SearchModuleDataHolder filter, String loadWidget);
+    void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
 
     /* Both Home and User menut control section */
     @Event(modulesToLoad = SearchModule.class)

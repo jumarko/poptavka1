@@ -22,7 +22,9 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 public final class Storage {
 
     private static final Storage INSTANCE = new Storage();
-    private static String currentlyLoadedView = "";
+    // Value is set on each new module load. To prevent any further complications, set this value
+    // using SearchModulePresenter constants.
+    private static int currentlyLoadedView = -1;
     //For history orientation
     // Lebo ak mam zobrazenu tabulku, potom naloadujem iny modul a dam spat
     // tabulka na loaduje ale modul nie je naloadovany, teda nevidno naloadovanu tabulku
@@ -31,12 +33,14 @@ public final class Storage {
     public static Storage get() {
         return INSTANCE;
     }
-    //constants
-    private static final int OFFSET_X = 60;
-    private static final int OFFSET_Y = 35;
+    //global constants
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
     public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
+    public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
+    //local constants
+    private static final int OFFSET_X = 60;
+    private static final int OFFSET_Y = 35;
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
     private static UserDetail user = null;
@@ -94,7 +98,7 @@ public final class Storage {
         return user;
     }
 
-    public static String getCurrentlyLoadedView() {
+    public static int getCurrentlyLoadedView() {
         return currentlyLoadedView;
     }
 
@@ -103,7 +107,7 @@ public final class Storage {
      * If widget contains no table, set value to NULL.
      * @param currentlyLoadedView
      */
-    public static void setCurrentlyLoadedView(String currentlyLoadedView) {
+    public static void setCurrentlyLoadedView(int currentlyLoadedView) {
         Storage.currentlyLoadedView = currentlyLoadedView;
     }
 
@@ -114,6 +118,5 @@ public final class Storage {
     public static void setCurrentlyLoadedModule(String currentlyLoadedModule) {
         Storage.currentlyLoadedModule = currentlyLoadedModule;
     }
-    // ID constants
-    public static final String SUP_NEW_DETAIL_DEMAND_ID = "supDemDet";
+
 }

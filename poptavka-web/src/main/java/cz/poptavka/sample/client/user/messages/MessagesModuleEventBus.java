@@ -52,7 +52,7 @@ public interface MessagesModuleEventBus extends EventBus {
      * @param loadWidget - prosim doplnit ???
      */
     @Event(handlers = MessagesModulePresenter.class)
-    void goToMessagesModule(SearchModuleDataHolder searchDataHolder, String loadWidget);
+    void goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
     /* Parent events                                                          */

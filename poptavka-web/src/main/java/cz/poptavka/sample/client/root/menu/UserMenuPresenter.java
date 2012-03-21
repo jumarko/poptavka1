@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.root.interfaces.IUserMenuView;
 import cz.poptavka.sample.client.root.interfaces.IUserMenuView.IUserMenuPresenter;
@@ -25,7 +26,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
     @Override
     public void goToAdministration() {
-        eventBus.goToAdminModule(null, "initAdminModule");
+        eventBus.goToAdminModule(null, Constants.NONE);
     }
 
     @Override
@@ -35,12 +36,12 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
 
     @Override
     public void goToMessages() {
-        eventBus.goToMessagesModule(null, "inbox");
+        eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
     }
 
     @Override
     public void goToDemands() {
-        eventBus.goToDemandModule(null, "welcome");
+        eventBus.goToDemandModule(null, Constants.NONE);
     }
 
 }

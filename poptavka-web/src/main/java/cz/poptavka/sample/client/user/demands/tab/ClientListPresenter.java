@@ -15,6 +15,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
@@ -110,7 +111,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
     public void onInitClientList(SearchModuleDataHolder searchModuleDataHolder) {
 //        commented code is from production code
 //        if (!initialized) {
-        Storage.setCurrentlyLoadedView("potentialDemandMessages");
+        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_MY_DEMANDS);
         searchDataHolder = searchModuleDataHolder;
         eventBus.requestClientsDemands(searchDataHolder);
 //        }

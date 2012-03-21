@@ -27,6 +27,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
@@ -115,7 +116,7 @@ public class AdminSuppliersPresenter
      * @param filter
      */
     public void onInitSuppliers(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminSuppliers");
+        Storage.setCurrentlyLoadedView(Constants.ADMIN_SUPPLIERS);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
         eventBus.getAdminSuppliersCount(searchDataHolder);

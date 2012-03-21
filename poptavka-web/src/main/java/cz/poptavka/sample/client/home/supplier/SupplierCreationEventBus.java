@@ -50,7 +50,7 @@ public interface SupplierCreationEventBus extends EventBus {
      * @param location - defines location of view I think
      */
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = SupplierCreationHistoryConverter.class)
-    String goToCreateSupplierModule(String location);
+    String goToCreateSupplierModule();
 
     /**************************************************************************/
     /* Parent events                                                          */

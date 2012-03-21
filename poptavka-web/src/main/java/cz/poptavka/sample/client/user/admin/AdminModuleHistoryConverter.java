@@ -14,8 +14,8 @@ public class AdminModuleHistoryConverter implements HistoryConverter<AdminModule
      * @param location
      * @return token string like module/method?param, where param = initAdminAccess, ....
      */
-    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String loadWidget) {
-        return loadWidget;
+    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, int loadWidget) {
+        return Integer.toString(loadWidget);
     }
 
     /**
@@ -28,7 +28,7 @@ public class AdminModuleHistoryConverter implements HistoryConverter<AdminModule
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminModuleEventBus eventBus) {
-        eventBus.goToAdminModule(null, param);
+        eventBus.goToAdminModule(null, Integer.valueOf(param));
     }
 
     @Override

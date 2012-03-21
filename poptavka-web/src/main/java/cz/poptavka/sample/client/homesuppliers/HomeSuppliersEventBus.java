@@ -53,7 +53,7 @@ public interface HomeSuppliersEventBus extends EventBus {
      * fragment.
      */
     @Event(handlers = HomeSuppliersPresenter.class)
-    void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder, String location);
+    void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
     /* Parent events                                                          */

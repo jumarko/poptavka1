@@ -5,6 +5,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.homeWelcome.interfaces.IHomeWelcomeView;
 import cz.poptavka.sample.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
@@ -31,6 +32,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
         // TODO martin - dopln si loadedView v ostatnych presenteroch to mavas vzdy vyplnene
         Storage.setCurrentlyLoadedModule("welcome");
+        Storage.setCurrentlyLoadedView(Constants.NONE);
         this.searchDataHolder = searchDataHolder;
     }
 

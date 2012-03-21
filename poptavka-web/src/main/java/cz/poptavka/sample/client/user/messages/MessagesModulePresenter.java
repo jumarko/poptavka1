@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
@@ -41,7 +42,6 @@ public class MessagesModulePresenter
         Button getDraftButton();
 
         Button getTrashButton();
-
     }
 
     @Override
@@ -53,7 +53,6 @@ public class MessagesModulePresenter
                 eventBus.initComposeNew();
                 view.getWrapperDetail().clear();
             }
-
         });
         view.getInboxButton().addClickHandler(new ClickHandler() {
 
@@ -62,7 +61,6 @@ public class MessagesModulePresenter
                 eventBus.initInbox(filter);
                 view.getWrapperDetail().clear();
             }
-
         });
         view.getSentButton().addClickHandler(new ClickHandler() {
 
@@ -71,7 +69,6 @@ public class MessagesModulePresenter
                 eventBus.initSent(filter);
                 view.getWrapperDetail().clear();
             }
-
         });
         view.getTrashButton().addClickHandler(new ClickHandler() {
 
@@ -80,7 +77,6 @@ public class MessagesModulePresenter
                 eventBus.initTrash(filter);
                 view.getWrapperDetail().clear();
             }
-
         });
         view.getDraftButton().addClickHandler(new ClickHandler() {
 
@@ -89,7 +85,6 @@ public class MessagesModulePresenter
                 eventBus.initDraft(filter);
                 view.getWrapperDetail().clear();
             }
-
         });
     }
 
@@ -111,24 +106,33 @@ public class MessagesModulePresenter
      * Initialize view for message module.
      * @param filter
      */
-    public void onGoToMessagesModule(SearchModuleDataHolder filter, String loadWidget) {
+    public void onGoToMessagesModule(SearchModuleDataHolder filter, int loadWidget) {
         Storage.setCurrentlyLoadedModule("messages");
         Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
         this.filter = filter;
 
         //Need for search module. To have one entry point.
-        if (loadWidget.equalsIgnoreCase("composeNew")) {
-            eventBus.initComposeNew();
-        } else if (loadWidget.equalsIgnoreCase("composeReply")) {
-            Window.alert("I shouldn't be here. do I?");
-        } else if (loadWidget.equalsIgnoreCase("sent")) {
-            eventBus.initSent(filter);
-        } else if (loadWidget.equalsIgnoreCase("trash")) {
-            eventBus.initTrash(filter);
-        } else if (loadWidget.equalsIgnoreCase("draft")) {
-            eventBus.initDraft(filter);
-        } else {
-            eventBus.initInbox(filter);
+        switch (loadWidget) {
+            case Constants.MESSAGES_COMPOSE_NEW:
+                eventBus.initComposeNew();
+                break;
+            case Constants.MESSAGES_COMPOSE_REPLY:
+                Window.alert("I shouldn't be here yet. do I?");
+                break;
+            case Constants.MESSAGES_INBOX:
+                eventBus.initInbox(filter);
+                break;
+            case Constants.MESSAGES_SENT:
+                eventBus.initSent(filter);
+                break;
+            case Constants.MESSAGES_DRAFT:
+                eventBus.initDraft(filter);
+                break;
+            case Constants.MESSAGES_TRASH:
+                eventBus.initTrash(filter);
+                break;
+            default:
+                break;
         }
 
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
@@ -153,5 +157,4 @@ public class MessagesModulePresenter
     public void onDisplayDetail(Widget content) {
         view.getWrapperDetail().setWidget(content);
     }
-
 }

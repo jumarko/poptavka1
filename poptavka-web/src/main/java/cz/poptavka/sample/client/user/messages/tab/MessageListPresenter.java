@@ -15,6 +15,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
@@ -149,34 +150,33 @@ public class MessageListPresenter extends LazyPresenter<MessageListPresenter.ILi
      *
      * Associated DetailWrapper widget is created and initialized.
      */
-    private void init() {
-        Storage.setCurrentlyLoadedView(null);
-        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayMain(view.getWidgetView());
-    }
-
     public void onInitInbox(SearchModuleDataHolder filter) {
         this.init();
-        Storage.setCurrentlyLoadedView("messagesTabInbox");
+        Storage.setCurrentlyLoadedView(Constants.MESSAGES_INBOX);
         eventBus.getInboxMessages(Storage.getUser().getUserId(), filter);
     }
 
     public void onInitSent(SearchModuleDataHolder filter) {
         this.init();
-        Storage.setCurrentlyLoadedView("messagesTabSent");
+        Storage.setCurrentlyLoadedView(Constants.MESSAGES_SENT);
         eventBus.getSentMessages(Storage.getUser().getUserId(), filter);
-    }
-
-    public void onInitTrash(SearchModuleDataHolder filter) {
-        this.init();
-        Storage.setCurrentlyLoadedView("messagesTabTrash");
-        eventBus.getDeletedMessages(Storage.getUser().getUserId(), filter);
     }
 
     public void onInitDraft(SearchModuleDataHolder filter) {
         this.init();
-        Storage.setCurrentlyLoadedView("messagesTabDraft");
+        Storage.setCurrentlyLoadedView(Constants.MESSAGES_DRAFT);
         //TODO Martin: getDraftMessages
+    }
+
+    public void onInitTrash(SearchModuleDataHolder filter) {
+        this.init();
+        Storage.setCurrentlyLoadedView(Constants.MESSAGES_TRASH);
+        eventBus.getDeletedMessages(Storage.getUser().getUserId(), filter);
+    }
+
+    private void init() {
+        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
+        eventBus.displayMain(view.getWidgetView());
     }
 
     public void onDisplayMessages(List<UserMessageDetail> messages) {

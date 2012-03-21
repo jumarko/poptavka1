@@ -24,6 +24,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -102,7 +103,7 @@ public class HomeSuppliersPresenter
     //others
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
-    private String location = null; //home, user
+    private String location = "home"; //home, user
     private SearchModuleDataHolder searchDataHolder = null;
 
     /**************************************************************************/
@@ -125,8 +126,12 @@ public class HomeSuppliersPresenter
      * @param moduleLocation - tells where is module used - home / user section
      */
     public void onGoToHomeSuppliersModule(
-            SearchModuleDataHolder searchModuleDataHolder, String moduleLocation) {
-        this.location = moduleLocation;
+            SearchModuleDataHolder searchModuleDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.NONE);
+
+        if (Storage.getUser() != null) {
+            this.location = "user";
+        }
         this.searchDataHolder = searchModuleDataHolder;
 
         //ROOT section
@@ -148,7 +153,7 @@ public class HomeSuppliersPresenter
                 //event won't be fired (user won't be able to choose the same category).
                 view.getSelectionRootModel().setSelected(view.getSelectionRootModel().getSelectedObject(), false);
             }
-        //CHILD section
+            //CHILD section
         } else {
             view.getFilterLabel().setVisible(true);
             view.getChildSection().setVisible(true);
@@ -159,11 +164,8 @@ public class HomeSuppliersPresenter
             // get Sub Categories
             eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
         }
-
-        //If module not loaded, do it.
         if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
             Storage.setCurrentlyLoadedModule("homeSuppliers");
-            Storage.setCurrentlyLoadedView("homeSuppliers");
         }
     }
 
@@ -348,6 +350,8 @@ public class HomeSuppliersPresenter
      */
     /* CHILD WIDGET */
     public void onDisplayChildWidget(Long id) {
+
+        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS);
 
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);

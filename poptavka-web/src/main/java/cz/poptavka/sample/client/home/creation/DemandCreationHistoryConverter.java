@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.home.creation;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Storage;
 
 /**
  * @author slavkovsky.martin
@@ -16,11 +17,12 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
      * @param location
      * @return token string like module/method?param, where param = home or user
      */
-    public String convertToToken(String methodName, String location) {
-        if (methodName.equals("goToCreateDemandModule")) {
-            return location;
+    public String convertToToken(String methodName) {
+        if (Storage.getUser() != null) {
+            return "user";
+        } else {
+            return "home";
         }
-        return "";
     }
 
     /**
@@ -34,7 +36,7 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
         if (methodName.equals("goToCreateDemandModule")) {
-            eventBus.goToCreateDemandModule(param);
+            eventBus.goToCreateDemandModule();
         }
     }
 

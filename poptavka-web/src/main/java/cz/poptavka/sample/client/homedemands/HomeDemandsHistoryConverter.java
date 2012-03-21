@@ -21,11 +21,11 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      * @param location
      * @return token string like module/method?param, where param = home or user
      */
-    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String location) {
-        if (methodName.equals("goToHomeDemandsModule")) {
-            return "location=" + location;
-        }
-        return "";
+    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder) {
+//        if (methodName.equals("goToHomeDemandsModule")) {
+//            return "location=" + location;
+//        }
+        return methodName;
     }
 
     /**
@@ -39,7 +39,8 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
         if (methodName.equals("goToHomeDemandsModule")) {
-            eventBus.goToHomeDemandsModule(null, param.replace("location=", ""));
+//            eventBus.goToHomeDemandsModule(null, param.replace("location=", ""));
+            eventBus.goToHomeDemandsModule(null);
         }
     }
 

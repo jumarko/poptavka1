@@ -31,6 +31,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
@@ -160,7 +161,7 @@ public class AdminOurPaymentDetailsPresenter
     }
 
     public void onInitOurPaymentDetails(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView("adminPaymentDetails");
+        Storage.setCurrentlyLoadedView(Constants.ADMIN_OUR_PAYMENT_DETAILS);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
 //        eventBus.getAdminDemandsOurPaymentDetailsCount(searchDataHolder);

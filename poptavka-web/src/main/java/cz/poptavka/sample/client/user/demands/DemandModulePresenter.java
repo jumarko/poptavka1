@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
@@ -54,7 +55,6 @@ public class DemandModulePresenter
         Button getSupAssignedButton();
 
         SimplePanel getContentPanel();
-
     }
 
     @Override
@@ -64,57 +64,50 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, "clientMyDemands");
+                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_MY_DEMANDS);
             }
-
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, "clientOffers");
+                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_OFFERS);
             }
-
         });
         view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS);
             }
-
         });
         view.getCliCreateDemand().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateDemandModule("user");
+                eventBus.goToCreateDemandModule();
             }
-
         });
         view.getCliCreateSupplier().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToCreateSupplierModule("user");
+                eventBus.goToCreateSupplierModule();
             }
-
         });
         view.getAllDemands().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeDemandsModule(null, "user");
+                eventBus.goToHomeDemandsModule(null);
             }
-
         });
         view.getAllSuppliers().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToHomeSuppliersModule(null, "user");
+                eventBus.goToHomeSuppliersModule(null);
             }
-
         });
 
         //MENU - SUPPLIER
@@ -122,25 +115,22 @@ public class DemandModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.goToDemandModule(null, "potentialDemands");
+                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_MY_DEMANDS);
             }
-
         });
         view.getSupOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_OFFERS);
             }
-
         });
         view.getSupAssignedButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                // TODO Auto-generated method stub
+                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS);
             }
-
         });
 
         //DEVEl - BEHO
@@ -187,7 +177,7 @@ public class DemandModulePresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     //Todo Beho - later add UserDetail as parameter
-    public void onGoToDemandModule(SearchModuleDataHolder filter, String loadWidget) {
+    public void onGoToDemandModule(SearchModuleDataHolder filter, int loadWidget) {
         Storage.setCurrentlyLoadedModule("demands");
         // hiding window for this is after succesfull Userhandler call
         Storage.showLoading(Storage.MSGS.progressDemandsLayoutInit());
@@ -199,21 +189,25 @@ public class DemandModulePresenter
          * Therefore need to specify, which widget to load.
          */
         //Client
-        if (loadWidget.equals("clientMyDemands")) {
-            eventBus.initClientList(filter);
-        } else if (loadWidget.equals("clientOffers")) {
-//            eventBus.initClientOffers(filter);
-        } else if (loadWidget.equals("clientAssignedDemands")) {
-            //
-            //Supplier
-        } else if (loadWidget.equals("potentialDemands")) {
-            eventBus.initSupplierList(filter);
-        } else if (loadWidget.equals("supplierOffers")) {
-            //
-        } else if (loadWidget.equals("supplierAssignedDemands")) {
-            //
-        } else { // welcome
-            view.setContent(new DemandsModuleWelcomeView());
+        switch (loadWidget) {
+            case Constants.DEMANDS_CLIENT_MY_DEMANDS:
+                eventBus.initClientList(filter);
+                break;
+            case Constants.DEMANDS_CLIENT_OFFERS:
+                break;
+            case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
+                break;
+            case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
+                eventBus.initSupplierList(filter);
+                break;
+            case Constants.DEMANDS_SUPPLIER_OFFERS:
+                break;
+            case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
+                break;
+            default:
+                Storage.setCurrentlyLoadedView(Constants.NONE);
+                view.setContent(new DemandsModuleWelcomeView());
+                break;
         }
 
 //        if (user.getRoleList().contains(Role.SUPPLIER)) {
@@ -242,5 +236,4 @@ public class DemandModulePresenter
     public void onDisplayView(Widget content) {
         view.setContent(content);
     }
-
 }

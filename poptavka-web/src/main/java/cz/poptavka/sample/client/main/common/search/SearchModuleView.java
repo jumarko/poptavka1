@@ -40,6 +40,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     TextBox searchContent, searchCategory, searchLocality;
     @UiField
     PopupPanel popupPanel;
+    private PopupPanel categoryTooltip = new PopupPanel();
 
     public SearchModuleView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -92,7 +93,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public void setCategories(Map<Long, String> categories) {
         this.categories = categories;
     }
-
     // Handlers
 //    @UiHandler("advSearchBtn")
 //    void handleSearchContentClick(ClickEvent event) {
@@ -121,10 +121,21 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 //            popupPanel.show();
 //        }
 //    }
+    private boolean advSearchBtnClicked = false;
+
     @UiHandler("searchContent")
     void handleListBoxClick(ClickEvent event) {
     }
-    private PopupPanel categoryTooltip = new PopupPanel();
+
+    @UiHandler("advSearchBtn")
+    void handleAdvSearchBtnClick(ClickEvent event) {
+        advSearchBtnClicked = true;
+    }
+
+    @UiHandler("searchCategory")
+    void handleSearchCategoryClick(ClickEvent event) {
+        advSearchBtnClicked = false;
+    }
 
     @UiHandler("searchCategory")
     void handlerSearchContentMouserOverEvent(MouseOverEvent event) {
@@ -152,6 +163,9 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 
     @UiHandler("popupPanel")
     void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
+        if (advSearchBtnClicked) {
+            return;
+        }
         categories.clear();
         CategorySelectorInterface categoryValues =
                 (CategorySelectorInterface) popupPanel.getWidget();

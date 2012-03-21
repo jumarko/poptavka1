@@ -4,13 +4,10 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
-import com.google.gwt.core.client.GWT;
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -29,6 +26,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -45,9 +43,6 @@ import java.util.Map;
 @Presenter(view = HomeDemandsView.class)
 public class HomeDemandsPresenter extends BasePresenter<
         HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
-
-    private static final Logger LOGGER = Logger.getLogger(HomeDemandsPresenter.class.getName());
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
     public interface HomeDemandsViewInterface {
 
@@ -136,9 +131,9 @@ public class HomeDemandsPresenter extends BasePresenter<
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
 
-    public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder, String location) {
+    public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
 //        eventBus.loadingShow(MSGS.loading());
-        Storage.setCurrentlyLoadedView("homeDemands");
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
         Storage.setCurrentlyLoadedModule("homeDemands");
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);

@@ -41,22 +41,22 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
 
     @Override
     public void goToHomeDemands() {
-        eventBus.goToHomeDemandsModule(null, "home");
+        eventBus.goToHomeDemandsModule(null);
     }
 
     @Override
     public void goToHomeSuppliers() {
-        eventBus.goToHomeSuppliersModule(null, "home");
+        eventBus.goToHomeSuppliersModule(null);
     }
 
     @Override
     public void goToCreateSupplier() {
-        eventBus.goToCreateSupplierModule("home");
+        eventBus.goToCreateSupplierModule();
     }
 
     @Override
     public void goToCreateDemand() {
-        eventBus.goToCreateDemandModule("home");
+        eventBus.goToCreateDemandModule();
     }
 
 }

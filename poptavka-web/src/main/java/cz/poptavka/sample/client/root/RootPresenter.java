@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
@@ -121,7 +122,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         } else {
             onSetUser(Storage.getUser());
         }
-        eventBus.goToDemandModule(null, "welcome");
+        eventBus.goToDemandModule(null, Constants.NONE);
     }
 
     public void onAtHome() {

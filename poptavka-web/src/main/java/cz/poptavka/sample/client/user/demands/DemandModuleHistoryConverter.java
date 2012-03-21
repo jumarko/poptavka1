@@ -14,8 +14,8 @@ public class DemandModuleHistoryConverter implements HistoryConverter<DemandModu
      * @param location
      * @return token string like module/method?param, where param = welcome, potentialDemands, myClients ...
      */
-    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, String loadWidget) {
-        return loadWidget;
+    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, int loadWidget) {
+        return Integer.toString(loadWidget);
     }
 
     /**
@@ -28,7 +28,7 @@ public class DemandModuleHistoryConverter implements HistoryConverter<DemandModu
      */
     @Override
     public void convertFromToken(String historyName, String param, DemandModuleEventBus eventBus) {
-        eventBus.goToDemandModule(null, param);
+        eventBus.goToDemandModule(null, Integer.valueOf(param));
     }
 
     @Override
