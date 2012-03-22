@@ -7,7 +7,7 @@ package cz.poptavka.sample.server.service.demandcreation;
 
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
-import cz.poptavka.sample.client.service.demand.DemandCreationModuleRPCService;
+import cz.poptavka.sample.client.service.demand.DemandCreationRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
@@ -36,10 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author praso
  */
-public class DemandCreationModuleRPCServiceImpl extends AutoinjectingRemoteService
-        implements DemandCreationModuleRPCService {
+public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
+        implements DemandCreationRPCService {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationModuleRPCServiceImpl.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
     private DemandService demandService;
     private GeneralService generalService;
     private LocalityService localityService;

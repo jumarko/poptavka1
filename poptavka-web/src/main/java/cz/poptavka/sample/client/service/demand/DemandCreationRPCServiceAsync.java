@@ -12,7 +12,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
  *
  * @author praso
  */
-public interface DemandCreationModuleRPCServiceAsync {
+public interface DemandCreationRPCServiceAsync {
 
     void createNewDemand(FullDemandDetail newDemand, Long clientId,
             AsyncCallback<FullDemandDetail> callback);

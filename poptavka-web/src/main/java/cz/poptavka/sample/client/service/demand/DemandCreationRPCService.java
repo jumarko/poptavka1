@@ -14,7 +14,7 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
  * @author praso
  */
 @RemoteServiceRelativePath("service/demandcreation")
-public interface DemandCreationModuleRPCService extends RemoteService {
+public interface DemandCreationRPCService extends RemoteService {
 
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId);
 

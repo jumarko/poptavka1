@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import cz.poptavka.sample.client.service.demand.DemandCreationModuleRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.DemandCreationRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
@@ -21,11 +21,11 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @EventHandler
 public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventBus> {
 
-    private DemandCreationModuleRPCServiceAsync demandCreationService = null;
+    private DemandCreationRPCServiceAsync demandCreationService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
-    void setDemandCreationModuleRPCServiceAsync(DemandCreationModuleRPCServiceAsync service) {
+    void setDemandCreationModuleRPCServiceAsync(DemandCreationRPCServiceAsync service) {
         demandCreationService = service;
     }
 
