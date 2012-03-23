@@ -176,9 +176,9 @@ public interface RootEventBus extends EventBus {
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class })
-//    historyConverter = RootHistoryConverter.class)
-    void atHome();
+    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
+    historyConverter = RootHistoryConverter.class)
+    String atHome(int loadModule);
 
     /**
      * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
@@ -186,8 +186,9 @@ public interface RootEventBus extends EventBus {
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
-    void atAccount();
+    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class },
+    historyConverter = RootHistoryConverter.class)
+    String atAccount(int loadModule);
 
     /**
      * This event will be called in case an error occurs while loading the

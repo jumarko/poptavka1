@@ -28,7 +28,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
     /**
      * This method will set up home menu after user is logged out.
      */
-    public void onAtHome() {
+    public void onAtHome(int loadModule) {
         GWT.log("set Home menu after user's logout");
         eventBus.setMenu(view);
     }

@@ -5,62 +5,80 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 /**
+ * Musime pouzit history aj na methody atHome a atAccount, ktore maju na starosti
+ * nastavovanie layoutov (menu, login link)
+ */
+/**
+ * History converter class. Handles history for RootModule.
+ *
  * @author slavkovsky.martin
  */
 @History(type = HistoryConverterType.DEFAULT, name = "root")
 public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
 
-//    public String onAtHome(int loadModule) {
-//        return Integer.toString(Storage.getCurrentlyLoadedModule());
-//    }
-//
-//    public String onAtAccount(int loadModule) {
-//        return Integer.toString(Storage.getCurrentlyLoadedModule());
-//    }
-//    public String onGoToHomeWelcomeModule(SearchModuleDataHolder filter) {
-//        return "back";
-//    }
-//
-//    public String onGoToDemandModule(SearchModuleDataHolder filter, int loadWidget) {
-//        return "back";
-//    }
+    /**
+     * Kedze sme vlozili dalsi medziclanok medzi volanie modulov. Vytvara sa nam novy
+     * token ktory ma za ulohu odchitit volanie metod atHome a atAccount aby sme vedeli
+     * aky layout zobrazit, ale neloaduje ziaden dalsi modul, teda musim volat dodatocne
+     * back & forward akcie. Pre jednoznacne rozlisenie sluzi nasledujuca pomocna metoda.
+     */
+    private String action = "back";
 
-//    public String onInitLoginWindow() {
-//        return "login";
-//    }
+    /**
+     * To convert token for atHome method.
+     *
+     * @param loadModule
+     * @return token string like module/method?param
+     */
+    public String onAtHome(int loadModule) {
+        return Integer.toString(loadModule);
+    }
+
+    /**
+     * To convert token for atAccount method.
+     *
+     * @param loadModule
+     * @return token string like module/method?param
+     */
+    public String onAtAccount(int loadModule) {
+        return Integer.toString(loadModule);
+    }
+
+    /**
+     * Called either when browser action <b>back</b> or <b>forward</b> is evocated,
+     * or by clicking on <b>hyperlink</b> with set token.
+     *
+     * @param methodName - name of the called method
+     * @param param - string behind '?' in url (module/method?param).
+     *                URL creates onAtHome & onAtAccount method in RootHistoryConverter class.
+     * @param eventBus - RootEventBus
+     */
     @Override
     public void convertFromToken(String historyName, String param, RootEventBus eventBus) {
-        /**
-         * Problem je ten ze ked vytvorim token pre rootRventBus eventy, tak sa mi potom pri akciach
-         * back & forward zavola dany token, ktory by mal riesit prave naloadovanie atHome, atAccount, teda
-         * layout. Ale vznika tu problem, ktory ani sam neviem popisat :)
-         */
-
-//        boolean wasBackOrForward = false;
-//        if (param.equals("back")) {
-//            eventBus.getHistory().getToken().replace("back", "forward");
-//            eventBus.getHistory().back();
-//            wasBackOrForward = true;
-//        }
-//        if (param.equals("forward")) {
-//            eventBus.getHistory().getToken().replace("forward", "back");
-//            eventBus.getHistory().forward();
-//            wasBackOrForward = true;
-//        }
-//        if (!wasBackOrForward) {
-//            //
-//            if (historyName.equals("goToHomeWelcomeModule")) {
-////            eventBus.setHistoryStoredForNextOne(false);
-//                eventBus.atHome();
-//                eventBus.goToHomeWelcomeModule(null);
-//            }
-//            if (historyName.equals("goToDemandModule")) {
-////            eventBus.getHistory().back();
-////            eventBus.setHistoryStoredForNextOne(false);
-//                eventBus.atAccount();
-//                eventBus.goToDemandModule(null, Constants.USER_DEMANDS_MODULE);
-//            }
-//        }
+        if (historyName.equals("atHome")) {
+            if (action.equals("back")) {
+                action = "forward";
+                eventBus.setHistoryStoredForNextOne(false);
+                eventBus.getHistory().back();
+            } else {
+                action = "back";
+                eventBus.setHistoryStoredForNextOne(false);
+                eventBus.getHistory().forward();
+            }
+            eventBus.atAccount(Integer.valueOf(param));
+        }
+        if (historyName.equals("atAccount")) {
+            if (action.equals("back")) {
+                action = "forward";
+                eventBus.setHistoryStoredForNextOne(false);
+                eventBus.getHistory().back();
+            } else {
+                action = "back";
+                eventBus.setHistoryStoredForNextOne(false);
+                eventBus.getHistory().forward();
+            }
+            eventBus.atHome(Integer.valueOf(param));
+        }
     }
 
     @Override

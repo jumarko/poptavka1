@@ -17,6 +17,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -108,7 +109,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         //Martin: Change id = 149 to id = 613248 for testing new user and his demands
 //                        setSessionID("id=149");
 //                        setSessionID("id=613248");
-                        eventBus.atAccount();
+                        eventBus.atAccount(Constants.USER_DEMANDS_MODULE);
                         hideView();
                     } else {
                         view.setLoginError();

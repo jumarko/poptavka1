@@ -10,6 +10,7 @@ import com.google.gwt.user.client.Window.ClosingEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.root.interfaces.IHeaderView;
@@ -38,7 +39,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
             public void onClick(ClickEvent event) {
                 GWT.log("Logged in? " + loggedIn);
                 if (loggedIn) {
-                    eventBus.atHome();
+                    eventBus.atHome(Constants.HOME_WELCOME_MODULE);
                     Cookies.setCookie("user-presenter", "unloaded");
                 } else {
                     onInitLoginWindow();
@@ -61,12 +62,12 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         login.onLogin();
     }
 
-    public void onAtHome() {
+    public void onAtHome(int loadModule) {
         this.loggedIn = false;
         view.getLoginLink().setText(MSGS.logIn());
     }
 
-    public void onAtAccount() {
+    public void onAtAccount(int loadModule) {
         this.loggedIn = true;
         view.getLoginLink().setText(MSGS.logOut());
     }

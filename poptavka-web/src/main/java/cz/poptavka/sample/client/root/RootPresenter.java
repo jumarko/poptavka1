@@ -110,7 +110,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onAtAccount() {
+    public void onAtAccount(int loadModule) {
         GWT.log("User has logged in and his user data are about to be retrieved");
         Cookies.setCookie("user-presenter", "loaded");
         if (Storage.getUser() == null) {
@@ -124,46 +124,46 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
         //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
         // tento kod. Ak to vyriesim, tak sa o to postaram.
-//        switch (loadModule) {
-//            case Constants.USER_ADMINISTRATION_MODULE:
-//                eventBus.goToAdminModule(null, Constants.NONE);
-//                break;
-//            case Constants.USER_DEMANDS_MODULE:
-        eventBus.goToDemandModule(null, Constants.NONE);
-//                break;
-//            case Constants.USER_MESSAGES_MODULE:
-//                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
-//                break;
-//            case Constants.USER_SETTINGS_MODULE:
-//                eventBus.goToSettingsModule();
-//                break;
-//            default:
-//                break;
-//        }
+        switch (loadModule) {
+            case Constants.USER_ADMINISTRATION_MODULE:
+                eventBus.goToAdminModule(null, Constants.NONE);
+                break;
+            case Constants.USER_DEMANDS_MODULE:
+                eventBus.goToDemandModule(null, Constants.NONE);
+                break;
+            case Constants.USER_MESSAGES_MODULE:
+                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
+                break;
+            case Constants.USER_SETTINGS_MODULE:
+                eventBus.goToSettingsModule();
+                break;
+            default:
+                break;
+        }
     }
 
-    public void onAtHome() {
+    public void onAtHome(int loadModule) {
         GWT.log("User has logged out");
         //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
         // tento kod. Ak to vyriesim, tak sa o to postaram.
-//        switch(loadModule) {
-//            case Constants.HOME_WELCOME_MODULE:
-        eventBus.goToHomeWelcomeModule(null);
-//                break;
-//            case Constants.HOME_DEMANDS_MODULE:
-//                eventBus.goToHomeDemandsModule(null);
-//                break;
-//            case Constants.HOME_SUPPLIERS_MODULE:
-//                eventBus.goToHomeSuppliersModule(null);
-//                break;
-//            case Constants.HOME_DEMAND_CREATION_MODULE:
-//                eventBus.goToCreateDemandModule();
-//                break;
-//            case Constants.HOME_SUPPLIER_CREATION_MODULE:
-//                break;
-//            default:
-//                break;
-//        }
+        switch (loadModule) {
+            case Constants.HOME_WELCOME_MODULE:
+                eventBus.goToHomeWelcomeModule(null);
+                break;
+            case Constants.HOME_DEMANDS_MODULE:
+                eventBus.goToHomeDemandsModule(null);
+                break;
+            case Constants.HOME_SUPPLIERS_MODULE:
+                eventBus.goToHomeSuppliersModule(null);
+                break;
+            case Constants.HOME_DEMAND_CREATION_MODULE:
+                eventBus.goToCreateDemandModule();
+                break;
+            case Constants.HOME_SUPPLIER_CREATION_MODULE:
+                break;
+            default:
+                break;
+        }
     }
 
     /**************************************************************************/
