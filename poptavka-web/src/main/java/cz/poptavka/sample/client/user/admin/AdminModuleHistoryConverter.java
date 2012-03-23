@@ -3,32 +3,123 @@ package cz.poptavka.sample.client.user.admin;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
-@History(type = HistoryConverterType.SIMPLE, name = "administration")
+/**
+ * History converter class. Handles history for AministrationModule.
+ *
+ * @author slavkovsky.martin
+ */
+@History(type = HistoryConverterType.DEFAULT, name = "administration")
 public class AdminModuleHistoryConverter implements HistoryConverter<AdminModuleEventBus> {
 
+    private static final String ADMIN_ACCESS_ROLE_TEXT = "adminAccessRole";
+    private static final String ADMIN_CLIENTS_TEXT = "adminClients";
+    private static final String ADMIN_DEMANDS_TEXT = "adminDemands";
+    private static final String ADMIN_EMAILS_ACTIVATION_TEXT = "adminEmailsActivation";
+    private static final String ADMIN_INVOICES_TEXT = "adminInvoices";
+    private static final String ADMIN_MESSAGES_TEXT = "adminMessages";
+    private static final String ADMIN_OFFERS_TEXT = "adminOffers";
+    private static final String ADMIN_PAYMENT_METHODS_TEXT = "adminPaymentMethods";
+    private static final String ADMIN_PERMISSIONS_TEXT = "adminPermissions";
+    private static final String ADMIN_PREFERENCES_TEXT = "adminPreferences";
+    private static final String ADMIN_PROBLEMS_TEXT = "adminProblems";
+    private static final String ADMIN_SUPPLIERS_TEXT = "adminSuppliers";
+    private static final String ADMIN_NONE_TEXT = "adminWelcome";
+
     /**
-     * To convert token for goToHomeSuppliersModule method
-     * @param searchDataHolder
-     * @param location
-     * @return token string like module/method?param, where param = initAdminAccess, ....
+     * Created token(URL) for onGoToAdminModule method.
+     *
+     * @param searchDataHolder - Provided by search module. Holds data to filter.
+     * @param loadWidget - Constant from class Constants. Tells which view to load.
+     * @return token string like module/method?param, where param = adminAccessRole, ....
      */
-    public String convertToToken(String methodName, SearchModuleDataHolder searchDataHolder, int loadWidget) {
-        return Integer.toString(loadWidget);
+    public String onGoToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget) {
+        //Nemusi byt, ale lepsie to vyzera ako ked tam mam dat do url len hodnotu ciselnej konstanty
+        switch (loadWidget) {
+            case Constants.ADMIN_ACCESS_ROLE:
+                return ADMIN_ACCESS_ROLE_TEXT;
+            case Constants.ADMIN_CLIENTS:
+                return ADMIN_CLIENTS_TEXT;
+            case Constants.ADMIN_DEMANDS:
+                return ADMIN_DEMANDS_TEXT;
+            case Constants.ADMIN_EMAILS_ACTIVATION:
+                return ADMIN_EMAILS_ACTIVATION_TEXT;
+            case Constants.ADMIN_INVOICES:
+                return ADMIN_INVOICES_TEXT;
+            case Constants.ADMIN_MESSAGES:
+                return ADMIN_MESSAGES_TEXT;
+            case Constants.ADMIN_OFFERS:
+                return ADMIN_OFFERS_TEXT;
+            case Constants.ADMIN_PAYMENT_METHODS:
+                return ADMIN_PAYMENT_METHODS_TEXT;
+            case Constants.ADMIN_PERMISSIONS:
+                return ADMIN_PERMISSIONS_TEXT;
+            case Constants.ADMIN_PREFERENCES:
+                return ADMIN_PREFERENCES_TEXT;
+            case Constants.ADMIN_PROBLEMS:
+                return ADMIN_PROBLEMS_TEXT;
+            case Constants.ADMIN_SUPPLIERS:
+                return ADMIN_SUPPLIERS_TEXT;
+            default:
+                return ADMIN_NONE_TEXT;
+        }
     }
 
     /**
-     * Called when browser action <b>back</b> or <b>forward</b> is evocated.
-     * Or by clicking on <b>hyperlink</b> with set token.
+     * Called either when browser action <b>back</b> or <b>forward</b> is evocated,
+     * or by clicking on <b>hyperlink</b> with set token.
      *
      * @param methodName - name of the called method
-     * @param param - string behind '?' in url (module/method?param). Url generates convertToToken method.
-     * @param eventBus
+     * @param param - string behind '?' in url (module/method?param).
+     *                URL creates onGoToAdminModule method in AdminModuleHistoryConverter class.
+     * @param eventBus - AdminModuleEventBus
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminModuleEventBus eventBus) {
-        eventBus.goToAdminModule(null, Integer.valueOf(param));
+        if (historyName.equals("goToAdminModule")) {
+            //Musim naspat previest retazce na konstanty
+            if (param.equals(ADMIN_ACCESS_ROLE_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_ACCESS_ROLE);
+            }
+            if (param.equals(ADMIN_CLIENTS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_CLIENTS);
+            }
+            if (param.equals(ADMIN_DEMANDS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_DEMANDS);
+            }
+            if (param.equals(ADMIN_EMAILS_ACTIVATION_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_EMAILS_ACTIVATION);
+            }
+            if (param.equals(ADMIN_INVOICES_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_INVOICES);
+            }
+            if (param.equals(ADMIN_MESSAGES_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_MESSAGES);
+            }
+            if (param.equals(ADMIN_OFFERS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_OFFERS);
+            }
+            if (param.equals(ADMIN_PAYMENT_METHODS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_PAYMENT_METHODS);
+            }
+            if (param.equals(ADMIN_PERMISSIONS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_PERMISSIONS);
+            }
+            if (param.equals(ADMIN_PREFERENCES_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_PREFERENCES);
+            }
+            if (param.equals(ADMIN_PROBLEMS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_PROBLEMS);
+            }
+            if (param.equals(ADMIN_SUPPLIERS_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_SUPPLIERS);
+            }
+            if (param.equals(ADMIN_NONE_TEXT)) {
+                eventBus.goToAdminModule(null, Constants.NONE);
+            }
+        }
     }
 
     @Override

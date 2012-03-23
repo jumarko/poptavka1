@@ -122,12 +122,48 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         } else {
             onSetUser(Storage.getUser());
         }
+        //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
+        // tento kod. Ak to vyriesim, tak sa o to postaram.
+//        switch (loadModule) {
+//            case Constants.USER_ADMINISTRATION_MODULE:
+//                eventBus.goToAdminModule(null, Constants.NONE);
+//                break;
+//            case Constants.USER_DEMANDS_MODULE:
         eventBus.goToDemandModule(null, Constants.NONE);
+//                break;
+//            case Constants.USER_MESSAGES_MODULE:
+//                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
+//                break;
+//            case Constants.USER_SETTINGS_MODULE:
+//                eventBus.goToSettingsModule();
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     public void onAtHome() {
         GWT.log("User has logged out");
+        //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
+        // tento kod. Ak to vyriesim, tak sa o to postaram.
+//        switch(loadModule) {
+//            case Constants.HOME_WELCOME_MODULE:
         eventBus.goToHomeWelcomeModule(null);
+//                break;
+//            case Constants.HOME_DEMANDS_MODULE:
+//                eventBus.goToHomeDemandsModule(null);
+//                break;
+//            case Constants.HOME_SUPPLIERS_MODULE:
+//                eventBus.goToHomeSuppliersModule(null);
+//                break;
+//            case Constants.HOME_DEMAND_CREATION_MODULE:
+//                eventBus.goToCreateDemandModule();
+//                break;
+//            case Constants.HOME_SUPPLIER_CREATION_MODULE:
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     /**************************************************************************/
@@ -185,7 +221,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {
     }
-
     private static final int OFFSET_X = 60;
     private static final int OFFSET_Y = 35;
 
@@ -280,7 +315,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             public void onClick(ClickEvent event) {
                 userInfoPanel.hide();
             }
-
         });
         FlowPanel m = new FlowPanel();
         m.add(content);
@@ -289,5 +323,4 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
     }
-
 }

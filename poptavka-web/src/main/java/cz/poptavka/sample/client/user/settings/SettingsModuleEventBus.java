@@ -37,8 +37,8 @@ public interface SettingsModuleEventBus extends EventBus {
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = SettingsModulePresenter.class)
-    void goToSettingsModule();
+    @Event(handlers = SettingsModulePresenter.class, historyConverter = SettingsModuleHistoryConverter.class)
+    String goToSettingsModule();
 
     /**************************************************************************/
     /* Parent events                                                          */

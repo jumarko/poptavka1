@@ -46,8 +46,6 @@ public interface DemandCreationEventBus extends EventBus {
     /**************************************************************************/
     /**
      * The only entry point to this module due to code-spliting feature.
-     *
-     * @param location - defines loacation of view
      */
     @Event(handlers = DemandCreationPresenter.class, historyConverter = DemandCreationHistoryConverter.class)
     String goToCreateDemandModule();

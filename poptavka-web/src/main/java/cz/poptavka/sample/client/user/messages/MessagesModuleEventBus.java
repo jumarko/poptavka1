@@ -51,8 +51,8 @@ public interface MessagesModuleEventBus extends EventBus {
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - prosim doplnit ???
      */
-    @Event(handlers = MessagesModulePresenter.class)
-    void goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
+    @Event(handlers = MessagesModulePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    String goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -60,23 +60,23 @@ public interface MessagesModuleEventBus extends EventBus {
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
-    @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
-    String initComposeNew();
+    @Event(handlers = ComposeMessagePresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    void initComposeNew();
 
-    @Event(handlers = ComposeMessagePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
-    String initComposeReply(MessageDetail msgDetail);
+    @Event(handlers = ComposeMessagePresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    void initComposeReply(MessageDetail msgDetail);
 
-    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
-    String initInbox(SearchModuleDataHolder searchDataHolder);
+    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    void initInbox(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
-    String initSent(SearchModuleDataHolder searchDataHolder);
+    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    void initSent(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
-    String initTrash(SearchModuleDataHolder searchDataHolder);
+    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    void initTrash(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = MessageListPresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
-    String initDraft(SearchModuleDataHolder searchDataHolder);
+    @Event(handlers = MessageListPresenter.class)//, historyConverter = MessagesModuleHistoryConverter.class)
+    void initDraft(SearchModuleDataHolder searchDataHolder);
 
     /**************************************************************************/
     /* Business events handled by presenters                                  */

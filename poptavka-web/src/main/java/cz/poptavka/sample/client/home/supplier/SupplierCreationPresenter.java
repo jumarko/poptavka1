@@ -125,7 +125,7 @@ public class SupplierCreationPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToCreateSupplierModule() {
-        Storage.setCurrentlyLoadedModule("createSupplier");
+        Storage.setCurrentlyLoadedModule(Constants.HOME_SUPPLIER_CREATION_MODULE);
         Storage.setCurrentlyLoadedView(Constants.NONE);
 
         LOGGER.info("SupplierCreationPresenter loaded");

@@ -2,7 +2,6 @@ package cz.poptavka.sample.client.user.messages;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
@@ -50,7 +49,7 @@ public class MessagesModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initComposeNew();
+                eventBus.goToMessagesModule(filter, Constants.MESSAGES_COMPOSE_NEW);
                 view.getWrapperDetail().clear();
             }
         });
@@ -58,7 +57,7 @@ public class MessagesModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.initInbox(filter);
+                eventBus.goToMessagesModule(filter, Constants.MESSAGES_INBOX);
                 view.getWrapperDetail().clear();
             }
         });
@@ -66,7 +65,7 @@ public class MessagesModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.initSent(filter);
+                eventBus.goToMessagesModule(filter, Constants.MESSAGES_SENT);
                 view.getWrapperDetail().clear();
             }
         });
@@ -74,7 +73,7 @@ public class MessagesModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.initTrash(filter);
+                eventBus.goToMessagesModule(filter, Constants.MESSAGES_TRASH);
                 view.getWrapperDetail().clear();
             }
         });
@@ -82,7 +81,7 @@ public class MessagesModulePresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.initDraft(filter);
+                eventBus.goToMessagesModule(filter, Constants.MESSAGES_DRAFT);
                 view.getWrapperDetail().clear();
             }
         });
@@ -107,7 +106,7 @@ public class MessagesModulePresenter
      * @param filter
      */
     public void onGoToMessagesModule(SearchModuleDataHolder filter, int loadWidget) {
-        Storage.setCurrentlyLoadedModule("messages");
+        Storage.setCurrentlyLoadedModule(Constants.USER_MESSAGES_MODULE);
         Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
         this.filter = filter;
 
@@ -117,7 +116,7 @@ public class MessagesModulePresenter
                 eventBus.initComposeNew();
                 break;
             case Constants.MESSAGES_COMPOSE_REPLY:
-                Window.alert("I shouldn't be here yet. do I?");
+//                eventBus.initComposeReply(null);
                 break;
             case Constants.MESSAGES_INBOX:
                 eventBus.initInbox(filter);

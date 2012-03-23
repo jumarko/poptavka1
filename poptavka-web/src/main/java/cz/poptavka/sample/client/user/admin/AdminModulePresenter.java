@@ -156,7 +156,7 @@ public class AdminModulePresenter
     /* Navigation events.                                                     */
     /**************************************************************************/
     public void onGoToAdminModule(SearchModuleDataHolder filter, int loadWidget) {
-        Storage.setCurrentlyLoadedModule("admin");
+        Storage.setCurrentlyLoadedModule(Constants.USER_ADMINISTRATION_MODULE);
         GWT.log("onGoToAdminModule - som tu");
 
         Storage.showLoading(Storage.MSGS.progressAdminLayoutInit());

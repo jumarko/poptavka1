@@ -40,7 +40,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * @param category - given category id
      * @return list of parents and given category
      */
-    public void onGetCategoryParents(Long categoryId, final String location) {
+    public void onGetCategoryParents(Long categoryId) {
         categoryService.getCategoryParents(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
@@ -50,7 +50,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
-                eventBus.updatePath(result, location);
+                eventBus.updatePath(result);
             }
         });
     }

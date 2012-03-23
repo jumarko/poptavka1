@@ -30,8 +30,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
-        // TODO martin - dopln si loadedView v ostatnych presenteroch to mavas vzdy vyplnene
-        Storage.setCurrentlyLoadedModule("welcome");
+        Storage.setCurrentlyLoadedModule(Constants.HOME_WELCOME_MODULE);
         Storage.setCurrentlyLoadedView(Constants.NONE);
         this.searchDataHolder = searchDataHolder;
     }

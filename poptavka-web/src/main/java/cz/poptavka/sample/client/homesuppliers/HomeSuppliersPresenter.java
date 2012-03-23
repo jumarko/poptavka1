@@ -103,7 +103,6 @@ public class HomeSuppliersPresenter
     //others
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
-    private String location = "home"; //home, user
     private SearchModuleDataHolder searchDataHolder = null;
 
     /**************************************************************************/
@@ -123,15 +122,12 @@ public class HomeSuppliersPresenter
     /**
      * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
      *                               - it's also used as pointer to differ root and child sections
-     * @param moduleLocation - tells where is module used - home / user section
      */
     public void onGoToHomeSuppliersModule(
             SearchModuleDataHolder searchModuleDataHolder) {
+        Storage.setCurrentlyLoadedModule(Constants.HOME_SUPPLIERS_MODULE);
         Storage.setCurrentlyLoadedView(Constants.NONE);
 
-        if (Storage.getUser() != null) {
-            this.location = "user";
-        }
         this.searchDataHolder = searchModuleDataHolder;
 
         //ROOT section
@@ -142,7 +138,7 @@ public class HomeSuppliersPresenter
             view.getRootSection().setVisible(true);
 
             // add root to path
-            eventBus.addToPath(new CategoryDetail(0L, ""), location);
+            eventBus.addToPath(new CategoryDetail(0L, ""));
             //get Root Categories
             //If root categories already loaded and returned by history -> no need to load again
             if (view.getRootSection().getWidgetCount() == 0) {
@@ -160,13 +156,14 @@ public class HomeSuppliersPresenter
             view.getRootSection().setVisible(false);
             dataProvider.updateRowCount(0, false);
             // create path
-            eventBus.getCategoryParents(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId(), location);
+            eventBus.getCategoryParents(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
             // get Sub Categories
             eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
         }
-        if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
-            Storage.setCurrentlyLoadedModule("homeSuppliers");
-        }
+        //martin - preco to muselo byt takto?
+//        if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
+//            Storage.setCurrentlyLoadedModule("homeSuppliers");
+//        }
     }
 
     /**************************************************************************/
@@ -238,7 +235,7 @@ public class HomeSuppliersPresenter
                     }
                     searchDataHolder.getHomeSuppliers().setSupplierCategory(
                             new CategoryDetail(selected.getId(), selected.getName()));
-                    eventBus.addToPath(selected, location);
+                    eventBus.addToPath(selected);
                 }
             }
         });
@@ -263,7 +260,7 @@ public class HomeSuppliersPresenter
                     searchDataHolder.getHomeSuppliers().setSupplierCategory(
                             new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.getSubCategories(selected.getId());
-                    eventBus.addToPath(selected, location);
+                    eventBus.addToPath(selected);
                 }
             }
         });
@@ -366,18 +363,18 @@ public class HomeSuppliersPresenter
      * @param categoryDetail - category from url to be loaded
      */
     /* PATH UPDATE */
-    public void onUpdatePath(ArrayList<CategoryDetail> categories, String location) {
+    public void onUpdatePath(ArrayList<CategoryDetail> categories) {
         view.getPath().clear();
 
         //Root
         Hyperlink rootLink = new Hyperlink("root",
-                getTokenGenerator().addToPath(new CategoryDetail(0L, ""), location));
+                getTokenGenerator().addToPath(new CategoryDetail(0L, "")));
         rootLink.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
         view.addPath(rootLink);
 
         //Anything else
         for (int i = categories.size() - 1; i > 0; i--) {
-            String token = getTokenGenerator().addToPath(categories.get(i), location);
+            String token = getTokenGenerator().addToPath(categories.get(i));
             Hyperlink subLink = new Hyperlink(" -> " + categories.get(i).getName(), token);
             subLink.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());
             view.addPath(subLink);
@@ -385,7 +382,7 @@ public class HomeSuppliersPresenter
 
         //Last
         // for last user addToPath method to generate token
-        eventBus.addToPath(categories.get(0), location);
+        eventBus.addToPath(categories.get(0));
     }
 
     /**
@@ -393,7 +390,7 @@ public class HomeSuppliersPresenter
      * @param categoryDetail
      */
     /* PATH ADD */
-    public void onAddToPath(CategoryDetail categoryDetail, String location) {
+    public void onAddToPath(CategoryDetail categoryDetail) {
         String symbol = "";
         //Root
         if (categoryDetail.getId() == 0) {
@@ -403,7 +400,7 @@ public class HomeSuppliersPresenter
             symbol = " -> ";
         }
         //Anything else
-        String token = getTokenGenerator().addToPath(categoryDetail, location);
+        String token = getTokenGenerator().addToPath(categoryDetail);
         Hyperlink link = new Hyperlink(symbol + categoryDetail.getName(), token);
 
         link.setStylePrimaryName(StyleResource.INSTANCE.common().hyperlinkInline());

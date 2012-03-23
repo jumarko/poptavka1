@@ -46,8 +46,6 @@ public interface SupplierCreationEventBus extends EventBus {
     /**************************************************************************/
     /**
      * The only entry point to this module due to code-spliting feature.
-     *
-     * @param location - defines location of view I think
      */
     @Event(handlers = SupplierCreationPresenter.class, historyConverter = SupplierCreationHistoryConverter.class)
     String goToCreateSupplierModule();

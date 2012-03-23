@@ -73,8 +73,8 @@ public interface RootEventBus extends EventBus {
      */
     @Start
     @InitHistory
-    @Event(handlers = { HeaderPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
-            RootPresenter.class, FooterPresenter.class })
+    @Event(handlers = {HeaderPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
+                RootPresenter.class, FooterPresenter.class })
     void start();
 
     /**************************************************************************/
@@ -119,8 +119,10 @@ public interface RootEventBus extends EventBus {
     /* Navigation events - Home menu control section                          */
     /**************************************************************************/
     // TODO praso - nechyba tu nahodou historyConverter?
-    @Event(modulesToLoad = HomeWelcomeModule.class)
+    // Martin - este neviem, skusal som, ale boli problemy s tym
+    @Event(modulesToLoad = HomeWelcomeModule.class)//, historyConverter = RootHistoryConverter.class)
     void goToHomeWelcomeModule(SearchModuleDataHolder filter);
+//    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
 
     @Event(modulesToLoad = HomeDemandsModule.class)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
@@ -141,8 +143,9 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
     /**************************************************************************/
-    @Event(modulesToLoad = DemandModule.class)
+    @Event(modulesToLoad = DemandModule.class) //, historyConverter = RootHistoryConverter.class)
     void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
+//    String goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
     /**
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
@@ -173,9 +176,9 @@ public interface RootEventBus extends EventBus {
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
-    historyConverter = RootHistoryConverter.class)
-    String atHome();
+    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class })
+//    historyConverter = RootHistoryConverter.class)
+    void atHome();
 
     /**
      * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
@@ -301,7 +304,6 @@ public interface RootEventBus extends EventBus {
 
     @Event(handlers = RootHandler.class)
     void getRootLocalities();
-
     // USER
 //    @Event(modulesToLoad = UserModule.class)
 //    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);

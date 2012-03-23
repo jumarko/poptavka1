@@ -4,7 +4,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
-@History(type = HistoryConverterType.SIMPLE, name = "home")
+@History(type = HistoryConverterType.DEFAULT, name = "home")
 public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 
     @Override
@@ -13,6 +13,6 @@ public class HomeHistoryConverter implements HistoryConverter<HomeEventBus> {
 
     @Override
     public boolean isCrawlable() {
-        return true;
+        return false;
     }
 }

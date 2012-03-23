@@ -178,7 +178,7 @@ public class DemandModulePresenter
     /**************************************************************************/
     //Todo Beho - later add UserDetail as parameter
     public void onGoToDemandModule(SearchModuleDataHolder filter, int loadWidget) {
-        Storage.setCurrentlyLoadedModule("demands");
+        Storage.setCurrentlyLoadedModule(Constants.USER_DEMANDS_MODULE);
         // hiding window for this is after succesfull Userhandler call
         Storage.showLoading(Storage.MSGS.progressDemandsLayoutInit());
 //        if (user.getRoleList().contains(Role.CLIENT)) {

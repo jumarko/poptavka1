@@ -76,7 +76,7 @@ public interface AdminModuleEventBus extends EventBus {
      * @param loadWidget - prosim doplnit ???
      */
     @Event(handlers = AdminModulePresenter.class, historyConverter = AdminModuleHistoryConverter.class)
-    String goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
+    String goToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
     /* Parent events                                                          */

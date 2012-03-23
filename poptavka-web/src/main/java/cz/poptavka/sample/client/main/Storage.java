@@ -28,7 +28,7 @@ public final class Storage {
     //For history orientation
     // Lebo ak mam zobrazenu tabulku, potom naloadujem iny modul a dam spat
     // tabulka na loaduje ale modul nie je naloadovany, teda nevidno naloadovanu tabulku
-    private static String currentlyLoadedModule = "";
+    private static int currentlyLoadedModule = -1;
 
     public static Storage get() {
         return INSTANCE;
@@ -111,11 +111,11 @@ public final class Storage {
         Storage.currentlyLoadedView = currentlyLoadedView;
     }
 
-    public static String getCurrentlyLoadedModule() {
+    public static int getCurrentlyLoadedModule() {
         return currentlyLoadedModule;
     }
 
-    public static void setCurrentlyLoadedModule(String currentlyLoadedModule) {
+    public static void setCurrentlyLoadedModule(int currentlyLoadedModule) {
         Storage.currentlyLoadedModule = currentlyLoadedModule;
     }
 

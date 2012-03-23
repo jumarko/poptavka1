@@ -108,7 +108,7 @@ public class DemandCreationPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToCreateDemandModule() {
-        Storage.setCurrentlyLoadedModule("createDemand");
+        Storage.setCurrentlyLoadedModule(Constants.HOME_DEMAND_CREATION_MODULE);
         Storage.setCurrentlyLoadedView(Constants.NONE);
 
         LOGGER.info("  INIT DemandCreation Widget");

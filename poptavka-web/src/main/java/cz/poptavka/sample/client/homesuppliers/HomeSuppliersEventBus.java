@@ -95,15 +95,15 @@ public interface HomeSuppliersEventBus extends EventBus {
     /* Business events handled by Presenters - Path events                    */
     /**************************************************************************/
     // UPDATE
-    @Event(handlers = HomeSuppliersPresenter.class)//, historyConverter = HomeSuppliersHistoryConverter.class)
-    void updatePath(ArrayList<CategoryDetail> categories, String location);
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void updatePath(ArrayList<CategoryDetail> categories);
 
     /**
      * After retrieving category, add its name to path.
      * @param categoryDetail
      */
     @Event(handlers = HomeSuppliersPresenter.class, historyConverter = HomeSuppliersHistoryConverter.class)
-    String addToPath(CategoryDetail categoryDetail, String location);
+    String addToPath(CategoryDetail categoryDetail);
 
     /**************************************************************************/
     /* Business events handled by Presenters - Data events                    */
@@ -120,7 +120,7 @@ public interface HomeSuppliersEventBus extends EventBus {
     void getCategories();
 
     @Event(handlers = HomeSuppliersHandler.class)
-    void getCategoryParents(Long categoryId, final String location);
+    void getCategoryParents(Long categoryId);
 
     @Event(handlers = HomeSuppliersHandler.class)
     void getSubCategories(Long category);
