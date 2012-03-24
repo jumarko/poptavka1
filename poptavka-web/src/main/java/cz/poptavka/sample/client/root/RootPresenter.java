@@ -3,6 +3,12 @@ package cz.poptavka.sample.client.root;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -143,6 +149,26 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtHome(int loadModule) {
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                URL.encode("/poptavka/j_spring_security_logout"));
+        builder.setHeader("Content-type", "application/x-www-form-urlencoded");
+        try {
+            Request request = builder.sendRequest(null,
+                    new RequestCallback() {
+                        public void onError(Request request,
+                                Throwable exception) {
+
+                        }
+
+                        public void onResponseReceived(Request request,
+                                Response response) {
+
+                        }
+                    });
+        } catch (RequestException e) {
+            // Couldn't connect to server
+            GWT.log("exception during login");
+        }
         GWT.log("User has logged out");
         //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
         // tento kod. Ak to vyriesim, tak sa o to postaram.

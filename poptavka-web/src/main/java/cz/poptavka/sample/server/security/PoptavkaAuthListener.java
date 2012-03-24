@@ -5,7 +5,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
-
+/**
+ * This class represent listener to authentication event
+ * @author kolkar
+ *
+ */
 public class PoptavkaAuthListener implements ApplicationListener<AbstractAuthenticationEvent> {
 
     private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthListener.class);

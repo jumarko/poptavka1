@@ -6,7 +6,11 @@ import java.util.Collection;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
-
+/**
+ * This class represents authenticated user.
+ * @author kolkar
+ *
+ */
 public class PoptavkaUserAuthentication implements Authentication {
 
     private static final long serialVersionUID = -3091441742758356129L;

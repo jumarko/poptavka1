@@ -3,22 +3,39 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
     xmlns:beans="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <beans:bean id="poptavkaAuthListener" class="cz.poptavka.sample.server.security.PoptavkaAuthListener"/>
-
+    
     <http auto-config="true">
-        <intercept-url pattern="/poptavka/user/**" access="ROLE_USER"/>
-        <intercept-url pattern="/**" access="ROLE_USER"/>
-        <intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+
+        <!-- TODO premysliet, ake vsetky zdroje chceme chranit autentizaciou -->
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/**/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!--<intercept-url pattern="/poptavka/service/**" access="hasRole('ROLE_USER')" />-->
+
+
+        <!-- If the user is authorized, he will be redirected to the success-handler.
+           The sucess-handler is responsible of interpreting what to do next.
+           Same principle with the failure-handler -->
+
     </http>
     
-    <beans:bean id="customAuthenticationProvider" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationProvider" />    
+    <beans:bean id="customAuthenticationProvider" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationProvider" />
     
     <authentication-manager alias="authenticationManager">
-	    <authentication-provider ref="customAuthenticationProvider"/>
-	</authentication-manager>
+        <authentication-provider ref="customAuthenticationProvider"/>
+    </authentication-manager>
+
+    <!-- Custom entry point to indicate that the user needs to authenticate first -->
+    <beans:bean id="customAuthenticationEntryPoint" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationEntryPoint" />
+
+
+    <!-- Custom handler to indicate that the authentication is succ`essful -->
+    <beans:bean id="customAuthenticationSuccessHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationSuccessHandler" />
+
+    <!-- Custom handler to indicate that the authentication has failed -->
+    <beans:bean id="customAuthenticationFailureHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationFailureHandler" />
         
 </beans:beans>

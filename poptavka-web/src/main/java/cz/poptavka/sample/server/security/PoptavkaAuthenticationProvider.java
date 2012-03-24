@@ -12,6 +12,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * Custom implementation of authenticationProvider.
+ * This class represents authentication mechanism.
+ * @author kolkar
+ *
+ */
 public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
 
     private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthenticationProvider.class);
@@ -25,6 +31,12 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         users.put("supplier@test.com", "kreslo");
     }
 
+    /**
+     * Method used to authenticate user
+     * @param authentication
+     * @return authentication object that represents signed in user
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         LOGGER.info("authentication");
