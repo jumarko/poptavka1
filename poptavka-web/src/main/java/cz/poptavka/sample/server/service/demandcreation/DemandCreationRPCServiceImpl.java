@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  *
  * @author praso
+ *
+ * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
 public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         implements DemandCreationRPCService {

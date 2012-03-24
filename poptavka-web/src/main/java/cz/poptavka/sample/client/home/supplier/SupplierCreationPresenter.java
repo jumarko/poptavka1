@@ -209,6 +209,8 @@ public class SupplierCreationPresenter
         return false;
     }
 
+    // TODO preco mame v presenteri SupplierRPCServiceAsync objekt??? Tymto uplne porusujeme
+    // MVP model. Rozhranim ma byt predsa eventbus. OPRAVIT !!! a nerobit taketo chyby !!!
     @Inject
     private SupplierRPCServiceAsync supplierRpcService = null;
 

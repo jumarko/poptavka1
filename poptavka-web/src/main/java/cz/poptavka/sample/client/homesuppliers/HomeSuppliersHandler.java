@@ -8,8 +8,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.HomeSuppliersRPCServiceAsync;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -19,18 +18,23 @@ import java.util.Map;
 @EventHandler
 public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus> {
 
-    private CategoryRPCServiceAsync categoryService = null;
-    private SupplierRPCServiceAsync supplierService = null;
+//    private CategoryRPCServiceAsync categoryService = null;
+//    private SupplierRPCServiceAsync supplierService = null;
+    private HomeSuppliersRPCServiceAsync homeSuppliersService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
+//    @Inject
+//    public void setCategoryService(CategoryRPCServiceAsync service) {
+//        categoryService = service;
+//    }
+//
+//    @Inject
+//    public void setSupplierService(SupplierRPCServiceAsync service) {
+//        supplierService = service;
+//    }
     @Inject
-    public void setCategoryService(CategoryRPCServiceAsync service) {
-        categoryService = service;
-    }
-
-    @Inject
-    public void setSupplierService(SupplierRPCServiceAsync service) {
-        supplierService = service;
+    public void setHomeSuppliersService(HomeSuppliersRPCServiceAsync service) {
+        homeSuppliersService = service;
     }
 
     // *** GET CATEGORIES
@@ -41,7 +45,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * @return list of parents and given category
      */
     public void onGetCategoryParents(Long categoryId) {
-        categoryService.getCategoryParents(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+        homeSuppliersService.getCategoryParents(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -59,7 +63,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * Get all categories. Used for display in listBox categories.
      */
     public void onGetCategories() {
-        categoryService.getCategories(
+        homeSuppliersService.getCategories(
                 new AsyncCallback<ArrayList<CategoryDetail>>() {
 
                     @Override
@@ -75,7 +79,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
     }
 
     public void onGetSubCategories(final Long category) {
-        categoryService.getCategoryChildren(category, new AsyncCallback<ArrayList<CategoryDetail>>() {
+        homeSuppliersService.getCategoryChildren(category, new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -92,7 +96,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
     //*************** GET SUPPLIERS DATA *********************
     public void onGetSuppliersCount(SearchModuleDataHolder detail) {
-        supplierService.filterSuppliersCount(detail, new AsyncCallback<Long>() {
+        homeSuppliersService.filterSuppliersCount(detail, new AsyncCallback<Long>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -110,7 +114,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
     public void onGetSuppliers(int start, int count, SearchModuleDataHolder search,
             Map<String, OrderType> orderColumns) {
-        supplierService.filterSuppliers(start, count, search, orderColumns,
+        homeSuppliersService.filterSuppliers(start, count, search, orderColumns,
                 new AsyncCallback<List<FullSupplierDetail>>() {
 
                     @Override

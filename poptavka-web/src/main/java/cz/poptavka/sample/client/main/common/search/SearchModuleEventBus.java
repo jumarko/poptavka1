@@ -8,9 +8,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.ArrayList;
-import java.util.List;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startView = SearchModuleView.class, module = SearchModule.class)
@@ -52,6 +50,7 @@ public interface SearchModuleEventBus extends EventBus {
     @Event(handlers = SearchModulePresenter.class)
     void clearSearchContent();
     // VIEWS INIT METHODS
+
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by DemandModulePresenter. */
@@ -142,10 +141,11 @@ public interface SearchModuleEventBus extends EventBus {
 
     @Event(handlers = SearchModulePresenter.class)
     void responseLocalities(final ArrayList<LocalityDetail> list);
-
-    @Event(handlers = SearchModuleHandler.class)
-    void requestPaymentMethods();
-
-    @Event(handlers = SearchModulePresenter.class)
-    void responsePaymentMethods(final List<PaymentMethodDetail> list);
+    // TODO Praso - zakomentoval som tuto metodu pretoze mam pocit, ze sa nepouziva a v podstate
+    // ani nema co robit v module SearchModule
+//    @Event(handlers = SearchModuleHandler.class)
+//    void requestPaymentMethods();
+//
+//    @Event(handlers = SearchModulePresenter.class)
+//    void responsePaymentMethods(final List<PaymentMethodDetail> list);
 }

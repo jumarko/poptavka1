@@ -39,6 +39,8 @@ import java.util.Date;
  * Locality and categories are going to be used in more RPC. The best idea
  * is to make an parent class with locality/category methods and other RPC will
  * extend this class.
+ *
+ * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {
 

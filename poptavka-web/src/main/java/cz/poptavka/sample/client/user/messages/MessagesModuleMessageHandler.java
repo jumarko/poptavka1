@@ -10,7 +10,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
+//import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -24,8 +24,8 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
 
     @Inject
     private MessageRPCServiceAsync messageService;
-    @Inject
-    private GeneralRPCServiceAsync generalService;
+//    @Inject
+//    private GeneralRPCServiceAsync generalService;
     @Inject
     private UserRPCServiceAsync userService;
 
