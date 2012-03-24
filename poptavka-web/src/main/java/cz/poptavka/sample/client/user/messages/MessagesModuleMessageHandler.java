@@ -11,7 +11,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 //import cz.poptavka.sample.client.service.demand.GeneralRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.MessagesRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -22,8 +22,10 @@ import java.util.List;
 @EventHandler
 public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModuleEventBus> {
 
+//    @Inject
+//    private MessageRPCServiceAsync messageService;
     @Inject
-    private MessageRPCServiceAsync messageService;
+    private MessagesRPCServiceAsync messagesService;
 //    @Inject
 //    private GeneralRPCServiceAsync generalService;
     @Inject
@@ -37,7 +39,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
      * @param type
      */
     public void onSendMessage(MessageDetail messageToSend, final String action) {
-        messageService.sendInternalMessage(messageToSend, new AsyncCallback<MessageDetail>() {
+        messagesService.sendInternalMessage(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -64,7 +66,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     }
 
     public void onGetInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder) {
-        messageService.getInboxMessages(recipientId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
+        messagesService.getInboxMessages(recipientId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -79,7 +81,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     }
 
     public void onGetSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder) {
-        messageService.getSentMessages(senderId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
+        messagesService.getSentMessages(senderId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -94,7 +96,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     }
 
     public void onGetDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder) {
-        messageService.getDeletedMessages(userId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
+        messagesService.getDeletedMessages(userId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -109,7 +111,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     }
 
     public void onRequestConversation(Long threadRootId, Long subRootId) {
-        messageService.getConversationMessages(threadRootId, subRootId,
+        messagesService.getConversationMessages(threadRootId, subRootId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
                     @Override
@@ -131,7 +133,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        messageService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
+        messagesService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -153,7 +155,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        messageService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
+        messagesService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -169,7 +171,7 @@ public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModul
     }
 
     public void onDeleteMessages(List<Long> messagesIds) {
-        messageService.deleteMessages(messagesIds, new AsyncCallback<List<UserMessageDetail>>() {
+        messagesService.deleteMessages(messagesIds, new AsyncCallback<List<UserMessageDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {

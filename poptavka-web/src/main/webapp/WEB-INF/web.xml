@@ -132,6 +132,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>MessagesRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.messages.MessagesRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MessagesRPCService</servlet-name>
+        <url-pattern>/poptavka/service/messagesmodule</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
         <servlet-name>DemandRPCService</servlet-name>
         <servlet-class>cz.poptavka.sample.server.service.demand.DemandRPCServiceImpl</servlet-class>
     </servlet>
