@@ -142,6 +142,15 @@
 
 
     <servlet>
+        <servlet-name>DemandsRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.demands.DemandsRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DemandsRPCService</servlet-name>
+        <url-pattern>/poptavka/service/demandsmodule</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>DemandRPCService</servlet-name>
         <servlet-class>cz.poptavka.sample.server.service.demand.DemandRPCServiceImpl</servlet-class>
     </servlet>

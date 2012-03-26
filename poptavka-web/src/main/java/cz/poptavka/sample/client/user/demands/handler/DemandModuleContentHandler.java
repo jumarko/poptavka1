@@ -12,8 +12,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
-import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.DemandsRPCServiceAsync;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
@@ -23,27 +22,29 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 @EventHandler
 public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEventBus> {
 
+//    @Inject
+//    private MessageRPCServiceAsync messageService;
+//    @Inject
+//    private DemandRPCServiceAsync demandService;
     @Inject
-    private MessageRPCServiceAsync messageService;
-    @Inject
-    private DemandRPCServiceAsync demandService;
+    private DemandsRPCServiceAsync demandsService;
 
     public void onRequestClientsDemands(SearchModuleDataHolder searchModuleDataHolder) {
         GWT.log("DemandModuleContentHandler > UserId: " + Storage.getUser().getUserId() + " ,ClientId: "
                 + Storage.getUser().getClientId());
-        messageService.getListOfClientDemandMessages(Storage.getUser().getUserId(), Storage.getUser().getClientId(),
+        demandsService.getListOfClientDemandMessages(Storage.getUser().getUserId(), Storage.getUser().getClientId(),
                 new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
-                }
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
+                    }
 
-                @Override
-                public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
-                    eventBus.responseClientsDemands(result);
-                }
-            });
+                    @Override
+                    public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
+                        eventBus.responseClientsDemands(result);
+                    }
+                });
     }
 
     /**
@@ -51,7 +52,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
      * Business UserID is fetched from Storage
      */
     public void onRequestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
-        messageService.getPotentialDemands(Storage.getUser().getUserId(),
+        demandsService.getPotentialDemands(Storage.getUser().getUserId(),
                 new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
 
                     @Override
@@ -78,7 +79,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        messageService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
+        demandsService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -100,7 +101,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        messageService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
+        demandsService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -116,7 +117,7 @@ public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEve
     }
 
     public void onRequestDemandDetail(Long demandId, final ViewType type) {
-        demandService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
+        demandsService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {

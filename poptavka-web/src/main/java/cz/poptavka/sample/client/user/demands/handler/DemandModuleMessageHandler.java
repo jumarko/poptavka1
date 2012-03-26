@@ -8,16 +8,27 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.DemandsRPCServiceAsync;
 import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
+/**
+ * TODO Praso - Preco mame dve Handler triedy pre modul Demands?
+ * 1) DemandModuleMessageHandler.java
+ * 2) DemandModuleContentHandler.java
+ * Ked sa nacita modul Demands prvy krat tak sa stiahnu zo servera oba subory naraz. Preto
+ * mi nedava vyznam aby sme kvoli 2 metodam tykajucih sa len tohto modulu vytvarali novy
+ * handler.
+ * @author Praso
+ */
 @EventHandler
 public class DemandModuleMessageHandler extends BaseEventHandler<DemandModuleEventBus> {
 
+//    @Inject
+//    private MessageRPCServiceAsync messageService;
     @Inject
-    private MessageRPCServiceAsync messageService;
+    private DemandsRPCServiceAsync demandsService;
 
     /**
      * Load demand/related conversation from DB.
@@ -27,7 +38,7 @@ public class DemandModuleMessageHandler extends BaseEventHandler<DemandModuleEve
      * @param userId
      */
     public void onRequestChatForSupplierList(long messageId, Long userMessageId, Long userId) {
-        messageService.loadSuppliersPotentialDemandConversation(messageId, userId, userMessageId,
+        demandsService.loadSuppliersPotentialDemandConversation(messageId, userId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
                 @Override
@@ -52,7 +63,7 @@ public class DemandModuleMessageHandler extends BaseEventHandler<DemandModuleEve
      * @param type
      */
     public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
-        messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
+        demandsService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
