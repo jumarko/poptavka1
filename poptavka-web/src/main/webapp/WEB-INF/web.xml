@@ -90,6 +90,24 @@
         <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    <!-- Securing RPC services against XSRF attack using GWT token service -->
+    <servlet>
+		<servlet-name>xsrf</servlet-name>
+		<servlet-class>
+			com.google.gwt.user.server.rpc.XsrfTokenServiceServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>xsrf</servlet-name>
+		<url-pattern>/gwt/xsrf</url-pattern>
+	</servlet-mapping>
+	
+	<context-param>
+		<param-name>gwt.xsrf.session_cookie_name</param-name>
+		<param-value>JSESSIONID</param-value>
+	</context-param>
+
 
     <!--
     Mapping an RPC service defined in handler-servlet.xml
