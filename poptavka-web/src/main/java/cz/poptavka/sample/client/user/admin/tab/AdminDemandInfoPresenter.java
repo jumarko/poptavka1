@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Presenter(view = AdminDemandInfoView.class)
 public class AdminDemandInfoPresenter
-        extends LazyPresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, AdminEventBus> {
 
     public interface AdminDemandInfoInterface extends LazyView {
 

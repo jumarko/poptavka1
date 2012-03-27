@@ -46,15 +46,15 @@ import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.Map;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = AdminModuleView.class, module = AdminModule.class)
-public interface AdminModuleEventBus extends EventBus {
+@Events(startView = AdminView.class, module = AdminModule.class)
+public interface AdminEventBus extends EventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = AdminModulePresenter.class)
+    @Event(handlers = AdminPresenter.class)
     void start();
 
     /**
@@ -63,7 +63,7 @@ public interface AdminModuleEventBus extends EventBus {
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = AdminModulePresenter.class)
+    @Event(handlers = AdminPresenter.class)
     void forward();
 
     /**************************************************************************/
@@ -75,7 +75,7 @@ public interface AdminModuleEventBus extends EventBus {
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - prosim doplnit ???
      */
-    @Event(handlers = AdminModulePresenter.class, historyConverter = AdminModuleHistoryConverter.class)
+    @Event(handlers = AdminPresenter.class, historyConverter = AdminHistoryConverter.class)
     String goToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
@@ -91,7 +91,7 @@ public interface AdminModuleEventBus extends EventBus {
 
     /** Module Initializatin section **/
     //display widget in content area
-    @Event(handlers = AdminModulePresenter.class)
+    @Event(handlers = AdminPresenter.class)
     void displayView(Widget content);
 
     /** Submodule Initializatin section **/
@@ -138,43 +138,43 @@ public interface AdminModuleEventBus extends EventBus {
      *********************** SUBWIDGETS SECTION *******************************************************
      **********************************************************************************************/
     /*********************** COUNT DATA ********************************************************/
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandsCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminOffersCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminClientsCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminMessagesCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminProblemsCount(SearchModuleDataHolder searchDataHolder);
 
     /*********************** ASYNCH DATAPROVIDERS *************************************************/
@@ -218,96 +218,96 @@ public interface AdminModuleEventBus extends EventBus {
     void createAdminProblemAsyncDataProvider(final int totalFound);
 
     /*********************** GET DATA ************************************************************/
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemands(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSuppliers(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminOffers(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminClients(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminInvoices(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminMessages(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminOurPaymentDetails(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminPaymentMethods(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminPermissions(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminPreferences(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminProblems(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns);
 
     /*********************** UPDATE **************************************************************/
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateDemand(FullDemandDetail demand);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateSupplier(FullSupplierDetail supplier);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateOffer(OfferDetail demand);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateClient(ClientDetail supplier);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateAccessRole(AccessRoleDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateEmailActivation(EmailActivationDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateInvoice(InvoiceDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateMessage(MessageDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateOurPaymentDetail(PaymentDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updatePaymentMethod(PaymentMethodDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updatePermission(PermissionDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updatePreference(PreferenceDetail accessRole);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void updateProblem(ProblemDetail accessRole);
 
     /*********************** DISPLAY DATA ********************************************************/
@@ -421,24 +421,24 @@ public interface AdminModuleEventBus extends EventBus {
 
     /*********************** CATEGORIES **********************************************************/
     //GET ROOT
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandRootCategories();
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSupplierRootCategories();
 
     //GET SUB
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandSubCategories(Long catId);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSupplierSubCategories(Long catId);
 
     //GET PARENT
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandParentCategories(Long catId);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSupplierParentCategories(Long catId);
 
     //DISPLAY
@@ -457,24 +457,24 @@ public interface AdminModuleEventBus extends EventBus {
 
     /*********************** LOCALITIES ***********************************************************/
     //GET ROOT
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandRootLocalities();
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSupplierRootLocalities();
 
     //GET SUB
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandSubLocalities(String locCode);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSupplierSubLocalities(String locCode);
 
     //GET PARENT
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminDemandParentLocalities(String locCode);
 
-    @Event(handlers = AdminModuleHandler.class)
+    @Event(handlers = AdminHandler.class)
     void getAdminSupplierParentLocalities(String locCode);
 
     //DISPLAY

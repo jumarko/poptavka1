@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Presenter(view = AdminSupplierInfoView.class)
 public class AdminSupplierInfoPresenter
-        extends LazyPresenter<AdminSupplierInfoPresenter.AdminSupplierInfoInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminSupplierInfoPresenter.AdminSupplierInfoInterface, AdminEventBus> {
 
     public interface AdminSupplierInfoInterface extends LazyView {
 

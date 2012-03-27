@@ -13,14 +13,14 @@ import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.service.demand.DemandsRPCServiceAsync;
-import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
+import cz.poptavka.sample.client.user.demands.DemandEventBus;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @EventHandler
-public class DemandModuleContentHandler extends BaseEventHandler<DemandModuleEventBus> {
+public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
 
 //    @Inject
 //    private MessageRPCServiceAsync messageService;

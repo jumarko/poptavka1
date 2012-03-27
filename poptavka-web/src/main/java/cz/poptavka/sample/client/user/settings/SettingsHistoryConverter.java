@@ -12,7 +12,7 @@ import com.mvp4g.client.history.HistoryConverter;
  * @author slavkovsky.martin
  */
 @History(type = HistoryConverterType.DEFAULT, name = "settings")
-public class SettingsModuleHistoryConverter implements HistoryConverter<SettingsModuleEventBus> {
+public class SettingsHistoryConverter implements HistoryConverter<SettingsEventBus> {
 
     /**
      * Creates token(URL) for goToSettingsModule method.
@@ -34,7 +34,7 @@ public class SettingsModuleHistoryConverter implements HistoryConverter<Settings
      * @param eventBus - SettingsModuleEventBus
      */
     @Override
-    public void convertFromToken(String methodName, String param, SettingsModuleEventBus eventBus) {
+    public void convertFromToken(String methodName, String param, SettingsEventBus eventBus) {
         if (methodName.equals("goToSettingsModule")) {
             eventBus.goToSettingsModule();
         }

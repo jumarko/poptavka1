@@ -10,7 +10,7 @@ import cz.poptavka.sample.client.service.demand.SettingsRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 @EventHandler
-public class SettingsModuleHandler extends BaseEventHandler<SettingsModuleEventBus> {
+public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
     @Inject
     SettingsRPCServiceAsync settingsService;

@@ -20,7 +20,7 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 import java.util.List;
 
 @EventHandler
-public class MessagesModuleMessageHandler extends BaseEventHandler<MessagesModuleEventBus> {
+public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
 //    @Inject
 //    private MessageRPCServiceAsync messageService;

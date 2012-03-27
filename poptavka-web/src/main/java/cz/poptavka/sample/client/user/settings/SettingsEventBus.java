@@ -11,15 +11,15 @@ import com.mvp4g.client.event.EventBus;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = SettingsModuleView.class, module = SettingsModule.class)
-public interface SettingsModuleEventBus extends EventBus {
+@Events(startView = SettingsView.class, module = SettingsModule.class)
+public interface SettingsEventBus extends EventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = SettingsModulePresenter.class)
+    @Event(handlers = SettingsPresenter.class)
     void start();
 
     /**
@@ -28,7 +28,7 @@ public interface SettingsModuleEventBus extends EventBus {
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = SettingsModulePresenter.class)
+    @Event(handlers = SettingsPresenter.class)
     void forward();
 
     /**************************************************************************/
@@ -37,7 +37,7 @@ public interface SettingsModuleEventBus extends EventBus {
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = SettingsModulePresenter.class, historyConverter = SettingsModuleHistoryConverter.class)
+    @Event(handlers = SettingsPresenter.class, historyConverter = SettingsHistoryConverter.class)
     String goToSettingsModule();
 
     /**************************************************************************/
@@ -46,13 +46,13 @@ public interface SettingsModuleEventBus extends EventBus {
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
-    @Event(handlers = SettingsModulePresenter.class)
+    @Event(handlers = SettingsPresenter.class)
     void setSettings(SettingsDetail detail);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-    @Event(handlers = SettingsModuleHandler.class)
+    @Event(handlers = SettingsHandler.class)
     void getLoggedUser(long userId);
 
 }

@@ -28,7 +28,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 @Presenter(view = AdminInvoicesView.class)
 public class AdminInvoicesPresenter
-        extends LazyPresenter<AdminInvoicesPresenter.AdminInvoicesInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminInvoicesPresenter.AdminInvoicesInterface, AdminEventBus> {
 
     //history of changes
     private Map<Long, InvoiceDetail> dataToUpdate = new HashMap<Long, InvoiceDetail>();

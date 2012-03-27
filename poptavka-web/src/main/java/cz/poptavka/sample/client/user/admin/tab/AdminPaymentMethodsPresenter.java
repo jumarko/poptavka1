@@ -32,7 +32,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @Presenter(view = AdminPaymentMethodsView.class)
 public class AdminPaymentMethodsPresenter
-        extends LazyPresenter<AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminPaymentMethodsPresenter.AdminPaymentMethodsInterface, AdminEventBus> {
 
     //history of changes
     private Map<Long, PaymentMethodDetail> dataToUpdate = new HashMap<Long, PaymentMethodDetail>();

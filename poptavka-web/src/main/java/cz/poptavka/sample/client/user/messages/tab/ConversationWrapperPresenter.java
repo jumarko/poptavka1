@@ -13,7 +13,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
+import cz.poptavka.sample.client.user.messages.MessagesEventBus;
 import cz.poptavka.sample.client.user.widget.messaging.OfferQuestionPresenter;
 import cz.poptavka.sample.client.user.widget.messaging.UserConversationPanel;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -21,7 +21,7 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Presenter(view = ConversationWrapperView.class)
 public class ConversationWrapperPresenter
-        extends LazyPresenter<ConversationWrapperPresenter.IDetailWrapper, MessagesModuleEventBus> {
+        extends LazyPresenter<ConversationWrapperPresenter.IDetailWrapper, MessagesEventBus> {
 
     public static final int DETAIL = 0;
     public static final int CHAT = 1;

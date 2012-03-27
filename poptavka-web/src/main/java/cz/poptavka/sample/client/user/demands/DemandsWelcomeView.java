@@ -15,17 +15,17 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Martin Slavkovsky
  */
-public class DemandsModuleWelcomeView extends Composite {
+public class DemandsWelcomeView extends Composite {
 
     private static DemandsModuleWelcomeViewUiBinder uiBinder = GWT.create(DemandsModuleWelcomeViewUiBinder.class);
 
-    interface DemandsModuleWelcomeViewUiBinder extends UiBinder<Widget, DemandsModuleWelcomeView> {
+    interface DemandsModuleWelcomeViewUiBinder extends UiBinder<Widget, DemandsWelcomeView> {
     }
 
     /**
      * creates WIDGET view
      */
-    public DemandsModuleWelcomeView() {
+    public DemandsWelcomeView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 

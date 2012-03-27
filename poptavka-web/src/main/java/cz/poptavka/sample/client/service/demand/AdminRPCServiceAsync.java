@@ -21,7 +21,7 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.Map;
 
-public interface GeneralRPCServiceAsync {
+public interface AdminRPCServiceAsync {
 
     //---------------------- DEMAND ------------------------------------------------
     void getAdminDemandsCount(SearchModuleDataHolder searchDataHolder, AsyncCallback<Long> callback);

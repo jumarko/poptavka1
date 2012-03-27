@@ -7,7 +7,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
+import cz.poptavka.sample.client.user.demands.DemandEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 
@@ -18,7 +18,7 @@ import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
  */
 @Presenter(view = DevelOfferQuestionWindow.class, multiple = true)
 public class DevelOfferQuestionPresenter extends LazyPresenter<
-    DevelOfferQuestionPresenter.ReplyInterface, DemandModuleEventBus> {
+    DevelOfferQuestionPresenter.ReplyInterface, DemandEventBus> {
 
     public interface ReplyInterface extends LazyView {
         Widget getWidgetView();

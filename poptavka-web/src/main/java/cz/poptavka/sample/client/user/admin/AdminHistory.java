@@ -9,9 +9,9 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import java.util.logging.Logger;
 
 @History(type = HistoryConverterType.DEFAULT)
-public class AdminModuleHistory implements HistoryConverter<AdminModuleEventBus> {
+public class AdminHistory implements HistoryConverter<AdminEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger(AdminModuleHistory.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AdminHistory.class.getName());
     private static final String DEMANDS = "initDemands";
     private static final String CLIENTS = "initClients";
     private static final String SUPPLIERS = "initSuppliers";
@@ -27,7 +27,7 @@ public class AdminModuleHistory implements HistoryConverter<AdminModuleEventBus>
     private static final String PROBLEMS = "initProblems";
 
     @Override
-    public void convertFromToken(String historyName, String param, AdminModuleEventBus eventBus) {
+    public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
 //        String cookie = Cookies.getCookie("admin-presenter");
 //        LOGGER.fine(" +++++++++ ADMIN  Name: " + historyName + "\nParam: " + param);
 

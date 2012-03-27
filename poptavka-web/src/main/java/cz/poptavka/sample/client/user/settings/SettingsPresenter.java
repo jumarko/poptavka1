@@ -13,9 +13,9 @@ import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
-@Presenter(view = SettingsModuleView.class)
-public class SettingsModulePresenter
-        extends BasePresenter<SettingsModulePresenter.HomeSettingsViewInterface, SettingsModuleEventBus> {
+@Presenter(view = SettingsView.class)
+public class SettingsPresenter
+        extends BasePresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus> {
 
     public interface HomeSettingsViewInterface {
 

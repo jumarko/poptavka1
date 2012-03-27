@@ -14,13 +14,13 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public class AdminModuleView extends Composite implements AdminModulePresenter.AdminModuleInterface, StyleInterface {
+public class AdminView extends Composite implements AdminPresenter.AdminModuleInterface, StyleInterface {
 
     private static AdminModuleViewUiBinder uiBinder = GWT.create(AdminModuleViewUiBinder.class);
 
-    interface AdminModuleViewUiBinder extends UiBinder<Widget, AdminModuleView> {
+    interface AdminModuleViewUiBinder extends UiBinder<Widget, AdminView> {
     }
-    private static final Logger LOGGER = Logger.getLogger(AdminModuleView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AdminView.class.getName());
     @UiField
     SimplePanel contentPanel;
     @UiField
@@ -28,7 +28,7 @@ public class AdminModuleView extends Composite implements AdminModulePresenter.A
     accessRolesButton, emailActivationsButton, invoicesButton, messagesButton,
     paymentMethodsButton, permissionsButton, preferencesButton, problemsButton; //ourPaymentDetailsButton,
 
-    public AdminModuleView() {
+    public AdminView() {
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }

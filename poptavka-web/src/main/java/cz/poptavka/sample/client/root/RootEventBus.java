@@ -50,7 +50,6 @@ import cz.poptavka.sample.client.user.settings.SettingsModule;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 @Events(startView = RootView.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -164,6 +163,7 @@ public interface RootEventBus extends EventBus {
     @Event(modulesToLoad = SearchModule.class)
     void goToSearchModule();
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(modulesToLoad = SearchModule.class)
     void clearSearchContent();
 
@@ -227,6 +227,7 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
+    // TODO Praso - mozeme odstranit? No usage
     @NotFoundHistory
     @Event(handlers = RootPresenter.class)
     void notFound();
@@ -234,15 +235,18 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void setUser(UserDetail user);
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(handlers = HeaderPresenter.class)
     void initLoginWindow();
 
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(handlers = RootPresenter.class)
     void loadingShowWithAnchor(String progressGettingDemandDataring,
             Widget anchor);
@@ -253,9 +257,11 @@ public interface RootEventBus extends EventBus {
     void loadingHide();
     // Afer login
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(handlers = RootPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
 
+    // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget);
@@ -263,6 +269,7 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = CategorySelectorPresenter.class)
     void setCategoryListData(int newListPosition, ArrayList<CategoryDetail> list);
 
+    // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget);
@@ -271,25 +278,27 @@ public interface RootEventBus extends EventBus {
     void setLocalityData(int localityType,
             ArrayList<LocalityDetail> localityList);
 
+    // TODO Praso - mozeme odstranit? No usage
     /** Demand Creation common method calls. */
     @Event(handlers = RootPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
 
+    // TODO Praso - mozeme odstranit? No usage
     /** Home category display widget and related call. */
     @Event(handlers = CategoryDisplayPresenter.class)
     void initCategoryDisplay(SimplePanel holderWidget);
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(handlers = CategoryDisplayPresenter.class)
     void displayRootCategories(ArrayList<CategoryDetail> list);
 
+    // TODO Praso - mozeme odstranit? No usage
     @Event(handlers = CategoryDisplayPresenter.class)
     void setCategoryDisplayData(ArrayList<CategoryDetail> list);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-    @Event(handlers = RootHandler.class)
-    void createDemand(FullDemandDetail detail, Long clientId);
 
     @Event(handlers = RootHandler.class)
     void getUser();

@@ -18,7 +18,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
+import cz.poptavka.sample.client.user.demands.DemandEventBus;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
 import cz.poptavka.sample.client.user.widget.grid.UniversalGrid;
 import cz.poptavka.sample.shared.domain.demandsModule.ClientDemandDetail;
@@ -27,7 +27,7 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
 
 
 @Presenter(view = ClientList.class)
-public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList, DemandModuleEventBus> {
+public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList, DemandEventBus> {
 
     public interface IList extends LazyView {
         Widget getWidgetView();

@@ -22,9 +22,9 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
  *
  * @author Beho
  */
-@Presenter(view = DemandModuleView.class, multiple = true)
-public class DemandModulePresenter
-        extends BasePresenter<DemandModulePresenter.DemandsLayoutInterface, DemandModuleEventBus> {
+@Presenter(view = DemandView.class, multiple = true)
+public class DemandPresenter
+        extends BasePresenter<DemandPresenter.DemandsLayoutInterface, DemandEventBus> {
 
     public interface DemandsLayoutInterface {
 
@@ -206,7 +206,7 @@ public class DemandModulePresenter
                 break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);
-                view.setContent(new DemandsModuleWelcomeView());
+                view.setContent(new DemandsWelcomeView());
                 break;
         }
 

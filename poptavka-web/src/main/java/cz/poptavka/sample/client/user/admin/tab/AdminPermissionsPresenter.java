@@ -32,7 +32,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.PermissionDetail;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @Presenter(view = AdminPermissionsView.class)
 public class AdminPermissionsPresenter
-        extends LazyPresenter<AdminPermissionsPresenter.AdminPermissionsInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminPermissionsPresenter.AdminPermissionsInterface, AdminEventBus> {
 
     //history of changes
     private Map<Long, PermissionDetail> dataToUpdate = new HashMap<Long, PermissionDetail>();

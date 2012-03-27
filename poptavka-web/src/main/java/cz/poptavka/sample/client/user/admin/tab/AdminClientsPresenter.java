@@ -28,7 +28,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
 
@@ -43,7 +43,7 @@ import java.util.Map;
  */
 @Presenter(view = AdminClientsView.class)
 public class AdminClientsPresenter
-        extends LazyPresenter<AdminClientsPresenter.AdminClientsInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminClientsPresenter.AdminClientsInterface, AdminEventBus> {
 
     //history of changes
     private Map<Long, ClientDetail> dataToUpdate = new HashMap<Long, ClientDetail>();

@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public interface IDemandModuleView { //extends IsWidget {
+public interface IDemandView { //extends IsWidget {
 
 //    public interface IDemandModulePresenter {
 //    }

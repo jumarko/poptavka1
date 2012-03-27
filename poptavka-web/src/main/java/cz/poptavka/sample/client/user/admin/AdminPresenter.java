@@ -15,9 +15,9 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.tab.AdminModuleWelcomeView;
 import cz.poptavka.sample.client.user.widget.LoadingDiv;
 
-@Presenter(view = AdminModuleView.class, multiple = true)
-public class AdminModulePresenter
-        extends BasePresenter<AdminModulePresenter.AdminModuleInterface, AdminModuleEventBus> {
+@Presenter(view = AdminView.class, multiple = true)
+public class AdminPresenter
+        extends BasePresenter<AdminPresenter.AdminModuleInterface, AdminEventBus> {
 
     public interface AdminModuleInterface {
 

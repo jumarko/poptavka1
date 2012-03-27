@@ -16,9 +16,9 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 /**
  * @author Martin Slavkovsky
  */
-@Presenter(view = MessagesModuleView.class, multiple = true)
-public class MessagesModulePresenter
-        extends BasePresenter<MessagesModulePresenter.MessagesLayoutInterface, MessagesModuleEventBus> {
+@Presenter(view = MessagesView.class, multiple = true)
+public class MessagesPresenter
+        extends BasePresenter<MessagesPresenter.MessagesLayoutInterface, MessagesEventBus> {
 
     private SearchModuleDataHolder filter = null;
 

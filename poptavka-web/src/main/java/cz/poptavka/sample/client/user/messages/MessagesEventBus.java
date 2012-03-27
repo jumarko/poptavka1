@@ -22,15 +22,15 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = MessagesModuleView.class, module = MessagesModule.class)
-public interface MessagesModuleEventBus extends EventBus {
+@Events(startView = MessagesView.class, module = MessagesModule.class)
+public interface MessagesEventBus extends EventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = MessagesModulePresenter.class)
+    @Event(handlers = MessagesPresenter.class)
     void start();
 
     /**
@@ -39,7 +39,7 @@ public interface MessagesModuleEventBus extends EventBus {
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = MessagesModulePresenter.class)
+    @Event(handlers = MessagesPresenter.class)
     void forward();
 
     /**************************************************************************/
@@ -51,7 +51,7 @@ public interface MessagesModuleEventBus extends EventBus {
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - prosim doplnit ???
      */
-    @Event(handlers = MessagesModulePresenter.class, historyConverter = MessagesModuleHistoryConverter.class)
+    @Event(handlers = MessagesPresenter.class, historyConverter = MessagesHistoryConverter.class)
     String goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
@@ -82,10 +82,10 @@ public interface MessagesModuleEventBus extends EventBus {
     /* Business events handled by presenters                                  */
     /**************************************************************************/
     //display widget in content area
-    @Event(handlers = MessagesModulePresenter.class)
+    @Event(handlers = MessagesPresenter.class)
     void displayMain(Widget content);
 
-    @Event(handlers = MessagesModulePresenter.class)
+    @Event(handlers = MessagesPresenter.class)
     void displayDetail(Widget content);
 
 //    @Event(handlers = MessageListPresenter.class, passive = true)
@@ -121,29 +121,29 @@ public interface MessagesModuleEventBus extends EventBus {
      * @param messageToSend
      * @param type type of handling view
      */
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void sendMessage(MessageDetail messageToSend, String action);
     //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void deleteMessages(List<Long> messagesIds);
 
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void requestUserInfo(Long receiverId);
 
     /*
@@ -156,7 +156,7 @@ public interface MessagesModuleEventBus extends EventBus {
 //    void requestDemandDetail(Long demandId, ViewType type);
 //    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
 //    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
-    @Event(handlers = MessagesModuleMessageHandler.class)
+    @Event(handlers = MessagesHandler.class)
     void requestConversation(Long threadRootId, Long subRootId);
 
 }

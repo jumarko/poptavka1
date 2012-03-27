@@ -11,17 +11,17 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 
-public class SettingsModuleView extends Composite implements
-        SettingsModulePresenter.HomeSettingsViewInterface {
+public class SettingsView extends Composite implements
+        SettingsPresenter.HomeSettingsViewInterface {
 
     private static HomeSettingsViewUiBinder uiBinder = GWT
             .create(HomeSettingsViewUiBinder.class);
 
     interface HomeSettingsViewUiBinder extends
-            UiBinder<Widget, SettingsModuleView> {
+            UiBinder<Widget, SettingsView> {
     }
 
-    public SettingsModuleView() {
+    public SettingsView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 

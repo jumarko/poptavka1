@@ -17,15 +17,15 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public class DemandModuleView extends Composite
-    implements DemandModulePresenter.DemandsLayoutInterface, StyleInterface {
+public class DemandView extends Composite
+    implements DemandPresenter.DemandsLayoutInterface, StyleInterface {
 
     private static DemandsLayoutViewUiBinder uiBinder = GWT.create(DemandsLayoutViewUiBinder.class);
 
-    interface DemandsLayoutViewUiBinder extends UiBinder<Widget, DemandModuleView> {
+    interface DemandsLayoutViewUiBinder extends UiBinder<Widget, DemandView> {
     }
 
-    private static final Logger LOGGER = Logger.getLogger(DemandModuleView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(DemandView.class.getName());
 
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField
@@ -42,7 +42,7 @@ public class DemandModuleView extends Composite
 
     //BEHO devel button, delete after work is done
 
-    public DemandModuleView() {
+    public DemandView() {
         //Zaisti pridanie stylu - zeleny backgroud + horizontalne menu
         StyleResource.INSTANCE.layout().ensureInjected();
         //Zaisti pridanie styl - pre nastavenie velkosti body po prohlaseni

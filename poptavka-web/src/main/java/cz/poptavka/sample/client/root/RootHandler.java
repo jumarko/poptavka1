@@ -18,7 +18,6 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 @EventHandler
 public class RootHandler extends BaseEventHandler<RootEventBus> {
@@ -120,9 +119,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     });
         }
         LOGGER.info("ending category service call");
-    }
-
-    public void onCreateDemand(FullDemandDetail detail, Long clientId) {
     }
 
     /**

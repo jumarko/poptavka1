@@ -12,7 +12,7 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
  * @author slavkovsky.martin
  */
 @History(type = HistoryConverterType.DEFAULT, name = "demands")
-public class DemandModuleHistoryConverter implements HistoryConverter<DemandModuleEventBus> {
+public class DemandHistoryConverter implements HistoryConverter<DemandEventBus> {
 
     private static final String DEMANDS_CLIENT_MY_DEMANDS_TEXT = "demandsClientMyDemands";
     private static final String DEMANDS_CLIENT_OFFERS_TEXT = "demandsClientOffers";
@@ -58,7 +58,7 @@ public class DemandModuleHistoryConverter implements HistoryConverter<DemandModu
      * @param eventBus - DemandModuleEventBus
      */
     @Override
-    public void convertFromToken(String historyName, String param, DemandModuleEventBus eventBus) {
+    public void convertFromToken(String historyName, String param, DemandEventBus eventBus) {
         if (historyName.equals("goToDemandModule")) {
             //Musim naspat previest retazce na konstanty
             if (param.equals(DEMANDS_CLIENT_MY_DEMANDS_TEXT)) {

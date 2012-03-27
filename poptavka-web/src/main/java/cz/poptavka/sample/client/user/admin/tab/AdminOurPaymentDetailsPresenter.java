@@ -34,7 +34,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -54,7 +54,7 @@ import java.util.logging.Logger;
  */
 @Presenter(view = AdminOurPaymentDetailsView.class)
 public class AdminOurPaymentDetailsPresenter
-        extends LazyPresenter<AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface, AdminModuleEventBus>
+        extends LazyPresenter<AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface, AdminEventBus>
         implements HasValueChangeHandlers<String> {
 
     private final static Logger LOGGER = Logger.getLogger("AdminDemandsPresenter");

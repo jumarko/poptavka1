@@ -13,8 +13,8 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.demands.handler.DemandModuleContentHandler;
-import cz.poptavka.sample.client.user.demands.handler.DemandModuleMessageHandler;
+import cz.poptavka.sample.client.user.demands.handler.DemandContentHandler;
+import cz.poptavka.sample.client.user.demands.handler.DemandMessageHandler;
 import cz.poptavka.sample.client.user.demands.tab.ClientListPresenter;
 import cz.poptavka.sample.client.user.demands.tab.SupplierListPresenter;
 import cz.poptavka.sample.client.user.widget.DevelDetailWrapperPresenter;
@@ -25,15 +25,15 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = DemandModuleView.class, module = DemandModule.class)
-public interface DemandModuleEventBus extends EventBus {
+@Events(startView = DemandView.class, module = DemandModule.class)
+public interface DemandEventBus extends EventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = DemandModulePresenter.class)
+    @Event(handlers = DemandPresenter.class)
     void start();
 
     /**
@@ -42,7 +42,7 @@ public interface DemandModuleEventBus extends EventBus {
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = DemandModulePresenter.class)
+    @Event(handlers = DemandPresenter.class)
     void forward();
 
     /**************************************************************************/
@@ -55,7 +55,7 @@ public interface DemandModuleEventBus extends EventBus {
      * @param filter - defines data holder to be displayed in advanced search bar
      * @param loadWidget - doplnit prosim ???
      */
-    @Event(handlers = DemandModulePresenter.class, historyConverter = DemandModuleHistoryConverter.class)
+    @Event(handlers = DemandPresenter.class, historyConverter = DemandHistoryConverter.class)
     String goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(forwardToParent = true)
@@ -86,7 +86,7 @@ public interface DemandModuleEventBus extends EventBus {
     /**************************************************************************/
     // Forward methods don't need history converter because they have its owns
     //display widget in content area
-    @Event(handlers = DemandModulePresenter.class)
+    @Event(handlers = DemandPresenter.class)
     void displayView(Widget content);
 
     /**************************************************************************/
@@ -98,7 +98,7 @@ public interface DemandModuleEventBus extends EventBus {
      * @param messageToSend
      * @param type type of handling view
      */
-    @Event(handlers = DemandModuleMessageHandler.class)
+    @Event(handlers = DemandMessageHandler.class)
     void sendMessage(MessageDetail messageToSend, ViewType type);
     //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
 
@@ -112,7 +112,7 @@ public interface DemandModuleEventBus extends EventBus {
      * Request/Response Method pair
      * Demands for CLIENT - his demands
      */
-    @Event(handlers = DemandModuleContentHandler.class)
+    @Event(handlers = DemandContentHandler.class)
     void requestClientsDemands(SearchModuleDataHolder searchModuleDataHolder);
 
     @Event(handlers = ClientListPresenter.class)
@@ -122,17 +122,17 @@ public interface DemandModuleEventBus extends EventBus {
      * Request/Response Method pair
      * NEW demands for SUPPLIER
      */
-    @Event(handlers = DemandModuleContentHandler.class)
+    @Event(handlers = DemandContentHandler.class)
     void requestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder);
 
     @Event(handlers = SupplierListPresenter.class)
     void responseSupplierNewDemands(ArrayList<PotentialDemandMessage> result);
 
     /**************************************************************************/
-    @Event(handlers = DemandModuleContentHandler.class)
+    @Event(handlers = DemandContentHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
 
-    @Event(handlers = DemandModuleContentHandler.class)
+    @Event(handlers = DemandContentHandler.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
     /**************************************************************************/
@@ -144,7 +144,7 @@ public interface DemandModuleEventBus extends EventBus {
      * @param demandId
      * @param type
      */
-    @Event(handlers = DemandModuleContentHandler.class)
+    @Event(handlers = DemandContentHandler.class)
     void requestDemandDetail(Long demandId, ViewType type);
 
     @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
@@ -157,7 +157,7 @@ public interface DemandModuleEventBus extends EventBus {
      * @param userMessageId
      * @param userId
      */
-    @Event(handlers = DemandModuleMessageHandler.class)
+    @Event(handlers = DemandMessageHandler.class)
     void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
 
     @Event(handlers = DevelDetailWrapperPresenter.class)

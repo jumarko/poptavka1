@@ -13,7 +13,7 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
  * @author slavkovsky.martin
  */
 @History(type = HistoryConverterType.DEFAULT, name = "messages")
-public class MessagesModuleHistoryConverter implements HistoryConverter<MessagesModuleEventBus> {
+public class MessagesHistoryConverter implements HistoryConverter<MessagesEventBus> {
 
     private static final String MESSAGES_COMPOSE_NEW_TEXT = "messagesComposeNew";
     private static final String MESSAGES_COMPOSE_REPLY_TEXT = "messagesComposeReply";
@@ -59,7 +59,7 @@ public class MessagesModuleHistoryConverter implements HistoryConverter<Messages
      * @param eventBus - MessagesModuleEventBus
      */
     @Override
-    public void convertFromToken(String historyName, String param, MessagesModuleEventBus eventBus) {
+    public void convertFromToken(String historyName, String param, MessagesEventBus eventBus) {
         if (historyName.equals("goToMessagesModule")) {
             if (param.equals(MESSAGES_COMPOSE_NEW_TEXT)) {
                 eventBus.goToMessagesModule(null, Constants.MESSAGES_COMPOSE_NEW);

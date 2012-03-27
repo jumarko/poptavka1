@@ -9,7 +9,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.service.demand.DemandsRPCServiceAsync;
-import cz.poptavka.sample.client.user.demands.DemandModuleEventBus;
+import cz.poptavka.sample.client.user.demands.DemandEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
 
@@ -23,7 +23,7 @@ import cz.poptavka.sample.shared.domain.type.ViewType;
  * @author Praso
  */
 @EventHandler
-public class DemandModuleMessageHandler extends BaseEventHandler<DemandModuleEventBus> {
+public class DemandMessageHandler extends BaseEventHandler<DemandEventBus> {
 
 //    @Inject
 //    private MessageRPCServiceAsync messageService;

@@ -12,7 +12,7 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
  * @author slavkovsky.martin
  */
 @History(type = HistoryConverterType.DEFAULT, name = "administration")
-public class AdminModuleHistoryConverter implements HistoryConverter<AdminModuleEventBus> {
+public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
 
     private static final String ADMIN_ACCESS_ROLE_TEXT = "adminAccessRole";
     private static final String ADMIN_CLIENTS_TEXT = "adminClients";
@@ -77,7 +77,7 @@ public class AdminModuleHistoryConverter implements HistoryConverter<AdminModule
      * @param eventBus - AdminModuleEventBus
      */
     @Override
-    public void convertFromToken(String historyName, String param, AdminModuleEventBus eventBus) {
+    public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
         if (historyName.equals("goToAdminModule")) {
             //Musim naspat previest retazce na konstanty
             if (param.equals(ADMIN_ACCESS_ROLE_TEXT)) {

@@ -22,8 +22,8 @@ import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.Map;
 
-@RemoteServiceRelativePath("service/general")
-public interface GeneralRPCService extends RemoteService {
+@RemoteServiceRelativePath("service/admin")
+public interface AdminRPCService extends RemoteService {
 
     //---------------------- DEMAND ------------------------------------------------
     Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder);

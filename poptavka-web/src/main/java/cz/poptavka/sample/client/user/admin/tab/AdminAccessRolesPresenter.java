@@ -30,7 +30,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 
@@ -45,7 +45,7 @@ import java.util.Map;
  */
 @Presenter(view = AdminAccessRolesView.class)
 public class AdminAccessRolesPresenter
-        extends LazyPresenter<AdminAccessRolesPresenter.AdminAccessRolesInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminAccessRolesPresenter.AdminAccessRolesInterface, AdminEventBus> {
 
     //history of changes
     private Map<Long, AccessRoleDetail> dataToUpdate = new HashMap<Long, AccessRoleDetail>();

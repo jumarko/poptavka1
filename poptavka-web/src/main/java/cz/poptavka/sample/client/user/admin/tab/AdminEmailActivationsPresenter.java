@@ -33,7 +33,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.admin.AdminModuleEventBus;
+import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ import java.util.Map;
  */
 @Presenter(view = AdminEmailActivationsView.class)
 public class AdminEmailActivationsPresenter
-        extends LazyPresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, AdminModuleEventBus> {
+        extends LazyPresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, AdminEventBus> {
 
     //history of changes
     private Map<Long, EmailActivationDetail> dataToUpdate = new HashMap<Long, EmailActivationDetail>();

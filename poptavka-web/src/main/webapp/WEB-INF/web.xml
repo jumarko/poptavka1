@@ -196,12 +196,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>GeneralRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.general.GeneralRPCServiceImpl</servlet-class>
+        <servlet-name>AdminRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.admin.AdminRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GeneralRPCService</servlet-name>
-        <url-pattern>/poptavka/service/general</url-pattern>
+        <servlet-name>AdminRPCService</servlet-name>
+        <url-pattern>/poptavka/service/admin</url-pattern>
     </servlet-mapping>
 
     <servlet>

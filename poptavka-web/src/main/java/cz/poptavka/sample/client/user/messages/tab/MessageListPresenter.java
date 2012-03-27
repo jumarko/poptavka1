@@ -18,12 +18,12 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
-import cz.poptavka.sample.client.user.messages.MessagesModuleEventBus;
+import cz.poptavka.sample.client.user.messages.MessagesEventBus;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import java.util.Arrays;
 
 @Presenter(view = MessageList.class)
-public class MessageListPresenter extends LazyPresenter<MessageListPresenter.IListM, MessagesModuleEventBus> {
+public class MessageListPresenter extends LazyPresenter<MessageListPresenter.IListM, MessagesEventBus> {
 
     public interface IListM extends LazyView, IsWidget {
 

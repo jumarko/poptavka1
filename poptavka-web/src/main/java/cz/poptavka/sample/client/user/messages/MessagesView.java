@@ -15,14 +15,14 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public class MessagesModuleView extends Composite
-        implements MessagesModulePresenter.MessagesLayoutInterface, StyleInterface {
+public class MessagesView extends Composite
+        implements MessagesPresenter.MessagesLayoutInterface, StyleInterface {
 
     private static MessagesModuleViewUiBinder uiBinder = GWT.create(MessagesModuleViewUiBinder.class);
 
-    interface MessagesModuleViewUiBinder extends UiBinder<Widget, MessagesModuleView> {
+    interface MessagesModuleViewUiBinder extends UiBinder<Widget, MessagesView> {
     }
-    private static final Logger LOGGER = Logger.getLogger(MessagesModuleView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MessagesView.class.getName());
 //    @UiField Button myDemandsBtn, offersBtn, createDemandBtn;
     @UiField
     SimplePanel wrapperMain, wrapperDetail;
@@ -31,7 +31,7 @@ public class MessagesModuleView extends Composite
     @UiField
     SplitLayoutPanel splitPanelSouth;
 
-    public MessagesModuleView() {
+    public MessagesView() {
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
