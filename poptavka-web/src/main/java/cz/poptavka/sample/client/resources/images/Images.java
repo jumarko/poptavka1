@@ -111,4 +111,7 @@ public interface Images extends ClientBundle {
 
     @Source("status-work.png")
     ImageResource statusWork();
+
+    @Source("ctrl_mouseLeft.gif")
+    ImageResource ctrlMouseLeft();
 }

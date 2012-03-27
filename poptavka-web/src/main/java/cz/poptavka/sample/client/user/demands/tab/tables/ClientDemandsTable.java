@@ -11,7 +11,6 @@ import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
@@ -31,13 +30,14 @@ import java.util.Map;
 /**
  * Class represents table with asynchronous data provider and sort handler.
  * Class not used yet.
+ *
+ * TODO: implement lines: 76, 101, 148
+ *
  * @author Mato
  */
 public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
 
-    private final static long ID = Storage.getUser().getClientId();
-//    private final static long ID = Storage.getUser().getUserId();
-//    private final static long ID = 140L;
+    private final static long ID = Storage.getUser().getUserId();
     // Search Data Holder
     private SearchModuleDataHolder searchDataHolder;
     private ClientListPresenter presenter;
@@ -47,6 +47,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
     // Data Provider
     private AsyncDataProvider dataProvider = null;
     private int start = 0;
+    private int count = 0;
     // Sort Provider
     private AsyncHandler sortHandler = null;
     private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
@@ -56,23 +57,23 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
     };
     private List<String> gridColumns = Arrays.asList(columnNames);
 
-    public void createAsyncDataProvider(final int resultCount, final SearchModuleDataHolder searchDataHolder) {
+    public void createAsyncDataProvider(final int resultCount,
+            final SearchModuleDataHolder searchDataHolder) {
         this.searchDataHolder = searchDataHolder;
         this.start = 0;
+        this.count = 0;
         this.dataProvider = new AsyncDataProvider<ClientDemandDetail>() {
 
             @Override
             protected void onRangeChanged(HasData<ClientDemandDetail> display) {
                 display.setRowCount(resultCount);
                 start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
+                count = display.getVisibleRange().getLength();
 
                 orderColumns.clear();
                 orderColumns.put(gridColumns.get(0), OrderType.DESC);
                 //uncoment if implemented
-//                presenter.requestClientDemands(ID, start, start + length, searchDataHolder, orderColumns);
-
-//                eventBus.loadingHide();
+//                presenter.requestClientDemands(ID, start, count, searchDataHolder, orderColumns);
             }
         };
         this.dataProvider.addDataDisplay(this);
@@ -97,8 +98,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
                 orderColumns.put(gridColumns.get(getColumnIndex(column)), orderType);
 
                 //uncoment if implemented
-                //view.getPageSize()
-//                presenter.requestClientDemands(ID, start, getPageSize(), searchDataHolder, orderColumns);
+//                presenter.requestClientDemands(ID, start, count, searchDataHolder, orderColumns);
             }
         };
         this.addColumnSortHandler(sortHandler);
@@ -116,10 +116,10 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
         // Add a selection model so we can select cells.
         selectionModel = new SingleSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
         this.setSelectionModel(selectionModel);
-        setEmptyTableWidget(new Label("No data available."));
+        setEmptyTableWidget(new Label(Storage.MSGS.noData()));
 
         //init table
-        initTableColumns(selectionModel);
+        initTableColumns();
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -130,7 +130,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
     /**
      * Create all columns to the grid and define click actions.
      */
-    private void initTableColumns(final SelectionModel<ClientDemandDetail> selectionModel) {
+    private void initTableColumns() {
         //init column factory
         ColumnFactory<ClientDemandDetail> factory = new ColumnFactory<ClientDemandDetail>();
 

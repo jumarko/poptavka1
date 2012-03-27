@@ -10,8 +10,9 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
+
+import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.views.AdminClientsViewView;
@@ -38,9 +39,10 @@ import java.util.Map;
 
 @Presenter(view = SearchModuleView.class, multiple = true)
 public class SearchModulePresenter
+        //        extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
         extends BasePresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
 
-    public interface SearchModuleInterface {
+    public interface SearchModuleInterface { //extends LazyView {
 
         Widget getWidgetView();
 
@@ -56,9 +58,11 @@ public class SearchModulePresenter
 
         TextBox getSearchLocality();
 
-        void setCategories(Map<Long, String> categories);
-
         SearchModuleDataHolder getFilter();
+
+        Map<Long, String> getFilterCategories();
+
+        Map<Long, String> getFilterLocalities();
     }
 
     public interface SearchModulesViewInterface { //extends LazyView {
@@ -75,6 +79,7 @@ public class SearchModulePresenter
     }
 
     @Override
+//    public void bindView() {
     public void bind() {
         this.addSearchBtnClickHandler();
         this.addAdvSearchBtnClickHandler();
@@ -84,6 +89,15 @@ public class SearchModulePresenter
             public void onClick(ClickEvent event) {
                 eventBus.initCategoryWidget(view.getPopupPanel());
                 view.getSearchCategory().setText("category");
+                showPopupPanel();
+            }
+        });
+        view.getSearchLocality().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.initLocalityWidget(view.getPopupPanel());
+                view.getSearchLocality().setText("locality");
                 showPopupPanel();
             }
         });

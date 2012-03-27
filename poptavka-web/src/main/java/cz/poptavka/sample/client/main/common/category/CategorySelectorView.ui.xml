@@ -4,18 +4,33 @@
 
     <ui:with field='res' type='cz.poptavka.sample.client.resources.StyleResource'/>
 
-    <g:HTMLPanel>
+    <g:VerticalPanel>
         <g:ScrollPanel ui:field='masterPanel'>
             <g:Grid ui:field='categoryListHolder'>
                 <g:row>
                     <g:customCell>
-                    <g:HTML></g:HTML>
+                        <g:HTML></g:HTML>
 <!--                         <g:ListBox visibleItemCount='10' width="200"/> -->
                     </g:customCell>
                 </g:row>
             </g:Grid>
         </g:ScrollPanel>
-        <strong><ui:msg key="selectedCats">Selected</ui:msg>:</strong><br />
-        <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>
-    </g:HTMLPanel>
+        <g:HorizontalPanel>
+            <g:VerticalPanel>
+<!--                    <g:HTMLPanel>-->
+<!--                <strong>-->
+                <g:Label>
+                    <ui:msg key="selectedCats">Selected</ui:msg>:
+                </g:Label>
+<!--                </strong>-->
+<!--                <br />-->
+<!--                </g:HTMLPanel>-->
+                <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>
+            </g:VerticalPanel>
+            <g:VerticalPanel>
+                <g:Label>To select parent category use:</g:Label>
+                <g:Image resource='{res.images.ctrlMouseLeft}'/>
+            </g:VerticalPanel>
+        </g:HorizontalPanel>
+    </g:VerticalPanel>
 </ui:UiBinder>

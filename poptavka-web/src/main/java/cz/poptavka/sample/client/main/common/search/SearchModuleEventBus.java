@@ -47,6 +47,9 @@ public interface SearchModuleEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holder);
 
+    @Event(forwardToParent = true)
+    void initLocalityWidget(SimplePanel embedWidget);
+
     @Event(handlers = SearchModulePresenter.class)
     void clearSearchContent();
     // VIEWS INIT METHODS

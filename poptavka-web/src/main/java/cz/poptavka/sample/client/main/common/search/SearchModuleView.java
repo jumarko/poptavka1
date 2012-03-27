@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter.SearchModulesViewInterface;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private Map<Long, String> categories = new HashMap<Long, String>();
+    private Map<Long, String> localities = new HashMap<Long, String>();
 
     @Override
     public PopupPanel getPopupPanel() {
@@ -41,11 +43,18 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @UiField
     PopupPanel popupPanel;
     private PopupPanel categoryTooltip = new PopupPanel();
+    private PopupPanel localityTooltip = new PopupPanel();
 
     public SearchModuleView() {
+//    @Override
+//    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         popupPanel.setAutoHideEnabled(true);
         popupPanel.setAnimationEnabled(true);
+        //Aby sa nam nezobrazoval taky ramcek (popup bez widgetu) pri starte modulu
+        //Musi to byt takto? Neda sa to urobit krajsie? (len hide nefunguje)
+        popupPanel.show();
+        popupPanel.hide();
     }
 
     @Override
@@ -64,14 +73,20 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         return advSearchBtn;
     }
 
-//    @Override
-//    public Button getSearchAdvBtn() {
-//        return searchAdvBtn;
-//    }
     @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = ((SearchModulesViewInterface) popupPanel.getWidget()).getFilter();
         return data;
+    }
+
+    @Override
+    public Map<Long, String> getFilterCategories() {
+        return categories;
+    }
+
+    @Override
+    public Map<Long, String> getFilterLocalities() {
+        return localities;
     }
 
     @Override
@@ -88,11 +103,15 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public TextBox getSearchLocality() {
         return searchLocality;
     }
-
-    @Override
-    public void setCategories(Map<Long, String> categories) {
-        this.categories = categories;
-    }
+//    @Override
+//    public void setCategories(Map<Long, String> categories) {
+//        this.categories = categories;
+//    }
+//
+//    @Override
+//    public void setLocalities(Map<Long, String> localities) {
+//        this.localities = localities;
+//    }
     // Handlers
 //    @UiHandler("advSearchBtn")
 //    void handleSearchContentClick(ClickEvent event) {
@@ -121,24 +140,30 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
 //            popupPanel.show();
 //        }
 //    }
-    private boolean advSearchBtnClicked = false;
+    //0 - searchContect
+    //1 - searchCategory
+    //2 - searchLocality
+    //3 - advSearchButton
+    private int action = -1;
 
+    /**
+     * SEARCH CONTENT
+     */
     @UiHandler("searchContent")
     void handleListBoxClick(ClickEvent event) {
+        action = 0;
     }
 
-    @UiHandler("advSearchBtn")
-    void handleAdvSearchBtnClick(ClickEvent event) {
-        advSearchBtnClicked = true;
-    }
-
+    /**
+     * SEARCH CATEGORY
+     */
     @UiHandler("searchCategory")
     void handleSearchCategoryClick(ClickEvent event) {
-        advSearchBtnClicked = false;
+        action = 1;
     }
 
     @UiHandler("searchCategory")
-    void handlerSearchContentMouserOverEvent(MouseOverEvent event) {
+    void handlerSearchCategoryMouserOverEvent(MouseOverEvent event) {
         if (categories.isEmpty()) {
             return;
         }
@@ -157,15 +182,73 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     @UiHandler("searchCategory")
-    void handlerSearchContentMouserOutEvent(MouseOutEvent event) {
+    void handlerSearchCategoryMouserOutEvent(MouseOutEvent event) {
         categoryTooltip.hide();
     }
 
-    @UiHandler("popupPanel")
-    void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
-        if (advSearchBtnClicked) {
+    /**
+     * SEARCH LOCALITY
+     */
+    @UiHandler("searchLocality")
+    void handleSearchLocalityClick(ClickEvent event) {
+        action = 2;
+    }
+
+    @UiHandler("searchLocality")
+    void handlerSearchLocalityMouserOverEvent(MouseOverEvent event) {
+        if (localities.isEmpty()) {
             return;
         }
+        Widget source = (Widget) event.getSource();
+        int left = source.getAbsoluteLeft();
+        int top = source.getAbsoluteTop();
+        localityTooltip.setPopupPosition(left + 30, top + 30);
+
+        VerticalPanel list = new VerticalPanel();
+        list.add(new Label("Filter localities:"));
+        for (String cat : localities.values()) {
+            list.add(new Label(cat));
+        }
+        localityTooltip.setWidget(list);
+        localityTooltip.show();
+    }
+
+    @UiHandler("searchLocality")
+    void handlerSearchLocalityMouserOutEvent(MouseOutEvent event) {
+        localityTooltip.hide();
+    }
+
+    /**
+     * BUTTONS
+     */
+    @UiHandler("advSearchBtn")
+    void handleAdvSearchBtnClick(ClickEvent event) {
+        action = 3;
+    }
+
+    /**
+     * POPUP
+     */
+    @UiHandler("popupPanel")
+    void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
+        switch (action) {
+            case 0://searchContext
+                break;
+            case 1://searchCategory
+                searchCategoriesAction();
+                break;
+            case 2://searchLocality
+                searchLocalitiesAction();
+                break;
+            case 3://advSearch
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void searchCategoriesAction() {
         categories.clear();
         CategorySelectorInterface categoryValues =
                 (CategorySelectorInterface) popupPanel.getWidget();
@@ -180,6 +263,24 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         }
         if (!categories.isEmpty()) {
             searchCategory.setText("filter:" + categories.values().toString());
+        }
+    }
+
+    private void searchLocalitiesAction() {
+        localities.clear();
+        LocalitySelectorInterface localityValues =
+                (LocalitySelectorInterface) popupPanel.getWidget();
+
+        //localities
+        for (int i = 0; i < localityValues.getSelectedList().getItemCount(); i++) {
+            localities.put(Long.valueOf(
+                    localityValues.getSelectedList().getValue(i)),
+                    //                    locality.getSelectedLocalityCodes().get(i)),
+                    localityValues.getSelectedList().getItemText(i));
+
+        }
+        if (!localities.isEmpty()) {
+            searchLocality.setText("filter:" + localities.values().toString());
         }
     }
 }

@@ -152,6 +152,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 URL.encode("/poptavka/j_spring_security_logout"));
         builder.setHeader("Content-type", "application/x-www-form-urlencoded");
+        //remove user from session management to force user input login information
+        Storage.setUser(null);
         try {
             Request request = builder.sendRequest(null,
                     new RequestCallback() {
