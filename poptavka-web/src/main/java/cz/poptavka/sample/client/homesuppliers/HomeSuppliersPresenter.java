@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.homesuppliers;
 import com.google.gwt.event.dom.client.ChangeEvent;
 
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -57,6 +58,10 @@ public class HomeSuppliersPresenter
 
         Label getFilterLabel();
 
+        Label getCategoryLoadingLabel();
+
+        CellList getCategoriesList();
+
         int getPageSize();
 
         ListBox getPageSizeCombo();
@@ -80,8 +85,6 @@ public class HomeSuppliersPresenter
         SingleSelectionModel getSelectionSupplierModel();
 
         SplitLayoutPanel getSplitter();
-
-        void displaySubCategories(ArrayList<CategoryDetail> categories);
 
         void displaySuppliersDetail(FullSupplierDetail userDetail);
 
@@ -154,6 +157,9 @@ public class HomeSuppliersPresenter
             view.getFilterLabel().setVisible(true);
             view.getChildSection().setVisible(true);
             view.getRootSection().setVisible(false);
+            view.getCategoryLoadingLabel().setText(Storage.MSGS.loadingCategories());
+            view.getCategoryLoadingLabel().setVisible(true);
+            view.getCategoriesList().setVisible(false);
             dataProvider.updateRowCount(0, false);
             // create path
             eventBus.getCategoryParents(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
@@ -248,6 +254,9 @@ public class HomeSuppliersPresenter
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
                 if (selected != null) {
+                    view.getCategoryLoadingLabel().setText(Storage.MSGS.loadingCategories());
+                    view.getCategoryLoadingLabel().setVisible(true);
+                    view.getCategoriesList().setVisible(false);
                     wasSelection = true;
                     view.hideSuppliersDetail();
                     view.getSelectionSupplierModel().setSelected(
@@ -316,8 +325,11 @@ public class HomeSuppliersPresenter
      */
     /* SUB CATEGORIES */
     public void onDisplaySubCategories(ArrayList<CategoryDetail> subcategories, Long parentCategory) {
+        view.getCategoryLoadingLabel().setVisible(false);
+        view.getCategoriesList().setVisible(true);
         //Force Loading indicator to show up when new data is retrieving
-        view.displaySubCategories(subcategories);
+        view.getCategoriesList().setRowCount(subcategories.size(), true);
+        view.getCategoriesList().setRowData(0, subcategories);
 
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
             searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));

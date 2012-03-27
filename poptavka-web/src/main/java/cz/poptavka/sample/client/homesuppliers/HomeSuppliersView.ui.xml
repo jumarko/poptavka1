@@ -14,6 +14,7 @@
         <g:HTMLPanel ui:field="child">
             <g:FlowPanel ui:field="path" />
             <g:HorizontalPanel>
+                <g:Label ui:field="categoryLoadingLabel"/>
                 <c:CellList ui:field = "categoriesList" width="300px"/>
             <!--<g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="split">
                 <g:west size="300" >-->

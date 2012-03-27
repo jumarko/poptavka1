@@ -62,7 +62,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true)
     ListBox pageSizeCombo;
     @UiField
-    Label reklama, filterLabel;
+    Label reklama, filterLabel, categoryLoadingLabel;
     @UiField
     HTMLPanel detail, child;
     @UiField
@@ -109,6 +109,11 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     @Override
+    public Label getCategoryLoadingLabel() {
+        return categoryLoadingLabel;
+    }
+
+    @Override
     public Widget getWidgetView() {
         return this;
     }
@@ -135,6 +140,11 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     @Override
+    public CellList getCategoriesList() {
+        return categoriesList;
+    }
+
+    @Override
     public SimplePager getPager() {
         return pager;
     }
@@ -157,12 +167,6 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public Button getContactBtn() {
         return contactBtn;
-    }
-
-    @Override
-    public void displaySubCategories(ArrayList<CategoryDetail> subCategories) {
-        categoriesList.setRowCount(subCategories.size(), true);
-        categoriesList.setRowData(0, subCategories);
     }
 
     @Override
