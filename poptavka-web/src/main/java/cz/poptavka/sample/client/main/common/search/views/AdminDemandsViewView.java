@@ -14,11 +14,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.demand.DemandType.Type;
 
-public class AdminDemandsViewView extends Composite {
+public class AdminDemandsViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -33,9 +35,9 @@ public class AdminDemandsViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    //    @Override
-//    public void createView() {
-    public AdminDemandsViewView() {
+    @Override
+    public void createView() {
+//    public AdminDemandsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         demandType.addItem(Storage.MSGS.select());
         for (Type type : DemandType.Type.values()) {
@@ -176,5 +178,15 @@ public class AdminDemandsViewView extends Composite {
         endDateTo.setValue(null);
         demandType.setSelectedIndex(0);
         demandStatus.setSelectedIndex(0);
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

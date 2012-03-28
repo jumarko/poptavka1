@@ -14,10 +14,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
-public class AdminMessagesViewView extends Composite {
+public class AdminMessagesViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -33,9 +35,9 @@ public class AdminMessagesViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    //    @Override
-//    public void createView() {
-    public AdminMessagesViewView() {
+    @Override
+    public void createView() {
+//    public AdminMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         type.addItem(Storage.MSGS.select());
         for (MessageType msgtype : MessageType.values()) {
@@ -276,4 +278,16 @@ public class AdminMessagesViewView extends Composite {
         type.setSelectedIndex(0);
         state.setSelectedIndex(0);
     }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }

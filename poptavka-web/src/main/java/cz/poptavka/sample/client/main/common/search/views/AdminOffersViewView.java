@@ -14,10 +14,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.offer.OfferState.Type;
 
-public class AdminOffersViewView extends Composite {
+public class AdminOffersViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -33,9 +35,9 @@ public class AdminOffersViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    //    @Override
-//    public void createView() {
-    public AdminOffersViewView() {
+    @Override
+    public void createView() {
+//    public AdminOffersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         state.addItem(Storage.MSGS.select());
         for (Type type : OfferState.Type.values()) {
@@ -218,4 +220,15 @@ public class AdminOffersViewView extends Composite {
         finnishTo.setValue(null);
         state.setSelectedIndex(0);
     }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

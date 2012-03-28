@@ -36,9 +36,9 @@ public class HomeDemandViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-//    @Override
-//    public void createView() {
-    public HomeDemandViewView() {
+    @Override
+    public void createView() {
+//    public HomeDemandViewView() {
         initWidget(uiBinder.createAndBindUi(this));
 
         demandTypes.addItem(Storage.MSGS.select());
@@ -84,11 +84,6 @@ public class HomeDemandViewView extends Composite implements
             data.getHomeDemands().setEndDate(finnishDate.getValue());
         }
         return data;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     @Override

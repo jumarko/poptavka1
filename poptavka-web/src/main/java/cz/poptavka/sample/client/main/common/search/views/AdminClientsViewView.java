@@ -8,11 +8,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class AdminClientsViewView extends Composite {
+public class AdminClientsViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -23,9 +26,9 @@ public class AdminClientsViewView extends Composite {
     @UiField
     Button clearBtn;
 
-//    @Override
-//    public void createView() {
-    public AdminClientsViewView() {
+    @Override
+    public void createView() {
+//    public AdminClientsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         ratingFrom.setText("0");
         ratingTo.setText("100");
@@ -128,5 +131,15 @@ public class AdminClientsViewView extends Composite {
         lastName.setText("");
         ratingFrom.setText("0");
         ratingTo.setText("100");
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

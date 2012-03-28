@@ -12,8 +12,10 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class AdminInvoicesViewView extends Composite {
+public class AdminInvoicesViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -27,9 +29,9 @@ public class AdminInvoicesViewView extends Composite {
     @UiField
     Button clearBtn;
 
-//    @Override
-//    public void createView() {
-    public AdminInvoicesViewView() {
+    @Override
+    public void createView() {
+//    public AdminInvoicesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -162,4 +164,16 @@ public class AdminInvoicesViewView extends Composite {
         variableSymbol.setText("");
         paymentMethod.setSelectedIndex(0);
     }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }

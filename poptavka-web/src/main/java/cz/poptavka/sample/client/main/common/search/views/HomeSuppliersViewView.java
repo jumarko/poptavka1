@@ -30,9 +30,8 @@ public class HomeSuppliersViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-//    @Override
-    public HomeSuppliersViewView() {
-//    public void createView() {
+    @Override
+    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         ratingFrom.setText("0");
         ratingTo.setText("100");
@@ -65,11 +64,6 @@ public class HomeSuppliersViewView extends Composite implements
             data.getHomeSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
         }
         return data;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     @Override

@@ -7,11 +7,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class MessagesTabViewView extends Composite {
+public class MessagesTabViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -22,7 +25,9 @@ public class MessagesTabViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    public MessagesTabViewView() {
+    @Override
+    public void createView() {
+//    public MessagesTabViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -63,5 +68,15 @@ public class MessagesTabViewView extends Composite {
         sender.setText("");
         subject.setText("");
         body.setText("");
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

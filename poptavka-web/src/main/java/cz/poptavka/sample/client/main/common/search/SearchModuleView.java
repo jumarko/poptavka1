@@ -45,9 +45,9 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     private PopupPanel categoryTooltip = new PopupPanel();
     private PopupPanel localityTooltip = new PopupPanel();
 
-    public SearchModuleView() {
-//    @Override
-//    public void createView() {
+//    public SearchModuleView() {
+    @Override
+    public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         popupPanel.setAutoHideEnabled(true);
         popupPanel.setAnimationEnabled(true);

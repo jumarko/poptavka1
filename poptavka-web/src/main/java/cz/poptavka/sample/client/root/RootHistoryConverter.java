@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.root;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Storage;
 
 /**
  * Musime pouzit history aj na methody atHome a atAccount, ktore maju na starosti
@@ -55,30 +56,47 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, RootEventBus eventBus) {
-        if (historyName.equals("atHome")) {
-            if (action.equals("back")) {
-                action = "forward";
-                eventBus.setHistoryStoredForNextOne(false);
-                eventBus.getHistory().back();
-            } else {
-                action = "back";
-                eventBus.setHistoryStoredForNextOne(false);
-                eventBus.getHistory().forward();
-            }
-            eventBus.atAccount(Integer.valueOf(param));
+        if (action.equals("back")) {
+            action = "forward";
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.getHistory().back();
+        } else {
+            action = "back";
+            eventBus.setHistoryStoredForNextOne(false);
+            eventBus.getHistory().forward();
         }
-        if (historyName.equals("atAccount")) {
-            if (action.equals("back")) {
-                action = "forward";
-                eventBus.setHistoryStoredForNextOne(false);
-                eventBus.getHistory().back();
-            } else {
-                action = "back";
-                eventBus.setHistoryStoredForNextOne(false);
-                eventBus.getHistory().forward();
-            }
+        if (Storage.getUser() == null) {
+//            LoginPopupPresenter login = eventBus.addHandler(LoginPopupPresenter.class);
+//            login.onLogin();
+//            if (Cookie.get...)
+            eventBus.atAccount(Integer.valueOf(param));
+        } else {
             eventBus.atHome(Integer.valueOf(param));
         }
+//        if (historyName.equals("atHome")) {
+//            if (action.equals("back")) {
+//                action = "forward";
+//                eventBus.setHistoryStoredForNextOne(false);
+//                eventBus.getHistory().back();
+//            } else {
+//                action = "back";
+//                eventBus.setHistoryStoredForNextOne(false);
+//                eventBus.getHistory().forward();
+//            }
+//            eventBus.atAccount(Integer.valueOf(param));
+//        }
+//        if (historyName.equals("atAccount")) {
+//            if (action.equals("back")) {
+//                action = "forward";
+//                eventBus.setHistoryStoredForNextOne(false);
+//                eventBus.getHistory().back();
+//            } else {
+//                action = "back";
+//                eventBus.setHistoryStoredForNextOne(false);
+//                eventBus.getHistory().forward();
+//            }
+//            eventBus.atHome(Integer.valueOf(param));
+//        }
     }
 
     @Override

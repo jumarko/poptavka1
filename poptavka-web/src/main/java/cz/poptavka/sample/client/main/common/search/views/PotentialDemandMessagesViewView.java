@@ -13,8 +13,10 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class PotentialDemandMessagesViewView extends Composite {
+public class PotentialDemandMessagesViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -31,7 +33,9 @@ public class PotentialDemandMessagesViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    public PotentialDemandMessagesViewView() {
+    @Override
+    public void createView() {
+//    public PotentialDemandMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         urgent.addItem("select urgention");
         urgent.addItem("less normal");
@@ -133,5 +137,15 @@ public class PotentialDemandMessagesViewView extends Composite {
         createdFrom.setValue(null);
         createdTo.setValue(null);
         urgent.setSelectedIndex(0);
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

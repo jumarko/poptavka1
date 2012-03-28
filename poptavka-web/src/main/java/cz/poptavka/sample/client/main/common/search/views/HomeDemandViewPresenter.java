@@ -2,11 +2,10 @@ package cz.poptavka.sample.client.main.common.search.views;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
+import com.mvp4g.client.presenter.LazyPresenter;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleEventBus;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -15,22 +14,20 @@ import java.util.ArrayList;
 
 @Presenter(view = HomeDemandViewView.class)
 public class HomeDemandViewPresenter
-        //        extends LazyPresenter<SearchModulePresenter.SearchModulesViewInterface, SearchModuleEventBus> {
-        extends BasePresenter<SearchModulePresenter.SearchModulesViewInterface, SearchModuleEventBus> {
-
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private static final int COLUMNS = 4;
+                extends LazyPresenter<SearchModulePresenter.SearchModulesViewInterface, SearchModuleEventBus> {
+//        extends BasePresenter<SearchModulePresenter.SearchModulesViewInterface, SearchModuleEventBus> {
 
     @Override
-//    public void bindView() {
-    public void bind() {
+    public void bindView() {
+//    public void bind() {
     }
 
-    public void onInitHomeDemandView(PopupPanel popupPanel) {
-        eventBus.requestCategories();
-        eventBus.requestLocalities();
-        popupPanel.setWidget(view.getWidgetView());
-    }
+    //Mato - if unused delete
+//    public void onInitHomeDemandView(PopupPanel popupPanel) {
+//        eventBus.requestCategories();
+//        eventBus.requestLocalities();
+//        popupPanel.setWidget(view.getWidgetView());
+//    }
 
     public void onStart() {
         // TODO praso
@@ -66,7 +63,7 @@ public class HomeDemandViewPresenter
 
             @Override
             public void execute() {
-                box.addItem(MSGS.allCategories());
+                box.addItem(Storage.MSGS.allCategories());
                 for (int i = 0; i < list.size(); i++) {
                     box.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
                 }

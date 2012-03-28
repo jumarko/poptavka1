@@ -8,12 +8,15 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class AdminEmailActivationViewView extends Composite {
+public class AdminEmailActivationViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -26,9 +29,9 @@ public class AdminEmailActivationViewView extends Composite {
     @UiField
     Button clearBtn;
 
-//    @Override
-//    public void createView() {
-    public AdminEmailActivationViewView() {
+    @Override
+    public void createView() {
+//    public AdminEmailActivationViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -99,5 +102,15 @@ public class AdminEmailActivationViewView extends Composite {
         activationLink.setText("");
         timeoutFrom.setValue(null);
         timeoutTo.setValue(null);
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

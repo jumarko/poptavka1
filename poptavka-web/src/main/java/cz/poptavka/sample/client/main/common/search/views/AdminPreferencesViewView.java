@@ -8,11 +8,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 
-public class AdminPreferencesViewView extends Composite {
+public class AdminPreferencesViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -23,7 +26,9 @@ public class AdminPreferencesViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    public AdminPreferencesViewView() {
+    @Override
+    public void createView() {
+//    public AdminPreferencesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -94,5 +99,15 @@ public class AdminPreferencesViewView extends Composite {
         key.setText("");
         value.setText("");
         description.setText("");
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

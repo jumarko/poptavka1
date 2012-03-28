@@ -13,12 +13,14 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 
-public class AdminSuppliersViewView extends Composite {
+public class AdminSuppliersViewView extends Composite implements
+        SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -31,7 +33,9 @@ public class AdminSuppliersViewView extends Composite {
     @UiField
     Button clearBtn;
 
-    public AdminSuppliersViewView() {
+    @Override
+    public void createView() {
+//    public AdminSuppliersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         //Rating
         ratingFrom.setText("0");
@@ -189,5 +193,15 @@ public class AdminSuppliersViewView extends Composite {
         verified.setSelectedIndex(0);
         idFrom.setText("");
         idTo.setText("");
+    }
+
+    @Override
+    public ListBox getCategoryList() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ListBox getLocalityList() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
