@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.main.login;
 
+import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -95,14 +96,15 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 GWT.log("exception during login");
             }
             //DEVEL ONLY FOR FAST LOGIN
-            userService.loginUser(new UserDetail(username, password), new AsyncCallback<String>() {
+            userService.loginUser(new UserDetail(username, password), new AsyncCallback<LoggedUserDetail>() {
                 @Override
                 public void onFailure(Throwable arg0) {
                     view.setUnknownError();
                 }
 
                 @Override
-                public void onSuccess(String sessionId) {
+                public void onSuccess(LoggedUserDetail loggedUser) {
+                    final String sessionId = "id=" + loggedUser.getUserId();
                     if (sessionId != null) {
                         // TODO Praso - workaround for developoment purposes
                         setSessionID(sessionId);

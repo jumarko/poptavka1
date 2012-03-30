@@ -1,5 +1,7 @@
 package cz.poptavka.sample.server.service.user;
 
+import cz.poptavka.sample.service.user.LoginService;
+import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
     private SupplierService supplierService;
+    private LoginService loginService;
 
     @Autowired
     public void setSupplierService(SupplierService roleService) {
@@ -34,25 +37,16 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         this.generalService = generalService;
     }
 
-    @Override
-    public String loginUser(UserDetail userDetail) {
+    @Autowired
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
+    }
 
-        // TODO BACKEND - pripravit novu servisu, ktora nam overi aj usernam a password. Predany Password sa musi na
-        // backende enkryptovat jednosmernou encryptovacou funkcionu a potom sa porovna s passwordom z DB. Zatial je
-        // overovanie hesla vypnute a overuje sa len username
-//        final User user = (User) generalService.searchUnique(
-//                new Search(User.class).addFilterEqual(
-//                    "email", userDetail.getEmail()).addFilterEqual(
-//                        "password", userDetail.getPassword()));
-        final User user = (User) generalService.searchUnique(
-                new Search(User.class).addFilterEqual("email", userDetail.getEmail()));
-        if (user == null) {
-            System.out.println("NULL branch");
-            return null;
-        }
-        userDetail.setUserId(user.getId());
-        System.out.println("USER branch");
-        return "id=" + userDetail.getUserId();
+
+    @Override
+    public LoggedUserDetail loginUser(UserDetail userDetail) {
+        final User user = this.loginService.loginUser(userDetail.getEmail(), userDetail.getPassword());
+        return new LoggedUserDetail(user.getId(), user.getEmail(), user.getAccessRoles());
     }
 
     @Override

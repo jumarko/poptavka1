@@ -96,7 +96,10 @@
         <constructor-arg ref="auditDao" />
     </bean>
 
-    <bean id="loginService" class="cz.poptavka.sample.service.user.LoginServiceImpl"/>
+    <bean id="loginService" class="cz.poptavka.sample.service.user.LoginServiceImpl">
+        <constructor-arg ref="generalService" />
+        <constructor-arg ref="passwordEncryptor" />
+    </bean>
 
     <bean id="supplierService" class="cz.poptavka.sample.service.user.SupplierServiceImpl">
         <constructor-arg ref="generalService" />
