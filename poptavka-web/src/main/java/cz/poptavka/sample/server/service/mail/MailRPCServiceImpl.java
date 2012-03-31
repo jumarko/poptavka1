@@ -1,22 +1,14 @@
 package cz.poptavka.sample.server.service.mail;
 
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMessage.RecipientType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
 
 import cz.poptavka.sample.client.service.demand.MailRPCService;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.service.mail.MailService;
 
 /**
  * RPC service implementation for sending mails
@@ -30,6 +22,10 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
     private static final Logger LOGGER = LoggerFactory
             .getLogger(MailRPCServiceImpl.class);
 
+    private static final String NOTIFICATION_MAIL_FROM = "poptavka1@gmail.com";
+
+    private MailService mailService;
+
     /**
      * Method used to send messages using gmail SMTP server, in future possibly
      * replaced by our own SMTP server.
@@ -40,46 +36,26 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
             String sender) {
         LOGGER.info("Sending mail message to: " + recipient);
 
-        final String username = "kolkar100@gmail.com";
-        final String password = "8809117823";
+        final SimpleMailMessage exceptionNotificationMessage = new SimpleMailMessage();
+        exceptionNotificationMessage.setFrom(NOTIFICATION_MAIL_FROM);
+        exceptionNotificationMessage.setTo(recipient);
 
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-
-        Message simpleMessage = new MimeMessage(session);
-
-        InternetAddress fromAddress = null;
-        InternetAddress toAddress = null;
-        try {
-            fromAddress = new InternetAddress(sender);
-            toAddress = new InternetAddress(recipient);
-        } catch (AddressException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        exceptionNotificationMessage.setSubject(subject);
+        exceptionNotificationMessage.setText(body);
 
         try {
-            simpleMessage.setFrom(fromAddress);
-            simpleMessage.setRecipient(RecipientType.TO, toAddress);
-            simpleMessage.setSubject(subject);
-            simpleMessage.setText(body);
-
-            Transport.send(simpleMessage);
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // send asynchronously to avoid blocking of normal execution
+            this.mailService.sendAsync(exceptionNotificationMessage);
+        } catch (MailException me) {
+            LOGGER.warn("An error occured while sending exception notification mail: ", me);
         }
+
         return true;
+    }
+
+    @Autowired
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
     }
 
 }
