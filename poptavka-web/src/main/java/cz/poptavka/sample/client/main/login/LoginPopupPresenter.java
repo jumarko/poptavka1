@@ -1,6 +1,5 @@
 package cz.poptavka.sample.client.main.login;
 
-import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -20,7 +19,9 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.root.RootEventBus;
+import cz.poptavka.sample.client.service.demand.MailRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
+import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
@@ -30,6 +31,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         .getName());
 
     private static final int COOKIE_TIMEOUT = 1000 * 60 * 60 * 24;
+
+    private MailRPCServiceAsync mailService = null;
 
     public interface LoginPopupInterface extends LazyView {
 
@@ -61,6 +64,20 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     /** Real html login. SHOULD/WILL be used in prod */
     public void doLogin() {
         if (view.isValid()) {
+            // for testing purpose, if sending mails works
+            mailService.sendMail("kolkar100@gmail.com", "TestMessage", "Test",
+                    "poptavka@poptavam.com", new AsyncCallback<Boolean>() {
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            GWT.log("message not sent succesfully");
+                        }
+
+                        @Override
+                        public void onSuccess(Boolean result) {
+                            GWT.log("message sent succesfully");
+                        }
+                    });
             view.setLoadingStatus();
             String username = view.getLogin();
             String password = view.getPassword();
@@ -124,6 +141,11 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 //            eventBus.atAccount();
 //            hideView();
         }
+    }
+
+    @Inject
+    void setMailService(MailRPCServiceAsync service) {
+        mailService = service;
     }
 
     public void hideView() {

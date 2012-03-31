@@ -120,6 +120,15 @@
         <servlet-name>DemandCreationRPCService</servlet-name>
         <url-pattern>/poptavka/service/demandcreation</url-pattern>
     </servlet-mapping>
+    
+        <servlet>
+        <servlet-name>MailRPCService</servlet-name>
+        <servlet-class>cz.poptavka.sample.server.service.mail.MailRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MailRPCService</servlet-name>
+        <url-pattern>/poptavka/service/mail</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>HomeDemandsRPCService</servlet-name>
