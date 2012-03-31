@@ -101,9 +101,7 @@ public class GeneralServiceIntegrationTest extends DBUnitBaseTest {
         Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(1).getId(), Is.is(1L));
         Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(2).getId(), Is.is(10L));
         Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(3).getId(), Is.is(5L));
-        // the last one could be any demand which has an empty createdDate
-        Assert.assertNull("Last demand should have an empty createdDate",
-                demandsSortedByCreatedDate.get(4).getCreatedDate());
+        // the fifth demand can be any, because many of demands have the same createdDate
     }
 
 

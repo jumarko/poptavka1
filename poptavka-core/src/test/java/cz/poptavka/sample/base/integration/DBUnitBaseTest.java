@@ -68,8 +68,8 @@ public abstract class DBUnitBaseTest extends BasicIntegrationTest {
 
     // Commands for disabling/enabling foreign key checks - useful in some corner cases, e.g. circular
     // foreign key references
-    private static final String DISABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET REFERENTIAL_INTEGRITY FALSE";
-    private static final String ENABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET REFERENTIAL_INTEGRITY TRUE";
+    private static final String DISABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET DATABASE REFERENTIAL INTEGRITY FALSE";
+    private static final String ENABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET DATABASE REFERENTIAL INTEGRITY TRUE";
     private boolean foreignKeyChecksDisabled = false;
 
     @Autowired

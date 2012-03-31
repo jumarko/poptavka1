@@ -13,6 +13,15 @@
         <property name="url" value="${db.url}" />
         <property name="username" value="${db.username}" />
         <property name="password" value="${db.password}" />
+
+        <!-- DBCP connection pool - see DbcpConnectionProvider too -->
+            <!--validationQuery to ensure that connection does not "read time out"!-->
+        <property name="validationQuery" value="${db.connection.pool.validationQuery}" />
+        <property name="initialSize" value="${db.connection.pool.initialSize}" />
+        <property name="maxActive" value="${db.connection.pool.maxActive}" />
+        <property name="maxIdle" value="${db.connection.pool.maxIdle}" />
+        <property name="minIdle" value="${db.connection.pool.minIdle}" />
+
     </bean>
 
     <!-- JPA EntityManagerFactory -->
