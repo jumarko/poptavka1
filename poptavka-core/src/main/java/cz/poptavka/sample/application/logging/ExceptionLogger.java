@@ -81,6 +81,8 @@ public class ExceptionLogger {
     }
 
 
+
+    //--------------------------------------------------- PRIVATE STUFF ------------------------------------------------
     private void sendNotificationMail(Exception exception) {
         if (CollectionUtils.isNotEmpty(recipients)) {
             Preconditions.checkNotNull(exception);
