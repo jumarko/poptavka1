@@ -69,6 +69,8 @@
         <gwt-syncproxy.version>2.0</gwt-syncproxy.version>
         <javax-mail.version>1.4.4</javax-mail.version>
         <jasypt.version>1.9.0</jasypt.version>
+        <tomcat.jdbc.version>7.0.21</tomcat.jdbc.version>
+        <tomcat.juli.version>6.0.16</tomcat.juli.version>
     </properties>
 
     <pluginRepositories>
@@ -163,6 +165,13 @@
             <id>repository.springframework.maven.milestone</id>
             <name>Spring Framework Maven Milestone Repository</name>
             <url>http://maven.springframework.org/milestone</url>
+        </repository>
+
+        <!--for Tomcat JDBC connection pool - set in data-acess.xml -->
+        <repository>
+            <id>com.springsource.repository.bundles.release</id>
+            <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+            <url>http://repository.springsource.com/maven/bundles/release</url>
         </repository>
 
 
@@ -395,10 +404,16 @@
                 <version>${hsqldb.version}</version>
             </dependency>
             <dependency>
-                <groupId>commons-dbcp</groupId>
-                <artifactId>commons-dbcp</artifactId>
-                <version>1.4</version>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-jdbc</artifactId>
+                <version>${tomcat.jdbc.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>juli</artifactId>
+                <version>${tomcat.juli.version}</version>
+            </dependency>
+
 
             <!-- Spring -->
             <dependency>
