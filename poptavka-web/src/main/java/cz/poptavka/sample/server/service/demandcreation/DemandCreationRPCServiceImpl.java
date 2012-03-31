@@ -23,7 +23,6 @@ import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
-import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -219,16 +218,4 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
-    @Override
-    public UserDetail verifyClient(UserDetail clientDetail) {
-        final List<Client> clientFromDB = this.clientService.searchByCriteria(
-                UserSearchCriteria.Builder.userSearchCriteria().withEmail(
-                clientDetail.getEmail()).withPassword(clientDetail.getPassword()).build());
-        if (clientFromDB.isEmpty()) {
-            return new UserDetail();
-        } else {
-            final Client user = clientFromDB.get(0);
-            return toUserDetail(user.getBusinessUser().getId(), user.getBusinessUser().getBusinessUserRoles());
-        }
-    }
 }

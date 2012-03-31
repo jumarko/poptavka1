@@ -19,8 +19,6 @@ public interface ClientRPCService extends RemoteService {
 
     UserDetail createNewClient(UserDetail clientDetail);
 
-    UserDetail verifyClient(UserDetail client);
-
     boolean checkFreeEmail(String email);
 
     Integer getClientsCount();

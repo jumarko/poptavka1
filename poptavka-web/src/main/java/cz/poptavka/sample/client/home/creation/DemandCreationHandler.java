@@ -1,16 +1,16 @@
 package cz.poptavka.sample.client.home.creation;
 
 import com.google.gwt.user.client.Window;
-import java.util.logging.Logger;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-
 import cz.poptavka.sample.client.service.demand.DemandCreationRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
+import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import java.util.logging.Logger;
 
 /**
  * Handler for RPC calls for DemandCreationModule
@@ -21,12 +21,19 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 @EventHandler
 public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventBus> {
 
-    private DemandCreationRPCServiceAsync demandCreationService = null;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
+
+    private DemandCreationRPCServiceAsync demandCreationService = null;
+    private UserRPCServiceAsync userRpcService;
 
     @Inject
     void setDemandCreationModuleRPCServiceAsync(DemandCreationRPCServiceAsync service) {
         demandCreationService = service;
+    }
+
+    @Inject
+    void setUserRpcService(UserRPCServiceAsync userRpcService) {
+        this.userRpcService = userRpcService;
     }
 
     /**
@@ -35,29 +42,40 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      *
      * @param client existing user detail
      */
-    public void onVerifyExistingClient(UserDetail client) {
+    public void onVerifyExistingClient(final UserDetail client) {
         LOGGER.fine("verify start");
-        demandCreationService.verifyClient(client, new AsyncCallback<UserDetail>() {
-
+        userRpcService.loginUser(client, new AsyncCallback<LoggedUserDetail>() {
             @Override
-            public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
+            public void onFailure(Throwable loginException) {
+                LOGGER.info("login error:" + loginException.getMessage());
+                eventBus.loadingHide();
+                eventBus.loginError();
             }
 
             @Override
-            public void onSuccess(UserDetail client) {
-                LOGGER.fine("verify result");
-                if (client == null) {
-                    eventBus.loadingHide();
-                    eventBus.loginError();
-                    return;
-                }
-                if (client.getClientId() != -1) {
-                    eventBus.prepareNewDemandForNewClient(client);
-                } else {
-                    eventBus.loadingHide();
-                    eventBus.loginError();
-                }
+            public void onSuccess(final LoggedUserDetail loggedUser) {
+                userRpcService.getUserById(loggedUser.getUserId(), new AsyncCallback<UserDetail>() {
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        // TODO
+                        throw new IllegalStateException("Cannot get business user for user id="
+                                + loggedUser.getUserId());
+                    }
+
+                    @Override
+                    public void onSuccess(UserDetail businessUserDetail) {
+                        eventBus.prepareNewDemandForNewClient(businessUserDetail);
+                    }
+                });
+
+
+                // TODO WTF - what is client id -1 ?!?
+//                if (client.getClientId() != -1) {
+//                    eventBus.prepareNewDemandForNewClient(client);
+//                } else {
+//                    eventBus.loadingHide();
+//                    eventBus.loginError();
+//                }
             }
         });
     }

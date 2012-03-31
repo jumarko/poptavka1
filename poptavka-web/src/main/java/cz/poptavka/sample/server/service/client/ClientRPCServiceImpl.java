@@ -17,10 +17,9 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
-import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.shared.domain.AddressDetail;
-import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -115,21 +114,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
-    @Override
-    public UserDetail verifyClient(UserDetail clientDetail) {
-        final List<Client> clientFromDB = this.clientService.searchByCriteria(
-                UserSearchCriteria.Builder
-                .userSearchCriteria()
-                .withEmail(clientDetail.getEmail())
-                .withPassword(clientDetail.getPassword())
-                .build());
-        if (clientFromDB.isEmpty()) {
-            return new UserDetail();
-        } else {
-            final Client user = clientFromDB.get(0);
-            return toUserDetail(user.getBusinessUser().getId(), user.getBusinessUser().getBusinessUserRoles());
-        }
-    }
 
     @Override
     public boolean checkFreeEmail(String email) {
