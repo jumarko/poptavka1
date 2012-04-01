@@ -62,7 +62,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
             System.out.println(client.getBusinessUser().getBusinessUserData().getPersonFirstName());
         }
         System.out.println();
-        Assert.assertEquals(4, allClients.size());
+        Assert.assertEquals(5, allClients.size());
     }
 
 
@@ -74,7 +74,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
                         .withSurName("Vytret\u00e1")
                         .build());
         Assert.assertNotNull(clients);
-        Assert.assertEquals(1, clients.size());
+        Assert.assertEquals(2, clients.size());
         final Client client = clients.get(0);
         Assert.assertTrue("Elv\u00edra".equals(client.getBusinessUser().getBusinessUserData().getPersonFirstName()));
         Assert.assertTrue("Vytret\u00e1".equals(client.getBusinessUser().getBusinessUserData().getPersonLastName()));
@@ -85,7 +85,7 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
                         .withName("Elv\u00edra")
                         .build());
         Assert.assertNotNull(clients);
-        Assert.assertEquals(2, clients2.size());
+        Assert.assertEquals(3, clients2.size());
         Assert.assertTrue("Elv\u00edra".equals(
                 clients2.get(0).getBusinessUser().getBusinessUserData().getPersonFirstName()));
         Assert.assertTrue("Elv\u00edra".equals(

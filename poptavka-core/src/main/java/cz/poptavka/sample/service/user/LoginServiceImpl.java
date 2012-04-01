@@ -11,6 +11,7 @@ import cz.poptavka.sample.exception.IncorrectPasswordException;
 import cz.poptavka.sample.exception.LoginException;
 import cz.poptavka.sample.exception.UserNotExistException;
 import cz.poptavka.sample.service.GeneralService;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 /**
@@ -43,6 +44,7 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public User getLoggedUser() {
         final User loggedUser = new User();
         loggedUser.setId(LOGGED_USER_ID);
@@ -69,8 +71,13 @@ public class LoginServiceImpl implements LoginService {
             throw new UserNotExistException("email=" + email);
         }
 
-        if (! encryptor.matches(password, user.getPassword())) {
-            throw new IncorrectPasswordException("For user with email=" + email);
+        try {
+            if (! encryptor.matches(password, user.getPassword())) {
+                throw new IncorrectPasswordException("For user with email=" + email);
+            }
+        } catch (EncryptionOperationNotPossibleException eonpe) {
+            throw new IncorrectPasswordException("Invalid password stored in db for user with email=" + email + "."
+                    + "Probably password is stored as a plaintext!", eonpe);
         }
 
         // everything is OK

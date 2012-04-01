@@ -59,4 +59,9 @@ public class LoginServiceIntegrationTest extends DBUnitBaseTest {
     public void loginUserForIncorrectPassword() {
         loginService.loginUser("elvira@email.com", "ahoj11");
     }
+
+    @Test(expected = IncorrectPasswordException.class)
+    public void loginUserForIncorrectPasswordLength() {
+        loginService.loginUser("elvira.plaintext.password@email.com", "ahoj1");
+    }
 }

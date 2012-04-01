@@ -8,6 +8,10 @@ import cz.poptavka.sample.exception.LoginException;
  *         Date: 8.1.11
  */
 public interface LoginService {
+    /**
+     * Finds user that is currently authenticated.
+     * @return
+     */
     User getLoggedUser();
 
     /**
