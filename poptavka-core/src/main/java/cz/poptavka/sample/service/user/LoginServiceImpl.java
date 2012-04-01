@@ -1,13 +1,16 @@
 package cz.poptavka.sample.service.user;
 
+import org.apache.commons.lang.Validate;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.googlecode.genericdao.search.Search;
+
 import cz.poptavka.sample.application.security.Encryptor;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.IncorrectPasswordException;
 import cz.poptavka.sample.exception.LoginException;
 import cz.poptavka.sample.exception.UserNotExistException;
 import cz.poptavka.sample.service.GeneralService;
-import org.apache.commons.lang.Validate;
 
 
 /**
@@ -52,6 +55,7 @@ public class LoginServiceImpl implements LoginService {
      *  @throws IllegalArgumentException if {@code email} or {@code password} is empty
      */
     @Override
+    @Transactional(readOnly = true)
     public User loginUser(String email, String password) throws LoginException {
         Validate.notEmpty(email);
         Validate.notEmpty(password);

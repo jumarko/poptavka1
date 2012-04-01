@@ -2,10 +2,14 @@ package cz.poptavka.sample.server.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
+
+import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.domain.user.rights.AccessRole;
 /**
  * This class represents authenticated user.
  * @author kolkar
@@ -17,18 +21,22 @@ public class PoptavkaUserAuthentication implements Authentication {
 
     private boolean authenticated;
 
-    private GrantedAuthority grantedAuthority;
+    private List<GrantedAuthority> grantedAuthority;
     private Authentication authentication;
 
-    public PoptavkaUserAuthentication(String role, Authentication authentication) {
-        this.grantedAuthority = new GrantedAuthorityImpl(role);
+    public PoptavkaUserAuthentication(User loggedUser, Authentication authentication) {
+        for (AccessRole role : loggedUser.getAccessRoles()) {
+            this.grantedAuthority.add(new GrantedAuthorityImpl(role.getName()));
+        }
         this.authentication = authentication;
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(grantedAuthority);
+        if (grantedAuthority != null) {
+            authorities.addAll(grantedAuthority);
+        }
         return authorities;
     }
 

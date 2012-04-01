@@ -5,8 +5,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-
-    <beans:bean id="poptavkaAuthListener" class="cz.poptavka.sample.server.security.PoptavkaAuthListener"/>
+    
+    <beans:import resource="security.xml"/>
     
     <http auto-config="true">
 
@@ -22,20 +22,8 @@
 
     </http>
     
-    <beans:bean id="customAuthenticationProvider" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationProvider" />
-    
     <authentication-manager alias="authenticationManager">
         <authentication-provider ref="customAuthenticationProvider"/>
     </authentication-manager>
-
-    <!-- Custom entry point to indicate that the user needs to authenticate first -->
-    <beans:bean id="customAuthenticationEntryPoint" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationEntryPoint" />
-
-
-    <!-- Custom handler to indicate that the authentication is succ`essful -->
-    <beans:bean id="customAuthenticationSuccessHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationSuccessHandler" />
-
-    <!-- Custom handler to indicate that the authentication has failed -->
-    <beans:bean id="customAuthenticationFailureHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationFailureHandler" />
         
 </beans:beans>

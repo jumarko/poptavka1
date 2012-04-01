@@ -1,16 +1,18 @@
 package cz.poptavka.sample.server.security;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+import cz.poptavka.sample.domain.user.User;
+import cz.poptavka.sample.service.user.LoginService;
 
 /**
  * Custom implementation of authenticationProvider.
@@ -22,13 +24,16 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
 
     private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthenticationProvider.class);
 
-    private static Map<String, String> users = new HashMap<String, String>();
+    private LoginService loginService;
 
-    static {
-        users.put("fabrizio", "javacodegeeks");
-        users.put("justin", "javacodegeeks");
-        users.put("client@test.com", "kreslo");
-        users.put("supplier@test.com", "kreslo");
+    @Autowired
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
+    }
+
+    public PoptavkaAuthenticationProvider(LoginService loginService) {
+        super();
+        this.loginService = loginService;
     }
 
     /**
@@ -38,22 +43,27 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
      * @throws AuthenticationException
      */
     @Override
+    @Transactional(readOnly = true)
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         LOGGER.info("authentication");
         String username = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
-        if (users.get(username) == null) {
-            throw new UsernameNotFoundException("User not found");
+        if (username == null || username.isEmpty()) {
+            throw new UsernameNotFoundException("Username not provided");
         }
 
-        String storedPass = users.get(username);
-
-        if (!storedPass.equals(password)) {
-            throw new BadCredentialsException("Invalid password");
+        if (password == null || password.isEmpty()) {
+            throw new BadCredentialsException("Password not provided");
         }
 
-        Authentication customAuthentication = new PoptavkaUserAuthentication("ROLE_USER", authentication);
+        final User loggedUser = this.loginService.loginUser(username, password);
+
+        if (loggedUser == null) {
+            throw new BadCredentialsException("Bad credentials");
+        }
+
+        Authentication customAuthentication = new PoptavkaUserAuthentication(loggedUser, authentication);
         customAuthentication.setAuthenticated(true);
 
         return customAuthentication;
