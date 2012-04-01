@@ -8,6 +8,7 @@ import cz.poptavka.sample.dao.GenericDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
 import java.util.List;
 
@@ -37,5 +38,28 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return
      */
     UserMessage getUserMessage(Message message, User user);
+
+    /**
+     * Gets the user's inbox
+     * @param user the user whose inbox to get
+     * @return list of <code>UserMesage</code> of the mesages in the user's
+     * inbox
+     */
+    List<UserMessage> getInbox(User user);
+
+    /**
+     * Gets the user's outbox
+     * @param user the user whose inbox to get
+     * @return list of <code>UserMesage</code> of the mesages in the user's
+     * outbox
+     */
+    List<UserMessage> getSentItems(User user);
+
+    /**
+     * Get's all the user's valid potential demand messages
+     * @param supplier the supplier to retreive the demand messages for
+     * @return list of <code>UserMesage</code> of the potential demand mesages
+     */
+    List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
 }

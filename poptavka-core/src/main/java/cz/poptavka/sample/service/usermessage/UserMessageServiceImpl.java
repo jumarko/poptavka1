@@ -59,11 +59,27 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
                 supplier.getId());
 
         final Search potentialDemandsSearch = new Search(UserMessage.class);
-        potentialDemandsSearch.addFilterEqual("user.id", supplier.getId());
+        potentialDemandsSearch.addFilterEqual("supplier", supplier);
         potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
         potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
 
-        return this.generalService.search(potentialDemandsSearch);
+        return getDao().getPotentialDemands(supplier);
+    }
+
+    @Override
+    public List<UserMessage> getInbox(User user) {
+        Preconditions.checkNotNull("User must be specified.", user);
+        Preconditions.checkNotNull("User's user id must be specified.",
+                user.getId());
+        return getDao().getInbox(user);
+    }
+
+    @Override
+    public List<UserMessage> getSentItems(User user) {
+        Preconditions.checkNotNull("User must be specified.", user);
+        Preconditions.checkNotNull("User's user id must be specified.",
+                user.getId());
+        return getDao().getSentItems(user);
     }
 
 }

@@ -8,6 +8,7 @@ import cz.poptavka.sample.dao.GenericHibernateDao;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
 import java.util.HashMap;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,6 +43,30 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         } else {
             return userMessages.get(0);
         }
+    }
+
+    @Override
+    public List<UserMessage> getInbox(User user) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+
+        return runNamedQuery("getInbox", queryParams);
+    }
+
+    @Override
+    public List<UserMessage> getSentItems(User user) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("user", user);
+
+        return runNamedQuery("getSentItems", queryParams);
+    }
+
+    @Override
+    public List<UserMessage> getPotentialDemands(BusinessUser supplier) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("supplier", supplier);
+
+        return runNamedQuery("getPotentialDemands", queryParams);
     }
 
 

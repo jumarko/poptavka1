@@ -48,7 +48,28 @@ import javax.persistence.NamedQuery;
                 query = " select userMessage"
                         + " from UserMessage userMessage\n"
                         + "where userMessage.user = :user"
-                        + " and userMessage.message = :message") }
+                        + " and userMessage.message = :message"),
+        @NamedQuery(name = "getInbox",
+                query = "select userMessage"
+                        + " from UserMessage userMessage"
+                        + " inner join userMessage.message.roles role\n"
+                        + "where userMessage.user = :user"
+                        + " and role.type = 'TO'"
+                        + " and role.user = :user"),
+        @NamedQuery(name = "getSentItems",
+                query = "select userMessage"
+                        + " from UserMessage userMessage\n"
+                        + "where userMessage.user = :user"
+                        + " and userMessage.message.sender = :user"),
+        @NamedQuery(name = "getPotentialDemands",
+                query = "select userMessage"
+                        + " from UserMessage userMessage "
+                        + "where userMessage.user = :supplier"
+                        + " and userMessage.message.demand is not NULL"
+                        + " and userMessage.message.parent is NULL"
+                        + " and userMessage.message.demand.status"
+                        + " = 'ACTIVE'")
+}
 )
 public class UserMessage extends DomainObject {
     @ManyToOne

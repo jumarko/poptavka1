@@ -62,4 +62,19 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
+    /**
+     * Gets the user's inbox
+     * @param user the user whose inbox to get
+     * @return list of <code>UserMesage</code> of the mesages in the user's
+     * inbox
+     */
+    List<UserMessage> getInbox(User user);
+
+    /**
+     * Gets the user's sent items folder
+     * @param user the user whose sent items to get
+     * @return list of <code>UserMesage</code> of the mesages in the user's
+     * sent items' folder
+     */
+    List<UserMessage> getSentItems(User user);
 }
