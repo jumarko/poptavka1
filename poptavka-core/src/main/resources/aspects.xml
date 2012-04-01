@@ -20,5 +20,7 @@
     <bean id="encryptorAspect" class="cz.poptavka.sample.application.security.aspects.EncryptorAspect" factory-method="aspectOf">
         <property name="encryptor" ref="passwordEncryptor" />
     </bean>
+    
+    <bean id="executionTimeLogger" class="cz.poptavka.sample.application.logging.ExecutionTimeLogger" factory-method="aspectOf" />
 
 </beans>
