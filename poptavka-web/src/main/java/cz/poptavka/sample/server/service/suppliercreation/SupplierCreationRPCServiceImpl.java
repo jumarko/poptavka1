@@ -11,6 +11,7 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
+import cz.poptavka.sample.domain.product.ServiceType;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.settings.Notification;
 import cz.poptavka.sample.domain.settings.NotificationItem;
@@ -19,13 +20,14 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
+import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,7 +39,7 @@ import java.util.List;
  * @author Praso
  * TODO praso - pridat komenty, vytvorit predka pre checkFreeEmail, optimalizovat backend
  */
-public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService implements SupplierCreationRPCService {
+public class SupplierCreationRPCServiceImpl extends CommonRPCServiceMethods implements SupplierCreationRPCService {
 
     private SupplierService supplierService;
     private ClientService clientService;
@@ -219,5 +221,32 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
         // email is free if no such user exists
         return userByEmail == null;
+    }
+
+    @Override
+    public ArrayList<ServiceDetail> getSupplierServices() {
+        List<Service> services = this.generalService.findAll(Service.class);
+        if (services != null) {
+            System.out.println("Services count: " + services.size());
+        } else {
+            System.out.println("NNULLLLLLLL");
+        }
+        return convertToServiceDetails(services);
+    }
+
+    protected ArrayList<ServiceDetail> convertToServiceDetails(List<Service> services) {
+        ArrayList<ServiceDetail> details = new ArrayList<ServiceDetail>();
+        for (Service sv : services) {
+            if (sv.isValid() && sv.getServiceType().equals(ServiceType.SUPPLIER)) {
+                ServiceDetail detail = new ServiceDetail();
+                detail.setId(sv.getId());
+                detail.setTitle(sv.getTitle());
+                detail.setPrice(sv.getPrice());
+                detail.setPrepaidMonths(sv.getPrepaidMonths().intValue());
+                detail.setDescription(sv.getDescription());
+                details.add(detail);
+            }
+        }
+        return details;
     }
 }

@@ -11,6 +11,7 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.Service;
+import cz.poptavka.sample.domain.product.ServiceType;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.settings.Notification;
 import cz.poptavka.sample.domain.settings.NotificationItem;
@@ -23,7 +24,7 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.SupplierCategory;
 import cz.poptavka.sample.domain.user.SupplierLocality;
 import cz.poptavka.sample.domain.user.Verification;
-import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.common.TreeItemService;
@@ -45,7 +46,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
+public class SupplierRPCServiceImpl extends CommonRPCServiceMethods implements SupplierRPCService {
 
     /**
      * Generated serialVersionUID.
@@ -113,7 +114,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         assignBusinessRoleToNewSupplier(newSupplier);
         /** registration process **/
         // TODO - verification will be set after activation link has been received
-
         final Supplier supplierFromDB = supplierService.create(newSupplier);
 
         // TODO jumar - WTF ? why new supplier is also a new client?!?
@@ -131,20 +131,18 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
-
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
     }
 
     private void setNewSupplierBusinessUserData(UserDetail supplier, Supplier newSupplier) {
-        final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(supplier.getCompanyName())
+        final BusinessUserData businessUserData = new BusinessUserData.Builder().
+                companyName(supplier.getCompanyName())
                 .taxId(supplier.getTaxId())
                 .identificationNumber(supplier.getIdentificationNumber())
                 .phone(supplier.getPhone())
                 .personFirstName(supplier.getFirstName())
-                .personLastName(supplier.getLastName())
-                //.description(supplier.getDescription());
+                .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
     }
@@ -231,6 +229,22 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
             System.out.println("NNULLLLLLLL");
         }
         return convertToServiceDetails(services);
+    }
+
+    protected ArrayList<ServiceDetail> convertToServiceDetails(List<Service> services) {
+        ArrayList<ServiceDetail> details = new ArrayList<ServiceDetail>();
+        for (Service sv : services) {
+            if (sv.isValid() && sv.getServiceType().equals(ServiceType.SUPPLIER)) {
+                ServiceDetail detail = new ServiceDetail();
+                detail.setId(sv.getId());
+                detail.setTitle(sv.getTitle());
+                detail.setPrice(sv.getPrice());
+                detail.setPrepaidMonths(sv.getPrepaidMonths().intValue());
+                detail.setDescription(sv.getDescription());
+                details.add(detail);
+            }
+        }
+        return details;
     }
 
     // TODO FIX this, it's not working nullPointerException.
@@ -594,7 +608,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 //        }
 //        return search;
 //    }
-
     private Search getCategoryFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search categorySearch = new Search(SupplierCategory.class);
         final List<Category> allSubCategories = Arrays.asList(

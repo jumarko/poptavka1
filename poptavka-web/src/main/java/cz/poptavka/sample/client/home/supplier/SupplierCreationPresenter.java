@@ -32,7 +32,7 @@ import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.main.common.service.ServiceWidget;
 import cz.poptavka.sample.client.resources.StyleResource;
-import cz.poptavka.sample.client.service.demand.SupplierRPCServiceAsync;
+import cz.poptavka.sample.client.service.demand.SupplierCreationRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 
@@ -212,14 +212,14 @@ public class SupplierCreationPresenter
     // TODO preco mame v presenteri SupplierRPCServiceAsync objekt??? Tymto uplne porusujeme
     // MVP model. Rozhranim ma byt predsa eventbus. OPRAVIT !!! a nerobit taketo chyby !!!
     @Inject
-    private SupplierRPCServiceAsync supplierRpcService = null;
+    private SupplierCreationRPCServiceAsync supplierCreationRpcService = null;
 
-    public void setService(SupplierRPCServiceAsync service) {
-        this.supplierRpcService = service;
+    public void setService(SupplierCreationRPCServiceAsync service) {
+        this.supplierCreationRpcService = service;
     }
 
     private void initServices() {
-        supplierRpcService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
+        supplierCreationRpcService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
 
             @Override
             public void onFailure(Throwable arg0) {

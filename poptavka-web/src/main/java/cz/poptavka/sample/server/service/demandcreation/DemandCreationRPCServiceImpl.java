@@ -17,7 +17,7 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.exception.MessageException;
-import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
-public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
+public class DemandCreationRPCServiceImpl extends CommonRPCServiceMethods
         implements DemandCreationRPCService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);

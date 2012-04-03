@@ -12,7 +12,7 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Verification;
-import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.register.RegisterService;
@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
+public class ClientRPCServiceImpl extends CommonRPCServiceMethods implements ClientRPCService {
 
     /**
      * Generated serialVersionUID.
