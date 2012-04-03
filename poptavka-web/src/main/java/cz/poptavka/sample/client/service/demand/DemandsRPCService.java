@@ -11,6 +11,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -43,4 +44,6 @@ public interface DemandsRPCService extends RemoteService {
             long userMessageId);
 
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
+
+    ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
 }

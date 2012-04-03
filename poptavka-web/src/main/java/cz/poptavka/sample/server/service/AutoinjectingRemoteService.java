@@ -1,9 +1,5 @@
 package cz.poptavka.sample.server.service;
 
-import cz.poptavka.sample.domain.demand.Demand;
-import cz.poptavka.sample.domain.offer.Offer;
-import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
-import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import net.sf.gilead.gwt.PersistentRemoteService;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
@@ -11,8 +7,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -32,33 +26,34 @@ public abstract class AutoinjectingRemoteService extends PersistentRemoteService
         beanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
     }
 
+    // TODO Praso - moved to DemandRPCService. Probably not used. Remove it.
+//    protected ArrayList<FullDemandDetail> toDemandDetailList(List<Demand> list) {
+//        ArrayList<FullDemandDetail> details = new ArrayList<FullDemandDetail>();
+//        for (Demand demand : list) {
+//            details.add(FullDemandDetail.createDemandDetail(demand));
+//        }
+//        return details;
+//    }
 
-    protected ArrayList<FullDemandDetail> toDemandDetailList(List<Demand> list) {
-        ArrayList<FullDemandDetail> details = new ArrayList<FullDemandDetail>();
-        for (Demand demand : list) {
-            details.add(FullDemandDetail.createDemandDetail(demand));
-        }
-        return details;
-    }
-
-    protected ArrayList<OfferDetail> toOfferDetailList(List<Offer> offerList) {
-        ArrayList<OfferDetail> details = new ArrayList<OfferDetail>();
-        for (Offer offer : offerList) {
-            OfferDetail detail = new OfferDetail();
-            detail.setDemandId(offer.getDemand().getId());
-            detail.setFinishDate(offer.getFinishDate());
-            detail.setPrice(offer.getPrice());
-            detail.setSupplierId(offer.getSupplier().getId());
-            if (offer.getSupplier().getBusinessUser().getBusinessUserData() != null) {
-                detail.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
-            } else {
-                detail.setSupplierName("unknown");
-            }
-
-            details.add(detail);
-        }
-        return details;
-    }
+    // TODO Praso - moved to demandsRPCServiceImpl
+//    protected ArrayList<OfferDetail> toOfferDetailList(List<Offer> offerList) {
+//        ArrayList<OfferDetail> details = new ArrayList<OfferDetail>();
+//        for (Offer offer : offerList) {
+//            OfferDetail detail = new OfferDetail();
+//            detail.setDemandId(offer.getDemand().getId());
+//            detail.setFinishDate(offer.getFinishDate());
+//            detail.setPrice(offer.getPrice());
+//            detail.setSupplierId(offer.getSupplier().getId());
+//            if (offer.getSupplier().getBusinessUser().getBusinessUserData() != null) {
+//                detail.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
+//            } else {
+//                detail.setSupplierName("unknown");
+//            }
+//
+//            details.add(detail);
+//        }
+//        return details;
+//    }
 
     // TODO Praso - method moved to CommonRPCServiceMethods
 //    protected UserDetail toUserDetail(Long userId, List<BusinessUserRole> userRoles) {

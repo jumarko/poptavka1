@@ -8,10 +8,12 @@ import cz.poptavka.sample.client.service.demand.DemandsRPCService;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
+import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageContext;
 import cz.poptavka.sample.domain.message.MessageUserRoleType;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageException;
@@ -21,6 +23,7 @@ import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.demand.RatingService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -229,4 +232,38 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
             return null;
         }
     }
+
+    // TODO Praso - zatial sa tato metoda nepouziva. V ramci refaktotingu RPC metod ju zrejme uplne
+    // prekopeme.
+    @Override
+    public ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) {
+        ArrayList<ArrayList<OfferDetail>> offerList = new ArrayList<ArrayList<OfferDetail>>();
+        for (Long id : idList) {
+            Demand demand = demandService.getById(id);
+            offerList.add(this.toOfferDetailList(demand.getOffers()));
+        }
+        return offerList;
+    }
+
+    // TODO Praso - zatial sa tato metoda nepouziva. V ramci refaktotingu RPC metod ju zrejme uplne
+    // prekopeme.
+    protected ArrayList<OfferDetail> toOfferDetailList(List<Offer> offerList) {
+        ArrayList<OfferDetail> details = new ArrayList<OfferDetail>();
+        for (Offer offer : offerList) {
+            OfferDetail detail = new OfferDetail();
+            detail.setDemandId(offer.getDemand().getId());
+            detail.setFinishDate(offer.getFinishDate());
+            detail.setPrice(offer.getPrice());
+            detail.setSupplierId(offer.getSupplier().getId());
+            if (offer.getSupplier().getBusinessUser().getBusinessUserData() != null) {
+                detail.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
+            } else {
+                detail.setSupplierName("unknown");
+            }
+
+            details.add(detail);
+        }
+        return details;
+    }
+
 }

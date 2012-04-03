@@ -16,6 +16,7 @@ import cz.poptavka.sample.domain.demand.DemandCategory;
 import cz.poptavka.sample.domain.demand.DemandLocality;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
+import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
@@ -360,6 +361,15 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return this.toDemandDetailList(client.getDemands());
     }
 
+    protected ArrayList<FullDemandDetail> toDemandDetailList(List<Demand> list) {
+        ArrayList<FullDemandDetail> details = new ArrayList<FullDemandDetail>();
+        for (Demand demand : list) {
+            details.add(FullDemandDetail.createDemandDetail(demand));
+        }
+        return details;
+    }
+
+
     @Override
     public ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) {
         ArrayList<ArrayList<OfferDetail>> offerList = new ArrayList<ArrayList<OfferDetail>>();
@@ -368,6 +378,25 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             offerList.add(this.toOfferDetailList(demand.getOffers()));
         }
         return offerList;
+    }
+
+    protected ArrayList<OfferDetail> toOfferDetailList(List<Offer> offerList) {
+        ArrayList<OfferDetail> details = new ArrayList<OfferDetail>();
+        for (Offer offer : offerList) {
+            OfferDetail detail = new OfferDetail();
+            detail.setDemandId(offer.getDemand().getId());
+            detail.setFinishDate(offer.getFinishDate());
+            detail.setPrice(offer.getPrice());
+            detail.setSupplierId(offer.getSupplier().getId());
+            if (offer.getSupplier().getBusinessUser().getBusinessUserData() != null) {
+                detail.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
+            } else {
+                detail.setSupplierName("unknown");
+            }
+
+            details.add(detail);
+        }
+        return details;
     }
 
     @Override

@@ -6,6 +6,7 @@ package cz.poptavka.sample.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
@@ -36,4 +37,7 @@ public interface DemandsRPCServiceAsync {
             long threadId, long userId, long userMessageId, AsyncCallback<ArrayList<MessageDetail>> callback);
 
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+
+    // TODO Praso - zatial sa nepouziva
+    void getDemandOffers(ArrayList<Long> idList, AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
 }
