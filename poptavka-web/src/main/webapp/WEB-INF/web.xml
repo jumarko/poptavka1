@@ -108,7 +108,15 @@
 		<param-value>JSESSIONID</param-value>
 	</context-param>
 
-
+	<servlet>
+		<servlet-name>gwt-request-handler</servlet-name>
+		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>gwt-request-handler</servlet-name>
+		<url-pattern>/poptavka/service/*</url-pattern>
+	</servlet-mapping>
+	
     <!--
     Mapping an RPC service defined in handler-servlet.xml
     -->
