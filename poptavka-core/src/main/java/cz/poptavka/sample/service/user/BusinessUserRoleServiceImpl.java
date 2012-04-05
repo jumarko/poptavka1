@@ -1,6 +1,7 @@
 package cz.poptavka.sample.service.user;
 
 import com.google.common.base.Preconditions;
+import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.dao.user.BusinessUserRoleDao;
 import cz.poptavka.sample.domain.common.Status;
 import cz.poptavka.sample.domain.product.Service;
@@ -8,6 +9,7 @@ import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.register.Registers;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
+import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
@@ -15,6 +17,7 @@ import cz.poptavka.sample.service.register.RegisterService;
 import java.util.Arrays;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.Validate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -112,6 +115,24 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
             }
         });
     }
+
+
+    /**
+     * Checks if client with {@code email} already exists.
+     *
+     * @param email
+     * @return true if no client with given {@code email} has been already registered, false otherwise
+     */
+    @Override
+    public boolean checkFreeEmail(String email) {
+        Validate.notEmpty(email, "Empty email does not mail sense)");
+        final Search freeMailCheck = new Search(User.class);
+        freeMailCheck.addFilterEqual("email", email);
+        final int count = getGeneralService().count(freeMailCheck);
+        return count == 0;
+    }
+
+
 
 
     protected GeneralService getGeneralService() {

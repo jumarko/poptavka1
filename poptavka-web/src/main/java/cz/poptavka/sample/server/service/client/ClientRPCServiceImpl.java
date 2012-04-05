@@ -8,7 +8,6 @@ import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.common.ResultCriteria;
-import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Verification;
@@ -117,12 +116,7 @@ public class ClientRPCServiceImpl extends CommonRPCServiceMethods implements Cli
 
     @Override
     public boolean checkFreeEmail(String email) {
-        // try to find user with given email
-        final BusinessUser userByEmail = (BusinessUser) generalService.searchUnique(
-                new Search(BusinessUser.class).addFilterEqual("email", email));
-
-        // email is free if no such user exists
-        return userByEmail == null;
+        return this.clientService.checkFreeEmail(email);
     }
 
     // TODO FIX this, it's not working nullPointerException.

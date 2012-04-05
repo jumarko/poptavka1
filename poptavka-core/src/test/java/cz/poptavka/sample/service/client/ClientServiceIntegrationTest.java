@@ -17,6 +17,8 @@ import cz.poptavka.sample.service.user.UserSearchCriteria;
 import cz.poptavka.sample.util.user.UserTestUtils;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -172,6 +174,15 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
         UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
                 this.registerService.getValue(Registers.Notification.CLIENT_DEMAND_STATUS_CHANGED, Notification.class),
                 false, Period.INSTANTLY);
+    }
+
+
+    @Test
+    public void testCheckFreeEmail() {
+        assertFalse(this.clientService.checkFreeEmail("elvira@email.com"));
+        assertTrue(this.clientService.checkFreeEmail("elvira11@email.com"));
+        assertFalse(this.clientService.checkFreeEmail("elviraM@email.com"));
+        assertFalse(this.clientService.checkFreeEmail("lisohlavka@email.com"));
     }
 
 

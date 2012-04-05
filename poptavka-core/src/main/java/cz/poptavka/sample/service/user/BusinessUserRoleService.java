@@ -16,4 +16,8 @@ import java.util.List;
 public interface BusinessUserRoleService<BUR extends BusinessUserRole, BUDao extends BusinessUserRoleDao<BUR>>
         extends GenericService<BUR, BUDao> {
     List<BUR> searchByCriteria(UserSearchCriteria userSarchCritera);
+
+
+    boolean checkFreeEmail(String email);
+
 }

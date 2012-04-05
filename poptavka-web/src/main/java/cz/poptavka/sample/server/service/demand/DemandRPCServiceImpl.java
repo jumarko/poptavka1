@@ -26,16 +26,10 @@ import cz.poptavka.sample.service.audit.AuditService;
 import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
-import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.user.ClientService;
-import cz.poptavka.sample.service.user.SupplierService;
-import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -43,6 +37,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Excalibur
@@ -56,12 +52,9 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private static final long serialVersionUID = -4661806018739964100L;
     private DemandService demandService;
     private ClientService clientService;
-    private MessageService messageService;
-    private SupplierService supplierService;
     private LocalityService localityService;
     private CategoryService categoryService;
     private GeneralService generalService;
-    private UserMessageService userMessageService;
     private AuditService auditService;
     private TreeItemService treeItemService;
 
@@ -82,21 +75,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
-    }
-
-    @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
-    public void setSupplierService(SupplierService supplierService) {
-        this.supplierService = supplierService;
-    }
-
-    @Autowired
-    public void setUserMessageService(UserMessageService userMessageService) {
-        this.userMessageService = userMessageService;
     }
 
     @Autowired
@@ -165,8 +143,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         demand.setCategories(categories);
 
         Demand newDemandFromDB = demandService.create(demand);
-        // TODO ivlcek - test sending demand to proper suppliers
-        sendDemandToSuppliersTest(newDemandFromDB);
+        sendDemandToSuppliers(newDemandFromDB);
         return (FullDemandDetail) FullDemandDetail.createDemandDetail(
                 newDemandFromDB);
     }
@@ -186,21 +163,20 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
      */
     // TODO should send messages as we're sending messages to display potential demands. Beho
     //
-    private void sendDemandToSuppliersTest(Demand demand) {
+    private void sendDemandToSuppliers(Demand demand) {
         // send message and handle exception if any
         try {
             this.demandService.sendDemandToSuppliers(demand);
         } catch (MessageException e) {
             LOGGER.error("Demand " + demand + " has not been sent to suppliers. "
                     + "The next try will be made by regular job.");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 
     /**
      * Method updates demand object in database.
      *
-     * @param fullDemandDetail - updated demandDetail from front end
+     * @param demandDetail - updated demandDetail from front end
      * @return FullDemandDetail
      */
     @Override
