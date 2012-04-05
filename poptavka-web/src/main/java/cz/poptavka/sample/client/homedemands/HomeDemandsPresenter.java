@@ -133,7 +133,6 @@ public class HomeDemandsPresenter extends BasePresenter<
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
 //        eventBus.loadingShow(MSGS.loading());
-        Storage.setCurrentlyLoadedModule(Constants.HOME_DEMANDS_MODULE);
         Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
 
         orderColumns.clear();

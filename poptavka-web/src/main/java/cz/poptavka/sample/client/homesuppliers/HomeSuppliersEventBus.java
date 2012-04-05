@@ -55,6 +55,8 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(handlers = HomeSuppliersPresenter.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void on(SearchModuleDataHolder searchDataHolder);
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/

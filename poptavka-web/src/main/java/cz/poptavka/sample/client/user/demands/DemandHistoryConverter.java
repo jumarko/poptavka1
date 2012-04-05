@@ -59,30 +59,6 @@ public class DemandHistoryConverter implements HistoryConverter<DemandEventBus> 
      */
     @Override
     public void convertFromToken(String historyName, String param, DemandEventBus eventBus) {
-        if (historyName.equals("goToDemandModule")) {
-            //Musim naspat previest retazce na konstanty
-            if (param.equals(DEMANDS_CLIENT_MY_DEMANDS_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_MY_DEMANDS);
-            }
-            if (param.equals(DEMANDS_CLIENT_OFFERS_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_OFFERS);
-            }
-            if (param.equals(DEMANDS_CLIENT_ASSIGNED_DEMANDS_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS);
-            }
-            if (param.equals(DEMANDS_SUPPLIER_MY_DEMANDS_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_MY_DEMANDS);
-            }
-            if (param.equals(DEMANDS_SUPPLIER_OFFERS_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_OFFERS);
-            }
-            if (param.equals(DEMANDS_SUPPLIER_ASSIGNED_DEMANDS_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS);
-            }
-            if (param.equals(DEMANDS_NONE_TEXT)) {
-                eventBus.goToDemandModule(null, Constants.NONE);
-            }
-        }
     }
 
     @Override

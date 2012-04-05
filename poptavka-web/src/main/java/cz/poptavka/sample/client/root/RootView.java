@@ -29,8 +29,8 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
         // TODO praso - otestovat na online poptavke ci sa zobrazuje tato loading show/hide hlaska
         wait.add(new Label("Wait until requested module code is downloaded from server."));
         initWidget(uiBinder.createAndBindUi(this));
-        /* Táto metóda, zaistí, že sa načíta CSS štýl. Bez nej by sa štýl nahral až pri prepnutí do
-         * ďalšieho modulu.
+        /* Tato metoda, zaisti, ze sa nacíta CSS styl. Bez nej by sa styl nahral az pri prepnuti do
+         * dalsieho modulu.
          */
         StyleResource.INSTANCE.layout().ensureInjected();
 

@@ -78,48 +78,6 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
-        if (historyName.equals("goToAdminModule")) {
-            //Musim naspat previest retazce na konstanty
-            if (param.equals(ADMIN_ACCESS_ROLE_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_ACCESS_ROLE);
-            }
-            if (param.equals(ADMIN_CLIENTS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_CLIENTS);
-            }
-            if (param.equals(ADMIN_DEMANDS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_DEMANDS);
-            }
-            if (param.equals(ADMIN_EMAILS_ACTIVATION_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_EMAILS_ACTIVATION);
-            }
-            if (param.equals(ADMIN_INVOICES_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_INVOICES);
-            }
-            if (param.equals(ADMIN_MESSAGES_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_MESSAGES);
-            }
-            if (param.equals(ADMIN_OFFERS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_OFFERS);
-            }
-            if (param.equals(ADMIN_PAYMENT_METHODS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PAYMENT_METHODS);
-            }
-            if (param.equals(ADMIN_PERMISSIONS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PERMISSIONS);
-            }
-            if (param.equals(ADMIN_PREFERENCES_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PREFERENCES);
-            }
-            if (param.equals(ADMIN_PROBLEMS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PROBLEMS);
-            }
-            if (param.equals(ADMIN_SUPPLIERS_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_SUPPLIERS);
-            }
-            if (param.equals(ADMIN_NONE_TEXT)) {
-                eventBus.goToAdminModule(null, Constants.NONE);
-            }
-        }
     }
 
     @Override

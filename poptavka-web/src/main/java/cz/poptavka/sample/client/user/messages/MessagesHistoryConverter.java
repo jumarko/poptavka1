@@ -60,29 +60,6 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
      */
     @Override
     public void convertFromToken(String historyName, String param, MessagesEventBus eventBus) {
-        if (historyName.equals("goToMessagesModule")) {
-            if (param.equals(MESSAGES_COMPOSE_NEW_TEXT)) {
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_COMPOSE_NEW);
-            }
-            if (param.equals(MESSAGES_COMPOSE_REPLY_TEXT)) {
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_COMPOSE_REPLY);
-            }
-            if (param.equals(MESSAGES_DRAFT_TEXT)) {
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_DRAFT);
-            }
-            if (param.equals(MESSAGES_INBOX_TEXT)) {
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
-            }
-            if (param.equals(MESSAGES_SENT_TEXT)) {
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_SENT);
-            }
-            if (param.equals(MESSAGES_TRASH_TEXT)) {
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_TRASH);
-            }
-            if (param.equals(MESSAGES_NONE)) {
-                eventBus.goToMessagesModule(null, Constants.NONE);
-            }
-        }
     }
 
     @Override

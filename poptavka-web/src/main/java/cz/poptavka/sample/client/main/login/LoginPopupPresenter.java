@@ -11,6 +11,7 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -18,6 +19,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Constants;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.service.demand.MailRPCServiceAsync;
@@ -29,13 +31,9 @@ import cz.poptavka.sample.shared.exceptions.CommonException;
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginPopupPresenter.class
-        .getName());
-
+    private static final Logger LOGGER = Logger.getLogger(LoginPopupPresenter.class.getName());
     private static final int COOKIE_TIMEOUT = 1000 * 60 * 60 * 24;
-
     private MailRPCServiceAsync mailService = null;
-
     private ErrorDialogPopupView errorDialog;
 
     public interface LoginPopupInterface extends LazyView {
@@ -55,9 +53,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         void setLoginError();
 
         LoginPopupPresenter getPresenter();
-
     }
-
     @Inject
     private UserRPCServiceAsync userService;
 
@@ -69,8 +65,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     public void doLogin() {
         if (view.isValid()) {
             // for testing purpose, if sending mails works
-            mailService.sendMail("kolkar100@gmail.com", "TestMessage", "Test",
-                    "poptavka@poptavam.com", new AsyncCallback<Boolean>() {
+            mailService.sendMail("kolkar100@gmail.com", "TestMessage", "Test", "poptavka@poptavam.com",
+                    new AsyncCallback<Boolean>() {
 
                         @Override
                         public void onFailure(Throwable caught) {
@@ -97,6 +93,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 Request request = builder.sendRequest("j_username=" + view.getLogin()
                         + "&j_password=" + view.getPassword(),
                         new RequestCallback() {
+
                             public void onError(Request request,
                                     Throwable exception) {
                                 // Couldn't connect to server (could be timeout,
@@ -123,6 +120,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             }
             //DEVEL ONLY FOR FAST LOGIN
             userService.loginUser(new UserDetail(username, password), new AsyncCallback<LoggedUserDetail>() {
+
                 @Override
                 public void onFailure(Throwable arg0) {
                     view.setUnknownError();
@@ -137,7 +135,29 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         //Martin: Change id = 149 to id = 613248 for testing new user and his demands
 //                        setSessionID("id=149");
 //                        setSessionID("id=613248");
-                        eventBus.atAccount(Constants.USER_DEMANDS_MODULE);
+
+                        //Martin - musi byt kvoli histori.
+                        //Kedze tato metoda obsarava prihlasovanie, musel som ju zahrnut.
+                        //Pretoze ak sa prihlasenie podari, musi sa naloadovat iny widget
+                        //ako pri neuspesnom prihlaseni. Nie je sposob ako to zistit
+                        //z history convertara "externe"
+                        if (History.getToken().equals("atAccount")) {
+                            eventBus.setHistoryStoredForNextOne(false);
+                            eventBus.atAccount();
+                            History.forward();
+                            Storage.setActionLoginAccountHistory("back");
+                        }
+                        if (History.getToken().equals("atHome")) {
+                            eventBus.setHistoryStoredForNextOne(false);
+                            eventBus.atAccount();
+                            History.back();
+                            Storage.setActionLoginHomeHistory("forward");
+                        }
+                        if (!History.getToken().equals("atAccount")
+                                && !History.getToken().equals("atHome")) {
+                            eventBus.atAccount();
+                            eventBus.goToDemandModule(null, Constants.NONE);
+                        }
                         hideView();
                     } else {
                         view.setLoginError();
@@ -169,5 +189,4 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         Date expires = new Date((new Date()).getTime() + cookieTimeout);
         Cookies.setCookie("sid", sessionId);
     }
-
 }

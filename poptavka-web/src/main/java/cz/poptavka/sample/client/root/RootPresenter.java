@@ -9,7 +9,6 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -23,7 +22,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.LoadingPopup;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter;
@@ -80,6 +78,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      */
     public void onStart() {
         GWT.log("Root presenter loaded");
+        eventBus.atHome();
         eventBus.goToHomeWelcomeModule(null);
         eventBus.goToSearchModule();
     }
@@ -116,9 +115,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
-    public void onAtAccount(int loadModule) {
+    public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
-        Cookies.setCookie("user-presenter", "loaded");
         if (Storage.getUser() == null) {
             // TODO praso - zakomentovane kvoli refaktorinu na standarny wait loading
             // cez onBefore, onAfter eventy v Root module. Potom to bude treba znovu
@@ -128,43 +126,24 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         } else {
             onSetUser(Storage.getUser());
         }
-        //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
-        // tento kod. Ak to vyriesim, tak sa o to postaram.
-        switch (loadModule) {
-            case Constants.USER_ADMINISTRATION_MODULE:
-                eventBus.goToAdminModule(null, Constants.NONE);
-                break;
-            case Constants.USER_DEMANDS_MODULE:
-                eventBus.goToDemandModule(null, Constants.NONE);
-                break;
-            case Constants.USER_MESSAGES_MODULE:
-                eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
-                break;
-            case Constants.USER_SETTINGS_MODULE:
-                eventBus.goToSettingsModule();
-                break;
-            default:
-                break;
-        }
     }
 
-    public void onAtHome(int loadModule) {
+    public void onAtHome() {
         RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
                 URL.encode("/poptavka/j_spring_security_logout"));
         builder.setHeader("Content-type", "application/x-www-form-urlencoded");
         //remove user from session management to force user input login information
-        Storage.setUser(null);
+//        Storage.setUser(null);
         try {
             Request request = builder.sendRequest(null,
                     new RequestCallback() {
+
                         public void onError(Request request,
                                 Throwable exception) {
-
                         }
 
                         public void onResponseReceived(Request request,
                                 Response response) {
-
                         }
                     });
         } catch (RequestException e) {
@@ -172,26 +151,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             GWT.log("exception during login");
         }
         GWT.log("User has logged out");
-        //Martin - skusal nieco kvoli historii, este neviem ako to zrobit, preto tu je
-        // tento kod. Ak to vyriesim, tak sa o to postaram.
-        switch (loadModule) {
-            case Constants.HOME_WELCOME_MODULE:
-                eventBus.goToHomeWelcomeModule(null);
-                break;
-            case Constants.HOME_DEMANDS_MODULE:
-                eventBus.goToHomeDemandsModule(null);
-                break;
-            case Constants.HOME_SUPPLIERS_MODULE:
-                eventBus.goToHomeSuppliersModule(null);
-                break;
-            case Constants.HOME_DEMAND_CREATION_MODULE:
-                eventBus.goToCreateDemandModule();
-                break;
-            case Constants.HOME_SUPPLIER_CREATION_MODULE:
-                break;
-            default:
-                break;
-        }
     }
 
     /**************************************************************************/

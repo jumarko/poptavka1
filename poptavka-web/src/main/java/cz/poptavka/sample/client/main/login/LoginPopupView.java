@@ -13,6 +13,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.ListBox;
@@ -26,7 +27,7 @@ import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 //public class LoginPopupView extends PopupPanel implements LoginPopupInterface {
 public class LoginPopupView extends PopupPanel
-    implements ReverseViewInterface<LoginPopupPresenter>, LoginPopupInterface {
+        implements ReverseViewInterface<LoginPopupPresenter>, LoginPopupInterface {
 
     /************** DEVEL ONLY *********/
     private static HashMap<Role, PrivateUser> privateUsers = new HashMap<Role, PrivateUser>();
@@ -42,7 +43,7 @@ public class LoginPopupView extends PopupPanel
                 pass = "kreslo";
             }
             if (role == Role.SUPPLIER) {
-                name = "supplier@test.com";
+                name = "moj@supplier.cz";
                 pass = "kreslo";
             }
         }
@@ -61,7 +62,6 @@ public class LoginPopupView extends PopupPanel
         privateUsers.put(Role.SUPPLIER, new LoginPopupView.PrivateUser(Role.SUPPLIER));
     }
     /************** DEVEL ONLY *********/
-
     private static final String LOGIN_DIV = "loginDiv";
     private static final String FORM_ID = "loginForm";
     private static final String BUTTON_SUBMIT_ID = "loginSubmit";
@@ -71,10 +71,7 @@ public class LoginPopupView extends PopupPanel
     private static final String LABEL_PASSWORD_ID = "loginPasswordLabel";
     private static final String PASSWORD_ID = "loginPassword";
     private static final String STATUS_ID = "loginStatus";
-
-    private static final LocalizableMessages MSGS = GWT
-            .create(LocalizableMessages.class);
-
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private SimpleIconLabel statusLabel = null;
     private FormPanel form;
     private LoginPopupPresenter presenter;
@@ -100,14 +97,13 @@ public class LoginPopupView extends PopupPanel
         list.insertItem("CLIENT", "CLIENT", 0);
         list.insertItem("SUPPLIER", "SUPPLIER", 1);
         list.addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 String roleString = list.getValue(list.getSelectedIndex());
                 Role role = Role.values()[Role.valueOf(roleString).ordinal()];
                 setLogin(role);
             }
-
-
         });
         panel.add(list);
     }
@@ -151,11 +147,10 @@ public class LoginPopupView extends PopupPanel
     }
 
     // This is our JSNI method that will be called on form submit
-    private native void injectLoginFunction(LoginPopupPresenter popupPresenter)
-    /*-{
-        $wnd.__gwt_login = function(){
-        popupPresenter.@cz.poptavka.sample.client.main.login.LoginPopupPresenter::doLogin()();
-        }
+    private native void injectLoginFunction(LoginPopupPresenter popupPresenter) /*-{
+    $wnd.__gwt_login = function(){
+    popupPresenter.@cz.poptavka.sample.client.main.login.LoginPopupPresenter::doLogin()();
+    }
     }-*/;
 
     /** Called to hide popup. **/
@@ -248,6 +243,12 @@ public class LoginPopupView extends PopupPanel
 
         @Override
         public void onBrowserEvent(Event event) {
+            if (History.getToken().contains("atHome")) {
+                History.forward();
+            }
+            if (History.getToken().contains("atAccount")) {
+                History.back();
+            }
             presenter.hideView();
         }
     }

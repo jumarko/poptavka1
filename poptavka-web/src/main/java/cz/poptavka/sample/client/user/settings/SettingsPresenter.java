@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
 
@@ -92,7 +91,6 @@ public class SettingsPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToSettingsModule() {
-        Storage.setCurrentlyLoadedModule(Constants.USER_SETTINGS_MODULE);
         GWT.log("User ID for settings" + Storage.getUser().getUserId());
         // eventBus.loadingShow(MSGS.progressDemandsLayoutInit());
         view.getNewMessageOptions().addItem("immediately");

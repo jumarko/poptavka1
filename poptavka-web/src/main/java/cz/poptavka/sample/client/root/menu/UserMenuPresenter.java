@@ -19,7 +19,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     /**
      * Jedina matoda, ktora nahra UserMenu pohlad do Root menu layoutu.
      */
-    public void onAtAccount(int loadModule) {
+    public void onAtAccount() {
         GWT.log("User menu view loaded");
         eventBus.setMenu(view);
     }

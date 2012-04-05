@@ -128,11 +128,19 @@ public class HomeSuppliersPresenter
      */
     public void onGoToHomeSuppliersModule(
             SearchModuleDataHolder searchModuleDataHolder) {
-        Storage.setCurrentlyLoadedModule(Constants.HOME_SUPPLIERS_MODULE);
         Storage.setCurrentlyLoadedView(Constants.NONE);
 
         this.searchDataHolder = searchModuleDataHolder;
 
+        this.onOn(searchModuleDataHolder);
+        //martin - preco to muselo byt takto?
+//        if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
+//            Storage.setCurrentlyLoadedModule("homeSuppliers");
+//        }
+    }
+
+    public void onOn(SearchModuleDataHolder searchModuleDataHolder) {
+        this.searchDataHolder = searchModuleDataHolder;
         //ROOT section
         if (searchDataHolder == null) {
             //display root categories on whole page
@@ -166,10 +174,6 @@ public class HomeSuppliersPresenter
             // get Sub Categories
             eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
         }
-        //martin - preco to muselo byt takto?
-//        if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
-//            Storage.setCurrentlyLoadedModule("homeSuppliers");
-//        }
     }
 
     /**************************************************************************/

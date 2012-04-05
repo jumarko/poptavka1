@@ -30,7 +30,6 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedModule(Constants.HOME_WELCOME_MODULE);
         Storage.setCurrentlyLoadedView(Constants.NONE);
         this.searchDataHolder = searchDataHolder;
     }

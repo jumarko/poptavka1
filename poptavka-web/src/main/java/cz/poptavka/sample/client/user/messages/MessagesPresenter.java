@@ -106,7 +106,6 @@ public class MessagesPresenter
      * @param filter
      */
     public void onGoToMessagesModule(SearchModuleDataHolder filter, int loadWidget) {
-        Storage.setCurrentlyLoadedModule(Constants.USER_MESSAGES_MODULE);
         Storage.showLoading(Storage.MSGS.progressMessagesLayoutInit());
         this.filter = filter;
 

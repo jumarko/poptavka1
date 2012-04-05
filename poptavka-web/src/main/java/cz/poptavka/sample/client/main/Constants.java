@@ -22,19 +22,8 @@ public final class Constants {
         return INSTANCE;
     }
 
-    /* Modules */
+    /* Common */
     public static final int NONE = -1;
-    // Home
-    public static final int HOME_WELCOME_MODULE = -2;
-    public static final int HOME_DEMANDS_MODULE = 0;
-    public static final int HOME_SUPPLIERS_MODULE = 1;
-    public static final int HOME_DEMAND_CREATION_MODULE = 2;
-    public static final int HOME_SUPPLIER_CREATION_MODULE = 3;
-    // User
-    public static final int USER_DEMANDS_MODULE = 4;
-    public static final int USER_MESSAGES_MODULE = 5;
-    public static final int USER_SETTINGS_MODULE = 6;
-    public static final int USER_ADMINISTRATION_MODULE = 7;
 
     /* Home demands module */
     public static final int HOME_DEMANDS = 8;

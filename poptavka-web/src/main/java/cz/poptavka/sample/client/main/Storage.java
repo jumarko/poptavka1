@@ -25,10 +25,8 @@ public final class Storage {
     // Value is set on each new module load. To prevent any further complications, set this value
     // using SearchModulePresenter constants.
     private static int currentlyLoadedView = -1;
-    //For history orientation
-    // Lebo ak mam zobrazenu tabulku, potom naloadujem iny modul a dam spat
-    // tabulka na loaduje ale modul nie je naloadovany, teda nevidno naloadovanu tabulku
-    private static int currentlyLoadedModule = -1;
+    private static String actionLoginHomeHistory = "back";
+    private static String actionLoginAccountHistory = "back";
 
     public static Storage get() {
         return INSTANCE;
@@ -111,12 +109,20 @@ public final class Storage {
         Storage.currentlyLoadedView = currentlyLoadedView;
     }
 
-    public static int getCurrentlyLoadedModule() {
-        return currentlyLoadedModule;
+    public static String getActionLoginAccountHistory() {
+        return actionLoginAccountHistory;
     }
 
-    public static void setCurrentlyLoadedModule(int currentlyLoadedModule) {
-        Storage.currentlyLoadedModule = currentlyLoadedModule;
+    public static void setActionLoginAccountHistory(String actionLoginAccountHistory) {
+        Storage.actionLoginAccountHistory = actionLoginAccountHistory;
+    }
+
+    public static String getActionLoginHomeHistory() {
+        return actionLoginHomeHistory;
+    }
+
+    public static void setActionLoginHomeHistory(String actionLoginHomeHistory) {
+        Storage.actionLoginHomeHistory = actionLoginHomeHistory;
     }
 
 }

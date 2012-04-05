@@ -39,9 +39,6 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
      */
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
-        if (methodName.equals("goToCreateDemandModule")) {
-            eventBus.goToCreateDemandModule();
-        }
     }
 
     @Override

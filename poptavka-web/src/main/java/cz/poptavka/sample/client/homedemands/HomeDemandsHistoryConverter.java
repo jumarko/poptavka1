@@ -41,9 +41,6 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
-        if (methodName.equals("goToHomeDemandsModule")) {
-            eventBus.goToHomeDemandsModule(null);
-        }
     }
 
     @Override

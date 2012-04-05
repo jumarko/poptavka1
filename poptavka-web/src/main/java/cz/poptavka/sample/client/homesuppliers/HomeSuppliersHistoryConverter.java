@@ -48,21 +48,18 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
-        if (methodName.equals("addToPath")) {
-            String[] params = param.split(";");
-            CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(
-                    params[1].replace("categoryId=", "")), null);
+        String[] params = param.split(";");
+        CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(
+                params[1].replace("categoryId=", "")), null);
 
-            //ROOT
-            if (categoryDetail.getId() == 0) {
-                eventBus.goToHomeSuppliersModule(null);
-            } else {
-                SearchModuleDataHolder searchModuleDataHolder = new SearchModuleDataHolder();
-                searchModuleDataHolder.initHomeSuppliers();
-                searchModuleDataHolder.getHomeSuppliers().setSupplierCategory(categoryDetail);
-                eventBus.goToHomeSuppliersModule(searchModuleDataHolder);
-            }
+        //ROOT
+        SearchModuleDataHolder searchModuleDataHolder = null;
+        if (categoryDetail.getId() != 0) {
+            searchModuleDataHolder = new SearchModuleDataHolder();
+            searchModuleDataHolder.initHomeSuppliers();
+            searchModuleDataHolder.getHomeSuppliers().setSupplierCategory(categoryDetail);
         }
+        eventBus.on(searchModuleDataHolder);
     }
 
     @Override

@@ -39,9 +39,6 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
      */
     @Override
     public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
-        if (methodName.equals("goToCreateSupplierModule")) {
-            eventBus.goToCreateSupplierModule();
-        }
     }
 
     @Override

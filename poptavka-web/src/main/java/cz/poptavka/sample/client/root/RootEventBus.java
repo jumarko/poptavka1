@@ -178,7 +178,7 @@ public interface RootEventBus extends EventBus {
      */
     @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
     historyConverter = RootHistoryConverter.class)
-    String atHome(int loadModule);
+    String atHome();
 
     /**
      * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
@@ -188,7 +188,7 @@ public interface RootEventBus extends EventBus {
      */
     @Event(handlers = { HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class },
     historyConverter = RootHistoryConverter.class)
-    String atAccount(int loadModule);
+    String atAccount();
 
     /**
      * This event will be called in case an error occurs while loading the
@@ -236,10 +236,12 @@ public interface RootEventBus extends EventBus {
     void setUser(UserDetail user);
 
     // TODO Praso - mozeme odstranit? No usage
+    // Martin - ano moze, pouziva ale priamo volane z prezentera
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
     // TODO Praso - mozeme odstranit? No usage
+    // Martin - ano moze, toto sa nepouziva cez eventBus
     @Event(handlers = HeaderPresenter.class)
     void initLoginWindow();
 

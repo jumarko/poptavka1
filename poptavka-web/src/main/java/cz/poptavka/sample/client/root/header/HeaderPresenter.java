@@ -10,7 +10,6 @@ import com.google.gwt.user.client.Window.ClosingEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.login.LoginPopupPresenter;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.root.interfaces.IHeaderView;
@@ -38,22 +37,27 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 GWT.log("Logged in? " + loggedIn);
+                //neda nahradid tym cookies? ... co lepsie pouzivat tie cookies ci premennu?
                 if (loggedIn) {
-                    eventBus.atHome(Constants.HOME_WELCOME_MODULE);
-                    Cookies.setCookie("user-presenter", "unloaded");
+                    eventBus.atHome();
+                    eventBus.goToHomeWelcomeModule(null);
                 } else {
                     onInitLoginWindow();
                 }
             }
-
         });
         Window.addWindowClosingHandler(new Window.ClosingHandler() {
 
             @Override
             public void onWindowClosing(ClosingEvent event) {
-                Cookies.setCookie("user-presenter", "unloaded");
+                if (eventBus.getHistory().getToken().contains("atHome")) {
+                    eventBus.getHistory().forward();
+                }
+                if (eventBus.getHistory().getToken().contains("atAccount")) {
+                    eventBus.getHistory().back();
+                }
+                Cookies.setCookie("login", "no");
             }
-
         });
     }
 
@@ -62,14 +66,13 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         login.onLogin();
     }
 
-    public void onAtHome(int loadModule) {
+    public void onAtHome() {
         this.loggedIn = false;
         view.getLoginLink().setText(MSGS.logIn());
     }
 
-    public void onAtAccount(int loadModule) {
+    public void onAtAccount() {
         this.loggedIn = true;
         view.getLoginLink().setText(MSGS.logOut());
     }
-
 }

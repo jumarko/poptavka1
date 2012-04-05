@@ -34,9 +34,6 @@ public class HomeWelcomeHistoryConverter implements HistoryConverter<HomeWelcome
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeWelcomeEventBus eventBus) {
-        if (methodName.equals("goToHomeWelcomeModule")) {
-            eventBus.goToHomeWelcomeModule(null);
-        }
     }
 
     @Override
