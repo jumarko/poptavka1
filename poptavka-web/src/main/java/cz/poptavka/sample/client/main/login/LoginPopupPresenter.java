@@ -18,11 +18,13 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.main.Constants;
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.client.service.demand.MailRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
@@ -33,6 +35,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     private static final int COOKIE_TIMEOUT = 1000 * 60 * 60 * 24;
 
     private MailRPCServiceAsync mailService = null;
+
+    private ErrorDialogPopupView errorDialog;
 
     public interface LoginPopupInterface extends LazyView {
 
@@ -71,6 +75,11 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         @Override
                         public void onFailure(Throwable caught) {
                             GWT.log("message not sent succesfully");
+                            if (caught instanceof CommonException) {
+                                CommonException commonException = (CommonException) caught;
+                                errorDialog = new ErrorDialogPopupView();
+                                errorDialog.show(commonException.getSymbol());
+                            }
                         }
 
                         @Override
