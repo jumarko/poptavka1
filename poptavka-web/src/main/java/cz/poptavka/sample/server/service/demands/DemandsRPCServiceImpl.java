@@ -24,6 +24,7 @@ import cz.poptavka.sample.service.demand.RatingService;
 import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -77,13 +78,6 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
-    }
-
-    @Override
-    public FullDemandDetail getFullDemandDetail(Long demandId) {
-
-        return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
-
     }
 
     /**
@@ -264,6 +258,20 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
             details.add(detail);
         }
         return details;
+    }
+
+    @Override
+    public FullDemandDetail getFullDemandDetail(Long demandId) {
+
+        return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+
+    }
+
+    @Override
+    public BaseDemandDetail getBaseDemandDetail(Long demandId) {
+
+        return BaseDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+
     }
 
 }

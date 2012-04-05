@@ -66,8 +66,10 @@ public interface DemandRPCServiceAsync {
 
     void getDemands(int fromResult, int toResult, AsyncCallback<List<FullDemandDetail>> callback);
 
+    // TODO Praso - pouziva sa v UserHandler. Mozeme asi odstranit
     void getFullDemandDetail(Long demandId, AsyncCallback<FullDemandDetail> callback);
 
+    // TODO Praso - pouziva sa v UserHandler. Mozeme asi odstranit
     void getBaseDemandDetail(Long demandId,
             AsyncCallback<BaseDemandDetail> callback);
 

@@ -43,6 +43,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 //        });
     }
 
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetClientDemandWithConversations(Long userId, Long clientId) {
         messageService.getListOfClientDemandMessages(userId, clientId,
                 new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
@@ -59,6 +60,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             });
     }
 
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestDemandConversations(long messageId) {
         messageService.getClientDemandConversations(messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
 
@@ -74,6 +76,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
         });
     }
 
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestSingleConversation(long threadRootId, long messageId) {
         messageService.getConversationMessages(threadRootId, messageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
@@ -90,6 +93,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 });
     }
 
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
@@ -112,6 +116,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
                 });
     }
 
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onSendMessageToPotentialDemand(MessageDetail messageToSend, final ViewType viewType) {
         messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
 
@@ -128,7 +133,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             }
         });
     }
-
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onSendDemandOffer(OfferMessageDetail offerToSend) {
         GWT.log(" ** Offer demand ID: " + offerToSend.getDemandId());
         Window.alert("* * * DEMAND OFFER CREATED * * *\n\n" + offerToSend.toString());
@@ -145,7 +150,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 //            }
 //        });
     }
-
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestPotentialDemandReadStatusChange(ArrayList<Long> messagesId, boolean isRead) {
         messageService.setMessageReadStatus(messagesId, isRead, new AsyncCallback<Void>() {
 
@@ -162,7 +167,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
             }
         });
     }
-
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetOfferStatusChange(OfferDetail offerDetail) {
         GWT.log("STATE: " + offerDetail.getState());
         offerService.changeOfferState(offerDetail, new AsyncCallback<OfferDetail>() {
@@ -184,6 +189,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      *
      * @param businessUserId
      */
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetPotentialDemands(long businessUserId) {
         messageService.getPotentialDemands(businessUserId,
                 new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
@@ -208,6 +214,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      *
      * @param clientId
      */
+    // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetClientDemandsWithOffers(Long businessUserId) {
         messageService.getOfferDemands(businessUserId, new AsyncCallback<ArrayList<OfferDemandMessage>>() {
 

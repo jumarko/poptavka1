@@ -14,6 +14,8 @@ import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 /**
  * Handler for RPC calls for localities & categories.
  *
+ * TODO can be removed
+ *
  * @author Beho
  *
  */

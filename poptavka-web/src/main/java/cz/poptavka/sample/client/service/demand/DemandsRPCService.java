@@ -12,6 +12,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
+import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
@@ -22,15 +23,6 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
  */
 @RemoteServiceRelativePath("service/demandsmodule")
 public interface DemandsRPCService extends RemoteService {
-
-    /**
-     * Gets DemandDetail from DB.
-     *
-     * @param demandId id of demand
-     * @param typeOfDetail type of Detail that should be returned
-     * @return DemandDetail of selected DemandType
-     */
-    FullDemandDetail getFullDemandDetail(Long demandId);
 
     ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId);
 
@@ -46,4 +38,16 @@ public interface DemandsRPCService extends RemoteService {
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
 
     ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
+
+        /**
+     * Gets DemandDetail from DB.
+     *
+     * @param demandId id of demand
+     * @param typeOfDetail type of Detail that should be returned
+     * @return DemandDetail of selected DemandType
+     */
+    FullDemandDetail getFullDemandDetail(Long demandId);
+
+    BaseDemandDetail getBaseDemandDetail(Long demandId);
+
 }

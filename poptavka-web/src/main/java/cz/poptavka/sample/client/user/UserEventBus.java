@@ -123,6 +123,8 @@ public interface UserEventBus extends EventBusWithLookup {
      * **/
     // TODO implements demandDetail section loading for Wrapper
     // serves for visual sing, that content is loading
+    // TODO Praso - tato metoda sa zrejme pouziva v demandModule. Musime ju presunut do
+    // demandsEventbus. A skontrolovat ci sa pouziva v tom spravnom presenteri
     @Event(handlers = { UserHandler.class, OldDetailWrapperPresenter.class })
     void getDemandDetail(Long demandId, ViewType typeOfDetail);
 
