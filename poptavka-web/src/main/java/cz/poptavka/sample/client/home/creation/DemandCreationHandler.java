@@ -67,15 +67,6 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                         eventBus.prepareNewDemandForNewClient(businessUserDetail);
                     }
                 });
-
-
-                // TODO WTF - what is client id -1 ?!?
-//                if (client.getClientId() != -1) {
-//                    eventBus.prepareNewDemandForNewClient(client);
-//                } else {
-//                    eventBus.loadingHide();
-//                    eventBus.loginError();
-//                }
             }
         });
     }
