@@ -11,7 +11,8 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Verification;
-import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
+import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.register.RegisterService;
@@ -27,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ClientRPCServiceImpl extends CommonRPCServiceMethods implements ClientRPCService {
+public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
 
     /**
      * Generated serialVersionUID.
@@ -109,7 +110,7 @@ public class ClientRPCServiceImpl extends CommonRPCServiceMethods implements Cli
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
         final Client newClientFromDB = clientService.create(newClient);
-        return this.toUserDetail(newClientFromDB.getBusinessUser().getId(),
+        return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
@@ -136,8 +137,7 @@ public class ClientRPCServiceImpl extends CommonRPCServiceMethods implements Cli
     /**
      * Method updates client object in database.
      *
-     * @param clientDetail - updated supplierDetail from front end
-     * @param updateWhat - define data to update. Values: supplier, categories, localities, address, userdata, all.
+     * @param detail - updated ClientDetail from front end
      * @return clientDetail
      */
     @Override

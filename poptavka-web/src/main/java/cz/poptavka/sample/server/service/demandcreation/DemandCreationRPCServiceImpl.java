@@ -17,7 +17,8 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.exception.MessageException;
-import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
+import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
@@ -37,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
-public class DemandCreationRPCServiceImpl extends CommonRPCServiceMethods
+public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         implements DemandCreationRPCService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
@@ -214,7 +215,7 @@ public class DemandCreationRPCServiceImpl extends CommonRPCServiceMethods
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
         final Client newClientFromDB = clientService.create(newClient);
-        return this.toUserDetail(newClientFromDB.getBusinessUser().getId(),
+        return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 

@@ -18,12 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Utility class containing conversions methods between Domain objects (used on backend) from/to
+ * detail objects (used on frontend).
  *
  * @author Praso
+ * @author Juraj Martinka
  */
-public class CommonRPCServiceMethods {
+public final class ConvertUtils {
 
-    protected UserDetail toUserDetail(Long userId, List<BusinessUserRole> userRoles) {
+    private ConvertUtils() {
+        // UTILITY CLASS - DO NOT INSTANTIATE!
+    }
+
+    public static UserDetail toUserDetail(Long userId, List<BusinessUserRole> userRoles) {
         if (userRoles == null) {
             throw new NullPointerException("These roles are not defined");
         }

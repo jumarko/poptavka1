@@ -18,13 +18,13 @@ import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.BusinessUserData;
-import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.SupplierCategory;
 import cz.poptavka.sample.domain.user.SupplierLocality;
 import cz.poptavka.sample.domain.user.Verification;
-import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
+import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.common.TreeItemService;
@@ -33,20 +33,17 @@ import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
-import cz.poptavka.sample.shared.domain.SupplierDetail;
-import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.domain.UserDetail.Role;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class SupplierRPCServiceImpl extends CommonRPCServiceMethods implements SupplierRPCService {
+public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
     /**
      * Generated serialVersionUID.
@@ -127,7 +124,7 @@ public class SupplierRPCServiceImpl extends CommonRPCServiceMethods implements S
         clientService.create(client);
 
         // TODO Beho+Vojto rework according to GWT Spring Security function.
-        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
+        return ConvertUtils.toUserDetail(supplierFromDB.getBusinessUser().getId(),
                 supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
@@ -414,70 +411,7 @@ public class SupplierRPCServiceImpl extends CommonRPCServiceMethods implements S
         return userDetails;
     }
 
-    protected UserDetail toUserDetail(Supplier supplier) {
 
-        UserDetail detail = new UserDetail();
-        detail.setUserId(supplier.getBusinessUser().getId());
-
-        // Set UserDetail according to his roles
-        for (BusinessUserRole role : supplier.getBusinessUser().getBusinessUserRoles()) {
-            if (role instanceof Client) {
-                Client clientRole = (Client) role;
-                detail.setClientId(clientRole.getId());
-                detail.addRole(Role.CLIENT);
-
-                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
-            }
-            if (role instanceof Supplier) {
-                Supplier supplierRole = (Supplier) role;
-                detail.setSupplierId(supplierRole.getId());
-                detail.addRole(Role.SUPPLIER);
-                SupplierDetail supplierDetail = new SupplierDetail();
-
-                // supplierServices
-                List<UserService> services = supplierRole.getBusinessUser().getUserServices();
-                for (UserService us : services) {
-                    supplierDetail.addService(us.getId().intValue());
-                }
-
-                // categories
-                ArrayList<String> categories = new ArrayList<String>();
-                List<Category> cats = supplierRole.getCategories();
-                for (Category cat : cats) {
-                    categories.add(cat.getId() + "");
-                }
-                supplierDetail.setCategories(categories);
-
-                // localities
-                ArrayList<String> localities = new ArrayList<String>();
-                List<Category> locs = supplierRole.getCategories();
-                for (Category loc : locs) {
-                    localities.add(loc.getId() + "");
-                }
-
-                // Other
-                detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
-                detail.setEmail(supplier.getBusinessUser().getEmail());
-                detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
-                detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
-                detail.setIdentificationNumber(
-                        supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber());
-//                detail.setPassword(supplier.getBusinessUser().getPassword());
-                detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
-                detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
-
-                supplierDetail.setLocalities(localities);
-
-                detail.setSupplier(supplierDetail);
-
-                detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
-            }
-        }
-
-        // TODO Beho fix this user ID
-//        System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
-        return detail;
-    }
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new LinkedList<Locality>();
 

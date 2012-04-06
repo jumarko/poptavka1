@@ -20,7 +20,8 @@ import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
-import cz.poptavka.sample.server.service.CommonRPCServiceMethods;
+import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
+import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
@@ -39,7 +40,7 @@ import java.util.List;
  * @author Praso
  * TODO praso - pridat komenty, vytvorit predka pre checkFreeEmail, optimalizovat backend
  */
-public class SupplierCreationRPCServiceImpl extends CommonRPCServiceMethods implements SupplierCreationRPCService {
+public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService implements SupplierCreationRPCService {
 
     private SupplierService supplierService;
     private ClientService clientService;
@@ -110,7 +111,7 @@ public class SupplierCreationRPCServiceImpl extends CommonRPCServiceMethods impl
         clientService.create(client);
 
         // TODO Beho+Vojto rework according to GWT Spring Security function.
-        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
+        return ConvertUtils.toUserDetail(supplierFromDB.getBusinessUser().getId(),
                 supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
