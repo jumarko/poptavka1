@@ -17,7 +17,5 @@ public interface SupplierCreationRPCServiceAsync {
 
     void createNewSupplier(UserDetail supplier, AsyncCallback<UserDetail> callback);
 
-    void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
-
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 }

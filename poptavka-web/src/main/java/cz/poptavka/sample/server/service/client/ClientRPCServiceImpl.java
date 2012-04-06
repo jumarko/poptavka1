@@ -15,7 +15,6 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements ClientRPCService {
@@ -34,11 +31,10 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -5905531608577218017L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientRPCServiceImpl.class);
+
     private GeneralService generalService;
     private ClientService clientService;
     private LocalityService localityService;
-    private RegisterService registerService;
 
     public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
@@ -66,11 +62,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setRegisterService(RegisterService registerService) {
-        this.registerService = registerService;
     }
 
     /**
@@ -114,11 +105,6 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
-
-    @Override
-    public boolean checkFreeEmail(String email) {
-        return this.clientService.checkFreeEmail(email);
-    }
 
     // TODO FIX this, it's not working nullPointerException.
     public Locality getLocality(String code) {

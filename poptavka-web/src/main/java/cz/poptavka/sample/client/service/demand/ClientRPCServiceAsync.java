@@ -18,8 +18,6 @@ public interface ClientRPCServiceAsync {
 
     void createNewClient(UserDetail clientDetail, AsyncCallback<UserDetail> callback);
 
-    void checkFreeEmail(String email, AsyncCallback<Boolean> callback);
-
     void getClientsCount(AsyncCallback<Integer> callback);
 
     void updateClient(ClientDetail supplierDetail,

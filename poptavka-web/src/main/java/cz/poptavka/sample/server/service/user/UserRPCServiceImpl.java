@@ -1,13 +1,6 @@
 package cz.poptavka.sample.server.service.user;
 
-import cz.poptavka.sample.service.user.LoginService;
-import cz.poptavka.sample.shared.domain.LoggedUserDetail;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.googlecode.genericdao.search.Search;
-
 import cz.poptavka.sample.client.service.demand.UserRPCService;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
@@ -16,21 +9,21 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
-import cz.poptavka.sample.service.user.SupplierService;
+import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.service.user.LoginService;
+import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserRPCServiceImpl extends AutoinjectingRemoteService implements UserRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;
     private GeneralService generalService;
-    private SupplierService supplierService;
     private LoginService loginService;
+    private ClientService clientService;
 
-    @Autowired
-    public void setSupplierService(SupplierService roleService) {
-        this.supplierService = roleService;
-    }
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -40,6 +33,11 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Autowired
     public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
+    }
+
+    @Autowired
+    public void setClientService(ClientService clientService) {
+        this.clientService = clientService;
     }
 
 
@@ -83,5 +81,11 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Override
     public UserDetail getUserById(Long userId) {
         return UserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
+    }
+
+
+    @Override
+    public boolean checkFreeEmail(String email) {
+        return clientService.checkFreeEmail(email);
     }
 }

@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.home.supplier;
 
+import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.Window;
@@ -19,12 +20,18 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 @EventHandler
 public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEventBus> {
 
-    private SupplierCreationRPCServiceAsync supplierCreationService = null;
+    private SupplierCreationRPCServiceAsync supplierCreationService;
+    private UserRPCServiceAsync userRpcService;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     @Inject
     void setSupplierCreationRPCService(SupplierCreationRPCServiceAsync service) {
         supplierCreationService = service;
+    }
+
+    @Inject
+    void setUserRpcService(UserRPCServiceAsync userRpcService) {
+        this.userRpcService = userRpcService;
     }
 
     public void onRegisterSupplier(UserDetail newSupplier) {
@@ -45,7 +52,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     }
 
     public void onCheckFreeEmail(String email) {
-        supplierCreationService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+        userRpcService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
 
             @Override
             public void onFailure(Throwable arg0) {
@@ -55,7 +62,6 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);
                 eventBus.checkFreeEmailResponse(result);
-                // eventBus.checkFreeEmailResponse();
             }
         });
     }

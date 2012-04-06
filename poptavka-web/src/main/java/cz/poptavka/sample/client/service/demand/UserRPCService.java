@@ -14,4 +14,10 @@ public interface UserRPCService extends RemoteService {
     UserDetail getSignedUser(String sessionId);
 
     UserDetail getUserById(Long userId);
+
+    /**
+     * Checks wheter given {@code email} is available.
+     * @param email ęmail address to be checked
+     */
+    boolean checkFreeEmail(String email);
 }

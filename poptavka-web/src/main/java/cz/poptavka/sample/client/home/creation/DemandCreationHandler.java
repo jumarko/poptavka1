@@ -123,7 +123,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     }
 
     public void onCheckFreeEmail(String email) {
-        demandCreationService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+        userRpcService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
 
             @Override
             public void onFailure(Throwable arg0) {

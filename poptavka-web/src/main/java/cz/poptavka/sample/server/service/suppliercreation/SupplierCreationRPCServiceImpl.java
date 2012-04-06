@@ -16,7 +16,6 @@ import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.settings.Notification;
 import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.settings.Period;
-import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
@@ -30,10 +29,9 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -214,15 +212,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         return categoryService.getById(Long.parseLong(id));
     }
 
-    @Override
-    public boolean checkFreeEmail(String email) {
-        // try to find user with given email
-        final BusinessUser userByEmail = (BusinessUser) generalService.searchUnique(
-                new Search(BusinessUser.class).addFilterEqual("email", email));
-
-        // email is free if no such user exists
-        return userByEmail == null;
-    }
 
     @Override
     public ArrayList<ServiceDetail> getSupplierServices() {

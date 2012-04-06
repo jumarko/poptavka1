@@ -6,20 +6,17 @@
 package cz.poptavka.sample.server.service.demandcreation;
 
 import com.google.common.base.Preconditions;
-import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.service.demand.DemandCreationRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.server.service.ConvertUtils;
-import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
@@ -43,7 +40,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandCreationRPCServiceImpl.class);
     private DemandService demandService;
-    private GeneralService generalService;
     private LocalityService localityService;
     private CategoryService categoryService;
     private ClientService clientService;
@@ -51,11 +47,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
-    }
-
-    @Autowired
-    public void setGeneralService(GeneralService generalService) {
-        this.generalService = generalService;
     }
 
     @Autowired
@@ -96,7 +87,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setStatus(DemandStatus.TEMPORARY);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getValidToDate());
-        demand.setClient(this.generalService.find(Client.class, cliendId));
+        demand.setClient(this.clientService.getById(cliendId));
 
         /** localities **/
         List<Locality> locs = new ArrayList<Locality>();
@@ -112,17 +103,15 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setCategories(categories);
 
         Demand newDemandFromDB = demandService.create(demand);
-        // TODO ivlcek - test sending demand to proper suppliers
-        sendDemandToSuppliersTest(newDemandFromDB);
-        return (FullDemandDetail) FullDemandDetail.createDemandDetail(
-                newDemandFromDB);
+        sendDemandToSuppliers(newDemandFromDB);
+        return FullDemandDetail.createDemandDetail(newDemandFromDB);
     }
 
     private boolean maxOffersSpecified(FullDemandDetail detail) {
         return detail.getMaxOffers() > 0;
     }
 
-    // TODO FIX this, it's not working nullPointerException. -- who use it anyway???
+    // TODO FIX this, it's not working nullPo interException. -- who use it anyway???
     public Locality getLocality(String code) {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
@@ -137,14 +126,11 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
      * Method creates a message that is associated with created demand. Message
      * is sent to all suppliers that complies with the demand criteria
      *
-     * TODO design some heuristic to choose suitable suppliers to whom the
      * demand messages should be sent and possibly separate this heuristic
      *
      * @param demand
      */
-    // TODO should send messages as we're sending messages to display potential demands. Beho
-    //
-    private void sendDemandToSuppliersTest(Demand demand) {
+    private void sendDemandToSuppliers(Demand demand) {
         // send message and handle exception if any
         try {
             this.demandService.sendDemandToSuppliers(demand);
@@ -155,27 +141,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         }
     }
 
-    /**
-     * Method is supposed the check whether email passed as argument does exist
-     * in our database.
-     *
-     * TODO BACKEND - please guys I believe there is more effective way how to
-     * carry out this simple method. I think we don't need to create Search
-     * object for such an easy task and we definitely don't need to retrieve
-     * the whole BusinessUser entity from database. (praso)
-     *
-     * @param email to be checked in our database
-     * @return true if email is available to use
-     */
-    @Override
-    public boolean checkFreeEmail(String email) {
-        // try to find user with given email
-        final BusinessUser userByEmail = (BusinessUser) generalService.searchUnique(
-                new Search(BusinessUser.class).addFilterEqual("email", email));
-
-        // email is free if no such user exists
-        return userByEmail == null;
-    }
 
     /**
      * Vytvorenie noveho klienta.

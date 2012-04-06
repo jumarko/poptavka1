@@ -7,7 +7,6 @@ import com.google.common.base.Preconditions;
 import cz.poptavka.sample.client.service.demand.ClientRPCService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
-import cz.poptavka.sample.service.register.RegisterService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import org.junit.Before;
@@ -31,8 +30,6 @@ public class ClientRPCServiceTest {
     private GeneralService generalService;
     @Autowired
     private LocalityService localityService;
-    @Autowired
-    private RegisterService registerService;
 
 
     @Before
@@ -40,13 +37,11 @@ public class ClientRPCServiceTest {
         Preconditions.checkNotNull(this.generalService);
         Preconditions.checkNotNull(this.clientService);
         Preconditions.checkNotNull(this.localityService);
-        Preconditions.checkNotNull(this.registerService);
 
         final ClientRPCServiceImpl clientRpcService = new ClientRPCServiceImpl();
         clientRpcService.setGeneralService(this.generalService);
         clientRpcService.setClientService(this.clientService);
         clientRpcService.setLocalityService(this.localityService);
-        clientRpcService.setRegisterService(this.registerService);
 
         this.clientRPCService = clientRpcService;
     }

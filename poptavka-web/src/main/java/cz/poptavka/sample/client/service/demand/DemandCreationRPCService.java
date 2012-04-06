@@ -19,7 +19,4 @@ public interface DemandCreationRPCService extends RemoteService {
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId);
 
     UserDetail createNewClient(UserDetail clientDetail);
-
-    boolean checkFreeEmail(String email);
-
 }

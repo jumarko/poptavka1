@@ -17,6 +17,7 @@ import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang.Validate;
 
 /**
  * Utility class containing conversions methods between Domain objects (used on backend) from/to
@@ -62,6 +63,37 @@ public final class ConvertUtils {
     }
 
 
+    /**
+     * Converts given list of categories to the list of strings containing codes (the same as IDs) of given categories.
+     * @param categories
+     * @return list containing categories' codes (i.e. IDs)
+     */
+    public static ArrayList<String> convertCategoriesToDetail(List<Category> categories) {
+        Validate.notNull(categories, "categories cannot be null");
+        final ArrayList<String> categoriesCodes = new ArrayList<String>();
+        for (Category category : categories) {
+            // no code is stored in DB for category - use ID instead
+            categoriesCodes.add(category.getId() + "");
+        }
+        return categoriesCodes;
+    }
+
+
+    /**
+     * Converts given list of localities to the list of strings containing codes of given localities.
+     * @param localities
+     * @return list containing localities' codes
+     */
+    public static ArrayList<String> convertLocalitiesToDetail(List<Locality> localities) {
+        Validate.notNull(localities, "localities cannot be null");
+        final ArrayList<String> localitiesCodes = new ArrayList<String>();
+        for (Locality locality : localities) {
+            localitiesCodes.add(locality.getCode() + "");
+        }
+        return localitiesCodes;
+    }
+
+
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
 
     private static SupplierDetail toSupplierDetail(Supplier supplierRole) {
@@ -72,26 +104,9 @@ public final class ConvertUtils {
             supplierDetail.addService(us.getId().intValue());
         }
 
-        supplierDetail.setCategories(convertCategories(supplierRole));
-        supplierDetail.setLocalities(convertLocalities(supplierRole));
+        supplierDetail.setCategories(convertCategoriesToDetail(supplierRole.getCategories()));
+        supplierDetail.setLocalities(convertLocalitiesToDetail(supplierRole.getLocalities()));
         return supplierDetail;
-    }
-
-
-    private static ArrayList<String> convertCategories(Supplier supplierRole) {
-        final ArrayList<String> categories = new ArrayList<String>();
-        for (Category category : supplierRole.getCategories()) {
-            categories.add(category.getId() + "");
-        }
-        return categories;
-    }
-
-    private static ArrayList<String> convertLocalities(Supplier supplierRole) {
-        final ArrayList<String> localities = new ArrayList<String>();
-        for (Locality locality : supplierRole.getLocalities()) {
-            localities.add(locality.getId() + "");
-        }
-        return localities;
     }
 
 }

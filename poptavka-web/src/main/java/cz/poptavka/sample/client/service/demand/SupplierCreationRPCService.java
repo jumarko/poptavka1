@@ -19,7 +19,5 @@ public interface SupplierCreationRPCService extends RemoteService {
 
     UserDetail createNewSupplier(UserDetail supplier);
 
-    boolean checkFreeEmail(String email);
-
     ArrayList<ServiceDetail> getSupplierServices();
 }
