@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.server.service;
 
+import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.product.UserService;
 import cz.poptavka.sample.domain.user.BusinessUserRole;
@@ -41,42 +42,17 @@ public final class ConvertUtils {
         // Set UserDetail according to his roles
         for (BusinessUserRole role : userRoles) {
             if (role instanceof Client) {
-                Client clientRole = (Client) role;
+                final Client clientRole = (Client) role;
                 detail.setClientId(clientRole.getId());
                 detail.addRole(Role.CLIENT);
 
                 detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
             }
             if (role instanceof Supplier) {
-                Supplier supplierRole = (Supplier) role;
+                final Supplier supplierRole = (Supplier) role;
                 detail.setSupplierId(supplierRole.getId());
                 detail.addRole(Role.SUPPLIER);
-                SupplierDetail supplierDetail = new SupplierDetail();
-
-                // supplierServices
-                List<UserService> services = supplierRole.getBusinessUser().getUserServices();
-                for (UserService us : services) {
-                    supplierDetail.addService(us.getId().intValue());
-                }
-
-                // categories
-                ArrayList<String> categories = new ArrayList<String>();
-                List<Category> cats = supplierRole.getCategories();
-                for (Category cat : cats) {
-                    categories.add(cat.getId() + "");
-                }
-                supplierDetail.setCategories(categories);
-
-                // localities
-                ArrayList<String> localities = new ArrayList<String>();
-                List<Category> locs = supplierRole.getCategories();
-                for (Category loc : locs) {
-                    localities.add(loc.getId() + "");
-                }
-                supplierDetail.setLocalities(localities);
-
-                detail.setSupplier(supplierDetail);
-
+                detail.setSupplier(toSupplierDetail(supplierRole));
                 detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
             }
         }
@@ -84,4 +60,38 @@ public final class ConvertUtils {
         System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
         return detail;
     }
+
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+
+    private static SupplierDetail toSupplierDetail(Supplier supplierRole) {
+        final SupplierDetail supplierDetail = new SupplierDetail();
+
+        // supplierServices
+        for (UserService us : supplierRole.getBusinessUser().getUserServices()) {
+            supplierDetail.addService(us.getId().intValue());
+        }
+
+        supplierDetail.setCategories(convertCategories(supplierRole));
+        supplierDetail.setLocalities(convertLocalities(supplierRole));
+        return supplierDetail;
+    }
+
+
+    private static ArrayList<String> convertCategories(Supplier supplierRole) {
+        final ArrayList<String> categories = new ArrayList<String>();
+        for (Category category : supplierRole.getCategories()) {
+            categories.add(category.getId() + "");
+        }
+        return categories;
+    }
+
+    private static ArrayList<String> convertLocalities(Supplier supplierRole) {
+        final ArrayList<String> localities = new ArrayList<String>();
+        for (Locality locality : supplierRole.getLocalities()) {
+            localities.add(locality.getId() + "");
+        }
+        return localities;
+    }
+
 }
