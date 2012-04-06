@@ -192,13 +192,28 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
                 personLastName(clientDetail.getLastName()).
                 phone(clientDetail.getPhone()).
                 identificationNumber(clientDetail.getIdentificationNumber()).
-                // TODO in builder crete setWebsite(String website)
-                taxId(clientDetail.getTaxId()).build();
+                taxId(clientDetail.getTaxId())
+                .website(clientDetail.getWebsite())
+                .build();
+
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
-        /** Address. **/
+
+        setAddresses(clientDetail, newClient);
+
+        /** Login & pwd information. **/
+        newClient.getBusinessUser().setEmail(clientDetail.getEmail());
+        newClient.getBusinessUser().setPassword(clientDetail.getPassword());
+
+        final Client newClientFromDB = clientService.create(newClient);
+
+        return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
+                newClientFromDB.getBusinessUser().getBusinessUserRoles());
+    }
+
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    private void setAddresses(UserDetail clientDetail, Client newClient) {
         final List<Address> addresses = new ArrayList<Address>();
-        // TODO are addresses really required - if yes add check for not null,
-        // otherwise following for-each throws NPE if clienDetail#getAddresses returns null
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {
                 Locality city = this.getLocality(detail.getCityName());
@@ -211,12 +226,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         }
 
         newClient.getBusinessUser().setAddresses(addresses);
-        /** Login & pwd information. **/
-        newClient.getBusinessUser().setEmail(clientDetail.getEmail());
-        newClient.getBusinessUser().setPassword(clientDetail.getPassword());
-        final Client newClientFromDB = clientService.create(newClient);
-        return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
-                newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
 }

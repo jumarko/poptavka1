@@ -36,7 +36,6 @@ public class BusinessUserData extends DomainObject {
     @Column(length = 20)
     private String phone;
 
-
     /** aka "ic" in czech republic. */
     @Column(length = 16)
     private String identificationNumber;
@@ -44,6 +43,9 @@ public class BusinessUserData extends DomainObject {
     /** aka "dic* in czech republic */
     @Column(length = 16)
     private String taxId;
+
+    /** user's web site. */
+    private String website;
 
 
     public BusinessUserData() {
@@ -112,6 +114,14 @@ public class BusinessUserData extends DomainObject {
         this.taxId = taxId;
     }
 
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     public String getDisplayName() {
         String result = "";
         if (!getPersonLastName().isEmpty()) {
@@ -139,6 +149,7 @@ public class BusinessUserData extends DomainObject {
         sb.append(", phone='").append(phone).append('\'');
         sb.append(", identificationNumber='").append(identificationNumber).append('\'');
         sb.append(", taxId='").append(taxId).append('\'');
+        sb.append(", www='").append(website).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -151,6 +162,7 @@ public class BusinessUserData extends DomainObject {
         private String phone;
         private String identificationNumber;
         private String taxId;
+        private String website;
 
         public Builder() {
         }
@@ -185,15 +197,25 @@ public class BusinessUserData extends DomainObject {
             return this;
         }
 
+        public Builder website(String website) {
+            this.website = website;
+            return this;
+        }
+
         public BusinessUserData build() {
             return new BusinessUserData(this);
         }
     }
 
     private BusinessUserData(Builder builder) {
+
         this.companyName = builder.companyName;
         this.personFirstName = builder.personFirstName;
         this.personLastName = builder.personLastName;
+        this.phone = builder.phone;
+        this.identificationNumber = builder.identificationNumber;
+        this.taxId = builder.taxId;
+        this.website = builder.website;
     }
 
 }
