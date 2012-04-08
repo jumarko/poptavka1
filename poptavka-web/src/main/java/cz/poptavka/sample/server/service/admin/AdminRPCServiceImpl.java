@@ -51,6 +51,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 
 /**
  * @author Martin Slavkovsky
@@ -58,16 +59,109 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;
+
+    //--------------------------------------------------- CONVERTERS ---------------------------------------------------
+    //--------------------------------------------------- WILL BE MOVED to the standalone classes ----------------------
+    private final Converter<PaymentMethod, PaymentMethodDetail> paymentMethodConverter =
+        new Converter<PaymentMethod, PaymentMethodDetail>() {
+            @Override
+            public PaymentMethodDetail convert(PaymentMethod paymentMethod) {
+                return PaymentMethodDetail.createPaymentMethodDetail(paymentMethod);
+            }
+        };
+    private final Converter<Permission, PermissionDetail> permissionConverter =
+        new Converter<Permission, PermissionDetail>() {
+            @Override
+            public PermissionDetail convert(Permission permission) {
+                return PermissionDetail.createPermissionsDetail(permission);
+            }
+        };
+    private final Converter<Preference, PreferenceDetail> preferenceConverter =
+        new Converter<Preference, PreferenceDetail>() {
+            @Override
+            public PreferenceDetail convert(Preference preference) {
+                return PreferenceDetail.createPreferenceDetail(preference);
+            }
+        };
+    private final Converter<Problem, ProblemDetail> problemConverter = new Converter<Problem, ProblemDetail>() {
+        @Override
+        public ProblemDetail convert(Problem problem) {
+            return ProblemDetail.createProblemDetail(problem);
+        }
+    };
+    private final Converter<Demand, FullDemandDetail> demandConverter = new Converter<Demand, FullDemandDetail>() {
+        @Override
+        public FullDemandDetail convert(Demand demand) {
+            return FullDemandDetail.createDemandDetail(demand);
+        }
+    };
+    private final Converter<Client, ClientDetail> clientConverter = new Converter<Client, ClientDetail>() {
+        @Override
+        public ClientDetail convert(Client client) {
+            return ClientDetail.createClientDetail(client);
+        }
+    };
+    private final Converter<Supplier, FullSupplierDetail> supplierConverter =
+        new Converter<Supplier, FullSupplierDetail>() {
+            @Override
+            public FullSupplierDetail convert(Supplier supplier) {
+                return FullSupplierDetail.createFullSupplierDetail(supplier);
+            }
+        };
+    private final Converter<Offer, OfferDetail> offerConverter = new Converter<Offer, OfferDetail>() {
+        @Override
+        public OfferDetail convert(Offer offer) {
+            return OfferDetail.createOfferDetail(offer);
+        }
+    };
+    private final Converter<AccessRole, AccessRoleDetail> accessRoleConverter =
+        new Converter<AccessRole, AccessRoleDetail>() {
+            @Override
+            public AccessRoleDetail convert(AccessRole role) {
+                return AccessRoleDetail.createAccessRoleDetail(role);
+            }
+        };
+    private final Converter<Message, MessageDetail> messageConverter =
+        new Converter<Message, MessageDetail>() {
+            @Override
+            public MessageDetail convert(Message message) {
+                return MessageDetail.createMessageDetail(message);
+            }
+        };
+    private final Converter<OurPaymentDetails, PaymentDetail> paymentConverter =
+        new Converter<OurPaymentDetails, PaymentDetail>() {
+            @Override
+            public PaymentDetail convert(OurPaymentDetails payment) {
+                return PaymentDetail.createOurPaymentDetailDetail(payment);
+            }
+        };
+    private final Converter<Invoice, InvoiceDetail> invoiceConverter = new Converter<Invoice, InvoiceDetail>() {
+        @Override
+        public InvoiceDetail convert(Invoice invoice) {
+            return InvoiceDetail.createInvoiceDetail(invoice);
+        }
+    };
+    private final Converter<EmailActivation, EmailActivationDetail> emailActivationConverter =
+        new Converter<EmailActivation, EmailActivationDetail>() {
+            @Override
+            public EmailActivationDetail convert(EmailActivation emailActivation) {
+                return EmailActivationDetail.createEmailActivationDetail(emailActivation);
+            }
+        };
+    //--------------------------------------------------- END OF CONVERTERS --------------------------------------------
+
     private GeneralService generalService;
     private DemandService demandService;
 
-    public GeneralService getAdminGeneralService() {
-        return generalService;
-    }
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
+    }
+
+    @Autowired
+    public void setDemandService(DemandService demandService) {
+        this.demandService = demandService;
     }
 
     /**********************************************************************************************
@@ -94,7 +188,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDemandDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), demandConverter);
     }
 
     @Override
@@ -142,14 +236,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<FullDemandDetail> createDemandDetailList(Collection<Demand> demands) {
-        List<FullDemandDetail> demandDetail = new ArrayList<FullDemandDetail>();
-        for (Demand demand : demands) {
-            demandDetail.add(FullDemandDetail.createDemandDetail(demand));
-        }
-        return demandDetail;
-    }
-
     /**********************************************************************************************
      ***********************  CLIENT SECTION. ************************************************
      **********************************************************************************************/
@@ -174,7 +260,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createClientDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), clientConverter);
     }
 
     @Override
@@ -182,11 +268,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return generalService.merge(accessRoleDetail);
     }
 
-//    @Override
-//    public List<ClientDetail> getAdminSortedClients(int start, int count, Map<String, OrderType> orderColumns) {
-//        return this.createClientDetailList(
-//                generalService.search(this.setSortSearch(start, count, orderColumns, Client.class)));
-//    }
+
     private Search setAdminClientsFilters(SearchModuleDataHolder searchDataHolder, Search search) {
         if (searchDataHolder.getAdminClients().getIdFrom() != null) {
             search.addFilterGreaterOrEqual("id", searchDataHolder.getAdminClients().getIdFrom());
@@ -223,13 +305,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<ClientDetail> createClientDetailList(Collection<Client> demands) {
-        List<ClientDetail> accessRoles = new ArrayList<ClientDetail>();
-        for (Client role : demands) {
-            accessRoles.add(ClientDetail.createClientDetail(role));
-        }
-        return accessRoles;
-    }
 
     /**********************************************************************************************
      ***********************  SUPPLIER SECTION. ************************************************
@@ -255,7 +330,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createFullSupplierDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), supplierConverter);
     }
 
     @Override
@@ -263,12 +338,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return generalService.merge(accessRoleDetail);
     }
 
-//    @Override
-//    public List<FullSupplierDetail> getAdminSortedSuppliers(int start,
-//    int count, Map<String, OrderType> orderColumns) {
-//        return this.createFullSupplierDetailList(
-//                generalService.search(this.setSortSearch(start, count, orderColumns, Supplier.class)));
-//    }
     private Search setAdminSuppliersFilters(SearchModuleDataHolder searchDataHolder, Search search) {
         if (searchDataHolder.getAdminSuppliers().getSupplierName() != null) {
             Collection<BusinessUserData> data = generalService.search(
@@ -308,13 +377,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<FullSupplierDetail> createFullSupplierDetailList(Collection<Supplier> demands) {
-        List<FullSupplierDetail> accessRoles = new ArrayList<FullSupplierDetail>();
-        for (Supplier role : demands) {
-            accessRoles.add(FullSupplierDetail.createFullSupplierDetail(role));
-        }
-        return accessRoles;
-    }
 
     /**********************************************************************************************
      ***********************  OFFER SECTION. ************************************************
@@ -340,7 +402,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createOfferDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), offerConverter);
     }
 
     @Override
@@ -348,11 +410,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return generalService.merge(accessRoleDetail);
     }
 
-//    @Override
-//    public List<OfferDetail> getAdminSortedOffers(int start, int count, Map<String, OrderType> orderColumns) {
-//        return this.createOfferDetailList(
-//                generalService.search(this.setSortSearch(start, count, orderColumns, Offer.class)));
-//    }
     private Search setAdminOffersFilters(SearchModuleDataHolder searchDataHolder, Search search) {
         if (searchDataHolder.getAdminOffers().getOfferIdFrom() != null) {
             search.addFilterGreaterOrEqual("id", searchDataHolder.getAdminOffers().getOfferIdFrom());
@@ -396,13 +453,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<OfferDetail> createOfferDetailList(Collection<Offer> demands) {
-        List<OfferDetail> accessRoles = new ArrayList<OfferDetail>();
-        for (Offer item : demands) {
-            accessRoles.add(OfferDetail.createOfferDetail(item));
-        }
-        return accessRoles;
-    }
 
     /**********************************************************************************************
      ***********************  ACCESS ROLE SECTION. ************************************************
@@ -428,7 +478,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createAccessRoleDetailList(generalService.search(search));
+        return  this.createDetailList(generalService.search(search), accessRoleConverter);
     }
 
 //    @Override
@@ -436,12 +486,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return generalService.merge(accessRoleDetail);
     }
 
-//    @Override
-//    public List<AccessRoleDetail> getAdminSortedAccessRoles(int start, int count,
-//    Map<String, OrderType> orderColumns) {
-//        return this.createAccessRoleDetailList(
-//                generalService.search(this.setSortSearch(start, count, orderColumns, AccessRole.class)));
-//    }
     private Search setAdminAccessRoleFilters(SearchModuleDataHolder searchDataHolder, Search search) {
         if (searchDataHolder.getAdminAccessRoles().getIdFrom() != null) {
             search.addFilterGreaterOrEqual("id", searchDataHolder.getAdminAccessRoles().getIdFrom());
@@ -464,12 +508,14 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<AccessRoleDetail> createAccessRoleDetailList(Collection<AccessRole> demands) {
-        List<AccessRoleDetail> accessRoles = new ArrayList<AccessRoleDetail>();
-        for (AccessRole role : demands) {
-            accessRoles.add(AccessRoleDetail.createAccessRoleDetail(role));
+
+    private <Domain, Detail> List<Detail> createDetailList(Collection<Domain> domainObjects,
+            Converter<Domain, Detail> convertCallback) {
+        final List<Detail> detailObjects = new ArrayList<Detail>();
+        for (Domain domainObject : domainObjects) {
+            detailObjects.add(convertCallback.convert(domainObject));
         }
-        return accessRoles;
+        return detailObjects;
     }
 
     /**********************************************************************************************
@@ -496,7 +542,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createEmailActivationDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), emailActivationConverter);
     }
 
     @Override
@@ -523,13 +569,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<EmailActivationDetail> createEmailActivationDetailList(Collection<EmailActivation> emailsList) {
-        List<EmailActivationDetail> emailsActivation = new ArrayList<EmailActivationDetail>();
-        for (EmailActivation email : emailsList) {
-            emailsActivation.add(EmailActivationDetail.createEmailActivationDetail(email));
-        }
-        return emailsActivation;
-    }
 
     /**********************************************************************************************
      ***********************  INVOICE SECTION. ****************************************************
@@ -555,7 +594,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createInvoiceDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), invoiceConverter);
     }
 
     @Override
@@ -592,13 +631,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<InvoiceDetail> createInvoiceDetailList(Collection<Invoice> invoicesList) {
-        List<InvoiceDetail> invoices = new ArrayList<InvoiceDetail>();
-        for (Invoice invoice : invoicesList) {
-            invoices.add(InvoiceDetail.createInvoiceDetail(invoice));
-        }
-        return invoices;
-    }
 
     /**********************************************************************************************
      ***********************  MESSAGE SECTION. ****************************************************
@@ -625,7 +657,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search.setFirstResult(start);
         search.setMaxResults(count);
 //        search.setPage(count);
-        return this.createMessageDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), messageConverter);
     }
 
     @Override
@@ -693,13 +725,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<MessageDetail> createMessageDetailList(Collection<Message> messagesList) {
-        List<MessageDetail> messages = new ArrayList<MessageDetail>();
-        for (Message message : messagesList) {
-            messages.add(MessageDetail.createMessageDetail(message));
-        }
-        return messages;
-    }
 
     /**********************************************************************************************
      ***********************  OUR PAYMENT DETAIL SECTION. *****************************************
@@ -725,7 +750,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createPaymentDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), paymentConverter);
     }
 
     @Override
@@ -738,13 +763,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<PaymentDetail> createPaymentDetailList(Collection<OurPaymentDetails> paymentsList) {
-        List<PaymentDetail> payments = new ArrayList<PaymentDetail>();
-        for (OurPaymentDetails payment : paymentsList) {
-            payments.add(PaymentDetail.createOurPaymentDetailDetail(payment));
-        }
-        return payments;
-    }
 
     /**********************************************************************************************
      ***********************  PAYMENT METHOD SECTION. ************************************************
@@ -770,14 +788,14 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createPaymentMethodDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), paymentMethodConverter);
     }
 
     @Override
     public List<PaymentMethodDetail> getAdminPaymentMethods() {
         final Search search = new Search(PaymentMethod.class);
         search.addSort("id", false);
-        return this.createPaymentMethodDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), paymentMethodConverter);
     }
 
     @Override
@@ -801,13 +819,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<PaymentMethodDetail> createPaymentMethodDetailList(Collection<PaymentMethod> demands) {
-        List<PaymentMethodDetail> accessRoles = new ArrayList<PaymentMethodDetail>();
-        for (PaymentMethod item : demands) {
-            accessRoles.add(PaymentMethodDetail.createPaymentMethodDetail(item));
-        }
-        return accessRoles;
-    }
 
     /**********************************************************************************************
      ***********************  PERMISSION SECTION. *************************************************
@@ -833,7 +844,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createPermissionDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), permissionConverter);
     }
 
     @Override
@@ -860,13 +871,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<PermissionDetail> createPermissionDetailList(Collection<Permission> permissionList) {
-        List<PermissionDetail> accessRoles = new ArrayList<PermissionDetail>();
-        for (Permission permission : permissionList) {
-            accessRoles.add(PermissionDetail.createPermissionsDetail(permission));
-        }
-        return accessRoles;
-    }
 
     /**********************************************************************************************
      ***********************  PREFERENCE SECTION. *************************************************
@@ -892,7 +896,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createPreferenceDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), preferenceConverter);
     }
 
     @Override
@@ -919,13 +923,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<PreferenceDetail> createPreferenceDetailList(Collection<Preference> preference) {
-        List<PreferenceDetail> preferences = new ArrayList<PreferenceDetail>();
-        for (Preference role : preference) {
-            preferences.add(PreferenceDetail.createPreferenceDetail(role));
-        }
-        return preferences;
-    }
 
     /**********************************************************************************************
      ***********************  PROBLEM SECTION. ************************************************
@@ -951,7 +948,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createProblemDetailList(generalService.search(search));
+        return this.createDetailList(generalService.search(search), problemConverter);
     }
 
     @Override
@@ -972,13 +969,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return search;
     }
 
-    private List<ProblemDetail> createProblemDetailList(Collection<Problem> demands) {
-        List<ProblemDetail> problems = new ArrayList<ProblemDetail>();
-        for (Problem item : demands) {
-            problems.add(ProblemDetail.createProblemDetail(item));
-        }
-        return problems;
-    }
 
     /**********************************************************************************************
      ***********************  COMMON METHODS. *************************************************
