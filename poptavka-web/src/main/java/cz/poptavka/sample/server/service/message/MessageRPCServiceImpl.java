@@ -6,6 +6,7 @@ package cz.poptavka.sample.server.service.message;
 
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.MessageRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -398,17 +399,14 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
         Search messageSearch = null;
         if (searchDataHolder != null) {
-            messageSearch = new Search(Message.class);
-            if (searchDataHolder.getMessagesTab().getSender() != null) {
-                messageSearch.addFilterIn("sender", generalService.search(
-                        new Search(User.class).addFilterLike("email",
-                            "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
-            }
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                messageSearch = new Search(Message.class);
+                if (item.getItem().equals("email")) {
+                    messageSearch.addFilterIn("sender", generalService.search(
+                            this.filter(new Search(User.class), "", item)));
+                } else {
+                    this.filter(messageSearch, "", item);
+                }
             }
         }
 
@@ -555,11 +553,8 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageSearch.addFilterEqual("sender", sender);
         //ak treba, filtruj spravy poslane danym uzivatelom
         if (searchDataHolder != null) {
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                this.filter(messageSearch, "", item);
             }
         }
 
@@ -582,9 +577,10 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         messageUserRoleSearch.addFilterIn("type", MessageUserRoleType.TO);
         //ak treba, filtruj prijemcov danych sprav
         if (searchDataHolder != null) {
-            messageUserRoleSearch.addFilterIn("user", generalService.search(
-                    new Search(User.class).addFilterLike(
-                        "email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                messageUserRoleSearch.addFilterIn("user", generalService.search(
+                        this.filter(new Search(User.class), "", item)));
+            }
         }
         /****/
         recipients.addAll(generalService.search(messageUserRoleSearch));
@@ -683,16 +679,13 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Search messageSearch = null;
         if (searchDataHolder != null) {
             messageSearch = new Search(Message.class);
-            if (searchDataHolder.getMessagesTab().getSender() != null) {
-                messageSearch.addFilterIn("sender", generalService.search(
-                        new Search(User.class).addFilterLike(
-                            "email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
-            }
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                if (item.getItem().equals("email")) {
+                    messageSearch.addFilterIn("sender", generalService.search(
+                            this.filter(new Search(User.class), "", item)));
+                } else {
+                    this.filter(messageSearch, "", item);
+                }
             }
         }
 
@@ -743,16 +736,13 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Search messageSearch = new Search(Message.class);
         messageSearch.addFilterEqual("messageState", MessageState.DELETED);
         if (searchDataHolder != null) {
-            if (searchDataHolder.getMessagesTab().getSender() != null) {
-                messageSearch.addFilterIn("sender", generalService.search(
-                        new Search(User.class).addFilterLike(
-                            "email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
-            }
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                if (item.getItem().equals("email")) {
+                    messageSearch.addFilterIn("sender", generalService.search(
+                            this.filter(new Search(User.class), "", item)));
+                } else {
+                    this.filter(messageSearch, "", item);
+                }
             }
         }
 
@@ -794,5 +784,29 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             }
             generalService.merge(msg);
         }
+    }
+
+    private Search filter(Search search, String prefix, FilterItem item) {
+        prefix += ".";
+        switch (item.getOperation()) {
+            case FilterItem.OPERATION_EQUALS:
+                search.addFilterEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_LIKE:
+                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
+                break;
+            case FilterItem.OPERATION_IN:
+                search.addFilterIn(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_FROM:
+                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_TO:
+                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            default:
+                break;
+        }
+        return search;
     }
 }

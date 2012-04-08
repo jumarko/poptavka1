@@ -8,11 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminPermissionsViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -26,56 +26,29 @@ public class AdminPermissionsViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminPermissionsViewView() {
+    public AdminPermissionsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminPermissions();
         if (!idFrom.getText().equals("")) {
-            data.getAdminPermissions().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminPermissions().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!code.getText().equals("")) {
-            data.getAdminPermissions().setCode(code.getText());
+            data.getFilters().add(new FilterItem("code", FilterItem.OPERATION_LIKE, code.getText()));
         }
         if (!name.getText().equals("")) {
-            data.getAdminPermissions().setName(name.getText());
+            data.getFilters().add(new FilterItem("name", FilterItem.OPERATION_LIKE, name.getText()));
         }
         if (!description.getText().equals("")) {
-            data.getAdminPermissions().setDescription(description.getText());
+            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_LIKE, description.getText()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminPermissions().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminPermissions().getIdFrom());
-        }
-        if (data.getAdminPermissions().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminPermissions().getIdTo());
-        }
-        if (data.getAdminPermissions().getName() != null) {
-            infoText.append("name:");
-            infoText.append(data.getAdminPermissions().getName());
-        }
-        if (data.getAdminPermissions().getCode() != null) {
-            infoText.append("code:");
-            infoText.append(data.getAdminPermissions().getCode());
-        }
-        if (data.getAdminPermissions().getDescription() != null) {
-            infoText.append("description:");
-            infoText.append(data.getAdminPermissions().getDescription());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -102,12 +75,7 @@ public class AdminPermissionsViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

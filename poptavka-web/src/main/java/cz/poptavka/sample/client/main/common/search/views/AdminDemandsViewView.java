@@ -15,12 +15,12 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.demand.DemandType.Type;
 
-public class AdminDemandsViewView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+public class AdminDemandsViewView extends Composite implements SearchModulePresenter.SearchModulesViewInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
@@ -35,9 +35,7 @@ public class AdminDemandsViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminDemandsViewView() {
+    public AdminDemandsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         demandType.addItem(Storage.MSGS.select());
         for (Type type : DemandType.Type.values()) {
@@ -49,92 +47,45 @@ public class AdminDemandsViewView extends Composite implements
         }
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminDemands();
         if (!demandIdFrom.getText().equals("")) {
-            data.getAdminDemands().setDemandIdFrom(Long.valueOf(demandIdFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
         }
         if (!demandIdTo.getText().equals("")) {
-            data.getAdminDemands().setDemandIdTo(Long.valueOf(demandIdTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, demandIdTo.getText()));
         }
         if (!clientIdFrom.getText().equals("")) {
-            data.getAdminDemands().setClientIdFrom(Long.valueOf(clientIdFrom.getText()));
+            data.getFilters().add(new FilterItem("client.id", FilterItem.OPERATION_FROM, clientIdFrom.getText()));
         }
         if (!clientIdTo.getText().equals("")) {
-            data.getAdminDemands().setClientIdTo(Long.valueOf(clientIdTo.getText()));
+            data.getFilters().add(new FilterItem("client.id", FilterItem.OPERATION_TO, clientIdTo.getText()));
         }
         if (!demandTitle.getText().equals("")) {
-            data.getAdminDemands().setDemandTitle(demandTitle.getText());
+            data.getFilters().add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (expirationDateFrom.getValue() != null) {
-            data.getAdminDemands().setExpirationDateFrom(expirationDateFrom.getValue());
+            data.getFilters().add(new FilterItem("validTo", FilterItem.OPERATION_FROM, expirationDateFrom.getValue()));
         }
         if (expirationDateTo.getValue() != null) {
-            data.getAdminDemands().setExpirationDateTo(expirationDateTo.getValue());
+            data.getFilters().add(new FilterItem("validTo", FilterItem.OPERATION_TO, expirationDateTo.getValue()));
         }
         if (endDateFrom.getValue() != null) {
-            data.getAdminDemands().setEndDateFrom(endDateFrom.getValue());
+            data.getFilters().add(new FilterItem("endDate", FilterItem.OPERATION_FROM, endDateFrom.getValue()));
         }
         if (endDateTo.getValue() != null) {
-            data.getAdminDemands().setEndDateFrom(endDateTo.getValue());
+            data.getFilters().add(new FilterItem("endDate", FilterItem.OPERATION_TO, endDateTo.getValue()));
         }
         if (demandType.getSelectedIndex() != 0) {
-            data.getAdminDemands().setDemandType(demandType.getItemText(demandType.getSelectedIndex()));
+            data.getFilters().add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
+                    demandType.getItemText(demandType.getSelectedIndex())));
         }
         if (demandStatus.getSelectedIndex() != 0) {
-            data.getAdminDemands().setDemandStatus(demandStatus.getItemText(demandStatus.getSelectedIndex()));
+            data.getFilters().add(new FilterItem("status", FilterItem.OPERATION_EQUALS,
+                    demandStatus.getItemText(demandStatus.getSelectedIndex())));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminDemands().getDemandIdFrom() != null) {
-            infoText.append("demandIdFrom:");
-            infoText.append(data.getAdminDemands().getDemandIdFrom());
-        }
-        if (data.getAdminDemands().getDemandIdTo() != null) {
-            infoText.append("demandIdTo:");
-            infoText.append(data.getAdminDemands().getDemandIdTo());
-        }
-        if (data.getAdminDemands().getClientIdFrom() != null) {
-            infoText.append("clientIdFrom:");
-            infoText.append(data.getAdminDemands().getClientIdFrom());
-        }
-        if (data.getAdminDemands().getClientIdTo() != null) {
-            infoText.append("clientIdTo:");
-            infoText.append(data.getAdminDemands().getClientIdTo());
-        }
-        if (data.getAdminDemands().getDemandTitle() != null) {
-            infoText.append("title:");
-            infoText.append(data.getAdminDemands().getDemandTitle());
-        }
-        if (data.getAdminDemands().getDemandType() != null) {
-            infoText.append("type:");
-            infoText.append(data.getAdminDemands().getDemandType());
-        }
-        if (data.getAdminDemands().getDemandStatus() != null) {
-            infoText.append("status:");
-            infoText.append(data.getAdminDemands().getDemandStatus());
-        }
-        if (data.getAdminDemands().getExpirationDateFrom() != null) {
-            infoText.append("expFrom:");
-            infoText.append(data.getAdminDemands().getExpirationDateFrom());
-        }
-        if (data.getAdminDemands().getExpirationDateTo() != null) {
-            infoText.append("expTo:");
-            infoText.append(data.getAdminDemands().getExpirationDateTo());
-        }
-        if (data.getAdminDemands().getEndDateFrom() != null) {
-            infoText.append("endDateFrom:");
-            infoText.append(data.getAdminDemands().getEndDateFrom());
-        }
-        if (data.getAdminDemands().getEndDateTo() != null) {
-            infoText.append("endDateTo:");
-            infoText.append(data.getAdminDemands().getEndDateTo());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("demandIdFrom")
@@ -181,12 +132,7 @@ public class AdminDemandsViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

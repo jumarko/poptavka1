@@ -6,6 +6,7 @@ package cz.poptavka.sample.server.service.demand;
 
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.DemandRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -27,6 +28,8 @@ import cz.poptavka.sample.service.common.TreeItemService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.service.user.ClientService;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
@@ -345,7 +348,6 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         return details;
     }
 
-
     @Override
     public ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) {
         ArrayList<ArrayList<OfferDetail>> offerList = new ArrayList<ArrayList<OfferDetail>>();
@@ -512,26 +514,26 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             return this.createDemandDetailList(this.generalService.search(search));
         }
         //0 0
-        if (detail.getHomeDemands().getDemandCategory() == null
-                && detail.getHomeDemands().getDemandLocality() == null) {
+        if (detail.getCategories() == null
+                && detail.getLocalities() == null) {
             Search search = this.getFilter("else", detail, orderColumns);
             return this.createDemandDetailList(this.generalService.search(search));
         }
         //1 0
-        if (detail.getHomeDemands().getDemandCategory() != null
-                && detail.getHomeDemands().getDemandLocality() == null) {
+        if (detail.getCategories() != null
+                && detail.getLocalities() == null) {
             Search search = this.getFilter("category", detail, orderColumns);
             return this.createDemandDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
-        if (detail.getHomeDemands().getDemandCategory() == null
-                && detail.getHomeDemands().getDemandLocality() != null) {
+        if (detail.getCategories() == null
+                && detail.getLocalities() != null) {
             Search search = this.getFilter("locality", detail, orderColumns);
             return this.createDemandDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (detail.getHomeDemands().getDemandCategory() != null
-                && detail.getHomeDemands().getDemandLocality() != null) {
+        if (detail.getCategories() != null
+                && detail.getLocalities() != null) {
             List<FullDemandDetail> demandsCat = this.createDemandDetailListCat(
                     this.generalService.searchAndCount(this.getFilter("category", detail, orderColumns)).getResult());
 
@@ -555,63 +557,52 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         if (detail != null) {
 
             /** simple **/
-            if (detail.getHomeDemands().getDemandCategory() != null) {
+            if (detail.getCategories() != null) {
                 search = new Search(DemandCategory.class);
                 prefix = "demand.";
-
-                final List<Category> allSubCategories = Arrays.asList(
-                        this.getAllSubcategories(detail.getHomeDemands().getDemandCategory().getId()));
+                List<Category> allSubCategories = new ArrayList<Category>();
+                for (CategoryDetail cat : detail.getCategories()) {
+                    allSubCategories = Arrays.asList(this.getAllSubcategories(cat.getId()));
+                }
                 search.addFilterIn("category", allSubCategories);
-            } else if (detail.getHomeDemands().getDemandLocality() != null) {
+            } else if (detail.getLocalities() != null) {
                 search = new Search(DemandLocality.class);
                 prefix = "demand.";
-                final List<Locality> allSubLocalities = Arrays.asList(
-                        this.getAllSublocalities(detail.getHomeDemands().getDemandLocality().getCode()));
+                List<Locality> allSubLocalities = new ArrayList<Locality>();
+                for (LocalityDetail loc : detail.getLocalities()) {
+                    allSubLocalities = Arrays.asList(this.getAllSublocalities(loc.getCode()));
+                }
                 search.addFilterIn("locality", allSubLocalities);
             } else {
                 search = new Search(Demand.class);
             }
-            if (detail.getHomeDemands().getDemandTitle() != null) {
-                search.addFilterLike(prefix + "title", "%" + detail.getHomeDemands().getDemandTitle() + "%");
-            }
-
-            /** additional **/
-//            if (detail.isAdditionalInfo()) {
-            if (detail.getHomeDemands().getPriceFrom() != null) {
-                search.addFilterGreaterOrEqual(prefix + "price", detail.getHomeDemands().getPriceFrom());
-            }
-            if (detail.getHomeDemands().getPriceTo() != null) {
-                search.addFilterLessOrEqual(prefix + "price", detail.getHomeDemands().getPriceTo());
-            }
-
-            if (detail.getHomeDemands().getDemandType() != null) {
-                search.addFilterEqual(prefix + "type",
-                        demandService.getDemandType(detail.getHomeDemands().getDemandType()));
-            }
-
-            if (detail.getHomeDemands().getEndDate() != null) {
-                search.addFilterGreaterOrEqual(prefix + "endDate", detail.getHomeDemands().getEndDate());
-            }
-            //created date
-            Calendar calendarDate = Calendar.getInstance(); //today -> case 0
-            //Musi byt? ved to je list, vzdy bude nasetovany nie?
-            if (detail.getHomeDemands().getCreationDate() != null) {
-                switch (detail.getHomeDemands().getCreationDate()) {
-                    case 1:
-                        calendarDate.add(Calendar.DATE, -1);  //yesterday
-                        break;
-                    case 2:
-                        calendarDate.add(Calendar.DATE, -7);  //last week
-                        break;
-                    case 3:
-                        calendarDate.add(Calendar.MONTH, -1);  //last month
-                        break;
-                    default:;
-                }
-                if (detail.getHomeDemands().getCreationDate() != 4) {
-                    search.addFilterGreaterOrEqual(prefix + "createdDate", new Date(calendarDate.getTimeInMillis()));
+            for (FilterItem item : detail.getFilters()) {
+                if (item.getItem().equals("createdDate")) {
+                    //created date
+                    Calendar calendarDate = Calendar.getInstance(); //today -> case 0
+                    //Musi byt? ved to je list, vzdy bude nasetovany nie?
+                    switch (Integer.valueOf(item.getValue().toString())) {
+                        case 1:
+                            calendarDate.add(Calendar.DATE, -1);  //yesterday
+                            break;
+                        case 2:
+                            calendarDate.add(Calendar.DATE, -7);  //last week
+                            break;
+                        case 3:
+                            calendarDate.add(Calendar.MONTH, -1);  //last month
+                            break;
+                        default:
+                            ;
+                    }
+                    if (Integer.valueOf(item.getValue().toString()) != 4) {
+                        search.addFilterGreaterOrEqual(prefix + "createdDate",
+                                new Date(calendarDate.getTimeInMillis()));
+                    }
+                } else {
+                    this.filter(search, prefix, item);
                 }
             }
+
         } else {
             search = new Search(Demand.class);
         }
@@ -624,6 +615,30 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
                     search.addSortDesc(prefix + item, true);
                 }
             }
+        }
+        return search;
+    }
+
+    private Search filter(Search search, String prefix, FilterItem item) {
+        prefix += ".";
+        switch (item.getOperation()) {
+            case FilterItem.OPERATION_EQUALS:
+                search.addFilterEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_LIKE:
+                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
+                break;
+            case FilterItem.OPERATION_IN:
+                search.addFilterIn(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_FROM:
+                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_TO:
+                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            default:
+                break;
         }
         return search;
     }

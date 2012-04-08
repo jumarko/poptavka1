@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminInvoicesViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -22,93 +23,53 @@ public class AdminInvoicesViewView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminInvoicesViewView> {
     }
     @UiField
-    TextBox idFrom, idTo, variableSymbol, totalPriceFrom, totalPriceTo,
-    invoiceNumberFrom, invoiceNumberTo;
+    TextBox idFrom, idTo, variableSymbol, totalPriceFrom, totalPriceTo;
+    @UiField
+    TextBox invoiceNumberFrom, invoiceNumberTo;
     @UiField
     ListBox paymentMethod;
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminInvoicesViewView() {
+    public AdminInvoicesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminInvoices();
         if (!idFrom.getText().equals("")) {
-            data.getAdminInvoice().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminInvoice().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!invoiceNumberFrom.getText().equals("")) {
-            data.getAdminInvoice().setInvoiceNumberFrom(Integer.valueOf(invoiceNumberFrom.getText()));
+            data.getFilters().add(new FilterItem("invoiceNumber",
+                    FilterItem.OPERATION_FROM, invoiceNumberFrom.getText()));
         }
         if (!invoiceNumberTo.getText().equals("")) {
-            data.getAdminInvoice().setInvoiceNumberTo(Integer.valueOf(invoiceNumberTo.getText()));
+            data.getFilters().add(new FilterItem("invoiceNumber", FilterItem.OPERATION_TO, invoiceNumberTo.getText()));
         }
         if (!totalPriceFrom.getText().equals("")) {
-            data.getAdminInvoice().setTotalPriceFrom(Integer.valueOf(totalPriceFrom.getText()));
+            data.getFilters().add(new FilterItem("totalPrice", FilterItem.OPERATION_FROM, totalPriceFrom.getText()));
         }
         if (!totalPriceTo.getText().equals("")) {
-            data.getAdminInvoice().setTotalPriceTo(Integer.valueOf(totalPriceTo.getText()));
+            data.getFilters().add(new FilterItem("totalPrice", FilterItem.OPERATION_TO, totalPriceTo.getText()));
         }
         if (!variableSymbol.getText().equals("")) {
-            data.getAdminInvoice().setVariableSymbol(variableSymbol.getText());
+            data.getFilters().add(new FilterItem("variableSymbol",
+                    FilterItem.OPERATION_FROM, variableSymbol.getText()));
         }
         if (paymentMethod.getSelectedIndex() != 0) {
-            data.getAdminInvoice().setPaymentMethodId(
-                    Long.valueOf(paymentMethod.getValue(paymentMethod.getSelectedIndex())));
+            data.getFilters().add(new FilterItem("paymentMethod", FilterItem.OPERATION_TO,
+                    paymentMethod.getValue(paymentMethod.getSelectedIndex())));
         }
         return data;
     }
 
-    public Widget getWidgetView() {
-        return this;
-    }
-
     public ListBox getPaymentMethodList() {
         return paymentMethod;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminInvoice().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminInvoice().getIdFrom());
-        }
-        if (data.getAdminInvoice().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminInvoice().getIdTo());
-        }
-        if (data.getAdminInvoice().getInvoiceNumberFrom() != null) {
-            infoText.append("invoiceNumFrom:");
-            infoText.append(data.getAdminInvoice().getInvoiceNumberFrom());
-        }
-        if (data.getAdminInvoice().getInvoiceNumberTo() != null) {
-            infoText.append("invoiceNumTo:");
-            infoText.append(data.getAdminInvoice().getInvoiceNumberTo());
-        }
-        if (data.getAdminInvoice().getTotalPriceFrom() != null) {
-            infoText.append("priceFrom:");
-            infoText.append(data.getAdminInvoice().getTotalPriceFrom());
-        }
-        if (data.getAdminInvoice().getTotalPriceTo() != null) {
-            infoText.append("priceTO:");
-            infoText.append(data.getAdminInvoice().getTotalPriceTo());
-        }
-        if (data.getAdminInvoice().getVariableSymbol() != null) {
-            infoText.append("varSymb:");
-            infoText.append(data.getAdminInvoice().getVariableSymbol());
-        }
-        if (data.getAdminInvoice().getPaymentMethodId() != null) {
-            infoText.append("methodId:");
-            infoText.append(data.getAdminInvoice().getPaymentMethodId());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -166,14 +127,7 @@ public class AdminInvoicesViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-
 }

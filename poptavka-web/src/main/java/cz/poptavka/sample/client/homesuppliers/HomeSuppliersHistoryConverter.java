@@ -56,8 +56,8 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         SearchModuleDataHolder searchModuleDataHolder = null;
         if (categoryDetail.getId() != 0) {
             searchModuleDataHolder = new SearchModuleDataHolder();
-            searchModuleDataHolder.initHomeSuppliers();
-            searchModuleDataHolder.getHomeSuppliers().setSupplierCategory(categoryDetail);
+//            searchModuleDataHolder.initHomeSuppliers();
+//            searchModuleDataHolder.getHomeSuppliers().setSupplierCategory(categoryDetail);
         }
         eventBus.on(searchModuleDataHolder);
     }

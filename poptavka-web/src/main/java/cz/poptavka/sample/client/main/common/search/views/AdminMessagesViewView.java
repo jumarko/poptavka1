@@ -15,6 +15,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
@@ -35,9 +36,7 @@ public class AdminMessagesViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminMessagesViewView() {
+    public AdminMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         type.addItem(Storage.MSGS.select());
         for (MessageType msgtype : MessageType.values()) {
@@ -49,142 +48,66 @@ public class AdminMessagesViewView extends Composite implements
         }
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminMessages();
         if (!messageIdFrom.getText().equals("")) {
-            data.getAdminMessages().setMessageIdFrom(Long.valueOf(messageIdFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, messageIdFrom.getText()));
         }
         if (!messageIdTo.getText().equals("")) {
-            data.getAdminMessages().setMessageIdTo(Long.valueOf(messageIdTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, messageIdTo.getText()));
         }
         if (!demandIdFrom.getText().equals("")) {
-            data.getAdminMessages().setDemandIdFrom(Long.valueOf(demandIdFrom.getText()));
+            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
         }
         if (!demandIdTo.getText().equals("")) {
-            data.getAdminMessages().setDemandIdTo(Long.valueOf(demandIdTo.getText()));
+            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
         }
         if (!parentIdFrom.getText().equals("")) {
-            data.getAdminMessages().setParentIdFrom(Long.valueOf(parentIdFrom.getText()));
+            data.getFilters().add(new FilterItem("parent.id", FilterItem.OPERATION_FROM, parentIdFrom.getText()));
         }
         if (!parentIdTo.getText().equals("")) {
-            data.getAdminMessages().setParentIdTo(Long.valueOf(parentIdTo.getText()));
+            data.getFilters().add(new FilterItem("parent.id", FilterItem.OPERATION_TO, parentIdTo.getText()));
         }
         if (!senderIdFrom.getText().equals("")) {
-            data.getAdminMessages().setSenderIdFrom(Long.valueOf(senderIdFrom.getText()));
+            data.getFilters().add(new FilterItem("sender.id", FilterItem.OPERATION_FROM, senderIdFrom.getText()));
         }
         if (!senderIdTo.getText().equals("")) {
-            data.getAdminMessages().setSenderIdTo(Long.valueOf(senderIdTo.getText()));
+            data.getFilters().add(new FilterItem("sender.id", FilterItem.OPERATION_TO, senderIdTo.getText()));
         }
-        if (!receiverIdFrom.getText().equals("")) {
-            data.getAdminMessages().setReceiverIdFrom(Long.valueOf(receiverIdFrom.getText()));
-        }
-        if (!receiverIdTo.getText().equals("")) {
-            data.getAdminMessages().setReceiverIdTo(Long.valueOf(receiverIdTo.getText()));
-        }
+//        if (!receiverIdFrom.getText().equals("")) {
+//            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, receiverIdFrom.getText()));
+//        }
+//        if (!receiverIdTo.getText().equals("")) {
+//            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, receiverIdTo.getText()));
+//        }
         if (!subject.getText().equals("")) {
-            data.getAdminMessages().setSubject(subject.getText());
+            data.getFilters().add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
         }
         if (!body.getText().equals("")) {
-            data.getAdminMessages().setBody(body.getText());
+            data.getFilters().add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
         }
         if (createdFrom.getValue() != null) {
-            data.getAdminMessages().setCreatedFrom(createdFrom.getValue());
+            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
         }
         if (createdTo.getValue() != null) {
-            data.getAdminMessages().setCreatedTo(createdTo.getValue());
+            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_TO, createdTo.getValue()));
         }
         if (sentFrom.getValue() != null) {
-            data.getAdminMessages().setSentFrom(sentFrom.getValue());
+            data.getFilters().add(new FilterItem("sent", FilterItem.OPERATION_FROM, sentFrom.getValue()));
         }
         if (sentTo.getValue() != null) {
-            data.getAdminMessages().setSentTo(sentTo.getValue());
+            data.getFilters().add(new FilterItem("sent", FilterItem.OPERATION_TO, sentTo.getValue()));
         }
         if (type.getSelectedIndex() != 0) {
-            data.getAdminMessages().setType(type.getItemText(type.getSelectedIndex()));
+            data.getFilters().add(new FilterItem("messageType", FilterItem.OPERATION_EQUALS,
+                    type.getItemText(type.getSelectedIndex())));
         }
         if (state.getSelectedIndex() != 0) {
-            data.getAdminMessages().setState(state.getItemText(state.getSelectedIndex()));
+            data.getFilters().add(new FilterItem("messageState", FilterItem.OPERATION_EQUALS,
+                    state.getItemText(state.getSelectedIndex())));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminMessages().getMessageIdFrom() != null) {
-            infoText.append("messageIdFrom:");
-            infoText.append(data.getAdminMessages().getMessageIdFrom());
-        }
-        if (data.getAdminMessages().getMessageIdTo() != null) {
-            infoText.append("messageIdTo:");
-            infoText.append(data.getAdminMessages().getMessageIdTo());
-        }
-        if (data.getAdminMessages().getDemandIdFrom() != null) {
-            infoText.append("demandIdFrom:");
-            infoText.append(data.getAdminMessages().getDemandIdFrom());
-        }
-        if (data.getAdminMessages().getDemandIdTo() != null) {
-            infoText.append("demandIdTo:");
-            infoText.append(data.getAdminMessages().getDemandIdTo());
-        }
-        if (data.getAdminMessages().getParentIdFrom() != null) {
-            infoText.append("parentIdFrom:");
-            infoText.append(data.getAdminMessages().getParentIdFrom());
-        }
-        if (data.getAdminMessages().getParentIdTo() != null) {
-            infoText.append("parentIdTo:");
-            infoText.append(data.getAdminMessages().getParentIdTo());
-        }
-        if (data.getAdminMessages().getSenderIdFrom() != null) {
-            infoText.append("senderIdFrom:");
-            infoText.append(data.getAdminMessages().getSenderIdFrom());
-        }
-        if (data.getAdminMessages().getSenderIdTo() != null) {
-            infoText.append("senderIdTo:");
-            infoText.append(data.getAdminMessages().getSenderIdTo());
-        }
-        if (data.getAdminMessages().getReceiverIdFrom() != null) {
-            infoText.append("receiverIdFrom:");
-            infoText.append(data.getAdminMessages().getReceiverIdFrom());
-        }
-        if (data.getAdminMessages().getReceiverIdTo() != null) {
-            infoText.append("receiverIdTo:");
-            infoText.append(data.getAdminMessages().getReceiverIdTo());
-        }
-        if (data.getAdminMessages().getSubject() != null) {
-            infoText.append("subject:");
-            infoText.append(data.getAdminMessages().getSubject());
-        }
-        if (data.getAdminMessages().getBody() != null) {
-            infoText.append("body:");
-            infoText.append(data.getAdminMessages().getBody());
-        }
-        if (data.getAdminMessages().getCreatedFrom() != null) {
-            infoText.append("createdFrom:");
-            infoText.append(data.getAdminMessages().getCreatedFrom());
-        }
-        if (data.getAdminMessages().getCreatedTo() != null) {
-            infoText.append("createdTo:");
-            infoText.append(data.getAdminMessages().getCreatedTo());
-        }
-        if (data.getAdminMessages().getSentFrom() != null) {
-            infoText.append("sentFrom:");
-            infoText.append(data.getAdminMessages().getSentFrom());
-        }
-        if (data.getAdminMessages().getSentFrom() != null) {
-            infoText.append("sentTo:");
-            infoText.append(data.getAdminMessages().getSentTo());
-        }
-        if (data.getAdminMessages().getType() != null) {
-            infoText.append("type:");
-            infoText.append(data.getAdminMessages().getType());
-        }
-        if (data.getAdminMessages().getState() != null) {
-            infoText.append("state:");
-            infoText.append(data.getAdminMessages().getState());
-        }
-
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("messageIdFrom")
@@ -280,14 +203,7 @@ public class AdminMessagesViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-
 }

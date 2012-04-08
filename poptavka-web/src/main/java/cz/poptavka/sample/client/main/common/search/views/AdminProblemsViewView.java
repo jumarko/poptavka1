@@ -8,11 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminProblemsViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -26,42 +26,23 @@ public class AdminProblemsViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminProblemsViewView() {
+    public AdminProblemsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminProblems();
         if (!idFrom.getText().equals("")) {
-            data.getAdminProblems().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminProblems().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!text.getText().equals("")) {
-            data.getAdminProblems().setText(text.getText());
+            data.getFilters().add(new FilterItem("text", FilterItem.OPERATION_LIKE, text.getText()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminProblems().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminProblems().getIdFrom());
-        }
-        if (data.getAdminProblems().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminProblems().getIdTo());
-        }
-        if (data.getAdminProblems().getText() != null) {
-            infoText.append("text:");
-            infoText.append(data.getAdminProblems().getText());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -86,12 +67,7 @@ public class AdminProblemsViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

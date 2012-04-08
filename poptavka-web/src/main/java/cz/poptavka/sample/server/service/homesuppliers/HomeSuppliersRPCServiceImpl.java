@@ -7,6 +7,7 @@ package cz.poptavka.sample.server.service.homesuppliers;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.HomeSuppliersRPCService;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -34,6 +35,7 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 
 /**
  *
@@ -103,20 +105,20 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
 //            return this.createSupplierDetailList(this.generalService.search(search));
 //        }
         //1 0
-        if (detail.getHomeSuppliers().getSupplierCategory() != null
-                && detail.getHomeSuppliers().getSupplierLocality() == null) {
+        if (detail.getCategories() != null
+                && detail.getLocalities() == null) {
             Search search = this.getCategoryFilter(detail, orderColumns);
             return this.createSupplierDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
-        if (detail.getHomeSuppliers().getSupplierCategory() == null
-                && detail.getHomeSuppliers().getSupplierLocality() != null) {
+        if (detail.getCategories() == null
+                && detail.getLocalities() != null) {
             Search search = this.getLocalityFilter(detail, orderColumns);
             return this.createSupplierDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (detail.getHomeSuppliers().getSupplierCategory() != null
-                && detail.getHomeSuppliers().getSupplierLocality() != null) {
+        if (detail.getCategories() != null
+                && detail.getLocalities() != null) {
             List<FullSupplierDetail> suppliersCat = this.createSupplierDetailListCat(
                     this.generalService.searchAndCount(this.getCategoryFilter(detail, orderColumns)).getResult());
 
@@ -136,8 +138,10 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
 
     private Search getCategoryFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search categorySearch = new Search(SupplierCategory.class);
-        final List<Category> allSubCategories = Arrays.asList(
-                this.getAllSubCategories(detail.getHomeSuppliers().getSupplierCategory().getId()));
+        List<Category> allSubCategories = new ArrayList<Category>();
+        for (CategoryDetail cat : detail.getCategories()) {
+            allSubCategories = Arrays.asList(this.getAllSubCategories(cat.getId()));
+        }
         categorySearch.addFilterIn("category", allSubCategories);
 
         Search supplierSearch = this.getSupplierFilter(detail, orderColumns);
@@ -168,8 +172,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
 
     private Search getLocalityFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search localitySearch = new Search(SupplierLocality.class);
-        final List<Locality> allSubLocalities = Arrays.asList(
-                this.getAllSublocalities(detail.getHomeSuppliers().getSupplierLocality().getCode()));
+        List<Locality> allSubLocalities = new ArrayList<Locality>();
+        for (LocalityDetail loc : detail.getLocalities()) {
+            allSubLocalities = Arrays.asList(
+                    this.getAllSublocalities(loc.getCode()));
+        }
         localitySearch.addFilterIn("locality", allSubLocalities);
 
         Search suppSearch = this.getSupplierFilter(detail, orderColumns);
@@ -197,39 +204,25 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private Search getSupplierFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Boolean filterApplied = false;
         Search search = new Search(Supplier.class);
-        if (detail.getHomeSuppliers().getSupplierName() != null) {
-            Collection<BusinessUserData> data = generalService.search(
-                    new Search(BusinessUserData.class).addFilterLike("companyName",
-                        "%" + detail.getAdminSuppliers().getSupplierName() + "%"));
-            search.addFilterIn("businessUser.businessUserData", data);
-            filterApplied = true;
-        }
+        for (FilterItem item : detail.getFilters()) {
+            if (item.getValue().equals("companyName")) {
+                Collection<BusinessUserData> data = generalService.search(
+                        this.filter(new Search(BusinessUserData.class), "", item));
+                search.addFilterIn("businessUser.businessUserData", data);
+            } else if (item.getValue().equals("description")) {
+                Collection<BusinessUserData> descsData = new ArrayList<BusinessUserData>();
+                String[] descs = item.getValue().toString().split("\\s+");
 
-        if (detail.getHomeSuppliers().getRatingFrom() != null) {
-            search.addFilterGreaterOrEqual("overalRating", detail.getHomeSuppliers().getRatingFrom());
-            filterApplied = true;
-        }
-        if (detail.getHomeSuppliers().getRatingTo() != null) {
-            search.addFilterLessOrEqual("overalRating", detail.getHomeSuppliers().getRatingTo());
-            filterApplied = true;
-        }
-        if (detail.getHomeSuppliers().getSupplierDescription() != null) {
-            Collection<BusinessUserData> descsData = new ArrayList<BusinessUserData>();
-            String[] descs = detail.getHomeSuppliers().getSupplierDescription().split("\\s+");
-
-            for (int i = 0; i < descs.length; i++) {
-                descsData.addAll(generalService.search(
-                        new Search(BusinessUserData.class).addFilterLike("description",
-                            "%" + detail.getAdminSuppliers().getSupplierDescription() + "%")));
+                for (int i = 0; i < descs.length; i++) {
+                    descsData.addAll(generalService.search(
+                            this.filter(new Search(BusinessUserData.class), "", item)));
+                }
+                search.addFilterIn("businessUser.businessUserData", descsData);
+            } else {
+                this.filter(search, "", item);
             }
-            search.addFilterIn("businessUser.businessUserData", descsData);
-            filterApplied = true;
         }
-        if (filterApplied) {
-            return this.getSortSearch(search, orderColumns, "supplier");
-        } else {
-            return null;
-        }
+        return this.getSortSearch(search, orderColumns, "supplier");
     }
 
     private Search getSortSearch(Search search, Map<String, OrderType> orderColumns, String prefix) {
@@ -311,5 +304,29 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             detail.setParent(false);
         }
         return detail;
+    }
+
+    private Search filter(Search search, String prefix, FilterItem item) {
+        prefix += ".";
+        switch (item.getOperation()) {
+            case FilterItem.OPERATION_EQUALS:
+                search.addFilterEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_LIKE:
+                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
+                break;
+            case FilterItem.OPERATION_IN:
+                search.addFilterIn(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_FROM:
+                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_TO:
+                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            default:
+                break;
+        }
+        return search;
     }
 }

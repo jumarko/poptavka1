@@ -170,9 +170,9 @@ public class HomeSuppliersPresenter
             view.getCategoriesList().setVisible(false);
             dataProvider.updateRowCount(0, false);
             // create path
-            eventBus.getCategoryParents(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
+            eventBus.getCategoryParents(searchDataHolder.getCategories().get(0).getId());
             // get Sub Categories
-            eventBus.getSubCategories(searchDataHolder.getHomeSuppliers().getSupplierCategory().getId());
+            eventBus.getSubCategories(searchDataHolder.getCategories().get(0).getId());
         }
     }
 
@@ -241,10 +241,10 @@ public class HomeSuppliersPresenter
                     eventBus.displayChildWidget(selected.getId());
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
-                        searchDataHolder.initHomeSuppliers();
+//                        searchDataHolder.initHomeSuppliers();
                     }
-                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
-                            new CategoryDetail(selected.getId(), selected.getName()));
+//                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
+//                            new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.addToPath(selected);
                 }
             }
@@ -268,10 +268,10 @@ public class HomeSuppliersPresenter
 
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
-                        searchDataHolder.initHomeSuppliers();
+//                        searchDataHolder.initHomeSuppliers();
                     }
-                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
-                            new CategoryDetail(selected.getId(), selected.getName()));
+//                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
+//                            new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.getSubCategories(selected.getId());
                     eventBus.addToPath(selected);
                 }
@@ -336,7 +336,7 @@ public class HomeSuppliersPresenter
         view.getCategoriesList().setRowData(0, subcategories);
 
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
-            searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));
+//            searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));
         }
         eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;

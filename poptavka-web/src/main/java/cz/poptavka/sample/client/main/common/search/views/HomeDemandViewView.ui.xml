@@ -12,16 +12,21 @@
             margin-right:10px;
             margin-left:10px;
         }
+        .dateBox {
+            width: 70px;
+            margin-right:10px;
+            margin-left:10px;
+        }
         .margin {
-            
+
         }
         .searchMainContent {
             width: 200px;
-        } 
+        }
     </ui:style>
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
-        
+
     <g:HTMLPanel>
         <div>
             <ul>
@@ -78,26 +83,32 @@
                     <g:ListBox ui:field="demandTypes" />
                 </li>
                 <li>
+                    <g:Label>
+                        <ui:msg key="creationDate">Creation date:</ui:msg>
+                    </g:Label>
+                </li>
+                <li>
+                    <g:ListBox ui:field="creationDate" />
+                </li>
+                <li>
+                    <g:Label>
+                        <ui:msg key="finnishDate">Finnish date:</ui:msg>
+                    </g:Label>
+                </li>
+                <li>
                     <table>
                         <tr>
                             <td width="200">
-                                <g:Label>
-                                    <ui:msg key="creationDate">Creation date:</ui:msg>
-                                </g:Label>
-                            </td>
-                            <td width="200">
-                                <g:Label>
-                                    <ui:msg key="finnishDate">Finnish date:</ui:msg>
-                                </g:Label>
-                            </td>
-                            
-                        </tr>
-                        <tr>
-                            <td>
-                                <g:ListBox ui:field="creationDate" />
-                            </td>
-                            <td>
-                                <p1:DateBox ui:field="finnishDate" />
+                                <g:HorizontalPanel>
+                                    <g:Label styleName="{style.margin}">
+                                        <ui:msg key="priceFrom">from</ui:msg>
+                                    </g:Label>
+                                    <p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateFrom"/>
+                                    <g:Label styleName="{style.margin}">
+                                        <ui:msg key="priceTo">to</ui:msg>
+                                    </g:Label>
+                                    <p1:DateBox styleName="{style.dateBox}" ui:field="finnishDateTo"/>
+                                </g:HorizontalPanel>
                             </td>
                         </tr>
                     </table>

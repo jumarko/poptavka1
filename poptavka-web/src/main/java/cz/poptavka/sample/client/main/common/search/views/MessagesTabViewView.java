@@ -7,11 +7,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class MessagesTabViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -25,42 +25,23 @@ public class MessagesTabViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public MessagesTabViewView() {
+    public MessagesTabViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initMessagesTab();
         if (!sender.getText().equals("")) {
-            data.getMessagesTab().setSender(sender.getText());
+            data.getFilters().add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, sender.getText()));
         }
         if (!subject.getText().equals("")) {
-            data.getMessagesTab().setSubject(subject.getText());
+            data.getFilters().add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
         }
         if (!body.getText().equals("")) {
-            data.getMessagesTab().setSubject(body.getText());
+            data.getFilters().add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getMessagesTab().getSender() != null) {
-            infoText.append("sender:");
-            infoText.append(data.getMessagesTab().getSender());
-        }
-        if (data.getMessagesTab().getSubject() != null) {
-            infoText.append("subject:");
-            infoText.append(data.getMessagesTab().getSubject());
-        }
-        if (data.getMessagesTab().getBody() != null) {
-            infoText.append("body:");
-            infoText.append(data.getMessagesTab().getBody());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("clearBtn")
@@ -71,12 +52,7 @@ public class MessagesTabViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

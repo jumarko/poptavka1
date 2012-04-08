@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class PotentialDemandMessagesViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -33,9 +34,7 @@ public class PotentialDemandMessagesViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public PotentialDemandMessagesViewView() {
+    public PotentialDemandMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         urgent.addItem("select urgention");
         urgent.addItem("less normal");
@@ -44,85 +43,41 @@ public class PotentialDemandMessagesViewView extends Composite implements
         urgent.addItem("urgent");
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initPotentialDemandMessages();
         if (!sender.getText().equals("")) {
-            data.getPotentialDemandMessages().setSender(sender.getText());
+            data.getFilters().add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, sender.getText()));
         }
         if (!title.getText().equals("")) {
-            data.getPotentialDemandMessages().setDemandTitle(title.getText());
+            data.getFilters().add(new FilterItem("title", FilterItem.OPERATION_LIKE, title.getText()));
         }
         if (!isStar.getText().equals("")) {
-            data.getPotentialDemandMessages().setIsStared(isStar.getValue());
+            data.getFilters().add(new FilterItem("star", FilterItem.OPERATION_EQUALS, isStar.getValue()));
         }
         if (!ratingFrom.getText().equals("")) {
-            data.getPotentialDemandMessages().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
+            //rating vs overalRating
+            data.getFilters().add(new FilterItem("rating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
         }
         if (!ratingTo.getText().equals("")) {
-            data.getPotentialDemandMessages().setRatingTo(Integer.valueOf(ratingTo.getText()));
+            data.getFilters().add(new FilterItem("rating", FilterItem.OPERATION_TO, ratingTo.getText()));
         }
         if (!priceFrom.getText().equals("")) {
-            data.getPotentialDemandMessages().setPriceFrom(Integer.valueOf(priceFrom.getText()));
+            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
         }
         if (!priceTo.getText().equals("")) {
-            data.getPotentialDemandMessages().setPriceTo(Integer.valueOf(priceTo.getText()));
+            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
         if (createdFrom.getValue() != null) {
-            data.getPotentialDemandMessages().setCreatedFrom(createdFrom.getValue());
+            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
         }
         if (createdTo.getValue() != null) {
-            data.getPotentialDemandMessages().setCreatedTo(createdTo.getValue());
+            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_TO, createdTo.getValue()));
         }
         if (urgent.getSelectedIndex() != 0) {
-            data.getPotentialDemandMessages().setUrgention(urgent.getSelectedIndex());
+            data.getFilters().add(new FilterItem("urgent", FilterItem.OPERATION_EQUALS, urgent.getSelectedIndex()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getPotentialDemandMessages().getSender() != null) {
-            infoText.append("sender:");
-            infoText.append(data.getPotentialDemandMessages().getSender());
-        }
-        if (data.getPotentialDemandMessages().getDemandTitle() != null) {
-            infoText.append("title:");
-            infoText.append(data.getPotentialDemandMessages().getDemandTitle());
-        }
-        if (data.getPotentialDemandMessages().getIsStared() != null) {
-            infoText.append("star:");
-            infoText.append(data.getPotentialDemandMessages().getIsStared().toString());
-        }
-        if (data.getPotentialDemandMessages().getUrgention() != null) {
-            infoText.append("urgent:");
-            infoText.append(urgent.getItemText(data.getPotentialDemandMessages().getUrgention()));
-        }
-        if (data.getPotentialDemandMessages().getCreatedFrom() != null) {
-            infoText.append("createdFrom:");
-            infoText.append(data.getPotentialDemandMessages().getCreatedFrom().toString());
-        }
-        if (data.getPotentialDemandMessages().getCreatedTo() != null) {
-            infoText.append("createdTo:");
-            infoText.append(data.getPotentialDemandMessages().getCreatedTo().toString());
-        }
-        if (data.getPotentialDemandMessages().getRatingFrom() != null) {
-            infoText.append("ratingFrom:");
-            infoText.append(data.getPotentialDemandMessages().getRatingFrom());
-        }
-        if (data.getPotentialDemandMessages().getRatingTo() != null) {
-            infoText.append("ratingTo:");
-            infoText.append(data.getPotentialDemandMessages().getRatingTo());
-        }
-        if (data.getPotentialDemandMessages().getPriceFrom() != null) {
-            infoText.append("priceFrom:");
-            infoText.append(data.getPotentialDemandMessages().getPriceFrom());
-        }
-        if (data.getPotentialDemandMessages().getPriceTo() != null) {
-            infoText.append("priceTo:");
-            infoText.append(data.getPotentialDemandMessages().getPriceTo());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("clearBtn")
@@ -140,12 +95,7 @@ public class PotentialDemandMessagesViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

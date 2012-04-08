@@ -8,11 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminPreferencesViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -26,56 +26,29 @@ public class AdminPreferencesViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminPreferencesViewView() {
+    public AdminPreferencesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminPreferences();
         if (!idFrom.getText().equals("")) {
-            data.getAdminPreferences().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminPreferences().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!key.getText().equals("")) {
-            data.getAdminPreferences().setKey(key.getText());
+            data.getFilters().add(new FilterItem("key", FilterItem.OPERATION_LIKE, key.getText()));
         }
         if (!value.getText().equals("")) {
-            data.getAdminPreferences().setValue(value.getText());
+            data.getFilters().add(new FilterItem("value", FilterItem.OPERATION_LIKE, value.getText()));
         }
         if (!description.getText().equals("")) {
-            data.getAdminPreferences().setDescription(description.getText());
+            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_IN, description.getText()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminPreferences().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminPreferences().getIdFrom());
-        }
-        if (data.getAdminPreferences().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminPreferences().getIdTo());
-        }
-        if (data.getAdminPreferences().getKey() != null) {
-            infoText.append("key:");
-            infoText.append(data.getAdminPreferences().getKey());
-        }
-        if (data.getAdminPreferences().getValue() != null) {
-            infoText.append("value:");
-            infoText.append(data.getAdminPreferences().getValue());
-        }
-        if (data.getAdminPreferences().getDescription() != null) {
-            infoText.append("description:");
-            infoText.append(data.getAdminPreferences().getDescription());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -102,12 +75,7 @@ public class AdminPreferencesViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

@@ -8,11 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminPaymentMethodsViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -26,49 +26,26 @@ public class AdminPaymentMethodsViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminPaymentMethodsViewView() {
+    public AdminPaymentMethodsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminPaymentMethods();
         if (!idFrom.getText().equals("")) {
-            data.getAdminPaymentMethods().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminPaymentMethods().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!name.getText().equals("")) {
-            data.getAdminPaymentMethods().setName(name.getText());
+            data.getFilters().add(new FilterItem("name", FilterItem.OPERATION_LIKE, name.getText()));
         }
         if (!description.getText().equals("")) {
-            data.getAdminPaymentMethods().setDescription(description.getText());
+            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_LIKE, description.getText()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminPaymentMethods().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminPaymentMethods().getIdFrom());
-        }
-        if (data.getAdminPaymentMethods().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminPaymentMethods().getIdTo());
-        }
-        if (data.getAdminPaymentMethods().getName() != null) {
-            infoText.append("name:");
-            infoText.append(data.getAdminPaymentMethods().getName());
-        }
-        if (data.getAdminPaymentMethods().getDescription() != null) {
-            infoText.append("description:");
-            infoText.append(data.getAdminPaymentMethods().getDescription());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -94,12 +71,7 @@ public class AdminPaymentMethodsViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

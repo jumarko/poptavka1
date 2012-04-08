@@ -15,6 +15,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.offer.OfferState.Type;
 
@@ -26,8 +27,9 @@ public class AdminOffersViewView extends Composite implements
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminOffersViewView> {
     }
     @UiField
-    TextBox offerIdFrom, offerIdTo, demandIdFrom, demandIdTo, supplierIdFrom,
-    supplierIdTo, priceFrom, priceTo;
+    TextBox offerIdFrom, offerIdTo, demandIdFrom, demandIdTo, supplierIdFrom;
+    @UiField
+    TextBox supplierIdTo, priceFrom, priceTo;
     @UiField
     DateBox createdFrom, createdTo, finnishFrom, finnishTo;
     @UiField
@@ -35,9 +37,7 @@ public class AdminOffersViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminOffersViewView() {
+    public AdminOffersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         state.addItem(Storage.MSGS.select());
         for (Type type : OfferState.Type.values()) {
@@ -45,107 +45,50 @@ public class AdminOffersViewView extends Composite implements
         }
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminOffers();
         if (!offerIdFrom.getText().equals("")) {
-            data.getAdminOffers().setOfferIdFrom(Long.valueOf(offerIdFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, offerIdFrom.getText()));
         }
         if (!offerIdTo.getText().equals("")) {
-            data.getAdminOffers().setOfferIdTo(Long.valueOf(offerIdTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, offerIdTo.getText()));
         }
         if (!demandIdFrom.getText().equals("")) {
-            data.getAdminOffers().setDemandIdFrom(Long.valueOf(demandIdFrom.getText()));
+            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
         }
         if (!demandIdTo.getText().equals("")) {
-            data.getAdminOffers().setDemandIdTo(Long.valueOf(demandIdTo.getText()));
+            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
         }
         if (!supplierIdFrom.getText().equals("")) {
-            data.getAdminOffers().setSupplierIdFrom(Long.valueOf(supplierIdFrom.getText()));
+            data.getFilters().add(new FilterItem("supplier.id", FilterItem.OPERATION_FROM, supplierIdFrom.getText()));
         }
         if (!supplierIdTo.getText().equals("")) {
-            data.getAdminOffers().setSupplierIdTo(Long.valueOf(supplierIdTo.getText()));
+            data.getFilters().add(new FilterItem("supplier.id", FilterItem.OPERATION_TO, supplierIdTo.getText()));
         }
         if (!priceFrom.getText().equals("")) {
-            data.getAdminOffers().setPriceFrom(Integer.valueOf(priceFrom.getText()));
+            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
         }
         if (!priceTo.getText().equals("")) {
-            data.getAdminOffers().setPriceTo(Integer.valueOf(priceTo.getText()));
+            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
         if (createdFrom.getValue() != null) {
-            data.getAdminOffers().setCreatedFrom(createdFrom.getValue());
+            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
         }
         if (createdTo.getValue() != null) {
-            data.getAdminOffers().setCreatedTo(createdTo.getValue());
+            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdTo.getValue()));
         }
         if (finnishFrom.getValue() != null) {
-            data.getAdminOffers().setFinnishFrom(finnishFrom.getValue());
+            data.getFilters().add(new FilterItem("finishDate", FilterItem.OPERATION_FROM, finnishFrom.getValue()));
         }
         if (finnishTo.getValue() != null) {
-            data.getAdminOffers().setFinnishTo(finnishTo.getValue());
+            data.getFilters().add(new FilterItem("finishDate", FilterItem.OPERATION_FROM, finnishTo.getValue()));
         }
         if (state.getSelectedIndex() != 0) {
-            data.getAdminOffers().setState(state.getItemText(state.getSelectedIndex()));
+            data.getFilters().add(new FilterItem("state", FilterItem.OPERATION_EQUALS,
+                    state.getItemText(state.getSelectedIndex())));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminOffers().getOfferIdFrom() != null) {
-            infoText.append("offerIdFrom:");
-            infoText.append(data.getAdminOffers().getOfferIdFrom());
-        }
-        if (data.getAdminOffers().getOfferIdTo() != null) {
-            infoText.append("offerIdTo:");
-            infoText.append(data.getAdminOffers().getOfferIdTo());
-        }
-        if (data.getAdminOffers().getDemandIdFrom() != null) {
-            infoText.append("demandIdFrom:");
-            infoText.append(data.getAdminOffers().getDemandIdTo());
-        }
-        if (data.getAdminOffers().getDemandIdTo() != null) {
-            infoText.append("demandIdTo:");
-            infoText.append(data.getAdminOffers().getDemandIdTo());
-        }
-        if (data.getAdminOffers().getSupplierIdFrom() != null) {
-            infoText.append("supplierIdFrom:");
-            infoText.append(data.getAdminOffers().getSupplierIdFrom());
-        }
-        if (data.getAdminOffers().getSupplierIdTo() != null) {
-            infoText.append("supplierIdTo:");
-            infoText.append(data.getAdminOffers().getSupplierIdTo());
-        }
-        if (data.getAdminOffers().getPriceFrom() != null) {
-            infoText.append("priceFrom:");
-            infoText.append(data.getAdminOffers().getPriceFrom());
-        }
-        if (data.getAdminOffers().getPriceTo() != null) {
-            infoText.append("priceTo:");
-            infoText.append(data.getAdminOffers().getPriceTo());
-        }
-        if (data.getAdminOffers().getCreatedFrom() != null) {
-            infoText.append("createdFrom:");
-            infoText.append(data.getAdminOffers().getCreatedFrom());
-        }
-        if (data.getAdminOffers().getCreatedTo() != null) {
-            infoText.append("createdTo:");
-            infoText.append(data.getAdminOffers().getCreatedTo());
-        }
-        if (data.getAdminOffers().getFinnishFrom() != null) {
-            infoText.append("finnishFrom:");
-            infoText.append(data.getAdminOffers().getFinnishFrom());
-        }
-        if (data.getAdminOffers().getFinnishTo() != null) {
-            infoText.append("finnishTo:");
-            infoText.append(data.getAdminOffers().getFinnishTo());
-        }
-        if (data.getAdminOffers().getState() != null) {
-            infoText.append("state:");
-            infoText.append(data.getAdminOffers().getState());
-        }
-
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("offerIdFrom")
@@ -222,13 +165,7 @@ public class AdminOffersViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

@@ -16,6 +16,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import cz.poptavka.sample.client.main.common.search.views.AdminAccessRolesViewView;
 import cz.poptavka.sample.client.main.common.search.views.AdminClientsViewView;
 import cz.poptavka.sample.client.main.common.search.views.AdminDemandsViewView;
 import cz.poptavka.sample.client.main.common.search.views.AdminEmailActivationViewView;
@@ -30,14 +32,14 @@ import cz.poptavka.sample.client.main.common.search.views.AdminSuppliersViewView
 import cz.poptavka.sample.client.main.common.search.views.HomeDemandViewView;
 import cz.poptavka.sample.client.main.common.search.views.HomeSuppliersViewView;
 import cz.poptavka.sample.client.main.common.search.views.MessagesTabViewView;
-import cz.poptavka.sample.client.user.admin.tab.AdminAccessRolesView;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * Musi byt mulitple = true, inak advance search views sa nebudu zobrazovat (bude vyhadzovat chybu)
+ * -- len v pripade, ze budu dedit SearchModulesViewInterface, co chceme, aby voly Lazy
+ */
 @Presenter(view = SearchModuleView.class, multiple = true)
 public class SearchModulePresenter
         extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
@@ -65,17 +67,13 @@ public class SearchModulePresenter
         Map<Long, String> getFilterLocalities();
     }
 
-    public interface SearchModulesViewInterface extends LazyView {
+    //Neviem zatial preco, ale nemoze to byt lazy, pretoze sa neinicializuci advace
+    //search views.
+    public interface SearchModulesViewInterface {
 
         SearchModuleDataHolder getFilter();
 
-//        Widget getWidgetView();
-
-        ListBox getCategoryList();
-
-        ListBox getLocalityList();
-
-        void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder);
+        Widget getWidgetView();
     }
 
     @Override
@@ -123,43 +121,8 @@ public class SearchModulePresenter
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
-    public void onResponseLocalities(final ArrayList<LocalityDetail> list) {
-        final ListBox box = ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).getLocalityList();
-        box.clear();
-        box.setVisible(true);
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                box.addItem("All localities...");
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(), list.get(i).getCode());
-                }
-                box.setSelectedIndex(0);
-                GWT.log("Locality List filled");
-            }
-        });
-    }
-
     public void onClearSearchContent() {
         view.getSearchContent().setText(Storage.MSGS.searchContent());
-    }
-
-    public void onResponseCategories(final ArrayList<CategoryDetail> list) {
-        final ListBox box = ((SearchModulesViewInterface) view.getPopupPanel().getWidget()).getCategoryList();
-        box.clear();
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-
-            @Override
-            public void execute() {
-                box.addItem(Storage.MSGS.allCategories());
-                for (int i = 0; i < list.size(); i++) {
-                    box.addItem(list.get(i).getName(), String.valueOf(list.get(i).getId()));
-                }
-                box.setSelectedIndex(0);
-                GWT.log("Category Lists filled");
-            }
-        });
     }
 
     public void onResponsePaymentMethods(final List<PaymentMethodDetail> list) {
@@ -216,6 +179,7 @@ public class SearchModulePresenter
             }
         });
     }
+    private int advSearchViewInitialized = -1;
 
     private void addAdvSearchBtnClickHandler() {
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
@@ -229,76 +193,124 @@ public class SearchModulePresenter
     }
 
     private void initAppropiateViews() {
-        switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.HOME_DEMANDS:
-                eventBus.requestCategories();
-                eventBus.requestLocalities();
-                view.getPopupPanel().setWidget(new HomeDemandViewView());
+        if (advSearchViewInitialized != Storage.getCurrentlyLoadedView()) {
+            advSearchViewInitialized = Storage.getCurrentlyLoadedView();
+            switch (Storage.getCurrentlyLoadedView()) {
+                case Constants.HOME_DEMANDS:
+                    view.getPopupPanel().setWidget(new HomeDemandViewView());
+                    break;
+                case Constants.HOME_SUPPLIERS:
+                    view.getPopupPanel().setWidget(new HomeSuppliersViewView());
+                    break;
+                case Constants.DEMANDS_CLIENT_MY_DEMANDS:
+                    break;
+                case Constants.DEMANDS_CLIENT_OFFERS:
+                    break;
+                case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
+                    break;
+                case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
+                    break;
+                case Constants.DEMANDS_SUPPLIER_OFFERS:
+                    break;
+                case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
+                    break;
+                case Constants.MESSAGES_INBOX:
+                    view.getPopupPanel().setWidget(new MessagesTabViewView());
+                    break;
+                case Constants.MESSAGES_SENT:
+                    view.getPopupPanel().setWidget(new MessagesTabViewView());
+                    break;
+                case Constants.MESSAGES_TRASH:
+                    view.getPopupPanel().setWidget(new MessagesTabViewView());
+                    break;
+                case Constants.ADMIN_ACCESS_ROLE:
+                    view.getPopupPanel().setWidget(new AdminAccessRolesViewView());
+                    break;
+                case Constants.ADMIN_CLIENTS:
+                    view.getPopupPanel().setWidget(new AdminClientsViewView());
+                    break;
+                case Constants.ADMIN_DEMANDS:
+                    view.getPopupPanel().setWidget(new AdminDemandsViewView());
+                    break;
+                case Constants.ADMIN_EMAILS_ACTIVATION:
+                    view.getPopupPanel().setWidget(new AdminEmailActivationViewView());
+                    break;
+                case Constants.ADMIN_INVOICES:
+                    view.getPopupPanel().setWidget(new AdminInvoicesViewView());
+                    break;
+                case Constants.ADMIN_MESSAGES:
+                    view.getPopupPanel().setWidget(new AdminMessagesViewView());
+                    break;
+                case Constants.ADMIN_OFFERS:
+                    view.getPopupPanel().setWidget(new AdminOffersViewView());
+                    break;
+                case Constants.ADMIN_PAYMENT_METHODS:
+                    view.getPopupPanel().setWidget(new AdminPaymentMethodsViewView());
+                    break;
+                case Constants.ADMIN_PERMISSIONS:
+                    view.getPopupPanel().setWidget(new AdminPermissionsViewView());
+                    break;
+                case Constants.ADMIN_PREFERENCES:
+                    view.getPopupPanel().setWidget(new AdminPreferencesViewView());
+                    break;
+                case Constants.ADMIN_PROBLEMS:
+                    view.getPopupPanel().setWidget(new AdminProblemsViewView());
+                    break;
+                case Constants.ADMIN_SUPPLIERS:
+                    view.getPopupPanel().setWidget(new AdminSuppliersViewView());
+                    break;
+                default:
+                    view.getPopupPanel().clear();
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Constucts info of given filters , that will be applied and place them into given textBox.
+     *
+     * @param type - 0...constucts info for advance search view,
+     *               1...constucts info for categories,
+     *               2...constucts info for localities.
+     * @param textBox - given textBox for holding info string.
+     * @param searchModuleDataHolder - given filters, selected by user.
+     */
+    private void displayShortInfo(int type, TextBox textBox, SearchModuleDataHolder searchModuleDataHolder) {
+        StringBuilder infoStr = new StringBuilder();
+        switch (type) {
+            case 0:
+                for (FilterItem item : searchModuleDataHolder.getFilters()) {
+                    infoStr.append(item.getItem());
+                    infoStr.append(":");
+                    switch (item.getOperation()) {
+                        case FilterItem.OPERATION_EQUALS:
+                            infoStr.append("=");
+                            break;
+                        case FilterItem.OPERATION_LIKE:
+                            infoStr.append("~");
+                            break;
+                        case FilterItem.OPERATION_FROM:
+                            infoStr.append(">");
+                            break;
+                        case FilterItem.OPERATION_TO:
+                            infoStr.append("<");
+                            break;
+                        case FilterItem.OPERATION_IN:
+                            infoStr.append(" in ");
+                            break;
+                        default:
+                            break;
+                    }
+                    infoStr.append(item.getValue());
+                }
                 break;
-            case Constants.HOME_SUPPLIERS:
-                eventBus.requestCategories();
-                eventBus.requestLocalities();
-                view.getPopupPanel().setWidget(new HomeSuppliersViewView());
+            case 1:
+                infoStr.append(searchModuleDataHolder.getCategories().toString());
                 break;
-            case Constants.DEMANDS_CLIENT_MY_DEMANDS:
-                break;
-            case Constants.DEMANDS_CLIENT_OFFERS:
-                break;
-            case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
-                break;
-            case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
-                break;
-            case Constants.DEMANDS_SUPPLIER_OFFERS:
-                break;
-            case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
-                break;
-            case Constants.MESSAGES_INBOX:
-                view.getPopupPanel().setWidget(new MessagesTabViewView());
-                break;
-            case Constants.MESSAGES_SENT:
-                view.getPopupPanel().setWidget(new MessagesTabViewView());
-                break;
-            case Constants.MESSAGES_TRASH:
-                view.getPopupPanel().setWidget(new MessagesTabViewView());
-                break;
-            case Constants.ADMIN_ACCESS_ROLE:
-                view.getPopupPanel().setWidget(new AdminAccessRolesView());
-                break;
-            case Constants.ADMIN_CLIENTS:
-                view.getPopupPanel().setWidget(new AdminClientsViewView());
-                break;
-            case Constants.ADMIN_DEMANDS:
-                view.getPopupPanel().setWidget(new AdminDemandsViewView());
-                break;
-            case Constants.ADMIN_EMAILS_ACTIVATION:
-                view.getPopupPanel().setWidget(new AdminEmailActivationViewView());
-                break;
-            case Constants.ADMIN_INVOICES:
-                view.getPopupPanel().setWidget(new AdminInvoicesViewView());
-                break;
-            case Constants.ADMIN_MESSAGES:
-                view.getPopupPanel().setWidget(new AdminMessagesViewView());
-                break;
-            case Constants.ADMIN_OFFERS:
-                view.getPopupPanel().setWidget(new AdminOffersViewView());
-                break;
-            case Constants.ADMIN_PAYMENT_METHODS:
-                view.getPopupPanel().setWidget(new AdminPaymentMethodsViewView());
-                break;
-            case Constants.ADMIN_PERMISSIONS:
-                view.getPopupPanel().setWidget(new AdminPermissionsViewView());
-                break;
-            case Constants.ADMIN_PREFERENCES:
-                view.getPopupPanel().setWidget(new AdminPreferencesViewView());
-                break;
-            case Constants.ADMIN_PROBLEMS:
-                view.getPopupPanel().setWidget(new AdminProblemsViewView());
-                break;
-            case Constants.ADMIN_SUPPLIERS:
-                view.getPopupPanel().setWidget(new AdminSuppliersViewView());
+            case 2:
+                infoStr.append(searchModuleDataHolder.getLocalities().toString());
                 break;
             default:
-                view.getPopupPanel().clear();
                 break;
         }
     }

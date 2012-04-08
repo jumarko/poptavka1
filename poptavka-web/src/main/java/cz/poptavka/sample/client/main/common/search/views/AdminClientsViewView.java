@@ -8,11 +8,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminClientsViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -26,72 +26,37 @@ public class AdminClientsViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminClientsViewView() {
+    public AdminClientsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         ratingFrom.setText("0");
         ratingTo.setText("100");
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminClients();
         if (!idFrom.getText().equals("")) {
-            data.getAdminClients().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminClients().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!companyName.getText().equals("")) {
-            data.getAdminClients().setCompanyName(companyName.getText());
+            data.getFilters().add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, companyName.getText()));
         }
         if (!firstName.getText().equals("")) {
-            data.getAdminClients().setFirstName(firstName.getText());
+            data.getFilters().add(new FilterItem("personFirstName", FilterItem.OPERATION_LIKE, firstName.getText()));
         }
         if (!lastName.getText().equals("")) {
-            data.getAdminClients().setLastName(lastName.getText());
+            data.getFilters().add(new FilterItem("personLastName", FilterItem.OPERATION_LIKE, lastName.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            data.getAdminClients().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
+            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingFrom.getText()));
         }
         if (!ratingTo.getText().equals("100")) {
-            data.getAdminClients().setRatingTo(Integer.valueOf(ratingTo.getText()));
+            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingTo.getText()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminClients().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminClients().getIdFrom());
-        }
-        if (data.getAdminClients().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminClients().getIdTo());
-        }
-        if (data.getAdminClients().getCompanyName() != null) {
-            infoText.append("companyName:");
-            infoText.append(data.getAdminClients().getCompanyName());
-        }
-        if (data.getAdminClients().getFirstName() != null) {
-            infoText.append("firstName:");
-            infoText.append(data.getAdminClients().getFirstName());
-        }
-        if (data.getAdminClients().getLastName() != null) {
-            infoText.append("lastName:");
-            infoText.append(data.getAdminClients().getLastName());
-        }
-        if (data.getAdminClients().getRatingFrom() != null) {
-            infoText.append("ratingFrom:");
-            infoText.append(data.getAdminClients().getRatingFrom().toString());
-        }
-        if (data.getAdminClients().getRatingTo() != null) {
-            infoText.append("ratingTo:");
-            infoText.append(data.getAdminClients().getRatingTo().toString());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -134,12 +99,7 @@ public class AdminClientsViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

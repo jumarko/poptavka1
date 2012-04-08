@@ -5,7 +5,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -25,7 +24,6 @@ import java.util.Map;
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
 
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private Map<Long, String> categories = new HashMap<Long, String>();
     private Map<Long, String> localities = new HashMap<Long, String>();
 
@@ -45,7 +43,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     private PopupPanel categoryTooltip = new PopupPanel();
     private PopupPanel localityTooltip = new PopupPanel();
 
-//    public SearchModuleView() {
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -245,7 +242,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
             default:
                 break;
         }
-
     }
 
     private void searchCategoriesAction() {

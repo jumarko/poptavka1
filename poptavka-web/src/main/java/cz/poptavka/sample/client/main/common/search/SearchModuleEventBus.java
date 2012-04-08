@@ -6,9 +6,6 @@ import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
-import java.util.ArrayList;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startView = SearchModuleView.class, module = SearchModule.class)
@@ -36,14 +33,6 @@ public interface SearchModuleEventBus extends EventBus {
     @Event(forwardToParent = true)
     void goToMessagesModule(SearchModuleDataHolder filter, int loadWidget);
 
-//    @Event(forwardToParent = true)
-//    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
-//
-//    @Event(forwardToParent = true)
-//    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
-//
-//    @Event(forwardToParent = true)
-//    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
     @Event(forwardToParent = true)
     void initCategoryWidget(SimplePanel holder);
 
@@ -133,17 +122,17 @@ public interface SearchModuleEventBus extends EventBus {
 //    void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
 //    @Event(handlers = DevelDetailWrapperPresenter.class)
 //    void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
-    @Event(handlers = SearchModuleHandler.class)
-    void requestCategories();
-
-    @Event(handlers = SearchModuleHandler.class)
-    void requestLocalities();
-
-    @Event(handlers = SearchModulePresenter.class)
-    void responseCategories(final ArrayList<CategoryDetail> list);
-
-    @Event(handlers = SearchModulePresenter.class)
-    void responseLocalities(final ArrayList<LocalityDetail> list);
+//    @Event(handlers = SearchModuleHandler.class)
+//    void requestCategories();
+//
+//    @Event(handlers = SearchModuleHandler.class)
+//    void requestLocalities();
+//
+//    @Event(handlers = SearchModulePresenter.class)
+//    void responseCategories(final ArrayList<CategoryDetail> list);
+//
+//    @Event(handlers = SearchModulePresenter.class)
+//    void responseLocalities(final ArrayList<LocalityDetail> list);
     // TODO Praso - zakomentoval som tuto metodu pretoze mam pocit, ze sa nepouziva a v podstate
     // ani nema co robit v module SearchModule
 //    @Event(handlers = SearchModuleHandler.class)

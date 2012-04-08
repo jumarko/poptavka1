@@ -5,6 +5,7 @@ package cz.poptavka.sample.server.service.messages;
 
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.MessagesRPCService;
 import cz.poptavka.sample.domain.message.Message;
 import cz.poptavka.sample.domain.message.MessageState;
@@ -115,11 +116,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         messageSearch.addFilterEqual("sender", sender);
         //ak treba, filtruj spravy poslane danym uzivatelom
         if (searchDataHolder != null) {
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                this.filter(messageSearch, "", item);
             }
         }
 
@@ -142,9 +140,14 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         messageUserRoleSearch.addFilterIn("type", MessageUserRoleType.TO);
         //ak treba, filtruj prijemcov danych sprav
         if (searchDataHolder != null) {
-            messageUserRoleSearch.addFilterIn("user", generalService.search(
-                    new Search(User.class).addFilterLike(
-                        "email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                if (item.getItem().equals("email")) {
+                    messageUserRoleSearch.addFilterIn("user", generalService.search(
+                            this.filter(new Search(User.class), "", item)));
+                } else {
+                    this.filter(messageSearch, "", item);
+                }
+            }
         }
         /****/
         recipients.addAll(generalService.search(messageUserRoleSearch));
@@ -195,7 +198,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return conversation list
      */
     @Override
-    public ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) {
+    public ArrayList<MessageDetail> getConversationMessages(long threadRootId,
+            long subRootId) {
 //        Message root = messageService.getById(threadRootId);
         Message subRoot = messageService.getById(subRootId);
         List<Message> conversation = messageService.getAllDescendants(subRoot);
@@ -216,7 +220,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) {
+    public void setMessageReadStatus(List<Long> userMessageIds,
+            boolean isRead) {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -229,7 +234,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * Change 'star' status of sent messages to chosen value
      */
     @Override
-    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) {
+    public void setMessageStarStatus(List<Long> userMessageIds,
+            boolean isStarred) {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);
@@ -242,16 +248,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         Search messageSearch = new Search(Message.class);
         messageSearch.addFilterEqual("messageState", MessageState.DELETED);
         if (searchDataHolder != null) {
-            if (searchDataHolder.getMessagesTab().getSender() != null) {
-                messageSearch.addFilterIn("sender", generalService.search(
-                        new Search(User.class).addFilterLike(
-                            "email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
-            }
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                if (item.getItem().equals("email")) {
+                    messageSearch.addFilterIn("sender", generalService.search(
+                            this.filter(new Search(User.class), "", item)));
+                } else {
+                    this.filter(messageSearch, "", item);
+                }
             }
         }
 
@@ -334,28 +337,24 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         Search messageSearch = null;
         if (searchDataHolder != null) {
             messageSearch = new Search(Message.class);
-            if (searchDataHolder.getMessagesTab().getSender() != null) {
-                messageSearch.addFilterIn("sender", generalService.search(
-                        new Search(User.class).addFilterLike(
-                            "email", "%" + searchDataHolder.getMessagesTab().getSender() + "%")));
+            for (FilterItem item : searchDataHolder.getFilters()) {
+                if (item.getItem().equals("email")) {
+                    messageSearch.addFilterIn("sender", generalService.search(
+                            this.filter(new Search(User.class), "", item)));
+                } else {
+                    this.filter(messageSearch, "", item);
+                }
             }
-            if (searchDataHolder.getMessagesTab().getSubject() != null) {
-                messageSearch.addFilterLike("subject", "%" + searchDataHolder.getMessagesTab().getSubject() + "%");
-            }
-            if (searchDataHolder.getMessagesTab().getBody() != null) {
-                messageSearch.addFilterLike("body", "%" + searchDataHolder.getMessagesTab().getBody() + "%");
-            }
-        }
 
-        //Ziskaj vsetky spravy daneho uzivatela, kt bol oznaceny ako adresat alebo odosielatel
-        List<MessageUserRole> recipientMessages = new ArrayList<MessageUserRole>();
-        Search recipientMessagesSearch = new Search(MessageUserRole.class);
-        recipientMessagesSearch.addFilterEqual("user", recipient);
-        recipientMessagesSearch.addFilterIn("type", roles);
-        if (searchDataHolder != null) {
-            recipientMessagesSearch.addFilterIn("message", generalService.search(messageSearch));
-        }
-        recipientMessages.addAll(generalService.search(recipientMessagesSearch));
+            //Ziskaj vsetky spravy daneho uzivatela, kt bol oznaceny ako adresat alebo odosielatel
+            List<MessageUserRole> recipientMessages = new ArrayList<MessageUserRole>();
+            Search recipientMessagesSearch = new Search(MessageUserRole.class);
+            recipientMessagesSearch.addFilterEqual("user", recipient);
+            recipientMessagesSearch.addFilterIn("type", roles);
+            if (searchDataHolder != null) {
+                recipientMessagesSearch.addFilterIn("message", generalService.search(messageSearch));
+            }
+            recipientMessages.addAll(generalService.search(recipientMessagesSearch));
 
 
 //        Search firstBornRecipientMessagesSearch = new Search(Message.class);
@@ -365,27 +364,51 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
 //            firstBornRecipientMessages = generalService.search(firstBornRecipientMessagesSearch);
 //        }
 
-        Map<Long, Message> rootRecipientMessages = new TreeMap<Long, Message>();
-        for (MessageUserRole mur : recipientMessages) {
-            if (mur.getMessage().getParent() == null) {
-                // nemusi kontorlovat, ved thread_id s parent_id = null je vzdy len jeden
+            Map<Long, Message> rootRecipientMessages = new TreeMap<Long, Message>();
+            for (MessageUserRole mur : recipientMessages) {
+                if (mur.getMessage().getParent() == null) {
+                    // nemusi kontorlovat, ved thread_id s parent_id = null je vzdy len jeden
 //                if (!rootRecipientMessages.containsKey(mur.getMessage().getThreadRoot().getId())) {
-                rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
+                    rootRecipientMessages.put(mur.getMessage().getThreadRoot().getId(), mur.getMessage());
+                }
+            }
+            //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
+            List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
+            for (Message msg : rootRecipientMessages.values()) {
+                Search userMessagesSearch = new Search(UserMessage.class);
+                userMessagesSearch.addFilterEqual("user", recipient);
+                userMessagesSearch.addFilterEqual("message", msg);
+                inboxMessages.addAll(generalService.search(userMessagesSearch));
+            }
+            List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
+            for (UserMessage userMessage : inboxMessages) {
+                inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
             }
         }
-        //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
-        List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
-        for (Message msg : rootRecipientMessages.values()) {
-            Search userMessagesSearch = new Search(UserMessage.class);
-            userMessagesSearch.addFilterEqual("user", recipient);
-            userMessagesSearch.addFilterEqual("message", msg);
-            inboxMessages.addAll(generalService.search(userMessagesSearch));
-        }
-        List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
-        for (UserMessage userMessage : inboxMessages) {
-            inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
-        }
+        return null;
+    }
 
-        return inboxMessagesDetail;
+    private Search filter(Search search, String prefix, FilterItem item) {
+        prefix += ".";
+        switch (item.getOperation()) {
+            case FilterItem.OPERATION_EQUALS:
+                search.addFilterEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_LIKE:
+                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
+                break;
+            case FilterItem.OPERATION_IN:
+                search.addFilterIn(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_FROM:
+                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_TO:
+                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            default:
+                break;
+        }
+        return search;
     }
 }

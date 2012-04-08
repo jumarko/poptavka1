@@ -8,12 +8,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class AdminEmailActivationViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -29,56 +29,30 @@ public class AdminEmailActivationViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
-//    public AdminEmailActivationViewView() {
+    public AdminEmailActivationViewView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initAdminEmailActivation();
         if (!idFrom.getText().equals("")) {
-            data.getAdminEmailActivation().setIdFrom(Long.valueOf(idFrom.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getAdminEmailActivation().setIdTo(Long.valueOf(idTo.getText()));
+            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!activationLink.getText().equals("")) {
-            data.getAdminEmailActivation().setActivationLink(activationLink.getText());
+            data.getFilters().add(new FilterItem("activationLink",
+                    FilterItem.OPERATION_LIKE, activationLink.getText()));
         }
         if (timeoutFrom.getValue() != null) {
-            data.getAdminEmailActivation().setTimeoutFrom(timeoutFrom.getValue());
+            data.getFilters().add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutFrom.getValue()));
         }
         if (timeoutTo.getValue() != null) {
-            data.getAdminEmailActivation().setTimeoutTo(timeoutTo.getValue());
+            data.getFilters().add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutTo.getValue()));
         }
         return data;
-    }
-
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getAdminEmailActivation().getIdFrom() != null) {
-            infoText.append("idFrom:");
-            infoText.append(data.getAdminEmailActivation().getIdFrom());
-        }
-        if (data.getAdminEmailActivation().getIdTo() != null) {
-            infoText.append("idTo:");
-            infoText.append(data.getAdminEmailActivation().getIdTo());
-        }
-        if (data.getAdminEmailActivation().getActivationLink() != null) {
-            infoText.append("activationLink:");
-            infoText.append(data.getAdminEmailActivation().getActivationLink());
-        }
-        if (data.getAdminEmailActivation().getTimeoutFrom() != null) {
-            infoText.append("timeoutFrom:");
-            infoText.append(data.getAdminEmailActivation().getTimeoutFrom());
-        }
-        if (data.getAdminEmailActivation().getTimeoutTo() != null) {
-            infoText.append("timeoutTo:");
-            infoText.append(data.getAdminEmailActivation().getTimeoutTo());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("idFrom")
@@ -105,12 +79,7 @@ public class AdminEmailActivationViewView extends Composite implements
     }
 
     @Override
-    public ListBox getCategoryList() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Widget getWidgetView() {
+        return this;
     }
 }

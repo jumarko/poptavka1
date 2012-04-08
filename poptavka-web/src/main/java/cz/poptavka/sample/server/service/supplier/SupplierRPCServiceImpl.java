@@ -3,6 +3,7 @@ package cz.poptavka.sample.server.service.supplier;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.SupplierRPCService;
 import cz.poptavka.sample.domain.address.Address;
 import cz.poptavka.sample.domain.address.Locality;
@@ -18,13 +19,13 @@ import cz.poptavka.sample.domain.settings.NotificationItem;
 import cz.poptavka.sample.domain.settings.Period;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.BusinessUserData;
+import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.SupplierCategory;
 import cz.poptavka.sample.domain.user.SupplierLocality;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
-import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.service.common.TreeItemService;
@@ -32,16 +33,21 @@ import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
-import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
+import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.domain.UserDetail.Role;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implements SupplierRPCService {
 
@@ -124,8 +130,9 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         clientService.create(client);
 
         // TODO Beho+Vojto rework according to GWT Spring Security function.
-        return ConvertUtils.toUserDetail(supplierFromDB.getBusinessUser().getId(),
-                supplierFromDB.getBusinessUser().getBusinessUserRoles());
+        return this.toUserDetail(newSupplier);
+//        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
+//                supplierFromDB.getBusinessUser().getBusinessUserRoles());
     }
 
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
@@ -133,12 +140,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     private void setNewSupplierBusinessUserData(UserDetail supplier, Supplier newSupplier) {
-        final BusinessUserData businessUserData = new BusinessUserData.Builder().
-                companyName(supplier.getCompanyName())
-                .taxId(supplier.getTaxId())
+        final BusinessUserData businessUserData = new BusinessUserData.Builder()
+                .companyName(supplier.getCompanyName()).taxId(supplier.getTaxId())
                 .identificationNumber(supplier.getIdentificationNumber())
-                .phone(supplier.getPhone())
-                .personFirstName(supplier.getFirstName())
+                .phone(supplier.getPhone()).personFirstName(supplier.getFirstName())
                 .personLastName(supplier.getLastName()) //.description(supplier.getDescription());
                 .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
@@ -411,7 +416,70 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return userDetails;
     }
 
+    protected UserDetail toUserDetail(Supplier supplier) {
 
+        UserDetail detail = new UserDetail();
+        detail.setUserId(supplier.getBusinessUser().getId());
+
+        // Set UserDetail according to his roles
+        for (BusinessUserRole role : supplier.getBusinessUser().getBusinessUserRoles()) {
+            if (role instanceof Client) {
+                Client clientRole = (Client) role;
+                detail.setClientId(clientRole.getId());
+                detail.addRole(Role.CLIENT);
+
+                detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
+            }
+            if (role instanceof Supplier) {
+                Supplier supplierRole = (Supplier) role;
+                detail.setSupplierId(supplierRole.getId());
+                detail.addRole(Role.SUPPLIER);
+                SupplierDetail supplierDetail = new SupplierDetail();
+
+                // supplierServices
+                List<UserService> services = supplierRole.getBusinessUser().getUserServices();
+                for (UserService us : services) {
+                    supplierDetail.addService(us.getId().intValue());
+                }
+
+                // categories
+                ArrayList<String> categories = new ArrayList<String>();
+                List<Category> cats = supplierRole.getCategories();
+                for (Category cat : cats) {
+                    categories.add(cat.getId() + "");
+                }
+                supplierDetail.setCategories(categories);
+
+                // localities
+                ArrayList<String> localities = new ArrayList<String>();
+                List<Category> locs = supplierRole.getCategories();
+                for (Category loc : locs) {
+                    localities.add(loc.getId() + "");
+                }
+
+                // Other
+                detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
+                detail.setEmail(supplier.getBusinessUser().getEmail());
+                detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
+                detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
+                detail.setIdentificationNumber(
+                        supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber());
+//                detail.setPassword(supplier.getBusinessUser().getPassword());
+                detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
+                detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
+
+                supplierDetail.setLocalities(localities);
+
+                detail.setSupplier(supplierDetail);
+
+                detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
+            }
+        }
+
+        // TODO Beho fix this user ID
+//        System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
+        return detail;
+    }
     private List<Category> categoriesHistory = new ArrayList<Category>();
     private List<Locality> localitiesHistory = new LinkedList<Locality>();
 
@@ -458,20 +526,20 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 //            return this.createSupplierDetailList(this.generalService.search(search));
 //        }
         //1 0
-        if (detail.getHomeSuppliers().getSupplierCategory() != null
-                && detail.getHomeSuppliers().getSupplierLocality() == null) {
+        if (detail.getCategories() != null
+                && detail.getLocalities() == null) {
             Search search = this.getCategoryFilter(detail, orderColumns);
             return this.createSupplierDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
-        if (detail.getHomeSuppliers().getSupplierCategory() == null
-                && detail.getHomeSuppliers().getSupplierLocality() != null) {
+        if (detail.getCategories() == null
+                && detail.getLocalities() != null) {
             Search search = this.getLocalityFilter(detail, orderColumns);
             return this.createSupplierDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (detail.getHomeSuppliers().getSupplierCategory() != null
-                && detail.getHomeSuppliers().getSupplierLocality() != null) {
+        if (detail.getCategories() != null
+                && detail.getLocalities() != null) {
             List<FullSupplierDetail> suppliersCat = this.createSupplierDetailListCat(
                     this.generalService.searchAndCount(this.getCategoryFilter(detail, orderColumns)).getResult());
 
@@ -544,8 +612,10 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 //    }
     private Search getCategoryFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search categorySearch = new Search(SupplierCategory.class);
-        final List<Category> allSubCategories = Arrays.asList(
-                this.getAllSubCategories(detail.getHomeSuppliers().getSupplierCategory().getId()));
+        List<Category> allSubCategories = new ArrayList<Category>();
+        for (CategoryDetail cat : detail.getCategories()) {
+            allSubCategories = Arrays.asList(this.getAllSubCategories(cat.getId()));
+        }
         categorySearch.addFilterIn("category", allSubCategories);
 
         Search supplierSearch = this.getSupplierFilter(detail, orderColumns);
@@ -558,8 +628,11 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     private Search getLocalityFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search localitySearch = new Search(SupplierLocality.class);
-        final List<Locality> allSubLocalities = Arrays.asList(
-                this.getAllSublocalities(detail.getHomeSuppliers().getSupplierLocality().getCode()));
+        List<Locality> allSubLocalities = new ArrayList<Locality>();
+        for (LocalityDetail loc : detail.getLocalities()) {
+            allSubLocalities = Arrays.asList(
+                    this.getAllSublocalities(loc.getCode()));
+        }
         localitySearch.addFilterIn("locality", allSubLocalities);
 
         Search suppSearch = this.getSupplierFilter(detail, orderColumns);
@@ -573,33 +646,26 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private Search getSupplierFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Boolean filterApplied = false;
         Search search = new Search(Supplier.class);
-        if (detail.getHomeSuppliers().getSupplierName() != null) {
-            Collection<BusinessUserData> data = generalService.search(
-                    new Search(BusinessUserData.class).addFilterLike("companyName",
-                        "%" + detail.getAdminSuppliers().getSupplierName() + "%"));
-            search.addFilterIn("businessUser.businessUserData", data);
-            filterApplied = true;
-        }
+        for (FilterItem item : detail.getFilters()) {
+            if (item.getItem().equals("comapnyName")) {
+                Collection<BusinessUserData> data = generalService.search(
+                        this.filter(new Search(BusinessUserData.class), "", item));
+                search.addFilterIn("businessUser.businessUserData", data);
+                filterApplied = true;
+            } else if (item.getItem().equals("description")) {
+                Collection<BusinessUserData> descsData = new ArrayList<BusinessUserData>();
+                String[] descs = item.getValue().toString().split("\\s+");
 
-        if (detail.getHomeSuppliers().getRatingFrom() != null) {
-            search.addFilterGreaterOrEqual("overalRating", detail.getHomeSuppliers().getRatingFrom());
-            filterApplied = true;
-        }
-        if (detail.getHomeSuppliers().getRatingTo() != null) {
-            search.addFilterLessOrEqual("overalRating", detail.getHomeSuppliers().getRatingTo());
-            filterApplied = true;
-        }
-        if (detail.getHomeSuppliers().getSupplierDescription() != null) {
-            Collection<BusinessUserData> descsData = new ArrayList<BusinessUserData>();
-            String[] descs = detail.getHomeSuppliers().getSupplierDescription().split("\\s+");
-
-            for (int i = 0; i < descs.length; i++) {
-                descsData.addAll(generalService.search(
-                        new Search(BusinessUserData.class).addFilterLike("description",
-                            "%" + detail.getAdminSuppliers().getSupplierDescription() + "%")));
+                for (int i = 0; i < descs.length; i++) {
+                    descsData.addAll(generalService.search(
+                            this.filter(new Search(BusinessUserData.class), "", item)));
+                }
+                search.addFilterIn("businessUser.businessUserData", descsData);
+                filterApplied = true;
+            } else {
+                this.filter(search, "", item);
             }
-            search.addFilterIn("businessUser.businessUserData", descsData);
-            filterApplied = true;
+
         }
         if (filterApplied) {
             return this.getSortSearch(search, orderColumns, "supplier");
@@ -617,6 +683,30 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                     search.addSortDesc(prefix + item, true);
                 }
             }
+        }
+        return search;
+    }
+
+    private Search filter(Search search, String prefix, FilterItem item) {
+        prefix += ".";
+        switch (item.getOperation()) {
+            case FilterItem.OPERATION_EQUALS:
+                search.addFilterEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_LIKE:
+                search.addFilterLike(prefix + item.getItem(), "%" + item.getValue().toString() + "%");
+                break;
+            case FilterItem.OPERATION_IN:
+                search.addFilterIn(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_FROM:
+                search.addFilterGreaterOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            case FilterItem.OPERATION_TO:
+                search.addFilterLessOrEqual(prefix + item.getItem(), item.getValue());
+                break;
+            default:
+                break;
         }
         return search;
     }

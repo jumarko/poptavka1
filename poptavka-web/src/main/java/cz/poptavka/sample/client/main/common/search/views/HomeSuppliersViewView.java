@@ -13,8 +13,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
-import cz.poptavka.sample.shared.domain.CategoryDetail;
-import cz.poptavka.sample.shared.domain.LocalityDetail;
+import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 
 public class HomeSuppliersViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -30,8 +29,7 @@ public class HomeSuppliersViewView extends Composite implements
     @UiField
     Button clearBtn;
 
-    @Override
-    public void createView() {
+    public HomeSuppliersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         ratingFrom.setText("0");
         ratingTo.setText("100");
@@ -40,64 +38,20 @@ public class HomeSuppliersViewView extends Composite implements
     @Override
     public SearchModuleDataHolder getFilter() {
         SearchModuleDataHolder data = new SearchModuleDataHolder();
-        data.initHomeSuppliers();
         if (!companyName.getText().equals("")) {
-            data.getHomeSuppliers().setSupplierName(companyName.getText());
+            data.getFilters().add(new FilterItem("name", FilterItem.OPERATION_FROM, companyName.getText()));
         }
         if (!supplierDescription.getText().equals("")) {
-            data.getHomeSuppliers().setSupplierDescription(supplierDescription.getText());
-        }
-        int selected = category.getSelectedIndex();
-        if (selected != 0) {
-            data.getHomeSuppliers().setSupplierCategory(new CategoryDetail(Long.valueOf(category.getValue(selected)),
-                    category.getItemText(selected)));
-        }
-        selected = locality.getSelectedIndex();
-        if (selected != 0) {
-            data.getHomeSuppliers().setSupplierLocality(new LocalityDetail(locality.getItemText(selected),
-                    locality.getValue(selected)));
+            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_FROM,
+                    supplierDescription.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            data.getHomeSuppliers().setRatingFrom(Integer.valueOf(ratingFrom.getText()));
+            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
         }
         if (!ratingTo.getText().equals("100")) {
-            data.getHomeSuppliers().setRatingTo(Integer.valueOf(ratingTo.getText()));
+            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingTo.getText()));
         }
         return data;
-    }
-
-    @Override
-    public ListBox getCategoryList() {
-        return category;
-    }
-
-    @Override
-    public ListBox getLocalityList() {
-        return locality;
-    }
-
-    @Override
-    public void displayAdvSearchDataInfo(SearchModuleDataHolder data, TextBox infoHolder) {
-        StringBuilder infoText = new StringBuilder();
-        if (data.getHomeSuppliers().getSupplierName() != null) {
-            infoText.append("supplier:" + data.getHomeSuppliers().getSupplierName());
-        }
-        if (data.getHomeSuppliers().getSupplierDescription() != null) {
-            infoText.append("desc:" + data.getHomeSuppliers().getSupplierDescription());
-        }
-        if (data.getHomeSuppliers().getSupplierCategory() != null) {
-            infoText.append("category:" + data.getHomeSuppliers().getSupplierCategory().getName());
-        }
-        if (data.getHomeSuppliers().getSupplierLocality() != null) {
-            infoText.append("locality:" + data.getHomeSuppliers().getSupplierLocality().getName());
-        }
-        if (data.getHomeSuppliers().getRatingFrom() != null) {
-            infoText.append("ratingFrom:" + data.getHomeSuppliers().getRatingFrom());
-        }
-        if (data.getHomeSuppliers().getRatingTo() != null) {
-            infoText.append("ratingTo:" + data.getHomeSuppliers().getRatingTo());
-        }
-        infoHolder.setText(infoText.toString());
     }
 
     @UiHandler("ratingFrom")
@@ -122,5 +76,10 @@ public class HomeSuppliersViewView extends Composite implements
         locality.setSelectedIndex(0);
         ratingFrom.setText("0");
         ratingTo.setText("100");
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }
