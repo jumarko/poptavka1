@@ -12,12 +12,14 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.service.demand.DemandsRPCServiceAsync;
 import cz.poptavka.sample.client.user.demands.DemandEventBus;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 @EventHandler
 public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
@@ -28,6 +30,7 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
 //    private DemandRPCServiceAsync demandService;
     @Inject
     private DemandsRPCServiceAsync demandsService;
+    private ErrorDialogPopupView errorDialog;
 
     public void onRequestClientsDemands(SearchModuleDataHolder searchModuleDataHolder) {
         GWT.log("DemandModuleContentHandler > UserId: " + Storage.getUser().getUserId() + " ,ClientId: "
@@ -37,6 +40,11 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
                     }
 
@@ -60,6 +68,11 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
                         if (!(caught instanceof IllegalArgumentException)) {
                             Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList\n\n"
                                     + caught.getMessage());
+                        }
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
                         }
                     }
 
@@ -85,6 +98,11 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
             public void onFailure(Throwable caught) {
                 Window.alert("Error in MessageHandler in method: onRequestReadStatusUpdate"
                         + caught.getMessage());
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override
@@ -107,6 +125,11 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
             public void onFailure(Throwable caught) {
                 Window.alert("Error in MessageHandler in method: onRequestStarStatusUpdate"
                         + caught.getMessage());
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override
@@ -123,6 +146,11 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
             public void onFailure(Throwable caught) {
                 Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
                         + caught.getMessage());
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override

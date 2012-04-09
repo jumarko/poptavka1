@@ -11,6 +11,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import cz.poptavka.sample.client.main.Storage;
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.LocalityRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
@@ -18,6 +19,7 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 @EventHandler
 public class RootHandler extends BaseEventHandler<RootEventBus> {
@@ -28,6 +30,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     private CategoryRPCServiceAsync categoryService = null;
     @Inject
     private UserRPCServiceAsync userService = null;
+    private ErrorDialogPopupView errorDialog;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
     public void onGetRootLocalities() {
@@ -40,8 +43,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     }
 
                     @Override
-                    public void onFailure(Throwable arg0) {
-                        // TODO empty
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                     }
 
                 });
@@ -52,8 +59,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
 
                     @Override
-                    public void onFailure(Throwable arg0) {
-                        // TODO empty
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                     }
 
                     @Override
@@ -68,8 +79,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
 
             @Override
-            public void onFailure(Throwable arg0) {
-                // empty
+            public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override
@@ -91,8 +106,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
 
                 @Override
-                public void onFailure(Throwable arg0) {
-                    // TODO Auto-generated method stub
+                public void onFailure(Throwable caught) {
+                    if (caught instanceof CommonException) {
+                        CommonException commonException = (CommonException) caught;
+                        errorDialog = new ErrorDialogPopupView();
+                        errorDialog.show(commonException.getSymbol());
+                    }
                 }
 
                 @Override
@@ -112,8 +131,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                         }
 
                         @Override
-                        public void onFailure(Throwable arg0) {
-                            // TODO Auto-generated method stub
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof CommonException) {
+                                CommonException commonException = (CommonException) caught;
+                                errorDialog = new ErrorDialogPopupView();
+                                errorDialog.show(commonException.getSymbol());
+                            }
                         }
 
                     });
@@ -138,6 +161,11 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 eventBus.loadingHide();
                 Window.alert("Error during getting logged User detail\n"
                         + caught.getMessage());
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override
