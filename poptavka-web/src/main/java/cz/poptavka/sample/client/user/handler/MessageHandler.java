@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.service.demand.MessageRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.OfferRPCServiceAsync;
 import cz.poptavka.sample.client.user.UserEventBus;
@@ -19,6 +20,7 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 @EventHandler
 public class MessageHandler extends BaseEventHandler<UserEventBus> {
@@ -27,6 +29,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     private MessageRPCServiceAsync messageService;
     @Inject
     private OfferRPCServiceAsync offerService;
+    private ErrorDialogPopupView errorDialog;
 
     // Beho: ??? needed ???
     public void onGetClientDemands(Long userId, int fakeParameter) {
@@ -50,6 +53,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                 @Override
                 public void onFailure(Throwable caught) {
+                    if (caught instanceof CommonException) {
+                        CommonException commonException = (CommonException) caught;
+                        errorDialog = new ErrorDialogPopupView();
+                        errorDialog.show(commonException.getSymbol());
+                    }
                     Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
                 }
 
@@ -66,6 +74,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 Window.alert("MessageHandler: onRequestDemandConversations:\n\n" + caught.getMessage());
             }
 
@@ -83,6 +96,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         Window.alert("MessageHandler: onRequestSingleConversation:\n\n" + caught.getMessage());
                     }
 
@@ -100,6 +118,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
                     }
 
@@ -122,7 +145,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                // TODO Auto-generated method stub
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 Window.alert(MessageHandler.class.getName() + " at onSendQueryToPotentialDemand\n\n"
                         + caught.getMessage());
             }
@@ -156,7 +183,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                // TODO Auto-generated method stub
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 Window.alert(MessageHandler.class.getName() + " at onRequestPotentialDemandReadStatusChange\n\n"
                         + caught.getMessage());
             }
@@ -174,6 +205,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 Window.alert(MessageHandler.class.getName() + " at onGetOfferStatusChange\n\n" + caught.getMessage());
             }
 
@@ -196,6 +232,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList"
                                 + caught.getMessage());
                     }
@@ -220,6 +261,11 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 Window.alert("MessageHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
             }
 
