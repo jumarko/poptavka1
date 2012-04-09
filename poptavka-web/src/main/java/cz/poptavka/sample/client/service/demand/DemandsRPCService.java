@@ -16,6 +16,7 @@ import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 /**
  *
@@ -24,20 +25,21 @@ import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 @RemoteServiceRelativePath("service/demandsmodule")
 public interface DemandsRPCService extends RemoteService {
 
-    ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId);
+    ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId)
+        throws CommonException;
 
-    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
+    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws CommonException;
 
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws CommonException;
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus);
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws CommonException;
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId);
+            long userMessageId) throws CommonException;
 
-    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws CommonException;
 
-    ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList);
+    ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) throws CommonException;
 
         /**
      * Gets DemandDetail from DB.
@@ -46,8 +48,8 @@ public interface DemandsRPCService extends RemoteService {
      * @param typeOfDetail type of Detail that should be returned
      * @return DemandDetail of selected DemandType
      */
-    FullDemandDetail getFullDemandDetail(Long demandId);
+    FullDemandDetail getFullDemandDetail(Long demandId) throws CommonException;
 
-    BaseDemandDetail getBaseDemandDetail(Long demandId);
+    BaseDemandDetail getBaseDemandDetail(Long demandId) throws CommonException;
 
 }
