@@ -7,17 +7,18 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 @RemoteServiceRelativePath("service/category")
 public interface CategoryRPCService extends RemoteService {
 
-    CategoryDetail getCategory(long id);
+    CategoryDetail getCategory(long id) throws CommonException;
 
-    ArrayList<CategoryDetail> getCategories();
+    ArrayList<CategoryDetail> getCategories() throws CommonException;
 
-    ArrayList<CategoryDetail> getCategoryParents(Long category);
+    ArrayList<CategoryDetail> getCategoryParents(Long category) throws CommonException;
 
-    ArrayList<CategoryDetail> getCategoryChildren(Long category);
+    ArrayList<CategoryDetail> getCategoryChildren(Long category) throws CommonException;
 
-    List<CategoryDetail> getAllRootCategories();
+    List<CategoryDetail> getAllRootCategories() throws CommonException;
 }

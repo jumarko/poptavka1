@@ -12,6 +12,7 @@ import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
@@ -26,22 +27,22 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public CategoryDetail getCategory(long id) {
+    public CategoryDetail getCategory(long id) throws CommonException {
         return createCategoryDetail(categoryService.getById(id));
     }
 
     @Autowired
-    public void setSupplierService(SupplierService supplierService) {
+    public void setSupplierService(SupplierService supplierService) throws CommonException {
         this.supplierService = supplierService;
     }
 
     @Override
-    public ArrayList<CategoryDetail> getAllRootCategories() {
+    public ArrayList<CategoryDetail> getAllRootCategories() throws CommonException {
         return createCategoryDetailList(categoryService.getRootCategories());
     }
 
     @Override
-    public ArrayList<CategoryDetail> getCategories() {
+    public ArrayList<CategoryDetail> getCategories() throws CommonException {
         final List<Category> categories = categoryService.getRootCategories();
         return createCategoryDetailList(categories);
     }
@@ -52,7 +53,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
      * @return list of parents and given category
      */
     @Override
-    public ArrayList<CategoryDetail> getCategoryParents(Long category) {
+    public ArrayList<CategoryDetail> getCategoryParents(Long category) throws CommonException {
         System.out.println("Getting parent categories");
         Category cat = categoryService.getById(category);
         List<Category> parents = new ArrayList<Category>();
@@ -67,7 +68,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public ArrayList<CategoryDetail> getCategoryChildren(Long category) {
+    public ArrayList<CategoryDetail> getCategoryChildren(Long category) throws CommonException {
         System.out.println("Getting children categories");
         try {
             if (category != null) {

@@ -41,6 +41,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.MessageType;
+import cz.poptavka.sample.shared.exceptions.CommonException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -165,12 +167,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private DemandService demandService;
 
     @Autowired
-    public void setGeneralService(GeneralService generalService) {
+    public void setGeneralService(GeneralService generalService) throws CommonException {
         this.generalService = generalService;
     }
 
     @Autowired
-    public void setDemandService(DemandService demandService) {
+    public void setDemandService(DemandService demandService) throws CommonException {
         this.demandService = demandService;
     }
 
@@ -178,7 +180,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  DEMAND SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Demand.class);
@@ -190,7 +192,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<FullDemandDetail> getAdminDemands(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Demand.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -202,7 +204,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public FullDemandDetail updateDemand(FullDemandDetail fullDemandDetail) {
+    public FullDemandDetail updateDemand(FullDemandDetail fullDemandDetail) throws CommonException {
         return generalService.merge(fullDemandDetail);
     }
 
@@ -210,7 +212,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  CLIENT SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminClientsCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminClientsCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Client.class);
@@ -222,7 +224,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<ClientDetail> getAdminClients(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Client.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -234,7 +236,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public ClientDetail updateClient(ClientDetail accessRoleDetail) {
+    public ClientDetail updateClient(ClientDetail accessRoleDetail) throws CommonException {
         return generalService.merge(accessRoleDetail);
     }
 
@@ -242,7 +244,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  SUPPLIER SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Supplier.class);
@@ -254,7 +256,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<FullSupplierDetail> getAdminSuppliers(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Supplier.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -266,7 +268,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public FullSupplierDetail updateSupplier(FullSupplierDetail accessRoleDetail) {
+    public FullSupplierDetail updateSupplier(FullSupplierDetail accessRoleDetail) throws CommonException {
         return generalService.merge(accessRoleDetail);
     }
 
@@ -274,7 +276,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  OFFER SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminOffersCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminOffersCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Offer.class);
@@ -286,7 +288,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<OfferDetail> getAdminOffers(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Offer.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -306,7 +308,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  ACCESS ROLE SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(AccessRole.class);
@@ -318,7 +320,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<AccessRoleDetail> getAdminAccessRoles(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(AccessRole.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -330,7 +332,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
 //    @Override
-    public AccessRoleDetail updateAccessRole(AccessRoleDetail accessRoleDetail) {
+    public AccessRoleDetail updateAccessRole(AccessRoleDetail accessRoleDetail) throws CommonException {
         return generalService.merge(accessRoleDetail);
     }
 
@@ -338,7 +340,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  EMAIL ACTIVATION SECTION. *******************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(EmailActivation.class);
@@ -350,7 +352,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<EmailActivationDetail> getAdminEmailsActivation(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(EmailActivation.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -370,7 +372,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  INVOICE SECTION. ****************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Invoice.class);
@@ -382,7 +384,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<InvoiceDetail> getAdminInvoices(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Invoice.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -394,7 +396,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public InvoiceDetail updateInvoice(InvoiceDetail supplierDetail) {
+    public InvoiceDetail updateInvoice(InvoiceDetail supplierDetail) throws CommonException {
         return generalService.merge(supplierDetail);
     }
 
@@ -402,7 +404,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  MESSAGE SECTION. ****************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminMessagesCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminMessagesCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Message.class);
@@ -414,7 +416,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<MessageDetail> getAdminMessages(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Message.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -427,7 +429,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public MessageDetail updateMessage(MessageDetail supplierDetail) {
+    public MessageDetail updateMessage(MessageDetail supplierDetail) throws CommonException {
         return generalService.merge(supplierDetail);
     }
 
@@ -435,7 +437,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  OUR PAYMENT DETAIL SECTION. *****************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(OurPaymentDetails.class);
@@ -447,7 +449,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<PaymentDetail> getAdminOurPaymentDetails(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(OurPaymentDetails.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -459,7 +461,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PaymentDetail updateOurPaymentDetail(PaymentDetail supplierDetail) {
+    public PaymentDetail updateOurPaymentDetail(PaymentDetail supplierDetail) throws CommonException {
         return generalService.merge(supplierDetail);
     }
 
@@ -467,7 +469,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  PAYMENT METHOD SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(PaymentMethod.class);
@@ -479,7 +481,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<PaymentMethodDetail> getAdminPaymentMethods(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(PaymentMethod.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -498,7 +500,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PaymentMethodDetail updatePaymentMethod(PaymentMethodDetail accessRoleDetail) {
+    public PaymentMethodDetail updatePaymentMethod(PaymentMethodDetail accessRoleDetail) throws CommonException {
         return generalService.merge(accessRoleDetail);
     }
 
@@ -506,7 +508,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  PERMISSION SECTION. *************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Permission.class);
@@ -518,7 +520,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<PermissionDetail> getAdminPermissions(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Permission.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -530,7 +532,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PermissionDetail updatePermission(PermissionDetail supplierDetail) {
+    public PermissionDetail updatePermission(PermissionDetail supplierDetail) throws CommonException {
         return generalService.merge(supplierDetail);
     }
 
@@ -538,7 +540,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  PREFERENCE SECTION. *************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Preference.class);
@@ -550,7 +552,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<PreferenceDetail> getAdminPreferences(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Preference.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -562,7 +564,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PreferenceDetail updatePreference(PreferenceDetail supplierDetail) {
+    public PreferenceDetail updatePreference(PreferenceDetail supplierDetail) throws CommonException {
         return generalService.merge(supplierDetail);
     }
 
@@ -570,7 +572,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      ***********************  PROBLEM SECTION. ************************************************
      **********************************************************************************************/
     @Override
-    public Long getAdminProblemsCount(SearchModuleDataHolder searchDataHolder) {
+    public Long getAdminProblemsCount(SearchModuleDataHolder searchDataHolder) throws CommonException {
         Search search = null;
         if (searchDataHolder == null) {
             search = new Search(Problem.class);
@@ -582,7 +584,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public List<ProblemDetail> getAdminProblems(int start, int count,
-            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws CommonException {
         Search search = new Search(Problem.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
@@ -594,7 +596,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public ProblemDetail updateProblem(ProblemDetail accessRoleDetail) {
+    public ProblemDetail updateProblem(ProblemDetail accessRoleDetail) throws CommonException {
         return generalService.merge(accessRoleDetail);
     }
 
