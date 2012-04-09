@@ -1,16 +1,19 @@
 package cz.poptavka.sample.client.home.creation;
 
-import com.google.gwt.user.client.Window;
+import java.util.logging.Logger;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
+
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.service.demand.DemandCreationRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import java.util.logging.Logger;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 /**
  * Handler for RPC calls for DemandCreationModule
@@ -25,6 +28,8 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 
     private DemandCreationRPCServiceAsync demandCreationService = null;
     private UserRPCServiceAsync userRpcService;
+
+    private ErrorDialogPopupView errorDialog;
 
     @Inject
     void setDemandCreationModuleRPCServiceAsync(DemandCreationRPCServiceAsync service) {
@@ -58,6 +63,11 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                     @Override
                     public void onFailure(Throwable caught) {
                         // TODO
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         throw new IllegalStateException("Cannot get business user for user id="
                                 + loggedUser.getUserId());
                     }
@@ -81,7 +91,11 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
 
             @Override
             public void onFailure(Throwable arg0) {
-                // TODO Auto-generated method stub
+                if (arg0 instanceof CommonException) {
+                    CommonException commonException = (CommonException) arg0;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override
@@ -106,9 +120,13 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                 new AsyncCallback<FullDemandDetail>() {
 
                     @Override
-                    public void onFailure(Throwable arg0) {
+                    public void onFailure(Throwable caught) {
                         eventBus.loadingHide();
-                        Window.alert(arg0.getMessage());
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                     }
 
                     @Override
@@ -126,7 +144,12 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
         userRpcService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
 
             @Override
-            public void onFailure(Throwable arg0) {
+            public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
             }
 
             @Override

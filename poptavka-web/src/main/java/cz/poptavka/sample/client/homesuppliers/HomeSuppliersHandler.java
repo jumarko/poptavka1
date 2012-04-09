@@ -8,10 +8,13 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.service.demand.HomeSuppliersRPCServiceAsync;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +24,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 //    private CategoryRPCServiceAsync categoryService = null;
 //    private SupplierRPCServiceAsync supplierService = null;
     private HomeSuppliersRPCServiceAsync homeSuppliersService = null;
+    private ErrorDialogPopupView errorDialog;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
 //    @Inject
@@ -49,6 +53,11 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
             @Override
             public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -72,7 +81,12 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
                     }
 
                     @Override
-                    public void onFailure(Throwable arg0) {
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         LOGGER.info("onFailureCategory");
                     }
                 });
@@ -83,6 +97,11 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
             @Override
             public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 throw new UnsupportedOperationException("Get children categories failed.");
             }
 
@@ -100,6 +119,11 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
             @Override
             public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 throw new UnsupportedOperationException("onFilterSuppliers "
                         + "(HomeSuppliersHandler) - not supported yet.");
             }
@@ -119,6 +143,11 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                         throw new UnsupportedOperationException(
                                 "onFilterSuppliers (HomeSupliersHandler) - not supported yet.");
                     }

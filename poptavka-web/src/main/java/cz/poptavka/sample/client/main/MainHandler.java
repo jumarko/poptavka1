@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.service.demand.CategoryRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.ClientRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.DemandRPCServiceAsync;
@@ -17,6 +18,7 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -36,6 +38,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
     private DemandRPCServiceAsync demandService = null;
     @Inject
     private ClientRPCServiceAsync clientService = null;
+    private ErrorDialogPopupView errorDialog;
 
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
@@ -48,8 +51,12 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                     }
 
                     @Override
-                    public void onFailure(Throwable arg0) {
-                        // TODO empty
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                     }
                 });
     }
@@ -58,8 +65,12 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         localityService.getLocalities(locCode,
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
                     @Override
-                    public void onFailure(Throwable arg0) {
-                        // TODO empty
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                     }
 
                     @Override
@@ -73,8 +84,12 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         categoryService
                 .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
                     @Override
-                    public void onFailure(Throwable arg0) {
-                        // empty
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof CommonException) {
+                            CommonException commonException = (CommonException) caught;
+                            errorDialog = new ErrorDialogPopupView();
+                            errorDialog.show(commonException.getSymbol());
+                        }
                     }
 
                     @Override
@@ -95,8 +110,12 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
             categoryService
                     .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
                         @Override
-                        public void onFailure(Throwable arg0) {
-                            // TODO Auto-generated method stub
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof CommonException) {
+                                CommonException commonException = (CommonException) caught;
+                                errorDialog = new ErrorDialogPopupView();
+                                errorDialog.show(commonException.getSymbol());
+                            }
                         }
 
                         @Override
@@ -114,8 +133,12 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                         }
 
                         @Override
-                        public void onFailure(Throwable arg0) {
-                            // TODO Auto-generated method stub
+                        public void onFailure(Throwable caught) {
+                            if (caught instanceof CommonException) {
+                                CommonException commonException = (CommonException) caught;
+                                errorDialog = new ErrorDialogPopupView();
+                                errorDialog.show(commonException.getSymbol());
+                            }
 
                         }
                     });
@@ -124,48 +147,48 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
     }
 
     // TODO remove these methods.
-//    /**
-//     * Creates new demand.
-//     *
-//     * @param detail
-//     *            front-end entity of demand
-//     * @param clientId
-//     *            client id
-//     */
+    // /**
+    // * Creates new demand.
+    // *
+    // * @param detail
+    // * front-end entity of demand
+    // * @param clientId
+    // * client id
+    // */
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
-//        GWT.log("Am I here?");
-//        demandService.createNewDemand(detail, clientId,
-//                new AsyncCallback<FullDemandDetail>() {
-//                    @Override
-//                    public void onFailure(Throwable arg0) {
-//                        eventBus.loadingHide();
-//                        Window.alert(arg0.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(FullDemandDetail result) {
-//                        // signal event
-//                        eventBus.loadingHide();
-//                        // TODO forward to user/atAccount
-////                        eventBus.addNewDemand(result);
-//                    }
-//                });
-//        LOGGER.info("submitting new demand");
+        // GWT.log("Am I here?");
+        // demandService.createNewDemand(detail, clientId,
+        // new AsyncCallback<FullDemandDetail>() {
+        // @Override
+        // public void onFailure(Throwable arg0) {
+        // eventBus.loadingHide();
+        // Window.alert(arg0.getMessage());
+        // }
+        //
+        // @Override
+        // public void onSuccess(FullDemandDetail result) {
+        // // signal event
+        // eventBus.loadingHide();
+        // // TODO forward to user/atAccount
+        // // eventBus.addNewDemand(result);
+        // }
+        // });
+        // LOGGER.info("submitting new demand");
     }
 
-//    public void onCheckFreeEmail(String email) {
-//        clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
-//            @Override
-//            public void onFailure(Throwable arg0) {
-//            }
-//
-//            @Override
-//            public void onSuccess(Boolean result) {
-//                LOGGER.fine("result of compare " + result);
-//                eventBus.checkFreeEmailResponse(result);
-//                // eventBus.checkFreeEmailResponse();
-//            }
-//        });
-//    }
+    // public void onCheckFreeEmail(String email) {
+    // clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
+    // @Override
+    // public void onFailure(Throwable arg0) {
+    // }
+    //
+    // @Override
+    // public void onSuccess(Boolean result) {
+    // LOGGER.fine("result of compare " + result);
+    // eventBus.checkFreeEmailResponse(result);
+    // // eventBus.checkFreeEmailResponse();
+    // }
+    // });
+    // }
 
 }

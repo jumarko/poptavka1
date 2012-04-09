@@ -122,7 +122,12 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
             userService.loginUser(new UserDetail(username, password), new AsyncCallback<LoggedUserDetail>() {
 
                 @Override
-                public void onFailure(Throwable arg0) {
+                public void onFailure(Throwable caught) {
+                    if (caught instanceof CommonException) {
+                        CommonException commonException = (CommonException) caught;
+                        errorDialog = new ErrorDialogPopupView();
+                        errorDialog.show(commonException.getSymbol());
+                    }
                     view.setUnknownError();
                 }
 

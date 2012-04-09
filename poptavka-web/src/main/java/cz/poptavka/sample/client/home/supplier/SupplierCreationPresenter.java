@@ -31,10 +31,12 @@ import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.main.common.service.ServiceWidget;
+import cz.poptavka.sample.client.main.errorDialog.ErrorDialogPopupView;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.service.demand.SupplierCreationRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
@@ -212,6 +214,7 @@ public class SupplierCreationPresenter
     // MVP model. Rozhranim ma byt predsa eventbus. OPRAVIT !!! a nerobit taketo chyby !!!
     @Inject
     private SupplierCreationRPCServiceAsync supplierCreationRpcService = null;
+    protected ErrorDialogPopupView errorDialog;
 
     public void setService(SupplierCreationRPCServiceAsync service) {
         this.supplierCreationRpcService = service;
@@ -221,7 +224,12 @@ public class SupplierCreationPresenter
         supplierCreationRpcService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
 
             @Override
-            public void onFailure(Throwable arg0) {
+            public void onFailure(Throwable caught) {
+                if (caught instanceof CommonException) {
+                    CommonException commonException = (CommonException) caught;
+                    errorDialog = new ErrorDialogPopupView();
+                    errorDialog.show(commonException.getSymbol());
+                }
                 // TODO create some good explanation with contact formular
                 SimpleIconLabel errorMsg =
                         new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
