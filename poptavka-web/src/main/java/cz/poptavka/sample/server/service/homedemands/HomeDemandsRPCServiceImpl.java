@@ -24,6 +24,8 @@ import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +67,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     }
 
     @Override
-    public long filterDemandsCount(SearchModuleDataHolder detail) {
+    public long filterDemandsCount(SearchModuleDataHolder detail) throws CommonException {
         return this.filter(detail, null).size();
     }
 
@@ -85,8 +87,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     }
 
     @Override
-    public List<FullDemandDetail> filterDemands(
-            int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    public List<FullDemandDetail> filterDemands(int start, int count,
+        SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) throws CommonException {
         List<FullDemandDetail> searchResult = this.filter(detail, orderColumns);
         if (searchResult.size() < (start + count)) {
             return searchResult.subList(start, searchResult.size());
