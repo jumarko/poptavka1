@@ -13,6 +13,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 /**
  *
@@ -21,19 +22,22 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 @RemoteServiceRelativePath("service/messagesmodule")
 public interface MessagesRPCService extends RemoteService {
 
-    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId);
+    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) throws CommonException;
 
-    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl);
+    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws CommonException;
 
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws CommonException;
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus);
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws CommonException;
 
-    List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
+    List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
+        throws CommonException;
 
-    List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
+    List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
+        throws CommonException;
 
-    List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
+    List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
+        throws CommonException;
 
-    void deleteMessages(List<Long> messagesIds);
+    void deleteMessages(List<Long> messagesIds) throws CommonException;
 }

@@ -17,6 +17,7 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 /**
  *
@@ -25,39 +26,43 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 @RemoteServiceRelativePath("service/messages")
 public interface MessageRPCService extends RemoteService {
 
-    ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam);
+    ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) throws CommonException;
 
-    ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId);
+    ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId)
+        throws CommonException;
 
-    ArrayList<MessageDetail> getClientDemandConversations(long threadRootId);
+    ArrayList<MessageDetail> getClientDemandConversations(long threadRootId) throws CommonException;
 
-    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId);
+    ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) throws CommonException;
 
-    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId);
+    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws CommonException;
 
     ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(long businessUserId,
-            SearchModuleDataHolder searchDataHolder);
+            SearchModuleDataHolder searchDataHolder) throws CommonException;
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId);
+            long userMessageId) throws CommonException;
 
-    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend);
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws CommonException;
 
-    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl);
+    MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws CommonException;
 
-    OfferMessageDetail sendOffer(OfferMessageDetail demandOffer);
+    OfferMessageDetail sendOffer(OfferMessageDetail demandOffer) throws CommonException;
 
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead);
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws CommonException;
 
-    ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId);
+    ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId) throws CommonException;
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus);
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws CommonException;
 
-    List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder);
+    List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
+        throws CommonException;
 
-    List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder);
+    List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
+        throws CommonException;
 
-    List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder);
+    List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
+        throws CommonException;
 
-    void deleteMessages(List<Long> messagesIds);
+    void deleteMessages(List<Long> messagesIds) throws CommonException;
 }
