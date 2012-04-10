@@ -13,11 +13,11 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.shared.domain.type.MessageType;
+import java.util.ArrayList;
 
 public class AdminMessagesViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -49,65 +49,65 @@ public class AdminMessagesViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!messageIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, messageIdFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, messageIdFrom.getText()));
         }
         if (!messageIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, messageIdTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, messageIdTo.getText()));
         }
         if (!demandIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
+            filters.add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
         }
         if (!demandIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
+            filters.add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
         }
         if (!parentIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("parent.id", FilterItem.OPERATION_FROM, parentIdFrom.getText()));
+            filters.add(new FilterItem("parent.id", FilterItem.OPERATION_FROM, parentIdFrom.getText()));
         }
         if (!parentIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("parent.id", FilterItem.OPERATION_TO, parentIdTo.getText()));
+            filters.add(new FilterItem("parent.id", FilterItem.OPERATION_TO, parentIdTo.getText()));
         }
         if (!senderIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("sender.id", FilterItem.OPERATION_FROM, senderIdFrom.getText()));
+            filters.add(new FilterItem("sender.id", FilterItem.OPERATION_FROM, senderIdFrom.getText()));
         }
         if (!senderIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("sender.id", FilterItem.OPERATION_TO, senderIdTo.getText()));
+            filters.add(new FilterItem("sender.id", FilterItem.OPERATION_TO, senderIdTo.getText()));
         }
 //        if (!receiverIdFrom.getText().equals("")) {
-//            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, receiverIdFrom.getText()));
+//            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, receiverIdFrom.getText()));
 //        }
 //        if (!receiverIdTo.getText().equals("")) {
-//            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, receiverIdTo.getText()));
+//            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, receiverIdTo.getText()));
 //        }
         if (!subject.getText().equals("")) {
-            data.getFilters().add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
+            filters.add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
         }
         if (!body.getText().equals("")) {
-            data.getFilters().add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
+            filters.add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
         }
         if (createdFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
+            filters.add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
         }
         if (createdTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_TO, createdTo.getValue()));
+            filters.add(new FilterItem("created", FilterItem.OPERATION_TO, createdTo.getValue()));
         }
         if (sentFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("sent", FilterItem.OPERATION_FROM, sentFrom.getValue()));
+            filters.add(new FilterItem("sent", FilterItem.OPERATION_FROM, sentFrom.getValue()));
         }
         if (sentTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("sent", FilterItem.OPERATION_TO, sentTo.getValue()));
+            filters.add(new FilterItem("sent", FilterItem.OPERATION_TO, sentTo.getValue()));
         }
         if (type.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("messageType", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("messageType", FilterItem.OPERATION_EQUALS,
                     type.getItemText(type.getSelectedIndex())));
         }
         if (state.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("messageState", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("messageState", FilterItem.OPERATION_EQUALS,
                     state.getItemText(state.getSelectedIndex())));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("messageIdFrom")

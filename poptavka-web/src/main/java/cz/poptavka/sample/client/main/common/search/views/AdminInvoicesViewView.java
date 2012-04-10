@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class AdminInvoicesViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -36,36 +36,36 @@ public class AdminInvoicesViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!idFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!invoiceNumberFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("invoiceNumber",
+            filters.add(new FilterItem("invoiceNumber",
                     FilterItem.OPERATION_FROM, invoiceNumberFrom.getText()));
         }
         if (!invoiceNumberTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("invoiceNumber", FilterItem.OPERATION_TO, invoiceNumberTo.getText()));
+            filters.add(new FilterItem("invoiceNumber", FilterItem.OPERATION_TO, invoiceNumberTo.getText()));
         }
         if (!totalPriceFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("totalPrice", FilterItem.OPERATION_FROM, totalPriceFrom.getText()));
+            filters.add(new FilterItem("totalPrice", FilterItem.OPERATION_FROM, totalPriceFrom.getText()));
         }
         if (!totalPriceTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("totalPrice", FilterItem.OPERATION_TO, totalPriceTo.getText()));
+            filters.add(new FilterItem("totalPrice", FilterItem.OPERATION_TO, totalPriceTo.getText()));
         }
         if (!variableSymbol.getText().equals("")) {
-            data.getFilters().add(new FilterItem("variableSymbol",
+            filters.add(new FilterItem("variableSymbol",
                     FilterItem.OPERATION_FROM, variableSymbol.getText()));
         }
         if (paymentMethod.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("paymentMethod", FilterItem.OPERATION_TO,
+            filters.add(new FilterItem("paymentMethod", FilterItem.OPERATION_TO,
                     paymentMethod.getValue(paymentMethod.getSelectedIndex())));
         }
-        return data;
+        return filters;
     }
 
     public ListBox getPaymentMethodList() {

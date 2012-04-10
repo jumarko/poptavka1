@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class AdminEmailActivationViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -34,25 +34,25 @@ public class AdminEmailActivationViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!idFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!activationLink.getText().equals("")) {
-            data.getFilters().add(new FilterItem("activationLink",
+            filters.add(new FilterItem("activationLink",
                     FilterItem.OPERATION_LIKE, activationLink.getText()));
         }
         if (timeoutFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutFrom.getValue()));
+            filters.add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutFrom.getValue()));
         }
         if (timeoutTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutTo.getValue()));
+            filters.add(new FilterItem("timeout", FilterItem.OPERATION_FROM, timeoutTo.getValue()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("idFrom")

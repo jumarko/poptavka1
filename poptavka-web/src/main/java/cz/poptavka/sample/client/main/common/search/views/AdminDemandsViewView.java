@@ -13,12 +13,12 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.demand.DemandType.Type;
+import java.util.ArrayList;
 
 public class AdminDemandsViewView extends Composite implements SearchModulePresenter.SearchModulesViewInterface {
 
@@ -48,44 +48,44 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!demandIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
         }
         if (!demandIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, demandIdTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, demandIdTo.getText()));
         }
         if (!clientIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("client.id", FilterItem.OPERATION_FROM, clientIdFrom.getText()));
+            filters.add(new FilterItem("client.id", FilterItem.OPERATION_FROM, clientIdFrom.getText()));
         }
         if (!clientIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("client.id", FilterItem.OPERATION_TO, clientIdTo.getText()));
+            filters.add(new FilterItem("client.id", FilterItem.OPERATION_TO, clientIdTo.getText()));
         }
         if (!demandTitle.getText().equals("")) {
-            data.getFilters().add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
+            filters.add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (expirationDateFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("validTo", FilterItem.OPERATION_FROM, expirationDateFrom.getValue()));
+            filters.add(new FilterItem("validTo", FilterItem.OPERATION_FROM, expirationDateFrom.getValue()));
         }
         if (expirationDateTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("validTo", FilterItem.OPERATION_TO, expirationDateTo.getValue()));
+            filters.add(new FilterItem("validTo", FilterItem.OPERATION_TO, expirationDateTo.getValue()));
         }
         if (endDateFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("endDate", FilterItem.OPERATION_FROM, endDateFrom.getValue()));
+            filters.add(new FilterItem("endDate", FilterItem.OPERATION_FROM, endDateFrom.getValue()));
         }
         if (endDateTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("endDate", FilterItem.OPERATION_TO, endDateTo.getValue()));
+            filters.add(new FilterItem("endDate", FilterItem.OPERATION_TO, endDateTo.getValue()));
         }
         if (demandType.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
                     demandType.getItemText(demandType.getSelectedIndex())));
         }
         if (demandStatus.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("status", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("status", FilterItem.OPERATION_EQUALS,
                     demandStatus.getItemText(demandStatus.getSelectedIndex())));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("demandIdFrom")

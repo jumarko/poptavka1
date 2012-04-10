@@ -13,11 +13,11 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.demand.DemandType.Type;
+import java.util.ArrayList;
 
 public class HomeDemandViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -51,29 +51,29 @@ public class HomeDemandViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!demandTitle.getText().equals("")) {
-            data.getFilters().add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
+            filters.add(new FilterItem("title", FilterItem.OPERATION_LIKE, demandTitle.getText()));
         }
         if (demandTypes.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
                     demandTypes.getItemText(demandTypes.getSelectedIndex())));
         }
         if (!priceFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
+            filters.add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
         }
         if (!priceTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
+            filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
-        data.getFilters().add(new FilterItem("creation", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
+        filters.add(new FilterItem("creation", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
         if (finnishDateFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
         }
         if (finnishDateTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, finnishDateTo.getValue()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("priceFrom")

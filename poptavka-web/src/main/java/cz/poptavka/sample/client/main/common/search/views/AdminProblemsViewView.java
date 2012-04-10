@@ -10,9 +10,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class AdminProblemsViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -31,18 +31,18 @@ public class AdminProblemsViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!idFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!text.getText().equals("")) {
-            data.getFilters().add(new FilterItem("text", FilterItem.OPERATION_LIKE, text.getText()));
+            filters.add(new FilterItem("text", FilterItem.OPERATION_LIKE, text.getText()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("idFrom")

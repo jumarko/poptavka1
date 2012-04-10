@@ -15,6 +15,7 @@ package cz.poptavka.sample.client.main.common.search.dataHolders;
  * @author Martin Slavkovsky
  */
 public class FilterItem {
+
     /*
      * OPERATIONS
      */
@@ -44,5 +45,32 @@ public class FilterItem {
 
     public Object getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder infoStr = new StringBuilder();
+        infoStr.append(item);
+        switch (operation) {
+            case OPERATION_EQUALS:
+                infoStr.append("=");
+                break;
+            case OPERATION_LIKE:
+                infoStr.append("~");
+                break;
+            case OPERATION_FROM:
+                infoStr.append(">");
+                break;
+            case OPERATION_TO:
+                infoStr.append("<");
+                break;
+            case OPERATION_IN:
+                infoStr.append(" in ");
+                break;
+            default:
+                break;
+        }
+        infoStr.append(value);
+        return infoStr.toString();
     }
 }

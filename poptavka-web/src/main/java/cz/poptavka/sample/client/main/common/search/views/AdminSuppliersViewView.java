@@ -12,11 +12,11 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.user.BusinessType;
 import cz.poptavka.sample.domain.user.Verification;
+import java.util.ArrayList;
 
 public class AdminSuppliersViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -57,40 +57,40 @@ public class AdminSuppliersViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!supplierName.getText().equals("")) {
-            data.getFilters().add(new FilterItem("name", FilterItem.OPERATION_FROM, supplierName.getText()));
+            filters.add(new FilterItem("name", FilterItem.OPERATION_FROM, supplierName.getText()));
         }
         if (!supplierDescription.getText().equals("")) {
-            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_TO,
+            filters.add(new FilterItem("description", FilterItem.OPERATION_TO,
                     supplierDescription.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
         }
         if (!ratingTo.getText().equals("100")) {
-            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_TO, ratingTo.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_TO, ratingTo.getText()));
         }
         if (type.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("type", FilterItem.OPERATION_EQUALS,
                     type.getItemText(type.getSelectedIndex())));
         }
         if (certified.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("certified", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("certified", FilterItem.OPERATION_EQUALS,
                     certified.getItemText(certified.getSelectedIndex())));
         }
         if (verified.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("verification", FilterItem.OPERATION_FROM,
+            filters.add(new FilterItem("verification", FilterItem.OPERATION_FROM,
                     verified.getItemText(verified.getSelectedIndex())));
         }
         if (!idFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("ratingFrom")

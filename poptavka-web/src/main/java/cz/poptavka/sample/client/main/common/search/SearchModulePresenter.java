@@ -33,8 +33,8 @@ import cz.poptavka.sample.client.main.common.search.views.HomeDemandViewView;
 import cz.poptavka.sample.client.main.common.search.views.HomeSuppliersViewView;
 import cz.poptavka.sample.client.main.common.search.views.MessagesTabViewView;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /*
  * Musi byt mulitple = true, inak advance search views sa nebudu zobrazovat (bude vyhadzovat chybu)
@@ -60,18 +60,14 @@ public class SearchModulePresenter
 
         TextBox getSearchLocality();
 
-        SearchModuleDataHolder getFilter();
-
-        Map<Long, String> getFilterCategories();
-
-        Map<Long, String> getFilterLocalities();
+        SearchModuleDataHolder getFilters();
     }
 
     //Neviem zatial preco, ale nemoze to byt lazy, pretoze sa neinicializuci advace
     //search views.
     public interface SearchModulesViewInterface {
 
-        SearchModuleDataHolder getFilter();
+        ArrayList<FilterItem> getFilter();
 
         Widget getWidgetView();
     }
@@ -160,20 +156,20 @@ public class SearchModulePresenter
             public void onClick(ClickEvent event) {
                 switch (Storage.getCurrentlyLoadedView()) {
                     case Constants.HOME_DEMANDS:
-                        eventBus.goToHomeDemandsModule(view.getFilter());
+                        eventBus.goToHomeDemandsModule(view.getFilters());
                         break;
                     case Constants.HOME_SUPPLIERS:
-                        eventBus.goToHomeSuppliersModule(view.getFilter());
+                        eventBus.goToHomeSuppliersModule(view.getFilters());
                         break;
                     default:
                         if (Constants.getDemandsConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToDemandModule(view.getFilter(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToDemandModule(view.getFilters(), Storage.getCurrentlyLoadedView());
                         }
                         if (Constants.getAdminConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToAdminModule(view.getFilter(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToAdminModule(view.getFilters(), Storage.getCurrentlyLoadedView());
                         }
                         if (Constants.getMessagesConstants().contains(Storage.getCurrentlyLoadedView())) {
-                            eventBus.goToMessagesModule(view.getFilter(), Storage.getCurrentlyLoadedView());
+                            eventBus.goToMessagesModule(view.getFilters(), Storage.getCurrentlyLoadedView());
                         }
                 }
             }
@@ -192,6 +188,9 @@ public class SearchModulePresenter
         });
     }
 
+    /**
+     * According to currently loaded view methods loads appropiate advance search view in popup window.
+     */
     private void initAppropiateViews() {
         if (advSearchViewInitialized != Storage.getCurrentlyLoadedView()) {
             advSearchViewInitialized = Storage.getCurrentlyLoadedView();
@@ -263,55 +262,6 @@ public class SearchModulePresenter
                     view.getPopupPanel().clear();
                     break;
             }
-        }
-    }
-
-    /**
-     * Constucts info of given filters , that will be applied and place them into given textBox.
-     *
-     * @param type - 0...constucts info for advance search view,
-     *               1...constucts info for categories,
-     *               2...constucts info for localities.
-     * @param textBox - given textBox for holding info string.
-     * @param searchModuleDataHolder - given filters, selected by user.
-     */
-    private void displayShortInfo(int type, TextBox textBox, SearchModuleDataHolder searchModuleDataHolder) {
-        StringBuilder infoStr = new StringBuilder();
-        switch (type) {
-            case 0:
-                for (FilterItem item : searchModuleDataHolder.getFilters()) {
-                    infoStr.append(item.getItem());
-                    infoStr.append(":");
-                    switch (item.getOperation()) {
-                        case FilterItem.OPERATION_EQUALS:
-                            infoStr.append("=");
-                            break;
-                        case FilterItem.OPERATION_LIKE:
-                            infoStr.append("~");
-                            break;
-                        case FilterItem.OPERATION_FROM:
-                            infoStr.append(">");
-                            break;
-                        case FilterItem.OPERATION_TO:
-                            infoStr.append("<");
-                            break;
-                        case FilterItem.OPERATION_IN:
-                            infoStr.append(" in ");
-                            break;
-                        default:
-                            break;
-                    }
-                    infoStr.append(item.getValue());
-                }
-                break;
-            case 1:
-                infoStr.append(searchModuleDataHolder.getCategories().toString());
-                break;
-            case 2:
-                infoStr.append(searchModuleDataHolder.getLocalities().toString());
-                break;
-            default:
-                break;
         }
     }
 }

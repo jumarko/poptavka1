@@ -6,14 +6,13 @@
 
     <g:VerticalPanel>
         <g:ScrollPanel ui:field='masterPanel'>
-            <g:Grid ui:field='categoryListHolder'/>
-<!--                <g:row>
+            <g:Grid ui:field='categoryListHolder'>
+                <g:row>
                     <g:customCell>
-                        <g:HTML></g:HTML>
                          <g:ListBox visibleItemCount='10' width="200"/>
                     </g:customCell>
-                </g:row>-->
-<!--            </g:Grid>-->
+                </g:row>
+            </g:Grid>
         </g:ScrollPanel>
         <g:HorizontalPanel>
             <g:VerticalPanel>

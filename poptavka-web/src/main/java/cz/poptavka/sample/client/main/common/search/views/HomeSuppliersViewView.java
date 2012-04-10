@@ -11,9 +11,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class HomeSuppliersViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -36,22 +36,22 @@ public class HomeSuppliersViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!companyName.getText().equals("")) {
-            data.getFilters().add(new FilterItem("name", FilterItem.OPERATION_FROM, companyName.getText()));
+            filters.add(new FilterItem("name", FilterItem.OPERATION_LIKE, companyName.getText()));
         }
         if (!supplierDescription.getText().equals("")) {
-            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_FROM,
+            filters.add(new FilterItem("description", FilterItem.OPERATION_LIKE,
                     supplierDescription.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingFrom.getText()));
         }
         if (!ratingTo.getText().equals("100")) {
-            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingTo.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_FROM, ratingTo.getText()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("ratingFrom")

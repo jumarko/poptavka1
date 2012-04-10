@@ -10,9 +10,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class AdminClientsViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -33,30 +33,30 @@ public class AdminClientsViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!idFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!companyName.getText().equals("")) {
-            data.getFilters().add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, companyName.getText()));
+            filters.add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, companyName.getText()));
         }
         if (!firstName.getText().equals("")) {
-            data.getFilters().add(new FilterItem("personFirstName", FilterItem.OPERATION_LIKE, firstName.getText()));
+            filters.add(new FilterItem("personFirstName", FilterItem.OPERATION_LIKE, firstName.getText()));
         }
         if (!lastName.getText().equals("")) {
-            data.getFilters().add(new FilterItem("personLastName", FilterItem.OPERATION_LIKE, lastName.getText()));
+            filters.add(new FilterItem("personLastName", FilterItem.OPERATION_LIKE, lastName.getText()));
         }
         if (!ratingFrom.getText().equals("0")) {
-            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingFrom.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingFrom.getText()));
         }
         if (!ratingTo.getText().equals("100")) {
-            data.getFilters().add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingTo.getText()));
+            filters.add(new FilterItem("overalRating", FilterItem.OPERATION_LIKE, ratingTo.getText()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("idFrom")

@@ -52,6 +52,7 @@ public class CategorySelectorPresenter
     // same list
     private boolean preventMultipleCalls = false;
 
+    @Override
     public void bindView() {
         view.getSelectedList().addClickHandler(new ClickHandler() {
             @Override

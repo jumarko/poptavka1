@@ -10,9 +10,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class AdminPreferencesViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -31,24 +31,24 @@ public class AdminPreferencesViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!idFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, idFrom.getText()));
         }
         if (!idTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, idTo.getText()));
         }
         if (!key.getText().equals("")) {
-            data.getFilters().add(new FilterItem("key", FilterItem.OPERATION_LIKE, key.getText()));
+            filters.add(new FilterItem("key", FilterItem.OPERATION_LIKE, key.getText()));
         }
         if (!value.getText().equals("")) {
-            data.getFilters().add(new FilterItem("value", FilterItem.OPERATION_LIKE, value.getText()));
+            filters.add(new FilterItem("value", FilterItem.OPERATION_LIKE, value.getText()));
         }
         if (!description.getText().equals("")) {
-            data.getFilters().add(new FilterItem("description", FilterItem.OPERATION_IN, description.getText()));
+            filters.add(new FilterItem("description", FilterItem.OPERATION_IN, description.getText()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("idFrom")

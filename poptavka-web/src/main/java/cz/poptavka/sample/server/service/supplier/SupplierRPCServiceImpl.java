@@ -45,7 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -480,8 +479,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 //        System.out.println("ID is: " + userRoles.get(0).getBusinessUser().getId());
         return detail;
     }
-    private List<Category> categoriesHistory = new ArrayList<Category>();
-    private List<Locality> localitiesHistory = new LinkedList<Locality>();
 
     private Category[] getAllSubCategories(Long id) {
         final Category cat = this.generalService.find(Category.class, id);
@@ -514,17 +511,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     private List<FullSupplierDetail> filter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        //detail nikdy nebude null, pretoze vzdy tam bude filter na categoriu
-//        if (detail == null) {
-//            Search search = this.getFilter(null, orderColumns);
-//            return this.createSupplierDetailList(this.generalService.search(search));
-//        }
-        //nikdy nebude null oba - vzdy podla nejakej kategorie - 0 0
-//        if (detail.getHomeSuppliers().getSupplierCategory() == null
-//                && detail.getHomeSuppliers().getSupplierLocality() == null) {
-//            Search search = this.getCategoryFilter(detail, orderColumns);
-//            return this.createSupplierDetailList(this.generalService.search(search));
-//        }
         //1 0
         if (detail.getCategories() != null
                 && detail.getLocalities() == null) {
@@ -646,7 +632,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private Search getSupplierFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Boolean filterApplied = false;
         Search search = new Search(Supplier.class);
-        for (FilterItem item : detail.getFilters()) {
+        for (FilterItem item : detail.getAttibutes()) {
             if (item.getItem().equals("comapnyName")) {
                 Collection<BusinessUserData> data = generalService.search(
                         this.filter(new Search(BusinessUserData.class), "", item));

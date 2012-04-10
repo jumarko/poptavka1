@@ -167,7 +167,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             } else {
                 search = new Search(Demand.class);
             }
-            for (FilterItem item : detail.getFilters()) {
+            for (FilterItem item : detail.getAttibutes()) {
                 if (item.getItem().equals("type")) {
                     search.addFilterEqual(prefix + "type",
                             demandService.getDemandType(item.getValue().toString()));

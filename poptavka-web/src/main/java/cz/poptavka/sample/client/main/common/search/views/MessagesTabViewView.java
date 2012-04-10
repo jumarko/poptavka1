@@ -9,9 +9,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
+import java.util.ArrayList;
 
 public class MessagesTabViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -30,18 +30,18 @@ public class MessagesTabViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!sender.getText().equals("")) {
-            data.getFilters().add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, sender.getText()));
+            filters.add(new FilterItem("companyName", FilterItem.OPERATION_LIKE, sender.getText()));
         }
         if (!subject.getText().equals("")) {
-            data.getFilters().add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
+            filters.add(new FilterItem("subject", FilterItem.OPERATION_LIKE, subject.getText()));
         }
         if (!body.getText().equals("")) {
-            data.getFilters().add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
+            filters.add(new FilterItem("body", FilterItem.OPERATION_LIKE, body.getText()));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("clearBtn")

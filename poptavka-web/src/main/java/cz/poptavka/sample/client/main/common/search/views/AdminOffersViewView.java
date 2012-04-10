@@ -13,11 +13,11 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.main.Storage;
-import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.domain.offer.OfferState;
 import cz.poptavka.sample.domain.offer.OfferState.Type;
+import java.util.ArrayList;
 
 public class AdminOffersViewView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
@@ -46,49 +46,49 @@ public class AdminOffersViewView extends Composite implements
     }
 
     @Override
-    public SearchModuleDataHolder getFilter() {
-        SearchModuleDataHolder data = new SearchModuleDataHolder();
+    public ArrayList<FilterItem> getFilter() {
+        ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!offerIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_FROM, offerIdFrom.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, offerIdFrom.getText()));
         }
         if (!offerIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("id", FilterItem.OPERATION_TO, offerIdTo.getText()));
+            filters.add(new FilterItem("id", FilterItem.OPERATION_TO, offerIdTo.getText()));
         }
         if (!demandIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
+            filters.add(new FilterItem("demand.id", FilterItem.OPERATION_FROM, demandIdFrom.getText()));
         }
         if (!demandIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
+            filters.add(new FilterItem("demand.id", FilterItem.OPERATION_TO, demandIdTo.getText()));
         }
         if (!supplierIdFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("supplier.id", FilterItem.OPERATION_FROM, supplierIdFrom.getText()));
+            filters.add(new FilterItem("supplier.id", FilterItem.OPERATION_FROM, supplierIdFrom.getText()));
         }
         if (!supplierIdTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("supplier.id", FilterItem.OPERATION_TO, supplierIdTo.getText()));
+            filters.add(new FilterItem("supplier.id", FilterItem.OPERATION_TO, supplierIdTo.getText()));
         }
         if (!priceFrom.getText().equals("")) {
-            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
+            filters.add(new FilterItem("price", FilterItem.OPERATION_FROM, priceFrom.getText()));
         }
         if (!priceTo.getText().equals("")) {
-            data.getFilters().add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
+            filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
         if (createdFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
+            filters.add(new FilterItem("created", FilterItem.OPERATION_FROM, createdFrom.getValue()));
         }
         if (createdTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("created", FilterItem.OPERATION_FROM, createdTo.getValue()));
+            filters.add(new FilterItem("created", FilterItem.OPERATION_FROM, createdTo.getValue()));
         }
         if (finnishFrom.getValue() != null) {
-            data.getFilters().add(new FilterItem("finishDate", FilterItem.OPERATION_FROM, finnishFrom.getValue()));
+            filters.add(new FilterItem("finishDate", FilterItem.OPERATION_FROM, finnishFrom.getValue()));
         }
         if (finnishTo.getValue() != null) {
-            data.getFilters().add(new FilterItem("finishDate", FilterItem.OPERATION_FROM, finnishTo.getValue()));
+            filters.add(new FilterItem("finishDate", FilterItem.OPERATION_FROM, finnishTo.getValue()));
         }
         if (state.getSelectedIndex() != 0) {
-            data.getFilters().add(new FilterItem("state", FilterItem.OPERATION_EQUALS,
+            filters.add(new FilterItem("state", FilterItem.OPERATION_EQUALS,
                     state.getItemText(state.getSelectedIndex())));
         }
-        return data;
+        return filters;
     }
 
     @UiHandler("offerIdFrom")

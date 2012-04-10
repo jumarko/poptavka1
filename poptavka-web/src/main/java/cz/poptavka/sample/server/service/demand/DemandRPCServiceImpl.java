@@ -576,7 +576,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
             } else {
                 search = new Search(Demand.class);
             }
-            for (FilterItem item : detail.getFilters()) {
+            for (FilterItem item : detail.getAttibutes()) {
                 if (item.getItem().equals("createdDate")) {
                     //created date
                     Calendar calendarDate = Calendar.getInstance(); //today -> case 0
