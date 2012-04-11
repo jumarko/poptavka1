@@ -1,7 +1,9 @@
 package cz.poptavka.sample.client.main.common.search;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -15,6 +17,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter.SearchModulesViewInterface;
@@ -36,7 +39,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     private PopupPanel toolTip = new PopupPanel();
     //Holds data
     private SearchModuleDataHolder filters = new SearchModuleDataHolder();
-    //0 - searchContect
     //1 - searchCategory
     //2 - searchLocality
     //3 - advSearchButton
@@ -95,11 +97,15 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /**
-     * SEARCH CONTENT
+     * If full text filtering was chosen, stores given string to SearchModuleDataHolder.
      */
-    @UiHandler("searchContent")
-    void handleListBoxClick(ClickEvent event) {
-        action = 0;
+    @Override
+    public void setFilterSearchContent() {
+        if (!searchContent.getText().equals("")
+                && !searchContent.getText().equals(Storage.MSGS.searchContent())) {
+            filters.setSearchText(searchContent.getText());
+        }
+        filters.setSearchText(searchContent.getText());
     }
 
     /*
@@ -109,22 +115,34 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * data from appropiate view loaded in popup window. See handlerPopupPanelCloserEvent methods.
      */
     @UiHandler("searchContent")
-    void handleSearchContentClick(ClickEvent event) {
-        action = 1;
+    void handleSearchContentFocusClick(FocusEvent event) {
+        if (searchContent.getText().equals(Storage.MSGS.searchContent())) {
+            searchContent.setText("");
+        }
+    }
+
+    @UiHandler("searchContent")
+    void handleSearchContentBlurClick(BlurEvent event) {
+        if (searchContent.getText().equals("")) {
+            searchContent.setText(Storage.MSGS.searchContent());
+        }
     }
 
     @UiHandler("searchCategory")
     void handleSearchCategoryClick(ClickEvent event) {
+        //action for this click = loading CategorySelectorWidget to popup window is made in presenter.
         action = 1;
     }
 
     @UiHandler("searchLocality")
     void handleSearchLocalityClick(ClickEvent event) {
+        //action for this click = loading LocalitySelectorWidget to popup window is made in presenter.
         action = 2;
     }
 
     @UiHandler("advSearchBtn")
     void handleAdvSearchBtnClick(ClickEvent event) {
+        //action for this click = loading appropiate advance search view to popup window is made in presenter.
         action = 3;
     }
 
@@ -169,11 +187,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /*
      * MOUNSE OUT HANDLERS
      */
-    @UiHandler("searchContent")
-    void handlerSearchContentMouserOutEvent(MouseOutEvent event) {
-        toolTip.hide();
-    }
-
     @UiHandler("searchCategory")
     void handlerSearchCategoryMouserOutEvent(MouseOutEvent event) {
         toolTip.hide();
@@ -194,9 +207,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @UiHandler("popupPanel")
     void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
         switch (action) {
-            case 0://searchContext
-                searchFullText();
-                break;
             case 1://searchCategory
                 searchCategoriesAction();
                 break;
@@ -209,6 +219,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
             default:
                 break;
         }
+        displayShortInfo();
     }
 
     /*
@@ -229,13 +240,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /**
-     * If full text filtering was chosen, stores given string to SearchModuleDataHolder.
-     */
-    private void searchFullText() {
-        filters.setSearchText(searchContent.getText());
-    }
-
-    /**
      * If categories filtering was chosen, CategorySelector widget is loaded in popup window.
      * This methods acquires chosen categories and store them in SearchModuleDataHolder.
      */
@@ -244,15 +248,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         CategorySelectorInterface categoryValues =
                 (CategorySelectorInterface) popupPanel.getWidget();
 
-        //categories
         for (int i = 0; i < categoryValues.getSelectedList().getItemCount(); i++) {
             filters.getCategories().add(new CategoryDetail(Long.valueOf(
                     categoryValues.getSelectedList().getValue(i)),
                     categoryValues.getSelectedList().getItemText(i)));
-        }
-        //Display short info
-        if (!filters.getCategories().isEmpty()) {
-            searchCategory.setText("filter:" + filters.getCategories().toString());
         }
     }
 
@@ -265,15 +264,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         LocalitySelectorInterface localityValues =
                 (LocalitySelectorInterface) popupPanel.getWidget();
 
-        //localities
         for (int i = 0; i < localityValues.getSelectedList().getItemCount(); i++) {
             filters.getLocalities().add(new LocalityDetail(
                     localityValues.getSelectedList().getItemText(i),
                     localityValues.getSelectedList().getValue(i)));
-        }
-        //Display short info
-        if (!filters.getLocalities().isEmpty()) {
-            searchLocality.setText("filter:" + filters.getLocalities().toString());
         }
     }
 
@@ -287,9 +281,43 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         SearchModulesViewInterface filtersValues =
                 (SearchModulesViewInterface) popupPanel.getWidget();
         filters.getAttibutes().addAll(filtersValues.getFilter());
-        //Display short info
-        if (!filters.getAttibutes().isEmpty()) {
-            searchContent.setText("filter:" + filters.getAttibutes().toString());
+    }
+
+    /**
+     * Constucts info of given filters , that will be applied and place them into given textBox.
+     * There are 3 options according to <b>action</b> attribute, which holds used choice:
+     *
+     * Action values:  1...constucts info for <b>categories</b>,
+     *                 2...constucts info for <b>localities</b>.
+     *                 3...constucts info for advance search view <b>attributes</b>,
+     * @param textBox - given textBox for holding info string.
+     * @param searchModuleDataHolder - given filters, selected by user.
+     */
+    private void displayShortInfo() {
+        switch (action) {
+            case 1:
+                if (filters.getLocalities().isEmpty()) {
+                    searchCategory.setText(Storage.MSGS.category());
+                } else {
+                    searchCategory.setText("filter:" + filters.getCategories().toString());
+                }
+                break;
+            case 2:
+                if (filters.getLocalities().isEmpty()) {
+                    searchLocality.setText(Storage.MSGS.locality());
+                } else {
+                    searchLocality.setText("filter:" + filters.getLocalities().toString());
+                }
+                break;
+            case 3:
+                if (filters.getAttibutes().isEmpty()) {
+                    searchContent.setText(Storage.MSGS.searchContent());
+                } else {
+                    searchContent.setText("filter:" + filters.getAttibutes().toString());
+                }
+                break;
+            default:
+                break;
         }
     }
 }

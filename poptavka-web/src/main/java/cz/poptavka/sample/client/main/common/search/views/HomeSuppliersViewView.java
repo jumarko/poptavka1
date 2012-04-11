@@ -8,7 +8,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.main.common.search.SearchModulePresenter;
@@ -24,8 +23,6 @@ public class HomeSuppliersViewView extends Composite implements
     }
     @UiField
     TextBox companyName, ratingFrom, ratingTo, supplierDescription;
-    @UiField
-    ListBox category, locality;
     @UiField
     Button clearBtn;
 
@@ -72,8 +69,6 @@ public class HomeSuppliersViewView extends Composite implements
     void clearBtnAction(ClickEvent event) {
         companyName.setText("");
         supplierDescription.setText("");
-        category.setSelectedIndex(0);
-        locality.setSelectedIndex(0);
         ratingFrom.setText("0");
         ratingTo.setText("100");
     }

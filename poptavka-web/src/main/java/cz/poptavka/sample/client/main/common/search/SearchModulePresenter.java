@@ -54,6 +54,8 @@ public class SearchModulePresenter
 
         PopupPanel getPopupPanel();
 
+        void setFilterSearchContent();
+
         TextBox getSearchContent();
 
         TextBox getSearchCategory();
@@ -81,7 +83,6 @@ public class SearchModulePresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.initCategoryWidget(view.getPopupPanel());
-                view.getSearchCategory().setText("category");
                 showPopupPanel();
             }
         });
@@ -90,7 +91,6 @@ public class SearchModulePresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.initLocalityWidget(view.getPopupPanel());
-                view.getSearchLocality().setText("locality");
                 showPopupPanel();
             }
         });
@@ -154,6 +154,7 @@ public class SearchModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
+                view.setFilterSearchContent();
                 switch (Storage.getCurrentlyLoadedView()) {
                     case Constants.HOME_DEMANDS:
                         eventBus.goToHomeDemandsModule(view.getFilters());

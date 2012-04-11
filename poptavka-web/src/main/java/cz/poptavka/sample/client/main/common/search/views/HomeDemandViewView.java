@@ -29,7 +29,7 @@ public class HomeDemandViewView extends Composite implements
     @UiField
     TextBox demandTitle, priceFrom, priceTo;
     @UiField
-    ListBox category, locality, demandTypes, creationDate;
+    ListBox demandTypes, creationDate;
     @UiField
     DateBox finnishDateFrom, finnishDateTo;
     @UiField
@@ -66,7 +66,9 @@ public class HomeDemandViewView extends Composite implements
         if (!priceTo.getText().equals("")) {
             filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
-        filters.add(new FilterItem("creation", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
+        if (creationDate.getSelectedIndex() > 0) {
+            filters.add(new FilterItem("creation", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
+        }
         if (finnishDateFrom.getValue() != null) {
             filters.add(new FilterItem("id", FilterItem.OPERATION_FROM, finnishDateFrom.getValue()));
         }
@@ -94,8 +96,6 @@ public class HomeDemandViewView extends Composite implements
     void clearBtnAction(ClickEvent event) {
         demandTitle.setText("");
         demandTypes.setSelectedIndex(0);
-        category.setSelectedIndex(0);
-        locality.setSelectedIndex(0);
         priceFrom.setText("");
         priceTo.setText("");
         creationDate.setSelectedIndex(0);

@@ -28,7 +28,7 @@ public class AdminSuppliersViewView extends Composite implements
     @UiField
     TextBox ratingFrom, ratingTo, supplierDescription, idFrom, idTo, supplierName;
     @UiField
-    ListBox supplierCategory, supplierLocality, type, certified, verified;
+    ListBox type, certified, verified;
     @UiField
     Button clearBtn;
 
@@ -125,8 +125,6 @@ public class AdminSuppliersViewView extends Composite implements
     void clearBtnAction(ClickEvent event) {
         supplierName.setText("");
         supplierDescription.setText("");
-        supplierCategory.setSelectedIndex(0);
-        supplierLocality.setSelectedIndex(0);
         ratingFrom.setText("0");
         ratingTo.setText("100");
         type.setSelectedIndex(0);

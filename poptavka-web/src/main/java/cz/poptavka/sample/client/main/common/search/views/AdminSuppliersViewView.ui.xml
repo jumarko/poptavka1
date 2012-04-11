@@ -14,14 +14,14 @@
         }
         .searchMainContent {
             width: 200px;
-        } 
+        }
         .margin {
-            
+
         }
     </ui:style>
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />
-        
+
     <g:HTMLPanel>
         <!-- menu -->
         <div>
@@ -54,18 +54,6 @@
                 </li>
                 <li>
                     <g:TextBox ui:field="supplierName"/>
-                </li>
-                <li>
-                    <g:Label>Category</g:Label>
-                </li>
-                <li>
-                    <g:ListBox ui:field="supplierCategory"></g:ListBox>
-                </li>
-                <li>
-                    <g:Label>Locality</g:Label>
-                </li>
-                <li>
-                    <g:ListBox ui:field="supplierLocality"></g:ListBox>
                 </li>
                 <li>
                     <g:Label>
