@@ -10,7 +10,9 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.AdminRPCService;
 import cz.poptavka.sample.domain.activation.EmailActivation;
+import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
+import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.invoice.OurPaymentDetails;
@@ -24,8 +26,11 @@ import cz.poptavka.sample.domain.user.Problem;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
 import cz.poptavka.sample.domain.user.rights.Permission;
+import cz.poptavka.sample.exception.MessageException;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
+import cz.poptavka.sample.service.address.LocalityService;
+import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
@@ -47,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 
@@ -165,6 +172,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     //--------------------------------------------------- END OF CONVERTERS --------------------------------------------
     private GeneralService generalService;
     private DemandService demandService;
+    private LocalityService localityService;
+    private CategoryService categoryService;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) throws CommonException {
@@ -174,6 +183,16 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Autowired
     public void setDemandService(DemandService demandService) throws CommonException {
         this.demandService = demandService;
+    }
+
+    @Autowired
+    public void setLocalityService(LocalityService localityService) {
+        this.localityService = localityService;
+    }
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     /**********************************************************************************************
@@ -204,8 +223,24 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public FullDemandDetail updateDemand(FullDemandDetail fullDemandDetail) throws CommonException {
-        return generalService.merge(fullDemandDetail);
+    public void updateDemand(FullDemandDetail fullDemandDetail) throws CommonException {
+        Demand demand = demandService.getById(fullDemandDetail.getDemandId());
+        if (!demand.getType().getDescription().equals(fullDemandDetail.getDemandType())) {
+            demand.setType(demandService.getDemandType(fullDemandDetail.getDemandType()));
+        }
+        //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
+        List<Category> categories = new ArrayList<Category>();
+        for (long catIds : fullDemandDetail.getCategories().keySet()) {
+            categories.add(categoryService.getById(catIds));
+        }
+        demand.setCategories(categories);
+        //Treba zistovat ci sa lokality zmenili? Ak ano, ako aby to nebolo narocne?
+        List<Locality> localities = new ArrayList<Locality>();
+        for (String locCode : fullDemandDetail.getLocalities().keySet()) {
+            localities.add(localityService.getLocality(locCode));
+        }
+        demand.setLocalities(localities);
+        demandService.update(demand);
     }
 
     /**********************************************************************************************
@@ -236,8 +271,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public ClientDetail updateClient(ClientDetail accessRoleDetail) throws CommonException {
-        return generalService.merge(accessRoleDetail);
+    public void updateClient(ClientDetail clientDetail) throws CommonException {
+        Client client = generalService.find(Client.class, clientDetail.getId());
+        generalService.merge(ClientDetail.updateClient(client, clientDetail));
     }
 
     /**********************************************************************************************
@@ -268,8 +304,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public FullSupplierDetail updateSupplier(FullSupplierDetail accessRoleDetail) throws CommonException {
-        return generalService.merge(accessRoleDetail);
+    public void updateSupplier(FullSupplierDetail supplierDetail) throws CommonException {
+        Supplier supplier = generalService.find(Supplier.class, supplierDetail.getSupplierId());
+        generalService.merge(FullSupplierDetail.updateSupplier(supplier, supplierDetail));
     }
 
     /**********************************************************************************************
@@ -300,8 +337,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public OfferDetail updateOffer(OfferDetail accessRoleDetail) {
-        return generalService.merge(accessRoleDetail);
+    public void updateOffer(OfferDetail offerDetail) {
+        Offer offer = generalService.find(Offer.class, offerDetail.getId());
+        generalService.merge(OfferDetail.updateOffer(offer, offerDetail));
     }
 
     /**********************************************************************************************
@@ -331,9 +369,10 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return this.createDetailList(generalService.search(search), accessRoleConverter);
     }
 
-//    @Override
-    public AccessRoleDetail updateAccessRole(AccessRoleDetail accessRoleDetail) throws CommonException {
-        return generalService.merge(accessRoleDetail);
+    @Override
+    public void updateAccessRole(AccessRoleDetail accessRoleDetail) throws CommonException {
+        AccessRole accessRole = generalService.find(AccessRole.class, accessRoleDetail.getId());
+        generalService.merge(AccessRoleDetail.updateAccessRole(accessRole, accessRoleDetail));
     }
 
     /**********************************************************************************************
@@ -364,8 +403,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public EmailActivationDetail updateEmailActivation(EmailActivationDetail supplierDetail) {
-        return generalService.merge(supplierDetail);
+    public void updateEmailActivation(EmailActivationDetail emailActivationDetail) {
+        EmailActivation emailActivation = generalService.find(EmailActivation.class, emailActivationDetail.getId());
+        generalService.merge(EmailActivationDetail.updateEmailActivation(emailActivation, emailActivationDetail));
     }
 
     /**********************************************************************************************
@@ -396,8 +436,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public InvoiceDetail updateInvoice(InvoiceDetail supplierDetail) throws CommonException {
-        return generalService.merge(supplierDetail);
+    public void updateInvoice(InvoiceDetail invoiceDetail) throws CommonException {
+        Invoice invoice = generalService.find(Invoice.class, invoiceDetail.getId());
+        generalService.merge(InvoiceDetail.updateInvoice(invoice, invoiceDetail));
     }
 
     /**********************************************************************************************
@@ -429,8 +470,13 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public MessageDetail updateMessage(MessageDetail supplierDetail) throws CommonException {
-        return generalService.merge(supplierDetail);
+    public void updateMessage(MessageDetail messageDetail) throws CommonException {
+        Message message = generalService.find(Message.class, messageDetail.getMessageId());
+        try {
+            generalService.merge(MessageDetail.updateMessage(message, messageDetail));
+        } catch (MessageException ex) {
+            Logger.getLogger(AdminRPCServiceImpl.class.getName()).log(Level.SEVERE, "Coudn't update message.", ex);
+        }
     }
 
     /**********************************************************************************************
@@ -461,8 +507,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PaymentDetail updateOurPaymentDetail(PaymentDetail supplierDetail) throws CommonException {
-        return generalService.merge(supplierDetail);
+    public void updateOurPaymentDetail(PaymentDetail paymentDetail) throws CommonException {
+        OurPaymentDetails ourPaymentDetails = generalService.find(OurPaymentDetails.class, paymentDetail.getId());
+        generalService.merge(PaymentDetail.updateOurPaymentDetails(ourPaymentDetails, paymentDetail));
     }
 
     /**********************************************************************************************
@@ -500,8 +547,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PaymentMethodDetail updatePaymentMethod(PaymentMethodDetail accessRoleDetail) throws CommonException {
-        return generalService.merge(accessRoleDetail);
+    public void updatePaymentMethod(PaymentMethodDetail paymentMethodDetail) throws CommonException {
+        PaymentMethod paymentMethod = generalService.find(PaymentMethod.class, paymentMethodDetail.getId());
+        generalService.merge(PaymentMethodDetail.updatePaymentMethod(paymentMethod, paymentMethodDetail));
     }
 
     /**********************************************************************************************
@@ -532,8 +580,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PermissionDetail updatePermission(PermissionDetail supplierDetail) throws CommonException {
-        return generalService.merge(supplierDetail);
+    public void updatePermission(PermissionDetail permissionDetail) throws CommonException {
+        Permission permissionDetails = generalService.find(Permission.class, permissionDetail.getId());
+        generalService.merge(PermissionDetail.updatePermission(permissionDetails, permissionDetail));
     }
 
     /**********************************************************************************************
@@ -564,8 +613,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public PreferenceDetail updatePreference(PreferenceDetail supplierDetail) throws CommonException {
-        return generalService.merge(supplierDetail);
+    public void updatePreference(PreferenceDetail preferenceDetail) throws CommonException {
+        Preference preference = generalService.find(Preference.class, preferenceDetail.getId());
+        generalService.merge(PreferenceDetail.updatePreference(preference, preferenceDetail));
     }
 
     /**********************************************************************************************
@@ -596,8 +646,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public ProblemDetail updateProblem(ProblemDetail accessRoleDetail) throws CommonException {
-        return generalService.merge(accessRoleDetail);
+    public void updateProblem(ProblemDetail problemDetail) throws CommonException {
+        Problem problem = generalService.find(Problem.class, problemDetail.getId());
+        generalService.merge(ProblemDetail.updateProblem(problem, problemDetail));
     }
 
     /**********************************************************************************************

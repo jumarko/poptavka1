@@ -4,9 +4,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
 import cz.poptavka.sample.domain.offer.Offer;
 
+/**
+ * Represents full detail of domain object <b>Offer</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
+ *
+ * @author Martin Slavkovsky
+ */
 public class OfferDetail implements Serializable {
 
     /**
@@ -26,6 +32,19 @@ public class OfferDetail implements Serializable {
     private long supplierId;
     private String supplierName;
 
+    /** for serialization. **/
+    public OfferDetail() {
+    }
+
+    public OfferDetail(OfferDetail offerDetail) {
+        this.updateWholeOfferDetail(offerDetail);
+    }
+
+    /**
+     * Method created FullDemandDetail from provided Demand domain object.
+     * @param role
+     * @return DemandDetail
+     */
     public static OfferDetail createOfferDetail(Offer offer) {
         OfferDetail o = new OfferDetail();
         //offer info
@@ -43,13 +62,34 @@ public class OfferDetail implements Serializable {
         return o;
     }
 
-    public OfferDetail() {
+    /**
+     * Method created domain object <b>Offer</b> from provided <b>OfferDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Offer - updated given domain object
+     */
+    public static Offer updateOffer(Offer domain, OfferDetail detail) {
+        if (!domain.getPrice().equals(detail.getPrice())) {
+            domain.setPrice(detail.getPrice());
+        }
+        if (!domain.getCreated().equals(detail.getCreatedDate())) {
+            domain.setCreated(detail.getCreatedDate());
+        }
+        if (!domain.getFinishDate().equals(detail.getFinishDate())) {
+            domain.setFinishDate(detail.getFinishDate());
+        }
+        if (!domain.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName().equals(
+                detail.getSupplierName())) {
+            domain.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(detail.getSupplierName());
+        }
+        //TODO Martin - how to update OfferState??
+        if (!domain.getPrice().equals(detail.getPrice())) {
+            domain.setPrice(detail.getPrice());
+        }
+        return domain;
     }
 
-    public OfferDetail(OfferDetail offerDetail) {
-        this.updateWholeOfferDetail(offerDetail);
-    }
-
+    //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeOfferDetail(OfferDetail detail) {
         id = detail.getId();
         price = detail.getPrice();
@@ -135,5 +175,19 @@ public class OfferDetail implements Serializable {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    @Override
+    public String toString() {
+        return "\nGlobal AccessRole Detail Info:"
+                + "\n    Id=" + Long.toString(id)
+                + "\n    Price=" + price.toString()
+                + "\n    State=" + state
+                + "\n    CreatedDate=" + createdDate.toString()
+                + "\n    FinnishDate=" + finishDate.toString()
+                + "\n    DemandId=" + Long.toString(demandId)
+                + "\n    DemandTitle=" + demandTitle
+                + "\n    SupplierId=" + Long.toString(supplierId)
+                + "\n    SupplierName=" + supplierName;
     }
 }

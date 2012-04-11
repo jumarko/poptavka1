@@ -4,10 +4,11 @@ import cz.poptavka.sample.domain.user.Problem;
 import java.io.Serializable;
 
 /**
- * Represents full detail of demandType. Serves for creating new demandType
- * or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>Problem</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class ProblemDetail implements Serializable {
@@ -28,17 +29,30 @@ public class ProblemDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param problem
-     * @return DemandDetail
+     * Method created <b>ProblemDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return ProblemDetail - created detail object
      */
-    public static ProblemDetail createProblemDetail(Problem problem) {
+    public static ProblemDetail createProblemDetail(Problem domain) {
         ProblemDetail detail = new ProblemDetail();
 
-        detail.setId(problem.getId());
-        detail.setText(problem.getText());
+        detail.setId(domain.getId());
+        detail.setText(domain.getText());
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>Problem</b> from provided <b>ProblemDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Problem - updated given domain object
+     */
+    public static Problem updateProblem(Problem domain, ProblemDetail detail) {
+        if (!domain.getText().equals(detail.getText())) {
+            domain.setText(detail.getText());
+        }
+        return domain;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -61,5 +75,12 @@ public class ProblemDetail implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "\nGlobal Problem Detail Info:"
+                + "\n    ID=" + Long.toString(id)
+                + "\n    Text=" + text;
     }
 }

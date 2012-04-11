@@ -4,10 +4,11 @@ import cz.poptavka.sample.domain.invoice.PaymentMethod;
 import java.io.Serializable;
 
 /**
- * Represents full detail of demandType. Serves for creating new demandType
- * or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>PaymentMethod</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class PaymentMethodDetail implements Serializable {
@@ -29,18 +30,34 @@ public class PaymentMethodDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
-     * @return DemandDetail
+     * Method created <b>PaymentMethodDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return PaymentMethodDetail - created detail object
      */
-    public static PaymentMethodDetail createPaymentMethodDetail(PaymentMethod demand) {
+    public static PaymentMethodDetail createPaymentMethodDetail(PaymentMethod domain) {
         PaymentMethodDetail detail = new PaymentMethodDetail();
 
-        detail.setId(demand.getId());
-        detail.setName(demand.getName());
-        detail.setDescription(demand.getDescription());
+        detail.setId(domain.getId());
+        detail.setName(domain.getName());
+        detail.setDescription(domain.getDescription());
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>PaymentMethod</b> from provided <b>PaymentMethodDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return PaymentMethod - updated given domain object
+     */
+    public static PaymentMethod updatePaymentMethod(PaymentMethod domain, PaymentMethodDetail detail) {
+        if (!domain.getName().equals(detail.getName())) {
+            domain.setName(detail.getName());
+        }
+        if (!domain.getDescription().equals(detail.getDescription())) {
+            domain.setDescription(detail.getDescription());
+        }
+        return domain;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -76,12 +93,10 @@ public class PaymentMethodDetail implements Serializable {
 
     @Override
     public String toString() {
-
         return "\nGlobal PaymentMethod Detail Info:"
-                + "\n    demandTypeId="
-                + id + "\n     name="
-                + name + "\n    Description="
-                + description;
+                + "\n    DemandTypeId=" + Long.toString(id)
+                + "\n    Name=" + name
+                + "\n    Description=" + description;
     }
 
     @Override

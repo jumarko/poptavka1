@@ -4,10 +4,12 @@
  */
 package cz.poptavka.sample.shared.domain.message;
 
+import cz.poptavka.sample.exception.MessageException;
 import java.io.Serializable;
 import java.util.Date;
 
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 
@@ -51,6 +53,32 @@ public class MessageDetail implements Serializable {
 
     public static MessageDetail createMessageDetail(Message message) {
         return fillMessageDetail(new MessageDetail(), message);
+    }
+
+    /**
+     * Method created domain object <b>Message</b> from provided <b>MessageDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Message - updated given domain object
+     */
+    public static Message updateMessage(Message domain, MessageDetail detail) throws MessageException {
+        //TODO Martin - how to update missing ones
+        if (!domain.getSubject().equals(detail.getSubject())) {
+            domain.setSubject(detail.getSubject());
+        }
+        if (!domain.getBody().equals(detail.getBody())) {
+            domain.setBody(detail.getBody());
+        }
+        if (!domain.getCreated().equals(detail.getCreated())) {
+            domain.setCreated(detail.getCreated());
+        }
+        if (!domain.getSent().equals(detail.getSent())) {
+            domain.setSent(detail.getSent());
+        }
+        if (!domain.getMessageState().equals(MessageState.valueOf(detail.getMessageState()))) {
+            domain.setMessageState(MessageState.valueOf(detail.getMessageState()));
+        }
+        return domain;
     }
 
     public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {

@@ -88,6 +88,49 @@ public class UserDetail implements Serializable {
         return detail;
     }
 
+    public static BusinessUser updateBusinessUser(BusinessUser domain, UserDetail detail) {
+        if (!domain.getEmail().equals(detail.getEmail())) {
+            domain.setEmail(detail.getEmail());
+        }
+        if (!domain.getPassword().equals(detail.getPassword())) {
+            domain.setPassword(detail.getPassword());
+        }
+        if (!domain.getBusinessUserData().getPersonFirstName().equals(detail.getFirstName())) {
+            domain.getBusinessUserData().setPersonFirstName(detail.getFirstName());
+        }
+        if (!domain.getBusinessUserData().getPersonLastName().equals(detail.getLastName())) {
+            domain.getBusinessUserData().setPersonLastName(detail.getLastName());
+        }
+        if (!domain.getBusinessUserData().getPhone().equals(detail.getPhone())) {
+            domain.getBusinessUserData().setPhone(detail.getPhone());
+        }
+        if (!domain.getBusinessUserData().getIdentificationNumber().equals(detail.getIdentificationNumber())) {
+            domain.getBusinessUserData().setIdentificationNumber(detail.getIdentificationNumber());
+        }
+        if (!domain.getBusinessUserData().getCompanyName().equals(detail.getCompanyName())) {
+            domain.getBusinessUserData().setCompanyName(detail.getCompanyName());
+        }
+        if (!domain.getBusinessUserData().getDescription().equals(detail.getDescription())) {
+            domain.getBusinessUserData().setDescription(detail.getDescription());
+        }
+        if (!domain.getBusinessUserData().getTaxId().equals(detail.getTaxId())) {
+            domain.getBusinessUserData().setTaxId(detail.getTaxId());
+        }
+        if (!domain.getBusinessUserData().getWebsite().equals(detail.getWebsite())) {
+            domain.getBusinessUserData().setWebsite(detail.getWebsite());
+        }
+        //TODO Martin - how to update following?
+        //    private SupplierDetail supplier = null;
+        //    private ArrayList<Role> roleList = new ArrayList<Role>();
+        //    private Long userId;
+        //    private Long clientId = -1L;
+        //    private Long supplierId = -1L;
+        //    private List<AddressDetail> addresses;
+        //    private ArrayList<String> demandsId = new ArrayList<String>();
+        //    private boolean verified = false;
+        return domain;
+    }
+
     public Long getUserId() {
         return userId;
     }

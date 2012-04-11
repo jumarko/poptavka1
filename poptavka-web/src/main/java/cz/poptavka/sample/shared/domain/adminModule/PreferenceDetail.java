@@ -4,10 +4,11 @@ import cz.poptavka.sample.domain.settings.Preference;
 import java.io.Serializable;
 
 /**
- * Represents full detail of demandType. Serves for creating new demandType
- * or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>Preference</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class PreferenceDetail implements Serializable {
@@ -30,19 +31,38 @@ public class PreferenceDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param pref
-     * @return DemandDetail
+     * Method created <b>PreferenceDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return PreferenceDetail - created detail object
      */
-    public static PreferenceDetail createPreferenceDetail(Preference pref) {
+    public static PreferenceDetail createPreferenceDetail(Preference domain) {
         PreferenceDetail detail = new PreferenceDetail();
 
-        detail.setId(pref.getId());
-        detail.setKey(pref.getKey());
-        detail.setValue(pref.getValue());
-        detail.setDescription(pref.getDescription());
+        detail.setId(domain.getId());
+        detail.setKey(domain.getKey());
+        detail.setValue(domain.getValue());
+        detail.setDescription(domain.getDescription());
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>Preference</b> from provided <b>PreferenceDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Preference - updated given domain object
+     */
+    public static Preference updatePreference(Preference domain, PreferenceDetail detail) {
+        if (!domain.getKey().equals(detail.getKey())) {
+            domain.setKey(detail.getKey());
+        }
+        if (!domain.getValue().equals(detail.getValue())) {
+            domain.setValue(detail.getValue());
+        }
+        if (!domain.getDescription().equals(detail.getDescription())) {
+            domain.setDescription(detail.getDescription());
+        }
+        return domain;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -87,13 +107,11 @@ public class PreferenceDetail implements Serializable {
 
     @Override
     public String toString() {
-
         return "\nGlobal Preference Detail Info:"
-                + "\n    demandTypeId="
-                + id + "\n     key="
-                + key + "\n    value="
-                + key + "\n    Description="
-                + description;
+                + "\n    DemandTypeId=" + Long.toString(id)
+                + "\n    Key=" + key
+                + "\n    Value=" + value
+                + "\n    Description=" + description;
     }
 
     @Override

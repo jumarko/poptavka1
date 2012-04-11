@@ -6,10 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Represents full detail of demandType. Serves for creating new demandType
- * or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>EmailActivation</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class EmailActivationDetail implements Serializable {
@@ -31,18 +32,34 @@ public class EmailActivationDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
-     * @return DemandDetail
+     * Method created <b>EmailActivationDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return EmailActivationDetail - created detail object
      */
-    public static EmailActivationDetail createEmailActivationDetail(EmailActivation demand) {
+    public static EmailActivationDetail createEmailActivationDetail(EmailActivation domain) {
         EmailActivationDetail detail = new EmailActivationDetail();
 
-        detail.setId(demand.getId());
-        detail.setActivationLink(demand.getActivationLink());
-        detail.setTimeout(demand.getTimeout());
+        detail.setId(domain.getId());
+        detail.setActivationLink(domain.getActivationLink());
+        detail.setTimeout(domain.getTimeout());
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>EmailActivation</b> from provided <b>EmailActivationDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return EmailActivation - updated given domain object
+     */
+    public static EmailActivation updateEmailActivation(EmailActivation domain, EmailActivationDetail detail) {
+        if (!domain.getActivationLink().equals(detail.getActivationLink())) {
+            domain.setActivationLink(detail.getActivationLink());
+        }
+        if (!domain.getTimeout().equals(detail.getTimeout())) {
+            domain.setTimeout(detail.getTimeout());
+        }
+        return domain;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -78,12 +95,10 @@ public class EmailActivationDetail implements Serializable {
 
     @Override
     public String toString() {
-
         return "\nGlobal EmailActivation Detail Info:"
-                + "\n    demandTypeId="
-                + id + "\n     name="
-                + activationLink + "\n    Description="
-                + timeout;
+                + "\n    DemandTypeId=" + Long.toString(id)
+                + "\n    Name=" + activationLink
+                + "\n    Description=" + timeout;
     }
 
     @Override

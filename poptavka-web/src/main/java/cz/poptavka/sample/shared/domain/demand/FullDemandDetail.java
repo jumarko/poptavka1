@@ -3,6 +3,7 @@ package cz.poptavka.sample.shared.domain.demand;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
@@ -17,9 +18,11 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>FullDemand</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Beho, Martin Slavkovsky
  */
 public class FullDemandDetail implements Serializable {
 
@@ -70,46 +73,91 @@ public class FullDemandDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     *
-     * @param demand
-     * @return DemandDetail
+     * Method created <b>FullDemandDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return FullDemandDetail - created detail object
      */
-    public static FullDemandDetail createDemandDetail(Demand demand) {
+    public static FullDemandDetail createDemandDetail(Demand domain) {
         FullDemandDetail detail = new FullDemandDetail();
-        detail.setDemandId(demand.getId());
-        detail.setTitle(demand.getTitle());
-        detail.setDescription(demand.getDescription());
-        detail.setPrice(demand.getPrice());
-        detail.setCreated(demand.getCreatedDate());
-        detail.setEndDate(demand.getEndDate());
-        detail.setValidToDate(demand.getValidTo());
-        detail.setMaxOffers(demand.getMaxSuppliers() == null ? 0 : demand.getMaxSuppliers());
-        detail.setMinRating(demand.getMinRating() == null ? 0 : demand.getMinRating());
+        detail.setDemandId(domain.getId());
+        detail.setTitle(domain.getTitle());
+        detail.setDescription(domain.getDescription());
+        detail.setPrice(domain.getPrice());
+        detail.setCreated(domain.getCreatedDate());
+        detail.setEndDate(domain.getEndDate());
+        detail.setValidToDate(domain.getValidTo());
+        detail.setMaxOffers(domain.getMaxSuppliers() == null ? 0 : domain.getMaxSuppliers());
+        detail.setMinRating(domain.getMinRating() == null ? 0 : domain.getMinRating());
         //categories
         Map<Long, String> catMap = new HashMap<Long, String>();
-        for (Category cat : demand.getCategories()) {
+        for (Category cat : domain.getCategories()) {
             catMap.put(cat.getId(), cat.getName());
         }
         detail.setCategories(catMap);
         //localities
         Map<String, String> locMap = new HashMap<String, String>();
-        for (Locality loc : demand.getLocalities()) {
+        for (Locality loc : domain.getLocalities()) {
             locMap.put(loc.getCode(), loc.getName());
         }
 
         detail.setLocalities(locMap);
-        detail.setDemandStatus(demand.getStatus().getValue());
+        detail.setDemandStatus(domain.getStatus().getValue());
 
-        if (demand.getType() != null) {
-            detail.setDemandType(demand.getType().getDescription());
+        if (domain.getType() != null) {
+            detail.setDemandType(domain.getType().getDescription());
         }
 
-        detail.setClientId(demand.getClient().getId());
+        detail.setClientId(domain.getClient().getId());
 
-        setExcludedSuppliers(demand, detail);
+        setExcludedSuppliers(domain, detail);
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>Demand</b> from provided <b>FullDemandDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Demand - updated given domain object
+     */
+    public static Demand updateDemand(Demand domain, FullDemandDetail detail) {
+        //TODO Martin - how to update following attributes?????
+        //    private boolean read;
+        //    private boolean starred;
+        //    private List<FullSupplierDetail> excludedSuppliers;
+
+        //Following attributes have to be updated in RPC service. See updateDemand in AdminRPCServiceImpl.
+        //    - demandType
+        //    - localities;
+        //    - categories;
+        if (!domain.getMaxSuppliers().equals(detail.getMaxOffers())) {
+            domain.setMaxSuppliers(detail.getMaxOffers());
+        }
+        if (!domain.getMinRating().equals(detail.getMinRating())) {
+            domain.setMinRating(detail.getMinRating());
+        }
+        if (!domain.getStatus().getValue().equals(detail.getDemandStatus())) {
+            domain.setStatus(DemandStatus.valueOf(detail.getDemandStatus()));
+        }
+        if (!domain.getCreatedDate().equals(detail.getCreated())) {
+            domain.setCreatedDate(detail.getCreated());
+        }
+        if (!domain.getEndDate().equals(detail.getEndDate())) {
+            domain.setEndDate(detail.getEndDate());
+        }
+        if (!domain.getValidTo().equals(detail.getValidToDate())) {
+            domain.setValidTo(detail.getValidToDate());
+        }
+        if (!domain.getTitle().equals(detail.getTitle())) {
+            domain.setTitle(detail.getTitle());
+        }
+        if (!domain.getDescription().equals(detail.getDescription())) {
+            domain.setDescription(detail.getDescription());
+        }
+        if (!domain.getPrice().equals(detail.getPrice())) {
+            domain.setPrice(detail.getPrice());
+        }
+        return domain;
     }
 
     private static void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
@@ -266,28 +314,26 @@ public class FullDemandDetail implements Serializable {
 
     @Override
     public String toString() {
-
         return "\nGlobal Demand Detail Info"
                 + "\n- BaseDemandDetail:"
-                + "\n    demandId="
-                + demandId + "\n     title="
-                + title + "\n    Description="
-                + description + "\n  Price="
-                + price + "\n    endDate="
-                + endDate + "\n  validToDate="
-                + validToDate + "\n  isRead="
-                + read + "\n     isStarred="
-                + starred + "\n  detailType="
-                + detailType + "\n"
+                + "\n     demandId=" + demandId
+                + "\n     title=" + title
+                + "\n     Description=" + description
+                + "\n     Price=" + price
+                + "\n     endDate=" + endDate
+                + "\n     validToDate=" + validToDate
+                + "\n     isRead=" + read
+                + "\n     isStarred=" + starred
+                + "\n     detailType=" + detailType
+                + "\n"
                 + "* FullDemandDetail:"
-                + "\n     localities="
-                + localities + "\n     categories="
-                + categories + "\n     clientId="
-                + clientId + "\n     maxOffers="
-                + maxOffers + "\n     minRating="
-                + minRating + "\n     demandType="
-                + demandType + "\n     demandStatus="
-                + demandStatus;
+                + "\n     localities=" + localities
+                + "\n     categories=" + categories
+                + "\n     clientId=" + clientId
+                + "\n     maxOffers=" + maxOffers
+                + "\n     minRating=" + minRating
+                + "\n     demandType=" + demandType
+                + "\n     demandStatus=" + demandStatus;
     }
 
     public String getDemandStatus() {

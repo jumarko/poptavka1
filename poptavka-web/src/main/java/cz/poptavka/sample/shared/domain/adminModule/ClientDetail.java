@@ -3,6 +3,7 @@ package cz.poptavka.sample.shared.domain.adminModule;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import java.io.Serializable;
 
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents full detail of Client. Serves for creating new
- * Client or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>Client</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class ClientDetail implements Serializable {
@@ -38,35 +40,50 @@ public class ClientDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param client
-     * @return DemandDetail
+     * Method created <b>ClientDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return ClientDetail - created detail object
      */
-    public static ClientDetail createClientDetail(Client client) {
+    public static ClientDetail createClientDetail(Client domain) {
         ClientDetail detail = new ClientDetail();
-        detail.setId(client.getId());
-        if (client.getOveralRating() != null) {
-            detail.setOveralRating(client.getOveralRating());
+        detail.setId(domain.getId());
+        if (domain.getOveralRating() != null) {
+            detail.setOveralRating(domain.getOveralRating());
         }
-        if (client.getVerification() != null) {
-            detail.setVerification(client.getVerification().name());
+        if (domain.getVerification() != null) {
+            detail.setVerification(domain.getVerification().name());
         }
-        detail.setUserDetail(UserDetail.createUserDetail(client.getBusinessUser()));
-        if (client.getSupplierBlacklist() != null) {
+        detail.setUserDetail(UserDetail.createUserDetail(domain.getBusinessUser()));
+        if (domain.getSupplierBlacklist() != null) {
             List<Long> supplierBlackListIds = new ArrayList<Long>();
-            for (Supplier supplier : client.getSupplierBlacklist().getSuppliers()) {
+            for (Supplier supplier : domain.getSupplierBlacklist().getSuppliers()) {
                 supplierBlackListIds.add(supplier.getId());
             }
             detail.setSupplierBlackListIds(supplierBlackListIds);
         }
 
         List<Long> demandsIds = new ArrayList<Long>();
-        for (Demand demand : client.getDemands()) {
+        for (Demand demand : domain.getDemands()) {
             demandsIds.add(demand.getId());
         }
         detail.setDemandsIds(demandsIds);
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>Client</b> from provided <b>ClientDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Client - updated given domain object
+     */
+    public static Client updateClient(Client client, ClientDetail clientDetail) {
+        if (client.getOveralRating() != clientDetail.getOveralRating()) {
+            client.setOveralRating(clientDetail.getOveralRating());
+        }
+        client.setVerification(Verification.valueOf(clientDetail.getVerification()));
+        //TODO Martin - how to update businessUserData, supplierBlackList, demandsIds???
+        return client;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -129,16 +146,12 @@ public class ClientDetail implements Serializable {
 
     @Override
     public String toString() {
-//        StringBuilder str = new StringBuilder();
-//        str.append("\nGlobal Client Detail Info:");
-//        str.append("\n    ClientId=");
-//        str.append(id + "\n     overalRating=");
-//        str.append(Integer.valueOf(overalRating) + "\n    UserDetail=");
-//        str.append(userDetail.toString() + "\n    SupplierBlackListIds=");
-//        str.append(supplierBlackListIds.toString() + "\n    DemandsIds=");
-//        str.append(demandsIds.toString());
-//        return str.toString();
-        return "Client.toString() not implemented";
+        return "\nGlobal Client Detail Info:"
+                + "\n    ClientId=" + Long.toString(id)
+                + "\n    OveralRating=" + Integer.valueOf(overalRating)
+                + "\n    UserDetail=" + userDetail.toString()
+                + "\n    SupplierBlackListIds=" + supplierBlackListIds.toString()
+                + "\n    DemandsIds=" + demandsIds.toString();
     }
 
     @Override

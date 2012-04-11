@@ -4,10 +4,11 @@ import cz.poptavka.sample.domain.user.rights.Permission;
 import java.io.Serializable;
 
 /**
- * Represents full detail of demandType. Serves for creating new demandType
- * or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>Permission</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class PermissionDetail implements Serializable, Comparable<PermissionDetail> {
@@ -30,19 +31,38 @@ public class PermissionDetail implements Serializable, Comparable<PermissionDeta
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param perm
-     * @return DemandDetail
+     * Method created <b>PermissionDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return PermissionDetail - created detail object
      */
-    public static PermissionDetail createPermissionsDetail(Permission perm) {
+    public static PermissionDetail createPermissionsDetail(Permission domain) {
         PermissionDetail detail = new PermissionDetail();
 
-        detail.setId(perm.getId());
-        detail.setName(perm.getName());
-        detail.setDescription(perm.getDescription());
-        detail.setCode(perm.getCode());
+        detail.setId(domain.getId());
+        detail.setName(domain.getName());
+        detail.setDescription(domain.getDescription());
+        detail.setCode(domain.getCode());
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>Permission</b> from provided <b>PermissionDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return Permission - updated given domain object
+     */
+    public static Permission updatePermission(Permission domain, PermissionDetail detail) {
+        if (!domain.getName().equals(detail.getName())) {
+            domain.setName(detail.getName());
+        }
+        if (!domain.getDescription().equals(detail.getDescription())) {
+            domain.setDescription(detail.getDescription());
+        }
+        if (!domain.getCode().equals(detail.getCode())) {
+            domain.setCode(detail.getCode());
+        }
+        return domain;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -87,13 +107,11 @@ public class PermissionDetail implements Serializable, Comparable<PermissionDeta
 
     @Override
     public String toString() {
-
         return "\nGlobal Permissions Detail Info:"
-                + "\n    Id="
-                + id + "\n     name="
-                + name + "\n    Description="
-                + description + "\n    Code="
-                + code;
+                + "\n    Id=" + Long.toString(id)
+                + "\n    Name=" + name
+                + "\n    Description=" + description
+                + "\n    Code=" + code;
     }
 
     @Override

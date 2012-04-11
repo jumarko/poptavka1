@@ -10,10 +10,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Represents full detail of demandType. Serves for creating new demandType
- * or for call of detail, that supports editing.
+ * Represents full detail of domain object <b>Invoice</b> used in <i>Administration Module</i>.
+ * Contains 2 static methods:  1. creating detail object
+ *                             2. updating domain object
  *
- * @author Beho
+ * @author Martin Slavkovsky
  *
  */
 public class InvoiceDetail implements Serializable {
@@ -52,34 +53,87 @@ public class InvoiceDetail implements Serializable {
     }
 
     /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param invoice
-     * @return DemandDetail
+     * Method created <b>InvoiceDetail</b> from provided Demand domain object.
+     * @param domain - given domain object
+     * @return InvoiceDetail - created detail object
      */
-    public static InvoiceDetail createInvoiceDetail(Invoice invoice) {
+    public static InvoiceDetail createInvoiceDetail(Invoice domain) {
         InvoiceDetail detail = new InvoiceDetail();
 
-        detail.setBankAccountNumber(invoice.getBankAccountNumber());
-        detail.setBankCode(invoice.getBankCode());
-        detail.setConstSymbol(invoice.getConstSymbol());
-        detail.setDueDate(invoice.getDueDate());
-        detail.setId(invoice.getId());
-        detail.setInvoiceNumber(invoice.getInvoiceNumber());
-        detail.setIssueDate(invoice.getIssueDate());
-        detail.setPaymentMethod(PaymentMethodDetail.createPaymentMethodDetail(invoice.getPaymentMethod()));
-        detail.setShipmentDate(invoice.getShipmentDate());
-        detail.setTaxBasis(invoice.getTaxBasis());
-        detail.setTotalPrice(invoice.getTotalPrice());
+        detail.setBankAccountNumber(domain.getBankAccountNumber());
+        detail.setBankCode(domain.getBankCode());
+        detail.setConstSymbol(domain.getConstSymbol());
+        detail.setDueDate(domain.getDueDate());
+        detail.setId(domain.getId());
+        detail.setInvoiceNumber(domain.getInvoiceNumber());
+        detail.setIssueDate(domain.getIssueDate());
+        detail.setPaymentMethod(PaymentMethodDetail.createPaymentMethodDetail(domain.getPaymentMethod()));
+        detail.setShipmentDate(domain.getShipmentDate());
+        detail.setTaxBasis(domain.getTaxBasis());
+        detail.setTotalPrice(domain.getTotalPrice());
         List<UserServiceDetail> userServices = new ArrayList<UserServiceDetail>();
-        for (UserService userService : invoice.getUserServices()) {
+        for (UserService userService : domain.getUserServices()) {
             userServices.add(UserServiceDetail.createAccessRoleDetail(userService));
         }
         detail.setUserServices(userServices);
-        detail.setVariableSymbol(invoice.getVariableSymbol());
-        detail.setVat(invoice.getVat());
-        detail.setVatRate(invoice.getVatRate());
+        detail.setVariableSymbol(domain.getVariableSymbol());
+        detail.setVat(domain.getVat());
+        detail.setVatRate(domain.getVatRate());
 
         return detail;
+    }
+
+    /**
+     * Method created domain object <b>Invoice</b> from provided <b>InvoiceDetail</b> object.
+     * @param domain - domain object to be updated
+     * @param detail - detail object which provides updated data
+     * @return InvoiceDetail - updated given domain object
+     */
+    public static Invoice updateInvoice(Invoice domain, InvoiceDetail detail) {
+        if (!domain.getInvoiceNumber().equals(detail.getInvoiceNumber())) {
+            domain.setInvoiceNumber(detail.getInvoiceNumber());
+        }
+        //------------------------------ Dates ---------------------------------
+        if (!domain.getIssueDate().equals(detail.getIssueDate())) {
+            domain.setIssueDate(detail.getIssueDate());
+        }
+        if (!domain.getShipmentDate().equals(detail.getShipmentDate())) {
+            domain.setShipmentDate(detail.getShipmentDate());
+        }
+        if (!domain.getDueDate().equals(detail.getDueDate())) {
+            domain.setDueDate(detail.getDueDate());
+        }
+        //------------------------ Bank information ----------------------------
+        if (!domain.getBankAccountNumber().equals(detail.getBankAccountNumber())) {
+            domain.setBankAccountNumber(detail.getBankAccountNumber());
+        }
+        if (!domain.getBankCode().equals(detail.getBankCode())) {
+            domain.setBankCode(detail.getBankCode());
+        }
+        if (!domain.getVariableSymbol().equals(detail.getVariableSymbol())) {
+            domain.setVariableSymbol(detail.getVariableSymbol());
+        }
+        if (!domain.getConstSymbol().equals(detail.getConstSymbol())) {
+            domain.setConstSymbol(detail.getConstSymbol());
+        }
+        //------------------------------ Price ---------------------------------
+        if (!domain.getTaxBasis().equals(detail.getTaxBasis())) {
+            domain.setTaxBasis(detail.getTaxBasis());
+        }
+        if (domain.getVatRate() != detail.getVatRate()) {
+            domain.setVatRate(detail.getVatRate());
+        }
+        if (!domain.getVat().equals(detail.getVat())) {
+            domain.setVat(detail.getVat());
+        }
+        if (!domain.getTotalPrice().equals(detail.getTotalPrice())) {
+            domain.setTotalPrice(detail.getTotalPrice());
+        }
+        if (!domain.getConstSymbol().equals(detail.getConstSymbol())) {
+            domain.setConstSymbol(detail.getConstSymbol());
+        }
+        //TODO Martin - how to update userServices, paymentMethods
+        return domain;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
@@ -223,8 +277,22 @@ public class InvoiceDetail implements Serializable {
 
     @Override
     public String toString() {
-
-        return "\nGlobal Invoice Detail Info:";
+        return "\nGlobal Invoice Detail Info:"
+                + "\n    Id=" + Long.toString(id)
+                + "\n    InvoiceNumber=" + invoiceNumber
+                + "\n    UserServices=" + userServices.toString()
+                + "\n    IssueDate=" + issueDate.toString()
+                + "\n    ShipmentDate=" + shipmentDate.toString()
+                + "\n    DueDate=" + dueDate.toString()
+                + "\n    BankAccountNum=" + bankAccountNumber
+                + "\n    BankCode" + bankCode
+                + "\n    VS=" + variableSymbol
+                + "\n    KS=" + constSymbol
+                + "\n    TaxtBasis=" + taxBasis.toString()
+                + "\n    VatRate=" + Integer.valueOf(vatRate)
+                + "\n    Vat=" + vat.toString()
+                + "\n    TotalPrice=" + totalPrice.toString()
+                + "\n    PaymentMethod=" + paymentMethod.toString();
     }
 
     @Override
