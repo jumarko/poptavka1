@@ -17,21 +17,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
-import cz.poptavka.sample.client.main.common.search.views.AdminAccessRolesViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminClientsViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminDemandsViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminEmailActivationViewView;
 import cz.poptavka.sample.client.main.common.search.views.AdminInvoicesViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminMessagesViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminOffersViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminPaymentMethodsViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminPermissionsViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminPreferencesViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminProblemsViewView;
-import cz.poptavka.sample.client.main.common.search.views.AdminSuppliersViewView;
-import cz.poptavka.sample.client.main.common.search.views.HomeDemandViewView;
-import cz.poptavka.sample.client.main.common.search.views.HomeSuppliersViewView;
-import cz.poptavka.sample.client.main.common.search.views.MessagesTabViewView;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +125,13 @@ public class SearchModulePresenter
         });
     }
 
+    public void onSetSearchBarEnables(boolean category, boolean locality, boolean advanceBtn) {
+        view.getSearchCategory().setEnabled(category);
+        view.getSearchLocality().setEnabled(locality);
+        view.getAdvSearchBtn().setEnabled(advanceBtn);
+    }
+
+
     private void showPopupPanel() {
         int left = view.getSearchContent().getElement().getAbsoluteLeft();
         int top = view.getSearchContent().getElement().getAbsoluteTop() + 30;
@@ -176,93 +169,14 @@ public class SearchModulePresenter
             }
         });
     }
-    private int advSearchViewInitialized = -1;
 
     private void addAdvSearchBtnClickHandler() {
         view.getAdvSearchBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                initAppropiateViews();
                 showPopupPanel();
             }
         });
-    }
-
-    /**
-     * According to currently loaded view methods loads appropiate advance search view in popup window.
-     */
-    private void initAppropiateViews() {
-        if (advSearchViewInitialized != Storage.getCurrentlyLoadedView()) {
-            advSearchViewInitialized = Storage.getCurrentlyLoadedView();
-            switch (Storage.getCurrentlyLoadedView()) {
-                case Constants.HOME_DEMANDS:
-                    view.getPopupPanel().setWidget(new HomeDemandViewView());
-                    break;
-                case Constants.HOME_SUPPLIERS:
-                    view.getPopupPanel().setWidget(new HomeSuppliersViewView());
-                    break;
-                case Constants.DEMANDS_CLIENT_MY_DEMANDS:
-                    break;
-                case Constants.DEMANDS_CLIENT_OFFERS:
-                    break;
-                case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
-                    break;
-                case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
-                    break;
-                case Constants.DEMANDS_SUPPLIER_OFFERS:
-                    break;
-                case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
-                    break;
-                case Constants.MESSAGES_INBOX:
-                    view.getPopupPanel().setWidget(new MessagesTabViewView());
-                    break;
-                case Constants.MESSAGES_SENT:
-                    view.getPopupPanel().setWidget(new MessagesTabViewView());
-                    break;
-                case Constants.MESSAGES_TRASH:
-                    view.getPopupPanel().setWidget(new MessagesTabViewView());
-                    break;
-                case Constants.ADMIN_ACCESS_ROLE:
-                    view.getPopupPanel().setWidget(new AdminAccessRolesViewView());
-                    break;
-                case Constants.ADMIN_CLIENTS:
-                    view.getPopupPanel().setWidget(new AdminClientsViewView());
-                    break;
-                case Constants.ADMIN_DEMANDS:
-                    view.getPopupPanel().setWidget(new AdminDemandsViewView());
-                    break;
-                case Constants.ADMIN_EMAILS_ACTIVATION:
-                    view.getPopupPanel().setWidget(new AdminEmailActivationViewView());
-                    break;
-                case Constants.ADMIN_INVOICES:
-                    view.getPopupPanel().setWidget(new AdminInvoicesViewView());
-                    break;
-                case Constants.ADMIN_MESSAGES:
-                    view.getPopupPanel().setWidget(new AdminMessagesViewView());
-                    break;
-                case Constants.ADMIN_OFFERS:
-                    view.getPopupPanel().setWidget(new AdminOffersViewView());
-                    break;
-                case Constants.ADMIN_PAYMENT_METHODS:
-                    view.getPopupPanel().setWidget(new AdminPaymentMethodsViewView());
-                    break;
-                case Constants.ADMIN_PERMISSIONS:
-                    view.getPopupPanel().setWidget(new AdminPermissionsViewView());
-                    break;
-                case Constants.ADMIN_PREFERENCES:
-                    view.getPopupPanel().setWidget(new AdminPreferencesViewView());
-                    break;
-                case Constants.ADMIN_PROBLEMS:
-                    view.getPopupPanel().setWidget(new AdminProblemsViewView());
-                    break;
-                case Constants.ADMIN_SUPPLIERS:
-                    view.getPopupPanel().setWidget(new AdminSuppliersViewView());
-                    break;
-                default:
-                    view.getPopupPanel().clear();
-                    break;
-            }
-        }
     }
 }

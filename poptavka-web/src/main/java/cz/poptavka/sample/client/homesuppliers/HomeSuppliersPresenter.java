@@ -128,18 +128,14 @@ public class HomeSuppliersPresenter
      */
     public void onGoToHomeSuppliersModule(
             SearchModuleDataHolder searchModuleDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.NONE);
+        eventBus.setUpSearchBar(Constants.NONE);
 
         this.searchDataHolder = searchModuleDataHolder;
 
-        this.onOn(searchModuleDataHolder);
-        //martin - preco to muselo byt takto?
-//        if (!Storage.getCurrentlyLoadedModule().equals("homeSuppliers")) {
-//            Storage.setCurrentlyLoadedModule("homeSuppliers");
-//        }
+        this.onDisplayParentOrChild(searchModuleDataHolder);
     }
 
-    public void onOn(SearchModuleDataHolder searchModuleDataHolder) {
+    public void onDisplayParentOrChild(SearchModuleDataHolder searchModuleDataHolder) {
         this.searchDataHolder = searchModuleDataHolder;
         //ROOT section
         if (searchDataHolder == null) {
@@ -241,10 +237,8 @@ public class HomeSuppliersPresenter
                     eventBus.displayChildWidget(selected.getId());
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
-//                        searchDataHolder.initHomeSuppliers();
                     }
-//                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
-//                            new CategoryDetail(selected.getId(), selected.getName()));
+                    searchDataHolder.getCategories().add(new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.addToPath(selected);
                 }
             }
@@ -268,10 +262,8 @@ public class HomeSuppliersPresenter
 
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
-//                        searchDataHolder.initHomeSuppliers();
                     }
-//                    searchDataHolder.getHomeSuppliers().setSupplierCategory(
-//                            new CategoryDetail(selected.getId(), selected.getName()));
+                    searchDataHolder.getCategories().add(selected);
                     eventBus.getSubCategories(selected.getId());
                     eventBus.addToPath(selected);
                 }
@@ -336,7 +328,7 @@ public class HomeSuppliersPresenter
         view.getCategoriesList().setRowData(0, subcategories);
 
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
-//            searchDataHolder.getHomeSuppliers().setSupplierCategory(new CategoryDetail(parentCategory, ""));
+            searchDataHolder.getCategories().add(new CategoryDetail(parentCategory, ""));
         }
         eventBus.getSuppliersCount(searchDataHolder);
         wasSelection = false;
@@ -364,7 +356,7 @@ public class HomeSuppliersPresenter
     /* CHILD WIDGET */
     public void onDisplayChildWidget(Long id) {
 
-        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS);
+        eventBus.setUpSearchBar(Constants.HOME_SUPPLIERS);
 
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);

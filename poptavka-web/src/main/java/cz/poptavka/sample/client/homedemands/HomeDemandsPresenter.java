@@ -25,7 +25,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
@@ -132,13 +131,12 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchModuleDataHolder searchDataHolder;
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
-//        eventBus.loadingShow(MSGS.loading());
-        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
+        eventBus.setUpSearchBar(Constants.HOME_DEMANDS);
 
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
         eventBus.filterDemandsCount(searchDataHolder, orderColumns);
-//        }
+
         this.searchDataHolder = searchDataHolder;
     }
 

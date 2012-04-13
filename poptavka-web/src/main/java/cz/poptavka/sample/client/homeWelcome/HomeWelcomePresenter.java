@@ -6,7 +6,6 @@ import com.mvp4g.client.presenter.BasePresenter;
 import cz.poptavka.sample.client.homeWelcome.interfaces.IHomeWelcomeView;
 import cz.poptavka.sample.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import cz.poptavka.sample.client.main.Constants;
-import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
 @Presenter(view = HomeWelcomeView.class)
@@ -30,7 +29,7 @@ public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWe
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToHomeWelcomeModule(SearchModuleDataHolder searchDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.NONE);
+        eventBus.setUpSearchBar(Constants.NONE);
         this.searchDataHolder = searchDataHolder;
     }
 

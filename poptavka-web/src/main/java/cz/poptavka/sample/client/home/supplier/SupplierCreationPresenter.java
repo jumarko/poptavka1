@@ -24,7 +24,6 @@ import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import cz.poptavka.sample.client.home.supplier.widget.SupplierServicePresenter;
 import cz.poptavka.sample.client.main.Constants;
-import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.SimpleIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
@@ -127,7 +126,7 @@ public class SupplierCreationPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToCreateSupplierModule() {
-        Storage.setCurrentlyLoadedView(Constants.NONE);
+        eventBus.setUpSearchBar(Constants.NONE);
 
         LOGGER.info("SupplierCreationPresenter loaded");
         //init parts

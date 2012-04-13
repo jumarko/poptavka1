@@ -56,6 +56,8 @@ public interface SearchModuleEventBus extends EventBus {
     /**************************************************************************/
     /* Business events. */
     /* Business events handled by ALL VIEW presenters. */
+    @Event(handlers = SearchModulePresenter.class)
+    void setSearchBarEnables(boolean category, boolean locality, boolean advanceBtn);
     /**
      * Send/Response method pair
      * Sends message and receive the answer in a form of the same message to be displayed on UI.

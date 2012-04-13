@@ -20,7 +20,6 @@ import com.mvp4g.client.view.LazyView;
 
 import cz.poptavka.sample.client.home.creation.FormUserRegistrationPresenter.FormRegistrationInterface;
 import cz.poptavka.sample.client.main.Constants;
-import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.StatusIconLabel;
 import cz.poptavka.sample.client.main.common.StatusIconLabel.State;
 import cz.poptavka.sample.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
@@ -108,7 +107,7 @@ public class DemandCreationPresenter
     /* Navigation events                                                      */
     /**************************************************************************/
     public void onGoToCreateDemandModule() {
-        Storage.setCurrentlyLoadedView(Constants.NONE);
+        eventBus.setUpSearchBar(Constants.NONE);
 
         LOGGER.info("  INIT DemandCreation Widget");
         view.getMainPanel().showWidget(0);

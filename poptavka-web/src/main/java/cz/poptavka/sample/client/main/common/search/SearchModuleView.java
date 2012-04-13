@@ -222,6 +222,12 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         displayShortInfo();
     }
 
+    public void setSearchBarEnables(boolean category, boolean locality, boolean advanceBtn) {
+        searchCategory.setEnabled(category);
+        searchLocality.setEnabled(locality);
+        advSearchBtn.setEnabled(advanceBtn);
+    }
+
     /*
      * **********************  HELPER METHODS ****************************
      */

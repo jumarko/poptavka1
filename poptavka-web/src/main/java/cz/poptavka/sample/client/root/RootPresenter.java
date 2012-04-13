@@ -59,6 +59,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setSearchBar(searchBar);
     }
 
+    public void onSetUpSearchBar(int loadedWidget) {
+        GWT.log("Search bar widget set up");
+        view.setUpSearchBar(loadedWidget);
+    }
+
     public void onSetBody(IsWidget body) {
         GWT.log("Body widget set");
         view.setBody(body);
@@ -79,8 +84,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     public void onStart() {
         GWT.log("Root presenter loaded");
         eventBus.atHome();
-        eventBus.goToHomeWelcomeModule(null);
         eventBus.goToSearchModule();
+        eventBus.goToHomeWelcomeModule(null);
     }
 
     /**

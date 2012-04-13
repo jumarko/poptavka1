@@ -89,6 +89,9 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void setSearchBar(IsWidget searchBar);
 
+    @Event(handlers = RootPresenter.class)
+    void setUpSearchBar(int loadedWidget);
+
     /**
      * Pouzitie autodisplay funkcie v RootModule ma za nasledok, ze kazdy modul sa
      * automaticky nastavi do RootPresentera cez metodu setBody(), ktora reprezentuje
@@ -316,6 +319,7 @@ public interface RootEventBus extends EventBus {
 
     @Event(handlers = RootHandler.class)
     void getRootLocalities();
+
     // USER
 //    @Event(modulesToLoad = UserModule.class)
 //    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);

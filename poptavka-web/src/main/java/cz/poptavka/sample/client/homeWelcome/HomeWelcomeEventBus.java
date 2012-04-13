@@ -48,6 +48,8 @@ public interface HomeWelcomeEventBus extends EventBus {
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void setUpSearchBar(int loadedWidget);
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

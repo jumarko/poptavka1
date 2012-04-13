@@ -56,7 +56,7 @@ public interface HomeSuppliersEventBus extends EventBus {
     void goToHomeSuppliersModule(SearchModuleDataHolder searchDataHolder);
 
     @Event(handlers = HomeSuppliersPresenter.class)
-    void on(SearchModuleDataHolder searchDataHolder);
+    void displayParentOrChild(SearchModuleDataHolder searchDataHolder);
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
@@ -66,6 +66,9 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void loadingHide();
+
+    @Event(forwardToParent = true)
+    void setUpSearchBar(int loadedWidget);
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

@@ -66,6 +66,8 @@ public interface DemandCreationEventBus extends EventBus {
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel holderWidget);
 
+    @Event(forwardToParent = true)
+    void setUpSearchBar(int loadedWidget);
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

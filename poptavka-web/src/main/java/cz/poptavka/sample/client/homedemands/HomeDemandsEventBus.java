@@ -65,6 +65,8 @@ public interface HomeDemandsEventBus extends EventBus {
     @Event(forwardToParent = true)
     void loadingHide();
 
+    @Event(forwardToParent = true)
+    void setUpSearchBar(int loadedWidget);
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
