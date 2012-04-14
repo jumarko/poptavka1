@@ -130,7 +130,6 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
         clientService.create(client);
 
-        // TODO Beho+Vojto rework according to GWT Spring Security function.
         return this.toUserDetail(newSupplier);
 //        return this.toUserDetail(supplierFromDB.getBusinessUser().getId(),
 //                supplierFromDB.getBusinessUser().getBusinessUserRoles());
