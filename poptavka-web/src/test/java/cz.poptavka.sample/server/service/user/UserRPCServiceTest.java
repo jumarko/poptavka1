@@ -3,6 +3,18 @@
  */
 package cz.poptavka.sample.server.service.user;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import cz.poptavka.sample.client.service.demand.UserRPCService;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
@@ -10,15 +22,7 @@ import cz.poptavka.sample.domain.user.rights.Permission;
 import cz.poptavka.sample.service.user.LoginService;
 import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import java.util.Arrays;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import cz.poptavka.sample.shared.exceptions.CommonException;
 
 public class UserRPCServiceTest {
     protected static final String TEST_USER_MAIL = "test@poptavam.com";
@@ -36,7 +40,7 @@ public class UserRPCServiceTest {
 
 
     @Test
-    public void testLoginUser() {
+    public void testLoginUser() throws CommonException {
         when(loginServiceMock.loginUser(eq(TEST_USER_MAIL), anyString()))
                 .thenReturn(createTestUser());
 
