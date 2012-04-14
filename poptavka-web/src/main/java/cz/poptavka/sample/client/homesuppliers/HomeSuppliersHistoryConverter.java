@@ -48,6 +48,12 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
+        if (Storage.getUser() == null) {
+            eventBus.clickSuppliersMenuStyleChange();
+        } else {
+            //Martin - uncomment if implemented
+//            eventBus.clickSuppliersUserMenuStyleChange();
+        }
         String[] params = param.split(";");
         CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(
                 params[1].replace("categoryId=", "")), null);
@@ -56,6 +62,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         SearchModuleDataHolder searchModuleDataHolder = null;
         if (categoryDetail.getId() != 0) {
             searchModuleDataHolder = new SearchModuleDataHolder();
+            searchModuleDataHolder.getCategories().clear();
             searchModuleDataHolder.getCategories().add(categoryDetail);
         }
         eventBus.displayParentOrChild(searchModuleDataHolder);

@@ -57,6 +57,9 @@ public interface MessagesEventBus extends EventBus {
     /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void clickMessagesUserMenuStyleChange();
+
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/
@@ -158,5 +161,4 @@ public interface MessagesEventBus extends EventBus {
 //    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
     @Event(handlers = MessagesHandler.class)
     void requestConversation(Long threadRootId, Long subRootId);
-
 }

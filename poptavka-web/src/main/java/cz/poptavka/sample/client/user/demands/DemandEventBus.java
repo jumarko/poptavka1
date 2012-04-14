@@ -81,6 +81,8 @@ public interface DemandEventBus extends EventBus {
     @Event(handlers = SupplierListPresenter.class)//, historyConverter = DemandModuleHistoryConverter.class)
     void initSupplierList(SearchModuleDataHolder filter);
 
+    @Event(forwardToParent = true)
+    void clickDemandsUserMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by DemandModulePresenter.                      */
     /**************************************************************************/

@@ -70,6 +70,8 @@ public interface HomeSuppliersEventBus extends EventBus {
     @Event(forwardToParent = true)
     void setUpSearchBar(int loadedWidget);
 
+    @Event(forwardToParent = true)
+    void clickSuppliersMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

@@ -79,7 +79,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
 
     @Override
     public long filterSuppliersCount(SearchModuleDataHolder detail) throws CommonException {
-        return this.filter(detail, null).size();
+        //najlepsie by bolo pouzit supplierService.getSuppliersQuickCount, ale zatial nemozem, pretoze
+        //nie je implementovane search
+        if (detail.getAttibutes().isEmpty()) {
+            return supplierService.getSuppliersCountQuick(
+                    categoryService.getById(detail.getCategories().get(0).getId()));
+        } else {
+            return this.filter(detail, null).size();
+        }
     }
 
     @Override
@@ -95,26 +102,13 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     private List<FullSupplierDetail> filter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        //detail nikdy nebude null, pretoze vzdy tam bude filter na categoriu
-//        if (detail == null) {
-//            Search search = this.getFilter(null, orderColumns);
-//            return this.createSupplierDetailList(this.generalService.search(search));
-//        }
-        //nikdy nebude null oba - vzdy podla nejakej kategorie - 0 0
-//        if (detail.getHomeSuppliers().getSupplierCategory() == null
-//                && detail.getHomeSuppliers().getSupplierLocality() == null) {
-//            Search search = this.getCategoryFilter(detail, orderColumns);
-//            return this.createSupplierDetailList(this.generalService.search(search));
-//        }
         //1 0
-        if (detail.getCategories() != null
-                && detail.getLocalities() == null) {
+        if (detail.getCategories() != null && detail.getLocalities() == null) {
             Search search = this.getCategoryFilter(detail, orderColumns);
-            return this.createSupplierDetailListCat(this.generalService.searchAndCount(search).getResult());
+            return this.createSupplierDetailListCat(this.generalService.search(search));
         }
         //0 1
-        if (detail.getCategories() == null
-                && detail.getLocalities() != null) {
+        if (detail.getCategories() == null && detail.getLocalities() != null) {
             Search search = this.getLocalityFilter(detail, orderColumns);
             return this.createSupplierDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
@@ -141,14 +135,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private Search getCategoryFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search categorySearch = new Search(SupplierCategory.class);
         List<Category> allSubCategories = new ArrayList<Category>();
+        //nemusi byt foreach pretoze homeSuppliers ma vzdy len jednu kategoriu
         for (CategoryDetail cat : detail.getCategories()) {
-            allSubCategories = Arrays.asList(this.getAllSubCategories(cat.getId()));
+            allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
         }
         categorySearch.addFilterIn("category", allSubCategories);
 
-        Search supplierSearch = this.getSupplierFilter(detail, orderColumns);
-        if (supplierSearch != null) {
-            categorySearch.addFilterIn("supplier", generalService.search(supplierSearch));
+        if (!detail.getAttibutes().isEmpty()) {
+            categorySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(detail, orderColumns)));
         }
 
         return categorySearch;
@@ -181,9 +175,8 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         }
         localitySearch.addFilterIn("locality", allSubLocalities);
 
-        Search suppSearch = this.getSupplierFilter(detail, orderColumns);
-        if (suppSearch != null) {
-            localitySearch.addFilterIn("supplier", generalService.search(suppSearch));
+        if (!detail.getAttibutes().isEmpty()) {
+            localitySearch.addFilterIn("supplier", generalService.search(getSupplierFilter(detail, orderColumns)));
         }
 
         return localitySearch;
@@ -297,13 +290,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private CategoryDetail createCategoryDetail(Category category) {
         long suppliersCount = supplierService.getSuppliersCountQuick(category);
         CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
-        // TODO uncomment, when implemented
-//        CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
-//              cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());
-        if (category.getChildren().size() != 0) {
-            detail.setParent(true);
-        } else {
+
+        if (category.getChildren().isEmpty()) {
             detail.setParent(false);
+        } else {
+            detail.setParent(true);
         }
         return detail;
     }

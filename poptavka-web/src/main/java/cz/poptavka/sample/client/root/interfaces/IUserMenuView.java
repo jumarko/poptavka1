@@ -14,4 +14,12 @@ public interface IUserMenuView extends IsWidget {
 
         void goToDemands();
     }
+
+    void clickDemandsUserMenuStyleChange();
+
+    void clickMessagesUserMenuStyleChange();
+
+    void clickSettingsUserMenuStyleChange();
+
+    void clickAdministrationUserMenuStyleChange();
 }

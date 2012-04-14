@@ -50,6 +50,9 @@ public interface HomeWelcomeEventBus extends EventBus {
     /**************************************************************************/
     @Event(forwardToParent = true)
     void setUpSearchBar(int loadedWidget);
+
+    @Event(forwardToParent = true)
+    void clickHomeMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

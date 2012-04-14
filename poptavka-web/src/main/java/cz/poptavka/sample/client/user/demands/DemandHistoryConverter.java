@@ -59,6 +59,7 @@ public class DemandHistoryConverter implements HistoryConverter<DemandEventBus> 
      */
     @Override
     public void convertFromToken(String historyName, String param, DemandEventBus eventBus) {
+        eventBus.clickDemandsUserMenuStyleChange();
     }
 
     @Override

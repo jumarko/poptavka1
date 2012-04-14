@@ -68,6 +68,9 @@ public interface SupplierCreationEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void setUpSearchBar(int loadedWidget);
+
+    @Event(forwardToParent = true)
+    void clickCreateSupplierMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

@@ -22,11 +22,11 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      */
     public String onGoToHomeDemandsModule(SearchModuleDataHolder filter) {
         /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
-                    Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
-        if (Storage.getUser() != null) {
-            return "user";
+        Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
+        if (Storage.getUser() == null) {
+            return "location=home";
         } else {
-            return "home";
+            return "location=user";
         }
     }
 
@@ -41,6 +41,12 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
+        if (Storage.getUser() == null) {
+            eventBus.clickDemandsMenuStyleChange();
+        } else {
+            //Martin - If implemented, uncoment
+//            eventBus.clickDemandsUserMenuStyleChange();
+        }
     }
 
     @Override

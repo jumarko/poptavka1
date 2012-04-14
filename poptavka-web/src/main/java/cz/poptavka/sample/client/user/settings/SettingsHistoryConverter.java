@@ -35,6 +35,7 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
      */
     @Override
     public void convertFromToken(String methodName, String param, SettingsEventBus eventBus) {
+        eventBus.clickSettingsUserMenuStyleChange();
     }
 
     @Override

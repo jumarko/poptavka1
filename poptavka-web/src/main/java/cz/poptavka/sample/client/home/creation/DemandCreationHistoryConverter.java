@@ -21,10 +21,10 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
     public String onGoToCreateDemandModule() {
         /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
                    Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
-        if (Storage.getUser() != null) {
-            return "location=user";
-        } else {
+        if (Storage.getUser() == null) {
             return "location=home";
+        } else {
+            return "location=user";
         }
     }
 
@@ -39,6 +39,12 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
      */
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
+        if (Storage.getUser() == null) {
+            eventBus.clickCreateDemandMenuStyleChange();
+        } else {
+            //If implemented, uncomment
+//            eventBus.clickCreateDemandUserMenuStyleChange();
+        }
     }
 
     @Override

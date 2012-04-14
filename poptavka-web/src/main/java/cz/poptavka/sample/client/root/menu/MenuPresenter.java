@@ -17,14 +17,6 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         eventBus.setMenu(view);
     }
 
-//    // TODO tuto metodu mozeme odstranit. Nahradil som ju metodou onAtHome tj.
-//    // po odhlaseni sa nastavi znovu Home menu
-//    public void onSetHomeMenu() {
-//        // TODO tuto metodu zrejme budeme volat ked budeme chciet nastavit home menu
-//        // ked sa uzivatel ohlasi z user casti
-//        GWT.log("set Home menu after user's logout");
-//        eventBus.setMenu(view);
-//    }
     /**
      * This method will set up home menu after user is logged out.
      */
@@ -34,6 +26,9 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
     }
 
     // TODO praso - zistit ako mam nastavit SearchFilter pre moduly. A vyvtovirt konstanty "home"
+    /**************************************************************************/
+    /* Navigation methods.                                                    */
+    /**************************************************************************/
     @Override
     public void goToHomeWelcome() {
         eventBus.goToHomeWelcomeModule(null);
@@ -59,4 +54,26 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         eventBus.goToCreateDemandModule();
     }
 
+    /**************************************************************************/
+    /* Style change methods.                                                  */
+    /**************************************************************************/
+    public void onClickHomeMenuStyleChange() {
+        view.clickHomeMenuStyleChange();
+    }
+
+    public void onClickDemandsMenuStyleChange() {
+        view.clickDemandsMenuStyleChange();
+    }
+
+    public void onClickSuppliersMenuStyleChange() {
+        view.clickSuppliersMenuStyleChange();
+    }
+
+    public void onClickCreateSupplierMenuStyleChange() {
+        view.clickCreateSupplierMenuStyleChange();
+    }
+
+    public void onClickCreateDemandMenuStyleChange() {
+        view.clickCreateDemandMenuStyleChange();
+    }
 }

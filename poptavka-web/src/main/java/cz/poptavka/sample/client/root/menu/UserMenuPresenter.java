@@ -24,6 +24,9 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
         eventBus.setMenu(view);
     }
 
+    /**************************************************************************/
+    /* Navigation methods.                                                    */
+    /**************************************************************************/
     @Override
     public void goToAdministration() {
         eventBus.goToAdminModule(null, Constants.NONE);
@@ -42,6 +45,25 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     @Override
     public void goToDemands() {
         eventBus.goToDemandModule(null, Constants.NONE);
+    }
+
+    /**************************************************************************/
+    /* Style change methods.                                                  */
+    /**************************************************************************/
+    public void onClickDemandsUserMenuStyleChange() {
+        view.clickDemandsUserMenuStyleChange();
+    }
+
+    public void onClickMessagesUserMenuStyleChange() {
+        view.clickMessagesUserMenuStyleChange();
+    }
+
+    public void onClickSettingsUserMenuStyleChange() {
+        view.clickSettingsUserMenuStyleChange();
+    }
+
+    public void onClickAdministrationUserMenuStyleChange() {
+        view.clickAdministrationUserMenuStyleChange();
     }
 
 }

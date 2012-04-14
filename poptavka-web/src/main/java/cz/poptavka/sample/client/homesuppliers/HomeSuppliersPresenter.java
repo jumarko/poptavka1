@@ -164,7 +164,7 @@ public class HomeSuppliersPresenter
             view.getCategoryLoadingLabel().setText(Storage.MSGS.loadingCategories());
             view.getCategoryLoadingLabel().setVisible(true);
             view.getCategoriesList().setVisible(false);
-            dataProvider.updateRowCount(0, false);
+//            dataProvider.updateRowCount(0, false);
             // create path
             eventBus.getCategoryParents(searchDataHolder.getCategories().get(0).getId());
             // get Sub Categories
@@ -238,6 +238,7 @@ public class HomeSuppliersPresenter
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
                     }
+                    searchDataHolder.getCategories().clear();
                     searchDataHolder.getCategories().add(new CategoryDetail(selected.getId(), selected.getName()));
                     eventBus.addToPath(selected);
                 }
@@ -263,6 +264,7 @@ public class HomeSuppliersPresenter
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
                     }
+                    searchDataHolder.getCategories().clear();
                     searchDataHolder.getCategories().add(selected);
                     eventBus.getSubCategories(selected.getId());
                     eventBus.addToPath(selected);

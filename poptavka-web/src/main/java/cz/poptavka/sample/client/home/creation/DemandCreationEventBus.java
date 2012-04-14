@@ -68,6 +68,9 @@ public interface DemandCreationEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void setUpSearchBar(int loadedWidget);
+
+    @Event(forwardToParent = true)
+    void clickCreateDemandMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

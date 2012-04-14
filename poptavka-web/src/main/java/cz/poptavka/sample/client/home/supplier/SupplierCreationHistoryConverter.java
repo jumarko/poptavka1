@@ -21,10 +21,10 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
     public String onGoToCreateSupplierModule() {
         /* Martin - Nemusi to byt, pretoze v convertFromToken to neberiem vobec do uvahy.
         Ale pre testovacie ucely ale vhodne. Potom moze odstranit */
-        if (Storage.getUser() != null) {
-            return "location=user";
-        } else {
+        if (Storage.getUser() == null) {
             return "location=home";
+        } else {
+            return "location=user";
         }
     }
 
@@ -39,6 +39,12 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
      */
     @Override
     public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
+        if (Storage.getUser() == null) {
+            eventBus.clickCreateSupplierMenuStyleChange();
+        } else {
+            //Martin - If implemented, uncomment
+//            eventBus.clickCreateSupplierUserMenuStyleChange();
+        }
     }
 
     @Override

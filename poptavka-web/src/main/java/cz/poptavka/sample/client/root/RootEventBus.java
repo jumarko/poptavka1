@@ -73,7 +73,7 @@ public interface RootEventBus extends EventBus {
     @Start
     @InitHistory
     @Event(handlers = {HeaderPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
-                RootPresenter.class, FooterPresenter.class })
+            RootPresenter.class, FooterPresenter.class })
     void start();
 
     /**************************************************************************/
@@ -179,7 +179,7 @@ public interface RootEventBus extends EventBus {
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, MenuPresenter.class },
     historyConverter = RootHistoryConverter.class)
     String atHome();
 
@@ -189,7 +189,7 @@ public interface RootEventBus extends EventBus {
      *
      * TODO praso - chyba tu zrejme historyConverter
      */
-    @Event(handlers = { HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class },
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class },
     historyConverter = RootHistoryConverter.class)
     String atAccount();
 
@@ -304,7 +304,6 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-
     @Event(handlers = RootHandler.class)
     void getUser();
 
@@ -320,13 +319,36 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootHandler.class)
     void getRootLocalities();
 
-    // USER
-//    @Event(modulesToLoad = UserModule.class)
-//    void initMessagesTabModuleInbox(SearchModuleDataHolder filter);
-//
-//    @Event(modulesToLoad = UserModule.class)
-//    void initMessagesTabModuleSent(SearchModuleDataHolder filter);
-//
-//    @Event(modulesToLoad = UserModule.class)
-//    void initMessagesTabModuleTrash(SearchModuleDataHolder filter);
+    /**************************************************************************/
+    /* Business events handled by MenuPresenter --- HOME MENU                 */
+    /**************************************************************************/
+    @Event(handlers = MenuPresenter.class)
+    void clickHomeMenuStyleChange();
+
+    @Event(handlers = MenuPresenter.class)
+    void clickDemandsMenuStyleChange();
+
+    @Event(handlers = MenuPresenter.class)
+    void clickSuppliersMenuStyleChange();
+
+    @Event(handlers = MenuPresenter.class)
+    void clickCreateSupplierMenuStyleChange();
+
+    @Event(handlers = MenuPresenter.class)
+    void clickCreateDemandMenuStyleChange();
+
+    /**************************************************************************/
+    /* Business events handled by UserMenuPresenter --- USER MENU             */
+    /**************************************************************************/
+    @Event(handlers = UserMenuPresenter.class)
+    void clickDemandsUserMenuStyleChange();
+
+    @Event(handlers = UserMenuPresenter.class)
+    void clickMessagesUserMenuStyleChange();
+
+    @Event(handlers = UserMenuPresenter.class)
+    void clickSettingsUserMenuStyleChange();
+
+    @Event(handlers = UserMenuPresenter.class)
+    void clickAdministrationUserMenuStyleChange();
 }
