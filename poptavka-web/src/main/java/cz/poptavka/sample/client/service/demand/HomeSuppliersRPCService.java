@@ -11,7 +11,7 @@ import cz.poptavka.sample.domain.common.OrderType;
 
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +24,14 @@ import java.util.Map;
 @RemoteServiceRelativePath("service/homesuppliers")
 public interface HomeSuppliersRPCService extends RemoteService {
 
-    long filterSuppliersCount(SearchModuleDataHolder supplier) throws CommonException;
+    long filterSuppliersCount(SearchModuleDataHolder supplier) throws RPCException;
 
     List<FullSupplierDetail> filterSuppliers(int start, int count,
-            SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns) throws CommonException;
+            SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns) throws RPCException;
 
-    ArrayList<CategoryDetail> getCategoryParents(Long category) throws CommonException;
+    ArrayList<CategoryDetail> getCategoryParents(Long category) throws RPCException;
 
-    ArrayList<CategoryDetail> getCategories() throws CommonException;
+    ArrayList<CategoryDetail> getCategories() throws RPCException;
 
-    ArrayList<CategoryDetail> getCategoryChildren(Long category) throws CommonException;
+    ArrayList<CategoryDetail> getCategoryChildren(Long category) throws RPCException;
 }

@@ -40,7 +40,7 @@ import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -105,7 +105,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return
      */
     @Override
-    public UserDetail createNewSupplier(UserDetail supplier) throws CommonException {
+    public UserDetail createNewSupplier(UserDetail supplier) throws RPCException {
         final Supplier newSupplier = new Supplier();
         setNewSupplierBusinessUserData(supplier, newSupplier);
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
@@ -224,7 +224,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<ServiceDetail> getSupplierServices() throws CommonException {
+    public ArrayList<ServiceDetail> getSupplierServices() throws RPCException {
         List<Service> services = this.generalService.findAll(Service.class);
         if (services != null) {
             System.out.println("Services count: " + services.size());
@@ -263,7 +263,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID, String localityCode)
-        throws CommonException {
+        throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
         Category[] categories = {categoryService.getById(categoryID)};
         Locality[] localities = {localityService.getLocality(localityCode)};
@@ -274,7 +274,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID) throws CommonException {
+    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count, Long categoryID) throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getSuppliers(
@@ -283,7 +283,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count) throws CommonException {
+    public ArrayList<FullSupplierDetail> getSuppliers(int start, int count) throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
 
         return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
@@ -291,7 +291,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public ArrayList<FullSupplierDetail> getSortedSuppliers(int start, int count, Map<String, OrderType> orderColumns)
-        throws CommonException {
+        throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start)
                 .maxResults(count).orderByColumns(orderColumns).build();
         return this.createSupplierDetailList(supplierService.getAll(resultCriteria));
@@ -301,18 +301,18 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * Get All suppliers count.
      */
     @Override
-    public Integer getSuppliersCount() throws CommonException {
+    public Integer getSuppliersCount() throws RPCException {
         return (int) supplierService.getCount();
     }
 
     @Override
-    public Long getSuppliersCount(Long categoryID) throws CommonException {
+    public Long getSuppliersCount(Long categoryID) throws RPCException {
         return supplierService.getSuppliersCountQuick(categoryService.getById(categoryID));
 //        return supplierService.getSuppliersCount(this.getAllSubcategories(categoryID));
     }
 
     @Override
-    public Long getSuppliersCount(Long categoryID, String localityCode) throws CommonException {
+    public Long getSuppliersCount(Long categoryID, String localityCode) throws RPCException {
         return supplierService.getSuppliersCount(
                 new Category[]{categoryService.getById(categoryID)},
                 new Locality[]{localityService.getLocality(localityCode)});
@@ -326,7 +326,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return supplierDetail
      */
     @Override
-    public FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail) throws CommonException {
+    public FullSupplierDetail updateSupplier(FullSupplierDetail supplierDetail) throws RPCException {
         Supplier supplier = supplierService.getById(supplierDetail.getSupplierId());
 
         //Supplier
@@ -499,14 +499,14 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public long filterSuppliersCount(SearchModuleDataHolder detail) throws CommonException {
+    public long filterSuppliersCount(SearchModuleDataHolder detail) throws RPCException {
         return this.filter(detail, null).size();
     }
 
     @Override
     public List<FullSupplierDetail> filterSuppliers(
             int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns)
-        throws CommonException {
+        throws RPCException {
         List<FullSupplierDetail> searchResult = this.filter(detail, orderColumns);
         if (searchResult.size() < (start + count)) {
             return searchResult.subList(start, searchResult.size());

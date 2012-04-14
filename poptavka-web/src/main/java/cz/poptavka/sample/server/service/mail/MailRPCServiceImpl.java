@@ -9,7 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import cz.poptavka.sample.client.service.demand.MailRPCService;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.mail.MailService;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 /**
  * RPC service implementation for sending mails
@@ -34,7 +34,7 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
      */
     @Override
     public Boolean sendMail(String recipient, String body, String subject,
-            String sender) throws CommonException {
+            String sender) throws RPCException {
         LOGGER.info("Sending mail message to: " + recipient);
 
         final SimpleMailMessage exceptionNotificationMessage = new SimpleMailMessage();
@@ -51,7 +51,7 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
             LOGGER.warn(
                     "An error occured while sending exception notification mail: ",
                     me);
-            throw new CommonException(
+            throw new RPCException(
                     "An error occured while sending exception notification mail: "
                             + me.getLocalizedMessage());
         }

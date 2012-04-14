@@ -13,7 +13,8 @@ import cz.poptavka.sample.client.service.demand.DemandsRPCServiceAsync;
 import cz.poptavka.sample.client.user.demands.DemandEventBus;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 /**
  * TODO Praso - Preco mame dve Handler triedy pre modul Demands?
@@ -46,10 +47,8 @@ public class DemandMessageHandler extends BaseEventHandler<DemandEventBus> {
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    if (caught instanceof CommonException) {
-                        CommonException commonException = (CommonException) caught;
-                        errorDialog = new ErrorDialogPopupView();
-                        errorDialog.show(commonException.getSymbol());
+                    if (caught instanceof RPCException) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                     }
                     Window.alert("DemandModuleMessageHandler: onRequestConversationForSupplierList:\n\n"
                             + caught.getMessage());
@@ -75,10 +74,8 @@ public class DemandMessageHandler extends BaseEventHandler<DemandEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
                         + caught.getMessage());

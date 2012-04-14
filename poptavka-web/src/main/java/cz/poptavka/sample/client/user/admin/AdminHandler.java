@@ -27,7 +27,8 @@ import cz.poptavka.sample.shared.domain.adminModule.ProblemDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +53,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 
@@ -72,10 +71,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<FullDemandDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -89,10 +86,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateDemand(demand, new AsyncCallback<FullDemandDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 
@@ -108,10 +103,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         categoryService.getAllRootCategories(new AsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -125,10 +118,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -142,10 +133,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -160,10 +149,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -177,10 +164,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -194,10 +179,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -214,10 +197,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminSuppliersCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -233,10 +214,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<FullSupplierDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -250,10 +229,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateSupplier(supplier, new AsyncCallback<FullSupplierDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -268,10 +245,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         categoryService.getAllRootCategories(new AsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -285,10 +260,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -302,10 +275,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -320,10 +291,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -337,10 +306,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -354,10 +321,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -374,10 +339,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminOffersCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -393,10 +356,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<OfferDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -410,8 +371,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateOffer(offer, new AsyncCallback<OfferDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
+                if (caught instanceof RPCException) {
+                    RPCException commonException = (RPCException) caught;
                     errorDialog = new ErrorDialogPopupView();
                     errorDialog.show(commonException.getSymbol());
                 }
@@ -430,8 +391,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminClientsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
+                if (caught instanceof RPCException) {
+                    RPCException commonException = (RPCException) caught;
                     errorDialog = new ErrorDialogPopupView();
                     errorDialog.show(commonException.getSymbol());
                 }
@@ -449,8 +410,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<ClientDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
+                        if (caught instanceof RPCException) {
+                            RPCException commonException = (RPCException) caught;
                             errorDialog = new ErrorDialogPopupView();
                             errorDialog.show(commonException.getSymbol());
                         }
@@ -466,10 +427,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateClient(client, new AsyncCallback<ClientDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -486,8 +445,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminAccessRolesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
+                if (caught instanceof RPCException) {
+                    RPCException commonException = (RPCException) caught;
                     errorDialog = new ErrorDialogPopupView();
                     errorDialog.show(commonException.getSymbol());
                 }
@@ -505,8 +464,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<AccessRoleDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
+                        if (caught instanceof RPCException) {
+                            RPCException commonException = (RPCException) caught;
                             errorDialog = new ErrorDialogPopupView();
                             errorDialog.show(commonException.getSymbol());
                         }
@@ -522,8 +481,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateAccessRole(role, new AsyncCallback<AccessRoleDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
+                if (caught instanceof RPCException) {
+                    RPCException commonException = (RPCException) caught;
                     errorDialog = new ErrorDialogPopupView();
                     errorDialog.show(commonException.getSymbol());
                 }
@@ -542,8 +501,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminEmailsActivationCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
+                if (caught instanceof RPCException) {
+                    RPCException commonException = (RPCException) caught;
                     errorDialog = new ErrorDialogPopupView();
                     errorDialog.show(commonException.getSymbol());
                 }
@@ -561,8 +520,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<EmailActivationDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
+                        if (caught instanceof RPCException) {
+                            RPCException commonException = (RPCException) caught;
                             errorDialog = new ErrorDialogPopupView();
                             errorDialog.show(commonException.getSymbol());
                         }
@@ -578,8 +537,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateEmailActivation(client, new AsyncCallback<EmailActivationDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
+                if (caught instanceof RPCException) {
+                    RPCException commonException = (RPCException) caught;
                     errorDialog = new ErrorDialogPopupView();
                     errorDialog.show(commonException.getSymbol());
                 }
@@ -598,10 +557,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminInvoicesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -617,10 +574,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<InvoiceDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -634,10 +589,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateInvoice(client, new AsyncCallback<InvoiceDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -654,10 +607,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminMessagesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -673,10 +624,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<MessageDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -690,10 +639,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateMessage(client, new AsyncCallback<MessageDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -710,10 +657,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminOurPaymentDetailsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -729,10 +674,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<PaymentDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -746,10 +689,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateOurPaymentDetail(client, new AsyncCallback<PaymentDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -766,10 +707,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminPaymentMethodsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -785,10 +724,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<PaymentMethodDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -802,10 +739,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updatePaymentMethod(paymentMethods, new AsyncCallback<PaymentMethodDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -822,10 +757,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminPermissionsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -841,10 +774,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<PermissionDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -858,10 +789,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updatePermission(permissions, new AsyncCallback<PermissionDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -878,10 +807,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminPreferencesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -897,10 +824,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<PreferenceDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -914,10 +839,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updatePreference(client, new AsyncCallback<PreferenceDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -934,10 +857,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.getAdminProblemsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override
@@ -953,10 +874,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 new AsyncCallback<List<ProblemDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                     @Override
@@ -970,10 +889,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         generalService.updateProblem(client, new AsyncCallback<ProblemDetail>() {
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
             @Override

@@ -28,7 +28,7 @@ import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -106,7 +106,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
      */
     @Override
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(
-            long businessUserId, long clientId) throws CommonException {
+            long businessUserId, long clientId) throws RPCException {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
@@ -138,7 +138,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
      * Returns messages for PotentialDemandsView's table
      */
     @Override
-    public ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws CommonException {
+    public ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws RPCException {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
                 businessUser,
@@ -167,7 +167,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
      * Change 'star' status of sent messages to chosen value
      */
     @Override
-    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws CommonException {
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);
@@ -181,7 +181,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws CommonException {
+    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -192,7 +192,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     @Override
     // TODO call setMessageReadStatus in body
     public ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws CommonException {
+            long threadId, long userId, long userMessageId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 
         setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
@@ -213,7 +213,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return message
      */
     @Override
-    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws CommonException {
+    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -232,7 +232,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     // TODO Praso - zatial sa tato metoda nepouziva. V ramci refaktotingu RPC metod ju zrejme uplne
     // prekopeme.
     @Override
-    public ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) throws CommonException {
+    public ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) throws RPCException {
         ArrayList<ArrayList<OfferDetail>> offerList = new ArrayList<ArrayList<OfferDetail>>();
         for (Long id : idList) {
             Demand demand = demandService.getById(id);
@@ -263,14 +263,14 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
     @Override
-    public FullDemandDetail getFullDemandDetail(Long demandId) throws CommonException {
+    public FullDemandDetail getFullDemandDetail(Long demandId) throws RPCException {
 
         return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
 
     }
 
     @Override
-    public BaseDemandDetail getBaseDemandDetail(Long demandId) throws CommonException {
+    public BaseDemandDetail getBaseDemandDetail(Long demandId) throws RPCException {
 
         return BaseDemandDetail.createDemandDetail(this.demandService.getById(demandId));
 

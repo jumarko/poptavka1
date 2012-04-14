@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @RemoteServiceRelativePath("service/suppliercreation")
 public interface SupplierCreationRPCService extends RemoteService {
 
-    UserDetail createNewSupplier(UserDetail supplier) throws CommonException;
+    UserDetail createNewSupplier(UserDetail supplier) throws RPCException;
 
-    ArrayList<ServiceDetail> getSupplierServices() throws CommonException;
+    ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
 }

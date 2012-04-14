@@ -7,7 +7,7 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.address.LocalityService;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<LocalityDetail> getLocalities(LocalityType type) throws CommonException {
+    public ArrayList<LocalityDetail> getLocalities(LocalityType type) throws RPCException {
         List<Locality>  localities =  localityService.getLocalities(type);
         System.out.println(localities.size());
         return createLocalityDetails(localities);
@@ -38,7 +38,7 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
      * Get children of locality specified by LOCALITY_CODE.
      */
     @Override
-    public ArrayList<LocalityDetail> getLocalities(String locCode) throws CommonException {
+    public ArrayList<LocalityDetail> getLocalities(String locCode) throws RPCException {
         LOGGER.info("Getting children localities ");
         final Locality locality = localityService.getLocality(locCode);
         if (locality != null) {
@@ -59,17 +59,17 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public Locality getLocality(long id) throws CommonException {
+    public Locality getLocality(long id) throws RPCException {
         return localityService.getById(id);
     }
 
     @Override
-    public ArrayList<LocalityDetail> getAllRootLocalities() throws CommonException {
+    public ArrayList<LocalityDetail> getAllRootLocalities() throws RPCException {
         return createLocalityDetails(localityService.getLocalities(LocalityType.REGION));
     }
 
     @Override
-    public ArrayList<LocalityDetail> getSubLocalities(String locCode) throws CommonException {
+    public ArrayList<LocalityDetail> getSubLocalities(String locCode) throws RPCException {
         return createLocalityDetails(localityService.getLocality(locCode).getChildren());
     }
 }

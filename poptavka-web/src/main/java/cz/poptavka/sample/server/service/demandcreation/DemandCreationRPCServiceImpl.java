@@ -24,7 +24,7 @@ import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public FullDemandDetail createNewDemand(FullDemandDetail detail, Long cliendId) throws CommonException {
+    public FullDemandDetail createNewDemand(FullDemandDetail detail, Long cliendId) throws RPCException {
         final Demand demand = new Demand();
         demand.setTitle(detail.getTitle());
         demand.setDescription(detail.getDescription());
@@ -149,7 +149,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
      *
      */
     @Override
-    public UserDetail createNewClient(UserDetail clientDetail) throws CommonException {
+    public UserDetail createNewClient(UserDetail clientDetail) throws RPCException {
         Preconditions.checkNotNull(clientDetail);
         final Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/

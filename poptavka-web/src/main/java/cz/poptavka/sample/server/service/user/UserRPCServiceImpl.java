@@ -14,7 +14,7 @@ import cz.poptavka.sample.service.user.LoginService;
 import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +44,13 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
 
 
     @Override
-    public LoggedUserDetail loginUser(UserDetail userDetail) throws CommonException {
+    public LoggedUserDetail loginUser(UserDetail userDetail) throws RPCException {
         final User user = this.loginService.loginUser(userDetail.getEmail(), userDetail.getPassword());
         return new LoggedUserDetail(user.getId(), user.getEmail(), user.getAccessRoles());
     }
 
     @Override
-    public UserDetail getSignedUser(String sessionId) throws CommonException {
+    public UserDetail getSignedUser(String sessionId) throws RPCException {
         // TODO make real implementation of getting user according to sessionID
         // now it's just fake string, that needs to be parsed
         String[] parsedSession = sessionId.split("=");
@@ -81,13 +81,13 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Override
-    public UserDetail getUserById(Long userId) throws CommonException {
+    public UserDetail getUserById(Long userId) throws RPCException {
         return UserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
     }
 
 
     @Override
-    public boolean checkFreeEmail(String email) throws CommonException {
+    public boolean checkFreeEmail(String email) throws RPCException {
         return clientService.checkFreeEmail(email);
     }
 }

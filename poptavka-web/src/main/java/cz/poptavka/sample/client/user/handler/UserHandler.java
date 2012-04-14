@@ -20,7 +20,8 @@ import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 
@@ -51,10 +52,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 eventBus.loadingHide();
                 Window.alert("Error during getting logged User detail\n"
@@ -78,10 +77,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    if (caught instanceof CommonException) {
-                        CommonException commonException = (CommonException) caught;
-                        errorDialog = new ErrorDialogPopupView();
-                        errorDialog.show(commonException.getSymbol());
+                    if (caught instanceof RPCException) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                     }
                     Window.alert(caught.getMessage());
                 }
@@ -98,10 +95,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    if (caught instanceof CommonException) {
-                        CommonException commonException = (CommonException) caught;
-                        errorDialog = new ErrorDialogPopupView();
-                        errorDialog.show(commonException.getSymbol());
+                    if (caught instanceof RPCException) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                     }
                     Window.alert(caught.getMessage());
                 }
@@ -119,10 +114,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 Window.alert("UserHandler at getDemandOffers exception:\n\n" + caught.getMessage());
             }

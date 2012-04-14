@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 /**
  *
@@ -17,7 +17,7 @@ import cz.poptavka.sample.shared.exceptions.CommonException;
 @RemoteServiceRelativePath("service/demandcreation")
 public interface DemandCreationRPCService extends RemoteService {
 
-    FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId) throws CommonException;
+    FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId) throws RPCException;
 
-    UserDetail createNewClient(UserDetail clientDetail) throws CommonException;
+    UserDetail createNewClient(UserDetail clientDetail) throws RPCException;
 }

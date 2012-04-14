@@ -8,16 +8,16 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 @RemoteServiceRelativePath("service/offers")
 public interface OfferRPCService extends RemoteService {
 
-    ArrayList<OfferDemandDetail> getClientDemands(long clientId) throws CommonException;
+    ArrayList<OfferDemandDetail> getClientDemands(long clientId) throws RPCException;
 
-    ArrayList<FullOfferDetail> getDemandOffers(long demandId, long threadRootId) throws CommonException;
+    ArrayList<FullOfferDetail> getDemandOffers(long demandId, long threadRootId) throws RPCException;
 
-    OfferDetail changeOfferState(OfferDetail offerDetail) throws CommonException;
+    OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException;
 
-    FullOfferDetail updateOffer(FullOfferDetail newOffer) throws CommonException;
+    FullOfferDetail updateOffer(FullOfferDetail newOffer) throws RPCException;
 }

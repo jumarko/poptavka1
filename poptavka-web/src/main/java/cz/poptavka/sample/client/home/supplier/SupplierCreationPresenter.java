@@ -35,7 +35,8 @@ import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.service.demand.SupplierCreationRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
@@ -224,10 +225,8 @@ public class SupplierCreationPresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 // TODO create some good explanation with contact formular
                 SimpleIconLabel errorMsg =

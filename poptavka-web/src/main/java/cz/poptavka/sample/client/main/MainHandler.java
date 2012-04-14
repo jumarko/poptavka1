@@ -18,7 +18,8 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -52,10 +53,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
                 });
@@ -66,10 +65,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
 
@@ -85,10 +82,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                 .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
 
@@ -111,10 +106,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                     .getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
                         @Override
                         public void onFailure(Throwable caught) {
-                            if (caught instanceof CommonException) {
-                                CommonException commonException = (CommonException) caught;
-                                errorDialog = new ErrorDialogPopupView();
-                                errorDialog.show(commonException.getSymbol());
+                            if (caught instanceof RPCException) {
+                                ExceptionUtils.showErrorDialog(errorDialog, caught);
                             }
                         }
 
@@ -134,10 +127,8 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
 
                         @Override
                         public void onFailure(Throwable caught) {
-                            if (caught instanceof CommonException) {
-                                CommonException commonException = (CommonException) caught;
-                                errorDialog = new ErrorDialogPopupView();
-                                errorDialog.show(commonException.getSymbol());
+                            if (caught instanceof RPCException) {
+                                ExceptionUtils.showErrorDialog(errorDialog, caught);
                             }
 
                         }

@@ -18,7 +18,8 @@ import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.domain.type.ViewType;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.List;
 
@@ -47,10 +48,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
                         + caught.getMessage());
@@ -79,10 +78,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -99,10 +96,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -119,10 +114,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -140,10 +133,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
@@ -166,10 +157,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 Window.alert("Error in MessageHandler in method: onRequestReadStatusUpdate"
                         + caught.getMessage());
@@ -193,10 +182,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 Window.alert("Error in MessageHandler in method: onRequestStarStatusUpdate"
                         + caught.getMessage());
@@ -214,10 +201,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 throw new UnsupportedOperationException("Not supported yet.");
             }
@@ -234,10 +219,8 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
                 throw new UnsupportedOperationException("Not supported yet.");
             }

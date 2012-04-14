@@ -33,7 +33,7 @@ import cz.poptavka.sample.shared.domain.message.OfferDemandMessage;
 import cz.poptavka.sample.shared.domain.message.OfferMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -119,7 +119,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return messageDetails je ArrayList, ktory obsahuje objekty MessageDetail
      */
     @Override
-    public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) throws CommonException {
+    public ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) throws RPCException {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
                 businessUser,
@@ -164,7 +164,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      */
     @Override
     public ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(
-            long businessUserId, long clientId) throws CommonException {
+            long businessUserId, long clientId) throws RPCException {
         ArrayList<ClientDemandMessageDetail> result = new ArrayList();
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         Map<Message, Integer> submessageCounts = this.messageService.getListOfClientDemandMessagesAll(businessUser);
@@ -194,7 +194,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return message
      */
     @Override
-    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws CommonException {
+    public MessageDetail sendQueryToPotentialDemand(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -216,7 +216,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return message
      */
     @Override
-    public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws CommonException {
+    public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -305,7 +305,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     @Override
     // TODO call setMessageReadStatus in body
     public ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws CommonException {
+            long threadId, long userId, long userMessageId) throws RPCException {
         Message threadRoot = messageService.getById(threadId);
 
         setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
@@ -338,7 +338,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws CommonException {
+    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -351,7 +351,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * Change 'star' status of sent messages to chosen value
      */
     @Override
-    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws CommonException {
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);
@@ -367,7 +367,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * Returns messages for PotentialDemandsView's table
      */
     @Override
-    public ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws CommonException {
+    public ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws RPCException {
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
                 businessUser,
@@ -395,7 +395,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     // Works fine - if more data in DB available - perform speed test
     @Override
     public ArrayList<PotentialDemandMessage> getPotentialDemandsBySearch(
-            long userId, SearchModuleDataHolder searchDataHolder) throws CommonException {
+            long userId, SearchModuleDataHolder searchDataHolder) throws RPCException {
         // TODO userID vs businessUserID ??
         User user = generalService.find(User.class, userId);
 
@@ -457,7 +457,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * nie.
      */
     @Override
-    public ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId) throws CommonException {
+    public ArrayList<OfferDemandMessage> getOfferDemands(long businessUserId) throws RPCException {
 
         BusinessUser businessUser = this.generalService.find(BusinessUser.class, businessUserId);
         final List<Message> messages = this.messageService.getAllMessages(
@@ -497,7 +497,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return
      */
     @Override
-    public ArrayList<MessageDetail> getClientDemandConversations(long threadRootId) throws CommonException {
+    public ArrayList<MessageDetail> getClientDemandConversations(long threadRootId) throws RPCException {
         // TODO Vojto
         ArrayList<MessageDetail> childrenList = new ArrayList<MessageDetail>();
 
@@ -516,7 +516,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
      * @return conversation list
      */
     @Override
-    public ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) throws CommonException {
+    public ArrayList<MessageDetail> getConversationMessages(long threadRootId, long subRootId) throws RPCException {
 //        Message root = messageService.getById(threadRootId);
         Message subRoot = messageService.getById(subRootId);
         List<Message> conversation = messageService.getAllDescendants(subRoot);
@@ -542,14 +542,14 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     @Override
     public List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
-        throws CommonException {
+        throws RPCException {
         return this.getMessages(recipientId, searchDataHolder, Arrays.asList(
                 MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
     }
 
     @Override
     public List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
-        throws CommonException {
+        throws RPCException {
         User sender = generalService.find(User.class, senderId);
 
         /****/// ziskaj vsetky spravy poslane danym uzivatelom
@@ -737,7 +737,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
     @Override
     public List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
-        throws CommonException {
+        throws RPCException {
         Search messageSearch = new Search(Message.class);
         messageSearch.addFilterEqual("messageState", MessageState.DELETED);
         if (searchDataHolder != null) {
@@ -776,7 +776,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     }
 
     @Override
-    public void deleteMessages(List<Long> messagesIds) throws CommonException {
+    public void deleteMessages(List<Long> messagesIds) throws RPCException {
         Search searchMsgs = new Search(Message.class);
         searchMsgs.addFilterIn("id", messagesIds);
         List<Message> msgs = generalService.search(searchMsgs);

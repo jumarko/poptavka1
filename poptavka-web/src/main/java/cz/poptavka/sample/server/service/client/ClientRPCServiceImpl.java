@@ -19,7 +19,7 @@ import cz.poptavka.sample.service.user.ClientService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     }
 
     @Override
-    public ArrayList<ClientDetail> getClients(int start, int count) throws CommonException {
+    public ArrayList<ClientDetail> getClients(int start, int count) throws RPCException {
         final Search search = new Search(Client.class);
         search.setFirstResult(start);
         search.setMaxResults(count);
@@ -70,7 +70,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * Vytvorenie noveho klienta.
      *
      */
-    public UserDetail createNewClient(UserDetail clientDetail) throws CommonException {
+    public UserDetail createNewClient(UserDetail clientDetail) throws RPCException {
         Preconditions.checkNotNull(clientDetail);
         final Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
@@ -109,7 +109,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
 
     // TODO FIX this, it's not working nullPointerException.
-    public Locality getLocality(String code) throws CommonException {
+    public Locality getLocality(String code) throws RPCException {
         System.out.println("Locality code value: " + code + ", localityService is null? " + (localityService == null));
         return localityService.getLocality(code);
     }
@@ -118,7 +118,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * Get All clients count.
      */
     @Override
-    public Integer getClientsCount() throws CommonException {
+    public Integer getClientsCount() throws RPCException {
         return (int) clientService.getCount();
     }
 
@@ -129,7 +129,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @return clientDetail
      */
     @Override
-    public ClientDetail updateClient(ClientDetail detail) throws CommonException {
+    public ClientDetail updateClient(ClientDetail detail) throws RPCException {
         Client client = clientService.getById(detail.getId());
 
         //Client
@@ -166,7 +166,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public ArrayList<ClientDetail> getSortedClients(int start, int count, Map<String, OrderType> orderColumns)
-        throws CommonException {
+        throws RPCException {
         final ResultCriteria resultCriteria = new ResultCriteria.Builder()
                 .firstResult(start).maxResults(count)
                 .orderByColumns(orderColumns)

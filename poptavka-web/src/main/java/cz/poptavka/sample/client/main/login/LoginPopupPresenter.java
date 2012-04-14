@@ -26,7 +26,8 @@ import cz.poptavka.sample.client.service.demand.MailRPCServiceAsync;
 import cz.poptavka.sample.client.service.demand.UserRPCServiceAsync;
 import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
@@ -71,10 +72,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                         @Override
                         public void onFailure(Throwable caught) {
                             GWT.log("message not sent succesfully");
-                            if (caught instanceof CommonException) {
-                                CommonException commonException = (CommonException) caught;
-                                errorDialog = new ErrorDialogPopupView();
-                                errorDialog.show(commonException.getSymbol());
+                            if (caught instanceof RPCException) {
+                                ExceptionUtils.showErrorDialog(errorDialog, caught);
                             }
                         }
 
@@ -123,10 +122,8 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    if (caught instanceof CommonException) {
-                        CommonException commonException = (CommonException) caught;
-                        errorDialog = new ErrorDialogPopupView();
-                        errorDialog.show(commonException.getSymbol());
+                    if (caught instanceof RPCException) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                     }
                     view.setUnknownError();
                 }

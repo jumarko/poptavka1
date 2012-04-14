@@ -16,7 +16,7 @@ import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 /**
  *
@@ -26,20 +26,20 @@ import cz.poptavka.sample.shared.exceptions.CommonException;
 public interface DemandsRPCService extends RemoteService {
 
     ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId)
-        throws CommonException;
+        throws RPCException;
 
-    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws CommonException;
+    ArrayList<PotentialDemandMessage> getPotentialDemands(long businessUserId) throws RPCException;
 
-    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws CommonException;
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
 
-    void setMessageStarStatus(List<Long> list, boolean newStatus) throws CommonException;
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
 
     ArrayList<MessageDetail> loadSuppliersPotentialDemandConversation(long threadId, long userId,
-            long userMessageId) throws CommonException;
+            long userMessageId) throws RPCException;
 
-    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws CommonException;
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException;
 
-    ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) throws CommonException;
+    ArrayList<ArrayList<OfferDetail>> getDemandOffers(ArrayList<Long> idList) throws RPCException;
 
         /**
      * Gets DemandDetail from DB.
@@ -48,8 +48,8 @@ public interface DemandsRPCService extends RemoteService {
      * @param typeOfDetail type of Detail that should be returned
      * @return DemandDetail of selected DemandType
      */
-    FullDemandDetail getFullDemandDetail(Long demandId) throws CommonException;
+    FullDemandDetail getFullDemandDetail(Long demandId) throws RPCException;
 
-    BaseDemandDetail getBaseDemandDetail(Long demandId) throws CommonException;
+    BaseDemandDetail getBaseDemandDetail(Long demandId) throws RPCException;
 
 }

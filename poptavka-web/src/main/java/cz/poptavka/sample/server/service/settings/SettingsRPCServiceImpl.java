@@ -22,7 +22,7 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.SupplierDetail;
 import cz.poptavka.sample.shared.domain.settings.SettingsDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
@@ -32,7 +32,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private GeneralService generalService;
 
     @Override
-    public SettingsDetail getUserSettings(long userId) throws CommonException {
+    public SettingsDetail getUserSettings(long userId) throws RPCException {
         GWT.log("Getting user settings for user:" + userId);
         final BusinessUser user = (BusinessUser) generalService
                 .searchUnique(new Search(User.class).addFilterEqual("id",

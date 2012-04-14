@@ -20,7 +20,7 @@ import cz.poptavka.sample.service.message.MessageService;
 import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.message.MessageDetail;
 import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -71,7 +71,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return message
      */
     @Override
-    public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws CommonException {
+    public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -88,7 +88,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public void deleteMessages(List<Long> messagesIds) throws CommonException {
+    public void deleteMessages(List<Long> messagesIds) throws RPCException {
         Search searchMsgs = new Search(Message.class);
         searchMsgs.addFilterIn("id", messagesIds);
         List<Message> msgs = generalService.search(searchMsgs);
@@ -105,14 +105,14 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
-        throws CommonException {
+        throws RPCException {
         return this.getMessages(recipientId, searchDataHolder, Arrays.asList(
                 MessageUserRoleType.TO, MessageUserRoleType.CC, MessageUserRoleType.BCC));
     }
 
     @Override
     public List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
-        throws CommonException {
+        throws RPCException {
         User sender = generalService.find(User.class, senderId);
 
         /****/// ziskaj vsetky spravy poslane danym uzivatelom
@@ -203,7 +203,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     public ArrayList<MessageDetail> getConversationMessages(long threadRootId,
-            long subRootId) throws CommonException {
+            long subRootId) throws RPCException {
 //        Message root = messageService.getById(threadRootId);
         Message subRoot = messageService.getById(subRootId);
         List<Message> conversation = messageService.getAllDescendants(subRoot);
@@ -225,7 +225,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void setMessageReadStatus(List<Long> userMessageIds,
-            boolean isRead) throws CommonException {
+            boolean isRead) throws RPCException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -239,7 +239,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     public void setMessageStarStatus(List<Long> userMessageIds,
-            boolean isStarred) throws CommonException {
+            boolean isStarred) throws RPCException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);
@@ -249,7 +249,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
 
     @Override
     public List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
-        throws CommonException {
+        throws RPCException {
         Search messageSearch = new Search(Message.class);
         messageSearch.addFilterEqual("messageState", MessageState.DELETED);
         if (searchDataHolder != null) {

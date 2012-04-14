@@ -19,7 +19,8 @@ import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.message.ClientDemandMessageDetail;
 import cz.poptavka.sample.shared.domain.message.PotentialDemandMessage;
 import cz.poptavka.sample.shared.domain.type.ViewType;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 @EventHandler
 public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
@@ -40,10 +41,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                         Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
                     }
@@ -69,10 +68,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
                             Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList\n\n"
                                     + caught.getMessage());
                         }
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
 
@@ -98,10 +95,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
             public void onFailure(Throwable caught) {
                 Window.alert("Error in MessageHandler in method: onRequestReadStatusUpdate"
                         + caught.getMessage());
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 
@@ -125,10 +120,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
             public void onFailure(Throwable caught) {
                 Window.alert("Error in MessageHandler in method: onRequestStarStatusUpdate"
                         + caught.getMessage());
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 
@@ -146,10 +139,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
             public void onFailure(Throwable caught) {
                 Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
                         + caught.getMessage());
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 

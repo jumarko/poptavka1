@@ -30,7 +30,7 @@ import cz.poptavka.sample.service.usermessage.UserMessageService;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.Date;
 
@@ -103,7 +103,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
      * @return zoznam DemandMessageWithOffersDetail objektov
      */
     @Override
-    public ArrayList<OfferDemandDetail> getClientDemands(long clientId) throws CommonException {
+    public ArrayList<OfferDemandDetail> getClientDemands(long clientId) throws RPCException {
         Client client = this.clientService.getById(clientId);
         ArrayList<OfferDemandDetail> offerDemandDetails = new ArrayList<OfferDemandDetail>();
         List<Demand> demands = client.getDemands();
@@ -127,7 +127,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     }
 
     @Override
-    public ArrayList<FullOfferDetail> getDemandOffers(long demandId, long threadRootId) throws CommonException {
+    public ArrayList<FullOfferDetail> getDemandOffers(long demandId, long threadRootId) throws RPCException {
 //        List<Offer> offers = this.demandService.getById(demandId).getOffers();
         ArrayList<FullOfferDetail> offerDetails = new ArrayList<FullOfferDetail>();
         Message threadRoot = this.messageService.getById(threadRootId);
@@ -160,7 +160,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     }
 
     @Override
-    public OfferDetail changeOfferState(OfferDetail offerDetail) throws CommonException {
+    public OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException {
         System.out.println("OFFER ID: " + offerDetail.getId());
         System.out.println("is service: " + (generalService == null));
 
@@ -176,7 +176,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     }
 
     @Override
-    public FullOfferDetail updateOffer(FullOfferDetail newOffer) throws CommonException {
+    public FullOfferDetail updateOffer(FullOfferDetail newOffer) throws RPCException {
         Offer offer = offerService.getById(newOffer.getOfferDetail().getId());
 
         OfferState state = offerService.getOfferState(newOffer.getOfferDetail().getState());

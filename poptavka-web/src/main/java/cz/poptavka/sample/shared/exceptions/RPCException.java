@@ -2,13 +2,13 @@ package cz.poptavka.sample.shared.exceptions;
 
 import java.io.Serializable;
 
-public class CommonException extends Exception implements Serializable {
+public class RPCException extends Exception implements Serializable {
     private String symbol;
 
-    public CommonException() {
+    public RPCException() {
     }
 
-    public CommonException(String symbol) {
+    public RPCException(String symbol) {
         this.symbol = symbol;
     }
 

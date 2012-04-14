@@ -19,7 +19,8 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.ExceptionUtils;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 @EventHandler
 public class RootHandler extends BaseEventHandler<RootEventBus> {
@@ -44,10 +45,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
 
@@ -60,10 +59,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        if (caught instanceof CommonException) {
-                            CommonException commonException = (CommonException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
 
@@ -80,10 +77,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
             @Override
             public void onFailure(Throwable caught) {
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 
@@ -107,10 +102,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    if (caught instanceof CommonException) {
-                        CommonException commonException = (CommonException) caught;
-                        errorDialog = new ErrorDialogPopupView();
-                        errorDialog.show(commonException.getSymbol());
+                    if (caught instanceof RPCException) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                     }
                 }
 
@@ -132,10 +125,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
                         @Override
                         public void onFailure(Throwable caught) {
-                            if (caught instanceof CommonException) {
-                                CommonException commonException = (CommonException) caught;
-                                errorDialog = new ErrorDialogPopupView();
-                                errorDialog.show(commonException.getSymbol());
+                            if (caught instanceof RPCException) {
+                                ExceptionUtils.showErrorDialog(errorDialog, caught);
                             }
                         }
 
@@ -161,10 +152,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 eventBus.loadingHide();
                 Window.alert("Error during getting logged User detail\n"
                         + caught.getMessage());
-                if (caught instanceof CommonException) {
-                    CommonException commonException = (CommonException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
             }
 

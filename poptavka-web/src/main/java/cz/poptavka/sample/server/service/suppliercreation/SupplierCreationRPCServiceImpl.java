@@ -29,7 +29,7 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.AddressDetail;
 import cz.poptavka.sample.shared.domain.ServiceDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +85,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
      * @return
      */
     @Override
-    public UserDetail createNewSupplier(UserDetail supplier) throws CommonException {
+    public UserDetail createNewSupplier(UserDetail supplier) throws RPCException {
         final Supplier newSupplier = new Supplier();
         setNewSupplierBusinessUserData(supplier, newSupplier);
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
@@ -216,7 +216,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
 
     @Override
-    public ArrayList<ServiceDetail> getSupplierServices() throws CommonException {
+    public ArrayList<ServiceDetail> getSupplierServices() throws RPCException {
         List<Service> services = this.generalService.findAll(Service.class);
         if (services != null) {
             System.out.println("Services count: " + services.size());
