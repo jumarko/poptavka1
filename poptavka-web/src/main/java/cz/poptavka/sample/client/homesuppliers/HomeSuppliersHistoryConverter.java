@@ -51,8 +51,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
         if (Storage.getUser() == null) {
             eventBus.clickSuppliersMenuStyleChange();
         } else {
-            //Martin - uncomment if implemented
-//            eventBus.clickSuppliersUserMenuStyleChange();
+            eventBus.clickDemandsUserMenuStyleChange();
         }
         String[] params = param.split(";");
         CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(

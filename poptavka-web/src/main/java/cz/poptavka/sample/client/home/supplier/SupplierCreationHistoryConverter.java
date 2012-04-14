@@ -42,8 +42,7 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
         if (Storage.getUser() == null) {
             eventBus.clickCreateSupplierMenuStyleChange();
         } else {
-            //Martin - If implemented, uncomment
-//            eventBus.clickCreateSupplierUserMenuStyleChange();
+            eventBus.clickDemandsUserMenuStyleChange();
         }
     }
 

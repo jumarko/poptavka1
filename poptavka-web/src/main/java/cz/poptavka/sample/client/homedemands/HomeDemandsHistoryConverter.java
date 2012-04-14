@@ -44,8 +44,7 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
         if (Storage.getUser() == null) {
             eventBus.clickDemandsMenuStyleChange();
         } else {
-            //Martin - If implemented, uncoment
-//            eventBus.clickDemandsUserMenuStyleChange();
+            eventBus.clickDemandsUserMenuStyleChange();
         }
     }
 

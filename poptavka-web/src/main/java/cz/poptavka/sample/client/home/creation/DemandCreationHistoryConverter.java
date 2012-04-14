@@ -42,8 +42,7 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
         if (Storage.getUser() == null) {
             eventBus.clickCreateDemandMenuStyleChange();
         } else {
-            //If implemented, uncomment
-//            eventBus.clickCreateDemandUserMenuStyleChange();
+            eventBus.clickDemandsUserMenuStyleChange();
         }
     }
 

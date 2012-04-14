@@ -72,6 +72,9 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void clickSuppliersMenuStyleChange();
+
+    @Event(forwardToParent = true)
+    void clickDemandsUserMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

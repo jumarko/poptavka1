@@ -71,6 +71,9 @@ public interface SupplierCreationEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void clickCreateSupplierMenuStyleChange();
+
+    @Event(forwardToParent = true)
+    void clickDemandsUserMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

@@ -70,6 +70,9 @@ public interface HomeDemandsEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void clickDemandsMenuStyleChange();
+
+    @Event(forwardToParent = true)
+    void clickDemandsUserMenuStyleChange();
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
