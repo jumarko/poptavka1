@@ -4,8 +4,20 @@
  */
 package cz.poptavka.sample.server.service.admin;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.Sort;
+
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.AdminRPCService;
@@ -48,15 +60,6 @@ import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.MessageType;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
-
 /*
  * TODO Martin
  * Vsetky count zrobit inak, ked sa bude riesit tento modul.
@@ -65,6 +68,7 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * @author Martin Slavkovsky
  */
+@Component(AdminRPCService.URL)
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;

@@ -36,6 +36,7 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +54,7 @@ import java.util.logging.Logger;
  *
  * @author ivan.vlcek
  */
+@Component(MessageRPCService.URL)
 public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements MessageRPCService {
 
     // TODO ivlcek - konstanty nacitat cez lokalizovane rozhranie

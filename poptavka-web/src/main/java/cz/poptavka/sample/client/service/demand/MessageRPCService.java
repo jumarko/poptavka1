@@ -23,8 +23,10 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
  *
  * @author ivan.vlcek
  */
-@RemoteServiceRelativePath("service/messages")
+@RemoteServiceRelativePath(MessageRPCService.URL)
 public interface MessageRPCService extends RemoteService {
+
+    String URL = "service/messages";
 
     ArrayList<MessageDetail> getClientDemands(long businessUserId, int fakeParam) throws RPCException;
 

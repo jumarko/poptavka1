@@ -15,8 +15,10 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
 import java.util.List;
 import java.util.Map;
 
-@RemoteServiceRelativePath("service/supplier")
+@RemoteServiceRelativePath(SupplierRPCService.URL)
 public interface SupplierRPCService extends RemoteService {
+
+    String URL = "service/supplier";
 
     UserDetail createNewSupplier(UserDetail supplier) throws RPCException;
 

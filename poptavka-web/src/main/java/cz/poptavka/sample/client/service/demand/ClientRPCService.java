@@ -12,8 +12,10 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.Map;
 
-@RemoteServiceRelativePath("service/cs")
+@RemoteServiceRelativePath(ClientRPCService.URL)
 public interface ClientRPCService extends RemoteService {
+
+    String URL = "service/cs";
 
     ArrayList<UserDetail> getAllClients() throws RPCException;
 

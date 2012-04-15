@@ -22,8 +22,10 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
  *
  * @author Drobcek
  */
-@RemoteServiceRelativePath("service/demandsmodule")
+@RemoteServiceRelativePath(DemandsRPCService.URL)
 public interface DemandsRPCService extends RemoteService {
+
+    String URL = "service/demandsmodule";
 
     ArrayList<ClientDemandMessageDetail> getListOfClientDemandMessages(long businessUserId, long clientId)
         throws RPCException;

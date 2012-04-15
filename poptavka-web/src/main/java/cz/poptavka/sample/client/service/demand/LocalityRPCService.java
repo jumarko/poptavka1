@@ -11,8 +11,10 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
-@RemoteServiceRelativePath("service/locality")
+@RemoteServiceRelativePath(LocalityRPCService.URL)
 public interface LocalityRPCService extends RemoteService {
+
+    String URL = "service/locality";
 
     /**
      * Returns locality list.

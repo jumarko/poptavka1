@@ -24,8 +24,10 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.Map;
 
-@RemoteServiceRelativePath("service/admin")
+@RemoteServiceRelativePath(AdminRPCService.URL)
 public interface AdminRPCService extends RemoteService {
+
+    String URL = "service/admin";
 
     //---------------------- DEMAND ------------------------------------------------
     Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) throws RPCException;

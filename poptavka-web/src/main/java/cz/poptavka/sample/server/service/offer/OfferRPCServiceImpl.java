@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import cz.poptavka.sample.client.service.demand.OfferRPCService;
 import cz.poptavka.sample.dao.message.MessageFilter;
@@ -38,6 +39,7 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
+@Component(OfferRPCService.URL)
 public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements OfferRPCService {
 
     /**

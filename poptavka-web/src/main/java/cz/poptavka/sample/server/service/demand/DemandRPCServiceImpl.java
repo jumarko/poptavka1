@@ -42,10 +42,12 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Excalibur
  */
+@Component(DemandRPCService.URL)
 public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements DemandRPCService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandRPCServiceImpl.class);

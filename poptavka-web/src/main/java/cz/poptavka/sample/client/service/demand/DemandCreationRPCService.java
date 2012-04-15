@@ -14,8 +14,10 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
  *
  * @author praso
  */
-@RemoteServiceRelativePath("service/demandcreation")
+@RemoteServiceRelativePath(DemandCreationRPCService.URL)
 public interface DemandCreationRPCService extends RemoteService {
+
+    String URL = "service/demandcreation";
 
     FullDemandDetail createNewDemand(FullDemandDetail newDemand, Long clientId) throws RPCException;
 

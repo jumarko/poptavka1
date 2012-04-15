@@ -22,7 +22,7 @@ import cz.poptavka.sample.domain.user.rights.Permission;
 import cz.poptavka.sample.service.user.LoginService;
 import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
-import cz.poptavka.sample.shared.exceptions.CommonException;
+import cz.poptavka.sample.shared.exceptions.RPCException;
 
 public class UserRPCServiceTest {
     protected static final String TEST_USER_MAIL = "test@poptavam.com";
@@ -40,7 +40,7 @@ public class UserRPCServiceTest {
 
 
     @Test
-    public void testLoginUser() throws CommonException {
+    public void testLoginUser() throws RPCException {
         when(loginServiceMock.loginUser(eq(TEST_USER_MAIL), anyString()))
                 .thenReturn(createTestUser());
 

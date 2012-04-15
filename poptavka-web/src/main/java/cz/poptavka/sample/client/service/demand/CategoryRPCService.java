@@ -9,8 +9,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
-@RemoteServiceRelativePath("service/category")
+@RemoteServiceRelativePath(CategoryRPCService.URL)
 public interface CategoryRPCService extends RemoteService {
+
+    String URL = "service/category";
 
     CategoryDetail getCategory(long id) throws RPCException;
 

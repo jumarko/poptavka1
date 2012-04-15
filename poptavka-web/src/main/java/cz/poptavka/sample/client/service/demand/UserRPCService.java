@@ -7,8 +7,10 @@ import cz.poptavka.sample.shared.domain.LoggedUserDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
-@RemoteServiceRelativePath("service/user")
+@RemoteServiceRelativePath(UserRPCService.URL)
 public interface UserRPCService extends RemoteService {
+
+    String URL = "service/user";
 
     LoggedUserDetail loginUser(UserDetail user) throws RPCException;
 

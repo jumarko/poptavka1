@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import cz.poptavka.sample.client.service.demand.CategoryRPCService;
 import cz.poptavka.sample.domain.demand.Category;
@@ -14,6 +15,7 @@ import cz.poptavka.sample.service.user.SupplierService;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
+@Component(CategoryRPCService.URL)
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         implements CategoryRPCService {
 

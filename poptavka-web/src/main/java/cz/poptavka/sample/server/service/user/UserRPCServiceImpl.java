@@ -18,7 +18,9 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component(UserRPCService.URL)
 public class UserRPCServiceImpl extends AutoinjectingRemoteService implements UserRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;

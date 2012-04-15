@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
@@ -43,6 +44,7 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
  * @author Praso
  * TODO Praso - optimize this PRC service as other RPC services
  */
+@Component(HomeSuppliersRPCService.URL)
 public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService implements HomeSuppliersRPCService {
 
     private static final Logger LOGGER = Logger.getLogger("HomeSuppliersRPCServiceImpl");

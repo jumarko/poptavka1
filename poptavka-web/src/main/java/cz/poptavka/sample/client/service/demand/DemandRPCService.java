@@ -22,8 +22,10 @@ import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.demand.BaseDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
-@RemoteServiceRelativePath("service/demands")
+@RemoteServiceRelativePath(DemandRPCService.URL)
 public interface DemandRPCService extends RemoteService {
+
+    String URL = "service/demands";
 
     FullDemandDetail updateDemand(FullDemandDetail newDemand);
 

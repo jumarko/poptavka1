@@ -23,6 +23,7 @@ import cz.poptavka.sample.shared.domain.message.UserMessageDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ import java.util.logging.Logger;
  *
  * @author Praso
  */
+@Component(MessagesRPCService.URL)
 public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implements MessagesRPCService {
 
     public static final String INTERNAL_MESSAGE = "Interna sprava";

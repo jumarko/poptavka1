@@ -16,8 +16,10 @@ import java.util.ArrayList;
  *
  * @author Praso
  */
-@RemoteServiceRelativePath("service/suppliercreation")
+@RemoteServiceRelativePath(SupplierCreationRPCService.URL)
 public interface SupplierCreationRPCService extends RemoteService {
+
+    String URL = "service/suppliercreation";
 
     UserDetail createNewSupplier(UserDetail supplier) throws RPCException;
 

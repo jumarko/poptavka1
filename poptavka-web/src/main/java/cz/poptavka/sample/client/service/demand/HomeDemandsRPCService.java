@@ -18,8 +18,10 @@ import java.util.Map;
  *
  * @author Praso
  */
-@RemoteServiceRelativePath("service/homedemands")
+@RemoteServiceRelativePath(HomeDemandsRPCService.URL)
 public interface HomeDemandsRPCService extends RemoteService {
+
+    String URL = "service/homedemands";
 
     long filterDemandsCount(SearchModuleDataHolder holder) throws RPCException;
 

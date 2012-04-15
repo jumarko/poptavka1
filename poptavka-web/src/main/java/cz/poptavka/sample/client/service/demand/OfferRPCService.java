@@ -10,8 +10,10 @@ import cz.poptavka.sample.shared.domain.demand.OfferDemandDetail;
 import cz.poptavka.sample.shared.domain.offer.FullOfferDetail;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
-@RemoteServiceRelativePath("service/offers")
+@RemoteServiceRelativePath(OfferRPCService.URL)
 public interface OfferRPCService extends RemoteService {
+
+    String URL = "service/offers";
 
     ArrayList<OfferDemandDetail> getClientDemands(long clientId) throws RPCException;
 
