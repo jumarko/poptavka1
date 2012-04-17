@@ -102,7 +102,7 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
             case NEW:
                 sb.append(renderer.render(Storage.RSCS.images().statusWork()));
                 break;
-            case TEMPORARY:
+            case CRAWLED:
                 sb.append(renderer.render(Storage.RSCS.images().statusWork()));
                 break;
             case TO_BE_CHECKED:

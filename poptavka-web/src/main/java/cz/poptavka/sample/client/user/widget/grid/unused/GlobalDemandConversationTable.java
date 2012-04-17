@@ -178,9 +178,9 @@ public class GlobalDemandConversationTable extends CellTable<ClientDemandMessage
 //            diffDays = rnd.nextInt(15); //TODO Martin - docasne, potom vymazat
 
             //TODO Martin - i18
-            if (value.equals(DemandStatus.TEMPORARY.getValue())) { //(0-4) velmi specha
+            if (value.equals(DemandStatus.CRAWLED.getValue())) { //(0-4) velmi specha
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().urgent()).getHTML();
-                GWT.log("temporary");
+                GWT.log("crawled");
 
             } else if (value.equals(DemandStatus.ACTIVE.getValue())) { //(5-8) specha
                 imageHtml = AbstractImagePrototype.create(StyleResource.INSTANCE.images().lessUrgent()).getHTML();

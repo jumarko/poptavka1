@@ -18,7 +18,7 @@ public enum DemandStatusType {
      * and we are waiting for approval to show Demand from non-registered Client.
      * Until we receive link confirmation/approval this Demand is in state TEMPORARY.
      */
-    TEMPORARY("TEMPORARY"),
+    CRAWLED("CRAWLED"),
     /**
      * Registered/non-registered Client confirmed/approved TEMPORARY Demand.
      * Operator must check this Demand and switch it to another state.
@@ -28,7 +28,7 @@ public enum DemandStatusType {
      * Operator checked the Demand which needs to be changed. Either some information is missing or it is a spam.
      */
     INVALID("INVALID"),
-    /**
+   /**
      * Demand is properly described by Client and Operator switched it to ACTIVE state.
      */
     ACTIVE("ACTIVE"),
