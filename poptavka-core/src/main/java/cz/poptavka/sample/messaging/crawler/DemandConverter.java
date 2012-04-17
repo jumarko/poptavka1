@@ -64,7 +64,7 @@ public class DemandConverter implements Converter<Demand, cz.poptavka.sample.dom
 
         final cz.poptavka.sample.domain.demand.Demand domainDemand = new cz.poptavka.sample.domain.demand.Demand();
 
-        domainDemand.setStatus(DemandStatus.TEMPORARY);
+        domainDemand.setStatus(DemandStatus.CRAWLED);
         domainDemand.setTitle(sourceDemand.getName());
         domainDemand.setDescription(sourceDemand.getDescription());
         domainDemand.setForeignLink(sourceDemand.getLink());

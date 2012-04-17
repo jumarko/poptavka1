@@ -44,7 +44,7 @@ public class DemandConverterTest extends DBUnitBaseTest {
         Assert.assertNull(domainDemand.getType());
 
         Assert.assertEquals("Demand status for crawled demand must be set to 'TEMPORARY'",
-                DemandStatus.TEMPORARY, domainDemand.getStatus());
+                DemandStatus.CRAWLED, domainDemand.getStatus());
 
         // TODO: origin should be filled, but it depends on the crawler
 //        Assert.assertNotNull("Origin should be filled for crawled demand", domainDemand.getOrigin());

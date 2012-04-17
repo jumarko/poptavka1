@@ -15,10 +15,8 @@ public enum DemandStatus {
      * and he must confirm email activation link. The other meaning is when Demand came from external system
      * and we are waiting for approval to show Demand from non-registered Client.
      * Until we receive link confirmation/approval this Demand is in state TEMPORARY.
-     *
-     * TODO vojto - zmazat tento stav
      */
-    TEMPORARY("TEMPORARY"),
+    CRAWLED("CRAWLED"),
 
     /**
      * Registered/non-registered Client confirmed/approved TEMPORARY Demand.
