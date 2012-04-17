@@ -60,7 +60,7 @@ public class MessagesHistoryConverter implements HistoryConverter<MessagesEventB
      */
     @Override
     public void convertFromToken(String historyName, String param, MessagesEventBus eventBus) {
-        eventBus.clickMessagesUserMenuStyleChange();
+        eventBus.userMenuStyleChange(1);
     }
 
     @Override

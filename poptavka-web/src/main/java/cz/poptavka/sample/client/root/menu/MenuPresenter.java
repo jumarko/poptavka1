@@ -57,23 +57,15 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
     /**************************************************************************/
     /* Style change methods.                                                  */
     /**************************************************************************/
-    public void onClickHomeMenuStyleChange() {
-        view.clickHomeMenuStyleChange();
-    }
-
-    public void onClickDemandsMenuStyleChange() {
-        view.clickDemandsMenuStyleChange();
-    }
-
-    public void onClickSuppliersMenuStyleChange() {
-        view.clickSuppliersMenuStyleChange();
-    }
-
-    public void onClickCreateSupplierMenuStyleChange() {
-        view.clickCreateSupplierMenuStyleChange();
-    }
-
-    public void onClickCreateDemandMenuStyleChange() {
-        view.clickCreateDemandMenuStyleChange();
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedModule - 0 - HomeWelcome
+     *                     - 1 - HomeDemands
+     *                     - 2 - HomeSuppliers
+     *                     - 3 - DemandCreation
+     *                     - 4 - SupplierCreation
+     */
+    public void onMenuStyleChange(int loadedModule) {
+        view.menuStyleChange(loadedModule);
     }
 }

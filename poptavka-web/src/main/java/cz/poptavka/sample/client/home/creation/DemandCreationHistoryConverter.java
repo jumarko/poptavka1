@@ -40,9 +40,9 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.clickCreateDemandMenuStyleChange();
+            eventBus.menuStyleChange(3);
         } else {
-            eventBus.clickDemandsUserMenuStyleChange();
+            eventBus.userMenuStyleChange(0);
         }
     }
 

@@ -50,20 +50,14 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     /**************************************************************************/
     /* Style change methods.                                                  */
     /**************************************************************************/
-    public void onClickDemandsUserMenuStyleChange() {
-        view.clickDemandsUserMenuStyleChange();
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedModule - 0 - Demands
+     *                     - 1 - Messages
+     *                     - 2 - Settings
+     *                     - 3 - Administration
+     */
+    public void onUserMenuStyleChange(int loadedModule) {
+        view.userMenuStyleChange(loadedModule);
     }
-
-    public void onClickMessagesUserMenuStyleChange() {
-        view.clickMessagesUserMenuStyleChange();
-    }
-
-    public void onClickSettingsUserMenuStyleChange() {
-        view.clickSettingsUserMenuStyleChange();
-    }
-
-    public void onClickAdministrationUserMenuStyleChange() {
-        view.clickAdministrationUserMenuStyleChange();
-    }
-
 }

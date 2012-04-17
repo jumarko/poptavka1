@@ -37,56 +37,82 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiHandler("demands")
     public void onClickDemands(ClickEvent e) {
         presenter.goToDemands();
-        clickDemandsUserMenuStyleChange();
+        demandsUserMenuStyleChange();
     }
 
     @UiHandler("messages")
     public void onClickMessages(ClickEvent e) {
         presenter.goToMessages();
-        clickMessagesUserMenuStyleChange();
+        messagesUserMenuStyleChange();
     }
 
     @UiHandler("settings")
     public void onClickSettings(ClickEvent e) {
         presenter.goToSettings();
-        clickSettingsUserMenuStyleChange();
+        settingsUserMenuStyleChange();
     }
 
     @UiHandler("administration")
     public void onClickAdministration(ClickEvent e) {
         presenter.goToAdministration();
-        clickAdministrationUserMenuStyleChange();
+        administrationUserMenuStyleChange();
     }
 
     /**************************************************************************/
     /* Style change methods.                                                  */
     /**************************************************************************/
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedModule - 0 - Demands
+     *                     - 1 - Messages
+     *                     - 2 - Settings
+     *                     - 3 - Administration
+     */
     @Override
-    public void clickDemandsUserMenuStyleChange() {
+    public void userMenuStyleChange(int loadedModule) {
+        switch (loadedModule) {
+            case 0:
+                demandsUserMenuStyleChange();
+                break;
+            case 1:
+                messagesUserMenuStyleChange();
+                break;
+            case 2:
+                settingsUserMenuStyleChange();
+                break;
+            case 3:
+                administrationUserMenuStyleChange();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**************************************************************************/
+    /* Helper methods.                                                        */
+    /**************************************************************************/
+    private void demandsUserMenuStyleChange() {
         demands.addStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickMessagesUserMenuStyleChange() {
+    private void messagesUserMenuStyleChange() {
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.addStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickSettingsUserMenuStyleChange() {
+    private void settingsUserMenuStyleChange() {
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.addStyleName(StyleResource.INSTANCE.layout().selected());
         administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickAdministrationUserMenuStyleChange() {
+    private void administrationUserMenuStyleChange() {
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());

@@ -36,38 +36,71 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     @UiHandler("home")
     public void onClickHome(ClickEvent e) {
         presenter.goToHomeWelcome();
-        clickHomeMenuStyleChange();
+        homeMenuStyleChange();
     }
 
     @UiHandler("demands")
     public void clickDemands(ClickEvent e) {
         presenter.goToHomeDemands();
-        clickDemandsMenuStyleChange();
+        demandsMenuStyleChange();
     }
 
     @UiHandler("suppliers")
     public void clickSuppliers(ClickEvent e) {
         presenter.goToHomeSuppliers();
-        clickSuppliersMenuStyleChange();
+        suppliersMenuStyleChange();
     }
 
     @UiHandler("createSupplier")
     public void clickCreateSupplier(ClickEvent e) {
         presenter.goToCreateSupplier();
-        clickCreateSupplierMenuStyleChange();
+        createSupplierMenuStyleChange();
     }
 
     @UiHandler("createDemand")
     public void clickCreateDemand(ClickEvent e) {
         presenter.goToCreateDemand();
-        clickCreateDemandMenuStyleChange();
+        createDemandMenuStyleChange();
     }
 
     /**************************************************************************/
     /* Style change methods.                                                  */
     /**************************************************************************/
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedModule - 0 - HomeWelcome
+     *                     - 1 - HomeDemands
+     *                     - 2 - HomeSuppliers
+     *                     - 3 - DemandCreation
+     *                     - 4 - SupplierCreation
+     */
     @Override
-    public void clickHomeMenuStyleChange() {
+    public void menuStyleChange(int loadedModule) {
+        switch (loadedModule) {
+            case 0:
+                homeMenuStyleChange();
+                break;
+            case 1:
+                demandsMenuStyleChange();
+                break;
+            case 2:
+                suppliersMenuStyleChange();
+                break;
+            case 3:
+                createDemandMenuStyleChange();
+                break;
+            case 4:
+                createSupplierMenuStyleChange();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**************************************************************************/
+    /* Helper methods.                                                        */
+    /**************************************************************************/
+    private void homeMenuStyleChange() {
         home.addStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -75,8 +108,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickDemandsMenuStyleChange() {
+    private void demandsMenuStyleChange() {
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.addStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -84,8 +116,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickSuppliersMenuStyleChange() {
+    private void suppliersMenuStyleChange() {
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.addStyleName(StyleResource.INSTANCE.layout().selected());
@@ -93,8 +124,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickCreateSupplierMenuStyleChange() {
+    private void createSupplierMenuStyleChange() {
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -102,8 +132,7 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
         createDemand.removeStyleName(StyleResource.INSTANCE.layout().selected());
     }
 
-    @Override
-    public void clickCreateDemandMenuStyleChange() {
+    private void createDemandMenuStyleChange() {
         home.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         suppliers.removeStyleName(StyleResource.INSTANCE.layout().selected());

@@ -42,9 +42,9 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.clickDemandsMenuStyleChange();
+            eventBus.menuStyleChange(1);
         } else {
-            eventBus.clickDemandsUserMenuStyleChange();
+            eventBus.userMenuStyleChange(0);
         }
     }
 

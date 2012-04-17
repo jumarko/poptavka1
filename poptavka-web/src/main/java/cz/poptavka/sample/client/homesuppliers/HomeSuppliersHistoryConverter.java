@@ -49,9 +49,9 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.clickSuppliersMenuStyleChange();
+            eventBus.menuStyleChange(2);
         } else {
-            eventBus.clickDemandsUserMenuStyleChange();
+            eventBus.userMenuStyleChange(0);
         }
         String[] params = param.split(";");
         CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(

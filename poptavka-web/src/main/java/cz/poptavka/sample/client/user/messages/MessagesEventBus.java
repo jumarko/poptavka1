@@ -58,7 +58,7 @@ public interface MessagesEventBus extends EventBus {
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void clickMessagesUserMenuStyleChange();
+    void userMenuStyleChange(int loadedModule);
 
     /**************************************************************************/
     /* Business Initialization events                                         */

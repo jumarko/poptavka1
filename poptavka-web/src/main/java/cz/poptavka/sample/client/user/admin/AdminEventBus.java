@@ -86,7 +86,7 @@ public interface AdminEventBus extends EventBus {
     void clearSearchContent();
 
     @Event(forwardToParent = true)
-    void clickAdministrationUserMenuStyleChange();
+    void userMenuStyleChange(int loadedModule);
     /**************************************************************************/
     /* Business Initialization events                                         */
     /**************************************************************************/

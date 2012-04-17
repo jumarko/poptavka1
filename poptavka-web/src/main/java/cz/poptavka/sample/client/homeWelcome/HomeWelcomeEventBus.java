@@ -52,7 +52,7 @@ public interface HomeWelcomeEventBus extends EventBus {
     void setUpSearchBar(int loadedWidget);
 
     @Event(forwardToParent = true)
-    void clickHomeMenuStyleChange();
+    void menuStyleChange(int loadedModule);
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

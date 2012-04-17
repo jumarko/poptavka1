@@ -323,32 +323,11 @@ public interface RootEventBus extends EventBus {
     /* Business events handled by MenuPresenter --- HOME MENU                 */
     /**************************************************************************/
     @Event(handlers = MenuPresenter.class)
-    void clickHomeMenuStyleChange();
-
-    @Event(handlers = MenuPresenter.class)
-    void clickDemandsMenuStyleChange();
-
-    @Event(handlers = MenuPresenter.class)
-    void clickSuppliersMenuStyleChange();
-
-    @Event(handlers = MenuPresenter.class)
-    void clickCreateSupplierMenuStyleChange();
-
-    @Event(handlers = MenuPresenter.class)
-    void clickCreateDemandMenuStyleChange();
+    void menuStyleChange(int loadedModule);
 
     /**************************************************************************/
     /* Business events handled by UserMenuPresenter --- USER MENU             */
     /**************************************************************************/
     @Event(handlers = UserMenuPresenter.class)
-    void clickDemandsUserMenuStyleChange();
-
-    @Event(handlers = UserMenuPresenter.class)
-    void clickMessagesUserMenuStyleChange();
-
-    @Event(handlers = UserMenuPresenter.class)
-    void clickSettingsUserMenuStyleChange();
-
-    @Event(handlers = UserMenuPresenter.class)
-    void clickAdministrationUserMenuStyleChange();
+    void userMenuStyleChange(int loadedModule);
 }

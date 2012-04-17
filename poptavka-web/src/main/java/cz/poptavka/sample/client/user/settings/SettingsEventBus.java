@@ -44,7 +44,7 @@ public interface SettingsEventBus extends EventBus {
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void clickSettingsUserMenuStyleChange();
+    void userMenuStyleChange(int loadedModule);
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

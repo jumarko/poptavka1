@@ -69,10 +69,10 @@ public interface HomeDemandsEventBus extends EventBus {
     void setUpSearchBar(int loadedWidget);
 
     @Event(forwardToParent = true)
-    void clickDemandsMenuStyleChange();
+    void menuStyleChange(int loadedModule);
 
     @Event(forwardToParent = true)
-    void clickDemandsUserMenuStyleChange();
+    void userMenuStyleChange(int loadedModule);
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/

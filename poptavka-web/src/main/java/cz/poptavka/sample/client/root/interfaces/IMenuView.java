@@ -17,13 +17,5 @@ public interface IMenuView extends IsWidget {
         void goToCreateDemand();
     }
 
-    void clickHomeMenuStyleChange();
-
-    void clickDemandsMenuStyleChange();
-
-    void clickSuppliersMenuStyleChange();
-
-    void clickCreateSupplierMenuStyleChange();
-
-    void clickCreateDemandMenuStyleChange();
+    void menuStyleChange(int loadedModule);
 }

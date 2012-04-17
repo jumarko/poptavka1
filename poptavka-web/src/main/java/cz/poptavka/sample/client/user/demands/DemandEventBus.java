@@ -82,7 +82,7 @@ public interface DemandEventBus extends EventBus {
     void initSupplierList(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void clickDemandsUserMenuStyleChange();
+    void userMenuStyleChange(int loadedModule);
     /**************************************************************************/
     /* Business events handled by DemandModulePresenter.                      */
     /**************************************************************************/

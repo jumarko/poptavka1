@@ -40,9 +40,9 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
     @Override
     public void convertFromToken(String methodName, String param, SupplierCreationEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.clickCreateSupplierMenuStyleChange();
+            eventBus.menuStyleChange(4);
         } else {
-            eventBus.clickDemandsUserMenuStyleChange();
+            eventBus.userMenuStyleChange(0);
         }
     }
 
