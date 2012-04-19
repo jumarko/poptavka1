@@ -59,11 +59,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
     /**************************************************************************/
     /**
      * Loads right styles to menu buttons.
-     * @param loadedModule - 0 - HomeWelcome
-     *                     - 1 - HomeDemands
-     *                     - 2 - HomeSuppliers
-     *                     - 3 - DemandCreation
-     *                     - 4 - SupplierCreation
+     * @param loadedModule - use module constants from class Contants.
      */
     public void onMenuStyleChange(int loadedModule) {
         view.menuStyleChange(loadedModule);

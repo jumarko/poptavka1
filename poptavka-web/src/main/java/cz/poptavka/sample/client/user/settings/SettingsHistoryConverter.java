@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.settings;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Constants;
 
 /**
  * History converter class. Handles history for HomeSuppliersModule.
@@ -35,7 +36,7 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
      */
     @Override
     public void convertFromToken(String methodName, String param, SettingsEventBus eventBus) {
-        eventBus.userMenuStyleChange(2);
+        eventBus.userMenuStyleChange(Constants.USER_SETTINGS_MODULE);
     }
 
     @Override

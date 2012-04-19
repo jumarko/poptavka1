@@ -22,9 +22,28 @@ public final class Constants {
         return INSTANCE;
     }
 
-    /* Common */
-    public static final int NONE = -1;
+    /**************************************************************************/
+    /* Common Contants                                                        */
+    /**************************************************************************/
+    public static final int NONE = 0;
 
+    /**************************************************************************/
+    /* Module Views Contants                                                  */
+    /**************************************************************************/
+    public static final int HOME_WELCOME_MODULE = -1;
+    public static final int HOME_DEMANDS_MODULE = -2;
+    public static final int HOME_SUPPLIERS_MODULE = -3;
+    public static final int HOME_DEMAND_CREATION_MODULE = -4;
+    public static final int HOME_SUPPLIER_CREATION_MODULE = -5;
+
+    public static final int USER_DEMANDS_MODULE = -6;
+    public static final int USER_MESSAGES_MODULE = -7;
+    public static final int USER_SETTINGS_MODULE = -8;
+    public static final int USER_ADMININSTRATION_MODULE = -9;
+
+    /**************************************************************************/
+    /* Table Views Contants                                                   */
+    /**************************************************************************/
     /* Home demands module */
     public static final int HOME_DEMANDS = 8;
     /* Home suppliers module */

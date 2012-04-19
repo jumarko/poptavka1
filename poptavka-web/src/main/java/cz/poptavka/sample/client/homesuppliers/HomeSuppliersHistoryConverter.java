@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.homesuppliers;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
@@ -49,9 +50,9 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
     @Override
     public void convertFromToken(String methodName, String param, HomeSuppliersEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(2);
+            eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
         } else {
-            eventBus.userMenuStyleChange(0);
+            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
         String[] params = param.split(";");
         CategoryDetail categoryDetail = new CategoryDetail(Long.valueOf(

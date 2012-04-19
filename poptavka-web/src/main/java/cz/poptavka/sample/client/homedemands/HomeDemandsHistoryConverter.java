@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.homedemands;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 
@@ -42,9 +43,9 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(1);
+            eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
         } else {
-            eventBus.userMenuStyleChange(0);
+            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
     }
 

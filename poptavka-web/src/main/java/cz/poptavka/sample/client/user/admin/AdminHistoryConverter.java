@@ -78,7 +78,7 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, AdminEventBus eventBus) {
-        eventBus.userMenuStyleChange(3);
+        eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.root.ReverseCompositeView;
 import cz.poptavka.sample.client.root.interfaces.IMenuView;
@@ -68,28 +69,24 @@ public class MenuView extends ReverseCompositeView<IMenuPresenter> implements IM
     /**************************************************************************/
     /**
      * Loads right styles to menu buttons.
-     * @param loadedModule - 0 - HomeWelcome
-     *                     - 1 - HomeDemands
-     *                     - 2 - HomeSuppliers
-     *                     - 3 - DemandCreation
-     *                     - 4 - SupplierCreation
+     * @param loadedModule - use module constants from class Contants.
      */
     @Override
     public void menuStyleChange(int loadedModule) {
         switch (loadedModule) {
-            case 0:
+            case Constants.HOME_WELCOME_MODULE:
                 homeMenuStyleChange();
                 break;
-            case 1:
+            case Constants.HOME_DEMANDS_MODULE:
                 demandsMenuStyleChange();
                 break;
-            case 2:
+            case Constants.HOME_SUPPLIERS_MODULE:
                 suppliersMenuStyleChange();
                 break;
-            case 3:
+            case Constants.HOME_DEMAND_CREATION_MODULE:
                 createDemandMenuStyleChange();
                 break;
-            case 4:
+            case Constants.HOME_SUPPLIER_CREATION_MODULE:
                 createSupplierMenuStyleChange();
                 break;
             default:

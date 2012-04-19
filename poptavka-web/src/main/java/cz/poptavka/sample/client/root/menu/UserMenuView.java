@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.root.ReverseCompositeView;
 import cz.poptavka.sample.client.root.interfaces.IUserMenuView;
@@ -63,24 +64,21 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     /**************************************************************************/
     /**
      * Loads right styles to menu buttons.
-     * @param loadedModule - 0 - Demands
-     *                     - 1 - Messages
-     *                     - 2 - Settings
-     *                     - 3 - Administration
+     * @param loadedModule - use module constants from class Contants.
      */
     @Override
     public void userMenuStyleChange(int loadedModule) {
         switch (loadedModule) {
-            case 0:
+            case Constants.USER_DEMANDS_MODULE:
                 demandsUserMenuStyleChange();
                 break;
-            case 1:
+            case Constants.USER_MESSAGES_MODULE:
                 messagesUserMenuStyleChange();
                 break;
-            case 2:
+            case Constants.USER_SETTINGS_MODULE:
                 settingsUserMenuStyleChange();
                 break;
-            case 3:
+            case Constants.USER_ADMININSTRATION_MODULE:
                 administrationUserMenuStyleChange();
                 break;
             default:

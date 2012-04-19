@@ -52,10 +52,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     /**************************************************************************/
     /**
      * Loads right styles to menu buttons.
-     * @param loadedModule - 0 - Demands
-     *                     - 1 - Messages
-     *                     - 2 - Settings
-     *                     - 3 - Administration
+     * @param loadedModule - use module constants from class Contants.
      */
     public void onUserMenuStyleChange(int loadedModule) {
         view.userMenuStyleChange(loadedModule);

@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.home.creation;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
+import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 
 /**
@@ -40,9 +41,9 @@ public class DemandCreationHistoryConverter implements HistoryConverter<DemandCr
     @Override
     public void convertFromToken(String methodName, String param, DemandCreationEventBus eventBus) {
         if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(3);
+            eventBus.menuStyleChange(Constants.HOME_DEMAND_CREATION_MODULE);
         } else {
-            eventBus.userMenuStyleChange(0);
+            eventBus.userMenuStyleChange(Constants.USER_DEMANDS_MODULE);
         }
     }
 
