@@ -13,7 +13,7 @@ public interface IRootView extends IsWidget {
 
     void setSearchBar(IsWidget searchBar);
 
-    void setUpSearchBar(int loadedWidget);
+    void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     void setBody(IsWidget body);
 

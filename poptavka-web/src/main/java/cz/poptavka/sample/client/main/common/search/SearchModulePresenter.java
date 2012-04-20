@@ -17,7 +17,7 @@ import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
-import cz.poptavka.sample.client.main.common.search.views.AdminInvoicesViewView;
+import cz.poptavka.sample.client.user.admin.searchViews.AdminInvoicesViewView;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.ArrayList;
 import java.util.List;

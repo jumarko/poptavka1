@@ -25,7 +25,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.widget.detail.DemandDetailView;
 import cz.poptavka.sample.domain.common.OrderType;
@@ -121,7 +120,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     }
 
     public void onForward() {
-        // nothing for now.
+        eventBus.setUpSearchBar(new HomeDemandViewView(), true, true, true);
     }
 
     /**************************************************************************/
@@ -131,8 +130,6 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchModuleDataHolder searchDataHolder;
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
-        eventBus.setUpSearchBar(Constants.HOME_DEMANDS);
-
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
         eventBus.filterDemandsCount(searchDataHolder, orderColumns);

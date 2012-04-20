@@ -6,6 +6,7 @@
  */
 package cz.poptavka.sample.client.home.supplier;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -67,7 +68,7 @@ public interface SupplierCreationEventBus extends EventBus {
     void initLocalityWidget(SimplePanel holderWidget);
 
     @Event(forwardToParent = true)
-    void setUpSearchBar(int loadedWidget);
+    void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);

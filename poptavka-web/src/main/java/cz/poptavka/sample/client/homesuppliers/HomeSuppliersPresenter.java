@@ -25,7 +25,6 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.resources.StyleResource;
@@ -116,7 +115,7 @@ public class HomeSuppliersPresenter
     }
 
     public void onForward() {
-        // nothing
+        eventBus.setUpSearchBar(new HomeSuppliersViewView(), false, true, true);
     }
 
     /**************************************************************************/
@@ -128,8 +127,6 @@ public class HomeSuppliersPresenter
      */
     public void onGoToHomeSuppliersModule(
             SearchModuleDataHolder searchModuleDataHolder) {
-        eventBus.setUpSearchBar(Constants.NONE);
-
         this.searchDataHolder = searchModuleDataHolder;
 
         this.onDisplayParentOrChild(searchModuleDataHolder);
@@ -358,7 +355,7 @@ public class HomeSuppliersPresenter
     /* CHILD WIDGET */
     public void onDisplayChildWidget(Long id) {
 
-        eventBus.setUpSearchBar(Constants.HOME_SUPPLIERS);
+
 
         view.getChildSection().setVisible(true);
         view.getRootSection().setVisible(false);

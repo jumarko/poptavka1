@@ -59,9 +59,9 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.setSearchBar(searchBar);
     }
 
-    public void onSetUpSearchBar(int loadedWidget) {
+    public void onSetUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn) {
         GWT.log("Search bar widget set up");
-        view.setUpSearchBar(loadedWidget);
+        view.setUpSearchBar(searchView, cat, loc, advBtn);
     }
 
     public void onSetBody(IsWidget body) {

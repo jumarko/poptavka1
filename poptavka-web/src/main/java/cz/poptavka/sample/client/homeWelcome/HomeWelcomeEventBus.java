@@ -6,6 +6,7 @@
  */
 package cz.poptavka.sample.client.homeWelcome;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -49,7 +50,7 @@ public interface HomeWelcomeEventBus extends EventBus {
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)
-    void setUpSearchBar(int loadedWidget);
+    void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);

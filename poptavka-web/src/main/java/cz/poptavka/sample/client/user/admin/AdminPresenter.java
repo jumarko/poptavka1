@@ -7,19 +7,21 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.BasePresenter;
 
+import com.mvp4g.client.presenter.LazyPresenter;
+
+import com.mvp4g.client.view.LazyView;
 import cz.poptavka.sample.client.main.Constants;
 import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.tab.AdminModuleWelcomeView;
 import cz.poptavka.sample.client.user.widget.LoadingDiv;
 
-@Presenter(view = AdminView.class, multiple = true)
+@Presenter(view = AdminView.class)//, multiple = true)
 public class AdminPresenter
-        extends BasePresenter<AdminPresenter.AdminModuleInterface, AdminEventBus> {
+        extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus> {
 
-    public interface AdminModuleInterface {
+    public interface AdminModuleInterface extends LazyView {
 
         Widget getWidgetView();
 
@@ -54,7 +56,7 @@ public class AdminPresenter
     private LoadingDiv loading = null;
 
     @Override
-    public void bind() {
+    public void bindView() {
         view.getDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override

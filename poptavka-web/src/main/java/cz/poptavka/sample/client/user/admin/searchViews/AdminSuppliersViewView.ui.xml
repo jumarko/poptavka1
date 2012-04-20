@@ -1,0 +1,114 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+    <ui:style>
+        .important {
+            font-weight: bold;
+            font-style: italic;
+        }
+        .rangeBox {
+            width: 30px;
+            margin-right:10px;
+            margin-left:10px;
+        }
+        .searchMainContent {
+            width: 200px;
+        }
+        .margin {
+
+        }
+    </ui:style>
+    <ui:with field='res'
+        type='cz.poptavka.sample.client.resources.StyleResource' />
+
+    <g:HTMLPanel>
+        <!-- menu -->
+        <div>
+            <ul>
+                <li>
+                    <g:Label>ID</g:Label>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td width="200">
+                                <g:HorizontalPanel>
+                                    <g:Label styleName="{style.margin}">
+                                        <ui:msg key="from">from</ui:msg>
+                                    </g:Label>
+                                    <g:TextBox styleName="{style.rangeBox}" ui:field="idFrom"/>
+                                    <g:Label styleName="{style.margin}">
+                                        <ui:msg key="to">to</ui:msg>
+                                    </g:Label>
+                                    <g:TextBox styleName="{style.rangeBox}" ui:field="idTo"/>
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <g:Label>
+                        <ui:msg key="supplierName">Company name:</ui:msg>
+                    </g:Label>
+                </li>
+                <li>
+                    <g:TextBox ui:field="supplierName"/>
+                </li>
+                <li>
+                    <g:Label>
+                        <ui:msg key="rating">Rating:</ui:msg>
+                    </g:Label>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td width="200">
+                                <g:HorizontalPanel>
+                                    <g:Label styleName="{style.margin}">
+                                        <ui:msg key="ratingFrom">from</ui:msg>
+                                    </g:Label>
+                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingFrom"/>
+                                    <g:Label styleName="{style.margin}">
+                                        <ui:msg key="ratingTo">to</ui:msg>
+                                    </g:Label>
+                                    <g:TextBox styleName="{style.rangeBox}" ui:field="ratingTo"/>
+                                    <g:Label styleName="{style.margin}">%</g:Label>
+                                </g:HorizontalPanel>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <g:Label>
+                        <ui:msg key="supplierDescription">Supplier description:</ui:msg>
+                    </g:Label>
+                </li>
+                <li>
+                    <g:TextBox ui:field="supplierDescription" />
+                </li>
+                <li>
+                    <g:Label>Type</g:Label>
+                </li>
+                <li>
+                    <g:ListBox ui:field="type"></g:ListBox>
+                </li>
+                <li>
+                    <g:Label>Verified</g:Label>
+                </li>
+                <li>
+                    <g:ListBox ui:field="verified"></g:ListBox>
+                </li>
+                <li>
+                    <g:Label>Certified</g:Label>
+                </li>
+                <li>
+                    <g:ListBox ui:field="certified"></g:ListBox>
+                </li>
+                <li>
+                    <g:Button ui:field="clearBtn">Clear</g:Button>
+                </li>
+            </ul>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

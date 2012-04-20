@@ -90,7 +90,7 @@ public interface RootEventBus extends EventBus {
     void setSearchBar(IsWidget searchBar);
 
     @Event(handlers = RootPresenter.class)
-    void setUpSearchBar(int loadedWidget);
+    void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     /**
      * Pouzitie autodisplay funkcie v RootModule ma za nasledok, ze kazdy modul sa

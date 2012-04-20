@@ -5,16 +5,16 @@ import java.util.logging.Logger;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import cz.poptavka.sample.client.main.common.OverflowComposite;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.client.user.StyleInterface;
 import cz.poptavka.sample.shared.domain.UserDetail.Role;
 
-public class AdminView extends Composite implements AdminPresenter.AdminModuleInterface, StyleInterface {
+public class AdminView extends OverflowComposite implements AdminPresenter.AdminModuleInterface, StyleInterface {
 
     private static AdminModuleViewUiBinder uiBinder = GWT.create(AdminModuleViewUiBinder.class);
 
@@ -28,7 +28,8 @@ public class AdminView extends Composite implements AdminPresenter.AdminModuleIn
     accessRolesButton, emailActivationsButton, invoicesButton, messagesButton,
     paymentMethodsButton, permissionsButton, preferencesButton, problemsButton; //ourPaymentDetailsButton,
 
-    public AdminView() {
+    @Override
+    public void createView() {
         StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }

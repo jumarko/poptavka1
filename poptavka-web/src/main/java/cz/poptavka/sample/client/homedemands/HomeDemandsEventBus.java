@@ -6,6 +6,7 @@
  */
 package cz.poptavka.sample.client.homedemands;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.List;
 
 import com.mvp4g.client.annotation.Debug;
@@ -66,7 +67,7 @@ public interface HomeDemandsEventBus extends EventBus {
     void loadingHide();
 
     @Event(forwardToParent = true)
-    void setUpSearchBar(int loadedWidget);
+    void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);
