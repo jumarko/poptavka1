@@ -7,6 +7,7 @@ import cz.poptavka.sample.base.integration.BasicIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * Tests for password encryptor.
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class PasswordEncryptorTest extends BasicIntegrationTest {
 
     @Autowired
+    @Qualifier("passwordEncryptor")
     private Encryptor passwordEncryptor;
 
     @Test

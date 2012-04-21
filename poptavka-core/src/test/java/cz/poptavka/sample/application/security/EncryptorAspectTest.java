@@ -8,10 +8,12 @@ import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class EncryptorAspectTest extends BasicIntegrationTest {
 
     @Autowired
+    @Qualifier("passwordEncryptor")
     private Encryptor encryptor;
 
 

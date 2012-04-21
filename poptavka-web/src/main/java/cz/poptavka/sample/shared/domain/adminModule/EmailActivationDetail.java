@@ -1,6 +1,6 @@
 package cz.poptavka.sample.shared.domain.adminModule;
 
-import cz.poptavka.sample.domain.activation.EmailActivation;
+import cz.poptavka.sample.domain.activation.ActivationEmail;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -36,12 +36,12 @@ public class EmailActivationDetail implements Serializable {
      * @param domain - given domain object
      * @return EmailActivationDetail - created detail object
      */
-    public static EmailActivationDetail createEmailActivationDetail(EmailActivation domain) {
+    public static EmailActivationDetail createEmailActivationDetail(ActivationEmail domain) {
         EmailActivationDetail detail = new EmailActivationDetail();
 
         detail.setId(domain.getId());
         detail.setActivationLink(domain.getActivationLink());
-        detail.setTimeout(domain.getTimeout());
+        detail.setTimeout(domain.getValidTo());
 
         return detail;
     }
@@ -52,12 +52,12 @@ public class EmailActivationDetail implements Serializable {
      * @param detail - detail object which provides updated data
      * @return EmailActivation - updated given domain object
      */
-    public static EmailActivation updateEmailActivation(EmailActivation domain, EmailActivationDetail detail) {
+    public static ActivationEmail updateEmailActivation(ActivationEmail domain, EmailActivationDetail detail) {
         if (!domain.getActivationLink().equals(detail.getActivationLink())) {
             domain.setActivationLink(detail.getActivationLink());
         }
-        if (!domain.getTimeout().equals(detail.getTimeout())) {
-            domain.setTimeout(detail.getTimeout());
+        if (!domain.getValidTo().equals(detail.getTimeout())) {
+            domain.setValidTo(detail.getTimeout());
         }
         return domain;
     }

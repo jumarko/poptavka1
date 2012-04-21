@@ -1,10 +1,11 @@
 package cz.poptavka.sample.domain.user;
 
 import cz.poptavka.sample.application.security.aspects.Encrypted;
-import cz.poptavka.sample.domain.activation.EmailActivation;
+import cz.poptavka.sample.domain.activation.ActivationEmail;
 import cz.poptavka.sample.domain.common.DomainObject;
 import cz.poptavka.sample.domain.settings.Settings;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -54,7 +55,8 @@ public class User extends DomainObject {
 
     @OneToOne
     @NotAudited
-    private EmailActivation emailActivation;
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    private ActivationEmail activationEmail;
 
 
     public User() {
@@ -101,12 +103,12 @@ public class User extends DomainObject {
         this.settings = settings;
     }
 
-    public EmailActivation getEmailActivation() {
-        return emailActivation;
+    public ActivationEmail getActivationEmail() {
+        return activationEmail;
     }
 
-    public void setEmailActivation(EmailActivation emailActivation) {
-        this.emailActivation = emailActivation;
+    public void setActivationEmail(ActivationEmail activationEmail) {
+        this.activationEmail = activationEmail;
     }
 
     @Override

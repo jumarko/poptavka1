@@ -3,7 +3,9 @@
  */
 package cz.poptavka.sample.application.security;
 
+import cz.poptavka.sample.exception.IncorrectActivationLinkException;
 import org.apache.commons.lang.Validate;
+import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.util.text.StrongTextEncryptor;
 import org.jasypt.util.text.TextEncryptor;
 
@@ -28,7 +30,13 @@ public class SymmetricKeyEncryptor implements Encryptor {
 
     @Override
     public String decrypt(String encryptedText) {
-        return textEncryptor.decrypt(encryptedText);
+        try {
+            return textEncryptor.decrypt(encryptedText);
+        } catch (EncryptionOperationNotPossibleException eonpe) {
+            throw new IncorrectActivationLinkException("Passed activation link is in illegal format. Probably, "
+                    + "it has been encrypted incorrectly.");
+        }
+
     }
 
     @Override

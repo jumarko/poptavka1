@@ -1,5 +1,6 @@
 package cz.poptavka.sample.service.user;
 
+import cz.poptavka.sample.exception.LoginUserNotExistException;
 import org.apache.commons.lang.Validate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,7 +10,6 @@ import cz.poptavka.sample.application.security.Encryptor;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.IncorrectPasswordException;
 import cz.poptavka.sample.exception.LoginException;
-import cz.poptavka.sample.exception.UserNotExistException;
 import cz.poptavka.sample.service.GeneralService;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
@@ -68,7 +68,7 @@ public class LoginServiceImpl implements LoginService {
         // at most one user with given email can exist
         final User user = (User) this.generalService.searchUnique(searchByEmail);
         if (user == null) {
-            throw new UserNotExistException("email=" + email);
+            throw new LoginUserNotExistException("email=" + email);
         }
 
         try {

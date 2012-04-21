@@ -11,6 +11,7 @@
             <list>
                 <value>classpath:/crypto.properties</value>
                 <value>classpath:/database.properties</value>
+                <value>classpath:/deployment.properties</value>
                 <value>classpath:/messaging.properties</value>
                 <value>classpath:/fulltext.properties</value>
                 <value>classpath:/mail.properties</value>

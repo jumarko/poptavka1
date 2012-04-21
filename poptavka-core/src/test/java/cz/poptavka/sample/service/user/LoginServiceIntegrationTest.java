@@ -8,7 +8,7 @@ import cz.poptavka.sample.base.integration.DBUnitBaseTest;
 import cz.poptavka.sample.base.integration.DataSet;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.IncorrectPasswordException;
-import cz.poptavka.sample.exception.UserNotExistException;
+import cz.poptavka.sample.exception.LoginUserNotExistException;
 import cz.poptavka.sample.service.GeneralService;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
@@ -17,6 +17,7 @@ import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @DataSet(path = { "classpath:cz/poptavka/sample/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
@@ -25,6 +26,7 @@ public class LoginServiceIntegrationTest extends DBUnitBaseTest {
     @Autowired
     private LoginService loginService;
     @Autowired
+    @Qualifier("passwordEncryptor")
     private Encryptor encryptor;
     @Autowired
     private GeneralService generalService;
@@ -50,7 +52,7 @@ public class LoginServiceIntegrationTest extends DBUnitBaseTest {
         assertFalse(user.getPassword().equals(testUserPassword));
     }
 
-    @Test(expected = UserNotExistException.class)
+    @Test(expected = LoginUserNotExistException.class)
     public void loginUserForNonexistentEmail() {
         loginService.loginUser("super-dummy-email-unknown@poptavka-fake.com", "SUPER_SECRET");
     }

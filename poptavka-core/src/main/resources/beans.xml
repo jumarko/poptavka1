@@ -130,6 +130,12 @@
     
     <bean id="notificationItemService" class="cz.poptavka.sample.service.message.settings.NotificationItemServiceImpl" />
 
+    <bean id="userVerificationService" class="cz.poptavka.sample.service.user.BusinessUserVerificationServiceImpl">
+        <constructor-arg ref="symmetricEncryptor" />
+        <constructor-arg ref="generalService" />
+        <property name="deploymentUrl" value="${deployment.url}" />
+    </bean>
+
     <!-- Jobs -->
     <bean id="additionalInfoFiller" class="cz.poptavka.sample.service.jobs.AdditionalInfoFiller">
         <property name="demandService" ref="demandService" />

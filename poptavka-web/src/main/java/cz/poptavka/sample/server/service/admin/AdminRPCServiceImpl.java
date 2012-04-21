@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.server.service.admin;
 
+import cz.poptavka.sample.domain.activation.ActivationEmail;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +22,6 @@ import com.googlecode.genericdao.search.Sort;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.main.common.search.dataHolders.FilterItem;
 import cz.poptavka.sample.client.service.demand.AdminRPCService;
-import cz.poptavka.sample.domain.activation.EmailActivation;
 import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.demand.Category;
@@ -165,11 +165,11 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             return InvoiceDetail.createInvoiceDetail(invoice);
         }
     };
-    private final Converter<EmailActivation, EmailActivationDetail> emailActivationConverter =
-            new Converter<EmailActivation, EmailActivationDetail>() {
+    private final Converter<ActivationEmail, EmailActivationDetail> emailActivationConverter =
+            new Converter<ActivationEmail, EmailActivationDetail>() {
 
                 @Override
-                public EmailActivationDetail convert(EmailActivation emailActivation) {
+                public EmailActivationDetail convert(ActivationEmail emailActivation) {
                     return EmailActivationDetail.createEmailActivationDetail(emailActivation);
                 }
             };
@@ -386,9 +386,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
-            search = new Search(EmailActivation.class);
+            search = new Search(ActivationEmail.class);
         } else {
-            search = this.setFilters(searchDataHolder, new Search(EmailActivation.class));
+            search = this.setFilters(searchDataHolder, new Search(ActivationEmail.class));
         }
         return (long) generalService.count(search);
     }
@@ -396,7 +396,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public List<EmailActivationDetail> getAdminEmailsActivation(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
-        Search search = new Search(EmailActivation.class);
+        Search search = new Search(ActivationEmail.class);
         if (searchDataHolder != null) {
             search = this.setFilters(searchDataHolder, search);
         }
@@ -408,7 +408,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public void updateEmailActivation(EmailActivationDetail emailActivationDetail) {
-        EmailActivation emailActivation = generalService.find(EmailActivation.class, emailActivationDetail.getId());
+        ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
         generalService.merge(EmailActivationDetail.updateEmailActivation(emailActivation, emailActivationDetail));
     }
 
