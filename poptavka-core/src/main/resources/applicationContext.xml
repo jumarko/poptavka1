@@ -9,6 +9,7 @@
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
+                <value>classpath:/crypto.properties</value>
                 <value>classpath:/database.properties</value>
                 <value>classpath:/messaging.properties</value>
                 <value>classpath:/fulltext.properties</value>

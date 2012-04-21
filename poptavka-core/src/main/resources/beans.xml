@@ -207,5 +207,8 @@
             <encryption:string-digester pool-size="2" algorithm="SHA-256" iterations="100000" salt-size-bytes="16"/>
         </property>
     </bean>
+    <bean id="symmetricEncryptor" class="cz.poptavka.sample.application.security.SymmetricKeyEncryptor">
+        <constructor-arg value="${crypto.symmetricKey.password}" />
+    </bean>
 
 </beans>

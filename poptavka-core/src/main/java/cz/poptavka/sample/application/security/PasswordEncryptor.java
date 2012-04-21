@@ -33,4 +33,9 @@ public class PasswordEncryptor implements Encryptor {
         this.stringDigester = stringDigester;
     }
 
+    @Override
+    public String decrypt(String encryptedText) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Password encryptor MUST be a one-way only."
+                + " No decryption of users' password will ever be supported!");
+    }
 }

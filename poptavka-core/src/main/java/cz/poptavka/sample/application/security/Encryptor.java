@@ -13,6 +13,20 @@ public interface Encryptor {
     String encrypt(String plainText);
 
     /**
+     * Decrypts given encrypted text to the plain text.
+     * This method assumes that {@code encryptedText} has been encrypted via this encryptor
+     * {@link #encrypt(String)}  method, otherwise it is very improbable, that decryption
+     * will be successful.
+     *
+     * @param encryptedText
+     * @return plain text
+     * @throws UnsupportedOperationException if encryptor does not support this operation,
+     *        e.g. {@link PasswordEncryptor}
+     */
+    String decrypt(String encryptedText) throws UnsupportedOperationException;
+
+
+    /**
      * Checks whether given {@code plainText} matches with given {@code digest} (hash).
      * <strong>This is optinal operation!</strong>.
      * @param plainText plain text form of some string
@@ -21,4 +35,5 @@ public interface Encryptor {
      * @throws UnsupportedOperationException if encryptor does not support this operation
      */
     boolean matches(String plainText, String digest) throws UnsupportedOperationException;
+
 }
