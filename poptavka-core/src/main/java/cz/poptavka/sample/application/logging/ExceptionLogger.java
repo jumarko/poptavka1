@@ -86,11 +86,14 @@ public class ExceptionLogger {
     private void sendNotificationMail(Exception exception) {
         if (CollectionUtils.isNotEmpty(recipients)) {
             Preconditions.checkNotNull(exception);
-            final SimpleMailMessage exceptionNotificationMessage = createNotificationMessage(exception);
-            if (excludeExceptionsInTestPhase && exceptionNotificationMessage.getText().contains("SurefireBooter")) {
-                // DO NOT send any notification
+
+            if (excludeExceptionsInTestPhase && isExceptionFromTest(exception)) {
+                // DO NOT send any notification for exceptions occurred in unit test - this might be the regular case
+                // and even if not, it is guarded by test itself
                 return;
             }
+
+            final SimpleMailMessage exceptionNotificationMessage = createNotificationMessage(exception);
             try {
                 // send asynchronously to avoid blocking of normal execution
                 this.mailService.sendAsync(exceptionNotificationMessage);
@@ -98,6 +101,23 @@ public class ExceptionLogger {
                 LOGGER.warn("An error occured while sending exception notification mail: ", me);
             }
         }
+    }
+
+    private boolean isExceptionFromTest(Exception exception) {
+        if (exception.getStackTrace().length < 1) {
+            throw new IllegalStateException("There is something very strange with exception " + exception + "."
+                    + " It does not contain StackTraceElement-s!");
+        }
+
+        for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
+            // JUnitStarter is called by IDEA, SurefireStarter is called by Maven
+            if ("JUnitStarter.java".equalsIgnoreCase(stackTraceElement.getFileName())
+                    || "SurefireStarter.java".equalsIgnoreCase(stackTraceElement.getFileName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private SimpleMailMessage createNotificationMessage(Exception exception) {
