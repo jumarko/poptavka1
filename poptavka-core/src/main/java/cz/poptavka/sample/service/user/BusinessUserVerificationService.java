@@ -4,7 +4,9 @@
 package cz.poptavka.sample.service.user;
 
 import cz.poptavka.sample.domain.user.BusinessUser;
+import cz.poptavka.sample.exception.ExpiredActivationLinkException;
 import cz.poptavka.sample.exception.IncorrectActivationLinkException;
+import cz.poptavka.sample.exception.UserNotExistException;
 
 public interface BusinessUserVerificationService {
     /**
@@ -25,7 +27,8 @@ public interface BusinessUserVerificationService {
      * @throws cz.poptavka.sample.exception.UserNotExistException if user with email extracted from activation link
      *      does not exist in user database
      */
-    BusinessUser verifyActivationLink(String link) throws IncorrectActivationLinkException;
+    BusinessUser verifyActivationLink(String link) throws UserNotExistException, ExpiredActivationLinkException,
+            IncorrectActivationLinkException;
 
 
     /**
