@@ -15,13 +15,12 @@ import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.GenericServiceImpl;
 import cz.poptavka.sample.service.register.RegisterService;
 import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Common ancestor for all implementations of service methods for {@link BusinessUserRole}-s.
@@ -43,12 +42,17 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private final GeneralService generalService;
     private final RegisterService registerService;
+    private BusinessUserVerificationService userVerificationService;
 
-    public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService) {
+    public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService,
+            BusinessUserVerificationService userVerificationService) {
         Preconditions.checkNotNull(generalService);
         Preconditions.checkNotNull(registerService);
+        Preconditions.checkNotNull(userVerificationService);
+
         this.generalService = generalService;
         this.registerService = registerService;
+        this.userVerificationService = userVerificationService;
     }
 
     @Override
@@ -89,10 +93,15 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
         businessUserRole.setVerification(Verification.UNVERIFIED);
+        // User#activationEmail is set within scope of "generateActivationLink" method
+        userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
 
         createBusinessUserIfNotExist(businessUserRole);
         return super.create(businessUserRole);
     }
+
+
+
 
     /**
      * Checks whether given <code>businessUser</code> has role specified by <code>userRoleClass</code>.

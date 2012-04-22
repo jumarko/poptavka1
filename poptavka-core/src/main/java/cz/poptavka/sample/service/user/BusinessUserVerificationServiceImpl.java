@@ -11,15 +11,16 @@ import cz.poptavka.sample.domain.user.BusinessUserRole;
 import cz.poptavka.sample.domain.user.Verification;
 import cz.poptavka.sample.exception.ExpiredActivationLinkException;
 import cz.poptavka.sample.exception.IncorrectActivationLinkException;
-import cz.poptavka.sample.exception.LoginUserNotExistException;
 import cz.poptavka.sample.exception.UserNotExistException;
 import cz.poptavka.sample.service.GeneralService;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 public class BusinessUserVerificationServiceImpl implements BusinessUserVerificationService {
@@ -31,6 +32,7 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
     private String deploymentUrl;
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
+    private static final String USER_ACTIVATION_RESOURCE_URI = "user/activation?link=";
 
 
     public BusinessUserVerificationServiceImpl(SymmetricKeyEncryptor symmetricEncryptor,
@@ -47,49 +49,43 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public String generateActivationLink(BusinessUser businessUser) {
         Validate.notNull(businessUser, "User to be activated must be specified!");
-        Validate.notNull(businessUser.getId(), "User to be activated must already haven an ID assigned!");
-
-        final BusinessUser businessUserFromDb = this.generalService.find(BusinessUser.class, businessUser.getId());
-        if (businessUserFromDb == null) {
-            throw new UserNotExistException("No user with id=" + businessUser.getId() + " exists!");
-        }
 
         final Date now = new Date();
         final Date linkValidTo = new Date(now.getTime() + DEFAULT_VALIDITY_LENGTH_MILLIS);
-        final ActivationLink activationLink = new ActivationLink(businessUserFromDb.getEmail(), linkValidTo.getTime());
+        final ActivationLink activationLink = new ActivationLink(businessUser.getEmail(), linkValidTo.getTime());
 
-        final String encryptedLink = symmetricEncryptor.encrypt(serializeLink(activationLink));
+        // URL encoding must be performed because encrypted link can contain '/' character
+        final String encryptedLink = encode(symmetricEncryptor.encrypt(serializeLink(activationLink)));
 
         // emailActivation property can be overwritten multiple times.
-        saveActivationEmailForUser(businessUserFromDb, activationLink, encryptedLink);
+        setActivationEmailForUser(businessUser, activationLink, encryptedLink);
 
-        return StringUtils.trimToEmpty(deploymentUrl) + encryptedLink;
+        return StringUtils.trimToEmpty(deploymentUrl) + USER_ACTIVATION_RESOURCE_URI
+                + businessUser.getActivationEmail().getActivationLink();
     }
 
 
-    /**
-     * Checks if passed {@code activationLink} represents valid link for correct user
-     * and activates that user if all requirements are satisfied - this practically means setting
-     * {@link BusinessUserRole#verification} to  {@link Verification#VERIFIED} for every {@link BusinessUserRole}
-     * assigned to the given business user.
-     *
-     * @param activationLink full activation link including host url,
-     *                       e.g. "https://www.poptavam.com/poptavka/ABx+12KCLAAHSJKQIUHKWQsdfakjlPQOW122
-     * @return business user which has been verified ({@link BusinessUserRole#verification}
-     * @throws IncorrectActivationLinkException if non-valid activation link is passed, e.g. empty or without user email
-     * @throws cz.poptavka.sample.exception.LoginUserNotExistException if activation link represents activation
-     * of non-existing user
-     * @throws ExpiredActivationLinkException if activation link expired already and cannot be used anymore
-     */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
-    public BusinessUser verifyActivationLink(String activationLink) throws LoginUserNotExistException,
+    @Transactional
+    public BusinessUser verifyUser(String activationLink) {
+        final BusinessUser businessUser = verifyActivationLink(activationLink);
+        for (BusinessUserRole role: businessUser.getBusinessUserRoles()) {
+            role.setVerification(Verification.VERIFIED);
+        }
+        generalService.save(businessUser);
+        return businessUser;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BusinessUser verifyActivationLink(String activationLink) throws UserNotExistException,
             ExpiredActivationLinkException, IncorrectActivationLinkException {
         Validate.notEmpty(activationLink, "Activation link to be verified must not be null!");
-        activationLink = stripDeploymentUrl(activationLink);
+
+        // DO NOT URL DECODE activationLink - this has already be done by Spring MVC infrastructure
+        activationLink = stripUrlPrefix(activationLink);
         final ActivationLink decryptedLink = deserializeLink(symmetricEncryptor.decrypt(activationLink));
 
         if (linkExpired(decryptedLink)) {
@@ -105,16 +101,12 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
             throw new IncorrectActivationLinkException("No activation email has been set for user. Activation link "
                     + decryptedLink + " might have been generated by malicious user!");
         }
-        // activation link is stored in an encrypted form in User table, therefore these encrypted forms
-        // must be compared!
-        if (! activationLink.equals(userToBeActivated.getActivationEmail().getActivationLink())) {
+        // activation link is stored in an encrypted URL encoded form in User table,
+        // therefore these forms must be compared!
+        if (! activationLink.equals(decode(userToBeActivated.getActivationEmail().getActivationLink()))) {
             throw new IncorrectActivationLinkException("Received activation link is different from the one"
                     + " assigned to the user. Link might have been generated by malicious user!");
         }
-        for (BusinessUserRole role: userToBeActivated.getBusinessUserRoles()) {
-            role.setVerification(Verification.VERIFIED);
-        }
-        generalService.save(userToBeActivated);
 
         return userToBeActivated;
     }
@@ -152,23 +144,75 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
         }
     }
 
-    private String stripDeploymentUrl(String activationLinkPlainText) {
+    private String stripUrlPrefix(String activationLinkPlainText) {
         Validate.notEmpty(activationLinkPlainText);
         if (activationLinkPlainText.startsWith(deploymentUrl)) {
-            return activationLinkPlainText.substring(deploymentUrl.length());
+            activationLinkPlainText = activationLinkPlainText.substring(deploymentUrl.length());
+        }
+        if (activationLinkPlainText.startsWith(USER_ACTIVATION_RESOURCE_URI)) {
+            activationLinkPlainText = activationLinkPlainText.substring(USER_ACTIVATION_RESOURCE_URI.length());
         }
 
         return activationLinkPlainText;
     }
 
-    private void saveActivationEmailForUser(BusinessUser user, ActivationLink activationLink, String encryptedLink) {
+    private void setActivationEmailForUser(BusinessUser user, ActivationLink activationLink, String linkString) {
         final ActivationEmail activationEmail = new ActivationEmail();
-        activationEmail.setActivationLink(encryptedLink);
+        activationEmail.setActivationLink(linkString);
         activationEmail.setValidTo(new Date(activationLink.getValidity()));
         user.setActivationEmail(activationEmail);
-        this.generalService.save(user);
     }
 
+    private String encode(String paramValue) {
+        try {
+            return URLEncoder.encode(paramValue, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("Never should occur - unsupported encoding", e);
+        }
+    }
 
+    private String decode(String urlEncoded) {
+        try {
+            return URLDecoder.decode(urlEncoded, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("Never should occur - unsupported encoding", e);
+        }
+    }
+
+    /**
+     * Nested class for more handy work with activation links.
+     */
+    private static class ActivationLink {
+
+        private String userEmail;
+        private long validity;
+
+        private ActivationLink() {
+            // ONLY FOR JACKSON deserialization mechanism
+        }
+
+        public ActivationLink(String userEmail, long validity) {
+            this.userEmail = userEmail;
+            this.validity = validity;
+        }
+
+
+        public long getValidity() {
+            return validity;
+        }
+
+        public void setValidity(long validity) {
+            this.validity = validity;
+        }
+
+        public String getUserEmail() {
+            return userEmail;
+        }
+
+        public void setUserEmail(String userEmail) {
+            this.userEmail = userEmail;
+        }
+
+    }
 
 }

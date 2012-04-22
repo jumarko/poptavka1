@@ -113,7 +113,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
                             }
                         } else {
                             if (potentialSupplierTwo.getSupplier().getOveralRating() != null) {
-                                // supplier with rating should be preferred before supplier without ratingß
+                                // supplier with rating should be preferred before supplier without rating
                                 return -1;
                             }
                         }

@@ -29,8 +29,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     private final NotificationUtils notificationUtils;
 
     public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
-            RegisterService registerService) {
-        super(generalService, registerService);
+            RegisterService registerService, BusinessUserVerificationService userVerificationService) {
+        super(generalService, registerService, userVerificationService);
         Preconditions.checkNotNull(supplierDao);
         setDao(supplierDao);
         this.notificationUtils = new NotificationUtils(registerService);

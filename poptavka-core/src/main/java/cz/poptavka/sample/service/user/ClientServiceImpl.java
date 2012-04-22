@@ -24,8 +24,9 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
 
     private final NotificationUtils notificationUtils;
 
-    public ClientServiceImpl(GeneralService generalService, RegisterService registerService) {
-        super(generalService, registerService);
+    public ClientServiceImpl(GeneralService generalService, RegisterService registerService,
+            BusinessUserVerificationService userVerificationService) {
+        super(generalService, registerService, userVerificationService);
         this.notificationUtils = new NotificationUtils(registerService);
     }
 

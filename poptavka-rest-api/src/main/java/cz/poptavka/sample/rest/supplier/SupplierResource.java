@@ -28,10 +28,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
-@RequestMapping(SupplierResource.DEMAND_RESOURCE_URI)
+@RequestMapping(SupplierResource.SUPPLIER_RESOURCE_URI)
 public class SupplierResource extends AbstractPageableResource<Supplier, SupplierDto> {
 
-    static final String DEMAND_RESOURCE_URI = "/suppliers";
+    static final String SUPPLIER_RESOURCE_URI = "/suppliers";
 
     private final SupplierService supplierService;
     private final Converter<Supplier, SupplierDto> supplierSerializer;
@@ -39,7 +39,7 @@ public class SupplierResource extends AbstractPageableResource<Supplier, Supplie
     @Autowired
     public SupplierResource(SupplierService supplierService, Converter<Supplier, SupplierDto> supplierSerializer,
             Converter<SupplierDto, Supplier> supplierDeserializer) {
-        super(Supplier.class, DEMAND_RESOURCE_URI);
+        super(Supplier.class, SUPPLIER_RESOURCE_URI);
 
         Validate.notNull(supplierService);
         Validate.notNull(supplierSerializer);
@@ -114,7 +114,7 @@ public class SupplierResource extends AbstractPageableResource<Supplier, Supplie
 
     //--------------------------------------------------- PRIVATE STUFF ------------------------------------------------
     private void setLinks(SupplierDto supplierDto, Supplier supplier) {
-        supplierDto.setLinks(ResourceUtils.generateSelfLinks(DEMAND_RESOURCE_URI, supplier));
+        supplierDto.setLinks(ResourceUtils.generateSelfLinks(SUPPLIER_RESOURCE_URI, supplier));
     }
 
 }

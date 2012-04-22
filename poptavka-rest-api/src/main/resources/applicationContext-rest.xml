@@ -55,6 +55,8 @@
         <constructor-arg ref="supplierSerializer" />
         <constructor-arg ref="supplierDeserializer" />
     </bean>
-    
+
+    <!--User-->
+    <bean id="userActivationResource" class="cz.poptavka.sample.rest.user.UserActivationResource" />
 </beans>
 

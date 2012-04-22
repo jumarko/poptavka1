@@ -60,6 +60,7 @@
     <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">
         <constructor-arg ref="generalService" />
         <constructor-arg ref="registerService" />
+        <constructor-arg ref="userVerificationService" />
         <property name="dao" ref="clientDao"/>
     </bean>
 
@@ -105,6 +106,7 @@
         <constructor-arg ref="generalService" />
         <constructor-arg ref="supplierDao" />
         <constructor-arg ref="registerService" />
+        <constructor-arg ref="userVerificationService" />
     </bean>
 
     <bean id="messageService" class="cz.poptavka.sample.service.message.MessageServiceImpl">
