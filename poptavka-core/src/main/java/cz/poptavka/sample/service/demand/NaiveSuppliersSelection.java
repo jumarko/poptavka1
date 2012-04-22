@@ -105,17 +105,19 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
                         }
 
                         if (potentialSupplierOne.getSupplier().getOveralRating() != null) {
+                            if (potentialSupplierTwo.getSupplier().getOveralRating() == null) {
+                                // since second supplier has no overall rating, the first one is always more preferred
+                                return 1;
+                            }
                             if (potentialSupplierOne.getSupplier().getOveralRating()
                                     .compareTo(potentialSupplierTwo.getSupplier().getOveralRating()) != 0) {
 
                                 return potentialSupplierOne.getSupplier().getOveralRating()
                                         .compareTo(potentialSupplierTwo.getSupplier().getOveralRating());
                             }
-                        } else {
-                            if (potentialSupplierTwo.getSupplier().getOveralRating() != null) {
-                                // supplier with rating should be preferred before supplier without rating
-                                return -1;
-                            }
+                        } else if (potentialSupplierTwo.getSupplier().getOveralRating() != null) {
+                            // supplier with rating should be preferred before supplier without rating
+                            return -1;
                         }
 
 
