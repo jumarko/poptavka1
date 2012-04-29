@@ -5,10 +5,13 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -65,6 +68,10 @@ public class AdminInvoicesPresenter
     private List<String> gridColumns = Arrays.asList(columnNames);
     //detail related
     private Boolean detailDisplayed = false;
+
+    private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     /**
      * Interface for widget AdminInvoicesView.
@@ -303,7 +310,7 @@ public class AdminInvoicesPresenter
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
-                    object.setTotalPrice(BigDecimal.valueOf(Long.valueOf(value)));
+                    object.setTotalPrice(BigDecimal.valueOf(currencyFormat.parse(value)));
                     eventBus.addInvoiceToCommit(object);
                 }
             }

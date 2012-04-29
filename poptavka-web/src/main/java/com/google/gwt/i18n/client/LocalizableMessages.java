@@ -154,4 +154,7 @@ public interface LocalizableMessages extends Messages {
     String received();
     String accepted();
 
+    //General
+    String currencyFormat();
+
 }

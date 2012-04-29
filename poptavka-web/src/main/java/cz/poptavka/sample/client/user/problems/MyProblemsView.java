@@ -3,6 +3,8 @@ package cz.poptavka.sample.client.user.problems;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -38,6 +40,10 @@ public class MyProblemsView extends Composite implements
 
     @UiField
     SimplePanel detailSection;
+
+    private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     private AsyncDataProvider dataProvider = new AsyncDataProvider() {
 
@@ -151,7 +157,7 @@ public class MyProblemsView extends Composite implements
 
             @Override
             public String getValue(Problem object) {
-                return object.getPrice();
+                return currencyFormat.format(Double.valueOf(object.getPrice()));
             }
         };
 

@@ -10,6 +10,8 @@ import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -55,6 +57,10 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     private Column<InvoiceDetail, String> payMethodColumn;
     private Column<InvoiceDetail, String> invoiceNumberColumn;
     private SingleSelectionModel<InvoiceDetail> selectionModel;
+
+    private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
     // The key provider that provides the unique ID of a InvoiceDetail.
     private static final ProvidesKey<InvoiceDetail> KEY_PROVIDER = new ProvidesKey<InvoiceDetail>() {
 
@@ -148,7 +154,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
 
             @Override
             public String getValue(InvoiceDetail object) {
-                return Long.toString(object.getTotalPrice().longValue());
+                return currencyFormat.format(object.getTotalPrice().longValue());
             }
         });
 

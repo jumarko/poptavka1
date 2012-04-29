@@ -6,6 +6,8 @@ package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -27,6 +29,10 @@ public class AdminInvoiceInfoView extends Composite implements
         AdminInvoicesPresenter.AdminInvoiceInfoInterface {
 
     private static AdminInvoiceInfoViewUiBinder uiBinder = GWT.create(AdminInvoiceInfoViewUiBinder.class);
+
+    private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     interface AdminInvoiceInfoViewUiBinder extends
             UiBinder<Widget, AdminInvoiceInfoView> {
@@ -81,7 +87,7 @@ public class AdminInvoiceInfoView extends Composite implements
 //        invoiceInfo.setPaymentMethod(paymentMethod.getItemText(paymentMethod.getSelectedIndex()));
         invoiceInfo.setShipmentDate(shipmentDate.getValue());
         invoiceInfo.setTaxBasis(BigDecimal.valueOf(Long.valueOf(taxBasis.getText())));
-        invoiceInfo.setTotalPrice(BigDecimal.valueOf(Long.valueOf(totalPrice.getText())));
+        invoiceInfo.setTotalPrice(new BigDecimal(currencyFormat.parse(totalPrice.getText())));
 //        invoiceInfo.setUserServices(userServices.get());
         invoiceInfo.setVariableSymbol(variableSymbol.getText());
         invoiceInfo.setVat(BigDecimal.valueOf(Long.valueOf(vat.getText())));
@@ -104,7 +110,7 @@ public class AdminInvoiceInfoView extends Composite implements
 //            paymentMethod.setText(PaymentMethodDetail.createPaymentMethodDetail(invoice.getPaymentMethod()));
             shipmentDate.setValue(invoice.getShipmentDate());
             taxBasis.setText(Long.toString(invoice.getTaxBasis().longValue()));
-            totalPrice.setText(Long.toString(invoice.getTotalPrice().longValue()));
+            totalPrice.setText(currencyFormat.format(invoice.getTotalPrice()));
 //            userServices.setText(UserServices);
             variableSymbol.setText(invoice.getVariableSymbol());
             vat.setText(Long.toString(invoice.getVat().longValue()));

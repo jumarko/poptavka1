@@ -149,7 +149,7 @@ public class OfferQuestionWindow extends Composite implements OfferQuestionPrese
         if (selectedResponse.equals(RESPONSE_OFFER)) {
             errorCount += (priceBox.getText().equals("") ? 1 : 0);
             try {
-                Long.parseLong(priceBox.getValue());
+                Long.valueOf(priceBox.getValue());
             } catch (Exception ex) {
                 errorCount++;
             }

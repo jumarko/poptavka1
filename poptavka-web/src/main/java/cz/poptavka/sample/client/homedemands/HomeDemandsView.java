@@ -11,6 +11,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -60,6 +61,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     Button offerBtn;
 
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
+    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
     private final SingleSelectionModel<FullDemandDetail> selectionModel =
             new SingleSelectionModel<FullDemandDetail>();
 
@@ -199,7 +201,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
 
             @Override
             public String getValue(FullDemandDetail demandDetail) {
-                return demandDetail.getPriceString();
+                return currencyFormat.format(demandDetail.getPrice());
             }
         });
 

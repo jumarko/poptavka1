@@ -155,7 +155,7 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
         if (selectedResponse.equals(RESPONSE_OFFER)) {
             errorCount += (priceBox.getText().equals("") ? 1 : 0);
             try {
-                Long.parseLong(priceBox.getValue());
+                Long.valueOf(priceBox.getValue());
             } catch (Exception ex) {
                 errorCount++;
             }

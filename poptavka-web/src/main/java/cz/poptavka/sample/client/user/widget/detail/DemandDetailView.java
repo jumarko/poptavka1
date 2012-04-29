@@ -3,6 +3,7 @@ package cz.poptavka.sample.client.user.widget.detail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -26,7 +27,10 @@ public class DemandDetailView extends Composite {
     @UiField
     HTMLPanel detail;
     private boolean empty = true;
+
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
 
     public Label getPrice() {
         return price;
@@ -87,7 +91,7 @@ public class DemandDetailView extends Composite {
     private void init(FullDemandDetail demand) {
         GWT.log("Demand detail" + demand.toString());
         demandName.setText(demand.getTitle());
-        price.setText(demand.getPriceString());
+        price.setText(currencyFormat.format(demand.getPrice()));
         endDate.setText(demand.getEndDate().toString());
         validTo.setText(demand.getValidToDate().toString());
         type.setText(demand.getDetailType().getValue());

@@ -1,10 +1,13 @@
 package cz.poptavka.sample.client.user.admin.tab;
 
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -56,6 +59,10 @@ public class AdminOffersPresenter
         "id", "demand.id", "supplier.id", "price", "state", "", "finnishDate"
     };
     private List<String> gridColumns = Arrays.asList(columnNames);
+
+    private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     /**
      * Interface for widget AdminOffersView.
@@ -271,7 +278,7 @@ public class AdminOffersPresenter
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new OfferDetail(object));
                     }
-                    object.setPrice(BigDecimal.valueOf(Long.valueOf(value)));
+                    object.setPrice(BigDecimal.valueOf(currencyFormat.parse(value)));
                     eventBus.addOfferToCommit(object);
                 }
             }

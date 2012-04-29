@@ -7,6 +7,8 @@ package cz.poptavka.sample.client.user.admin.tab;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
@@ -32,6 +34,10 @@ public class AdminDemandInfoView extends Composite implements
         AdminDemandInfoPresenter.AdminDemandInfoInterface {
 
     private static AdminDemandInfoViewUiBinder uiBinder = GWT.create(AdminDemandInfoViewUiBinder.class);
+
+    private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
+
+    private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     interface AdminDemandInfoViewUiBinder extends
             UiBinder<Widget, AdminDemandInfoView> {
@@ -171,7 +177,7 @@ public class AdminDemandInfoView extends Composite implements
         // Update the contact.
         demandInfo.setTitle(titleBox.getText());
         demandInfo.setDescription(descriptionBox.getText());
-        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(priceBox.getText())));
+        demandInfo.setPrice(BigDecimal.valueOf(Double.valueOf(currencyFormat.parse(priceBox.getText()))));
         demandInfo.setEndDate(endDateBox.getValue());
         demandInfo.setValidToDate(expirationBox.getValue());
         demandInfo.setClientId(Long.valueOf(clientID.getText()));
@@ -200,7 +206,7 @@ public class AdminDemandInfoView extends Composite implements
         if (contact != null) {
             titleBox.setText(contact.getTitle());
             descriptionBox.setText(contact.getDescription());
-            priceBox.setText(contact.getPriceString());
+            priceBox.setText(currencyFormat.format(contact.getPrice()));
             endDateBox.setValue(contact.getEndDate());
             expirationBox.setValue(contact.getValidToDate());
             clientID.setText(String.valueOf(contact.getClientId()));
