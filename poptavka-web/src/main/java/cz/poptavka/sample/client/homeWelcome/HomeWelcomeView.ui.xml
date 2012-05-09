@@ -9,7 +9,7 @@
 		}
     </ui:style>
 <!--    <g:HTMLPanel styleName='{res.layout.stackLayout}'>-->
-    <g:HTMLPanel styleName='{res.layout.fullSize}'>
+    <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
         <h1>Milí vývojári,</h1>
         <h3>
                 Už viac ako rok sa trápime s naším projektom. Vyzerá to tak, že pokiaľ to netlačím tak nikto z vás nemá iniciatívu niečo robiť. Túto

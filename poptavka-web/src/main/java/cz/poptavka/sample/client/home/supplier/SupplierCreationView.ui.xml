@@ -8,7 +8,7 @@
         type='cz.poptavka.sample.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <g:HTMLPanel>
+    <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
         <g:StackLayoutPanel ui:field='mainPanel'
             styleName='{res.layout.stackLayout}' height="55%">
             <g:stack>

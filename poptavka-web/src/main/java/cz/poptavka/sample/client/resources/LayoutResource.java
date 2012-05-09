@@ -18,6 +18,8 @@ public interface LayoutResource extends CssResource {
     String layoutUser();
     @ClassName("header-container")
     String headerContainer();
+    @ClassName("header-content")
+    String headerContent();
     @ClassName("footer-container")
     String footerContainer();
     @ClassName("body-container")
@@ -28,6 +30,12 @@ public interface LayoutResource extends CssResource {
     String loginButton();
     @ClassName("footer-toggle")
     String footerToggle();
+    @ClassName("home-menu")
+    String homeMenu();
+    @ClassName("search-view")
+    String searchView();
+    @ClassName("selected")
+    String selected();
 
     /** UserView.class **/
     @ClassName("full-size-panel")
@@ -52,14 +60,6 @@ public interface LayoutResource extends CssResource {
     String stackLayout();
     @ClassName("stackLayoutPanelHeader")
     String stackLayoutPanelHeader();
-
-    @ClassName("home-menu")
-    String homeMenu();
-    @ClassName("search-view")
-    String searchView();
-
-    @ClassName("selected")
-    String selected();
 
     /** DELETE AFTER THIS LINE **/
 

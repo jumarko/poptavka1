@@ -3,12 +3,20 @@
 /**
  * Css Resources for main basic layout of ALL views
  *
- * @author Beho
+ * @author Beho, Jaro
  *
  */
 body {
 	margin: 0;
 	background: url(images/body_bg.gif) repeat-x;
+}
+
+.body-container {
+	margin: 0 auto;
+	padding: 5px 50px;
+	width: 975px;
+	height: 100%;
+	background: url(images/content_bg.gif) no-repeat top center #ffffff;
 }
 
 .layout-public-main {
@@ -26,9 +34,22 @@ body {
 }
 
 .header-container {
+	margin: 0 auto;
+	height: 148px;
+	width: 1075px;
 	background-color: none;
 }
 
+.header-content {
+	margin: 0;
+	padding: 0;
+	height: 110px;
+	width: 1075px;
+}
+/*
+*	Footer Module styles
+*
+*/
 .footer-container {
 	position: absolute;
 	border-top: 2px black dotted;
@@ -49,10 +70,10 @@ body {
 	cursor: pointer;
 }
 
-.body-container {
-	background-color: #ffffff;
-}
-
+/*
+*	Login are styles
+*
+*/
 .login-area {
 	float: right;
 	border-bottom: thin black solid;
@@ -102,11 +123,13 @@ body {
 	padding-left: 10px;
 	height: 36px;
 }
+
 .submenu-list {
 	margin: 0px;
 	padding: 0 0 0 10px;
 	list-style: none;
 }
+
 .submenu-list a {
 	display: block;
 	background: #1f7b82;
@@ -114,6 +137,7 @@ body {
 	color: #ffffff;
 	border-bottom: 1px solid #07545A;
 }
+
 .submenu-list a:hover {
 	cursor: pointer;
 	background: #15676d;
@@ -146,15 +170,16 @@ body {
 *	Home Menu Styles
 *
 */
-.home-menu ul {
-	list-style-type: square;
-	display: inline;
+.home-menu {
+	list-style-type: none;
 	padding: 0;
-	margin: 0;
+	margin: 0 0 0 6px;
+	width: 550px;
 }
 
-.home-menu ul, li {
-	display: inline;
+.home-menu li {
+	display: block;
+	float: left;
 }
 
 .home-menu li button {
@@ -163,6 +188,18 @@ body {
 	color: #f4f4f4;
 	font-size: 16px;
 	font-weight: bold;
+	text-shadow: 1px 3px 3px #03272a;
+}
+
+.home-menu li button:hover {
+	border: none;
+	text-shadow: 0px 0px 3px #777;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.home-menu li button:active {
+	border: none;
 }
 
 .home-menu li a {
@@ -217,7 +254,6 @@ div.stackLayoutPanelHeader:hover {
 /** DELETE AFTER THIS LINE **/
 
 /** TODO Praso - toto je len ukazka na pracu s kliknutymi menu tlacitkami, **/
-
 .selected {
 	font-weight: bold;
 }

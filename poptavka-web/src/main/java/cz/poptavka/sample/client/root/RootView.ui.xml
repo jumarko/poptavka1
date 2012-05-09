@@ -11,17 +11,17 @@
 
     </ui:style>
 
-    <g:DockLayoutPanel ui:field="layoutMaster" unit="EM">
-        <g:north size="15">
-            <g:VerticalPanel>
+    <g:DockLayoutPanel ui:field="layoutMaster" unit="PX">
+        <g:north size="148">
+            <g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
                 <g:SimplePanel ui:field='header'/>
                 <g:HorizontalPanel>
                     <g:SimplePanel ui:field="menu" />
                     <g:SimplePanel ui:field="searchBar" />
                 </g:HorizontalPanel>
-            </g:VerticalPanel>
+            </g:HTMLPanel>
         </g:north>
-        <g:south size="5">
+        <g:south size="38">
             <g:SimplePanel ui:field="footer"/>
         </g:south>
         <g:center>
