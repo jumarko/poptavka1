@@ -217,6 +217,19 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
         </dependency>
+        
+        <!-- GWT validation -->
+        <dependency>
+            <groupId>com.googlecode.gwt-validation</groupId>
+            <artifactId>gwt-validation</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>	
+                </exclusion>
+            </exclusions>
+            <version>2.1</version>
+        </dependency>
 
     </dependencies>
     <profiles>
