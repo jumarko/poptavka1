@@ -97,7 +97,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /**
-     * If full text filtering was chosen, stores given string to SearchModuleDataHolder.
+     * If full text filtering was chosen, stores given string to
+     * SearchModuleDataHolder.
      */
     @Override
     public void setFilterSearchContent() {
@@ -112,7 +113,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * CLICK HANDLERS
      *
      * To define what action was made by user. Have to know because of acquiring
-     * data from appropiate view loaded in popup window. See handlerPopupPanelCloserEvent methods.
+     * data from appropiate view loaded in popup window. See
+     * handlerPopupPanelCloserEvent methods.
      */
     @UiHandler("searchContent")
     void handleSearchContentFocusClick(FocusEvent event) {
@@ -201,8 +203,9 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * POPUP CLOSE HANDLER
      */
     /**
-     * When popup is closed. Appropiate filters are stored to searchModuleDataHolder.
-     * Storing is according type of filtering performed - string, categories, localities, attributes.
+     * When popup is closed. Appropiate filters are stored to
+     * searchModuleDataHolder. Storing is according type of filtering performed
+     * - string, categories, localities, attributes.
      */
     @UiHandler("popupPanel")
     void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
@@ -229,10 +232,11 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /*
-     * **********************  HELPER METHODS ****************************
+     * ********************** HELPER METHODS ****************************
      */
     /**
      * Creates popup window used as tooltip if user has chosen some filters.
+     *
      * @param event - action - mouse over TextBox
      * @param content - widget loads to represent popup content
      */
@@ -246,24 +250,21 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /**
-     * If categories filtering was chosen, CategorySelector widget is loaded in popup window.
-     * This methods acquires chosen categories and store them in SearchModuleDataHolder.
+     * If categories filtering was chosen, CategorySelector widget is loaded in
+     * popup window. This methods acquires chosen categories and store them in
+     * SearchModuleDataHolder.
      */
     private void searchCategoriesAction() {
         filters.getCategories().clear();
-        CategorySelectorInterface categoryValues =
-                (CategorySelectorInterface) popupPanel.getWidget();
+        CategorySelectorInterface categoryValues = (CategorySelectorInterface) popupPanel.getWidget();
 
-        for (int i = 0; i < categoryValues.getSelectedList().getItemCount(); i++) {
-            filters.getCategories().add(new CategoryDetail(Long.valueOf(
-                    categoryValues.getSelectedList().getValue(i)),
-                    categoryValues.getSelectedList().getItemText(i)));
-        }
+        filters.getCategories().addAll(categoryValues.getDataProvider().getList());
     }
 
     /**
-     * If localities filtering was chosen, CategorySelector widget is loaded in popup window.
-     * This methods acquires chosen categories and store them in SearchModuleDataHolder.
+     * If localities filtering was chosen, CategorySelector widget is loaded in
+     * popup window. This methods acquires chosen categories and store them in
+     * SearchModuleDataHolder.
      */
     private void searchLocalitiesAction() {
         filters.getLocalities().clear();
@@ -278,9 +279,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /**
-     * If attributes filtering was chosen, appropiate widget of currently loaded view is loaded in popup window.
-     * This methods acquires attributes and theirs values that are chosen to be filtered and store them
-     * in SearchModuleDataHolder.
+     * If attributes filtering was chosen, appropiate widget of currently loaded
+     * view is loaded in popup window. This methods acquires attributes and
+     * theirs values that are chosen to be filtered and store them in
+     * SearchModuleDataHolder.
      */
     private void searchAdvanced() {
         filters.getAttibutes().clear();
@@ -290,12 +292,14 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     }
 
     /**
-     * Constucts info of given filters , that will be applied and place them into given textBox.
-     * There are 3 options according to <b>action</b> attribute, which holds used choice:
+     * Constucts info of given filters , that will be applied and place them
+     * into given textBox. There are 3 options according to <b>action</b>
+     * attribute, which holds used choice:
      *
-     * Action values:  1...constucts info for <b>categories</b>,
-     *                 2...constucts info for <b>localities</b>.
-     *                 3...constucts info for advance search view <b>attributes</b>,
+     * Action values: 1...constucts info for <b>categories</b>, 2...constucts
+     * info for <b>localities</b>. 3...constucts info for advance search view
+     * <b>attributes</b>,
+     *
      * @param textBox - given textBox for holding info string.
      * @param searchModuleDataHolder - given filters, selected by user.
      */

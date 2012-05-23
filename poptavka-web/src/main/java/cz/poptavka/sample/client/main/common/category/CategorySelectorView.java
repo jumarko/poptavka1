@@ -1,21 +1,20 @@
 package cz.poptavka.sample.client.main.common.category;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.Widget;
-
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SingleSelectionModel;
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
+import java.util.ArrayList;
 
 public class CategorySelectorView extends Composite
     implements CategorySelectorPresenter.CategorySelectorInterface, ProvidesValidate {
@@ -30,11 +29,17 @@ public class CategorySelectorView extends Composite
     @UiField Grid categoryListHolder;
     private ArrayList<ListBox> listBoxes = new ArrayList<ListBox>();
 
-    @UiField ListBox selectedList;
-    private HashSet<String> selectedListTitles = new HashSet<String>();
+    @UiField(provided=true) CellList selectedList;
+    private SingleSelectionModel<CategoryDetail> selectionModel = new SingleSelectionModel<CategoryDetail>();
+    private ListDataProvider<CategoryDetail> dataProvider = new ListDataProvider<CategoryDetail>();
+    
+//    private HashSet<String> selectedListTitles = new HashSet<String>();
 
     @Override
     public void createView() {
+        selectedList = new CellList<CategoryDetail>(new ItemCell());
+        selectedList.setSelectionModel(selectionModel);
+        dataProvider.addDataDisplay(selectedList);
         initWidget(uiBinder.createAndBindUi(this));
     }
 
@@ -43,24 +48,31 @@ public class CategorySelectorView extends Composite
     }
 
     @Override
-    public ListBox getSelectedList() {
+    public CellList getSelectedList() {
         return selectedList;
+    }
+    
+    @Override
+    public SingleSelectionModel getSelectionModel() {
+        return selectionModel;
+    }
+    
+    @Override
+    public ListDataProvider<CategoryDetail> getDataProvider() {
+        return dataProvider;
     }
 
     @Override
-    public void addToSelectedList(String text, String value) {
-        if (!selectedListTitles.contains(text)) {
-            selectedList.addItem(text, value);
-            selectedListTitles.add(text);
+    public void addToSelectedList(CategoryDetail categoryDetail) {//String text, String value
+//        if (!selectedListTitles.contains(text)) {
+        if (!dataProvider.getList().contains(categoryDetail)) {
+            dataProvider.getList().add(categoryDetail);
         }
     }
 
     @Override
     public void removeFromSelectedList() {
-        int index = selectedList.getSelectedIndex();
-        String item = selectedList.getItemText(index);
-        selectedListTitles.remove(item);
-        selectedList.removeItem(index);
+        dataProvider.getList().remove(selectionModel.getSelectedObject());
     }
 
     /** Returns actual free depth level. **/
@@ -101,14 +113,15 @@ public class CategorySelectorView extends Composite
 
     @Override
     public boolean isValid() {
-        return selectedList.getItemCount() > 0;
+        return dataProvider.getList().size() > 0;
     }
 
     /** Demand cration getValues method. **/
+    @Override
     public ArrayList<String> getSelectedCategoryCodes() {
         ArrayList<String> codes = new ArrayList<String>();
-        for (int i = 0; i < selectedList.getItemCount(); i++) {
-            codes.add(selectedList.getValue(i));
+        for (CategoryDetail catDetail: dataProvider.getList()) {
+            codes.add(Long.toString(catDetail.getId()));
         }
         return codes;
     }
@@ -132,4 +145,28 @@ public class CategorySelectorView extends Composite
 
 
 
+}
+
+/**
+ * The Cell used to render a {@link CategoryDetail}.
+ */
+class ItemCell extends AbstractCell<CategoryDetail> {
+
+    @Override
+    public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
+        // Value can be null, so do a null check..
+        if (value == null) {
+            return;
+        }
+
+        // Add category name.
+        sb.appendHtmlConstant("<table><tr><td style='font-size:95%;'>");
+        sb.appendEscaped(value.getName());
+        sb.appendHtmlConstant("</td>");
+        // Add image for remove.
+        sb.appendHtmlConstant("<td>");
+        sb.appendHtmlConstant(AbstractImagePrototype.create(
+                StyleResource.INSTANCE.images().errorIcon()).getHTML());
+        sb.appendHtmlConstant("</td></tr></table>");
+    }
 }

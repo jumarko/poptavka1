@@ -29,6 +29,7 @@ import cz.poptavka.sample.client.main.common.creation.FormDemandBasicPresenter.F
 import cz.poptavka.sample.client.main.common.creation.ProvidesValidate;
 import cz.poptavka.sample.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import cz.poptavka.sample.client.resources.StyleResource;
+import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.UserDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import java.util.HashMap;
@@ -179,11 +180,8 @@ public class DemandCreationPresenter
 
         //categories
         Map<Long, String> categories = new HashMap<Long, String>();
-        for (int i = 0; i < categoryValues.getSelectedList().getItemCount(); i++) {
-            categories.put(Long.valueOf(
-                    categoryValues.getSelectedList().getValue(i)),
-                    //                    categorySelector.getSelectedCategoryCodes().get(i)),
-                    categoryValues.getSelectedList().getItemText(i));
+        for (CategoryDetail catDetail: categoryValues.getDataProvider().getList()) {
+            categories.put(catDetail.getId(), catDetail.getName());
         }
         demand.setCategories(categories);
 

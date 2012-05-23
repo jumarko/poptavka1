@@ -1,20 +1,18 @@
 package cz.poptavka.sample.client.main.common.category;
 
-import java.util.ArrayList;
-
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Grid;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.ui.*;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-
 import cz.poptavka.sample.client.root.RootEventBus;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import java.util.ArrayList;
 
 @Presenter(view = CategorySelectorView.class, multiple = true)
 public class CategorySelectorPresenter
@@ -26,11 +24,15 @@ public class CategorySelectorPresenter
 
         Grid getListHolder();
 
-        ListBox getSelectedList();
+        CellList getSelectedList();
+        
+        SingleSelectionModel getSelectionModel();
+        
+        ListDataProvider<CategoryDetail> getDataProvider();
 
         boolean isValid();
 
-        void addToSelectedList(String text, String value);
+        void addToSelectedList(CategoryDetail categoryDetail);
 
         void removeFromSelectedList();
 
@@ -54,9 +56,10 @@ public class CategorySelectorPresenter
 
     @Override
     public void bindView() {
-        view.getSelectedList().addClickHandler(new ClickHandler() {
+        view.getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
             @Override
-            public void onClick(ClickEvent arg0) {
+            public void onSelectionChange(SelectionChangeEvent event) {
                 view.removeFromSelectedList();
             }
         });
@@ -106,10 +109,10 @@ public class CategorySelectorPresenter
                 String text = box.getItemText(box.getSelectedIndex());
                 String value = box.getValue(box.getSelectedIndex());
                 if (event.isControlKeyDown() &&  ! isLeaf(text)) {
-                    view.addToSelectedList(text.substring(0, text.indexOf(NONLEAF_SUFFIX)), value);
+                    view.addToSelectedList(new CategoryDetail(Long.parseLong(value), text.substring(0, text.indexOf(NONLEAF_SUFFIX))));
                 } else {
                     if (isLeaf(text)) {
-                        view.addToSelectedList(text, value);
+                        view.addToSelectedList(new CategoryDetail(Long.parseLong(value), text));
                     } else {
                         preventMultipleCalls = true;
                         view.clearChildrenLists(index);
