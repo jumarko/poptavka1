@@ -51,14 +51,11 @@ body {
 *
 */
 .footer-container {
-	position: absolute;
-	border-top: 2px black dotted;
-	background-color: #D0D0D0;
-	top: 0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	height: 0px;
+	background: url(images/footer_bg.gif) repeat-x;
+}
+.footer-container p {
+	color: #ffffff;
+	margin: 0;
 }
 
 .footer-toggle {
@@ -233,18 +230,17 @@ body {
 }
 
 .stackLayout {
-	border-bottom: 1px solid #bbbbbb;
+	border-bottom: 1px solid #63602f;
 }
 
 .stackLayoutPanelHeader {
 	cursor: pointer;
 	cursor: hand;
 	font-weight: bold;
-	padding-left: 3px;
-	border: 1px solid #bbbbbb;
+	padding: 6px;
+	border: 1px solid #63602f;
 	border-bottom: 0px;
-	background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px
-		-989px;
+	background: #f0edbb;
 }
 
 div.stackLayoutPanelHeader:hover {

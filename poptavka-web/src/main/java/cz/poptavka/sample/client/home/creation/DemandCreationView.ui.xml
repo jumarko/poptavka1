@@ -10,9 +10,9 @@
 
 	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
 		<g:StackLayoutPanel ui:field='mainPanel'
-			styleName='{res.layout.stackLayout}' height="100%">
+			styleName='{res.layout.stackLayout}' height="90%">
 			<g:stack>
-				<g:customHeader size="19">
+				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
 						1.
 						<ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
@@ -30,7 +30,7 @@
 				</g:DockLayoutPanel>
 			</g:stack>
 			<g:stack>
-				<g:customHeader size="19">
+				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
 						2.
 						<ui:msg key="catsSelection">Category selection</ui:msg>
@@ -48,7 +48,7 @@
 				</g:DockLayoutPanel>
 			</g:stack>
 			<g:stack>
-				<g:customHeader size="19">
+				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
 						3.
 						<ui:msg key="locsSelection">Locality selection</ui:msg>
@@ -66,7 +66,7 @@
 				</g:DockLayoutPanel>
 			</g:stack>
 			<g:stack>
-				<g:customHeader size="19">
+				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
 						4.
 						<ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
@@ -84,7 +84,7 @@
 				</g:DockLayoutPanel>
 			</g:stack>
 			<g:stack>
-				<g:customHeader size="19">
+				<g:customHeader size="30">
 					<g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
 						5.
 						<ui:msg key="loginOrRegister">Log in or register</ui:msg>
