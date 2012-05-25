@@ -30,25 +30,25 @@ import javax.validation.groups.Default;
 
 public class Address {
 
-	@NotNull
-	@Size(min=5, max=10, message="{com.em.validation.sample.client.model.Address.zip.size}")
+	@NotNull(message="{address.notNull.zip}")
+	@Size(min=5, max=10, message="{address.size.zip}")
 	private String zip = null;
 
-	@NotNull
-	@Size(min=1, message="{com.em.validation.sample.client.model.Address.street.size}", groups=Default.class)
+        @NotNull(message="{address.notNull.street}")
+	@Size(min=3, message="{address.size.street}", groups=Default.class)
 	private String street = null;
 
-	@NotNull
-	@Size(min=1, message="{com.em.validation.sample.client.model.Address.state.size}")
+	@NotNull(message="{address.notNull.state}")
+	@Size(min=4, message="{address.size.state}")
 	private String state = null;
 
-	@NotNull
-	@Size(min=1, message="{com.em.validation.sample.client.model.Address.city.size}")
+	@NotNull(message="{address.notNull.city}")
+	@Size(min=4, message="{address.size.city}")
 	private String city = null;
 
-	@NotNull
-	@Valid
-	private Person owner = null;
+//	@NotNull
+//	@Valid
+//	private Person owner = null;
 	
 	public String getZip() {
 		return zip;
@@ -82,11 +82,11 @@ public class Address {
 		this.city = city;
 	}
 
-	public Person getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Person owner) {
-		this.owner = owner;
-	}
+//	public Person getOwner() {
+//		return owner;
+//	}
+//
+//	public void setOwner(Person owner) {
+//		this.owner = owner;
+//	}
 }

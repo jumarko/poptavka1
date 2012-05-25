@@ -219,7 +219,7 @@
         </dependency>
         
         <!-- GWT validation -->
-        <dependency>
+<!--        <dependency>
             <groupId>com.googlecode.gwt-validation</groupId>
             <artifactId>gwt-validation</artifactId>
             <exclusions>
@@ -229,6 +229,50 @@
                 </exclusion>
             </exclusions>
             <version>2.1</version>
+        </dependency>-->
+        
+        <!-- Hibernate bean validation source for the GWT client -->
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.xml.bind</groupId>
+                    <artifactId>jaxb-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.2.0.Final</version>
+            <classifier>sources</classifier>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.xml.bind</groupId>
+                    <artifactId>jaxb-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+    <!-- Required by Hibernate validator because slf4j-log4j is
+         optional in the hibernate-validator POM
+     -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
         </dependency>
 
     </dependencies>
@@ -295,17 +339,17 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <version>2.3.0-1</version>
                 <dependencies>
-          <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <version>2.4.0</version>
-          </dependency>
-          <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <version>2.4.0</version>
-          </dependency>
-        </dependencies>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-user</artifactId>
+                        <version>2.4.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.google.gwt</groupId>
+                        <artifactId>gwt-dev</artifactId>
+                        <version>2.4.0</version>
+                    </dependency>
+                </dependencies>
 
                 <executions>
                     <execution>
@@ -354,10 +398,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                <excludes>
-                    <exclude>**/*GwtTest.java</exclude>
-                    <exclude>**/*RpcServiceTest.java</exclude>
-                </excludes>
+                    <excludes>
+                        <exclude>**/*GwtTest.java</exclude>
+                        <exclude>**/*RpcServiceTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
@@ -368,20 +412,20 @@
         <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
         <runTarget>Poptavka.html</runTarget>
     </properties>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>gwt-maven-plugin</artifactId>
-        <version>2.3.0-1</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>compile-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-    </plugins>
-  </reporting>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>2.3.0-1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>compile-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

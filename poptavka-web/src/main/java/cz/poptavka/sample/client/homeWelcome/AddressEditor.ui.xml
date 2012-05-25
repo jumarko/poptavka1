@@ -19,52 +19,60 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 -->
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' 
-			 xmlns:g='urn:import:com.google.gwt.user.client.ui'
-		>
-
-	<g:HTMLPanel>
-		<h2>GWT Validation test</h2>
-		<table>
-			<tr>
-				<td>Street:</td>
-				<td><g:TextBox ui:field="street"/></td>
-			</tr>
-			<tr>
-				<td>City:</td>
-				<td><g:TextBox ui:field="city"/></td>
-			</tr>
-			<tr>
-				<td>State:</td>
-				<td><g:TextBox ui:field="state"/></td>	
-			</tr>
-			<tr>
-				<td>Zip:</td>
-				<td><g:TextBox ui:field="zip"/></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<h3>Owner</h3>
-					<table>
-						<tr>
-							<td>First Name:</td>
-							<td><g:TextBox ui:field="firstName"/></td>
-						</tr>
-						<tr>
-							<td>Last Name:</td>
-							<td><g:TextBox ui:field="lastName"/></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td><g:Button ui:field="submit" text="submit"/></td>
-				<td align="right"><g:Button ui:field="clear" text="clear"/></td>
-			</tr>
-		</table><br/>
-
-		<br/><br/>
-		<b>Errors:</b>
-		<g:HTML ui:field="errors" />
-	</g:HTMLPanel>
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <ui:style>
+        .error {
+            color: red;
+        }
+    </ui:style>
+    <g:HTMLPanel>
+        <h2>GWT Validation test</h2>
+        <table>
+            <tr>
+                <td>State:</td>
+                <td>
+                    <g:TextBox ui:field="state"/>
+                </td>	
+                <td>
+                    <g:Label styleName="{style.error}" ui:field="errorLabelState"/>
+                </td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td>
+                    <g:TextBox ui:field="city"/>
+                </td>
+                <td>
+                    <g:Label styleName="{style.error}" ui:field="errorLabelCity"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Street:</td>
+                <td>
+                    <g:TextBox ui:field="street"/>
+                </td>
+                <td>
+                    <g:Label styleName="{style.error}" ui:field="errorLabelStreet"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Zip:</td>
+                <td>
+                    <g:TextBox ui:field="zip"/>
+                </td>
+                <td>
+                    <g:Label styleName="{style.error}" ui:field="errorLabelZip"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <g:Button ui:field="submit" text="submit"/>
+                </td>
+                <td align="right">
+                    <g:Button ui:field="clear" text="clear"/>
+                </td>
+            </tr>
+        </table>
+    </g:HTMLPanel>
 	
 </ui:UiBinder> 

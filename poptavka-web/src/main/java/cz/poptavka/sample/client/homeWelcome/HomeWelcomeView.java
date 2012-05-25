@@ -24,8 +24,8 @@ public class HomeWelcomeView extends
                 StyleResource.INSTANCE.common().ensureInjected();
 
         Address address = new Address();
-        Person person = new Person();
-        address.setOwner(person);
+//        Person person = new Person();
+//        address.setOwner(person);
 
         this.addressEditor.edit(address);
     }
