@@ -127,7 +127,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     /* Navigation events                                                      */
     /**************************************************************************/
     //need to remember for asynchDataProvider if asking for more data
-    private SearchModuleDataHolder searchDataHolder;
+    private SearchModuleDataHolder searchDataHolder = null;
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
         orderColumns.clear();

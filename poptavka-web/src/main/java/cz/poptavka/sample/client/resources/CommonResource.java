@@ -37,4 +37,7 @@ public interface CommonResource extends CssResource {
 
     @ClassName("user")
     String user();
+
+    @ClassName("empty_style")
+    String emptyStyle();
 }

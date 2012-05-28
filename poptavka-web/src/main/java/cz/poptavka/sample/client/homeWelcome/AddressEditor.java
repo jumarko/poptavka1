@@ -21,12 +21,6 @@ package cz.poptavka.sample.client.homeWelcome;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -41,7 +35,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import cz.poptavka.sample.client.resources.StyleResource;
-
+import java.util.Set;
+import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -72,6 +67,13 @@ public class AddressEditor extends Composite implements Editor<Address> {
     @Ignore
     Label errorLabelState, errorLabelCity, errorLabelStreet, errorLabelZip;
     private Address baseLineAddress = null;
+    //Constants
+    private final static String NORMAL_STYLE = StyleResource.INSTANCE.common().emptyStyle();
+    private final static String ERROR_STYLE = StyleResource.INSTANCE.common().errorField();
+    private final static int CITY = 0;
+    private final static int STATE = 1;
+    private final static int STREET = 2;
+    private final static int ZIP = 3;
 
     public AddressEditor() {
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -85,73 +87,43 @@ public class AddressEditor extends Composite implements Editor<Address> {
     }
 
     @UiHandler("state")
-    void validateState(BlurEvent e) {
-        this.state.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelState.setText("");
+    private void validateState(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "state", address.getState(), Default.class);
-        this.displayErrors(violations);
+        this.displayErrors(STATE, violations);
     }
 
     @UiHandler("city")
-    void validateCity(BlurEvent e) {
-        this.city.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelCity.setText("");
+    private void validateCity(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "city", address.getCity(), Default.class);
-        this.displayErrors(violations);
+        this.displayErrors(CITY, violations);
     }
 
     @UiHandler("street")
-    void validateStreet(BlurEvent e) {
-        this.street.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelStreet.setText("");
+    private void validateStreet(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "street", address.getStreet(), Default.class);
-        this.displayErrors(violations);
+        this.displayErrors(STREET, violations);
     }
 
     @UiHandler("zip")
-    void validateZip(BlurEvent e) {
-        this.zip.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelZip.setText("");
+    private void validateZip(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "zip", address.getZip(), Default.class);
-        this.displayErrors(violations);
+        this.displayErrors(ZIP, violations);
     }
 
     @UiHandler("submit")
-    void validateAll(ClickEvent e) {
+    private void validateAll(ClickEvent e) {
         validateCity(null);
         validateState(null);
         validateStreet(null);
         validateZip(null);
-    }
-
-    private void displayErrors(Set<ConstraintViolation<Address>> violations) {
-        StringBuilder builder = new StringBuilder();
-        for (ConstraintViolation<Address> violation : violations) {
-            builder.append(violation.getMessage());
-            builder.append(" : <i>(");
-            builder.append(violation.getPropertyPath().toString());
-            setErrors(violation.getPropertyPath().toString(), violation.getMessage());
-            builder.append(" = ");
-            builder.append("" + violation.getInvalidValue());
-            builder.append(")</i>");
-            builder.append("<br/>");
-        }
-
-        //Martin: Toto este neviem naco je
-        List<ConstraintViolation<?>> adaptedViolations = new ArrayList<ConstraintViolation<?>>();
-        for (ConstraintViolation<Address> violation : violations) {
-            adaptedViolations.add(violation);
-        }
-
-        driver.setConstraintViolations((List<ConstraintViolation<?>>) adaptedViolations);
     }
 
     @UiHandler("clear")
@@ -161,33 +133,47 @@ public class AddressEditor extends Composite implements Editor<Address> {
         this.street.setText("");
         this.zip.setText("");
 
-        clearStyles();
+        setError(CITY, NORMAL_STYLE, "");
+        setError(STATE, NORMAL_STYLE, "");
+        setError(STREET, NORMAL_STYLE, "");
+        setError(ZIP, NORMAL_STYLE, "");
     }
 
-    public void clearStyles() {
-        this.city.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelCity.setText("");
-        this.state.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelState.setText("");
-        this.street.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelStreet.setText("");
-        this.zip.removeStyleName(StyleResource.INSTANCE.common().errorField());
-        this.errorLabelZip.setText("");
+    private void displayErrors(int item, Set<ConstraintViolation<Address>> violations) {
+        for (ConstraintViolation<Address> violation : violations) {
+            setError(item, ERROR_STYLE, violation.getMessage());
+            return;
+        }
+        setError(item, NORMAL_STYLE, "");
     }
 
-    private void setErrors(String item, String errorMessage) {
-        if (item.equals("city")) {
-            this.city.setStyleName(StyleResource.INSTANCE.common().errorField());
-            this.errorLabelCity.setText(errorMessage);
-        } else if (item.equals("state")) {
-            this.state.setStyleName(StyleResource.INSTANCE.common().errorField());
-            this.errorLabelState.setText(errorMessage);
-        } else if (item.equals("street")) {
-            this.street.setStyleName(StyleResource.INSTANCE.common().errorField());
-            this.errorLabelStreet.setText(errorMessage);
-        } else if (item.equals("zip")) {
-            this.zip.setStyleName(StyleResource.INSTANCE.common().errorField());
-            this.errorLabelZip.setText(errorMessage);
+    /**
+     * Set style and error message to given item.
+     *
+     * @param item - use class constant CITY, STATE, STREET, ZIP
+     * @param style - user class constant NORMAL_STYLE, ERROR_STYLE
+     * @param errorMessage - message of item's ErrorLabel
+     */
+    private void setError(int item, String style, String errorMessage) {
+        switch (item) {
+            case CITY:
+                this.city.setStyleName(style);
+                this.errorLabelCity.setText(errorMessage);
+                break;
+            case STATE:
+                this.state.setStyleName(style);
+                this.errorLabelState.setText(errorMessage);
+                break;
+            case STREET:
+                this.street.setStyleName(style);
+                this.errorLabelStreet.setText(errorMessage);
+                break;
+            case ZIP:
+                this.zip.setStyleName(style);
+                this.errorLabelZip.setText(errorMessage);
+                break;
+            default:
+                break;
         }
     }
 }

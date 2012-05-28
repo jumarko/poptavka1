@@ -103,35 +103,31 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private List<FullDemandDetail> filter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         //null
         if (detail == null) {
-            Search search = this.getFilter(null, null, orderColumns);
+            Search search = this.getFilter(null, orderColumns);
             return this.createDemandDetailList(this.generalService.search(search));
         }
         //0 0
-        if (detail.getCategories() == null
-                && detail.getLocalities() == null) {
-            Search search = this.getFilter("else", detail, orderColumns);
+        if (detail.getCategories() == null && detail.getLocalities() == null) {
+            Search search = this.getFilter(detail, orderColumns);
             return this.createDemandDetailList(this.generalService.search(search));
         }
         //1 0
-        if (detail.getCategories() != null
-                && detail.getLocalities() == null) {
-            Search search = this.getFilter("category", detail, orderColumns);
+        if (detail.getCategories() != null && detail.getLocalities() == null) {
+            Search search = this.getFilter(detail, orderColumns);
             return this.createDemandDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
-        if (detail.getCategories() == null
-                && detail.getLocalities() != null) {
-            Search search = this.getFilter("locality", detail, orderColumns);
+        if (detail.getCategories() == null && detail.getLocalities() != null) {
+            Search search = this.getFilter(detail, orderColumns);
             return this.createDemandDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
-        if (detail.getCategories() != null
-                && detail.getLocalities() != null) {
+        if (detail.getCategories() != null && detail.getLocalities() != null) {
             List<FullDemandDetail> demandsCat = this.createDemandDetailListCat(
-                    this.generalService.searchAndCount(this.getFilter("category", detail, orderColumns)).getResult());
+                    this.generalService.searchAndCount(this.getFilter(detail, orderColumns)).getResult());
 
             List<FullDemandDetail> demandsLoc = this.createDemandDetailListLoc(
-                    this.generalService.searchAndCount(this.getFilter("locality", detail, orderColumns)).getResult());
+                    this.generalService.searchAndCount(this.getFilter(detail, orderColumns)).getResult());
 
             List<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
             for (FullDemandDetail demandCat : demandsCat) {
@@ -144,7 +140,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         return null;
     }
 
-    private Search getFilter(String type, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private Search getFilter(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         Search search = null;
         String prefix = "";
         if (detail != null) {
