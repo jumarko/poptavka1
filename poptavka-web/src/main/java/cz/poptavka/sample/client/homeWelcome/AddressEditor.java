@@ -87,7 +87,7 @@ public class AddressEditor extends Composite implements Editor<Address> {
     }
 
     @UiHandler("state")
-    private void validateState(BlurEvent e) {
+    public void validateState(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "state", address.getState(), Default.class);
@@ -95,7 +95,7 @@ public class AddressEditor extends Composite implements Editor<Address> {
     }
 
     @UiHandler("city")
-    private void validateCity(BlurEvent e) {
+    public void validateCity(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "city", address.getCity(), Default.class);
@@ -103,7 +103,7 @@ public class AddressEditor extends Composite implements Editor<Address> {
     }
 
     @UiHandler("street")
-    private void validateStreet(BlurEvent e) {
+    public void validateStreet(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "street", address.getStreet(), Default.class);
@@ -111,7 +111,7 @@ public class AddressEditor extends Composite implements Editor<Address> {
     }
 
     @UiHandler("zip")
-    private void validateZip(BlurEvent e) {
+    public  void validateZip(BlurEvent e) {
         Address address = driver.flush();
         Set<ConstraintViolation<Address>> violations = validator.validateValue(
                 Address.class, "zip", address.getZip(), Default.class);
@@ -119,7 +119,7 @@ public class AddressEditor extends Composite implements Editor<Address> {
     }
 
     @UiHandler("submit")
-    private void validateAll(ClickEvent e) {
+    public void validateAll(ClickEvent e) {
         validateCity(null);
         validateState(null);
         validateStreet(null);
