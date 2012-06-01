@@ -15,12 +15,12 @@
     
     <!-- Specify the Validator for the Validation bootstrap to use. -->
     <replace-with
-        class="cz.poptavka.sample.client.homeWelcome.SampleValidatorFactory">
+        class="cz.poptavka.sample.client.main.common.SampleValidatorFactory">
         <when-type-is class="javax.validation.ValidatorFactory" />
     </replace-with>
     <!--  specify the ValidationMessageResolver to use for your custom validation messages -->
     <replace-with
-        class="cz.poptavka.sample.client.homeWelcome.CustomValidationMessagesResolver">
+        class="cz.poptavka.sample.client.main.common.CustomValidationMessagesResolver">
         <when-type-is
             class="com.google.gwt.validation.client.UserValidationMessagesResolver" />
     </replace-with>

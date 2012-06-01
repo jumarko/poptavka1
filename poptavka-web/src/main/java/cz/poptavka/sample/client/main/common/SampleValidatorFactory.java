@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package cz.poptavka.sample.client.homeWelcome;
+package cz.poptavka.sample.client.main.common;
 
 import com.google.gwt.core.client.GWT;
 //import com.google.gwt.sample.validation.shared.ClientGroup;
@@ -35,7 +35,7 @@ public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
    * Validator marker for the Validation Sample project. Only the classes listed
    * in the {@link GwtValidation} annotation can be validated.
    */
-  @GwtValidation(value = {Address.class, FullDemandDetail.class}, groups = {Default.class})//, ClientGroup.class})
+  @GwtValidation(value = FullDemandDetail.class, groups = {Default.class})//, ClientGroup.class})
   public interface GwtValidator extends Validator {
   }
 

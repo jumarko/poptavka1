@@ -38,7 +38,7 @@
                             <td>
                                 <g:TextBox ui:field="title" />
                             </td>
-                            <td>
+                            <td width="200px">
                                 <g:Label styleName="{style.error}" ui:field="errorLabelTitle"/>
                             </td>
                         </tr>
@@ -49,7 +49,7 @@
                             <td>
                                 <g:TextBox ui:field="priceString" />
                             </td>
-                            <td>
+                            <td width="200px">
                                 <g:Label styleName="{style.error}" ui:field="errorLabelPrice"/>
                             </td>
                         </tr>
@@ -60,7 +60,7 @@
                             <td>
                                 <p1:DateBox ui:field="endDate" />
                             </td>
-                            <td>
+                            <td width="200px">
                                 <g:Label styleName="{style.error}" ui:field="errorLabelEndDate"/>
                             </td>
                         </tr>
@@ -71,7 +71,7 @@
                             <td>
                                 <p1:DateBox ui:field="validToDate" />
                             </td>
-                            <td>
+                            <td width="200px">
                                 <g:Label styleName="{style.error}" ui:field="errorLabelExpDate"/>
                             </td>
                         </tr>

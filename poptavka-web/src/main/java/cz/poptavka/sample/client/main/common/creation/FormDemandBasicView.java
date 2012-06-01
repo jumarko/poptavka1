@@ -24,6 +24,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail.DemandField;
+import java.util.HashSet;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -71,7 +72,8 @@ public class FormDemandBasicView extends Composite
     private final static int DESCRIPTION = 4;
     //place for uploadFiles button
     //place for addNextAttachment button
-    private int valid = 0;
+//    private int valid = 0;
+    private Set<Integer> valid = new HashSet<Integer>();
 
     public void createView() {
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -122,7 +124,6 @@ public class FormDemandBasicView extends Composite
         this.displayErrors(PRICE, violations);
     }
 
-//    @UiHandler("endDateDateBox")
     public void validateEndDate() {
         FullDemandDetail demandDetail = driver.flush();
         Set<ConstraintViolation<FullDemandDetail>> violations = validator.validateValue(
@@ -130,7 +131,6 @@ public class FormDemandBasicView extends Composite
         this.displayErrors(END_DATE, violations);
     }
 
-//    @UiHandler("expireDateBox")
     public void validateValidToDate() {
         FullDemandDetail demandDetail = driver.flush();
         Set<ConstraintViolation<FullDemandDetail>> violations = validator.validateValue(
@@ -158,7 +158,7 @@ public class FormDemandBasicView extends Composite
         validateEndDate();
         validateValidToDate();
         validateDescription(null);
-        return valid == 0;
+        return valid.size() == 0;
     }
 
     @Override
@@ -181,11 +181,11 @@ public class FormDemandBasicView extends Composite
     private void displayErrors(int item, Set<ConstraintViolation<FullDemandDetail>> violations) {
         for (ConstraintViolation<FullDemandDetail> violation : violations) {
             setError(item, ERROR_STYLE, violation.getMessage());
-            valid++;
+            valid.add(item);
             return;
         }
         setError(item, NORMAL_STYLE, "");
-        valid--;//????
+        valid.remove(item);//????
     }
 
     /**

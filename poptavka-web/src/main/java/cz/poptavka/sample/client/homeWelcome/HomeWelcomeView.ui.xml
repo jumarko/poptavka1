@@ -1,7 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-        xmlns:e='urn:import:cz.poptavka.sample.client.homeWelcome'>
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='res'
         type='cz.poptavka.sample.client.resources.StyleResource' />              
     <ui:style>
@@ -11,14 +10,7 @@
     </ui:style>
 <!--    <g:HTMLPanel styleName='{res.layout.stackLayout}'>-->
     <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
-        <table width="100%">
-            <tr>
-                <td width="33%" valign="top">
-                    <e:AddressEditor ui:field="addressEditor"/>
-                </td>
-                </tr>		
-        </table>
-<!--        <h1>Milí vývojári,</h1>
+        <h1>Milí vývojári,</h1>
         <h3>
                 Už viac ako rok sa trápime s naším projektom. Vyzerá to tak, že pokiaľ to netlačím tak nikto z vás nemá iniciatívu niečo robiť. Túto
                 chybu beriem na seba a mrzí ma, že som vedenie projektu podcenil. Posnažím sa to napraviť.
@@ -34,8 +26,8 @@
         </h3>
 
         <h4>Projektový vedúci</h4>
-        <p>Ivan Vlček</p>-->
+        <p>Ivan Vlček</p>
 
-<!--        <g:Button styleName="{style.important}" ui:field="button" />-->
+        <g:Button styleName="{style.important}" ui:field="button" />
     </g:HTMLPanel>
 </ui:UiBinder>
