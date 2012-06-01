@@ -1,5 +1,7 @@
 package cz.poptavka.sample.shared.domain.demand;
 
+import cz.poptavka.sample.domain.address.Locality;
+import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
@@ -12,11 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
- * Represents full detail of domain object <b>FullDemand</b> used in <i>Administration Module</i>.
- * Contains 2 static methods:  1. creating detail object
- *                             2. updating domain object
+ * Represents full detail of domain object <b>FullDemand</b> used in
+ * <i>Administration Module</i>. Contains 2 static methods: 1. creating detail
+ * object 2. updating domain object
  *
  * @author Beho, Martin Slavkovsky
  */
@@ -49,11 +55,24 @@ public class FullDemandDetail implements Serializable {
     private boolean read;
     private boolean starred;
     private Date created;
-    private Date endDate;
-    private Date validToDate;
+    //Basic Demand Info
+    @NotNull(message = "{demandNotNullTitle}")
+    @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
-    private String description;
+    @NotNull(message = "{demandNotNullPrice}")
+    @Pattern(regexp = "\\d+(\\.\\d{2})*", message = "{demandPatternPrice}")///^\\d+(\\.\\d{2})?$*/  /^[0-9]+(\\.[0-9]{2})?$/
+    private String priceString;
     private BigDecimal price;
+    @NotNull(message = "{demandNotNullEndDate}")
+    @Future(message = "{demandFutureEndDate}")
+    private Date endDate;
+    @NotNull(message = "{demandNotNullValidToDate}")
+    @Future(message = "{demandFutureValidToDate}")
+    private Date validToDate;
+    @NotNull(message = "{demandNotNullDescription}")
+    @Size(min = 5, message = "{demandSizeDescription}")
+    private String description;
+    //
     private List<FullSupplierDetail> excludedSuppliers;
 
     /**
@@ -70,7 +89,9 @@ public class FullDemandDetail implements Serializable {
 
 
     /**
-     * Method created domain object <b>Demand</b> from provided <b>FullDemandDetail</b> object.
+     * Method created domain object <b>Demand</b> from provided
+     * <b>FullDemandDetail</b> object.
+     *
      * @param domain - domain object to be updated
      * @param detail - detail object which provides updated data
      * @return Demand - updated given domain object
@@ -370,12 +391,16 @@ public class FullDemandDetail implements Serializable {
         this.description = description;
     }
 
+    public void setPriceString(String priceStr) {
+        this.priceString = priceStr;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
 
     public String getPriceString() {
-        return String.valueOf(price);
+        return priceString;
     }
 
     public void setType(DemandDetailType demandDetailType) {
@@ -388,12 +413,14 @@ public class FullDemandDetail implements Serializable {
                 this.price = null;
             } else {
                 this.price = BigDecimal.valueOf(Long.valueOf(price));
+                this.priceString = price;
             }
         }
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+        this.priceString = priceString.toString();
     }
 
     public List<FullSupplierDetail> getExcludedSuppliers() {

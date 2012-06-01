@@ -29,32 +29,70 @@ public interface ValidationMessages extends ConstantsWithLookup {
      *
      * @return translated "Name must be at least {min} characters long."
      */
+    /**************************************************************************/
+    /* Welcome Module - error messages.                                       */
+    /**************************************************************************/
 //    @DefaultStringValue("Name must be at least {min} characters long.")
 //    @Key("custom.name.size.message")
 //    String custom_name_size_message();
-
     @Key("address.notNull.state")
-    String address_notNull_state();
+    String addressNotNullState();
 
     @Key("address.notNull.city")
-    String address_notNull_city();
+    String addressNotNullCity();
 
     @Key("address.notNull.street")
-    String address_notNull_street();
-    
-    @Key("address.notNull.zip")
-    String address_notNull_zip();
+    String addressNotNullStreet();
 
+    @Key("address.notNull.zip")
+    String addressNotNullZip();
 
     @Key("address.size.state")
-    String address_size_state();
+    String addressSizeState();
 
     @Key("address.size.city")
-    String address_size_city();
+    String addressSizeCity();
 
     @Key("address.size.street")
-    String address_size_street();
+    String addressSizeStreet();
 
     @Key("address.size.zip")
-    String address_size_zip();
+    String addressSizeZip();
+
+    /**************************************************************************/
+    /* Create Demand Module - error messages.                                 */
+    /**************************************************************************/
+    //Preco musi byt ten key?
+    @Key("demand.notNull.title")
+    String demandNotNullTitle();
+
+    @Key("demand.size.title")
+    String demandSizeTitle();
+
+    @Key("demand.notNull.price")
+    String demandNotNullPrice();
+
+    @Key("demand.pattern.price")
+    String demandPatternPrice();
+
+    @Key("demand.notNull.endDate")
+    String demandNotNullEndDate();
+
+    @Key("demand.future.endDate")
+    String demandFutureEndDate();
+
+    @Key("demand.notNull.validToDate")
+    String demandNotNullValidToDate();
+
+    @Key("demand.future.validToDate")
+    String demandFutureValidToDate();
+
+    @Key("demand.notNull.description")
+    String demandNotNullDescription();
+
+    @Key("demand.size.description")
+    String demandSizeDescription();
+
+    @Key("demand.pattern")
+    String demandPattern();
 }

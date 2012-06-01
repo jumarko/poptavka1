@@ -21,6 +21,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.validation.client.GwtValidation;
 import com.google.gwt.validation.client.AbstractGwtValidatorFactory;
 import com.google.gwt.validation.client.impl.AbstractGwtValidator;
+import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -34,7 +35,7 @@ public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
    * Validator marker for the Validation Sample project. Only the classes listed
    * in the {@link GwtValidation} annotation can be validated.
    */
-  @GwtValidation(value = Address.class, groups = {Default.class})//, ClientGroup.class})
+  @GwtValidation(value = {Address.class, FullDemandDetail.class}, groups = {Default.class})//, ClientGroup.class})
   public interface GwtValidator extends Validator {
   }
 
