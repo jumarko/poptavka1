@@ -20,6 +20,7 @@ import cz.poptavka.sample.domain.demand.DemandType;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.exception.MessageException;
+import cz.poptavka.sample.shared.domain.converter.DemandConverter;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -62,6 +63,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private GeneralService generalService;
     private AuditService auditService;
     private TreeItemService treeItemService;
+    private final DemandConverter demandConverter = new DemandConverter();
 
     public DemandService getDemandService() {
         return demandService;
@@ -149,8 +151,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
 
         Demand newDemandFromDB = demandService.create(demand);
         sendDemandToSuppliers(newDemandFromDB);
-        return (FullDemandDetail) FullDemandDetail.createDemandDetail(
-                newDemandFromDB);
+        return (FullDemandDetail) demandConverter.convertToTarget(newDemandFromDB);
     }
 
     private boolean maxOffersSpecified(FullDemandDetail detail) {
@@ -242,7 +243,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     public List<FullDemandDetail> getAllDemands() {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (Demand demand : demandService.getAll()) {
-            fullDemandDetails.add(FullDemandDetail.createDemandDetail(demand));
+            fullDemandDetails.add(demandConverter.convertToTarget(demand));
         }
         return fullDemandDetails;
     }
@@ -345,7 +346,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     protected ArrayList<FullDemandDetail> toDemandDetailList(List<Demand> list) {
         ArrayList<FullDemandDetail> details = new ArrayList<FullDemandDetail>();
         for (Demand demand : list) {
-            details.add(FullDemandDetail.createDemandDetail(demand));
+            details.add(demandConverter.convertToTarget(demand));
         }
         return details;
     }
@@ -387,7 +388,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     private List<FullDemandDetail> createDemandDetailList(Collection<Demand> demands) {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (Demand demand : demands) {
-            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand);
+            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand);
             fullDemandDetails.add(demandDetail);
         }
         return fullDemandDetails;
@@ -398,7 +399,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         for (DemandCategory demand : demands) {
             List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand.getDemand());
+            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());
             demandDetail.setCreated(createdDate);
             fullDemandDetails.add(demandDetail);
         }
@@ -410,7 +411,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
         for (DemandLocality demand : demands) {
             List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand.getDemand());
+            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());
             demandDetail.setCreated(createdDate);
             fullDemandDetails.add(demandDetail);
         }
@@ -448,7 +449,7 @@ public class DemandRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Override
     public FullDemandDetail getFullDemandDetail(Long demandId) {
 
-        return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+        return demandConverter.convertToTarget(this.demandService.getById(demandId));
 
     }
 

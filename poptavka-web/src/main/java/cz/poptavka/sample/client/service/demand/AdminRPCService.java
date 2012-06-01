@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.service.demand;
 
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -9,7 +10,6 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentDetail;
@@ -72,10 +72,10 @@ public interface AdminRPCService extends RemoteService {
     //---------------------- EMAIL ACTIVATION---------------------------------------------
     Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws RPCException;
 
-    List<EmailActivationDetail> getAdminEmailsActivation(int start, int count,
+    List<ActivationEmailDetail> getAdminEmailsActivation(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException;
 
-    void updateEmailActivation(EmailActivationDetail detailObject) throws RPCException;
+    void updateEmailActivation(ActivationEmailDetail detailObject) throws RPCException;
 
     //---------------------- INVOICE --------------------------------------------------
     Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) throws RPCException;

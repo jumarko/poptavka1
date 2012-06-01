@@ -40,27 +40,6 @@ public class OfferDetail implements Serializable {
         this.updateWholeOfferDetail(offerDetail);
     }
 
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param role
-     * @return DemandDetail
-     */
-    public static OfferDetail createOfferDetail(Offer offer) {
-        OfferDetail o = new OfferDetail();
-        //offer info
-        o.setId(offer.getId());
-        o.setPrice(offer.getPrice());
-        o.setState(offer.getState().getCode());
-        o.setCreatedDate(offer.getCreated());
-        o.setFinishDate(offer.getFinishDate());
-        //demand info
-        o.setDemandId(offer.getDemand().getId());
-        o.setDemandTitle(offer.getDemand().getTitle());
-        //supplier info
-        o.setSupplierId(offer.getSupplier().getId());
-        o.setSupplierName(offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName());
-        return o;
-    }
 
     /**
      * Method created domain object <b>Offer</b> from provided <b>OfferDetail</b> object.

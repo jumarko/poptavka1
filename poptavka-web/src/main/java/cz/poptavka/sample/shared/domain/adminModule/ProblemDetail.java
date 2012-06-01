@@ -28,19 +28,6 @@ public class ProblemDetail implements Serializable {
         this.updateWholeProblem(problemDetail);
     }
 
-    /**
-     * Method created <b>ProblemDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return ProblemDetail - created detail object
-     */
-    public static ProblemDetail createProblemDetail(Problem domain) {
-        ProblemDetail detail = new ProblemDetail();
-
-        detail.setId(domain.getId());
-        detail.setText(domain.getText());
-
-        return detail;
-    }
 
     /**
      * Method created domain object <b>Problem</b> from provided <b>ProblemDetail</b> object.

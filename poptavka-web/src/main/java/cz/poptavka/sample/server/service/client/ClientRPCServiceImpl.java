@@ -11,6 +11,7 @@ import cz.poptavka.sample.domain.common.ResultCriteria;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.domain.user.Verification;
+import cz.poptavka.sample.shared.domain.converter.ClientConverter;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.GeneralService;
@@ -39,6 +40,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private GeneralService generalService;
     private ClientService clientService;
     private LocalityService localityService;
+    private ClientConverter clientConverter = new ClientConverter();
 
     public ArrayList<UserDetail> getAllClients() {
         // TODO do we need this method?
@@ -179,7 +181,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private ArrayList<ClientDetail> createClientDetailList(Collection<Client> clients) {
         ArrayList<ClientDetail> clientDetails = new ArrayList<ClientDetail>();
         for (Client client : clients) {
-            clientDetails.add(ClientDetail.createClientDetail(client));
+            clientDetails.add(clientConverter.convertToTarget(client));
         }
         GWT.log("clientDetailList created: " + clientDetails.size());
         return clientDetails;

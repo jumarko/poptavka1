@@ -19,6 +19,7 @@ import cz.poptavka.sample.domain.message.UserMessage;
 import cz.poptavka.sample.domain.user.BusinessUser;
 import cz.poptavka.sample.domain.user.User;
 import cz.poptavka.sample.exception.MessageException;
+import cz.poptavka.sample.shared.domain.converter.MessageConverter;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.common.TreeItemService;
@@ -72,6 +73,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private TreeItemService treeItemService;
     private DemandService demandService;
     private RatingService ratingService;
+    private MessageConverter messageConverter = new MessageConverter();
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -204,7 +206,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
             // TODO set the id correctly, check it
-            MessageDetail messageDetailFromDB = MessageDetail.createMessageDetail(this.messageService.create(m));
+            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
             Logger.getLogger(MessageRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -226,7 +228,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(INTERNAL_MESSAGE);
             // TODO set the id correctly, check it
-            MessageDetail messageDetailFromDB = MessageDetail.createMessageDetail(this.messageService.create(m));
+            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
             Logger.getLogger(MessageRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -317,7 +319,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 threadRoot, user);
         ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
         for (Message message : messages) {
-            messageDetailImpls.add(MessageDetail.createMessageDetail(message));
+            messageDetailImpls.add(messageConverter.convertToTarget(message));
         }
         return messageDetailImpls;
     }
@@ -329,7 +331,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 threadRoot, user);
         ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
         for (Message message : messages) {
-            messageDetailImpls.add(MessageDetail.createMessageDetail(message));
+            messageDetailImpls.add(messageConverter.convertToTarget(message));
         }
         return messageDetailImpls;
     }
@@ -506,7 +508,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         Message root = messageService.getById(threadRootId);
         List<Message> threads = root.getChildren();
         for (Message msg : threads) {
-            childrenList.add(MessageDetail.createMessageDetail(msg));
+            childrenList.add(messageConverter.convertToTarget(msg));
         }
         return childrenList;
     }
@@ -526,9 +528,9 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         ArrayList<MessageDetail> result = new ArrayList<MessageDetail>();
         // add root and subRoot message
 //        result.add(MessageDetail.createMessageDetail(root));
-        result.add(MessageDetail.createMessageDetail(subRoot));
+        result.add(messageConverter.convertToTarget(subRoot));
         for (Message m : conversation) {
-            result.add(MessageDetail.createMessageDetail(m));
+            result.add(messageConverter.convertToTarget(m));
         }
         return result;
     }

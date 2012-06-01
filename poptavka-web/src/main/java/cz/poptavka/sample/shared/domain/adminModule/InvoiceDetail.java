@@ -52,36 +52,6 @@ public class InvoiceDetail implements Serializable {
         this.updateWholeInvoice(demand);
     }
 
-    /**
-     * Method created <b>InvoiceDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return InvoiceDetail - created detail object
-     */
-    public static InvoiceDetail createInvoiceDetail(Invoice domain) {
-        InvoiceDetail detail = new InvoiceDetail();
-
-        detail.setBankAccountNumber(domain.getBankAccountNumber());
-        detail.setBankCode(domain.getBankCode());
-        detail.setConstSymbol(domain.getConstSymbol());
-        detail.setDueDate(domain.getDueDate());
-        detail.setId(domain.getId());
-        detail.setInvoiceNumber(domain.getInvoiceNumber());
-        detail.setIssueDate(domain.getIssueDate());
-        detail.setPaymentMethod(PaymentMethodDetail.createPaymentMethodDetail(domain.getPaymentMethod()));
-        detail.setShipmentDate(domain.getShipmentDate());
-        detail.setTaxBasis(domain.getTaxBasis());
-        detail.setTotalPrice(domain.getTotalPrice());
-        List<UserServiceDetail> userServices = new ArrayList<UserServiceDetail>();
-        for (UserService userService : domain.getUserServices()) {
-            userServices.add(UserServiceDetail.createAccessRoleDetail(userService));
-        }
-        detail.setUserServices(userServices);
-        detail.setVariableSymbol(domain.getVariableSymbol());
-        detail.setVat(domain.getVat());
-        detail.setVatRate(domain.getVatRate());
-
-        return detail;
-    }
 
     /**
      * Method created domain object <b>Invoice</b> from provided <b>InvoiceDetail</b> object.

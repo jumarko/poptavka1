@@ -41,32 +41,6 @@ public class PaymentDetail implements Serializable {
     }
 
     /**
-     * Method created <b>PaymentDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return PaymentDetail - created detail object
-     */
-    public static PaymentDetail createOurPaymentDetailDetail(OurPaymentDetails domain) {
-        PaymentDetail detail = new PaymentDetail();
-
-        detail.setId(domain.getId());
-        detail.setBankAccount(domain.getBankAccount());
-        detail.setBankCode(domain.getBankCode());
-        detail.setCity(domain.getCity());
-        detail.setCountryVat(domain.getCountryVat());
-        detail.setEmail(domain.getEmail());
-        detail.setIban(domain.getIban());
-        detail.setIdentificationNumber(domain.getIdentificationNumber());
-        detail.setPhone(domain.getPhone());
-        detail.setStreet(domain.getStreet());
-        detail.setSwiftCode(domain.getSwiftCode());
-        detail.setTaxId(domain.getTaxId());
-        detail.setTitle(domain.getTitle());
-        detail.setZipCode(domain.getZipCode());
-
-        return detail;
-    }
-
-    /**
      * Method created domain object <b>OurPaymentDetails</b> from provided <b>PaymentDetail</b> object.
      * @param domain - domain object to be updated
      * @param detail - detail object which provides updated data

@@ -39,37 +39,6 @@ public class ClientDetail implements Serializable {
         this.updateWholeClient(role);
     }
 
-    /**
-     * Method created <b>ClientDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return ClientDetail - created detail object
-     */
-    public static ClientDetail createClientDetail(Client domain) {
-        ClientDetail detail = new ClientDetail();
-        detail.setId(domain.getId());
-        if (domain.getOveralRating() != null) {
-            detail.setOveralRating(domain.getOveralRating());
-        }
-        if (domain.getVerification() != null) {
-            detail.setVerification(domain.getVerification().name());
-        }
-        detail.setUserDetail(UserDetail.createUserDetail(domain.getBusinessUser()));
-        if (domain.getSupplierBlacklist() != null) {
-            List<Long> supplierBlackListIds = new ArrayList<Long>();
-            for (Supplier supplier : domain.getSupplierBlacklist().getSuppliers()) {
-                supplierBlackListIds.add(supplier.getId());
-            }
-            detail.setSupplierBlackListIds(supplierBlackListIds);
-        }
-
-        List<Long> demandsIds = new ArrayList<Long>();
-        for (Demand demand : domain.getDemands()) {
-            demandsIds.add(demand.getId());
-        }
-        detail.setDemandsIds(demandsIds);
-
-        return detail;
-    }
 
     /**
      * Method created domain object <b>Client</b> from provided <b>ClientDetail</b> object.

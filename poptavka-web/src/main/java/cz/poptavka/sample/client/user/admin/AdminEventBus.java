@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.user.admin;
 
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 import java.util.List;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -31,7 +32,6 @@ import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
@@ -289,7 +289,7 @@ public interface AdminEventBus extends EventBus {
     void updateAccessRole(AccessRoleDetail accessRole);
 
     @Event(handlers = AdminHandler.class)
-    void updateEmailActivation(EmailActivationDetail accessRole);
+    void updateEmailActivation(ActivationEmailDetail accessRole);
 
     @Event(handlers = AdminHandler.class)
     void updateInvoice(InvoiceDetail accessRole);
@@ -329,7 +329,7 @@ public interface AdminEventBus extends EventBus {
     void displayAdminTabAccessRoles(List<AccessRoleDetail> clients);
 
     @Event(handlers = AdminEmailActivationsPresenter.class)
-    void displayAdminTabEmailsActivation(List<EmailActivationDetail> clients);
+    void displayAdminTabEmailsActivation(List<ActivationEmailDetail> clients);
 
     @Event(handlers = AdminInvoicesPresenter.class)
     void displayAdminTabInvoices(List<InvoiceDetail> clients);
@@ -391,7 +391,7 @@ public interface AdminEventBus extends EventBus {
     void addAccessRoleToCommit(AccessRoleDetail clientDetail);
 
     @Event(handlers = AdminEmailActivationsPresenter.class)
-    void addEmailActivationToCommit(EmailActivationDetail clientDetail);
+    void addEmailActivationToCommit(ActivationEmailDetail clientDetail);
 
     @Event(handlers = AdminInvoicesPresenter.class)
     void addInvoiceToCommit(InvoiceDetail clientDetail);

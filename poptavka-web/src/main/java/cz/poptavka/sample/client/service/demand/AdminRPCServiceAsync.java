@@ -1,5 +1,6 @@
 package cz.poptavka.sample.client.service.demand;
 
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -8,7 +9,6 @@ import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentDetail;
@@ -68,9 +68,9 @@ public interface AdminRPCServiceAsync {
     void getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder, AsyncCallback<Long> callback);
 
     void getAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
-            Map<String, OrderType> orderColumns, AsyncCallback<List<EmailActivationDetail>> callback);
+            Map<String, OrderType> orderColumns, AsyncCallback<List<ActivationEmailDetail>> callback);
 
-    void updateEmailActivation(EmailActivationDetail detailObject, AsyncCallback<EmailActivationDetail> callback);
+    void updateEmailActivation(ActivationEmailDetail detailObject, AsyncCallback<ActivationEmailDetail> callback);
 
     //---------------------- INVOICE --------------------------------------------------
     void getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder, AsyncCallback<Long> callback);

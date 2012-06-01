@@ -28,7 +28,7 @@ import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 
 import java.util.Date;
 
@@ -52,16 +52,16 @@ public class AdminEmailActivationsView extends Composite
     @UiField(provided = true) SimplePager pager;
     @UiField(provided = true) ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<EmailActivationDetail> dataGrid;
+    @UiField(provided = true) DataGrid<ActivationEmailDetail> dataGrid;
     // Editable Columns
-    private Column<EmailActivationDetail, String> activationColumn;
-    private Column<EmailActivationDetail, Date> timeoutColumn;
-    private SingleSelectionModel<EmailActivationDetail> selectionModel;
+    private Column<ActivationEmailDetail, String> activationColumn;
+    private Column<ActivationEmailDetail, Date> timeoutColumn;
+    private SingleSelectionModel<ActivationEmailDetail> selectionModel;
     // The key provider that provides the unique ID of a EmailActivationDetail.
-    private static final ProvidesKey<EmailActivationDetail> KEY_PROVIDER = new ProvidesKey<EmailActivationDetail>() {
+    private static final ProvidesKey<ActivationEmailDetail> KEY_PROVIDER = new ProvidesKey<ActivationEmailDetail>() {
 
         @Override
-        public Object getKey(EmailActivationDetail item) {
+        public Object getKey(ActivationEmailDetail item) {
             return item == null ? null : item.getId();
         }
     };
@@ -93,7 +93,7 @@ public class AdminEmailActivationsView extends Composite
         GWT.log("init AdminEmailActivations DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<EmailActivationDetail>(KEY_PROVIDER);
+        dataGrid = new DataGrid<ActivationEmailDetail>(KEY_PROVIDER);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -105,9 +105,9 @@ public class AdminEmailActivationsView extends Composite
         pager.setDisplay(dataGrid);
 
         //SELECTION MODEL
-        selectionModel = new SingleSelectionModel<EmailActivationDetail>(KEY_PROVIDER);
+        selectionModel = new SingleSelectionModel<ActivationEmailDetail>(KEY_PROVIDER);
         dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<EmailActivationDetail>createCheckboxManager());
+                DefaultSelectionEventManager.<ActivationEmailDetail>createCheckboxManager());
 
         // COLUMNS
         initTableColumns();
@@ -122,7 +122,7 @@ public class AdminEmailActivationsView extends Composite
         addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
 
             @Override
-            public String getValue(EmailActivationDetail object) {
+            public String getValue(ActivationEmailDetail object) {
                 return String.valueOf(object.getId());
             }
         });
@@ -131,7 +131,7 @@ public class AdminEmailActivationsView extends Composite
         activationColumn = addColumn(new EditTextCell(), "ActivationLink", 100, new GetValue<String>() {
 
             @Override
-            public String getValue(EmailActivationDetail object) {
+            public String getValue(ActivationEmailDetail object) {
                 return object.getActivationLink();
             }
         });
@@ -141,7 +141,7 @@ public class AdminEmailActivationsView extends Composite
         timeoutColumn = addColumn(new DatePickerCell(dateFormat), "Timeout", 100, new GetValue<Date>() {
 
             @Override
-            public Date getValue(EmailActivationDetail object) {
+            public Date getValue(ActivationEmailDetail object) {
                 return object.getTimeout();
             }
         });
@@ -154,7 +154,7 @@ public class AdminEmailActivationsView extends Composite
      */
     private interface GetValue<C> {
 
-        C getValue(EmailActivationDetail emailActivationDetail);
+        C getValue(ActivationEmailDetail emailActivationDetail);
     }
 
     /**
@@ -165,12 +165,12 @@ public class AdminEmailActivationsView extends Composite
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<EmailActivationDetail, C> addColumn(Cell<C> cell, String headerText, int width,
+    private <C> Column<ActivationEmailDetail, C> addColumn(Cell<C> cell, String headerText, int width,
             final GetValue<C> getter) {
-        Column<EmailActivationDetail, C> column = new Column<EmailActivationDetail, C>(cell) {
+        Column<ActivationEmailDetail, C> column = new Column<ActivationEmailDetail, C>(cell) {
 
             @Override
-            public C getValue(EmailActivationDetail object) {
+            public C getValue(ActivationEmailDetail object) {
                 return getter.getValue(object);
             }
         };
@@ -187,7 +187,7 @@ public class AdminEmailActivationsView extends Composite
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<EmailActivationDetail> getDataGrid() {
+    public DataGrid<ActivationEmailDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -195,7 +195,7 @@ public class AdminEmailActivationsView extends Composite
      * @return table column: TIMEOUT
      */
     @Override
-    public Column<EmailActivationDetail, Date> getTimeoutColumn() {
+    public Column<ActivationEmailDetail, Date> getTimeoutColumn() {
         return timeoutColumn;
     }
 
@@ -203,7 +203,7 @@ public class AdminEmailActivationsView extends Composite
      * @return table column: ACTIVATION LINK
      */
     @Override
-    public Column<EmailActivationDetail, String> getActivationLinkColumn() {
+    public Column<ActivationEmailDetail, String> getActivationLinkColumn() {
         return activationColumn;
     }
 
@@ -211,7 +211,7 @@ public class AdminEmailActivationsView extends Composite
      * @return table's selection model
      */
     @Override
-    public SingleSelectionModel<EmailActivationDetail> getSelectionModel() {
+    public SingleSelectionModel<ActivationEmailDetail> getSelectionModel() {
         return selectionModel;
     }
 

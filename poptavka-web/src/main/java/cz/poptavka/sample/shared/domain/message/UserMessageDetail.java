@@ -7,6 +7,7 @@ package cz.poptavka.sample.shared.domain.message;
 import com.google.gwt.view.client.ProvidesKey;
 import cz.poptavka.sample.client.user.messages.tab.MessageTableDisplay;
 import cz.poptavka.sample.domain.message.UserMessage;
+import cz.poptavka.sample.shared.domain.converter.MessageConverter;
 import java.io.Serializable;
 
 /**
@@ -40,7 +41,7 @@ public class UserMessageDetail implements Serializable, MessageTableDisplay {
         detail.setId(userMessage.getId());
         detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
-        detail.setMessageDetail(MessageDetail.createMessageDetail(userMessage.getMessage()));
+        detail.setMessageDetail(new MessageConverter().convertToTarget(userMessage.getMessage()));
         detail.setSenderEmail(userMessage.getMessage().getSender().getEmail()); //User().getEmail());
 
         return detail;

@@ -5,6 +5,20 @@
 package cz.poptavka.sample.server.service.admin;
 
 import cz.poptavka.sample.domain.activation.ActivationEmail;
+import cz.poptavka.sample.shared.domain.converter.AccessRoleConverter;
+import cz.poptavka.sample.shared.domain.converter.ActivationEmailConverter;
+import cz.poptavka.sample.shared.domain.converter.ClientConverter;
+import cz.poptavka.sample.shared.domain.converter.DemandConverter;
+import cz.poptavka.sample.shared.domain.converter.InvoiceConverter;
+import cz.poptavka.sample.shared.domain.converter.MessageConverter;
+import cz.poptavka.sample.shared.domain.converter.OfferConverter;
+import cz.poptavka.sample.shared.domain.converter.PaymentConverter;
+import cz.poptavka.sample.shared.domain.converter.PaymentMethodConverter;
+import cz.poptavka.sample.shared.domain.converter.PermissionConverter;
+import cz.poptavka.sample.shared.domain.converter.PreferenceConverter;
+import cz.poptavka.sample.shared.domain.converter.ProblemConverter;
+import cz.poptavka.sample.shared.domain.converter.SupplierConverter;
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.googlecode.genericdao.search.Search;
@@ -46,7 +59,6 @@ import cz.poptavka.sample.service.demand.CategoryService;
 import cz.poptavka.sample.service.demand.DemandService;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
 import cz.poptavka.sample.shared.domain.adminModule.PaymentDetail;
@@ -72,108 +84,7 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;
-    //--------------------------------------------------- CONVERTERS ---------------------------------------------------
-    //--------------------------------------------------- WILL BE MOVED to the standalone classes ----------------------
-    private final Converter<PaymentMethod, PaymentMethodDetail> paymentMethodConverter =
-            new Converter<PaymentMethod, PaymentMethodDetail>() {
 
-                @Override
-                public PaymentMethodDetail convert(PaymentMethod paymentMethod) {
-                    return PaymentMethodDetail.createPaymentMethodDetail(paymentMethod);
-                }
-            };
-    private final Converter<Permission, PermissionDetail> permissionConverter =
-            new Converter<Permission, PermissionDetail>() {
-
-                @Override
-                public PermissionDetail convert(Permission permission) {
-                    return PermissionDetail.createPermissionsDetail(permission);
-                }
-            };
-    private final Converter<Preference, PreferenceDetail> preferenceConverter =
-            new Converter<Preference, PreferenceDetail>() {
-
-                @Override
-                public PreferenceDetail convert(Preference preference) {
-                    return PreferenceDetail.createPreferenceDetail(preference);
-                }
-            };
-    private final Converter<Problem, ProblemDetail> problemConverter = new Converter<Problem, ProblemDetail>() {
-
-        @Override
-        public ProblemDetail convert(Problem problem) {
-            return ProblemDetail.createProblemDetail(problem);
-        }
-    };
-    private final Converter<Demand, FullDemandDetail> demandConverter = new Converter<Demand, FullDemandDetail>() {
-
-        @Override
-        public FullDemandDetail convert(Demand demand) {
-            return FullDemandDetail.createDemandDetail(demand);
-        }
-    };
-    private final Converter<Client, ClientDetail> clientConverter = new Converter<Client, ClientDetail>() {
-
-        @Override
-        public ClientDetail convert(Client client) {
-            return ClientDetail.createClientDetail(client);
-        }
-    };
-    private final Converter<Supplier, FullSupplierDetail> supplierConverter =
-            new Converter<Supplier, FullSupplierDetail>() {
-
-                @Override
-                public FullSupplierDetail convert(Supplier supplier) {
-                    return FullSupplierDetail.createFullSupplierDetail(supplier);
-                }
-            };
-    private final Converter<Offer, OfferDetail> offerConverter = new Converter<Offer, OfferDetail>() {
-
-        @Override
-        public OfferDetail convert(Offer offer) {
-            return OfferDetail.createOfferDetail(offer);
-        }
-    };
-    private final Converter<AccessRole, AccessRoleDetail> accessRoleConverter =
-            new Converter<AccessRole, AccessRoleDetail>() {
-
-                @Override
-                public AccessRoleDetail convert(AccessRole role) {
-                    return AccessRoleDetail.createAccessRoleDetail(role);
-                }
-            };
-    private final Converter<Message, MessageDetail> messageConverter =
-            new Converter<Message, MessageDetail>() {
-
-                @Override
-                public MessageDetail convert(Message message) {
-                    return MessageDetail.createMessageDetail(message);
-                }
-            };
-    private final Converter<OurPaymentDetails, PaymentDetail> paymentConverter =
-            new Converter<OurPaymentDetails, PaymentDetail>() {
-
-                @Override
-                public PaymentDetail convert(OurPaymentDetails payment) {
-                    return PaymentDetail.createOurPaymentDetailDetail(payment);
-                }
-            };
-    private final Converter<Invoice, InvoiceDetail> invoiceConverter = new Converter<Invoice, InvoiceDetail>() {
-
-        @Override
-        public InvoiceDetail convert(Invoice invoice) {
-            return InvoiceDetail.createInvoiceDetail(invoice);
-        }
-    };
-    private final Converter<ActivationEmail, EmailActivationDetail> emailActivationConverter =
-            new Converter<ActivationEmail, EmailActivationDetail>() {
-
-                @Override
-                public EmailActivationDetail convert(ActivationEmail emailActivation) {
-                    return EmailActivationDetail.createEmailActivationDetail(emailActivation);
-                }
-            };
-    //--------------------------------------------------- END OF CONVERTERS --------------------------------------------
     private GeneralService generalService;
     private DemandService demandService;
     private LocalityService localityService;
@@ -223,7 +134,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), demandConverter);
+        return new DemandConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -271,7 +182,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), clientConverter);
+        return new ClientConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -304,7 +215,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), supplierConverter);
+        return new SupplierConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -337,7 +248,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), offerConverter);
+        return new OfferConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -370,7 +281,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), accessRoleConverter);
+        return new AccessRoleConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -394,7 +305,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
-    public List<EmailActivationDetail> getAdminEmailsActivation(int start, int count,
+    public List<ActivationEmailDetail> getAdminEmailsActivation(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(ActivationEmail.class);
         if (searchDataHolder != null) {
@@ -403,13 +314,13 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), emailActivationConverter);
+        return new ActivationEmailConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
-    public void updateEmailActivation(EmailActivationDetail emailActivationDetail) {
+    public void updateEmailActivation(ActivationEmailDetail emailActivationDetail) {
         ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
-        generalService.merge(EmailActivationDetail.updateEmailActivation(emailActivation, emailActivationDetail));
+        generalService.merge(ActivationEmailDetail.updateEmailActivation(emailActivation, emailActivationDetail));
     }
 
     /**********************************************************************************************
@@ -436,7 +347,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), invoiceConverter);
+        return new InvoiceConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -470,7 +381,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search.setFirstResult(start);
         search.setMaxResults(count);
 //        search.setPage(count);
-        return this.createDetailList(generalService.search(search), messageConverter);
+        return new MessageConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -507,7 +418,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), paymentConverter);
+        return new PaymentConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -540,14 +451,14 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), paymentMethodConverter);
+        return new PaymentMethodConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
     public List<PaymentMethodDetail> getAdminPaymentMethods() {
         final Search search = new Search(PaymentMethod.class);
         search.addSort("id", false);
-        return this.createDetailList(generalService.search(search), paymentMethodConverter);
+        return new PaymentMethodConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -580,7 +491,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), permissionConverter);
+        return new PermissionConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -613,7 +524,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), preferenceConverter);
+        return new PreferenceConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -646,7 +557,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return this.createDetailList(generalService.search(search), problemConverter);
+        return new ProblemConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override
@@ -658,14 +569,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     /**********************************************************************************************
      ***********************  COMMON METHODS. *************************************************
      **********************************************************************************************/
-    private <Domain, Detail> List<Detail> createDetailList(Collection<Domain> domainObjects,
-            Converter<Domain, Detail> convertCallback) {
-        final List<Detail> detailObjects = new ArrayList<Detail>();
-        for (Domain domainObject : domainObjects) {
-            detailObjects.add(convertCallback.convert(domainObject));
-        }
-        return detailObjects;
-    }
 
     private Search setSortSearch(Map<String, OrderType> orderColumns, Search search) {
         List<Sort> sorts = new ArrayList<Sort>();

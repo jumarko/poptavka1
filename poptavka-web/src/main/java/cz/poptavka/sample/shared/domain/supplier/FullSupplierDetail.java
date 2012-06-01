@@ -41,56 +41,6 @@ public class FullSupplierDetail implements Serializable {
         this.updateWholeSupplier(supplier);
     }
 
-    public static FullSupplierDetail createFullSupplierDetail(Supplier supplier) {
-        FullSupplierDetail detail = new FullSupplierDetail();
-        detail.setSupplierId(supplier.getId());
-        if (supplier.getOveralRating() != null) {
-            detail.setOverallRating(supplier.getOveralRating());
-        }
-        if (supplier.isCertified() != null) {
-            detail.setCertified(supplier.isCertified());
-        }
-        if (supplier.getVerification() != null) {
-            detail.setVerification(supplier.getVerification().name());
-        }
-        //categories
-        Map<Long, String> catMap = new HashMap<Long, String>();
-        for (Category cat : supplier.getCategories()) {
-            catMap.put(cat.getId(), cat.getName());
-        }
-        detail.setCategories(catMap);
-        //localities
-        Map<String, String> locMap = new HashMap<String, String>();
-        for (Locality loc : supplier.getLocalities()) {
-            locMap.put(loc.getCode(), loc.getName());
-        }
-        detail.setLocalities(locMap);
-        if (supplier.getBusinessUser() != null) {
-            List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-            for (Address addr : supplier.getBusinessUser().getAddresses()) {
-                addresses.add(AddressDetail.createAddressDetail(addr));
-            }
-            detail.setAddresses(addresses);
-            detail.setEmail(supplier.getBusinessUser().getEmail());
-            if (supplier.getBusinessUser().getBusinessUserData() != null) {
-                detail.setDescription(supplier.getBusinessUser().getBusinessUserData().getDescription());
-                //        services = supplier.getBusinessUser().getUserServices();
-                if (supplier.getBusinessUser().getBusinessType() != null) {
-                    detail.setBusinessType(supplier.getBusinessUser().getBusinessType().getValue());
-                }
-                detail.setCompanyName(supplier.getBusinessUser().getBusinessUserData().getCompanyName());
-                if (supplier.getBusinessUser().getBusinessUserData().getIdentificationNumber() != null) {
-                    detail.setIdentificationNumber(supplier.getBusinessUser()
-                            .getBusinessUserData().getIdentificationNumber());
-                }
-                detail.setFirstName(supplier.getBusinessUser().getBusinessUserData().getPersonFirstName());
-                detail.setLastName(supplier.getBusinessUser().getBusinessUserData().getPersonLastName());
-                detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
-            }
-        }
-        return detail;
-    }
-
     public static Supplier updateSupplier(Supplier domain, FullSupplierDetail detail) {
         return domain;
     }

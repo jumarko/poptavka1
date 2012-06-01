@@ -4,6 +4,7 @@
  */
 package cz.poptavka.sample.client.user.admin.tab;
 
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,6 @@ import cz.poptavka.sample.client.main.Storage;
 import cz.poptavka.sample.client.main.common.search.SearchModuleDataHolder;
 import cz.poptavka.sample.client.user.admin.AdminEventBus;
 import cz.poptavka.sample.domain.common.OrderType;
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +49,8 @@ public class AdminEmailActivationsPresenter
         extends LazyPresenter<AdminEmailActivationsPresenter.AdminEmailActivationsInterface, AdminEventBus> {
 
     //history of changes
-    private Map<Long, EmailActivationDetail> dataToUpdate = new HashMap<Long, EmailActivationDetail>();
-    private Map<Long, EmailActivationDetail> originalData = new HashMap<Long, EmailActivationDetail>();
+    private Map<Long, ActivationEmailDetail> dataToUpdate = new HashMap<Long, ActivationEmailDetail>();
+    private Map<Long, ActivationEmailDetail> originalData = new HashMap<Long, ActivationEmailDetail>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
     //for asynch data retrieving
@@ -71,13 +71,13 @@ public class AdminEmailActivationsPresenter
     public interface AdminEmailActivationsInterface extends LazyView {
 
         // TABLE
-        DataGrid<EmailActivationDetail> getDataGrid();
+        DataGrid<ActivationEmailDetail> getDataGrid();
 
-        Column<EmailActivationDetail, String> getActivationLinkColumn();
+        Column<ActivationEmailDetail, String> getActivationLinkColumn();
 
-        Column<EmailActivationDetail, Date> getTimeoutColumn();
+        Column<ActivationEmailDetail, Date> getTimeoutColumn();
 
-        SingleSelectionModel<EmailActivationDetail> getSelectionModel();
+        SingleSelectionModel<ActivationEmailDetail> getSelectionModel();
 
         // PAGER
         SimplePager getPager();
@@ -118,7 +118,7 @@ public class AdminEmailActivationsPresenter
      * Displays retrieved data.
      * @param accessRoles -- list to display
      */
-    public void onDisplayAdminTabEmailsActivation(List<EmailActivationDetail> demands) {
+    public void onDisplayAdminTabEmailsActivation(List<ActivationEmailDetail> demands) {
         dataProvider.updateRowData(start, demands);
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
@@ -134,10 +134,10 @@ public class AdminEmailActivationsPresenter
         this.start = 0;
         orderColumns.clear();
         orderColumns.put(columnNames[2], OrderType.DESC);
-        dataProvider = new AsyncDataProvider<EmailActivationDetail>() {
+        dataProvider = new AsyncDataProvider<ActivationEmailDetail>() {
 
             @Override
-            protected void onRangeChanged(HasData<EmailActivationDetail> display) {
+            protected void onRangeChanged(HasData<ActivationEmailDetail> display) {
                 display.setRowCount(totalFound);
                 start = display.getVisibleRange().getStart();
                 int length = display.getVisibleRange().getLength();
@@ -164,8 +164,8 @@ public class AdminEmailActivationsPresenter
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }
-                Column<EmailActivationDetail, String> column =
-                        (Column<EmailActivationDetail, String>) event.getColumn();
+                Column<ActivationEmailDetail, String> column =
+                        (Column<ActivationEmailDetail, String>) event.getColumn();
                 if (column == null) {
                     return;
                 }
@@ -182,7 +182,7 @@ public class AdminEmailActivationsPresenter
      *
      * Store changes made in table data.
      */
-    public void onAddEmailActivationToCommit(EmailActivationDetail data) {
+    public void onAddEmailActivationToCommit(ActivationEmailDetail data) {
         dataToUpdate.remove(data.getId());
         dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
@@ -225,13 +225,13 @@ public class AdminEmailActivationsPresenter
      * COLUMN UPDATER - ACTIVATIONLINK.
      */
     private void setActivationLinkColumnUpdater() {
-        view.getActivationLinkColumn().setFieldUpdater(new FieldUpdater<EmailActivationDetail, String>() {
+        view.getActivationLinkColumn().setFieldUpdater(new FieldUpdater<ActivationEmailDetail, String>() {
 
             @Override
-            public void update(int index, EmailActivationDetail object, String value) {
+            public void update(int index, ActivationEmailDetail object, String value) {
                 if (!object.getActivationLink().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new EmailActivationDetail(object));
+                        originalData.put(object.getId(), new ActivationEmailDetail(object));
                     }
                     object.setActivationLink(value);
                     eventBus.addEmailActivationToCommit(object);
@@ -244,13 +244,13 @@ public class AdminEmailActivationsPresenter
      * COLUMN UPDATER - TIMEOUT.
      */
     private void setTimeoutColumnUpdater() {
-        view.getTimeoutColumn().setFieldUpdater(new FieldUpdater<EmailActivationDetail, Date>() {
+        view.getTimeoutColumn().setFieldUpdater(new FieldUpdater<ActivationEmailDetail, Date>() {
 
             @Override
-            public void update(int index, EmailActivationDetail object, Date value) {
+            public void update(int index, ActivationEmailDetail object, Date value) {
                 if (!object.getTimeout().equals(value)) {
                     if (!originalData.containsKey(object.getId())) {
-                        originalData.put(object.getId(), new EmailActivationDetail(object));
+                        originalData.put(object.getId(), new ActivationEmailDetail(object));
                     }
                     object.setTimeout(value);
                     eventBus.addEmailActivationToCommit(object);
@@ -293,7 +293,7 @@ public class AdminEmailActivationsPresenter
                 dataToUpdate.clear();
                 view.getDataGrid().setFocus(true);
                 int idx = 0;
-                for (EmailActivationDetail data : originalData.values()) {
+                for (ActivationEmailDetail data : originalData.values()) {
                     idx = view.getDataGrid().getVisibleItems().indexOf(data);
                     view.getDataGrid().getVisibleItem(idx).updateWholeEmailActivation(data);
                 }

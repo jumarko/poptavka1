@@ -31,22 +31,6 @@ public class PermissionDetail implements Serializable, Comparable<PermissionDeta
     }
 
     /**
-     * Method created <b>PermissionDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return PermissionDetail - created detail object
-     */
-    public static PermissionDetail createPermissionsDetail(Permission domain) {
-        PermissionDetail detail = new PermissionDetail();
-
-        detail.setId(domain.getId());
-        detail.setName(domain.getName());
-        detail.setDescription(domain.getDescription());
-        detail.setCode(domain.getCode());
-
-        return detail;
-    }
-
-    /**
      * Method created domain object <b>Permission</b> from provided <b>PermissionDetail</b> object.
      * @param domain - domain object to be updated
      * @param detail - detail object which provides updated data

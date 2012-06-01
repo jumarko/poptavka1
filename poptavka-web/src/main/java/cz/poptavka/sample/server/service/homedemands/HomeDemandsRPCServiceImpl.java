@@ -14,6 +14,7 @@ import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandCategory;
 import cz.poptavka.sample.domain.demand.DemandLocality;
+import cz.poptavka.sample.shared.domain.converter.DemandConverter;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.server.service.demand.DemandRPCServiceImpl;
 import cz.poptavka.sample.service.GeneralService;
@@ -58,6 +59,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private AuditService auditService;
     private TreeItemService treeItemService;
     private LocalityService localityService;
+    private DemandConverter demandConverter = new DemandConverter();
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -216,7 +218,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private List<FullDemandDetail> createDemandDetailList(Collection<Demand> demands) {
         List<FullDemandDetail> fullDemandDetails = new ArrayList<FullDemandDetail>();
         for (Demand demand : demands) {
-            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand);
+            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand);
             fullDemandDetails.add(demandDetail);
         }
         return fullDemandDetails;
@@ -227,7 +229,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         for (DemandCategory demand : demands) {
             List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand.getDemand());
+            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());
             demandDetail.setCreated(createdDate);
             fullDemandDetails.add(demandDetail);
         }
@@ -239,7 +241,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         for (DemandLocality demand : demands) {
             List<Number> revisions = auditService.getRevisions(Demand.class, demand.getDemand().getId());
             Date createdDate = auditService.getRevisionDate(revisions.get(0));
-            FullDemandDetail demandDetail = FullDemandDetail.createDemandDetail(demand.getDemand());
+            FullDemandDetail demandDetail = demandConverter.convertToTarget(demand.getDemand());
             demandDetail.setCreated(createdDate);
             fullDemandDetails.add(demandDetail);
         }

@@ -1,5 +1,7 @@
 package cz.poptavka.sample.shared.domain.offer;
 
+import cz.poptavka.sample.shared.domain.converter.MessageConverter;
+import cz.poptavka.sample.shared.domain.converter.OfferConverter;
 import java.io.Serializable;
 
 import com.google.gwt.core.client.GWT;
@@ -24,8 +26,8 @@ public class FullOfferDetail implements Serializable {
         if (message == null) {
             return detail;
         }
-        detail.setMessageDetail(MessageDetail.createMessageDetail(message));
-        detail.setOfferDetail(OfferDetail.createOfferDetail(message.getOffer()));
+        detail.setMessageDetail(new MessageConverter().convertToTarget(message));
+        detail.setOfferDetail(new OfferConverter().convertToTarget(message.getOffer()));
 
         detail.setIsRead(true);
 

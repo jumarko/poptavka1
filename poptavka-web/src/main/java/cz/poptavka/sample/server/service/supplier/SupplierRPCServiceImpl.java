@@ -25,6 +25,7 @@ import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.domain.user.SupplierCategory;
 import cz.poptavka.sample.domain.user.SupplierLocality;
 import cz.poptavka.sample.domain.user.Verification;
+import cz.poptavka.sample.shared.domain.converter.SupplierConverter;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.service.GeneralService;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -64,6 +65,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private LocalityService localityService;
     private CategoryService categoryService;
     private TreeItemService treeItemService;
+    private SupplierConverter supplierConverter = new SupplierConverter();
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -396,7 +398,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private ArrayList<FullSupplierDetail> createSupplierDetailList(Collection<Supplier> suppliers) {
         ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
         for (Supplier supplier : suppliers) {
-            userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplier));
+            userDetails.add(supplierConverter.convertToTarget(supplier));
         }
         GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
@@ -405,7 +407,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private ArrayList<FullSupplierDetail> createSupplierDetailListCat(Collection<SupplierCategory> suppliersCat) {
         ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
         for (SupplierCategory supplierCat : suppliersCat) {
-            userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplierCat.getSupplier()));
+            userDetails.add(supplierConverter.convertToTarget(supplierCat.getSupplier()));
         }
         GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;
@@ -414,7 +416,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private ArrayList<FullSupplierDetail> createSupplierDetailListLoc(Collection<SupplierLocality> suppliersLoc) {
         ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
         for (SupplierLocality supplierLoc : suppliersLoc) {
-            userDetails.add(FullSupplierDetail.createFullSupplierDetail(supplierLoc.getSupplier()));
+            userDetails.add(supplierConverter.convertToTarget(supplierLoc.getSupplier()));
         }
         GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;

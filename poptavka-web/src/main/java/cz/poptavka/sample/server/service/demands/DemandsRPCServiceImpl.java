@@ -5,6 +5,8 @@
 package cz.poptavka.sample.server.service.demands;
 
 import cz.poptavka.sample.client.service.demand.DemandsRPCService;
+import cz.poptavka.sample.shared.domain.converter.DemandConverter;
+import cz.poptavka.sample.shared.domain.converter.MessageConverter;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.dao.message.MessageFilter;
 import cz.poptavka.sample.domain.common.ResultCriteria;
@@ -59,6 +61,8 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     private GeneralService generalService;
     private MessageService messageService;
     private RatingService ratingService;
+    private MessageConverter messageConverter = new MessageConverter();
+    private DemandConverter demandConverter = new DemandConverter();
 
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
@@ -204,7 +208,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
                 threadRoot, user);
         ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
         for (Message message : messages) {
-            messageDetailImpls.add(MessageDetail.createMessageDetail(message));
+            messageDetailImpls.add(messageConverter.convertToTarget(message));
         }
         return messageDetailImpls;
     }
@@ -223,7 +227,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
             m.setBody(messageDetailImpl.getBody());
             m.setSubject(QUERY_TO_POTENTIAL_DEMAND_SUBJECT);
             // TODO set the id correctly, check it
-            MessageDetail messageDetailFromDB = MessageDetail.createMessageDetail(this.messageService.create(m));
+            MessageDetail messageDetailFromDB = messageConverter.convertToTarget(this.messageService.create(m));
             return messageDetailFromDB;
         } catch (MessageException ex) {
             Logger.getLogger(DemandsRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,8 +270,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
 
     @Override
     public FullDemandDetail getFullDemandDetail(Long demandId) throws RPCException {
-
-        return FullDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+        return demandConverter.convertToTarget(this.demandService.getById(demandId));
 
     }
 

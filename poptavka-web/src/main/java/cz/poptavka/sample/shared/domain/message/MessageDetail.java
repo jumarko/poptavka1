@@ -51,10 +51,6 @@ public class MessageDetail implements Serializable {
         this.updateWholeMessage(detail);
     }
 
-    public static MessageDetail createMessageDetail(Message message) {
-        return fillMessageDetail(new MessageDetail(), message);
-    }
-
     /**
      * Method created domain object <b>Message</b> from provided <b>MessageDetail</b> object.
      * @param domain - domain object to be updated

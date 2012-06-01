@@ -15,6 +15,7 @@ import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.user.BusinessUserData;
 import cz.poptavka.sample.domain.user.Client;
 import cz.poptavka.sample.exception.MessageException;
+import cz.poptavka.sample.shared.domain.converter.DemandConverter;
 import cz.poptavka.sample.server.service.AutoinjectingRemoteService;
 import cz.poptavka.sample.server.service.ConvertUtils;
 import cz.poptavka.sample.service.address.LocalityService;
@@ -47,6 +48,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private LocalityService localityService;
     private CategoryService categoryService;
     private ClientService clientService;
+    private DemandConverter demandConverter = new DemandConverter();
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -108,7 +110,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
         Demand newDemandFromDB = demandService.create(demand);
         sendDemandToSuppliers(newDemandFromDB);
-        return FullDemandDetail.createDemandDetail(newDemandFromDB);
+        return demandConverter.convertToTarget(newDemandFromDB);
     }
 
     private boolean maxOffersSpecified(FullDemandDetail detail) {

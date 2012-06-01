@@ -13,7 +13,7 @@ import java.util.Date;
  * @author Martin Slavkovsky
  *
  */
-public class EmailActivationDetail implements Serializable {
+public class ActivationEmailDetail implements Serializable {
 
     /**
      * Generated serialVersionUID.
@@ -24,35 +24,19 @@ public class EmailActivationDetail implements Serializable {
     private Date timeout;
 
     /** for serialization. **/
-    public EmailActivationDetail() {
+    public ActivationEmailDetail() {
     }
 
-    public EmailActivationDetail(EmailActivationDetail demand) {
+    public ActivationEmailDetail(ActivationEmailDetail demand) {
         this.updateWholeEmailActivation(demand);
     }
-
-    /**
-     * Method created <b>EmailActivationDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return EmailActivationDetail - created detail object
-     */
-    public static EmailActivationDetail createEmailActivationDetail(ActivationEmail domain) {
-        EmailActivationDetail detail = new EmailActivationDetail();
-
-        detail.setId(domain.getId());
-        detail.setActivationLink(domain.getActivationLink());
-        detail.setTimeout(domain.getValidTo());
-
-        return detail;
-    }
-
     /**
      * Method created domain object <b>EmailActivation</b> from provided <b>EmailActivationDetail</b> object.
      * @param domain - domain object to be updated
      * @param detail - detail object which provides updated data
      * @return EmailActivation - updated given domain object
      */
-    public static ActivationEmail updateEmailActivation(ActivationEmail domain, EmailActivationDetail detail) {
+    public static ActivationEmail updateEmailActivation(ActivationEmail domain, ActivationEmailDetail detail) {
         if (!domain.getActivationLink().equals(detail.getActivationLink())) {
             domain.setActivationLink(detail.getActivationLink());
         }
@@ -63,7 +47,7 @@ public class EmailActivationDetail implements Serializable {
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholeEmailActivation(EmailActivationDetail emailActivationDetail) {
+    public void updateWholeEmailActivation(ActivationEmailDetail emailActivationDetail) {
         id = emailActivationDetail.getId();
         activationLink = emailActivationDetail.getActivationLink();
         timeout = emailActivationDetail.getTimeout();
@@ -109,7 +93,7 @@ public class EmailActivationDetail implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final EmailActivationDetail other = (EmailActivationDetail) obj;
+        final ActivationEmailDetail other = (ActivationEmailDetail) obj;
         if (this.id != other.getId()) {
             return false;
         }

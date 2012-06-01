@@ -38,26 +38,6 @@ public class AccessRoleDetail implements Serializable {
     }
 
     /**
-     * Method created <b>AccessRoleDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return AccessRoleDetail - created detail object
-     */
-    public static AccessRoleDetail createAccessRoleDetail(AccessRole domain) {
-        AccessRoleDetail detail = new AccessRoleDetail();
-
-        detail.setId(domain.getId());
-        detail.setName(domain.getName());
-        detail.setDescription(domain.getDescription());
-        detail.setCode(domain.getCode());
-        List<PermissionDetail> permissions = new ArrayList<PermissionDetail>();
-        for (Iterator<Permission> it = domain.getPermissions().iterator(); it.hasNext();) {
-            permissions.add(PermissionDetail.createPermissionsDetail(it.next()));
-        }
-        detail.setPermissions(permissions);
-        return detail;
-    }
-
-    /**
      * Method created domain object <b>AccessRole</b> from provided <b>AccessRoleDetail</b> object.
      * @param domain - domain object to be updated
      * @param detail - detail object which provides updated data

@@ -1,13 +1,9 @@
 package cz.poptavka.sample.shared.domain.demand;
 
-import cz.poptavka.sample.domain.address.Locality;
-import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
 import cz.poptavka.sample.domain.demand.DemandStatus;
-import cz.poptavka.sample.domain.user.Supplier;
 import cz.poptavka.sample.shared.domain.supplier.FullSupplierDetail;
 import cz.poptavka.sample.shared.domain.type.DemandDetailType;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -72,47 +68,6 @@ public class FullDemandDetail implements Serializable {
         this.updateWholeDemand(demand);
     }
 
-    /**
-     * Method created <b>FullDemandDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return FullDemandDetail - created detail object
-     */
-    public static FullDemandDetail createDemandDetail(Demand domain) {
-        FullDemandDetail detail = new FullDemandDetail();
-        detail.setDemandId(domain.getId());
-        detail.setTitle(domain.getTitle());
-        detail.setDescription(domain.getDescription());
-        detail.setPrice(domain.getPrice());
-        detail.setCreated(domain.getCreatedDate());
-        detail.setEndDate(domain.getEndDate());
-        detail.setValidToDate(domain.getValidTo());
-        detail.setMaxOffers(domain.getMaxSuppliers() == null ? 0 : domain.getMaxSuppliers());
-        detail.setMinRating(domain.getMinRating() == null ? 0 : domain.getMinRating());
-        //categories
-        Map<Long, String> catMap = new HashMap<Long, String>();
-        for (Category cat : domain.getCategories()) {
-            catMap.put(cat.getId(), cat.getName());
-        }
-        detail.setCategories(catMap);
-        //localities
-        Map<String, String> locMap = new HashMap<String, String>();
-        for (Locality loc : domain.getLocalities()) {
-            locMap.put(loc.getCode(), loc.getName());
-        }
-
-        detail.setLocalities(locMap);
-        detail.setDemandStatus(domain.getStatus().getValue());
-
-        if (domain.getType() != null) {
-            detail.setDemandType(domain.getType().getDescription());
-        }
-
-        detail.setClientId(domain.getClient().getId());
-
-        setExcludedSuppliers(domain, detail);
-
-        return detail;
-    }
 
     /**
      * Method created domain object <b>Demand</b> from provided <b>FullDemandDetail</b> object.
@@ -160,15 +115,6 @@ public class FullDemandDetail implements Serializable {
         return domain;
     }
 
-    private static void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
-        final List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
-        if (demand.getExcludedSuppliers() != null) {
-            for (Supplier supplier : demand.getExcludedSuppliers()) {
-                excludedSuppliers.add(FullSupplierDetail.createFullSupplierDetail(supplier));
-            }
-        }
-        detail.setExcludedSuppliers(excludedSuppliers);
-    }
 
     public void setBasicInfo(HashMap<DemandField, Object> map) {
         this.setTitle((String) map.get(DemandField.TITLE));

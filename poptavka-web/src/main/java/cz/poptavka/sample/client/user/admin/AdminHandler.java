@@ -14,8 +14,8 @@ import cz.poptavka.sample.domain.address.LocalityType;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.shared.domain.adminModule.AccessRoleDetail;
 import cz.poptavka.sample.shared.domain.CategoryDetail;
+import cz.poptavka.sample.shared.domain.adminModule.ActivationEmailDetail;
 import cz.poptavka.sample.shared.domain.adminModule.ClientDetail;
-import cz.poptavka.sample.shared.domain.adminModule.EmailActivationDetail;
 import cz.poptavka.sample.shared.domain.adminModule.InvoiceDetail;
 import cz.poptavka.sample.shared.domain.LocalityDetail;
 import cz.poptavka.sample.shared.domain.adminModule.OfferDetail;
@@ -517,7 +517,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void onGetAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminEmailsActivation(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<EmailActivationDetail>>() {
+                new AsyncCallback<List<ActivationEmailDetail>>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         if (caught instanceof RPCException) {
@@ -527,14 +527,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                         }
                     }
                     @Override
-                    public void onSuccess(List<EmailActivationDetail> result) {
+                    public void onSuccess(List<ActivationEmailDetail> result) {
                         eventBus.displayAdminTabEmailsActivation(result);
                     }
                 });
     }
 
-    public void onUpdateEmailActivation(EmailActivationDetail client) {
-        generalService.updateEmailActivation(client, new AsyncCallback<EmailActivationDetail>() {
+    public void onUpdateEmailActivation(ActivationEmailDetail client) {
+        generalService.updateEmailActivation(client, new AsyncCallback<ActivationEmailDetail>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -544,7 +544,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(EmailActivationDetail result) {
+            public void onSuccess(ActivationEmailDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
             }
         });

@@ -30,21 +30,6 @@ public class PreferenceDetail implements Serializable {
         this.updateWholePreference(pref);
     }
 
-    /**
-     * Method created <b>PreferenceDetail</b> from provided Demand domain object.
-     * @param domain - given domain object
-     * @return PreferenceDetail - created detail object
-     */
-    public static PreferenceDetail createPreferenceDetail(Preference domain) {
-        PreferenceDetail detail = new PreferenceDetail();
-
-        detail.setId(domain.getId());
-        detail.setKey(domain.getKey());
-        detail.setValue(domain.getValue());
-        detail.setDescription(domain.getDescription());
-
-        return detail;
-    }
 
     /**
      * Method created domain object <b>Preference</b> from provided <b>PreferenceDetail</b> object.
