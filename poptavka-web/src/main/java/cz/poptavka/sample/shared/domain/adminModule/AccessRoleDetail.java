@@ -37,26 +37,6 @@ public class AccessRoleDetail implements Serializable {
         this.updateWholeAccessRole(role);
     }
 
-    /**
-     * Method created domain object <b>AccessRole</b> from provided <b>AccessRoleDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return AccessRole - updated given domain object
-     */
-    public static AccessRole updateAccessRole(AccessRole domain, AccessRoleDetail detail) {
-        if (!domain.getName().equals(detail.getName())) {
-            domain.setName(detail.getName());
-        }
-        if (!domain.getDescription().equals(detail.getDescription())) {
-            domain.setDescription(detail.getDescription());
-        }
-        if (!domain.getCode().equalsIgnoreCase(detail.getCode())) {
-            domain.setCode(detail.getCode());
-        }
-        //TODO Martin - update permissions
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeAccessRole(AccessRoleDetail roleDetail) {
         id = roleDetail.getId();

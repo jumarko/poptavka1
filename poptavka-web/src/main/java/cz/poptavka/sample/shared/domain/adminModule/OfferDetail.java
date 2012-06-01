@@ -40,34 +40,6 @@ public class OfferDetail implements Serializable {
         this.updateWholeOfferDetail(offerDetail);
     }
 
-
-    /**
-     * Method created domain object <b>Offer</b> from provided <b>OfferDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return Offer - updated given domain object
-     */
-    public static Offer updateOffer(Offer domain, OfferDetail detail) {
-        if (!domain.getPrice().equals(detail.getPrice())) {
-            domain.setPrice(detail.getPrice());
-        }
-        if (!domain.getCreated().equals(detail.getCreatedDate())) {
-            domain.setCreated(detail.getCreatedDate());
-        }
-        if (!domain.getFinishDate().equals(detail.getFinishDate())) {
-            domain.setFinishDate(detail.getFinishDate());
-        }
-        if (!domain.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName().equals(
-                detail.getSupplierName())) {
-            domain.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(detail.getSupplierName());
-        }
-        //TODO Martin - how to update OfferState??
-        if (!domain.getPrice().equals(detail.getPrice())) {
-            domain.setPrice(detail.getPrice());
-        }
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeOfferDetail(OfferDetail detail) {
         id = detail.getId();

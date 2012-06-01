@@ -39,16 +39,15 @@ import cz.poptavka.sample.domain.address.Locality;
 import cz.poptavka.sample.domain.common.OrderType;
 import cz.poptavka.sample.domain.demand.Category;
 import cz.poptavka.sample.domain.demand.Demand;
+import cz.poptavka.sample.domain.demand.DemandStatus;
 import cz.poptavka.sample.domain.invoice.Invoice;
 import cz.poptavka.sample.domain.invoice.OurPaymentDetails;
 import cz.poptavka.sample.domain.invoice.PaymentMethod;
 import cz.poptavka.sample.domain.message.Message;
+import cz.poptavka.sample.domain.message.MessageState;
 import cz.poptavka.sample.domain.offer.Offer;
 import cz.poptavka.sample.domain.settings.Preference;
-import cz.poptavka.sample.domain.user.BusinessUserData;
-import cz.poptavka.sample.domain.user.Client;
-import cz.poptavka.sample.domain.user.Problem;
-import cz.poptavka.sample.domain.user.Supplier;
+import cz.poptavka.sample.domain.user.*;
 import cz.poptavka.sample.domain.user.rights.AccessRole;
 import cz.poptavka.sample.domain.user.rights.Permission;
 import cz.poptavka.sample.exception.MessageException;
@@ -73,9 +72,8 @@ import cz.poptavka.sample.shared.domain.type.MessageType;
 import cz.poptavka.sample.shared.exceptions.RPCException;
 
 /*
- * TODO Martin
- * Vsetky count zrobit inak, ked sa bude riesit tento modul.
- * Vsetky updaty dorobit.
+ * TODO Martin Vsetky count zrobit inak, ked sa bude riesit tento modul. Vsetky
+ * updaty dorobit.
  */
 /**
  * @author Martin Slavkovsky
@@ -84,7 +82,6 @@ import cz.poptavka.sample.shared.exceptions.RPCException;
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
     private static final long serialVersionUID = 1132667081084321575L;
-
     private GeneralService generalService;
     private DemandService demandService;
     private LocalityService localityService;
@@ -110,9 +107,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         this.categoryService = categoryService;
     }
 
-    /**********************************************************************************************
-     ***********************  DEMAND SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** DEMAND SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -140,27 +140,61 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateDemand(FullDemandDetail fullDemandDetail) throws RPCException {
         Demand demand = demandService.getById(fullDemandDetail.getDemandId());
+        if (!demand.getMaxSuppliers().equals(fullDemandDetail.getMaxOffers())) {
+            demand.setMaxSuppliers(fullDemandDetail.getMaxOffers());
+        }
+        if (!demand.getMinRating().equals(fullDemandDetail.getMinRating())) {
+            demand.setMinRating(fullDemandDetail.getMinRating());
+        }
+        if (!demand.getStatus().getValue().equals(fullDemandDetail.getDemandStatus())) {
+            demand.setStatus(DemandStatus.valueOf(fullDemandDetail.getDemandStatus()));
+        }
+        if (!demand.getCreatedDate().equals(fullDemandDetail.getCreated())) {
+            demand.setCreatedDate(fullDemandDetail.getCreated());
+        }
+        if (!demand.getEndDate().equals(fullDemandDetail.getEndDate())) {
+            demand.setEndDate(fullDemandDetail.getEndDate());
+        }
+        if (!demand.getValidTo().equals(fullDemandDetail.getValidToDate())) {
+            demand.setValidTo(fullDemandDetail.getValidToDate());
+        }
+        if (!demand.getTitle().equals(fullDemandDetail.getTitle())) {
+            demand.setTitle(fullDemandDetail.getTitle());
+        }
+        if (!demand.getDescription().equals(fullDemandDetail.getDescription())) {
+            demand.setDescription(fullDemandDetail.getDescription());
+        }
+        if (!demand.getPrice().equals(fullDemandDetail.getPrice())) {
+            demand.setPrice(fullDemandDetail.getPrice());
+        }
         if (!demand.getType().getDescription().equals(fullDemandDetail.getDemandType())) {
             demand.setType(demandService.getDemandType(fullDemandDetail.getDemandType()));
         }
-        //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
         List<Category> categories = new ArrayList<Category>();
         for (long catIds : fullDemandDetail.getCategories().keySet()) {
             categories.add(categoryService.getById(catIds));
         }
-        demand.setCategories(categories);
-        //Treba zistovat ci sa lokality zmenili? Ak ano, ako aby to nebolo narocne?
+        //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
+        if (!demand.getCategories().containsAll(categories)) {
+            demand.setCategories(categories);
+        }
         List<Locality> localities = new ArrayList<Locality>();
         for (String locCode : fullDemandDetail.getLocalities().keySet()) {
             localities.add(localityService.getLocality(locCode));
         }
-        demand.setLocalities(localities);
+        //Treba zistovat ci sa lokality zmenili? Ak ano, ako aby to nebolo narocne?
+        if (!demand.getLocalities().containsAll(localities)) {
+            demand.setLocalities(localities);
+        }
         demandService.update(demand);
     }
 
-    /**********************************************************************************************
-     ***********************  CLIENT SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** CLIENT SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminClientsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -188,12 +222,20 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateClient(ClientDetail clientDetail) throws RPCException {
         Client client = generalService.find(Client.class, clientDetail.getId());
-        generalService.merge(ClientDetail.updateClient(client, clientDetail));
+        if (client.getOveralRating() != clientDetail.getOveralRating()) {
+            client.setOveralRating(clientDetail.getOveralRating());
+        }
+        client.setVerification(Verification.valueOf(clientDetail.getVerification()));
+        //TODO Martin - how to update businessUserData, supplierBlackList, demandsIds???
+        generalService.merge(client);
     }
 
-    /**********************************************************************************************
-     ***********************  SUPPLIER SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** SUPPLIER SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -221,12 +263,15 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateSupplier(FullSupplierDetail supplierDetail) throws RPCException {
         Supplier supplier = generalService.find(Supplier.class, supplierDetail.getSupplierId());
-        generalService.merge(FullSupplierDetail.updateSupplier(supplier, supplierDetail));
+        generalService.merge(supplier);
     }
 
-    /**********************************************************************************************
-     ***********************  OFFER SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** OFFER SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminOffersCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -254,12 +299,32 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateOffer(OfferDetail offerDetail) {
         Offer offer = generalService.find(Offer.class, offerDetail.getId());
-        generalService.merge(OfferDetail.updateOffer(offer, offerDetail));
+        if (!offer.getPrice().equals(offerDetail.getPrice())) {
+            offer.setPrice(offerDetail.getPrice());
+        }
+        if (!offer.getCreated().equals(offerDetail.getCreatedDate())) {
+            offer.setCreated(offerDetail.getCreatedDate());
+        }
+        if (!offer.getFinishDate().equals(offerDetail.getFinishDate())) {
+            offer.setFinishDate(offerDetail.getFinishDate());
+        }
+        if (!offer.getSupplier().getBusinessUser().getBusinessUserData().getCompanyName().equals(
+                offerDetail.getSupplierName())) {
+            offer.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(offerDetail.getSupplierName());
+        }
+        //TODO Martin - how to update OfferState??
+        if (!offer.getPrice().equals(offerDetail.getPrice())) {
+            offer.setPrice(offerDetail.getPrice());
+        }
+        generalService.merge(offer);
     }
 
-    /**********************************************************************************************
-     ***********************  ACCESS ROLE SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** ACCESS ROLE SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -287,12 +352,25 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateAccessRole(AccessRoleDetail accessRoleDetail) throws RPCException {
         AccessRole accessRole = generalService.find(AccessRole.class, accessRoleDetail.getId());
-        generalService.merge(AccessRoleDetail.updateAccessRole(accessRole, accessRoleDetail));
+        if (!accessRole.getName().equals(accessRoleDetail.getName())) {
+            accessRole.setName(accessRoleDetail.getName());
+        }
+        if (!accessRole.getDescription().equals(accessRoleDetail.getDescription())) {
+            accessRole.setDescription(accessRoleDetail.getDescription());
+        }
+        if (!accessRole.getCode().equalsIgnoreCase(accessRoleDetail.getCode())) {
+            accessRole.setCode(accessRoleDetail.getCode());
+        }
+        //TODO Martin - update permissions
+        generalService.merge(accessRole);
     }
 
-    /**********************************************************************************************
-     ***********************  EMAIL ACTIVATION SECTION. *******************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** EMAIL ACTIVATION SECTION.
+     * *******************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -320,12 +398,21 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateEmailActivation(ActivationEmailDetail emailActivationDetail) {
         ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
-        generalService.merge(ActivationEmailDetail.updateEmailActivation(emailActivation, emailActivationDetail));
+        if (!emailActivation.getActivationLink().equals(emailActivationDetail.getActivationLink())) {
+            emailActivation.setActivationLink(emailActivationDetail.getActivationLink());
+        }
+        if (!emailActivation.getValidTo().equals(emailActivationDetail.getTimeout())) {
+            emailActivation.setValidTo(emailActivationDetail.getTimeout());
+        }
+        generalService.merge(emailActivation);
     }
 
-    /**********************************************************************************************
-     ***********************  INVOICE SECTION. ****************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** INVOICE SECTION.
+     * ****************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -353,12 +440,58 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateInvoice(InvoiceDetail invoiceDetail) throws RPCException {
         Invoice invoice = generalService.find(Invoice.class, invoiceDetail.getId());
-        generalService.merge(InvoiceDetail.updateInvoice(invoice, invoiceDetail));
+        if (!invoice.getInvoiceNumber().equals(invoiceDetail.getInvoiceNumber())) {
+            invoice.setInvoiceNumber(invoiceDetail.getInvoiceNumber());
+        }
+        //------------------------------ Dates ---------------------------------
+        if (!invoice.getIssueDate().equals(invoiceDetail.getIssueDate())) {
+            invoice.setIssueDate(invoiceDetail.getIssueDate());
+        }
+        if (!invoice.getShipmentDate().equals(invoiceDetail.getShipmentDate())) {
+            invoice.setShipmentDate(invoiceDetail.getShipmentDate());
+        }
+        if (!invoice.getDueDate().equals(invoiceDetail.getDueDate())) {
+            invoice.setDueDate(invoiceDetail.getDueDate());
+        }
+        //------------------------ Bank information ----------------------------
+        if (!invoice.getBankAccountNumber().equals(invoiceDetail.getBankAccountNumber())) {
+            invoice.setBankAccountNumber(invoiceDetail.getBankAccountNumber());
+        }
+        if (!invoice.getBankCode().equals(invoiceDetail.getBankCode())) {
+            invoice.setBankCode(invoiceDetail.getBankCode());
+        }
+        if (!invoice.getVariableSymbol().equals(invoiceDetail.getVariableSymbol())) {
+            invoice.setVariableSymbol(invoiceDetail.getVariableSymbol());
+        }
+        if (!invoice.getConstSymbol().equals(invoiceDetail.getConstSymbol())) {
+            invoice.setConstSymbol(invoiceDetail.getConstSymbol());
+        }
+        //------------------------------ Price ---------------------------------
+        if (!invoice.getTaxBasis().equals(invoiceDetail.getTaxBasis())) {
+            invoice.setTaxBasis(invoiceDetail.getTaxBasis());
+        }
+        if (invoice.getVatRate() != invoiceDetail.getVatRate()) {
+            invoice.setVatRate(invoiceDetail.getVatRate());
+        }
+        if (!invoice.getVat().equals(invoiceDetail.getVat())) {
+            invoice.setVat(invoiceDetail.getVat());
+        }
+        if (!invoice.getTotalPrice().equals(invoiceDetail.getTotalPrice())) {
+            invoice.setTotalPrice(invoiceDetail.getTotalPrice());
+        }
+        if (!invoice.getConstSymbol().equals(invoiceDetail.getConstSymbol())) {
+            invoice.setConstSymbol(invoiceDetail.getConstSymbol());
+        }
+        //TODO Martin - how to update userServices, paymentMethods
+        generalService.merge(invoice);
     }
 
-    /**********************************************************************************************
-     ***********************  MESSAGE SECTION. ****************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** MESSAGE SECTION.
+     * ****************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminMessagesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -388,15 +521,35 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public void updateMessage(MessageDetail messageDetail) throws RPCException {
         Message message = generalService.find(Message.class, messageDetail.getMessageId());
         try {
-            generalService.merge(MessageDetail.updateMessage(message, messageDetail));
+            //TODO Martin - how to update missing ones
+            if (!message.getSubject().equals(messageDetail.getSubject())) {
+                message.setSubject(messageDetail.getSubject());
+            }
+            if (!message.getBody().equals(messageDetail.getBody())) {
+                message.setBody(messageDetail.getBody());
+            }
+            if (!message.getCreated().equals(messageDetail.getCreated())) {
+                message.setCreated(messageDetail.getCreated());
+            }
+            if (!message.getSent().equals(messageDetail.getSent())) {
+                message.setSent(messageDetail.getSent());
+            }
+            if (!message.getMessageState().equals(MessageState.valueOf(messageDetail.getMessageState()))) {
+                message.setMessageState(MessageState.valueOf(messageDetail.getMessageState()));
+            }
+
+            generalService.merge(message);
         } catch (MessageException ex) {
             Logger.getLogger(AdminRPCServiceImpl.class.getName()).log(Level.SEVERE, "Coudn't update message.", ex);
         }
     }
 
-    /**********************************************************************************************
-     ***********************  OUR PAYMENT DETAIL SECTION. *****************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** OUR PAYMENT DETAIL SECTION.
+     * *****************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -424,12 +577,54 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateOurPaymentDetail(PaymentDetail paymentDetail) throws RPCException {
         OurPaymentDetails ourPaymentDetails = generalService.find(OurPaymentDetails.class, paymentDetail.getId());
-        generalService.merge(PaymentDetail.updateOurPaymentDetails(ourPaymentDetails, paymentDetail));
+        if (!ourPaymentDetails.getBankAccount().equals(paymentDetail.getBankAccount())) {
+            ourPaymentDetails.setBankAccount(paymentDetail.getBankAccount());
+        }
+        if (!ourPaymentDetails.getBankCode().equals(paymentDetail.getBankCode())) {
+            ourPaymentDetails.setBankCode(paymentDetail.getBankCode());
+        }
+        if (!ourPaymentDetails.getCity().equals(paymentDetail.getCity())) {
+            ourPaymentDetails.setCity(paymentDetail.getCity());
+        }
+        if (!ourPaymentDetails.getCountryVat().equals(paymentDetail.getCountryVat())) {
+            ourPaymentDetails.setCountryVat(paymentDetail.getCountryVat());
+        }
+        if (!ourPaymentDetails.getEmail().equals(paymentDetail.getEmail())) {
+            ourPaymentDetails.setEmail(paymentDetail.getEmail());
+        }
+        if (!ourPaymentDetails.getIban().equals(paymentDetail.getIban())) {
+            ourPaymentDetails.setIban(paymentDetail.getIban());
+        }
+        if (!ourPaymentDetails.getIdentificationNumber().equals(paymentDetail.getIdentificationNumber())) {
+            ourPaymentDetails.setIdentificationNumber(paymentDetail.getIdentificationNumber());
+        }
+        if (!ourPaymentDetails.getPhone().equals(paymentDetail.getPhone())) {
+            ourPaymentDetails.setPhone(paymentDetail.getPhone());
+        }
+        if (!ourPaymentDetails.getStreet().equals(paymentDetail.getStreet())) {
+            ourPaymentDetails.setStreet(paymentDetail.getStreet());
+        }
+        if (!ourPaymentDetails.getSwiftCode().equals(paymentDetail.getSwiftCode())) {
+            ourPaymentDetails.setSwiftCode(paymentDetail.getSwiftCode());
+        }
+        if (!ourPaymentDetails.getTaxId().equals(paymentDetail.getTaxId())) {
+            ourPaymentDetails.setTaxId(paymentDetail.getTaxId());
+        }
+        if (!ourPaymentDetails.getTitle().equals(paymentDetail.getTitle())) {
+            ourPaymentDetails.setTitle(paymentDetail.getTitle());
+        }
+        if (!ourPaymentDetails.getZipCode().equals(paymentDetail.getZipCode())) {
+            ourPaymentDetails.setZipCode(paymentDetail.getZipCode());
+        }
+        generalService.merge(ourPaymentDetails);
     }
 
-    /**********************************************************************************************
-     ***********************  PAYMENT METHOD SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** PAYMENT METHOD SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -464,12 +659,21 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updatePaymentMethod(PaymentMethodDetail paymentMethodDetail) throws RPCException {
         PaymentMethod paymentMethod = generalService.find(PaymentMethod.class, paymentMethodDetail.getId());
-        generalService.merge(PaymentMethodDetail.updatePaymentMethod(paymentMethod, paymentMethodDetail));
+        if (!paymentMethod.getName().equals(paymentMethodDetail.getName())) {
+            paymentMethod.setName(paymentMethodDetail.getName());
+        }
+        if (!paymentMethod.getDescription().equals(paymentMethodDetail.getDescription())) {
+            paymentMethod.setDescription(paymentMethodDetail.getDescription());
+        }
+        generalService.merge(paymentMethod);
     }
 
-    /**********************************************************************************************
-     ***********************  PERMISSION SECTION. *************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** PERMISSION SECTION.
+     * *************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -496,13 +700,25 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     public void updatePermission(PermissionDetail permissionDetail) throws RPCException {
-        Permission permissionDetails = generalService.find(Permission.class, permissionDetail.getId());
-        generalService.merge(PermissionDetail.updatePermission(permissionDetails, permissionDetail));
+        Permission permission = generalService.find(Permission.class, permissionDetail.getId());
+        if (!permission.getName().equals(permissionDetail.getName())) {
+            permission.setName(permissionDetail.getName());
+        }
+        if (!permission.getDescription().equals(permissionDetail.getDescription())) {
+            permission.setDescription(permissionDetail.getDescription());
+        }
+        if (!permission.getCode().equals(permissionDetail.getCode())) {
+            permission.setCode(permissionDetail.getCode());
+        }
+        generalService.merge(permission);
     }
 
-    /**********************************************************************************************
-     ***********************  PREFERENCE SECTION. *************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** PREFERENCE SECTION.
+     * *************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -530,12 +746,24 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updatePreference(PreferenceDetail preferenceDetail) throws RPCException {
         Preference preference = generalService.find(Preference.class, preferenceDetail.getId());
-        generalService.merge(PreferenceDetail.updatePreference(preference, preferenceDetail));
+        if (!preference.getKey().equals(preferenceDetail.getKey())) {
+            preference.setKey(preferenceDetail.getKey());
+        }
+        if (!preference.getValue().equals(preferenceDetail.getValue())) {
+            preference.setValue(preferenceDetail.getValue());
+        }
+        if (!preference.getDescription().equals(preferenceDetail.getDescription())) {
+            preference.setDescription(preferenceDetail.getDescription());
+        }
+        generalService.merge(preference);
     }
 
-    /**********************************************************************************************
-     ***********************  PROBLEM SECTION. ************************************************
-     **********************************************************************************************/
+    /**
+     * ********************************************************************************************
+     *********************** PROBLEM SECTION.
+     * ************************************************
+     *********************************************************************************************
+     */
     @Override
     public Long getAdminProblemsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
@@ -563,13 +791,18 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     public void updateProblem(ProblemDetail problemDetail) throws RPCException {
         Problem problem = generalService.find(Problem.class, problemDetail.getId());
-        generalService.merge(ProblemDetail.updateProblem(problem, problemDetail));
+        if (!problem.getText().equals(problemDetail.getText())) {
+            problem.setText(problemDetail.getText());
+        }
+        generalService.merge(problem);
     }
 
-    /**********************************************************************************************
-     ***********************  COMMON METHODS. *************************************************
-     **********************************************************************************************/
-
+    /**
+     * ********************************************************************************************
+     *********************** COMMON METHODS.
+     * *************************************************
+     *********************************************************************************************
+     */
     private Search setSortSearch(Map<String, OrderType> orderColumns, Search search) {
         List<Sort> sorts = new ArrayList<Sort>();
         for (String str : orderColumns.keySet()) {

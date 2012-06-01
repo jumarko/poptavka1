@@ -1,11 +1,7 @@
 package cz.poptavka.sample.client.main.common.creation;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.google.gwt.core.client.GWT;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
@@ -13,19 +9,18 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
-
 import cz.poptavka.sample.client.resources.StyleResource;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail;
 import cz.poptavka.sample.shared.domain.demand.FullDemandDetail.DemandField;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -35,8 +30,6 @@ import javax.validation.groups.Default;
 public class FormDemandBasicView extends Composite
         implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate, Editor<FullDemandDetail> {
 
-//    private static final Logger LOGGER = Logger.getLogger(FormDemandBasicView.class
-//            .getName());
     private static FormDemandBasicUiBinder uiBinder = GWT.create(FormDemandBasicUiBinder.class);
 
     interface FormDemandBasicUiBinder extends UiBinder<Widget, FormDemandBasicView> {
@@ -72,9 +65,9 @@ public class FormDemandBasicView extends Composite
     private final static int DESCRIPTION = 4;
     //place for uploadFiles button
     //place for addNextAttachment button
-//    private int valid = 0;
     private Set<Integer> valid = new HashSet<Integer>();
 
+    @Override
     public void createView() {
         this.validator = Validation.buildDefaultValidatorFactory().getValidator();
         initWidget(uiBinder.createAndBindUi(this));
@@ -185,7 +178,7 @@ public class FormDemandBasicView extends Composite
             return;
         }
         setError(item, NORMAL_STYLE, "");
-        valid.remove(item);//????
+        valid.remove(item);
     }
 
     /**

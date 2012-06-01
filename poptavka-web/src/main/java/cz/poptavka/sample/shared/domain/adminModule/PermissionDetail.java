@@ -30,25 +30,6 @@ public class PermissionDetail implements Serializable, Comparable<PermissionDeta
         this.updateWholePermission(prem);
     }
 
-    /**
-     * Method created domain object <b>Permission</b> from provided <b>PermissionDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return Permission - updated given domain object
-     */
-    public static Permission updatePermission(Permission domain, PermissionDetail detail) {
-        if (!domain.getName().equals(detail.getName())) {
-            domain.setName(detail.getName());
-        }
-        if (!domain.getDescription().equals(detail.getDescription())) {
-            domain.setDescription(detail.getDescription());
-        }
-        if (!domain.getCode().equals(detail.getCode())) {
-            domain.setCode(detail.getCode());
-        }
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholePermission(PermissionDetail permissionsDetail) {
         id = permissionsDetail.getId();

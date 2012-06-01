@@ -87,56 +87,6 @@ public class FullDemandDetail implements Serializable {
         this.updateWholeDemand(demand);
     }
 
-
-    /**
-     * Method created domain object <b>Demand</b> from provided
-     * <b>FullDemandDetail</b> object.
-     *
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return Demand - updated given domain object
-     */
-    public static Demand updateDemand(Demand domain, FullDemandDetail detail) {
-        //TODO Martin - how to update following attributes?????
-        //    private boolean read;
-        //    private boolean starred;
-        //    private List<FullSupplierDetail> excludedSuppliers;
-
-        //Following attributes have to be updated in RPC service. See updateDemand in AdminRPCServiceImpl.
-        //    - demandType
-        //    - localities;
-        //    - categories;
-        if (!domain.getMaxSuppliers().equals(detail.getMaxOffers())) {
-            domain.setMaxSuppliers(detail.getMaxOffers());
-        }
-        if (!domain.getMinRating().equals(detail.getMinRating())) {
-            domain.setMinRating(detail.getMinRating());
-        }
-        if (!domain.getStatus().getValue().equals(detail.getDemandStatus())) {
-            domain.setStatus(DemandStatus.valueOf(detail.getDemandStatus()));
-        }
-        if (!domain.getCreatedDate().equals(detail.getCreated())) {
-            domain.setCreatedDate(detail.getCreated());
-        }
-        if (!domain.getEndDate().equals(detail.getEndDate())) {
-            domain.setEndDate(detail.getEndDate());
-        }
-        if (!domain.getValidTo().equals(detail.getValidToDate())) {
-            domain.setValidTo(detail.getValidToDate());
-        }
-        if (!domain.getTitle().equals(detail.getTitle())) {
-            domain.setTitle(detail.getTitle());
-        }
-        if (!domain.getDescription().equals(detail.getDescription())) {
-            domain.setDescription(detail.getDescription());
-        }
-        if (!domain.getPrice().equals(detail.getPrice())) {
-            domain.setPrice(detail.getPrice());
-        }
-        return domain;
-    }
-
-
     public void setBasicInfo(HashMap<DemandField, Object> map) {
         this.setTitle((String) map.get(DemandField.TITLE));
         this.setDescription((String) map.get(DemandField.DESCRIPTION));

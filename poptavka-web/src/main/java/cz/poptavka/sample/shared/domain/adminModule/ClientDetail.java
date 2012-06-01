@@ -39,22 +39,6 @@ public class ClientDetail implements Serializable {
         this.updateWholeClient(role);
     }
 
-
-    /**
-     * Method created domain object <b>Client</b> from provided <b>ClientDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return Client - updated given domain object
-     */
-    public static Client updateClient(Client client, ClientDetail clientDetail) {
-        if (client.getOveralRating() != clientDetail.getOveralRating()) {
-            client.setOveralRating(clientDetail.getOveralRating());
-        }
-        client.setVerification(Verification.valueOf(clientDetail.getVerification()));
-        //TODO Martin - how to update businessUserData, supplierBlackList, demandsIds???
-        return client;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeClient(ClientDetail detail) {
         id = detail.getId();

@@ -40,55 +40,6 @@ public class PaymentDetail implements Serializable {
         this.updateWholeOurPaymentDetail(demand);
     }
 
-    /**
-     * Method created domain object <b>OurPaymentDetails</b> from provided <b>PaymentDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return OurPaymentDetails - updated given domain object
-     */
-    public static OurPaymentDetails updateOurPaymentDetails(OurPaymentDetails domain, PaymentDetail detail) {
-        if (!domain.getBankAccount().equals(detail.getBankAccount())) {
-            domain.setBankAccount(detail.getBankAccount());
-        }
-        if (!domain.getBankCode().equals(detail.getBankCode())) {
-            domain.setBankCode(detail.getBankCode());
-        }
-        if (!domain.getCity().equals(detail.getCity())) {
-            domain.setCity(detail.getCity());
-        }
-        if (!domain.getCountryVat().equals(detail.getCountryVat())) {
-            domain.setCountryVat(detail.getCountryVat());
-        }
-        if (!domain.getEmail().equals(detail.getEmail())) {
-            domain.setEmail(detail.getEmail());
-        }
-        if (!domain.getIban().equals(detail.getIban())) {
-            domain.setIban(detail.getIban());
-        }
-        if (!domain.getIdentificationNumber().equals(detail.getIdentificationNumber())) {
-            domain.setIdentificationNumber(detail.getIdentificationNumber());
-        }
-        if (!domain.getPhone().equals(detail.getPhone())) {
-            domain.setPhone(detail.getPhone());
-        }
-        if (!domain.getStreet().equals(detail.getStreet())) {
-            domain.setStreet(detail.getStreet());
-        }
-        if (!domain.getSwiftCode().equals(detail.getSwiftCode())) {
-            domain.setSwiftCode(detail.getSwiftCode());
-        }
-        if (!domain.getTaxId().equals(detail.getTaxId())) {
-            domain.setTaxId(detail.getTaxId());
-        }
-        if (!domain.getTitle().equals(detail.getTitle())) {
-            domain.setTitle(detail.getTitle());
-        }
-        if (!domain.getZipCode().equals(detail.getZipCode())) {
-            domain.setZipCode(detail.getZipCode());
-        }
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeOurPaymentDetail(PaymentDetail detail) {
         id = detail.getId();

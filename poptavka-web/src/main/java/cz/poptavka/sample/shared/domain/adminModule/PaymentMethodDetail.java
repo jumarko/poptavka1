@@ -29,23 +29,6 @@ public class PaymentMethodDetail implements Serializable {
         this.updateWholePaymentMethod(demand);
     }
 
-
-    /**
-     * Method created domain object <b>PaymentMethod</b> from provided <b>PaymentMethodDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return PaymentMethod - updated given domain object
-     */
-    public static PaymentMethod updatePaymentMethod(PaymentMethod domain, PaymentMethodDetail detail) {
-        if (!domain.getName().equals(detail.getName())) {
-            domain.setName(detail.getName());
-        }
-        if (!domain.getDescription().equals(detail.getDescription())) {
-            domain.setDescription(detail.getDescription());
-        }
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholePaymentMethod(PaymentMethodDetail paymentMethodDetail) {
         id = paymentMethodDetail.getId();

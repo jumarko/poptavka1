@@ -52,60 +52,6 @@ public class InvoiceDetail implements Serializable {
         this.updateWholeInvoice(demand);
     }
 
-
-    /**
-     * Method created domain object <b>Invoice</b> from provided <b>InvoiceDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return InvoiceDetail - updated given domain object
-     */
-    public static Invoice updateInvoice(Invoice domain, InvoiceDetail detail) {
-        if (!domain.getInvoiceNumber().equals(detail.getInvoiceNumber())) {
-            domain.setInvoiceNumber(detail.getInvoiceNumber());
-        }
-        //------------------------------ Dates ---------------------------------
-        if (!domain.getIssueDate().equals(detail.getIssueDate())) {
-            domain.setIssueDate(detail.getIssueDate());
-        }
-        if (!domain.getShipmentDate().equals(detail.getShipmentDate())) {
-            domain.setShipmentDate(detail.getShipmentDate());
-        }
-        if (!domain.getDueDate().equals(detail.getDueDate())) {
-            domain.setDueDate(detail.getDueDate());
-        }
-        //------------------------ Bank information ----------------------------
-        if (!domain.getBankAccountNumber().equals(detail.getBankAccountNumber())) {
-            domain.setBankAccountNumber(detail.getBankAccountNumber());
-        }
-        if (!domain.getBankCode().equals(detail.getBankCode())) {
-            domain.setBankCode(detail.getBankCode());
-        }
-        if (!domain.getVariableSymbol().equals(detail.getVariableSymbol())) {
-            domain.setVariableSymbol(detail.getVariableSymbol());
-        }
-        if (!domain.getConstSymbol().equals(detail.getConstSymbol())) {
-            domain.setConstSymbol(detail.getConstSymbol());
-        }
-        //------------------------------ Price ---------------------------------
-        if (!domain.getTaxBasis().equals(detail.getTaxBasis())) {
-            domain.setTaxBasis(detail.getTaxBasis());
-        }
-        if (domain.getVatRate() != detail.getVatRate()) {
-            domain.setVatRate(detail.getVatRate());
-        }
-        if (!domain.getVat().equals(detail.getVat())) {
-            domain.setVat(detail.getVat());
-        }
-        if (!domain.getTotalPrice().equals(detail.getTotalPrice())) {
-            domain.setTotalPrice(detail.getTotalPrice());
-        }
-        if (!domain.getConstSymbol().equals(detail.getConstSymbol())) {
-            domain.setConstSymbol(detail.getConstSymbol());
-        }
-        //TODO Martin - how to update userServices, paymentMethods
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeInvoice(InvoiceDetail detail) {
         bankAccountNumber = detail.getBankAccountNumber();

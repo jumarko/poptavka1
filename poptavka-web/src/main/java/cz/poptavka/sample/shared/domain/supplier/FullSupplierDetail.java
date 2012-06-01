@@ -41,10 +41,6 @@ public class FullSupplierDetail implements Serializable {
         this.updateWholeSupplier(supplier);
     }
 
-    public static Supplier updateSupplier(Supplier domain, FullSupplierDetail detail) {
-        return domain;
-    }
-
     public void updateWholeSupplier(FullSupplierDetail supplier) {
         supplierId = supplier.getSupplierId();
         overallRating = supplier.getOverallRating();

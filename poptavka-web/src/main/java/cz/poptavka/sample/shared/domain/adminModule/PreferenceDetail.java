@@ -30,26 +30,6 @@ public class PreferenceDetail implements Serializable {
         this.updateWholePreference(pref);
     }
 
-
-    /**
-     * Method created domain object <b>Preference</b> from provided <b>PreferenceDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return Preference - updated given domain object
-     */
-    public static Preference updatePreference(Preference domain, PreferenceDetail detail) {
-        if (!domain.getKey().equals(detail.getKey())) {
-            domain.setKey(detail.getKey());
-        }
-        if (!domain.getValue().equals(detail.getValue())) {
-            domain.setValue(detail.getValue());
-        }
-        if (!domain.getDescription().equals(detail.getDescription())) {
-            domain.setDescription(detail.getDescription());
-        }
-        return domain;
-    }
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholePreference(PreferenceDetail preferenceDetail) {
         id = preferenceDetail.getId();

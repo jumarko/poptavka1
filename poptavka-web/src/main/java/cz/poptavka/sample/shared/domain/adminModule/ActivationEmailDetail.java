@@ -30,21 +30,6 @@ public class ActivationEmailDetail implements Serializable {
     public ActivationEmailDetail(ActivationEmailDetail demand) {
         this.updateWholeEmailActivation(demand);
     }
-    /**
-     * Method created domain object <b>EmailActivation</b> from provided <b>EmailActivationDetail</b> object.
-     * @param domain - domain object to be updated
-     * @param detail - detail object which provides updated data
-     * @return EmailActivation - updated given domain object
-     */
-    public static ActivationEmail updateEmailActivation(ActivationEmail domain, ActivationEmailDetail detail) {
-        if (!domain.getActivationLink().equals(detail.getActivationLink())) {
-            domain.setActivationLink(detail.getActivationLink());
-        }
-        if (!domain.getValidTo().equals(detail.getTimeout())) {
-            domain.setValidTo(detail.getTimeout());
-        }
-        return domain;
-    }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeEmailActivation(ActivationEmailDetail emailActivationDetail) {
