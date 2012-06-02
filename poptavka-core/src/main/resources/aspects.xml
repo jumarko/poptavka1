@@ -7,7 +7,7 @@
     <!--Aspects are defined via annotations and in aop.xml file-->
 
     <!-- aspects' beans' -->
-    <bean id="exceptionLogger" class="cz.poptavka.sample.application.logging.ExceptionLogger" factory-method="aspectOf">
+    <bean id="exceptionLogger" class="com.eprovement.poptavka.application.logging.ExceptionLogger" factory-method="aspectOf">
         <property name="recipients">
             <!-- Write down mail addresses where the notification email will be sent when an exception occurs -->
             <list>
@@ -17,10 +17,10 @@
         <property name="mailService" ref="mailService" />
     </bean>
 
-    <bean id="encryptorAspect" class="cz.poptavka.sample.application.security.aspects.EncryptorAspect" factory-method="aspectOf">
+    <bean id="encryptorAspect" class="com.eprovement.poptavka.application.security.aspects.EncryptorAspect" factory-method="aspectOf">
         <property name="encryptor" ref="passwordEncryptor" />
     </bean>
     
-    <bean id="executionTimeLogger" class="cz.poptavka.sample.application.logging.ExecutionTimeLogger" factory-method="aspectOf" />
+    <bean id="executionTimeLogger" class="com.eprovement.poptavka.application.logging.ExecutionTimeLogger" factory-method="aspectOf" />
 
 </beans>

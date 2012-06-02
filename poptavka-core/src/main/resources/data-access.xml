@@ -69,7 +69,7 @@
                 <entry key="hibernate.search.default.indexBase" value="${fulltext.indexbase}"/>
                 <!-- TODO set up common fulltext search analyzer "caseAccentInsensitiveAnalyzer"
                 to avoid necessity of referencing this analyzer from all domain objects that want to participate in full-text search. -->
-                <!--<entry key="hibernate.search.analyzer" value="cz.poptavka.sample.domain.common.DomainObject#caseAccentInsensitiveAnalyzer"/>-->
+                <!--<entry key="hibernate.search.analyzer" value="com.eprovement.poptavka.domain.common.DomainObject#caseAccentInsensitiveAnalyzer"/>-->
             </map>
         </property>
     </bean>
@@ -97,7 +97,7 @@
     <bean id="mySearchProcessor" class="com.googlecode.genericdao.search.jpa.JPASearchProcessor">
         <constructor-arg ref="metadataUtil" />
     </bean>
-    <bean id="generalDao" class="cz.poptavka.sample.dao.DecoratedGeneralDAOImpl">
+    <bean id="generalDao" class="com.eprovement.poptavka.dao.DecoratedGeneralDAOImpl">
         <constructor-arg ref="mySearchProcessor"/>
     </bean>
 

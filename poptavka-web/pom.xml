@@ -293,7 +293,7 @@
                         </executions>
                         <configuration>
                             <i18nConstantsBundles>
-                                <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
+                                <i18nConstantsBundle>com.eprovement.poptavka.client.i18n.PoptavkaConstants</i18nConstantsBundle>
                             </i18nConstantsBundles>
 
                             <extraJvmArgs>-noverify -javaagent:${REBEL_HOME}/jrebel.jar -Xmx1576m -Xms512m -XX:MaxPermSize=1024m</extraJvmArgs>
@@ -359,7 +359,7 @@
                 </executions>
                 <configuration>
                     <i18nConstantsBundles>
-                        <i18nConstantsBundle>cz.poptavka.sample.client.i18n.PoptavkaConstants</i18nConstantsBundle>
+                        <i18nConstantsBundle>com.eprovement.poptavka.client.i18n.PoptavkaConstants</i18nConstantsBundle>
                     </i18nConstantsBundles>
                     <!--                    <servicePattern>cz/poptavka/sample/client/service/*RPCService.java</servicePattern>-->
                     <extraJvmArgs>-Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m</extraJvmArgs>

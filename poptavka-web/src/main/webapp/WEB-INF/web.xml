@@ -123,7 +123,7 @@
     
     <servlet>
         <servlet-name>UserActivationRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.user.activation.UserActivationRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.user.activation.UserActivationRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserActivationRPCService</servlet-name>
@@ -132,7 +132,7 @@
     
     <servlet>
         <servlet-name>DemandCreationRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.demandcreation.DemandCreationRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.demandcreation.DemandCreationRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DemandCreationRPCService</servlet-name>
@@ -141,7 +141,7 @@
     
         <servlet>
         <servlet-name>MailRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.mail.MailRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.mail.MailRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MailRPCService</servlet-name>
@@ -150,7 +150,7 @@
 
     <servlet>
         <servlet-name>HomeDemandsRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.homedemands.HomeDemandsRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.homedemands.HomeDemandsRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeDemandsRPCService</servlet-name>
@@ -159,7 +159,7 @@
     
     <servlet>
         <servlet-name>SupplierCreationRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.suppliercreation.SupplierCreationRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.suppliercreation.SupplierCreationRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SupplierCreationRPCService</servlet-name>
@@ -169,7 +169,7 @@
 
     <servlet>
         <servlet-name>HomeSuppliersRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.homesuppliers.HomeSuppliersRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.homesuppliers.HomeSuppliersRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeSuppliersRPCService</servlet-name>
@@ -178,7 +178,7 @@
 
     <servlet>
         <servlet-name>MessagesRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.messages.MessagesRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.messages.MessagesRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MessagesRPCService</servlet-name>
@@ -188,7 +188,7 @@
 
     <servlet>
         <servlet-name>DemandsRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.demands.DemandsRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.demands.DemandsRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DemandsRPCService</servlet-name>
@@ -197,7 +197,7 @@
 
     <servlet>
         <servlet-name>DemandRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.demand.DemandRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.demand.DemandRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DemandRPCService</servlet-name>
@@ -206,7 +206,7 @@
 
     <servlet>
         <servlet-name>ClientRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.client.ClientRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.client.ClientRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ClientRPCService</servlet-name>
@@ -215,7 +215,7 @@
 
     <servlet>
         <servlet-name>SupplierRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.supplier.SupplierRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.supplier.SupplierRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SupplierRPCService</servlet-name>
@@ -224,7 +224,7 @@
 
     <servlet>
         <servlet-name>AdminRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.admin.AdminRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.admin.AdminRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminRPCService</servlet-name>
@@ -233,7 +233,7 @@
 
     <servlet>
         <servlet-name>MessageRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.message.MessageRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.message.MessageRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MessageRPCService</servlet-name>
@@ -242,7 +242,7 @@
 
     <servlet>
         <servlet-name>OfferRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.offer.OfferRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.offer.OfferRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>OfferRPCService</servlet-name>
@@ -253,7 +253,7 @@
 
     <servlet>
         <servlet-name>LocalityRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.locality.LocalityRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.locality.LocalityRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LocalityRPCService</servlet-name>
@@ -262,7 +262,7 @@
 
     <servlet>
         <servlet-name>CategoryRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.category.CategoryRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.category.CategoryRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CategoryRPCService</servlet-name>
@@ -271,7 +271,7 @@
 
     <servlet>
         <servlet-name>UserRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.user.UserRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.user.UserRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserRPCService</servlet-name>
@@ -280,7 +280,7 @@
 
     <servlet>
         <servlet-name>SettingsRPCService</servlet-name>
-        <servlet-class>cz.poptavka.sample.server.service.settings.SettingsRPCServiceImpl</servlet-class>
+        <servlet-class>com.eprovement.poptavka.server.service.settings.SettingsRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SettingsRPCService</servlet-name>
@@ -289,7 +289,7 @@
 <!-- AJAX Crawlability filter - START -->
     <filter>
         <filter-name>Crawlfilter</filter-name>
-        <filter-class>cz.poptavka.sample.server.CrawlServlet</filter-class>
+        <filter-class>com.eprovement.poptavka.server.CrawlServlet</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Crawlfilter</filter-name>

@@ -7,8 +7,8 @@
    <import resource="classpath:messaging-config.xml" />
 
     <!-- senders -->
-    <bean id="messageSender" class="cz.poptavka.sample.messaging.sample.MessageSender" />
-    <bean id="messageListener" class="cz.poptavka.sample.messaging.sample.MessageHandler" />
+    <bean id="messageSender" class="com.eprovement.poptavka.messaging.sample.MessageSender" />
+    <bean id="messageListener" class="com.eprovement.poptavka.messaging.sample.MessageHandler" />
     <!-- If you want to completely decouple message listener from amqp infrastructure then use messageListenerAdapter-->
     <!--<bean id="messageListenerAdapter" class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">-->
         <!--<constructor-arg ref="messageListener" />-->

@@ -11,12 +11,12 @@
     <beans:import resource="security.xml"/>
     
         <!-- Service -->
-    <beans:bean id="userActivationRPCService" class="cz.poptavka.sample.server.service.user.activation.UserActivationRPCServiceImpl">
+    <beans:bean id="userActivationRPCService" class="com.eprovement.poptavka.server.service.user.activation.UserActivationRPCServiceImpl">
         <beans:constructor-arg ref="userVerificationService" />
     </beans:bean>
     
     <context:annotation-config/>
-    <context:component-scan base-package="cz.poptavka.sample.server.service"/>
+    <context:component-scan base-package="com.eprovement.poptavka.server.service"/>
     
     <http auto-config="true">
 

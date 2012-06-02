@@ -13,62 +13,62 @@
     <import resource="messaging-config.xml" />
 
 
-    <bean id="clientDao" class="cz.poptavka.sample.dao.user.ClientDaoImpl"/>
+    <bean id="clientDao" class="com.eprovement.poptavka.dao.user.ClientDaoImpl"/>
 
-    <bean id="preferenceDao" class="cz.poptavka.sample.dao.user.PreferenceDaoImpl" />
+    <bean id="preferenceDao" class="com.eprovement.poptavka.dao.user.PreferenceDaoImpl" />
 
-    <bean id="demandDao" class="cz.poptavka.sample.dao.demand.DemandDaoImpl">
+    <bean id="demandDao" class="com.eprovement.poptavka.dao.demand.DemandDaoImpl">
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="ratingDao" class="cz.poptavka.sample.dao.demand.RatingDaoImpl" />
+    <bean id="ratingDao" class="com.eprovement.poptavka.dao.demand.RatingDaoImpl" />
 
-    <bean id="auditDao" class="cz.poptavka.sample.dao.audit.AuditDaoImpl" />
+    <bean id="auditDao" class="com.eprovement.poptavka.dao.audit.AuditDaoImpl" />
 
-    <bean id="treeItemDao" class="cz.poptavka.sample.dao.common.TreeItemDaoImpl" />
+    <bean id="treeItemDao" class="com.eprovement.poptavka.dao.common.TreeItemDaoImpl" />
 
-    <bean id="localityDao" class="cz.poptavka.sample.dao.address.LocalityDaoImpl" />
+    <bean id="localityDao" class="com.eprovement.poptavka.dao.address.LocalityDaoImpl" />
 
-    <bean id="categoryDao" class="cz.poptavka.sample.dao.demand.CategoryDaoImpl" />
+    <bean id="categoryDao" class="com.eprovement.poptavka.dao.demand.CategoryDaoImpl" />
 
-    <bean id="supplierDao" class="cz.poptavka.sample.dao.user.SupplierDaoImpl">
+    <bean id="supplierDao" class="com.eprovement.poptavka.dao.user.SupplierDaoImpl">
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="messageDao" class="cz.poptavka.sample.dao.message.MessageDaoImpl" />
+    <bean id="messageDao" class="com.eprovement.poptavka.dao.message.MessageDaoImpl" />
 
-    <bean id="userMessageDao" class="cz.poptavka.sample.dao.usermessage.UserMessageDaoImpl" />
+    <bean id="userMessageDao" class="com.eprovement.poptavka.dao.usermessage.UserMessageDaoImpl" />
 
-    <bean id="OfferDao" class="cz.poptavka.sample.dao.offer.OfferDaoImpl" />
+    <bean id="OfferDao" class="com.eprovement.poptavka.dao.offer.OfferDaoImpl" />
 
 
     <!-- Service -->
-    <bean id="generalService" class="cz.poptavka.sample.service.GeneralServiceImpl">
+    <bean id="generalService" class="com.eprovement.poptavka.service.GeneralServiceImpl">
         <constructor-arg ref="generalDao" />
     </bean>
 
-    <bean id="fulltextSearchService" class="cz.poptavka.sample.service.fulltext.HibernateFulltextSearchService" />
+    <bean id="fulltextSearchService" class="com.eprovement.poptavka.service.fulltext.HibernateFulltextSearchService" />
 
-    <bean id="registerService" class="cz.poptavka.sample.service.register.RegisterServiceImpl">
+    <bean id="registerService" class="com.eprovement.poptavka.service.register.RegisterServiceImpl">
         <constructor-arg ref="generalService" />
     </bean>
 
-    <bean id="treeItemService" class="cz.poptavka.sample.service.common.TreeItemServiceImpl">
+    <bean id="treeItemService" class="com.eprovement.poptavka.service.common.TreeItemServiceImpl">
         <constructor-arg ref="treeItemDao" />
     </bean>
 
-    <bean id="clientService" class="cz.poptavka.sample.service.user.ClientServiceImpl">
+    <bean id="clientService" class="com.eprovement.poptavka.service.user.ClientServiceImpl">
         <constructor-arg ref="generalService" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
         <property name="dao" ref="clientDao"/>
     </bean>
 
-    <bean id="preferenceService" class="cz.poptavka.sample.service.user.PreferenceServiceImpl">
+    <bean id="preferenceService" class="com.eprovement.poptavka.service.user.PreferenceServiceImpl">
         <constructor-arg ref="preferenceDao" />
     </bean>
 
-    <bean id="demandService" class="cz.poptavka.sample.service.demand.DemandServiceImpl">
+    <bean id="demandService" class="com.eprovement.poptavka.service.demand.DemandServiceImpl">
         <constructor-arg ref="demandDao" />
         <property name="clientService" ref="clientService" />
         <property name="supplierService" ref="supplierService" />
@@ -77,86 +77,86 @@
         <property name="suppliersSelection" ref="demandSelection" />
     </bean>
 
-    <bean id="demandSelection" class="cz.poptavka.sample.service.demand.NaiveSuppliersSelection">
+    <bean id="demandSelection" class="com.eprovement.poptavka.service.demand.NaiveSuppliersSelection">
         <property name="supplierService" ref="supplierService" />
     </bean>
 
-    <bean id="ratingService" class="cz.poptavka.sample.service.demand.RatingServiceImpl">
+    <bean id="ratingService" class="com.eprovement.poptavka.service.demand.RatingServiceImpl">
         <constructor-arg ref="ratingDao" />
     </bean>
 
-    <bean id="categoryService" class="cz.poptavka.sample.service.demand.CategoryServiceImpl">
+    <bean id="categoryService" class="com.eprovement.poptavka.service.demand.CategoryServiceImpl">
         <constructor-arg ref="categoryDao" />
     </bean>
 
-    <bean id="localityService" class="cz.poptavka.sample.service.address.LocalityServiceImpl">
+    <bean id="localityService" class="com.eprovement.poptavka.service.address.LocalityServiceImpl">
         <constructor-arg ref="localityDao" />
     </bean>
 
-    <bean id="auditService" class="cz.poptavka.sample.service.audit.AuditServiceImpl">
+    <bean id="auditService" class="com.eprovement.poptavka.service.audit.AuditServiceImpl">
         <constructor-arg ref="auditDao" />
     </bean>
 
-    <bean id="loginService" class="cz.poptavka.sample.service.user.LoginServiceImpl">
+    <bean id="loginService" class="com.eprovement.poptavka.service.user.LoginServiceImpl">
         <constructor-arg ref="generalService" />
         <constructor-arg ref="passwordEncryptor" />
     </bean>
 
-    <bean id="supplierService" class="cz.poptavka.sample.service.user.SupplierServiceImpl">
+    <bean id="supplierService" class="com.eprovement.poptavka.service.user.SupplierServiceImpl">
         <constructor-arg ref="generalService" />
         <constructor-arg ref="supplierDao" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
     </bean>
 
-    <bean id="messageService" class="cz.poptavka.sample.service.message.MessageServiceImpl">
+    <bean id="messageService" class="com.eprovement.poptavka.service.message.MessageServiceImpl">
         <constructor-arg ref="messageDao" />
         <constructor-arg ref="generalService" />
         <constructor-arg ref="userMessageService" />
     </bean>
 
-    <bean id="userMessageService" class="cz.poptavka.sample.service.usermessage.UserMessageServiceImpl">
+    <bean id="userMessageService" class="com.eprovement.poptavka.service.usermessage.UserMessageServiceImpl">
         <constructor-arg ref="userMessageDao" />
         <constructor-arg ref="generalService" />
     </bean>
 
-    <bean id="offerService" class="cz.poptavka.sample.service.offer.OfferServiceImpl">
+    <bean id="offerService" class="com.eprovement.poptavka.service.offer.OfferServiceImpl">
         <constructor-arg ref="OfferDao" />
         <property name="registerService" ref="registerService" />
     </bean>
 
-    <bean id="processCrawledDemandsService" class="cz.poptavka.sample.service.demand.ProcessCrawledDemandsServiceImpl">
+    <bean id="processCrawledDemandsService" class="com.eprovement.poptavka.service.demand.ProcessCrawledDemandsServiceImpl">
         <constructor-arg ref="demandConverter" />
         <constructor-arg ref="demandService" />
     </bean>
     
-    <bean id="notificationItemService" class="cz.poptavka.sample.service.message.settings.NotificationItemServiceImpl" />
+    <bean id="notificationItemService" class="com.eprovement.poptavka.service.message.settings.NotificationItemServiceImpl" />
 
-    <bean id="userVerificationService" class="cz.poptavka.sample.service.user.BusinessUserVerificationServiceImpl">
+    <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.BusinessUserVerificationServiceImpl">
         <constructor-arg ref="symmetricEncryptor" />
         <constructor-arg ref="generalService" />
         <property name="deploymentUrl" value="${deployment.url}" />
     </bean>
 
     <!-- Jobs -->
-    <bean id="additionalInfoFiller" class="cz.poptavka.sample.service.jobs.AdditionalInfoFiller">
+    <bean id="additionalInfoFiller" class="com.eprovement.poptavka.service.jobs.AdditionalInfoFiller">
         <property name="demandService" ref="demandService" />
         <property name="supplierService" ref="supplierService" />
     </bean>
 
-    <bean id="demandsToSuppliersSender" class="cz.poptavka.sample.service.jobs.DemandsToSuppliersSender">
+    <bean id="demandsToSuppliersSender" class="com.eprovement.poptavka.service.jobs.DemandsToSuppliersSender">
         <property name="demandService" ref="demandService" />
     </bean>
 
     <!-- Other -->
-    <bean id="applicationContextProvider" class="cz.poptavka.sample.application.ApplicationContextProvider"/>
+    <bean id="applicationContextProvider" class="com.eprovement.poptavka.application.ApplicationContextProvider"/>
 
-    <bean id="demandConverter" class="cz.poptavka.sample.messaging.crawler.DemandConverter">
+    <bean id="demandConverter" class="com.eprovement.poptavka.messaging.crawler.DemandConverter">
         <constructor-arg ref="generalService" />
         <constructor-arg ref="demandService" />
         <constructor-arg ref="localityService" />
     </bean>
-    <bean id="processCrawledDemandsHandler" class="cz.poptavka.sample.messaging.crawler.ProcessCrawledDemandsHandler">
+    <bean id="processCrawledDemandsHandler" class="com.eprovement.poptavka.messaging.crawler.ProcessCrawledDemandsHandler">
         <constructor-arg ref="messageTemplate" />
         <constructor-arg ref="processCrawledDemandsService" />
     </bean>
@@ -168,7 +168,7 @@
         <!--p:queueNames="${amqp.queue}"-->
         <!--p:messageListener-ref="processCrawledDemandsHandler" />-->
 
-    <!--<context:component-scan base-package="cz.poptavka.sample"/>-->
+    <!--<context:component-scan base-package="com.eprovement.poptavka"/>-->
 
     <!-- Mail support -->
     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -185,7 +185,7 @@
             </props>
         </property>
     </bean>
-    <bean id="mailService" class="cz.poptavka.sample.service.mail.MailServiceImpl">
+    <bean id="mailService" class="com.eprovement.poptavka.service.mail.MailServiceImpl">
         <property name="javaMailSender" ref="javaMailSender" />
     </bean>
 
@@ -204,18 +204,18 @@
         <property name="registrationBehaviorName" value="REGISTRATION_IGNORE_EXISTING" />
     </bean>
     <bean id="jmxAssembler" class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler">
-        <property name="managedInterfaces" value="cz.poptavka.sample.application.PoptavkaManagedOperations" />
+        <property name="managedInterfaces" value="com.eprovement.poptavka.application.PoptavkaManagedOperations" />
     </bean>
     
     <!--Security-->
         <!--  Set up string digester here so we can configure it for more pools if it's a problem -->
         <!-- same settings as StrongPasswordGenerator -->
-    <bean id="passwordEncryptor" class="cz.poptavka.sample.application.security.PasswordEncryptor">
+    <bean id="passwordEncryptor" class="com.eprovement.poptavka.application.security.PasswordEncryptor">
         <property name="stringDigester">
             <encryption:string-digester pool-size="2" algorithm="SHA-256" iterations="100000" salt-size-bytes="16"/>
         </property>
     </bean>
-    <bean id="symmetricEncryptor" class="cz.poptavka.sample.application.security.SymmetricKeyEncryptor">
+    <bean id="symmetricEncryptor" class="com.eprovement.poptavka.application.security.SymmetricKeyEncryptor">
         <constructor-arg value="${crypto.symmetricKey.password}" />
     </bean>
 

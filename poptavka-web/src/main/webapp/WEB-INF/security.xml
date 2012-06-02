@@ -7,19 +7,19 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
        http://www.jasypt.org/schema/encryption http://www.jasypt.org/schema/encryption/jasypt-spring31-encryption-1.xsd">
 
-	<bean id="customAuthenticationProvider" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationProvider" >
+	<bean id="customAuthenticationProvider" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider" >
 		<constructor-arg ref="loginService"/>
 	</bean>
 
     <!-- Custom entry point to indicate that the user needs to authenticate first -->
-    <bean id="customAuthenticationEntryPoint" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationEntryPoint" />
+    <bean id="customAuthenticationEntryPoint" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationEntryPoint" />
 
 
     <!-- Custom handler to indicate that the authentication is succ`essful -->
-    <bean id="customAuthenticationSuccessHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationSuccessHandler" />
+    <bean id="customAuthenticationSuccessHandler" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationSuccessHandler" />
 
     <!-- Custom handler to indicate that the authentication has failed -->
-    <bean id="customAuthenticationFailureHandler" class="cz.poptavka.sample.server.security.PoptavkaAuthenticationFailureHandler" />
+    <bean id="customAuthenticationFailureHandler" class="com.eprovement.poptavka.server.security.PoptavkaAuthenticationFailureHandler" />
     
-    <bean id="poptavkaAuthListener" class="cz.poptavka.sample.server.security.PoptavkaAuthListener"/>
+    <bean id="poptavkaAuthListener" class="com.eprovement.poptavka.server.security.PoptavkaAuthListener"/>
 </beans>
