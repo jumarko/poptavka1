@@ -257,15 +257,6 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             sb.append(" cannot be sent because it is NOT in a COMPOSED state.");
             throw new MessageException(sb.toString());
         }
-        if ((message.getRoles() == null) || (message.getRoles().isEmpty())) {
-            final StringBuilder sb = new StringBuilder();
-            sb.append("Message [id=").append(ToStringUtils.printId(message));
-            sb.append(" cannot be sent because there are no recipients set"
-                    + "in ROLES.");
-            sb.append("Roles: ").append(message.getRoles());
-            throw new MessageException(sb.toString());
-        }
-
         for (MessageUserRole role : message.getRoles()) {
             if ((role.getType() == MessageUserRoleType.TO)
                     || (role.getType() == MessageUserRoleType.CC)
