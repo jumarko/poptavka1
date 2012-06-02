@@ -1,0 +1,95 @@
+<!--<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+     injecting style resources
+    <ui:with field='res'
+        type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+    <g:HTMLPanel>
+        <g:StackLayoutPanel ui:field='mainPanel'
+            styleName='{res.layout.stackLayout}' height="95%">
+            <g:stack>
+                <g:customHeader size="19">
+                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                        1.
+                        <ui:msg key="demandCreationTitle">Demand Creation</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='basicStatus'
+                            style='{res.common.infoMessage}' message='{text.basicMessage}'
+                            description='{text.basicDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="basicInfoHolder" />
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:stack>
+            <g:stack>
+                <g:customHeader size="19">
+                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                        2.
+                        <ui:msg key="catsSelection">Category selection</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='categoryStatus'
+                            style='{res.common.infoMessage}' message='{text.catMessage}'
+                            description='{text.catDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="categoryHolder" />
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:stack>
+            <g:stack>
+                <g:customHeader size="19">
+                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                        3.
+                        <ui:msg key="locsSelection">Locality selection</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <cm:StatusIconLabel ui:field='localityStatus'
+                            style='{res.common.infoMessage}' message='{text.locMessage}'
+                            description='{text.locDescription}' />
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="localityHolder" />
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:stack>
+            <g:stack>
+                <g:customHeader size="19">
+                    <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
+                        4.
+                        <ui:msg key="demandAdvInfo">Demand Advanced Info</ui:msg>
+                    </g:HTML>
+                </g:customHeader>
+                <g:DockLayoutPanel unit="EM" height="100%">
+                    <g:south size="4">
+                        <g:FlowPanel>
+
+                            <cm:StatusIconLabel ui:field='advStatus'
+                                style='{res.common.infoMessage}' message='{text.advMessage}'
+                                description='{text.advDescription}' />
+                        </g:FlowPanel>
+                    </g:south>
+                    <g:center>
+                        <g:SimplePanel ui:field="advInfoHolder" />
+                    </g:center>
+                </g:DockLayoutPanel>
+            </g:stack>
+        </g:StackLayoutPanel>
+        <div style="margin-top: 5px;">
+            <g:Button ui:field="createBtn">
+                <ui:msg key="createDemandLink">Create Demand</ui:msg>
+            </g:Button>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>-->

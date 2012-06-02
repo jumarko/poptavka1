@@ -1,0 +1,51 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.eprovement.poptavka.client.service.demand;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * @author Drobcek
+ */
+public interface DemandsRPCServiceAsync {
+
+    void getListOfClientDemandMessages(long businessUserId, long clientId,
+            AsyncCallback<ArrayList<ClientDemandMessageDetail>> callback);
+
+    void getPotentialDemands(long businessUserId,
+            AsyncCallback<ArrayList<PotentialDemandMessage>> asyncCallback);
+
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
+
+    void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
+
+    void loadSuppliersPotentialDemandConversation(
+            long threadId, long userId, long userMessageId, AsyncCallback<ArrayList<MessageDetail>> callback);
+
+    void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+
+    // TODO Praso - zatial sa nepouziva
+    void getDemandOffers(ArrayList<Long> idList, AsyncCallback<ArrayList<ArrayList<OfferDetail>>> callback);
+
+    // Nasledujuce 2 metody sa pouzivaju v UserEventBus tj. UserHandler. Je nutne ich presunut do noveho modulu
+    // TODO Praso - pouziva sa v UserHandler. Mozeme asi odstranit
+    void getFullDemandDetail(Long demandId, AsyncCallback<FullDemandDetail> callback);
+
+    // TODO Praso - pouziva sa v UserHandler. Mozeme asi odstranit
+    void getBaseDemandDetail(Long demandId,
+            AsyncCallback<BaseDemandDetail> callback);
+
+}

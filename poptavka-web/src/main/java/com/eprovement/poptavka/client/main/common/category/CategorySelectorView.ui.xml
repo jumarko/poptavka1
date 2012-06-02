@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
+
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+
+    <g:VerticalPanel>
+        <g:ScrollPanel ui:field='masterPanel'>
+            <g:Grid ui:field='categoryListHolder'>
+                <g:row>
+                    <g:customCell>
+                         <g:ListBox visibleItemCount='10' width="200"/>
+                    </g:customCell>
+                </g:row>
+            </g:Grid>
+        </g:ScrollPanel>
+        <g:HorizontalPanel>
+            <g:VerticalPanel>
+                <g:Label>
+                    <ui:msg key="selectedCats">Selected</ui:msg>:
+                </g:Label>
+                <c:CellList pageSize="5" width="450" ui:field="selectedList"/>
+            </g:VerticalPanel>
+            <g:VerticalPanel>
+                <g:Label>To select parent category use:</g:Label>
+                <g:Image resource='{res.images.ctrlMouseLeft}'/>
+            </g:VerticalPanel>
+        </g:HorizontalPanel>
+    </g:VerticalPanel>
+</ui:UiBinder>

@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+  <g:DialogBox ui:field="dialogBox" autoHide="false" modal="true" glassEnabled="true" animationEnabled="true">
+   <g:caption><b>Error occured</b></g:caption>
+   <g:HTMLPanel>
+     <g:HTML ui:field='errorText' />
+     <g:Button ui:field='okButton' >Ok</g:Button>
+   </g:HTMLPanel>
+ </g:DialogBox>
+</ui:UiBinder> 

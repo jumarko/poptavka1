@@ -1,0 +1,26 @@
+<!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
+<dataset>
+
+    <!-- settings for our user -->
+    <SETTINGS ID="111" />
+    <USERT ID="111" EMAIL="pref@mail.com" PASSWORD="pref" SETTINGS_ID="111"/>
+    <BUSINESSUSERDATA ID="111" />
+    <BUSINESSUSER ID="111" BUSINESSUSERDATA_ID="111" />
+    <BUSINESSUSERROLE ID="111" BUSINESSUSER_ID="111" VERIFICATION="UNVERIFIED" />
+    <CLIENT ID="111" />
+
+
+    <!-- other settings -->
+    <SETTINGS ID="112" />
+    <SETTINGS ID="113" />
+
+
+    <!-- preferences -->
+    <PREFERENCE ID="1" SETTINGS_ID="111" PKEY="user.color.favourite" VALUE="RED" />
+    <PREFERENCE ID="2" SETTINGS_ID="112" PKEY="user.color.font" VALUE="BLACK" />
+    <PREFERENCE ID="3" SETTINGS_ID="111" PKEY="user.mail.demand.updated.notification" VALUE="true" />
+    <PREFERENCE ID="4" SETTINGS_ID="113" PKEY="user.demands.share" VALUE="true" />
+
+
+
+</dataset>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+	<ui:with field='res'
+		type='com.eprovement.poptavka.client.resources.StyleResource' />
+	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+	<ui:style>
+		
+	</ui:style>
+
+	<g:DockLayoutPanel ui:field="layoutMaster"
+		styleName="{res.layout.layoutPublic}" unit="PX">
+		<g:north size="110">
+			<g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
+				<!-- old type -->
+				<!-- <div id="loginArea" class='{res.layout.loginArea}'> -->
+
+				<!-- new type -->
+
+				<div style="margin: auto; width: 1075px; position: relative; height: 110px;">
+					<!-- Logo -->
+					<div
+						style="position: absolute; background: url(images/logo.png) no-repeat scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;"></div>
+					<!-- end Logo -->
+					
+					<!-- Login Button -->
+					<div style="position: absolute; right: 20px; top: 0px; z-index: 150;">
+						<div class='{res.layout.loginButton}'>
+							<g:Anchor ui:field="loginButton">
+								<ui:msg key="logIn">Log In</ui:msg>
+							</g:Anchor>
+						</div>
+						<div id="loginAnchor"
+							style="position: absolute; width: 150px; right: 0px; z-index: 151;">
+						</div>
+					</div>
+				</div>
+				<!-- <a href="#"> -->
+				<!-- <ui:msg key="help">Help</ui:msg> -->
+				<!-- </a> -->
+				<!-- <a href="#"> -->
+				<!-- <ui:msg key="about">About</ui:msg> -->
+				<!-- </a> -->
+				<!-- <br /> -->
+				<!-- Current locale: -->
+				<!-- <ui:msg key="locDef">Default</ui:msg> -->
+				<!-- </div> -->
+			</g:HTMLPanel>
+		</g:north>
+		<g:south size="0">
+			<!-- <g:HTMLPanel ui:field='footerHolder' styleName='{res.layout.footerContainer}'> -->
+			<!-- TODO: REPLACE footer - will be hardcoded in host page - BUT no more 
+				- pure GWT layout design -->
+			<!-- </g:HTMLPanel> -->
+			<g:HTMLPanel ui:field='footerHolder' styleName='{res.layout.footerContainer}'>
+				<!-- <div style="border-top: black solid thin; background-color: gray; 
+					display: inline;"> -->
+				Content long content
+				<br />
+				<div style="display: inline;">
+					<ul style="display: inline;">
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+					</ul>
+				</div>
+				<div style="display: inline;">
+					<ul style="display: inline;">
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+					</ul>
+				</div>
+				<div style="display: inline;">
+					<ul style="display: inline;">
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+						<li style="display: inline">Item</li>
+					</ul>
+				</div>
+				<!-- </div> -->
+			</g:HTMLPanel>
+		</g:south>
+		<g:center>
+			<g:HTMLPanel>
+				<g:SimplePanel ui:field='bodyHolder' styleName='{res.layout.bodyContainer}' />
+				<g:HTML ui:field="footController" styleName="{res.layout.footerToggle}">
+					<ui:msg key="footerDisplay">DisplayFooter</ui:msg>
+					<!-- <cm:SimpleIconLabel description='{text.close}' inline="true" /> -->
+				</g:HTML>
+			</g:HTMLPanel>
+
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>

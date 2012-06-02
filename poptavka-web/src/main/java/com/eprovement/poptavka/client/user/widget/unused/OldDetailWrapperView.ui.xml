@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:e="urn:import:com.eprovement.poptavka.client.user.widget.detail"
+    xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.messaging">
+
+    <ui:style>
+        .overflow {
+            overflow: scroll;
+        }
+        .relative {
+            position: relative;
+        }
+    </ui:style>
+    <g:HTMLPanel ui:field="container" styleName="{style.overflow}">
+        <g:SimplePanel ui:field="detailHolder" styleName="{style.relative}">
+            <g:HTML>
+                <center>
+                    <h2>Demand Detail window</h2>
+                    <p>
+                        Click on demand to show demand.
+                    </p>
+                </center>
+            </g:HTML>
+        </g:SimplePanel>
+        <g:StackLayoutPanel ui:field="stackConversationPanel" unit='EM' visible="false"/>
+        <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
+        <e:DemandDetailView ui:field="demandDetail"/>
+           <g:SimplePanel ui:field="replyHolder" />
+    </g:HTMLPanel>
+</ui:UiBinder>

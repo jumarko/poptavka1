@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:with field='res'
+        type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:style>
+		.important {
+			font-weight: bold;
+		}
+    </ui:style>
+<!--    <g:HTMLPanel styleName='{res.layout.stackLayout}'>-->
+    <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
+        <h1>Milí vývojári,</h1>
+        <h3>
+                Už viac ako rok sa trápime s naším projektom. Vyzerá to tak, že pokiaľ to netlačím tak nikto z vás nemá iniciatívu niečo robiť. Túto
+                chybu beriem na seba a mrzí ma, že som vedenie projektu podcenil. Posnažím sa to napraviť.
+        </h3>
+
+        <h3>Asi štvrť roka sme študovali dokumentáciu a keď sa pozriem do kódu tak žasnem nad niektorými Vašimi výtvormi. Na viacerých miestach
+                som našiel naflákaný kód, z ktorého sa dalo rýchlo vyčítať, že ten kto to písal pri tom ani trošku nerozmýšľal. Týmto si ale
+                pridávame prácu pretože čím viac bušíme nepremyslený kód tým väčší bordel nám vzniká pod rukami. Kto to má po Vás opravovať?
+        </h3>
+
+        <h3>Dávajte si na to pozor. Mojím zámerom je vytvoriť najlepší poptávkový web a flákačov v týme nepotrebujem. Buď k tomu pristupujte
+                profesionálne alebo sa na celý projekt vykašlite.
+        </h3>
+
+        <h4>Projektový vedúci</h4>
+        <p>Ivan Vlček</p>
+
+        <g:Button styleName="{style.important}" ui:field="button" />
+    </g:HTMLPanel>
+</ui:UiBinder>

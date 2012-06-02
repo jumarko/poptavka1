@@ -1,0 +1,47 @@
+<!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
+<dataset >
+
+    <NOTIFICATION  ID="1" DESCRIPTION="Notifikacia pre klientov, ktori niesu oficialne zaregistrovany ale boli  defaultne zalozeni v systeme aj s ich cudzimi poptavkami"
+            NAME="Notifikácia pre neregistrovaného klienta" NOTIFICATIONTYPE="NONREGISTERED" CODE="nonregistered.supplier" />
+
+    <NOTIFICATION  ID="2" DESCRIPTION="Notifkacia pre dodavatelov, ktori niesu oficialne zaregistrovani ale boli defaultne zalozeni do systemu"
+            NAME="Notifikácia pre neregistrovaného dodávateľa" NOTIFICATIONTYPE="NONREGISTERED" CODE="nonregistered.client" />
+
+    <NOTIFICATION  ID="3" DESCRIPTION="Notifikácia sa odošle ked užívateľ obdrží novu správu v systéme"
+                NAME="Nova správa" NOTIFICATIONTYPE="SUPPLIER" CODE="new.message.supplier" />
+
+    <NOTIFICATION  ID="4" DESCRIPTION="Notifikácia pre dodávateľa o novej poptávke"
+                NAME="Nová poptávka" NOTIFICATIONTYPE="SUPPLIER" CODE="new.demand" />
+
+    <NOTIFICATION  ID="5" DESCRIPTION="Notifikácie pre klienta o novej ponuke"
+                NAME="Nová ponuka" NOTIFICATIONTYPE="CLIENT" CODE="new.offer" />
+
+    <NOTIFICATION  ID="6" DESCRIPTION="Notifikácia o aktualizáciach a novinkách systému"
+                NAME="Nová správa od systému" NOTIFICATIONTYPE="SUPPLIER" CODE="new.info" />
+
+    <NOTIFICATION  ID="7" DESCRIPTION="Notifikácia o novej správe od operátora systému"
+                NAME="Nová správa od operátora" NOTIFICATIONTYPE="SUPPLIER" CODE="new.operator" />
+
+    <NOTIFICATION  ID="8" DESCRIPTION="Notifikácia o zmene stavu poptávky"
+                NAME="Zmena stavu poptávky" NOTIFICATIONTYPE="CLIENT" CODE="demand.status.changed" />
+
+     <NOTIFICATION  ID="9" DESCRIPTION="Notifikácia o zmene stavu ponuky"
+                NAME="Zmena stavu ponuky" NOTIFICATIONTYPE="SUPPLIER" CODE="offer.status.changed" />
+
+     <NOTIFICATION  ID="10" DESCRIPTION="Notifikácia sa odošle ked užívateľ obdrží novu správu v systéme"
+                NAME="Nová správa" NOTIFICATIONTYPE="CLIENT" CODE="new.message.client" />
+
+     <NOTIFICATION  ID="11" DESCRIPTION="Notifikácia o aktualizáciach a novinkách systému"
+                NAME="Nová správa od systému" NOTIFICATIONTYPE="CLIENT" CODE="new.info.client" />
+    <NOTIFICATION  ID="12" DESCRIPTION="Notifikácia o novej správe pre klienta od operátora systému "
+                   NAME="Nová správa od operátora" NOTIFICATIONTYPE="CLIENT" CODE="new.operator.client" />
+
+
+    <!--see real DB for more information on SERVICEs-->
+    <SERVICE ID="1" CODE="validity.1month" VALID="1" />
+    <SERVICE ID="2" CODE="validity.3month" VALID="1" />
+    <SERVICE ID="3" CODE="validity.1year" VALID="1" />
+    <SERVICE ID="4" CODE="classic" VALID="1" />
+
+
+</dataset>

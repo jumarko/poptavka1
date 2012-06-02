@@ -1,0 +1,46 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
+
+	<!-- injecting style resources -->
+	<ui:with field='res'
+		type='com.eprovement.poptavka.client.resources.StyleResource' />
+	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' 
+		/> -->
+
+	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
+		<g:VerticalPanel>
+			<g:HorizontalPanel ui:field="root" />
+			<g:HTMLPanel ui:field="child">
+				<g:FlowPanel ui:field="path" />
+				<g:HorizontalPanel>
+					<g:Label ui:field="categoryLoadingLabel" />
+					<c:CellList ui:field="categoriesList" width="300px" />
+					<!--<g:SplitLayoutPanel styleName='{res.layout.fullSize}' ui:field="split"> 
+						<g:west size="300" > -->
+					<g:ScrollPanel>
+						<g:VerticalPanel width="600px">
+							<g:Label ui:field="filterLabel">Search panel set, additional filters
+								will by used.</g:Label>
+							<c:DataGrid ui:field="dataGrid" />
+							<g:HorizontalPanel>
+								<c:SimplePager ui:field="pager" />
+								<g:ListBox ui:field='pageSizeCombo' />
+							</g:HorizontalPanel>
+						</g:VerticalPanel>
+					</g:ScrollPanel>
+					<!--</g:west> <g:center > <g:ScrollPanel> -->
+					<g:ScrollPanel>
+						<g:HTMLPanel ui:field="detail">
+							<g:Label ui:field="reklama">Reklama</g:Label>
+							<d:SupplierDetailView ui:field="supplierDetail" />
+							<g:Button ui:field="contactBtn">Contact</g:Button>
+						</g:HTMLPanel>
+					</g:ScrollPanel>
+					<!--</g:ScrollPanel> </g:center> </g:SplitLayoutPanel> -->
+				</g:HorizontalPanel>
+			</g:HTMLPanel>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

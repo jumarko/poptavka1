@@ -1,0 +1,165 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+        xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+        xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+<!--	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateLocales='default'>-->
+
+    <ui:style>
+		.header {
+			font-size: 110%;
+			font-weight: bold;
+			color: #555;
+		}
+
+		.label {
+			font-weight: bold;
+		}
+
+		.decorationPanel {
+			width: 100%;
+		}
+
+		.titleBox {
+			width: 100%;
+			height: 55px;
+		}
+
+		.descriptionBox {
+			width: 100%;
+			height: 150px;
+		}
+
+		.priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
+			{
+
+		}
+    </ui:style>
+
+    <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
+        <g:ScrollPanel>
+            <g:HTMLPanel>
+                <table style="width: 100%;">
+                    <tr>
+                        <td colspan='2' align='center' class='{style.header}'>
+                            <ui:msg key='contactInfoFormTitle'>Invoice Info</ui:msg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>InvoiceNumber:</td>
+                        <td>
+                            <g:TextBox ui:field='invoiceNumber' styleName='{style.titleBox}' />
+                        </td>
+                    </tr>
+                     <tr>
+                        <td class='{style.label}'>PaymentMethod:</td>
+                        <td>
+                            <g:ListBox ui:field='paymentMethod' styleName='{style.titleBox}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>UserServices</td>
+                        <td>
+                            <g:ListBox ui:field='userServices' styleName='{style.titleBox}' visibleItemCount='5' />
+                        </td>
+                    </tr>
+                    //----------------------------------------- Dates ------------------------------------------------------------------
+                    <tr>
+                        <td colspan='2' align='center' class='{style.header}'>
+                            <ui:msg key='contactInfoFormTitle'>Dates</ui:msg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>IssueDate:</td>
+                        <td>
+                            <d:DateBox ui:field='issueDate' styleName='{style.endDateBox}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>ShipmentDate:</td>
+                        <td>
+                            <d:DateBox ui:field='shipmentDate' styleName='{style.expirationBox}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>DueDate:</td>
+                        <td>
+                            <d:DateBox ui:field='dueDate' styleName='{style.expirationBox}' />
+                        </td>
+                    </tr>
+                    //---------------------------------------- Bank information --------------------------------------------------------
+                    <tr>
+                        <td colspan='2' align='center' class='{style.header}'>
+                            <ui:msg key='contactInfoFormTitle'>Bank information</ui:msg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>BankAccountNumber:</td>
+                        <td>
+                            <g:TextBox ui:field='bankAccountNumber' styleName='{style.maxOffers}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>BankCode:</td>
+                        <td>
+                            <g:TextBox ui:field='bankCode' styleName='{style.minRating}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>VariableSymbol:</td>
+                        <td>
+                            <g:TextBox ui:field='variableSymbol' styleName='{style.demandType}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>ConstSymbol:</td>
+                        <td>
+                            <g:TextBox ui:field='constSymbol' styleName='{style.demandStatus}' />
+                        </td>
+                    </tr>
+                    //------------------------------ Price -----------------------------------------------------------------------------
+                    <tr>
+                        <td colspan='2' align='center' class='{style.header}'>
+                            <ui:msg key='contactInfoFormTitle'>Price</ui:msg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>TaxBasis</td>
+                        <td>
+                            <g:TextBox ui:field='taxBasis' styleName='{style.maxOffers}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>VatRate</td>
+                        <td>
+                            <g:TextBox ui:field='vatRate' styleName='{style.maxOffers}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>Vat:</td>
+                        <td>
+                            <g:TextBox ui:field='vat' styleName='{style.maxOffers}' />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='{style.label}'>TotalPrice:</td>
+                        <td>
+                            <g:TextBox ui:field='totalPrice' styleName='{style.maxOffers}' />
+                        </td>
+                    </tr>
+                    
+    
+                  
+                    <tr>
+                        <td colspan='2' align='center'>
+                            <g:Button ui:field='updateButton'>
+                                <ui:msg key='demandDetailFormUpdateButton'>Update Demand</ui:msg>
+                            </g:Button>
+                        </td>
+                    </tr>
+                </table>
+            </g:HTMLPanel>
+        </g:ScrollPanel>
+    </g:DecoratorPanel>
+</ui:UiBinder>

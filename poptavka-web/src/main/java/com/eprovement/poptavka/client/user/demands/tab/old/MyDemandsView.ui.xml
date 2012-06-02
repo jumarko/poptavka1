@@ -1,0 +1,100 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:c='urn:import:com.google.gwt.user.cellview.client'
+    xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.grid.unused">
+    <ui:style>
+        .important {
+            font-weight: bold;
+        }
+
+        .cellTable {
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+
+        .header {
+            background: #aaaaff;
+            color: #000000;
+            padding: 3px;
+            font-size: 14px;
+        }
+
+        .detailPanel {
+            background: #d6f6d0;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #32d512;
+            -moz-border-radius: 3px;
+        }
+    </ui:style>
+
+    <ui:with field='res'
+        type='com.eprovement.poptavka.client.resources.StyleResource' />
+
+    <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
+        <g:west size="650">
+            <g:FlowPanel>
+                <g:HTMLPanel>
+                    <div>
+                        <g:HTML>
+                            <ui:msg key="myDemands">My Demands</ui:msg>
+                        </g:HTML>
+                        <g:Button ui:field='answerBtn' enabled="false">
+                            <ui:msg key="answer">Answer</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field='editBtn' enabled="false">
+                            <ui:msg key="edit">Edit</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field='closeBtn' enabled="false">
+                            <ui:msg key="close">Close</ui:msg>
+                        </g:Button>
+                        <g:Button ui:field='cancelBtn' enabled="false">
+                            <ui:msg key="cancel">Cancel</ui:msg>
+                        </g:Button>
+                    </div>
+                    <div>
+                        <div style="height: 100%; overflow: auto; display: block;">
+                            <w:GlobalDemandConversationTable ui:field="demandTable" />
+                            <div>
+                                <table width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center">
+                                                <c:SimplePager ui:field="demandPager" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="height: 100%; overflow: auto; display: hidden;">
+                            <g:Anchor ui:field="backToDemandsBtn">
+                                <span style="cursor: pointer; cursor: hand">
+                                    <ui:msg key="backToDemands">Back to Demand List</ui:msg>
+                                </span>
+                            </g:Anchor>
+                            <w:SingleDemandConversationTable ui:field="conversationTable" />
+
+                            <div>
+                                <table width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center">
+                                                <c:SimplePager ui:field="conversationPager" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </g:HTMLPanel>
+            </g:FlowPanel>
+        </g:west>
+        <g:center>
+            <g:SimplePanel ui:field="detailHolder" />
+        </g:center>
+    </g:SplitLayoutPanel>
+</ui:UiBinder>

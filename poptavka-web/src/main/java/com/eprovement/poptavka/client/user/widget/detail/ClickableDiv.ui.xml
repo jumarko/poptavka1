@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:with type="com.eprovement.poptavka.client.resources.StyleResource" field="img"></ui:with>
+
+    <ui:style>
+        .header {
+            cursor: pointer;
+        }
+    </ui:style>
+    <g:HTMLPanel ui:field="master" styleName="{style.header}">
+        <div style="float: right; padding-right: 10px;">
+            <g:Image ui:field="toggleImg" resource="{img.images.toggleOpen}"></g:Image>
+        </div>
+        <div>
+            <span ui:field="title"></span>
+            <g:Image ui:field="loadImg" resource="{img.images.loadIcon24}" visible="false"></g:Image>
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

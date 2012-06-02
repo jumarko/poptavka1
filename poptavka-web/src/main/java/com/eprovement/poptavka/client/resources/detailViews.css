@@ -1,0 +1,61 @@
+/* 
+    Document   : mailBox
+    Created on : Feb 7, 2012, 8:18:20 AM
+    Author     : slavkovsky.martin
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/*  DEMAND DETAIL SECTION  */
+
+
+.demandDetailSectionHeader th {
+    font-family: fantasy;
+    font-size: xx-large;
+    background-color: green;
+}
+
+.demandDetailTable {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.demandDetailTable th {
+    border: 1px solid black;
+    font-weight: bold;
+    background-color: limegreen;
+}
+
+.demandDetailTable td {
+    border: 1px solid black;
+}
+
+/*  SUPPLIER DETAIL SECTION  */
+
+.supplierDetailSectionHeader th {
+    font-family: fantasy;
+    font-size: xx-large;
+    background-color: red;
+}
+
+.supplierDetailTable {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.supplierDetailTable th {
+    border: 1px solid black;
+    font-weight: bold;
+    background-color: lightcoral;
+}
+
+.supplierDetailTable td {
+    border: 1px solid black;
+}

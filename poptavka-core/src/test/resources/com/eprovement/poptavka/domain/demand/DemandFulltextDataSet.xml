@@ -1,0 +1,29 @@
+<!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
+
+<dataset>
+    <!--Demands especially suitable for testing full-text search-->
+    <!--This data set should always be used with CategoryDataSet.xml, LocalityDataSet.xml
+        and finally DemandDataSet.xml because it rely on those data.
+        Watch out for conflicts with DemandDataSet.xml especially in ID fields.-->
+
+    <DEMAND ID="111" TYPE_ID="1" TITLE="Poptávam 100 kg kŕmnej repy"
+            DESCRIPTION="Hľadám dodávateľa pre dodávku 100 kg červenej kŕmnej repy. Značka: spoľahlivosť a diskrétnosť. Požadujem stopercentnú kvalitu"
+            PRICE="10000" STATUS="NEW" />
+    <DEMAND ID="112" TYPE_ID="2" TITLE="Ford Focus II Kombi"
+            DESCRIPTION="Sháním zachovalé auto Ford Focus II Kombi, rok výroby od 2006 vyšší. Barva ideálně černá nebo modrá. Maximální počet najetých km 150 000.
+            Palivo: diesel. Požaduju evidenci servisní historie!"
+            PRICE="110000" STATUS="NEW" />
+    <DEMAND ID="113" TYPE_ID="1" TITLE="Poptávka FAKE Poptávka" DESCRIPTION="Požaduju hledám auto bla bla ideálně maximálně, dodávku." PRICE="120000" />
+
+
+    <!--########################################## demands for localities ###########################################-->
+    <DEMAND_LOCALITY ID="111" DEMAND_ID="111" LOCALITY_ID="1" />   <!-- "locality1"-->
+    <DEMAND_LOCALITY ID="112" DEMAND_ID="112" LOCALITY_ID="2" />   <!-- "locality2"-->
+    <DEMAND_LOCALITY ID="113" DEMAND_ID="113" LOCALITY_ID="2" />   <!-- "locality2"-->
+
+    <!--########################################## demands for categories ###########################################-->
+    <DEMAND_CATEGORY ID="111" DEMAND_ID="111" CATEGORY_ID="1" /> <!-- "Root category" -->
+    <DEMAND_CATEGORY ID="112" DEMAND_ID="112" CATEGORY_ID="2" /> <!-- "Category 1" -->
+    <DEMAND_CATEGORY ID="113" DEMAND_ID="113" CATEGORY_ID="3" /> <!-- "Category 2" -->
+
+</dataset>
