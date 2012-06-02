@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>cz.poptavka</groupId>
+    <groupId>com.eprovement</groupId>
     <artifactId>poptavka-web</artifactId>
     <packaging>war</packaging>
     <name>poptavka-web</name>
     <url>http://maven.apache.org</url>
     <parent>
-        <groupId>cz.poptavka</groupId>
+        <groupId>com.eprovement</groupId>
         <artifactId>poptavka</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>cz.poptavka</groupId>
+            <groupId>com.eprovement</groupId>
             <artifactId>poptavka-core</artifactId>
             <exclusions>
                 <exclusion>
@@ -30,7 +30,7 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>cz.poptavka</groupId>
+            <groupId>com.eprovement</groupId>
             <artifactId>poptavka-rest-api</artifactId>
             <!--<scope>runtime</scope>-->
         </dependency>
