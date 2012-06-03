@@ -20,8 +20,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.main.common.LoadingPopup;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;
-import com.eprovement.poptavka.client.main.common.creation.FormDemandAdvPresenter;
-import com.eprovement.poptavka.client.main.common.creation.FormDemandBasicPresenter;
+import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter;
+import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.main.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;

@@ -11,7 +11,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.eprovement.poptavka.client.main.common.creation.ProvidesValidate;
+import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import java.util.ArrayList;

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.eprovement.poptavka.client.main.common;
+package com.eprovement.poptavka.client.main.common.validation;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;

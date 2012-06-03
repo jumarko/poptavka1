@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.main.common.creation.ProvidesValidate;
+import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 

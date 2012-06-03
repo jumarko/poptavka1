@@ -27,8 +27,8 @@ import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
 
-import com.eprovement.poptavka.client.home.creation.DemandCreationModule;
-import com.eprovement.poptavka.client.home.supplier.SupplierCreationModule;
+import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
+import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
 import com.eprovement.poptavka.client.home.widget.category.CategoryDisplayPresenter;
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;

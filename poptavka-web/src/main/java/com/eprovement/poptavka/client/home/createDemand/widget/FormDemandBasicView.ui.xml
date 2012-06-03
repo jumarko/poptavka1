@@ -1,0 +1,111 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common"
+             xmlns:bg="urn:import:com.eprovement.poptavka.client.main.common.creation"
+             xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+
+    <ui:style>
+        .clickable {
+        cursor: pointer;
+        }
+
+        .clickable div:hover {
+        background-color: #EEE;
+        }
+
+        .hiddenField {
+        display: none;
+        }
+
+        .error {
+        color: red;
+        }
+
+        .width {
+        width: 400px;
+        }
+    </ui:style>
+    <g:HTMLPanel>
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <ui:msg key="title">Title</ui:msg>
+                            </td>
+                            <td>
+                                <g:TextBox ui:field="title" />
+                            </td>
+                            <td width="200px">
+                                <g:Label styleName="{style.error}" ui:field="errorLabelTitle"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ui:msg key="price">Price</ui:msg>
+                            </td>
+                            <td>
+                                <g:TextBox ui:field="priceString" />
+                            </td>
+                            <td width="200px">
+                                <g:Label styleName="{style.error}" ui:field="errorLabelPrice"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ui:msg key="endDate">End Date</ui:msg>
+                            </td>
+                            <td>
+                                <p1:DateBox ui:field="endDate" />
+                            </td>
+                            <td width="200px">
+                                <g:Label styleName="{style.error}" ui:field="errorLabelEndDate"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ui:msg key="expireDate">Expire Date</ui:msg>
+                            </td>
+                            <td>
+                                <p1:DateBox ui:field="validToDate" />
+                            </td>
+                            <td width="200px">
+                                <g:Label styleName="{style.error}" ui:field="errorLabelExpDate"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <ui:msg key="attachment">Attachment</ui:msg>
+                            </td>
+                            <td styleName="{style.width}">
+                                <g:FileUpload />    
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <strong>
+                                    <ui:msg key="description">Description</ui:msg>
+                                </strong>
+                                <br />
+                                <g:TextArea ui:field="description"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <g:Label styleName="{style.error}" ui:field="errorLabelDesc"/>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </g:HTMLPanel>
+</ui:UiBinder>
