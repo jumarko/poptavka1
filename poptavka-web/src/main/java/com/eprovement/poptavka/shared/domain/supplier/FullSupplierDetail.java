@@ -1,15 +1,13 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
-import com.eprovement.poptavka.domain.address.Address;
-import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Email;
 
 public class FullSupplierDetail implements Serializable {
 
@@ -18,21 +16,39 @@ public class FullSupplierDetail implements Serializable {
      */
     private static final long serialVersionUID = -8271479725303195283L;
     private long supplierId;
-    private int overallRating = -1;
-    private boolean certified = false;
+    //Info
+    @NotNull(message = "{supplierNotNullEmail}")
+    @Email(message = "{supplierEmail}")
+    private String email;
+    @NotNull(message = "{supplierNotNullCompanyName}")
+    private String companyName;
+    @NotNull(message = "{supplierNotNullIdentifNumber}")
+    private String identificationNumber;
+    @NotNull(message = "{supplierNotNullFirstName}")
+    private String firstName;
+    @NotNull(message = "{supplierNotNullLastName}")
+    private String lastName;
+    @NotNull(message = "{supplierNotNullPhone}")
+    private String phone;
+    @NotNull(message = "{supplierNotNullPassword}")
+    private String password;
+    @NotNull(message = "{supplierNotNullPassword}")
+    private String passwordConfirm;
+    @NotNull(message = "{supplierNotNullDescription}")
     private String description;
-    private String verification;
+    @NotNull(message = "{supplierNotNullTaxNumber}")
+    private String taxId;
+    private String website;
+    //Lists
     private Map<String, String> localities; //<codes, value>
     private Map<Long, String> categories;   //<ids, value>
     private ArrayList<Integer> services = new ArrayList<Integer>();
     private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+    //Others
+    private int overallRating = -1;
+    private boolean certified = false;
+    private String verification;
     private String businessType;
-    private String email;
-    private String companyName;
-    private String identificationNumber;
-    private String firstName;
-    private String lastName;
-    private String phone;
 
     public FullSupplierDetail() {
     }
@@ -204,6 +220,39 @@ public class FullSupplierDetail implements Serializable {
     public void setVerification(String verification) {
         this.verification = verification;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public String getTaxId() {
+        return taxId;
+    }
+
+    public void setTaxId(String taxId) {
+        this.taxId = taxId;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+    
 
     @Override
     public boolean equals(Object obj) {

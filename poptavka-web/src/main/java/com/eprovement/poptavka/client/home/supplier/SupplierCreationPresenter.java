@@ -63,7 +63,7 @@ public class SupplierCreationPresenter
         Widget getWidgetView();
 
         StatusIconLabel getStatusLabel(int order);
-
+        
         void showConditions();
 
         boolean isValid();
@@ -157,7 +157,7 @@ public class SupplierCreationPresenter
             eventBus.removeHandler(supplierInfo);
         }
         supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
-        supplierInfo.onInitSupplierForm(supplierInfoHolder);
+        supplierInfo.onInitSupplierForm(supplierInfoHolder, view.getStatusLabel(1));
     }
 
     /**************************************************************************/

@@ -15,6 +15,7 @@
  */
 package com.eprovement.poptavka.client.main.common;
 
+import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.core.client.GWT;
 //import com.google.gwt.sample.validation.shared.ClientGroup;
 //import com.google.gwt.sample.validation.shared.Person;
@@ -22,6 +23,7 @@ import com.google.gwt.validation.client.GwtValidation;
 import com.google.gwt.validation.client.AbstractGwtValidatorFactory;
 import com.google.gwt.validation.client.impl.AbstractGwtValidator;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -31,16 +33,16 @@ import javax.validation.groups.Default;
  */
 public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
 
-  /**
-   * Validator marker for the Validation Sample project. Only the classes listed
-   * in the {@link GwtValidation} annotation can be validated.
-   */
-  @GwtValidation(value = FullDemandDetail.class, groups = {Default.class})//, ClientGroup.class})
-  public interface GwtValidator extends Validator {
-  }
+    /**
+     * Validator marker for the Validation Sample project. Only the classes
+     * listed in the {@link GwtValidation} annotation can be validated.
+     */
+    @GwtValidation(value = {FullSupplierDetail.class, FullDemandDetail.class}, groups = {Default.class})
+    public interface GwtValidator extends Validator {
+    }
 
-  @Override
-  public AbstractGwtValidator createValidator() {
-    return GWT.create(GwtValidator.class);
-  }
+    @Override
+    public AbstractGwtValidator createValidator() {
+        return GWT.create(GwtValidator.class);
+    }
 }

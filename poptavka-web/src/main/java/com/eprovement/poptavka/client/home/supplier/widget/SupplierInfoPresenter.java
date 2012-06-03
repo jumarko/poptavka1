@@ -31,9 +31,11 @@ public class SupplierInfoPresenter extends
 
         HasValueChangeHandlers<String> getEmailBox();
 
-        PasswordTextBox getPwdBox();
+//        PasswordTextBox getPassword();
 
-        PasswordTextBox getPwdConfirmBox();
+//        PasswordTextBox getPasswordConfirm();
+
+        void setStatusIconLabel(StatusIconLabel statusIconLabel);
 
         StatusIconLabel getMailStatus();
 
@@ -41,7 +43,7 @@ public class SupplierInfoPresenter extends
 
         StatusIconLabel getPwdConfirmStatus();
 
-        UserDetail getBaseSupplier();
+//        UserDetail getBaseSupplier();
 
         UserDetail createSupplier();
 
@@ -62,22 +64,23 @@ public class SupplierInfoPresenter extends
                 initVisualMailCheck(value.getValue());
             }
         });
-        view.getPwdBox().addKeyUpHandler(new KeyUpHandler() {
-            @Override
-            public void onKeyUp(KeyUpEvent event) {
-                initVisualPwdCheck(view.getPwdBox().getText());
-            }
-        });
-        view.getPwdConfirmBox().addKeyUpHandler(new KeyUpHandler() {
-            @Override
-            public void onKeyUp(KeyUpEvent arg0) {
-                initVisualPwdConfirmCheck();
-            }
-        });
+//        view.getPassword().addKeyUpHandler(new KeyUpHandler() {
+//            @Override
+//            public void onKeyUp(KeyUpEvent event) {
+//                initVisualPwdCheck(view.getPassword().getText());
+//            }
+//        });
+//        view.getPasswordConfirm().addKeyUpHandler(new KeyUpHandler() {
+//            @Override
+//            public void onKeyUp(KeyUpEvent arg0) {
+//                initVisualPwdConfirmCheck();
+//            }
+//        });
     }
 
-    public void onInitSupplierForm(SimplePanel embedToWidget) {
+    public void onInitSupplierForm(SimplePanel embedToWidget, StatusIconLabel statusIconLabel) {
         embedToWidget.setWidget(view.getWidgetView());
+        view.setStatusIconLabel(statusIconLabel);
     }
 
     public void onCheckFreeEmailResponse(Boolean isAvailable) {
@@ -106,45 +109,45 @@ public class SupplierInfoPresenter extends
         }
     }
 
-    private static final int SHORT = 5;
-    private static final int LONG = 8;
+//    private static final int SHORT = 5;
+//    private static final int LONG = 8;
+//
+//    private void initVisualPwdCheck(String value) {
+//        view.getPwdStatus().setVisible(true);
+//        if (value.length() <= SHORT) {
+//
+//            // TODO change to global status changer eventBus call
+//            view.getPwdStatus().setStateWithDescription(State.ERROR_16, MSGS.shortPassword());
+//            view.setPasswordLengthFlag(false);
+//            return;
+//        }
+//        view.setPasswordLengthFlag(true);
+//        if ((value.length() <= LONG) && (value.length() > SHORT)) {
+//            view.setPasswordFlag(true);
+//
+//            // TODO change to global status changer eventBus call
+//            view.getPwdStatus().setStateWithDescription(State.INFO_16, MSGS.semiStrongPassword());
+//        }
+//        if (value.length() > LONG) {
+//            view.setPasswordFlag(true);
+//
+//            // TODO change to global status changer eventBus call
+//            view.getPwdStatus().setStateWithDescription(State.ACCEPT_16, MSGS.strongPassword());
+//        }
+//    }
 
-    private void initVisualPwdCheck(String value) {
-        view.getPwdStatus().setVisible(true);
-        if (value.length() <= SHORT) {
-
-            // TODO change to global status changer eventBus call
-            view.getPwdStatus().setStateWithDescription(State.ERROR_16, MSGS.shortPassword());
-            view.setPasswordLengthFlag(false);
-            return;
-        }
-        view.setPasswordLengthFlag(true);
-        if ((value.length() <= LONG) && (value.length() > SHORT)) {
-            view.setPasswordFlag(true);
-
-            // TODO change to global status changer eventBus call
-            view.getPwdStatus().setStateWithDescription(State.INFO_16, MSGS.semiStrongPassword());
-        }
-        if (value.length() > LONG) {
-            view.setPasswordFlag(true);
-
-            // TODO change to global status changer eventBus call
-            view.getPwdStatus().setStateWithDescription(State.ACCEPT_16, MSGS.strongPassword());
-        }
-    }
-
-    private void initVisualPwdConfirmCheck() {
-        view.getPwdConfirmStatus().setVisible(true);
-        if (!view.getPwdBox().getText().equals(view.getPwdConfirmBox().getText())) {
-            view.setMailFlag(false);
-
-            // TODO change to global status changer eventBus call
-            view.getPwdConfirmStatus().setStateWithDescription(State.ERROR_16, MSGS.passwordsUnmatch());
-        } else {
-            view.setMailFlag(true);
-
-            // TODO change to global status changer eventBus call
-            view.getPwdConfirmStatus().setStateWithDescription(State.ACCEPT_16, MSGS.passwordsMatch());
-        }
-    }
+//    private void initVisualPwdConfirmCheck() {
+//        view.getPwdConfirmStatus().setVisible(true);
+//        if (!view.getPassword().getText().equals(view.getPasswordConfirm().getText())) {
+//            view.setMailFlag(false);
+//
+//            // TODO change to global status changer eventBus call
+//            view.getPwdConfirmStatus().setStateWithDescription(State.ERROR_16, MSGS.passwordsUnmatch());
+//        } else {
+//            view.setMailFlag(true);
+//
+//            // TODO change to global status changer eventBus call
+//            view.getPwdConfirmStatus().setStateWithDescription(State.ACCEPT_16, MSGS.passwordsMatch());
+//        }
+//    }
 }

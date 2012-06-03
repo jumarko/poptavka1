@@ -185,12 +185,12 @@ public class SupplierDetailView extends Composite {
         firstName.setText(detail.getFirstName());
         lastName.setText(detail.getLastName());
         phone.setText(detail.getPhone());
-//        website.setText(detail.getWebsite());
+        website.setText(detail.getWebsite());
         street.setText(detail.getAddresses().get(0).getStreet());
         city.setText(detail.getAddresses().get(0).getCityName());
         zipCode.setText(detail.getAddresses().get(0).getZipCode());
 //        websiteContactPerson.setText(detail.getWebsite());
-//        taxId.setText(detail.get);
+        taxId.setText(detail.getTaxId());
 
     }
 }

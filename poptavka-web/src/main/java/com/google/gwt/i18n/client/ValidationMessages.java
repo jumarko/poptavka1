@@ -29,12 +29,15 @@ public interface ValidationMessages extends ConstantsWithLookup {
      *
      * @return translated "Name must be at least {min} characters long."
      */
-    /**************************************************************************/
-    /* Welcome Module - error messages.                                       */
-    /**************************************************************************/
-//    @DefaultStringValue("Name must be at least {min} characters long.")
-//    @Key("custom.name.size.message")
-//    String custom_name_size_message();
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Create Demand Module - error messages.
+     */
+    /**
+     * ***********************************************************************
+     */
     @Key("address.notNull.state")
     String addressNotNullState();
 
@@ -47,21 +50,18 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("address.notNull.zip")
     String addressNotNullZip();
 
-    @Key("address.size.state")
-    String addressSizeState();
+    @Key("address.pattern.zip")
+    String addressPatternZip();
 
-    @Key("address.size.city")
-    String addressSizeCity();
-
-    @Key("address.size.street")
-    String addressSizeStreet();
-
-    @Key("address.size.zip")
-    String addressSizeZip();
-
-    /**************************************************************************/
-    /* Create Demand Module - error messages.                                 */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Create Demand Module - error messages.
+     */
+    /**
+     * ***********************************************************************
+     */
     //Preco musi byt ten key?
     @Key("demand.notNull.title")
     String demandNotNullTitle();
@@ -95,4 +95,46 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("demand.pattern")
     String demandPattern();
+
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Create Supplier Module - error messages.
+     */
+    /**
+     * ***********************************************************************
+     */
+    @Key("supplier.notNull.email")
+    String supplierNotNullEmail();
+
+    @Key("supplier.email")
+    String supplierEmail();
+
+    @Key("supplier.notNull.companyName")
+    String supplierNotNullCompanyName();
+
+    @Key("supplier.notNull.identifNumber")
+    String supplierNotNullIdentifNumber();
+
+    @Key("supplier.notNull.taxNumber")
+    String supplierNotNullTaxNumber();
+
+    @Key("supplier.notNull.firstName")
+    String supplierNotNullFirstName();
+
+    @Key("supplier.notNull.lastName")
+    String supplierNotNullLastName();
+
+    @Key("supplier.notNull.phone")
+    String supplierNotNullPhone();
+
+    @Key("supplier.notNull.description")
+    String supplierNotNullDescription();
+    
+    @Key("supplier.notNull.password")
+    String supplierNotNullPassword();
+    
+    @Key("supplier.notNull.passwordConfirm")
+    String supplierNotNullPassrowdConfirm();
 }

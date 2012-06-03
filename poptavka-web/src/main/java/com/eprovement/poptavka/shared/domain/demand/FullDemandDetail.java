@@ -1,9 +1,5 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
-import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandStatus;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
 import java.io.Serializable;
@@ -60,7 +56,7 @@ public class FullDemandDetail implements Serializable {
     @Size(min = 5, max = 50, message = "{demandSizeTitle}")
     private String title;
     @NotNull(message = "{demandNotNullPrice}")
-    @Pattern(regexp = "\\d+(\\.\\d{2})*", message = "{demandPatternPrice}")///^\\d+(\\.\\d{2})?$*/  /^[0-9]+(\\.[0-9]{2})?$/
+    @Pattern(regexp = "\\d+(\\.\\d{2})*", message = "{demandPatternPrice}")
     private String priceString;
     private BigDecimal price;
     @NotNull(message = "{demandNotNullEndDate}")

@@ -54,6 +54,8 @@ public class SupplierConverter extends AbstractConverter<Supplier, FullSupplierD
                     detail.setBusinessType(source.getBusinessUser().getBusinessType().getValue());
                 }
                 detail.setCompanyName(source.getBusinessUser().getBusinessUserData().getCompanyName());
+                detail.setTaxId(source.getBusinessUser().getBusinessUserData().getTaxId());
+                detail.setWebsite(source.getBusinessUser().getBusinessUserData().getWebsite());
                 if (source.getBusinessUser().getBusinessUserData().getIdentificationNumber() != null) {
                     detail.setIdentificationNumber(source.getBusinessUser()
                             .getBusinessUserData().getIdentificationNumber());
