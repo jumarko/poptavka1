@@ -95,6 +95,9 @@ public final class ReflectionUtils {
 
         final List<Method> allPublicMethods = Arrays.asList(aClass.getMethods());
         final Field field = org.springframework.util.ReflectionUtils.findField(aClass, fieldName);
+        if (field == null) {
+            return null;
+        }
 
         for (Method publicMethod : allPublicMethods) {
             if (publicMethod.getName().contains(ReflectionUtils.getFieldNameFirstLetterUpperCase(field))
