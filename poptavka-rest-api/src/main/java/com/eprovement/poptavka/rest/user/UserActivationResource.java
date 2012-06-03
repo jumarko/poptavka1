@@ -33,8 +33,14 @@ public class UserActivationResource {
         Validate.notEmpty(activationLink);
 
         final BusinessUser businessUser = verificationService.verifyUser(activationLink);
-
-        return "User [email=" + businessUser.getEmail() + " has been activated successfully.";
+        
+        if(businessUser != null) {
+            return "redirect:/Activation.html";
+        } else {
+            return null;
+        }
+        
+        //return "User [email=" + businessUser.getEmail() + " has been activated successfully.";
     }
 
 
