@@ -100,7 +100,7 @@ public final class ReflectionUtils {
         }
 
         for (Method publicMethod : allPublicMethods) {
-            if (publicMethod.getName().contains(ReflectionUtils.getFieldNameFirstLetterUpperCase(field))
+            if (publicMethod.getName().endsWith(ReflectionUtils.getFieldNameFirstLetterUpperCase(field))
                     && startsWithSomePrefix(publicMethod.getName(), accessorPrefixes)) {
                 return publicMethod;
             }
