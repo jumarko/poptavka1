@@ -16,7 +16,12 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import com.eprovement.poptavka.util.search.Searcher;
+import com.eprovement.poptavka.util.search.SearcherException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -53,6 +58,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
      * </p>
      */
     @Override
+    @Transactional(readOnly = true)
     public List<UserMessage> getPotentialDemands(BusinessUser supplier) {
         Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
@@ -66,20 +72,71 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         return getDao().getPotentialDemands(supplier);
     }
 
+    /**
+     *  {@inheritDoc}
+     * <p>
+     *     This implementation requires only <code>id</code> attribute of parameter <code>supplier</code> to be filled.
+     * </p>
+     */
     @Override
+    @Transactional(readOnly = true)
+    public List<UserMessage> getPotentialDemands(BusinessUser supplier, Search search) {
+        try {
+            Preconditions.checkNotNull("Search object must be specified.", search);
+            return Searcher.searchCollection(getPotentialDemands(supplier), search);
+        } catch (SearcherException ex) {
+            Logger.getLogger(UserMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ArrayList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<UserMessage> getInbox(User user) {
         Preconditions.checkNotNull("User must be specified.", user);
         Preconditions.checkNotNull("User's user id must be specified.",
                 user.getId());
         return getDao().getInbox(user);
     }
+    
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserMessage> getInbox(User user, Search search) {
+        try {
+            Preconditions.checkNotNull("Search object must be specified.", search);
+            return Searcher.searchCollection(getInbox(user), search);
+        } catch (SearcherException ex) {
+            Logger.getLogger(UserMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ArrayList();
+    }
+
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserMessage> getSentItems(User user) {
         Preconditions.checkNotNull("User must be specified.", user);
         Preconditions.checkNotNull("User's user id must be specified.",
                 user.getId());
         return getDao().getSentItems(user);
+    }
+    
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserMessage> getSentItems(User user, Search search) {
+        try {
+            Preconditions.checkNotNull("Search object must be specified.", search);
+            return Searcher.searchCollection(getSentItems(user), search);
+        } catch (SearcherException ex) {
+            Logger.getLogger(UserMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ArrayList();
     }
 
 }
