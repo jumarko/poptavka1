@@ -62,6 +62,7 @@
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
         <property name="dao" ref="clientDao"/>
+        <property name="mailService" ref="mailService"/>
     </bean>
 
     <bean id="preferenceService" class="com.eprovement.poptavka.service.user.PreferenceServiceImpl">
@@ -107,6 +108,7 @@
         <constructor-arg ref="supplierDao" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
+        <property name="mailService" ref="mailService"/>
     </bean>
 
     <bean id="messageService" class="com.eprovement.poptavka.service.message.MessageServiceImpl">

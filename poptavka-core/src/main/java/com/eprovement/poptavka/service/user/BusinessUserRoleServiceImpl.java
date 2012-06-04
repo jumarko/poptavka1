@@ -1,7 +1,5 @@
 package com.eprovement.poptavka.service.user;
 
-import com.google.common.base.Preconditions;
-import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
 import com.eprovement.poptavka.domain.common.Status;
 import com.eprovement.poptavka.domain.product.Service;
@@ -13,12 +11,16 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.Verification;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import com.eprovement.poptavka.service.mail.MailService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.google.common.base.Preconditions;
+import com.googlecode.genericdao.search.Search;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +45,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     private final GeneralService generalService;
     private final RegisterService registerService;
     private BusinessUserVerificationService userVerificationService;
+    private MailService mailService;
 
     public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService,
             BusinessUserVerificationService userVerificationService) {
@@ -94,13 +97,27 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
         businessUserRole.setVerification(Verification.UNVERIFIED);
         // User#activationEmail is set within scope of "generateActivationLink" method
-        userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
+        final String activationLink = userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
+        if (mailService != null) {
+            mailService.sendAsync(createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationLink));
+        }
 
         createBusinessUserIfNotExist(businessUserRole);
         return super.create(businessUserRole);
     }
 
+    private SimpleMailMessage createActivationMailMessage(String userMail, String activationLink) {
+            final SimpleMailMessage activationMessage = new SimpleMailMessage();
+            activationMessage.setFrom("poptavka1@gmail.com");
+            activationMessage.setTo(userMail);
 
+            activationMessage.setSubject("Poptavka account activation");
+            activationMessage.setText("Welcome to Poptavka!\n\n"
+                    + "Your account has been created and needs to be activated.\n"
+                    + "Please, Click the following link to complete your registration: " + activationLink);
+            return activationMessage;
+
+    }
 
 
     /**
@@ -142,7 +159,9 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     }
 
 
-
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
     protected GeneralService getGeneralService() {
         return generalService;

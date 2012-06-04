@@ -32,7 +32,7 @@ public class BusinessUserVerificationServiceImpl implements BusinessUserVerifica
     private String deploymentUrl;
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
-    private static final String USER_ACTIVATION_RESOURCE_URI = "user/activation?link=";
+    private static final String USER_ACTIVATION_RESOURCE_URI = "api/user/activation?link=";
 
 
     public BusinessUserVerificationServiceImpl(SymmetricKeyEncryptor symmetricEncryptor,
