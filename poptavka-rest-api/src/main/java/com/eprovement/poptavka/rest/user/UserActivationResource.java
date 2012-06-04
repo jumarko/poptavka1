@@ -3,15 +3,19 @@
  */
 package com.eprovement.poptavka.rest.user;
 
-import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.service.user.BusinessUserVerificationService;
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+
+import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.service.user.BusinessUserVerificationService;
 
 @Controller
 @RequestMapping(UserActivationResource.USER_ACTIVATION_RESOURCE_URI)
@@ -29,18 +33,23 @@ public class UserActivationResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody
-    String getSupplierById(@RequestParam("link") String activationLink) {
+    ModelAndView getSupplierById(@RequestParam("link") String activationLink) {
         Validate.notEmpty(activationLink);
 
         final BusinessUser businessUser = verificationService.verifyUser(activationLink);
         
-        if(businessUser != null) {
-            return "redirect:/Activation.html";
+        if (businessUser != null) {
+            String url = "/Activation.html";
+
+            RedirectView rv = new RedirectView(url);
+            rv.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+            rv.setUrl(url);
+            ModelAndView mv = new ModelAndView(rv);
+            return mv;
         } else {
             return null;
         }
         
-        //return "User [email=" + businessUser.getEmail() + " has been activated successfully.";
     }
 
 
