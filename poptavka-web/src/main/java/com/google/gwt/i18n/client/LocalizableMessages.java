@@ -48,6 +48,7 @@ public interface LocalizableMessages extends Messages {
     String demand();
     //demand creation
     String mailAvailable();
+    String mailNotAvailable();
     String malformedEmail();
     String shortPassword();
     String strongPassword();

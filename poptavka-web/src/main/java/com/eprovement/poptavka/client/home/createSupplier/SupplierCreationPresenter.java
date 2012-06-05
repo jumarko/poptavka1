@@ -157,7 +157,7 @@ public class SupplierCreationPresenter
             eventBus.removeHandler(supplierInfo);
         }
         supplierInfo = eventBus.addHandler(SupplierInfoPresenter.class);
-        supplierInfo.onInitSupplierForm(supplierInfoHolder, view.getStatusLabel(1));
+        supplierInfo.onInitSupplierForm(supplierInfoHolder);
     }
 
     /**************************************************************************/

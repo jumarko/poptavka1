@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
+import com.eprovement.poptavka.client.main.common.validation.Email;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.Email;
 
 public class FullSupplierDetail implements Serializable {
 
@@ -252,7 +252,6 @@ public class FullSupplierDetail implements Serializable {
     public void setWebsite(String website) {
         this.website = website;
     }
-    
 
     @Override
     public boolean equals(Object obj) {

@@ -1,12 +1,18 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common">
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
     <!-- injecting style resources -->
     <ui:with field='res'
              type='com.eprovement.poptavka.client.resources.StyleResource' />
-
+    <ui:style>
+        .error {
+        font-size:10px;
+        color: red;
+        }
+    </ui:style>
     <g:HTMLPanel>
         <div>
             <table>
@@ -27,6 +33,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="email">novy@supplier.cz</g:TextBox>
+                                        <g:Label styleName="{style.error}" ui:field="emailErrorLabel"/>
                                     </td>
                                     <td width="32px">
                                         <cm:StatusIconLabel ui:field="mailStatus"
@@ -39,9 +46,10 @@
                                     </td>
                                     <td>
                                         <g:PasswordTextBox ui:field="password">heslo</g:PasswordTextBox>
+                                        <g:Label styleName="{style.error}" ui:field="passwordErrorLabel"/>
                                     </td>
                                     <td>
-                                        <cm:StatusIconLabel ui:field="pwdStatus"
+                                        <cm:StatusIconLabel ui:field="passwordStatus"
                                                             visible="false" state="ERROR_24" description="Short password" />
                                     </td>
                                 </tr>
@@ -51,9 +59,10 @@
                                     </td>
                                     <td>
                                         <g:PasswordTextBox ui:field="passwordConfirm">heslo</g:PasswordTextBox>
+                                        <g:Label styleName="{style.error}" ui:field="passwordConfirmErrorLabel"/>
                                     </td>
                                     <td>
-                                        <cm:StatusIconLabel ui:field="pwdCheckStatus"
+                                        <cm:StatusIconLabel ui:field="passwordCheckStatus"
                                                             visible="false" state="ERROR_24" description="Passwords don't match" />
                                     </td>
                                 </tr>
@@ -75,9 +84,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="street">ulica</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="streetErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -86,9 +93,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="city">Brno</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="cityErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -97,9 +102,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="zip">60200</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="zipErrorLabel"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -121,9 +124,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="companyName" >Comapny</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="companyNameErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -132,9 +133,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="identificationNumber" >ID-12323-sda</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="identificationNumberErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -143,9 +142,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="taxId">tax-a341-512a</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="taxIdErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -154,9 +151,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="website">www.sss.zzz</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="websiteErrorLabel"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -174,9 +169,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="firstName">Meno</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="firstNameErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -185,9 +178,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="lastName">Priezvisko</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="lastNameErrorLabel"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -196,9 +187,7 @@
                                     </td>
                                     <td>
                                         <g:TextBox ui:field="phone">123456789</g:TextBox>
-                                    </td>
-                                    <td>
-                            &nbsp;&nbsp;&nbsp; 
+                                        <g:Label styleName="{style.error}" ui:field="phoneErrorLabel"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -214,6 +203,11 @@
                             <tr>
                                 <td>
                                     <g:TextArea ui:field="description" height="200px" width="300px"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <g:Label styleName="{style.error}" ui:field="descriptionErrorLabel"/>
                                 </td>
                             </tr>
                         </table>
