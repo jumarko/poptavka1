@@ -9,7 +9,7 @@ public class AddressDetail implements Serializable {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = 803719527031189460L;
-    private String cityName;
+    private String city;
     private String street;
     private String zipCode;
 
@@ -17,7 +17,7 @@ public class AddressDetail implements Serializable {
     }
 
     public AddressDetail(AddressDetail address) {
-        this.cityName = address.getCityName();
+        this.city = address.getCity();
         this.street = address.getStreet();
         this.zipCode = address.getZipCode();
     }
@@ -25,7 +25,7 @@ public class AddressDetail implements Serializable {
     public static AddressDetail createAddressDetail(Address address) {
         AddressDetail detail = new AddressDetail();
         if (address.getCity() != null) {
-            detail.setCityName(address.getCity().getName());
+            detail.setCity(address.getCity().getName());
         }
         if (address.getStreet() != null) {
             StringBuilder fullStreet = new StringBuilder(address.getStreet());
@@ -42,12 +42,12 @@ public class AddressDetail implements Serializable {
         return detail;
     }
 
-    public String getCityName() {
-        return cityName;
+    public String getCity() {
+        return city;
     }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
+    public void setCity(String cityName) {
+        this.city = cityName;
     }
 
     public String getStreet() {
@@ -68,6 +68,6 @@ public class AddressDetail implements Serializable {
 
     @Override
     public String toString() {
-        return street + ", " + zipCode + " " + cityName;
+        return street + ", " + zipCode + " " + city;
     }
 }

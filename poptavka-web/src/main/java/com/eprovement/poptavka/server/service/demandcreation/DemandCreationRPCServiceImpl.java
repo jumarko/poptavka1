@@ -187,7 +187,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         final List<Address> addresses = new ArrayList<Address>();
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {
-                Locality city = this.getLocality(detail.getCityName());
+                Locality city = this.getLocality(detail.getCity());
                 Address address = new Address();
                 address.setCity(city);
                 address.setStreet(detail.getStreet());

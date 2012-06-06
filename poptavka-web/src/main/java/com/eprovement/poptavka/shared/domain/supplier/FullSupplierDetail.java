@@ -1,11 +1,9 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
 import com.eprovement.poptavka.client.main.common.validation.Email;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
 
@@ -43,7 +41,16 @@ public class FullSupplierDetail implements Serializable {
     private Map<String, String> localities; //<codes, value>
     private Map<Long, String> categories;   //<ids, value>
     private ArrayList<Integer> services = new ArrayList<Integer>();
-    private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+    //Martin - In poptavka 1.0 only one supplier's address is implemented, therefore
+    //for simplicity List<AddressDetail> and single String of city, street, zip added.
+    //in poptavka 2.0 implement GWT validation for List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+    //in poptavka 2.0 when implement validation for upper code, delete below code:
+    @NotNull(message = "{supplierNotNullStreet}")
+    private String street;
+    @NotNull(message = "{supplierNotNullCity}")
+    private String city;
+    @NotNull(message = "{supplierNotNullZipCode}")
+    private String zipCode;
     //Others
     private int overallRating = -1;
     private boolean certified = false;
@@ -72,9 +79,9 @@ public class FullSupplierDetail implements Serializable {
         for (String locCode : supplier.getLocalities().keySet()) {
             localities.put(locCode, supplier.getLocalities().get(locCode));
         }
-        for (AddressDetail addr : supplier.getAddresses()) {
-            addresses.add(new AddressDetail(addr));
-        }
+        street = supplier.getStreet();
+        city = supplier.getCity();
+        zipCode = supplier.getZipCode();
         email = supplier.getEmail();
         description = supplier.getDescription();
         businessType = supplier.getBusinessType();
@@ -147,14 +154,6 @@ public class FullSupplierDetail implements Serializable {
 
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
-    }
-
-    public List<AddressDetail> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<AddressDetail> addresses) {
-        this.addresses = addresses;
     }
 
     public String getBusinessType() {
@@ -251,6 +250,30 @@ public class FullSupplierDetail implements Serializable {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     @Override

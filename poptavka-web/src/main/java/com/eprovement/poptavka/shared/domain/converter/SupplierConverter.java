@@ -3,15 +3,11 @@
  */
 package com.eprovement.poptavka.shared.domain.converter;
 
-import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
@@ -41,11 +37,9 @@ public class SupplierConverter extends AbstractConverter<Supplier, FullSupplierD
         }
         detail.setLocalities(locMap);
         if (source.getBusinessUser() != null) {
-            List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-            for (Address addr : source.getBusinessUser().getAddresses()) {
-                addresses.add(AddressDetail.createAddressDetail(addr));
-            }
-            detail.setAddresses(addresses);
+            detail.setCity(source.getBusinessUser().getAddresses().get(0).getCity().getName());
+            detail.setStreet(source.getBusinessUser().getAddresses().get(0).getStreet());
+            detail.setZipCode(source.getBusinessUser().getAddresses().get(0).getZipCode());
             detail.setEmail(source.getBusinessUser().getEmail());
             if (source.getBusinessUser().getBusinessUserData() != null) {
                 detail.setDescription(source.getBusinessUser().getBusinessUserData().getDescription());

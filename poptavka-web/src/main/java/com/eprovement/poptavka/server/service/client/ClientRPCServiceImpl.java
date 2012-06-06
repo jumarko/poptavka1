@@ -93,7 +93,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         // otherwise following for-each throws NPE if clienDetail#getAddresses returns null
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {
-                Locality city = this.getLocality(detail.getCityName());
+                Locality city = this.getLocality(detail.getCity());
                 Address address = new Address();
                 address.setCity(city);
                 address.setStreet(detail.getStreet());

@@ -32,7 +32,7 @@
                                         <ui:msg key="emailLogin">E-mail</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="email">novy@supplier.cz</g:TextBox>
+                                        <g:TextBox ui:field="email"/>
                                         <g:Label styleName="{style.error}" ui:field="emailErrorLabel"/>
                                     </td>
                                     <td width="32px">
@@ -45,7 +45,7 @@
                                         <ui:msg key="pass">Password</ui:msg>
                                     </td>
                                     <td>
-                                        <g:PasswordTextBox ui:field="password">heslo</g:PasswordTextBox>
+                                        <g:PasswordTextBox ui:field="password"/>
                                         <g:Label styleName="{style.error}" ui:field="passwordErrorLabel"/>
                                     </td>
                                     <td>
@@ -58,7 +58,7 @@
                                         <ui:msg key="passRepeat">Password Again</ui:msg>
                                     </td>
                                     <td>
-                                        <g:PasswordTextBox ui:field="passwordConfirm">heslo</g:PasswordTextBox>
+                                        <g:PasswordTextBox ui:field="passwordConfirm"/>
                                         <g:Label styleName="{style.error}" ui:field="passwordConfirmErrorLabel"/>
                                     </td>
                                     <td>
@@ -83,7 +83,7 @@
                                         <ui:msg key="street">Street</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="street">ulica</g:TextBox>
+                                        <g:TextBox ui:field="street"/>
                                         <g:Label styleName="{style.error}" ui:field="streetErrorLabel"/>
                                     </td>
                                 </tr>
@@ -92,7 +92,7 @@
                                         <ui:msg key="city">City</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="city">Brno</g:TextBox>
+                                        <g:TextBox ui:field="city"/>
                                         <g:Label styleName="{style.error}" ui:field="cityErrorLabel"/>
                                     </td>
                                 </tr>
@@ -101,7 +101,7 @@
                                         <ui:msg key="zipcode">Zipcode</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="zip">60200</g:TextBox>
+                                        <g:TextBox ui:field="zipCode"/>
                                         <g:Label styleName="{style.error}" ui:field="zipErrorLabel"/>
                                     </td>
                                 </tr>
@@ -123,7 +123,7 @@
                                         <ui:msg key="companyName">Company Name</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="companyName" >Comapny</g:TextBox>
+                                        <g:TextBox ui:field="companyName"/>
                                         <g:Label styleName="{style.error}" ui:field="companyNameErrorLabel"/>
                                     </td>
                                 </tr>
@@ -132,7 +132,7 @@
                                         <ui:msg key="idNumber">Identification Number</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="identificationNumber" >ID-12323-sda</g:TextBox>
+                                        <g:TextBox ui:field="identificationNumber"/>
                                         <g:Label styleName="{style.error}" ui:field="identificationNumberErrorLabel"/>
                                     </td>
                                 </tr>
@@ -141,7 +141,7 @@
                                         <ui:msg key="taxNumber">Tax Number</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="taxId">tax-a341-512a</g:TextBox>
+                                        <g:TextBox ui:field="taxId"/>
                                         <g:Label styleName="{style.error}" ui:field="taxIdErrorLabel"/>
                                     </td>
                                 </tr>
@@ -150,7 +150,7 @@
                                         <ui:msg key="website">Your Website</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="website">www.sss.zzz</g:TextBox>
+                                        <g:TextBox ui:field="website"/>
                                         <g:Label styleName="{style.error}" ui:field="websiteErrorLabel"/>
                                     </td>
                                 </tr>
@@ -168,7 +168,7 @@
                                         <ui:msg key="name">Name</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="firstName">Meno</g:TextBox>
+                                        <g:TextBox ui:field="firstName"/>
                                         <g:Label styleName="{style.error}" ui:field="firstNameErrorLabel"/>
                                     </td>
                                 </tr>
@@ -177,7 +177,7 @@
                                         <ui:msg key="lastName">Last Name</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="lastName">Priezvisko</g:TextBox>
+                                        <g:TextBox ui:field="lastName"/>
                                         <g:Label styleName="{style.error}" ui:field="lastNameErrorLabel"/>
                                     </td>
                                 </tr>
@@ -186,7 +186,7 @@
                                         <ui:msg key="phone">Phone</ui:msg>
                                     </td>
                                     <td>
-                                        <g:TextBox ui:field="phone">123456789</g:TextBox>
+                                        <g:TextBox ui:field="phone"/>
                                         <g:Label styleName="{style.error}" ui:field="phoneErrorLabel"/>
                                     </td>
                                 </tr>

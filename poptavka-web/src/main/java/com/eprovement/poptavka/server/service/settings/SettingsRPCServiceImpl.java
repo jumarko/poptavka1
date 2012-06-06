@@ -88,7 +88,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         for (Address address : user.getAddresses()) {
             AddressDetail detail = new AddressDetail();
             if (address.getCity() != null) {
-                detail.setCityName(address.getCity().getName());
+                detail.setCity(address.getCity().getName());
             }
             detail.setStreet(address.getStreet());
             detail.setZipCode(address.getZipCode());

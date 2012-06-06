@@ -125,7 +125,7 @@ public class FormUserRegistrationView extends Composite
         client.setWebsite(websiteBox.getText());
 
         AddressDetail address = new AddressDetail();
-        address.setCityName(cityBox.getText());
+        address.setCity(cityBox.getText());
         address.setStreet(streetBox.getText());
         address.setZipCode(zipBox.getText());
 

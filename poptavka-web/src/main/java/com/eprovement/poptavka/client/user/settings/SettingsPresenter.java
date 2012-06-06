@@ -133,7 +133,7 @@ public class SettingsPresenter
                     Integer.toString(detail.getSupplier().getOverallRating()));
         }
         view.getStreet().setText(detail.getAddresses().get(0).getStreet());
-        view.getCity().setText(detail.getAddresses().get(0).getCityName());
+        view.getCity().setText(detail.getAddresses().get(0).getCity());
         view.getZipCode().setText(detail.getAddresses().get(0).getZipCode());
 
         StringBuilder categoryBuilder = new StringBuilder();

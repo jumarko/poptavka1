@@ -191,7 +191,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail detail : supplier.getAddresses()) {
             Locality cityLoc = (Locality) generalService.searchUnique(
-                    new Search(Locality.class).addFilterEqual("name", detail.getCityName()));
+                    new Search(Locality.class).addFilterEqual("name", detail.getCity()));
 
             if (cityLoc != null) {
                 Address address = new Address();

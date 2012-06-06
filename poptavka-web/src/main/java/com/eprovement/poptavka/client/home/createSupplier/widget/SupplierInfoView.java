@@ -33,18 +33,12 @@ public class SupplierInfoView extends Composite
 
     interface FormUserRegistrationUiBinder extends UiBinder<Widget, SupplierInfoView> {
     }
-    @UiField TextBox companyName;
-    @UiField TextBox identificationNumber;
-    @UiField TextBox taxId;
-    @UiField TextBox website;
-    @UiField TextBox firstName;
-    @UiField TextBox lastName;
-    @UiField TextBox phone;
-    @UiField TextBox email;
-    @UiField PasswordTextBox password;
+    @UiField TextBox companyName, identificationNumber, taxId;
+    @UiField TextBox firstName, lastName;
+    @UiField TextBox phone, email, website;
     @UiField TextArea description;
-    @UiField @Ignore TextBox street, city, zip;
-    @UiField @Ignore PasswordTextBox passwordConfirm;
+    @UiField TextBox street, city, zipCode;
+    @UiField PasswordTextBox password, passwordConfirm;
     //StatusIconLabels
     @UiField StatusIconLabel mailStatus;
     @UiField StatusIconLabel passwordStatus;
@@ -76,7 +70,7 @@ public class SupplierInfoView extends Composite
     private final static String TAX_ID = "taxId";
     private final static String STREET = "street";
     private final static String CITY = "city";
-    private final static String ZIP = "zip";
+    private final static String ZIP_CODE = "zipCode";
     private final static String FIRST_NAME = "firstName";
     private final static String LAST_NAME = "lastName";
     private final static String PHONE = "phone";
@@ -115,7 +109,7 @@ public class SupplierInfoView extends Composite
         taxId.setName(TAX_ID);
         street.setName(STREET);
         city.setName(CITY);
-        zip.setName(ZIP);
+        zipCode.setName(ZIP_CODE);
         firstName.setName(FIRST_NAME);
         lastName.setName(LAST_NAME);
         phone.setName(PHONE);
@@ -130,7 +124,7 @@ public class SupplierInfoView extends Composite
         widgets.put(taxId, taxIdErrorLabel);
         widgets.put(street, streetErrorLabel);
         widgets.put(city, cityErrorLabel);
-        widgets.put(zip, zipErrorLabel);
+        widgets.put(zipCode, zipErrorLabel);
         widgets.put(firstName, firstNameErrorLabel);
         widgets.put(lastName, lastNameErrorLabel);
         widgets.put(email, emailErrorLabel);
@@ -173,6 +167,12 @@ public class SupplierInfoView extends Composite
             return fullSupplierDetail.getFirstName();
         } else if (attributeName.equals(LAST_NAME)) {
             return fullSupplierDetail.getLastName();
+        } else if (attributeName.equals(STREET)) {
+            return fullSupplierDetail.getStreet();
+        } else if (attributeName.equals(CITY)) {
+            return fullSupplierDetail.getCity();
+        } else if (attributeName.equals(ZIP_CODE)) {
+            return fullSupplierDetail.getZipCode();
         } else if (attributeName.equals(TAX_ID)) {
             return fullSupplierDetail.getTaxId();
         } else if (attributeName.equals(PHONE)) {
@@ -228,9 +228,9 @@ public class SupplierInfoView extends Composite
         user.setFirstName(firstName.getText());
         user.setLastName(lastName.getText());
         AddressDetail address = new AddressDetail();
-        address.setCityName(city.getText());
+        address.setCity(city.getText());
         address.setStreet(street.getText());
-        address.setZipCode(zip.getText());
+        address.setZipCode(zipCode.getText());
 
         List<AddressDetail> addresses = new ArrayList<AddressDetail>();
         addresses.add(address);
