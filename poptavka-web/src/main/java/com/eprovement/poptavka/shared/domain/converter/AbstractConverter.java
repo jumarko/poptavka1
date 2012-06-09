@@ -4,12 +4,13 @@
 package com.eprovement.poptavka.shared.domain.converter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class AbstractConverter<Domain, Detail> implements Converter<Domain, Detail> {
 
     @Override
-    public List<Detail> convertToTargetList(List<Domain> domainObjects) {
+    public List<Detail> convertToTargetList(Collection<Domain> domainObjects) {
         final List<Detail> detailObjects = new ArrayList<Detail>();
         for (Domain domainObject : domainObjects) {
             detailObjects.add(convertToTarget(domainObject));

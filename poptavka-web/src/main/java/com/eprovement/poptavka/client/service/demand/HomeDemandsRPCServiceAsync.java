@@ -17,8 +17,8 @@ import java.util.List;
  */
 public interface HomeDemandsRPCServiceAsync {
 
-    void filterDemands(int start, int count, SearchModuleDataHolder holder, Map<String, OrderType> orderColumns,
+    void getDemands(int start, int count, SearchModuleDataHolder holder, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullDemandDetail>> callback);
 
-    void filterDemandsCount(SearchModuleDataHolder holder, AsyncCallback<Long> callback);
+    void getDemandsCount(SearchModuleDataHolder holder, AsyncCallback<Long> callback);
 }

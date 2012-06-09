@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.shared.domain.converter;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface Converter<Source, Target> {
@@ -11,7 +12,7 @@ public interface Converter<Source, Target> {
 
     Source converToSource(Target target);
 
-    List<Target> convertToTargetList(List<Source> sourceObjects);
+    List<Target> convertToTargetList(Collection<Source> sourceObjects);
 
     List<Source> convertToSourceList(List<Target> targetObjects);
 }

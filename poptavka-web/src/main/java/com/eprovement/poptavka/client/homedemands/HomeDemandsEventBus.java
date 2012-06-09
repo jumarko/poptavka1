@@ -90,10 +90,10 @@ public interface HomeDemandsEventBus extends EventBus {
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = HomeDemandsHandler.class)
-    void filterDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 
     @Event(handlers = HomeDemandsHandler.class)
-    void filterDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 
     // TODO Praso - co s tymito komentarmi? Treba ich odstranit. Je tam nieco dolezite?
     /* Business events. */

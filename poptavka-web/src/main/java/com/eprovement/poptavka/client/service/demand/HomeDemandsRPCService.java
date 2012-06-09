@@ -23,8 +23,8 @@ public interface HomeDemandsRPCService extends RemoteService {
 
     String URL = "service/homedemands";
 
-    long filterDemandsCount(SearchModuleDataHolder holder) throws RPCException;
+    long getDemandsCount(SearchModuleDataHolder holder) throws RPCException;
 
-    List<FullDemandDetail> filterDemands(int start, int count,
+    List<FullDemandDetail> getDemands(int start, int count,
             SearchModuleDataHolder holder, Map<String, OrderType> orderColumns) throws RPCException;
 }

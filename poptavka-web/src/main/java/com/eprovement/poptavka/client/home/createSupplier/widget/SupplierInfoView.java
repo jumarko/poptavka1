@@ -193,10 +193,12 @@ public class SupplierInfoView extends Composite
     @Override
     public boolean isValid() {
         for (TextBoxBase box : widgets.keySet()) {
-            validateItem(box);
+            if (!box.getName().equals(PASSWORD) || !box.getName().equals(PASSWORD_CONFIRM)) {
+                validateItem(box);
+            }
         }
-        //Email is not contained in widgets list
-        validateItem(email);
+        initVisualPasswordCheck(null);
+        initVisualPasswordConfirmCheck(null);
         return valid.isEmpty();
     }
 
@@ -252,7 +254,7 @@ public class SupplierInfoView extends Composite
     }
 
     @UiHandler("password")
-    public void initVisualPwdCheck(KeyUpEvent event) {
+    public void initVisualPasswordCheck(KeyUpEvent event) {
         if (validateItem(password)) {
             passwordStatus.setVisible(true);
             if (password.getText().length() <= SHORT_PASSWORD) {
@@ -272,7 +274,7 @@ public class SupplierInfoView extends Composite
     }
 
     @UiHandler("passwordConfirm")
-    public void initVisualPwdConfirmCheck(KeyUpEvent event) {
+    public void initVisualPasswordConfirmCheck(KeyUpEvent event) {
         if (validateItem(passwordConfirm)) {
             passwordCheckStatus.setVisible(true);
             if (!password.getText().equals(passwordConfirm.getText())) {

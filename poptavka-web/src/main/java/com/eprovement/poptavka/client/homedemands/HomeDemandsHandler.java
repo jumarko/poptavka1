@@ -26,29 +26,29 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         homeDemandsService = service;
     }
 
-    public void onFilterDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        homeDemandsService.filterDemandsCount(detail, new AsyncCallback<Long>() {
+    public void onGetDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+        homeDemandsService.getDemandsCount(detail, new AsyncCallback<Long>() {
 
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("onFilterDemands (HomeDemandsHandler) - not supported yet.");
+                throw new UnsupportedOperationException("onGetDemands (HomeDemandsHandler) - not supported yet.");
             }
 
             @Override
             public void onSuccess(Long result) {
-//                eventBus.setResultSource("filter");
+//                eventBus.setResultSource("get");
 //                eventBus.setResultCount(result);
                 eventBus.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onFilterDemands(int start, int count, SearchModuleDataHolder detail,
+    public void onGetDemands(int start, int count, SearchModuleDataHolder detail,
             Map<String, OrderType> orderColumns) {
-        homeDemandsService.filterDemands(start, count, detail, orderColumns,
+        homeDemandsService.getDemands(start, count, detail, orderColumns,
                 new AsyncCallback<List<FullDemandDetail>>() {
 
                     @Override
@@ -57,7 +57,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
                             ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                         throw new UnsupportedOperationException(""
-                                + "onFilterDemands (HomeDemandsHandler) - not supported yet.");
+                                + "onGetDemands (HomeDemandsHandler) - not supported yet.");
                     }
 
                     @Override

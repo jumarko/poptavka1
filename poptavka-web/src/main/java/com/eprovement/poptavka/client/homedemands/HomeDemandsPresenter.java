@@ -132,7 +132,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
-        eventBus.filterDemandsCount(searchDataHolder, orderColumns);
+        eventBus.getDemandsCount(searchDataHolder, orderColumns);
 
         this.searchDataHolder = searchDataHolder;
     }
@@ -155,7 +155,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
                 orderColumns.clear();
                 orderColumns.put(gridColumns.get(0), OrderType.DESC);
-                eventBus.filterDemands(start, start + length, searchDataHolder, orderColumns);
+                eventBus.getDemands(start, start + length, searchDataHolder, orderColumns);
 
                 // TODO praso - testo cakacej smycky od MVP4G
 //                eventBus.loadingHide();
@@ -192,7 +192,7 @@ public class HomeDemandsPresenter extends BasePresenter<
                 orderColumns.put(gridColumns.get(
                         view.getDataGrid().getColumnIndex(column)), orderType);
 
-                eventBus.filterDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
+                eventBus.getDemands(start, view.getPageSize(), searchDataHolder, orderColumns);
             }
 
         };
