@@ -110,7 +110,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
     //*************** GET SUPPLIERS DATA *********************
     public void onGetSuppliersCount(SearchModuleDataHolder detail) {
-        homeSuppliersService.filterSuppliersCount(detail, new AsyncCallback<Long>() {
+        homeSuppliersService.getSuppliersCount(detail, new AsyncCallback<Long>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -131,7 +131,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
     public void onGetSuppliers(int start, int count, SearchModuleDataHolder search,
             Map<String, OrderType> orderColumns) {
-        homeSuppliersService.filterSuppliers(start, count, search, orderColumns,
+        homeSuppliersService.getSuppliers(start, count, search, orderColumns,
                 new AsyncCallback<List<FullSupplierDetail>>() {
 
                     @Override

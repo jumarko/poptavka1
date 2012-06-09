@@ -21,10 +21,10 @@ import java.util.List;
  */
 public interface HomeSuppliersRPCServiceAsync {
 
-    void filterSuppliers(int start, int count, SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns,
+    void getSuppliers(int start, int count, SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns,
             AsyncCallback<List<FullSupplierDetail>> callback);
 
-    void filterSuppliersCount(SearchModuleDataHolder supplier, AsyncCallback<Long> callback);
+    void getSuppliersCount(SearchModuleDataHolder supplier, AsyncCallback<Long> callback);
 
     void getCategories(AsyncCallback<ArrayList<CategoryDetail>> callback);
 

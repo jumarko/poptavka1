@@ -26,9 +26,9 @@ public interface HomeSuppliersRPCService extends RemoteService {
 
     String URL = "service/homesuppliers";
 
-    long filterSuppliersCount(SearchModuleDataHolder supplier) throws RPCException;
+    long getSuppliersCount(SearchModuleDataHolder supplier) throws RPCException;
 
-    List<FullSupplierDetail> filterSuppliers(int start, int count,
+    List<FullSupplierDetail> getSuppliers(int start, int count,
             SearchModuleDataHolder supplier, Map<String, OrderType> orderColumns) throws RPCException;
 
     ArrayList<CategoryDetail> getCategoryParents(Long category) throws RPCException;
