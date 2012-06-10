@@ -366,7 +366,8 @@ public class FullDemandDetail implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-        this.priceString = priceString.toString();
+        // TODO: WTF is this ??
+        this.priceString = price.toString();
     }
 
     public List<FullSupplierDetail> getExcludedSuppliers() {

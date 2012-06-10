@@ -3,6 +3,7 @@ package com.eprovement.poptavka.service.demand;
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.common.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
@@ -15,6 +16,7 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.util.date.DateUtils;
+import java.util.HashMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.hamcrest.core.Is;
@@ -357,6 +359,18 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     @Test
     public void testGetAllDemands() {
         Assert.assertEquals(10, this.demandService.getAll().size());
+    }
+
+    @Test
+    public void testGetAllDemandsByCriteria() {
+        final ResultCriteria resultCriteria =
+                new ResultCriteria.Builder()
+                        .firstResult(0)
+                        .maxResults(15)
+                        .orderByColumns(new HashMap<String, OrderType>() {{  put("createdDate", OrderType.DESC);  }})
+                        .build();
+
+        Assert.assertEquals(10, this.demandService.getAll(resultCriteria).size());
     }
 
 
