@@ -34,7 +34,6 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("onGetDemands (HomeDemandsHandler) - not supported yet.");
             }
 
             @Override
@@ -56,8 +55,6 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
                         if (caught instanceof RPCException) {
                             ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
-                        throw new UnsupportedOperationException(""
-                                + "onGetDemands (HomeDemandsHandler) - not supported yet.");
                     }
 
                     @Override

@@ -81,7 +81,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
@@ -99,7 +98,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
@@ -117,7 +115,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
@@ -136,7 +133,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                         if (caught instanceof RPCException) {
                             ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
-                        throw new UnsupportedOperationException("Not supported yet.");
                     }
 
                     @Override
@@ -204,7 +200,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
@@ -222,7 +217,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override

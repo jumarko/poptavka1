@@ -57,7 +57,6 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
@@ -97,7 +96,6 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("Get children categories failed.");
             }
 
             @Override
@@ -117,8 +115,6 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
-                throw new UnsupportedOperationException("onFilterSuppliers "
-                        + "(HomeSuppliersHandler) - not supported yet.");
             }
 
             @Override
@@ -139,8 +135,6 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
                         if (caught instanceof RPCException) {
                             ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
-                        throw new UnsupportedOperationException(
-                                "onFilterSuppliers (HomeSupliersHandler) - not supported yet.");
                     }
 
                     @Override
