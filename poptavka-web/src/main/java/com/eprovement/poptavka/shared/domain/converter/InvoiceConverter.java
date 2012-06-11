@@ -21,12 +21,12 @@ public class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDetail> 
         detail.setBankAccountNumber(source.getBankAccountNumber());
         detail.setBankCode(source.getBankCode());
         detail.setConstSymbol(source.getConstSymbol());
-        detail.setDueDate(source.getDueDate());
+        detail.setDueDate(convertDate(source.getDueDate()));
         detail.setId(source.getId());
         detail.setInvoiceNumber(source.getInvoiceNumber());
-        detail.setIssueDate(source.getIssueDate());
+        detail.setIssueDate(convertDate(source.getIssueDate()));
         detail.setPaymentMethod(paymentMethodConverter.convertToTarget(source.getPaymentMethod()));
-        detail.setShipmentDate(source.getShipmentDate());
+        detail.setShipmentDate(convertDate(source.getShipmentDate()));
         detail.setTaxBasis(source.getTaxBasis());
         detail.setTotalPrice(source.getTotalPrice());
         List<UserServiceDetail> userServices = new ArrayList<UserServiceDetail>();

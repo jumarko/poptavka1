@@ -26,9 +26,9 @@ public class DemandConverter extends AbstractConverter<Demand, FullDemandDetail>
         detail.setTitle(source.getTitle());
         detail.setDescription(source.getDescription());
         detail.setPrice(source.getPrice());
-        detail.setCreated(source.getCreatedDate());
-        detail.setEndDate(source.getEndDate());
-        detail.setValidToDate(source.getValidTo());
+        detail.setCreated(convertDate(source.getCreatedDate()));
+        detail.setEndDate(convertDate(source.getEndDate()));
+        detail.setValidToDate(convertDate(source.getValidTo()));
         detail.setMaxOffers(source.getMaxSuppliers() == null ? 0 : source.getMaxSuppliers());
         detail.setMinRating(source.getMinRating() == null ? 0 : source.getMinRating());
         //categories

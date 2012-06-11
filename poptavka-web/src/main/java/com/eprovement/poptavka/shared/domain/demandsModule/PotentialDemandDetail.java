@@ -46,6 +46,7 @@ public class PotentialDemandDetail implements Serializable {
                 detail.setPrice(userMessage.getMessage().getDemand().getPrice());
                 detail.setDemandType(userMessage.getMessage().getDemand().getType());
                 detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
+                // TODO move to the own converter and use convertDate method for dates!!!
                 detail.setCreatedDate(userMessage.getMessage().getCreated());
                 detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
                 detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());

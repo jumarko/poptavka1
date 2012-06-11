@@ -5,6 +5,7 @@ package com.eprovement.poptavka.shared.domain.converter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public abstract class AbstractConverter<Domain, Detail> implements Converter<Domain, Detail> {
@@ -26,4 +27,13 @@ public abstract class AbstractConverter<Domain, Detail> implements Converter<Dom
         }
         return domainObjects;
     }
+
+    public Date convertDate(Date date) {
+        if (date != null) {
+            return new Date(date.getTime());
+        }
+
+        return null;
+    }
+
 }
