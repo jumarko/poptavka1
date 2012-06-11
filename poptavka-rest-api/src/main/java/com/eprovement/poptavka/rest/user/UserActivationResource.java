@@ -34,21 +34,16 @@ public class UserActivationResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity<String> getSupplierById(@RequestParam("link") String activationLink) {
+    ResponseEntity<String> activateUser (@RequestParam("link") String activationLink) {
         Validate.notEmpty(activationLink);
 
         final BusinessUser businessUser = verificationService.verifyUser(activationLink);
-        
-        if (businessUser == null) {
-            String url = "/Activation.html";
-            MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-            headers.add("Location", url);
-            ResponseEntity<String> response = new ResponseEntity(headers, HttpStatus.MOVED_TEMPORARILY);
-            return response;
-        } else {
-            return null;
-        }
-        
+
+        String url = "/Activation.html";
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        headers.add("Location", url);
+        ResponseEntity<String> response = new ResponseEntity(headers, HttpStatus.MOVED_TEMPORARILY);
+        return response;   
     }
 
 
