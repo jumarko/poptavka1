@@ -22,6 +22,7 @@ import com.eprovement.poptavka.service.audit.AuditService;
 import com.eprovement.poptavka.service.common.TreeItemService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.converter.DemandConverter;
@@ -62,6 +63,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private AuditService auditService;
     private TreeItemService treeItemService;
     private DemandConverter demandConverter = new DemandConverter();
+    private FulltextSearchService fulltextSearchService;
 
     // ***********************************************************************
     // Autowired methods
@@ -96,6 +98,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         this.localityService = localityService;
     }
 
+    @Autowired
+    public void setFulltextSearchService(FulltextSearchService fulltextSearchService) {
+        this.fulltextSearchService = fulltextSearchService;
+        this.fulltextSearchService.createInitialFulltextIndex();
+    }
+
     // ***********************************************************************
     // Get filtered demands
     // ***********************************************************************
@@ -112,11 +120,16 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     @Override
     public long getDemandsCount(SearchModuleDataHolder detail) throws RPCException {
-        //TODO Martin implement fulltext search
-        if (detail == null || detail.getAttibutes().isEmpty()) {
-            return filterWithoutAttributesCount(detail);
+        if (detail == null) {
+            return filterWithoutAttributesCount(null);
         } else {
-            return filterWithAttributesCount(detail);
+            if (!detail.getSearchText().isEmpty()) {
+                return fullTextSearchCount(detail.getSearchText());
+            } else if (detail.getAttibutes().isEmpty()) {
+                return filterWithoutAttributesCount(detail);
+            } else {
+                return filterWithAttributesCount(detail);
+            }
         }
     }
 
@@ -137,11 +150,16 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Override
     public List<FullDemandDetail> getDemands(int start, int maxResult,
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) throws RPCException {
-        //TODO Martin implement fulltext search
-        if (detail == null || detail.getAttibutes().isEmpty()) {
-            return filterWithoutAttributes(start, maxResult, detail, orderColumns);
+        if (detail == null) {
+            return filterWithoutAttributes(start, maxResult, null, orderColumns);
         } else {
-            return filterWithAttributes(detail, orderColumns);
+            if (!detail.getSearchText().isEmpty()) {
+                return fullTextSearch(detail.getSearchText()).subList(start, maxResult);
+            } else if (detail.getAttibutes().isEmpty()) {
+                return filterWithoutAttributes(start, maxResult, detail, orderColumns);
+            } else {
+                return filterWithoutAttributes(start, maxResult, detail, orderColumns);
+            }
         }
     }
 
@@ -169,7 +187,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     private List<FullDemandDetail> getSortedDemands(int start, int maxResult, Map<String, OrderType> orderColumns) {
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).build();
+        //orderByColumns(orderColumns).build();
         List<Demand> demands = demandService.getAll(resultCriteria);
         return demandConverter.convertToTargetList(demands);
     }
@@ -208,7 +227,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             cats.add(categoryService.getById(catDetail.getId()));
         }
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).build();
+        //.orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()])));
     }
@@ -247,7 +267,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             locs.add(localityService.getLocality(catDetail.getCode()));
         }
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).build();
+        //orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, locs.toArray(new Locality[locs.size()])));
     }
@@ -298,9 +319,25 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             locs.add(localityService.getLocality(catDetail.getCode()));
         }
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(count).orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
+        //orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()]), locs.toArray(new Locality[locs.size()])));
+    }
+    
+    // ***********************************************************************
+    // Get demands by Fulltext search
+    // ***********************************************************************
+    public long fullTextSearchCount(String searchText) {
+        final List<Demand> foundDemands =
+                this.fulltextSearchService.search(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
+        return foundDemands.size();
+    }
+
+    public List<FullDemandDetail> fullTextSearch(String searchText) {
+        final List<Demand> foundDemands =
+                this.fulltextSearchService.search(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
+        return demandConverter.convertToTargetList(foundDemands);
     }
 
     // ***********************************************************************
@@ -387,7 +424,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             return getSortedDemands(start, count, orderColumns);
         }
         //1 0
-        if (!detail.getCategories().isEmpty()&& detail.getLocalities().isEmpty()) {
+        if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
             return getSortedCategoryDemands(detail.getCategories(), start, count, orderColumns);
         }
         //0 1
@@ -563,6 +600,10 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         return search;
     }
 
+    // ***********************************************************************
+    // Other methods
+    // ***********************************************************************
+    
     //TODO Martin - musim stale zistovat createdDate z auditServicy, alebo sa to pridani 
     //atributu createDate do Domain objektu vyplna samo?
     //TODO Martin - da sa tu pouzit converter?

@@ -4,6 +4,8 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.main.Storage;
 import java.util.List;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -130,6 +132,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     private SearchModuleDataHolder searchDataHolder = null;
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
         orderColumns.clear();
         orderColumns.put(columnNames[0], OrderType.ASC);
         eventBus.getDemandsCount(searchDataHolder, orderColumns);

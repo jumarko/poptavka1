@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.main.Constants;
 import com.google.gwt.event.dom.client.ChangeEvent;
 
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -125,8 +126,8 @@ public class HomeSuppliersPresenter
      * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
      *                               - it's also used as pointer to differ root and child sections
      */
-    public void onGoToHomeSuppliersModule(
-            SearchModuleDataHolder searchModuleDataHolder) {
+    public void onGoToHomeSuppliersModule(SearchModuleDataHolder searchModuleDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS);
         this.searchDataHolder = searchModuleDataHolder;
 
         this.onDisplayParentOrChild(searchModuleDataHolder);

@@ -102,11 +102,10 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      */
     @Override
     public void setFilterSearchContent() {
-        if (!searchContent.getText().equals("")
+        if (!searchContent.getText().isEmpty()
                 && !searchContent.getText().equals(Storage.MSGS.searchContent())) {
             filters.setSearchText(searchContent.getText());
         }
-        filters.setSearchText(searchContent.getText());
     }
 
     /*
