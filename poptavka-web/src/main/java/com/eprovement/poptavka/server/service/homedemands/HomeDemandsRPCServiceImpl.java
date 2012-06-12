@@ -187,8 +187,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      */
     private List<FullDemandDetail> getSortedDemands(int start, int maxResult, Map<String, OrderType> orderColumns) {
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).build();
-        //orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).
+                        orderByColumns(orderColumns).build();
         List<Demand> demands = demandService.getAll(resultCriteria);
         return demandConverter.convertToTargetList(demands);
     }
@@ -227,8 +227,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             cats.add(categoryService.getById(catDetail.getId()));
         }
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).build();
-        //.orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).
+                        orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()])));
     }
@@ -267,8 +267,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             locs.add(localityService.getLocality(catDetail.getCode()));
         }
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).build();
-        //orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).
+                        orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, locs.toArray(new Locality[locs.size()])));
     }
@@ -319,8 +319,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             locs.add(localityService.getLocality(catDetail.getCode()));
         }
         final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(count).build();
-        //orderByColumns(orderColumns).build();
+                new ResultCriteria.Builder().firstResult(start).maxResults(count).
+                        orderByColumns(orderColumns).build();
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()]), locs.toArray(new Locality[locs.size()])));
     }

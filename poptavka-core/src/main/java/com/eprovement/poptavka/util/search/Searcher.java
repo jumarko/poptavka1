@@ -55,7 +55,8 @@ public class Searcher {
                     search.getSearchClass()));
         }
         for (E item : haystack) {
-            boolean belongsToResult = false;
+                // if no filter criteria are specified then item belongs to the result automatically
+            boolean belongsToResult = getterChains.isEmpty();
             for (Map.Entry<Filter, List<Method>> entry : getterChains.entrySet()) {
                 Filter filter = entry.getKey();
                 List<Method> getterChain = entry.getValue();

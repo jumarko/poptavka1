@@ -8,7 +8,7 @@ package com.eprovement.poptavka.util.search;
  *
  * @author Vojtech Hubr
  */
-public class SearcherException extends Exception {
+public class SearcherException extends RuntimeException {
 
     /**
      * Creates a new instance of

@@ -5,10 +5,13 @@
 
 package com.eprovement.poptavka.dao;
 
+import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.common.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
+import com.googlecode.genericdao.search.Search;
+import com.googlecode.genericdao.search.Sort;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
@@ -229,19 +232,18 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      * <p>
      * Currently only {@link com.eprovement.poptavka.domain.common.ResultCriteria#firstResult}
      * and {@link ResultCriteria#maxResults| are supported restrictions that can be applied!<br />
-     * Ordering ({@link com.eprovement.poptavka.domain.common.ResultCriteria#orderByColumns}) cannot be applied!
+     * Ordering ({@link com.eprovement.poptavka.domain.common.ResultCriteria#orderByColumns}) cannot be applied
+     * --> Collection returned by query must be sorted explicitely in memory.
      * </p>
      *
      * @param query          a query to which additional criteria should be applief
      * @param resultCriteria additional criteria to be applied to query
      * @return the same query which is further restricted by additional criteria <code>resultCriteria</code>
      * @throws IllegalStateException if given <code>resultCriteria</code> contains specification of ordering
+     *
+     * @see Searcher
      */
     public Query applyResultCriteria(Query query, ResultCriteria resultCriteria) {
-        Preconditions.checkState(!ResultCriteria.isOrderBySpecified(resultCriteria),
-                "Query with ResultCriteria DOES NOT SUPPORT ORDERING - only firstResult and maxResults are supported"
-                        + " properties for ResultCriteria!");
-
         if (resultCriteria != null) {
             if (resultCriteria.getFirstResult() != null) {
                 query.setFirstResult(resultCriteria.getFirstResult());
@@ -434,7 +436,26 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
             }
         }
 
-        return (applyResultCriteria(query, resultCriteria)).getResultList();
+        final List unsortedResult = applyResultCriteria(query, resultCriteria).getResultList();
+        if (CollectionUtils.isNotEmpty(unsortedResult) && ResultCriteria.isOrderBySpecified(resultCriteria)) {
+            // must be ordered
+            final Search sortedSearch = new Search(unsortedResult.get(0).getClass());
+            for (Map.Entry<String, OrderType> orderBy : resultCriteria.getOrderByColumns().entrySet()) {
+                switch (orderBy.getValue()) {
+                    case ASC:
+                        sortedSearch.addSortAsc(orderBy.getKey());
+                        break;
+                    case DESC:
+                        sortedSearch.addSortDesc(orderBy.getKey());
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Unknown OrderType: " + orderBy.getValue());
+                }
+                return Searcher.searchCollection(unsortedResult, sortedSearch);
+            }
+        }
+
+        return unsortedResult;
     }
 
 
