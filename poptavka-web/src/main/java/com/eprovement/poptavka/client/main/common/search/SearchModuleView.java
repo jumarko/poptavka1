@@ -19,10 +19,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import com.eprovement.poptavka.client.main.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter.SearchModulesViewInterface;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.google.gwt.user.client.ui.*;
 
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
 
@@ -37,12 +39,18 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @UiField
     PopupPanel popupPanel;
     private PopupPanel toolTip = new PopupPanel();
+    private CategorySelectorView categorySelector = null;
+    private LocalitySelectorView localitySelector = null;
+    private IsWidget attributeSelector = null;
     //Holds data
     private SearchModuleDataHolder filters = new SearchModuleDataHolder();
-    //1 - searchCategory
-    //2 - searchLocality
-    //3 - advSearchButton
     private int action = -1;
+    //Constants
+    public static final int CATEGORIES = 1;
+    public static final int LOCALITIES = 2;
+    public static final int ATTRIBUTES = 3;
+
+
 
     @Override
     public void createView() {
@@ -58,6 +66,25 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    @Override
+    public IsWidget getAttributeSelector() {
+        return attributeSelector;
+    }
+
+    public void setAttributeSelector(IsWidget attributeSearchViewWidget) {
+        this.attributeSelector = attributeSearchViewWidget;
+    }
+
+    @Override
+    public CategorySelectorView getCategorySelector() {
+        return categorySelector;
+    }
+
+    @Override
+    public LocalitySelectorView getLocalitySelector() {
+        return localitySelector;
     }
 
     // Buttons
@@ -132,19 +159,33 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @UiHandler("searchCategory")
     void handleSearchCategoryClick(ClickEvent event) {
         //action for this click = loading CategorySelectorWidget to popup window is made in presenter.
-        action = 1;
+        action = CATEGORIES;
+        //If not null => it was already initialized => just load it
+        //If null => let presenter initialize it
+        if (categorySelector != null) {
+            popupPanel.setWidget(categorySelector);
+        }
     }
 
     @UiHandler("searchLocality")
     void handleSearchLocalityClick(ClickEvent event) {
         //action for this click = loading LocalitySelectorWidget to popup window is made in presenter.
-        action = 2;
+        action = LOCALITIES;
+        //If not null => it was already initialized => just load it
+        //If null => let presenter initialize it
+        if (localitySelector != null) {
+            popupPanel.setWidget(localitySelector);
+        }
     }
 
     @UiHandler("advSearchBtn")
     void handleAdvSearchBtnClick(ClickEvent event) {
         //action for this click = loading appropiate advance search view to popup window is made in presenter.
-        action = 3;
+        action = ATTRIBUTES;
+        //If not null => it was already initialized => just load it
+        if (attributeSelector != null) {
+            popupPanel.setWidget(attributeSelector);
+        }
     }
 
     /*
@@ -204,18 +245,21 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     /**
      * When popup is closed. Appropiate filters are stored to
      * searchModuleDataHolder. Storing is according type of filtering performed
-     * - string, categories, localities, attributes.
+     * - categories, localities, attributes.
      */
     @UiHandler("popupPanel")
     void handlerPopupPanelCloserEvent(CloseEvent<PopupPanel> event) {
         switch (action) {
-            case 1://searchCategory
+            case CATEGORIES://searchCategory
+                categorySelector = (CategorySelectorView) popupPanel.getWidget();
                 searchCategoriesAction();
                 break;
-            case 2://searchLocality
+            case LOCALITIES://searchLocality
+                localitySelector = (LocalitySelectorView) popupPanel.getWidget();
                 searchLocalitiesAction();
                 break;
-            case 3://advSearch
+            case ATTRIBUTES://advSearch
+                attributeSelector = popupPanel.getWidget();
                 searchAdvanced();
                 break;
             default:
@@ -304,21 +348,21 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      */
     private void displayShortInfo() {
         switch (action) {
-            case 1:
-                if (filters.getLocalities().isEmpty()) {
+            case CATEGORIES:
+                if (filters.getCategories().isEmpty()) {
                     searchCategory.setText(Storage.MSGS.category());
                 } else {
                     searchCategory.setText("filter:" + filters.getCategories().toString());
                 }
                 break;
-            case 2:
+            case LOCALITIES:
                 if (filters.getLocalities().isEmpty()) {
                     searchLocality.setText(Storage.MSGS.locality());
                 } else {
                     searchLocality.setText("filter:" + filters.getLocalities().toString());
                 }
                 break;
-            case 3:
+            case ATTRIBUTES:
                 if (filters.getAttibutes().isEmpty()) {
                     searchContent.setText(Storage.MSGS.searchContent());
                 } else {
