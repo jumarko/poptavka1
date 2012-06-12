@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +15,29 @@ import java.util.List;
  * @see com.eprovement.poptavka.service.user.LoginService
  */
 public class LoggedUserDetail implements Serializable {
-    /** Logged user must always has non-null id set! */
+
+    /**
+     * Generated serialVersionUID.
+     */
+    private static final long serialVersionUID = -120882367332196457L;
+    /**
+     * Logged user must always has non-null id set!
+     */
     private long userId;
     private String email;
-    private ArrayList<AccessRole> accessRoles;
+    private ArrayList<AccessRoleDetail> accessRoles;
 
+    /**
+     * Required for GWT
+     */
+    public LoggedUserDetail() {
+        super();
+    }
 
-    /** Required for GWT */
-    public LoggedUserDetail() { }
-
-    public LoggedUserDetail(long userId, String email, List<AccessRole> accessRoles) {
+    public LoggedUserDetail(long userId, String email, List<AccessRoleDetail> accessRoles) {
         this.userId = userId;
         this.email = email;
-        this.accessRoles = new ArrayList<AccessRole>(accessRoles);
+        this.accessRoles = new ArrayList<AccessRoleDetail>(accessRoles);
     }
 
     public long getUserId() {
@@ -38,7 +48,11 @@ public class LoggedUserDetail implements Serializable {
         return email;
     }
 
-    public ArrayList<AccessRole> getAccessRoles() {
+    public ArrayList<AccessRoleDetail> getAccessRoles() {
         return accessRoles;
+    }
+
+    public void setAccessRoles(ArrayList<AccessRoleDetail> accessRoles) {
+        this.accessRoles = accessRoles;
     }
 }

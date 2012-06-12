@@ -14,6 +14,7 @@ import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.LoggedUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.converter.AccessRoleConverter;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private GeneralService generalService;
     private LoginService loginService;
     private ClientService clientService;
-
+    private AccessRoleConverter roleConverter = new AccessRoleConverter();
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -44,11 +45,11 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         this.clientService = clientService;
     }
 
-
     @Override
     public LoggedUserDetail loginUser(UserDetail userDetail) throws RPCException {
         final User user = this.loginService.loginUser(userDetail.getEmail(), userDetail.getPassword());
-        return new LoggedUserDetail(user.getId(), user.getEmail(), user.getAccessRoles());
+        return new LoggedUserDetail(user.getId(), user.getEmail(),
+                roleConverter.convertToTargetList(user.getAccessRoles()));
     }
 
     @Override
@@ -86,7 +87,6 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     public UserDetail getUserById(Long userId) throws RPCException {
         return UserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
     }
-
 
     @Override
     public boolean checkFreeEmail(String email) throws RPCException {

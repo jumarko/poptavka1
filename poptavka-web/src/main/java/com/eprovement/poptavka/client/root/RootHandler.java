@@ -21,6 +21,7 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.google.gwt.user.client.History;
 
 @EventHandler
 public class RootHandler extends BaseEventHandler<RootEventBus> {
@@ -152,6 +153,10 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 eventBus.loadingHide();
                 Window.alert("Error during getting logged User detail\n"
                         + caught.getMessage());
+                //Set layouts back when unsuccess login.
+                //TODO Martin - not good aproach in my opinion, onAccount method
+                //should first try to login and then change layouts
+                History.back();
                 if (caught instanceof RPCException) {
                     ExceptionUtils.showErrorDialog(errorDialog, caught);
                 }
