@@ -26,17 +26,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Common ancestor for all implementations of service methods for {@link BusinessUserRole}-s.
- * <p>
- *     Provides customized implementations of common methods, such as
- *     {@link #create(com.eprovement.poptavka.domain.user.BusinessUserRole)} which is (in normal case)
- *     directly used from {@link com.eprovement.poptavka.service.GeneralServiceImpl}, but it is necessary to modify it
- *     for {@link BusinessUserRole}-s -> see {@link #create(com.eprovement.poptavka.domain.user.BusinessUserRole)}
- *
+ * <p/>
+ * Provides customized implementations of common methods, such as
+ * {@link #create(com.eprovement.poptavka.domain.user.BusinessUserRole)} which is (in normal case)
+ * directly used from {@link com.eprovement.poptavka.service.GeneralServiceImpl}, but it is necessary to modify it
+ * for {@link BusinessUserRole}-s -> see {@link #create(com.eprovement.poptavka.domain.user.BusinessUserRole)}
+ * <p/>
  * <p>Examples of child implementations:
- *     @see ClientServiceImpl
- *     @see SupplierServiceImpl
+ *
  * @author Juraj Martinka
  *         Date: 14.5.11
+ * @see ClientServiceImpl
+ * @see SupplierServiceImpl
  */
 public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, BURDao extends BusinessUserRoleDao<BUR>>
         extends GenericServiceImpl<BUR, BURDao>
@@ -67,11 +68,11 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     /**
      * Create s new instance of this business user role - concrete instance type is as specified by generic type
      * BUR.
-     * <p>
-     *     Each business user role (e.g. client, supplier or partner) is connected to the particular business user.
-     *     Therefore instance of {@link BusinessUser} must be create before {@link BusinessUserRole} itself.
-     *     If new {@link BusinessUserRole} should be assigned to the existing {@link BusinessUser} then that
-     *     {@link BusinessUser} must be explicitly set to <code>businessUserRole</code> object.
+     * <p/>
+     * Each business user role (e.g. client, supplier or partner) is connected to the particular business user.
+     * Therefore instance of {@link BusinessUser} must be create before {@link BusinessUserRole} itself.
+     * If new {@link BusinessUserRole} should be assigned to the existing {@link BusinessUser} then that
+     * {@link BusinessUser} must be explicitly set to <code>businessUserRole</code> object.
      *
      * @param businessUserRole
      * @return
@@ -97,9 +98,11 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
         businessUserRole.setVerification(Verification.UNVERIFIED);
         // User#activationEmail is set within scope of "generateActivationLink" method
-        final String activationLink = userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
+        final String activationLink =
+                userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
         if (mailService != null) {
-            mailService.sendAsync(createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationLink));
+            mailService.sendAsync(
+                    createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationLink));
         }
 
         createBusinessUserIfNotExist(businessUserRole);
@@ -107,15 +110,15 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     }
 
     private SimpleMailMessage createActivationMailMessage(String userMail, String activationLink) {
-            final SimpleMailMessage activationMessage = new SimpleMailMessage();
-            activationMessage.setFrom("poptavka1@gmail.com");
-            activationMessage.setTo(userMail);
+        final SimpleMailMessage activationMessage = new SimpleMailMessage();
+        activationMessage.setFrom("poptavka1@gmail.com");
+        activationMessage.setTo(userMail);
 
-            activationMessage.setSubject("Poptavka account activation");
-            activationMessage.setText("Welcome to Poptavka!\n\n"
-                    + "Your account has been created and needs to be activated.\n"
-                    + "Please, Click the following link to complete your registration: " + activationLink);
-            return activationMessage;
+        activationMessage.setSubject("Poptavka account activation");
+        activationMessage.setText("Welcome to Poptavka!\n\n"
+                + "Your account has been created and needs to be activated.\n"
+                + "Please, Click the following link to complete your registration: " + activationLink);
+        return activationMessage;
 
     }
 
@@ -123,7 +126,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     /**
      * Checks whether given <code>businessUser</code> has role specified by <code>userRoleClass</code>.
      *
-     * @param businessUser user which should be checked, can be null -> in that case, false is returned immediately.
+     * @param businessUser  user which should be checked, can be null -> in that case, false is returned immediately.
      * @param userRoleClass
      * @return true  if given user has specified role, false otherwise.
      */

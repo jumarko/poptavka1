@@ -29,7 +29,12 @@ import com.eprovement.poptavka.shared.domain.converter.DemandConverter;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.googlecode.genericdao.search.Search;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -324,7 +329,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         return demandConverter.convertToTargetList(demandService.getDemands(
                 resultCriteria, cats.toArray(new Category[cats.size()]), locs.toArray(new Locality[locs.size()])));
     }
-    
+
     // ***********************************************************************
     // Get demands by Fulltext search
     // ***********************************************************************
@@ -449,7 +454,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * make decision
      * @return demand detail list
      */
-    private List<FullDemandDetail> filterWithAttributes(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private List<FullDemandDetail> filterWithAttributes(SearchModuleDataHolder detail,
+            Map<String, OrderType> orderColumns) {
         //0 0
         if (detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
             Search search = this.getFilter(detail, orderColumns);
@@ -603,8 +609,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     // ***********************************************************************
     // Other methods
     // ***********************************************************************
-    
-    //TODO Martin - musim stale zistovat createdDate z auditServicy, alebo sa to pridani 
+
+    //TODO Martin - musim stale zistovat createdDate z auditServicy, alebo sa to pridani
     //atributu createDate do Domain objektu vyplna samo?
     //TODO Martin - da sa tu pouzit converter?
     private List<FullDemandDetail> createDemandDetailListCat(Collection<DemandCategory> demands) {

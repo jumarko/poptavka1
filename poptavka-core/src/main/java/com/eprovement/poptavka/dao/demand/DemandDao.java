@@ -113,7 +113,8 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return all demands that (directly OR indirectly) belongs to the some from given <code>localities</code>.
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      *
-     * @see #getDemands(com.eprovement.poptavka.domain.address.Locality[], com.eprovement.poptavka.domain.common.ResultCriteria)
+     * @see #getDemands(com.eprovement.poptavka.domain.address.Locality[],
+     * com.eprovement.poptavka.domain.common.ResultCriteria)
      * @see ResultCriteria#orderByColumns
      */
     Set<Demand> getDemands(Category[] categories, ResultCriteria resultCriteria);
@@ -124,7 +125,8 @@ public interface DemandDao extends GenericDao<Demand> {
      * @param categories
      * @return
      *
-     * @see #getDemands(com.eprovement.poptavka.domain.address.Locality[], com.eprovement.poptavka.domain.common.ResultCriteria)
+     * @see #getDemands(com.eprovement.poptavka.domain.address.Locality[],
+     * com.eprovement.poptavka.domain.common.ResultCriteria)
      */
     long getDemandsCount(Category... categories);
 

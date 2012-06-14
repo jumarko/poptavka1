@@ -1,13 +1,7 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.domain.user.Supplier;
-import com.eprovement.poptavka.domain.user.Verification;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import java.io.Serializable;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

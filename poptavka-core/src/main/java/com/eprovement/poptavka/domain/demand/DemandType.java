@@ -6,7 +6,8 @@ import org.hibernate.envers.Audited;
 import javax.persistence.Entity;
 
 /**
- * Type of demand. It is closely connected to the business relation to the {@link com.eprovement.poptavka.domain.user.User}
+ * Type of demand. It is closely connected to the business relation to the
+ * {@link com.eprovement.poptavka.domain.user.User}
  * and {@link com.eprovement.poptavka.domain.product.UserService}.
  *
  * @author Juraj Martinka

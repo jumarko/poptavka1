@@ -8,7 +8,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
@@ -25,14 +31,16 @@ public class CategorySelectorView extends Composite
     //default list visibleItemCount
     private static final int TEN = 10;
 
-    @UiField ScrollPanel masterPanel;
-    @UiField Grid categoryListHolder;
+    @UiField
+    ScrollPanel masterPanel;
+    @UiField
+    Grid categoryListHolder;
     private ArrayList<ListBox> listBoxes = new ArrayList<ListBox>();
 
-    @UiField(provided=true) CellList selectedList;
+    @UiField(provided = true) CellList selectedList;
     private SingleSelectionModel<CategoryDetail> selectionModel = new SingleSelectionModel<CategoryDetail>();
     private ListDataProvider<CategoryDetail> dataProvider = new ListDataProvider<CategoryDetail>();
-    
+
 //    private HashSet<String> selectedListTitles = new HashSet<String>();
 
     @Override
@@ -51,19 +59,19 @@ public class CategorySelectorView extends Composite
     public CellList getSelectedList() {
         return selectedList;
     }
-    
+
     @Override
     public SingleSelectionModel getSelectionModel() {
         return selectionModel;
     }
-    
+
     @Override
     public ListDataProvider<CategoryDetail> getDataProvider() {
         return dataProvider;
     }
 
     @Override
-    public void addToSelectedList(CategoryDetail categoryDetail) {//String text, String value
+    public void addToSelectedList(CategoryDetail categoryDetail) { //String text, String value
 //        if (!selectedListTitles.contains(text)) {
         if (!dataProvider.getList().contains(categoryDetail)) {
             dataProvider.getList().add(categoryDetail);

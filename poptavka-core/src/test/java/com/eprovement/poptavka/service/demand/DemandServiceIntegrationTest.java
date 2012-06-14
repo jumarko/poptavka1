@@ -367,7 +367,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
                 new ResultCriteria.Builder()
                         .firstResult(0)
                         .maxResults(15)
-                        .orderByColumns(new HashMap<String, OrderType>() {{  put("createdDate", OrderType.DESC);  }})
+                        .orderByColumns(new HashMap<String, OrderType>() { {  put("createdDate", OrderType.DESC);  } })
                         .build();
 
         Assert.assertEquals(10, this.demandService.getAll(resultCriteria).size());

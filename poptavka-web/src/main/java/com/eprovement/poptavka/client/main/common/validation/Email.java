@@ -10,7 +10,7 @@ package com.eprovement.poptavka.client.main.common.validation;
  * its affiliates, and individual contributors by the @authors tag. See the
  * copyright.txt in the distribution for a full listing of individual
  * contributors.
- * 
+ *
 * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
@@ -46,20 +46,20 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Documented
 @Constraint(validatedBy = com.eprovement.poptavka.client.main.common.validation.EmailValidator.class)
-@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
 public @interface Email {
 
     String message() default "Invalid email input";
 
-    Class<?>[] groups() default {};
+    Class<?>[] groups() default { };
 
-    Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default { };
 
     /**
      * Defines several {@code @Email} annotations on the same element.
      */
-    @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+    @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
     @Retention(RUNTIME)
     @Documented
     public @interface List {

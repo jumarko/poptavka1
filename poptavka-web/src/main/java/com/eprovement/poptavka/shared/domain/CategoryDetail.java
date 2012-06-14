@@ -107,6 +107,5 @@ public class CategoryDetail implements Serializable {
         hash = 67 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
-    
-    
+
 }

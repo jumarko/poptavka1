@@ -21,8 +21,8 @@ public interface BusinessUserVerificationService {
      * Verifies given link if it belongs to the existing user.
      * @param link link to be verified
      * @return User which has been verified
-     * @throws com.eprovement.poptavka.exception.IncorrectActivationLinkException if link does not correspond to some valid
-     *      (generated) activation link
+     * @throws com.eprovement.poptavka.exception.IncorrectActivationLinkException
+     *          if link does not correspond to some valid (generated) activation link
      * @throws com.eprovement.poptavka.exception.ExpiredActivationLinkException if link already expired
      * @throws com.eprovement.poptavka.exception.UserNotExistException if user with email extracted from activation link
      *      does not exist in user database

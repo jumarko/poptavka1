@@ -34,7 +34,7 @@ public class UserActivationResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity<String> activateUser (@RequestParam("link") String activationLink) {
+    ResponseEntity<String> activateUser(@RequestParam("link") String activationLink) {
         Validate.notEmpty(activationLink);
 
         final BusinessUser businessUser = verificationService.verifyUser(activationLink);
@@ -43,7 +43,7 @@ public class UserActivationResource {
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         headers.add("Location", url);
         ResponseEntity<String> response = new ResponseEntity(headers, HttpStatus.MOVED_TEMPORARILY);
-        return response;   
+        return response;
     }
 
 

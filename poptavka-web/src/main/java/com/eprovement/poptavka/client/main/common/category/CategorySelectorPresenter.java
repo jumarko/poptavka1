@@ -3,7 +3,11 @@ package com.eprovement.poptavka.client.main.common.category;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -25,9 +29,9 @@ public class CategorySelectorPresenter
         Grid getListHolder();
 
         CellList getSelectedList();
-        
+
         SingleSelectionModel getSelectionModel();
-        
+
         ListDataProvider<CategoryDetail> getDataProvider();
 
         boolean isValid();
@@ -109,7 +113,8 @@ public class CategorySelectorPresenter
                 String text = box.getItemText(box.getSelectedIndex());
                 String value = box.getValue(box.getSelectedIndex());
                 if (event.isControlKeyDown() &&  ! isLeaf(text)) {
-                    view.addToSelectedList(new CategoryDetail(Long.parseLong(value), text.substring(0, text.indexOf(NONLEAF_SUFFIX))));
+                    view.addToSelectedList(new CategoryDetail(Long.parseLong(value),
+                            text.substring(0, text.indexOf(NONLEAF_SUFFIX))));
                 } else {
                     if (isLeaf(text)) {
                         view.addToSelectedList(new CategoryDetail(Long.parseLong(value), text));

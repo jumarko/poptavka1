@@ -1,12 +1,7 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
 import java.io.Serializable;
-
-import com.eprovement.poptavka.domain.user.rights.AccessRole;
-import com.eprovement.poptavka.domain.user.rights.Permission;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**

@@ -13,7 +13,8 @@ public class DemandSerializer implements Converter<Demand, com.eprovement.poptav
     @Override
     public com.eprovement.poptavka.rest.demand.DemandDto convert(Demand demand) {
         Validate.notNull(demand);
-        final com.eprovement.poptavka.rest.demand.DemandDto demandDto = new com.eprovement.poptavka.rest.demand.DemandDto();
+        final com.eprovement.poptavka.rest.demand.DemandDto demandDto =
+                new com.eprovement.poptavka.rest.demand.DemandDto();
         demandDto.setTitle(demand.getTitle());
         demandDto.setDescription(demand.getDescription());
         demandDto.setPrice(demand.getPrice());

@@ -20,13 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Vojtech Hubr
  */
-    @DataSet(path = {
+@DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/message/MessageDataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
-
 public class SearcherTest extends DBUnitBaseTest {
 
     @Autowired
@@ -41,7 +40,6 @@ public class SearcherTest extends DBUnitBaseTest {
         this.demand = new Demand();
         user.setId(111111111L);
         demand.setId(2L);
-        
     }
 
     @Test
@@ -49,7 +47,7 @@ public class SearcherTest extends DBUnitBaseTest {
 
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
-        
+
         Search search = new Search(UserMessage.class);
         search.addFilter(new Filter("isRead", false));
         List<UserMessage> inboxFiltered = Searcher.searchCollection(
@@ -83,8 +81,7 @@ public class SearcherTest extends DBUnitBaseTest {
         // same as above, but with pagination
         search.setPage(1);
         search.setMaxResults(2);
-        inboxFiltered = Searcher.searchCollection(
-        inbox, search);
+        inboxFiltered = Searcher.searchCollection(inbox, search);
 
         i = 0;
         checkUserMessageExists(2L, i++, inboxFiltered);
@@ -92,17 +89,15 @@ public class SearcherTest extends DBUnitBaseTest {
 
         search.setPage(2);
         search.setMaxResults(2);
-        inboxFiltered = Searcher.searchCollection(
-        inbox, search);
+        inboxFiltered = Searcher.searchCollection(inbox, search);
 
         i = 0;
         checkUserMessageExists(4L, i++, inboxFiltered);
 
-        // same as above, but with constraints        
+        // same as above, but with constraints
         search.setFirstResult(1);
         search.setMaxResults(2);
-        inboxFiltered = Searcher.searchCollection(
-        inbox, search);
+        inboxFiltered = Searcher.searchCollection(inbox, search);
 
         i = 0;
         checkUserMessageExists(202L, i++, inboxFiltered);
@@ -147,14 +142,13 @@ public class SearcherTest extends DBUnitBaseTest {
      * @param index
      * @param allUserMessages
      */
-    private void checkUserMessageExists(Long userMessageId, int index,
-            List<UserMessage> allUserMessages) {
+    private void checkUserMessageExists(Long userMessageId, int index, List<UserMessage> allUserMessages) {
         Assert.assertTrue(
-                "UserMessage [id=" + userMessageId + "] expected to be in"
-                + " the list [" + allUserMessages + "] at index ["
-                + index + "] is not there.",
-                allUserMessages.get(index).getId().equals(userMessageId)
-                );
+            "UserMessage [id=" + userMessageId + "] expected to be in"
+            + " the list [" + allUserMessages + "] at index ["
+            + index + "] is not there.",
+            allUserMessages.get(index).getId().equals(userMessageId)
+        );
     }
 
 }

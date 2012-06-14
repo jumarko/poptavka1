@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -24,7 +25,6 @@ import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPrese
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter.SearchModulesViewInterface;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.google.gwt.user.client.ui.*;
 
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
 
@@ -343,8 +343,6 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
      * info for <b>localities</b>. 3...constucts info for advance search view
      * <b>attributes</b>,
      *
-     * @param textBox - given textBox for holding info string.
-     * @param searchModuleDataHolder - given filters, selected by user.
      */
     private void displayShortInfo() {
         switch (action) {

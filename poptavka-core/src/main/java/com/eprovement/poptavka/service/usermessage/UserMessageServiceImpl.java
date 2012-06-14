@@ -98,7 +98,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
                 user.getId());
         return getDao().getInbox(user);
     }
-    
+
     /**
      *  {@inheritDoc}
      */
@@ -123,7 +123,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
                 user.getId());
         return getDao().getSentItems(user);
     }
-    
+
     /**
      *  {@inheritDoc}
      */

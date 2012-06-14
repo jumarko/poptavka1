@@ -91,7 +91,8 @@ public class DemandConverterTest extends DBUnitBaseTest {
     public void testConvertAttractiveDemand() throws Exception {
         final Demand attractiveDemand = TestingDemand.generateDemands()[0];
         attractiveDemand.setAttractive("attractive");
-        final com.eprovement.poptavka.domain.demand.Demand domainDemand = this.demandConverter.convert(attractiveDemand);
+        final com.eprovement.poptavka.domain.demand.Demand domainDemand =
+                this.demandConverter.convert(attractiveDemand);
         Assert.assertEquals(DemandType.Type.ATTRACTIVE, domainDemand.getType().getType());
     }
 }

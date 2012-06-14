@@ -63,7 +63,7 @@ public class SupplierCreationPresenter
         Widget getWidgetView();
 
         StatusIconLabel getStatusLabel(int order);
-        
+
         void showConditions();
 
         boolean isValid();

@@ -1,11 +1,8 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.domain.invoice.Invoice;
-import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.domain.settings.Preference;
 import java.io.Serializable;
 
 /**

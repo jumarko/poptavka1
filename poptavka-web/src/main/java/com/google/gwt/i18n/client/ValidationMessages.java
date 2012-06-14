@@ -131,22 +131,22 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("supplier.notNull.description")
     String supplierNotNullDescription();
-    
+
     @Key("supplier.notNull.password")
     String supplierNotNullPassword();
-    
+
     @Key("supplier.min.password")
     String supplierMinPassword();
-    
+
     @Key("supplier.notNull.passwordConfirm")
     String supplierNotNullPassrowdConfirm();
-    
+
     @Key("supplier.notNull.street")
     String supplierNotNullStreet();
-    
+
     @Key("supplier.notNull.city")
     String supplierNotNullCity();
-    
+
     @Key("supplier.notNull.zipCode")
     String supplierNotNullZipCode();
 }

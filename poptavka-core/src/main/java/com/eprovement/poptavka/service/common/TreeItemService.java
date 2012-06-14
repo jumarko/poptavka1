@@ -13,8 +13,8 @@ import java.util.Set;
 public interface TreeItemService {
 
     /**
-     * @see com.eprovement.poptavka.dao.common.TreeItemDao#getAllDescendants(com.eprovement.poptavka.domain.common.TreeItem,
-     *      Class, com.eprovement.poptavka.domain.common.ResultCriteria)
+     * @see com.eprovement.poptavka.dao.common.TreeItemDao#getAllDescendants(
+     * com.eprovement.poptavka.domain.common.TreeItem, Class, com.eprovement.poptavka.domain.common.ResultCriteria)
      */
     <T extends TreeItem> List<T> getAllDescendants(TreeItem parentNode, Class<T> treeItemClass);
 
@@ -38,8 +38,8 @@ public interface TreeItemService {
     <T extends TreeItem> Set<Long> getAllChildItemsIdsRecursively(List<TreeItem> treeItems, Class<T> treeItemClass);
 
     /**
-     * @see com.eprovement.poptavka.dao.common.TreeItemDao#getAllChildren(com.eprovement.poptavka.domain.common.TreeItem,
-     *      Class, com.eprovement.poptavka.domain.common.ResultCriteria)
+     * @see com.eprovement.poptavka.dao.common.TreeItemDao#getAllChildren(
+     * com.eprovement.poptavka.domain.common.TreeItem, Class, com.eprovement.poptavka.domain.common.ResultCriteria)
      */
     <T extends TreeItem> List<T> getAllChildren(TreeItem parentNode, Class<T> treeItemClass);
 

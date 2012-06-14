@@ -6,7 +6,14 @@ import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.Sort;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.ClassUtils;
@@ -15,25 +22,25 @@ import org.apache.commons.lang.ClassUtils;
  *
  * @author Vojtech Hubr
  */
-public class Searcher {
-    
+public final class Searcher {
+
     private Searcher() {
         // utility class - DO NOT INSTANTIATE!
     }
 
     /**
      * Applies a given <code>search</code> on the <code>haystack</code>
-     * 
+     *
      * Filtering currently does not support nesting and it only joins
      * the filters with and
-     * 
+     *
      * @param haystack the collection that should be searched (filtered, sorted
      * and trimmed)
      * @param search search object that specifies parameters of the desired
      * search
      * @return a list that is a result of filtering, sorting and trimming of
      * <code>haystack</code> as directed by <code>search</code>
-     * @throws SearcherException 
+     * @throws SearcherException
      */
     public static <E> List<E> searchCollection(Collection<E> haystack,
             Search search) throws SearcherException {
@@ -49,7 +56,7 @@ public class Searcher {
     private static <E> void filterCollection(Search search, Collection<E> haystack,
             List<E> result) throws SearcherException {
         Map<Filter, List<Method>> getterChains = new HashMap<Filter,
-                List<Method>>();
+                        List<Method>>();
         for (Filter filter : search.getFilters()) {
             getterChains.put(filter, getGetterChain(filter.getProperty(),
                     search.getSearchClass()));
@@ -108,7 +115,7 @@ public class Searcher {
                             break;
                         }
                     }
-                    if(filter.getOperator() == Filter.OP_LESS_OR_EQUAL) {
+                    if (filter.getOperator() == Filter.OP_LESS_OR_EQUAL) {
                         belongsToResult = comparableValue.compareTo(filter.getValue()) <= 0;
                         if (belongsToResult) {
                             continue;
@@ -116,7 +123,7 @@ public class Searcher {
                             break;
                         }
                     }
-                    if(filter.getOperator() == Filter.OP_LESS_THAN) {
+                    if (filter.getOperator() == Filter.OP_LESS_THAN) {
                         belongsToResult = comparableValue.compareTo(filter.getValue()) < 0;
                         if (belongsToResult) {
                             continue;
@@ -131,25 +138,24 @@ public class Searcher {
             }
         }
     }
-    
+
     /**
      * Sorts the <code>list</code> according to the sorts in <code>search</code>
      * It supports multiple sort criteria, ascending and descending order
      * and also case sensitive and insensitive sorting for strings.
-     * 
+     *
      * @param search defines the sorting parameters
      * @param list the list to be sorted in situ
-     * @throws SearcherException 
+     * @throws SearcherException
      */
-    private static <E> void sortList(Search search, List<E> list)
-            throws SearcherException {
+    private static <E> void sortList(Search search, List<E> list) throws SearcherException {
         final Map<Sort, List<Method>> sortGetterChains = new HashMap<Sort, List<Method>>();
         for (Sort sort : search.getSorts()) {
             sortGetterChains.put(sort, getGetterChain(sort.getProperty(),
                     search.getSearchClass()));
         }
 
-        Collections.sort(list, new Comparator<E>(){
+        Collections.sort(list, new Comparator<E>() {
             @Override
             public int compare(E e1, E e2) {
                 for (Map.Entry<Sort, List<Method>> entry : sortGetterChains
@@ -168,10 +174,10 @@ public class Searcher {
                         return 0;
                     }
                     if (value1 == null && value2 != null) {
-                        return -1*ascDesc;
+                        return -1 * ascDesc;
                     }
                     if (value1 != null && value2 == null) {
-                        return 1*ascDesc;
+                        return 1 * ascDesc;
                     }
                     int result = 0;
                     if (Arrays.asList(type.getInterfaces()).contains(
@@ -179,7 +185,7 @@ public class Searcher {
                         Comparable comparableValue1 = (Comparable) value1;
                         Comparable comparableValue2 = (Comparable) value2;
                         result = comparableValue1.compareTo(comparableValue2)
-                                *ascDesc;
+                                * ascDesc;
                     }
                     if (result != 0) {
                         return result;
@@ -187,7 +193,7 @@ public class Searcher {
                 }
                 return 0;
             }
-            
+
         });
     }
 
@@ -208,9 +214,10 @@ public class Searcher {
                     list.size());
             return list.subList(start, end);
         } else if (search.getPage() != -1 && search.getMaxResults() > 0) {
-            int start = search.getPage()*search.getMaxResults();
+            int start = search.getPage() * search.getMaxResults();
             if (start > list.size() - 1) {
-                return new ArrayList<E>();            }
+                return new ArrayList<E>();
+            }
             int end = Math.min(start + search.getMaxResults() + 1,
                     list.size());
             return list.subList(start, end);
@@ -230,13 +237,13 @@ public class Searcher {
      * with 1 to the object we got by applying the first result and we continue
      * until we get to the end of the list. The final result is the desired
      * property.
-     * @throws SearcherException 
+     * @throws SearcherException
      */
     private static List<Method> getGetterChain(String property,
             Class baseClass) throws SearcherException {
         String[] properties = property.split("\\.");
         List<Method> getterChain = new ArrayList<Method>();
-        for (int i = 0; i < properties.length ; i++) {
+        for (int i = 0; i < properties.length; i++) {
             Method getter = ReflectionUtils.getGetterMethod(baseClass,
                     properties[i]);
             if (getter == null) {
@@ -279,7 +286,7 @@ public class Searcher {
      * @param getterChain the chain of getters to follow
      * @param toUpperCase whether to convert the result to uppercase provided
      * it is an instance of <code>String</code>
-     * @return 
+     * @return
      */
     private static <E> Object getValue(E item, List<Method> getterChain,
             boolean toUpperCase) {
@@ -302,5 +309,5 @@ public class Searcher {
             Logger.getLogger(Searcher.class.getName()).log(Level.SEVERE, null, ex);
         }
         return value;
-    }    
+    }
 }

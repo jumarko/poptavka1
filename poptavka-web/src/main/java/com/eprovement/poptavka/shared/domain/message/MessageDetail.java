@@ -4,14 +4,11 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
-import com.eprovement.poptavka.exception.MessageException;
-import java.io.Serializable;
-import java.util.Date;
-
 import com.eprovement.poptavka.domain.message.Message;
-import com.eprovement.poptavka.domain.message.MessageState;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  *

@@ -19,9 +19,20 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.TextBoxBase;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.validation.client.Validation;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
@@ -33,18 +44,22 @@ public class SupplierInfoView extends Composite
 
     interface FormUserRegistrationUiBinder extends UiBinder<Widget, SupplierInfoView> {
     }
-    @UiField TextBox companyName, identificationNumber, taxId;
+    @UiField
+    TextBox companyName, identificationNumber, taxId;
     @UiField TextBox firstName, lastName;
     @UiField TextBox phone, email, website;
-    @UiField TextArea description;
+    @UiField
+    TextArea description;
     @UiField TextBox street, city, zipCode;
-    @UiField PasswordTextBox password, passwordConfirm;
+    @UiField
+    PasswordTextBox password, passwordConfirm;
     //StatusIconLabels
     @UiField StatusIconLabel mailStatus;
     @UiField StatusIconLabel passwordStatus;
     @UiField StatusIconLabel passwordCheckStatus;
     //Error Labels
-    @UiField @Ignore Label companyNameErrorLabel;
+    @UiField @Ignore
+    Label companyNameErrorLabel;
     @UiField @Ignore Label identificationNumberErrorLabel;
     @UiField @Ignore Label taxIdErrorLabel;
     @UiField @Ignore Label websiteErrorLabel;

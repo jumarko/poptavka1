@@ -1,7 +1,5 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.domain.activation.ActivationEmail;
-
 import java.io.Serializable;
 import java.util.Date;
 

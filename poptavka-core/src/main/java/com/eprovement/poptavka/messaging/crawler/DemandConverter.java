@@ -62,7 +62,8 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
             return null;
         }
 
-        final com.eprovement.poptavka.domain.demand.Demand domainDemand = new com.eprovement.poptavka.domain.demand.Demand();
+        final com.eprovement.poptavka.domain.demand.Demand domainDemand =
+                new com.eprovement.poptavka.domain.demand.Demand();
 
         domainDemand.setStatus(DemandStatus.CRAWLED);
         domainDemand.setTitle(sourceDemand.getName());

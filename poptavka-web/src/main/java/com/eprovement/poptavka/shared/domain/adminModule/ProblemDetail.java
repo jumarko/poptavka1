@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.domain.user.Problem;
 import java.io.Serializable;
 
 /**

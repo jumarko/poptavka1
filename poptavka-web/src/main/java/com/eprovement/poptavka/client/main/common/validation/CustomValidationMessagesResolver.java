@@ -26,11 +26,11 @@ import com.google.gwt.validation.client.UserValidationMessagesResolver;
  * {@link ValidationMessages}.
  */
 public class CustomValidationMessagesResolver extends AbstractValidationMessageResolver
-    implements UserValidationMessagesResolver {
+        implements UserValidationMessagesResolver {
 
-  // TODO(nchalko) implement this as part of the GWtValidation annotation
-  // instead of a separate class.
-  protected CustomValidationMessagesResolver() {
-    super((ConstantsWithLookup) GWT.create(ValidationMessages.class));
-  }
+    // TODO(nchalko) implement this as part of the GWtValidation annotation
+    // instead of a separate class.
+    protected CustomValidationMessagesResolver() {
+        super((ConstantsWithLookup) GWT.create(ValidationMessages.class));
+    }
 }

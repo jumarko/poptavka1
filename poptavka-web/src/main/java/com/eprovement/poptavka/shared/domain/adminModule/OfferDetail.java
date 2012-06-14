@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.eprovement.poptavka.domain.offer.Offer;
-
 /**
  * Represents full detail of domain object <b>Offer</b> used in <i>Administration Module</i>.
  * Contains 2 static methods:  1. creating detail object

@@ -1,5 +1,11 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.main.common.OverflowComposite;
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
@@ -23,14 +29,6 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.OverflowComposite;
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-
 import java.util.ArrayList;
 import java.util.logging.Logger;
 

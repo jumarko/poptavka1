@@ -5,6 +5,11 @@
 package com.eprovement.poptavka.server.service.admin;
 
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
+import com.eprovement.poptavka.domain.user.BusinessUserData;
+import com.eprovement.poptavka.domain.user.Client;
+import com.eprovement.poptavka.domain.user.Problem;
+import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.Verification;
 import com.eprovement.poptavka.shared.domain.converter.AccessRoleConverter;
 import com.eprovement.poptavka.shared.domain.converter.ActivationEmailConverter;
 import com.eprovement.poptavka.shared.domain.converter.ClientConverter;
@@ -47,7 +52,6 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageState;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.settings.Preference;
-import com.eprovement.poptavka.domain.user.*;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.domain.user.rights.Permission;
 import com.eprovement.poptavka.exception.MessageException;

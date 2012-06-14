@@ -28,7 +28,11 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -72,7 +76,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     public void setTreeItemService(TreeItemService treeItemService) {
         this.treeItemService = treeItemService;
     }
-    
+
     // ***********************************************************************
     // Categories getter methods
     // ***********************************************************************
@@ -201,8 +205,8 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         for (CategoryDetail catDetail : categories) {
             cats.add(categoryService.getById(catDetail.getId()));
         }
-        final ResultCriteria resultCriteria =
-                new ResultCriteria.Builder().firstResult(start).maxResults(maxResult).orderByColumns(orderColumns).build();
+        final ResultCriteria resultCriteria = new ResultCriteria.Builder().firstResult(start).maxResults(maxResult)
+                        .orderByColumns(orderColumns).build();
         return supplierConverter.convertToTargetList(supplierService.getSuppliers(
                 resultCriteria, cats.toArray(new Category[cats.size()])));
     }
@@ -341,7 +345,8 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * make decision
      * @return supplier detail list
      */
-    private List<FullSupplierDetail> filterWithAttributes(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    private List<FullSupplierDetail> filterWithAttributes(SearchModuleDataHolder detail,
+            Map<String, OrderType> orderColumns) {
         //1 0
         if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
             Search search = this.getCategoryFilter(detail, orderColumns);

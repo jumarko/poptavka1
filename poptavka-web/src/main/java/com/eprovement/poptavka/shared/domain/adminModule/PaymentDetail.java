@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.domain.invoice.OurPaymentDetails;
 import java.io.Serializable;
 
 /**
