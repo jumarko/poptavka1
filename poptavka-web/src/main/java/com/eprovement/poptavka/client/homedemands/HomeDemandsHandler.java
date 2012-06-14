@@ -7,6 +7,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCServiceAsync;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.common.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
@@ -26,7 +27,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         homeDemandsService = service;
     }
 
-    public void onGetDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+    public void onGetDemandsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
         homeDemandsService.getDemandsCount(detail, new AsyncCallback<Long>() {
 
             @Override
@@ -38,9 +39,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-//                eventBus.setResultSource("get");
-//                eventBus.setResultCount(result);
-                eventBus.createAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }

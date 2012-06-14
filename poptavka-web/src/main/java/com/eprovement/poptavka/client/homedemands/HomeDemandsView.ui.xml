@@ -5,6 +5,7 @@ Uncomment this for XHTML entities
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
         xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+        xmlns:ug="urn:import:com.eprovement.poptavka.client.user.widget.grid"
         xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
@@ -29,21 +30,10 @@ Uncomment this for XHTML entities
             <g:ScrollPanel>
                 <g:HTMLPanel>
                     <table width="100%">
-<!--                        <tr>
-                            <td>
-                                <g:HorizontalPanel ui:field="filterPanel" styleName="{style.panel}">
-                                    <g:Label styleName="{style.name}">
-                                        <ui:msg key="filter">Filter:</ui:msg>
-                                    </g:Label>
-                                    <g:ListBox ui:field="category" styleName="{style.list}" />
-                                    <g:ListBox ui:field="locality" styleName="{style.list}" />
-                                </g:HorizontalPanel>
-                            </td>
-                        </tr>-->
                         <tr>
                             <td>
                                 <g:ScrollPanel>
-                                    <c:DataGrid ui:field='dataGrid' />
+                                    <ug:UniversalAsyncGrid ui:field='dataGrid' />
                                 </g:ScrollPanel>
                             </td>
                         </tr>
@@ -53,9 +43,7 @@ Uncomment this for XHTML entities
                                 <g:ListBox ui:field='pageSize'/>
                             </td>
                         </tr>
-
                     </table>
-
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:west>

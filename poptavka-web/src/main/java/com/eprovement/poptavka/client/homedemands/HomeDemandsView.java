@@ -5,18 +5,14 @@
 package com.eprovement.poptavka.client.homedemands;
 
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -25,10 +21,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.eprovement.poptavka.client.main.common.OverflowComposite;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 
 import java.util.Date;
@@ -43,16 +39,17 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
 
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
+    // Table
     @UiField(provided = true)
-    ListBox pageSize;
-//    @UiField
-//    ListBox category, locality;
-    @UiField
-    Label bannerLabel;
-    @UiField(provided = true)
-    DataGrid<FullDemandDetail> dataGrid;
+    UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    // Pager
     @UiField(provided = true)
     SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSize;
+    // Others
+    @UiField
+    Label bannerLabel;
     @UiField
     DemandDetailView demandDetail;
     @UiField
@@ -62,8 +59,6 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
 
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
-    private final SingleSelectionModel<FullDemandDetail> selectionModel =
-            new SingleSelectionModel<FullDemandDetail>();
 
     public HomeDemandsView() {
         pageSize = new ListBox();
@@ -96,7 +91,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     }
 
     @Override
-    public DataGrid<FullDemandDetail> getDataGrid() {
+    public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -115,14 +110,13 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      */
     private void initCellTable() {
         // Create a CellTable.
-        dataGrid = new DataGrid<FullDemandDetail>();
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>();
         dataGrid.setWidth("800px");
         dataGrid.setHeight("500px");
-        dataGrid.setEmptyTableWidget(new Label("No data available."));
+//        dataGrid.setEmptyTableWidget(new Label("No data available."));
 //        dataGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
         dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
         dataGrid.setPageSize(this.getPageSize());
-        dataGrid.setSelectionModel(selectionModel);
 
         // Create a Pager to control the table.
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -137,9 +131,10 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      */
     private void initGridColumns() {
         // Date of creation
-        addColumn(new TextCell(), bundle.createdDate(), true, 35, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, 35, new UniversalAsyncGrid.GetValue<String>() {
 
-            public String getValue(FullDemandDetail demandDetail) {
+            public String getValue(Object object) {
+                FullDemandDetail demandDetail = (FullDemandDetail) object;
                 if (demandDetail.getCreated() == null) {
                     return "not defined";
                 } else {
@@ -158,12 +153,12 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Root category info
-        addColumn(new TextCell(), bundle.category(), false, 60, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.category(), false, 60, new UniversalAsyncGrid.GetValue<String>() {
 
             @Override
-            public String getValue(FullDemandDetail demandDetail) {
+            public String getValue(Object object) {
                 StringBuilder str = new StringBuilder();
-                for (String cat : demandDetail.getCategories().values()) {
+                for (String cat : ((FullDemandDetail) object).getCategories().values()) {
                     str.append(cat);
                     str.append(",\n");
                 }
@@ -173,21 +168,21 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Demand Info
-        addColumn(new TextCell(), bundle.demand(), true, 100, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.demand(), true, 100, new UniversalAsyncGrid.GetValue<String>() {
 
             @Override
-            public String getValue(FullDemandDetail demandDetail) {
-                return demandDetail.getTitle();
+            public String getValue(Object object) {
+                return ((FullDemandDetail) object).getTitle();
             }
         });
 
         // Locality
-        addColumn(new TextCell(), bundle.locality(), false, 60, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.locality(), false, 60, new UniversalAsyncGrid.GetValue<String>() {
 
             @Override
-            public String getValue(FullDemandDetail demandDetail) {
+            public String getValue(Object object) {
                 StringBuilder str = new StringBuilder();
-                for (String cat : demandDetail.getLocalities().values()) {
+                for (String cat : ((FullDemandDetail) object).getLocalities().values()) {
                     str.append(cat);
                     str.append(",\n");
                 }
@@ -197,27 +192,22 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         });
 
         // Cena
-        addColumn(new TextCell(), bundle.price(), true, 40, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.price(), true, 40, new UniversalAsyncGrid.GetValue<String>() {
 
             @Override
-            public String getValue(FullDemandDetail demandDetail) {
-                return currencyFormat.format(demandDetail.getPrice());
+            public String getValue(Object object) {
+                return currencyFormat.format(((FullDemandDetail) object).getPrice());
             }
         });
 
         // Urgencia
-        addColumn(new ImageStatus(), "", true, 20, new GetValue<Date>() {
+        dataGrid.addColumn(new ImageStatus(), "", true, 20, new UniversalAsyncGrid.GetValue<Date>() {
 
             @Override
-            public Date getValue(FullDemandDetail object) {
-                return object.getEndDate();
+            public Date getValue(Object object) {
+                return ((FullDemandDetail) object).getEndDate();
             }
         });
-    }
-
-    @Override
-    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
-        return selectionModel;
     }
 
     @Override
@@ -278,45 +268,5 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
             sb.appendEscaped(text);
             sb.appendHtmlConstant("</td></tr></table>");
         }
-    }
-
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C>
-     *            the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(FullDemandDetail contact);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C>
-     *            the cell type
-     * @param cell
-     *            the cell used to render the column
-     * @param headerText
-     *            the header string
-     * @param getter
-     *            the value getter for the cell
-     */
-    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell,
-            String headerText, boolean sort, int width, final GetValue<C> getter) {
-        Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
-
-            @Override
-            public C getValue(FullDemandDetail demand) {
-                return getter.getValue(demand);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
     }
 }

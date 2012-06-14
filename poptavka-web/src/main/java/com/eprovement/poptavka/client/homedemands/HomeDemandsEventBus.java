@@ -6,19 +6,19 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.user.client.ui.IsWidget;
-import java.util.List;
-
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.event.EventBus;
-
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.domain.common.OrderType;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Events(startView = HomeDemandsView.class, module = HomeDemandsModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeDemandsEventBus extends EventBus {
+public interface HomeDemandsEventBus extends EventBus, IEventBusData {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -74,11 +74,17 @@ public interface HomeDemandsEventBus extends EventBus {
 
     @Event(forwardToParent = true)
     void userMenuStyleChange(int loadedModule);
+
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
+    @Override
     @Event(handlers = HomeDemandsPresenter.class)
-    void createAsyncDataProvider(final int resultCount);
+    void getDataCount(SearchModuleDataHolder detail);
+
+    @Override
+    @Event(handlers = HomeDemandsPresenter.class)
+    void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);
@@ -90,57 +96,8 @@ public interface HomeDemandsEventBus extends EventBus {
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCount(SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getDemandsCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
 
     @Event(handlers = HomeDemandsHandler.class)
     void getDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
-
-    // TODO Praso - co s tymito komentarmi? Treba ich odstranit. Je tam nieco dolezite?
-    /* Business events. */
-    /* Business events handled by Presenters. */
-//    @Event(handlers = HomeDemandsPresenter.class)
-//    void setLocalityData(ArrayList<LocalityDetail> list);
-    //Display
-//    @Event(handlers = HomeDemandsPresenter.class)
-//    void setCategoryData(ArrayList<CategoryDetail> list);
-//    @Event(handlers = HomeDemandsPresenter.class)
-//    void setResultSource(String resultSource);
-//    @Event(handlers = HomeDemandsPresenter.class)
-//    void setResultCount(long resultCount);
-//    @Event(handlers = HomeDemandsPresenter.class)
-//    void filter();
-
-    /* Business events handled by Handlers. */
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getAllDemandsCount();
-//
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getSortedDemandsCount(Map<String, OrderType> orderColumns);
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getSortedDemands(int start, int count, Map<String, OrderType> orderColumns);
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemandsCountCategory(long id);
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemandsCountLocality(String code);
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemandsCountCategoryLocality(long id, String code);
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemands(int fromResult, int toResult);
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemandsByCategories(int fromResult, int toResult, long id);
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemandsByLocalities(int fromResult, int toResult, String code);
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getDemandsByCategoriesLocalities(int fromResult, int toResult, long id, String code);
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getCategories();
-//
-//    @Event(handlers = HomeDemandsHandler.class)
-//    void getLocalities();
 }
