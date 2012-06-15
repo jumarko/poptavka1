@@ -26,16 +26,32 @@ import java.util.Map;
  */
 public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
+    //*************************************************************************
+    //                              INTERFACES                                *
+    //*************************************************************************
     /**
      * To use this class, eventBus which uses it must extend this interface.
      */
     public interface IEventBusData {
 
-        void getDataCount(SearchModuleDataHolder searchDataHolder);
+        void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder);
 
         void getData(int start, int maxResult,
                 SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns);
     }
+    /**
+     * Get a cell value from a record.
+     *
+     * @param <C> - the cell type
+     */
+    public interface GetValue<C> {
+
+        C getValue(Object object);
+    }
+
+    //*************************************************************************/
+    //                          ATTRIBUTES                                    */
+    //*************************************************************************/
     // Data Provider
     private AsyncDataProvider<T> dataProvider = null;
     private int start = 0;
@@ -48,14 +64,16 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     private SearchModuleDataHolder searchDataHolder = null;
     private final SingleSelectionModel<T> selectionModel = new SingleSelectionModel<T>();
 
-    public UniversalAsyncGrid() {
+    public UniversalAsyncGrid(List<String> gridColumns) {
         super();
         setSelectionModel(selectionModel);
+        this.gridColumns = gridColumns;
     }
 
-    public UniversalAsyncGrid(ProvidesKey<T> keyProvider) {
+    public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
         setSelectionModel(selectionModel);
+        this.gridColumns = gridColumns;
     }
 
     /**
@@ -66,13 +84,11 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * @param searchDataHolder - define search criteria if any
      * @param gridColumns - define column names of table
      */
-    public void getDataCount(IEventBusData eventBus, SearchModuleDataHolder searchDataHolder,
-            List<String> gridColumns) {
+    public void getDataCount(IEventBusData eventBus, SearchModuleDataHolder searchDataHolder) {
         this.eventBus = eventBus;
         this.searchDataHolder = searchDataHolder;
-        this.gridColumns = gridColumns;
 
-        eventBus.getDataCount(searchDataHolder);
+        eventBus.getDataCount(this, searchDataHolder);
     }
 
     /**
@@ -127,16 +143,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         addColumnSortHandler(sortHandler);
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> - the cell type
-     */
-    public interface GetValue<C> {
-
-        C getValue(Object object);
-    }
-
+    //*************************************************************************/
+    // ADDITIONAL "OVERRIDE" METHODS
+    //*************************************************************************/
     /**
      * Add a column with a header.
      *
@@ -160,6 +169,12 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         addColumn(column, headerText);
         setColumnWidth(column, width, Unit.PX);
         return column;
+    }
+
+    public void updateRowData(List<T> list) {
+        dataProvider.updateRowData(start, list);
+        flush();
+        redraw();
     }
 
     // ***********************************************************************

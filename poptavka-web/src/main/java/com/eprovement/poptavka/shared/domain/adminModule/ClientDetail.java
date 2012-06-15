@@ -97,7 +97,6 @@ public class ClientDetail implements Serializable {
                 + "\n    ClientId=" + Long.toString(id)
                 + "\n    OveralRating=" + Integer.valueOf(overalRating)
                 + "\n    UserDetail=" + userDetail.toString()
-                + "\n    SupplierBlackListIds=" + supplierBlackListIds.toString()
                 + "\n    DemandsIds=" + demandsIds.toString();
     }
 

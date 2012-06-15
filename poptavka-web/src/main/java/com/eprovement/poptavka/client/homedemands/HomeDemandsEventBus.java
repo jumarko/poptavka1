@@ -80,7 +80,7 @@ public interface HomeDemandsEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     @Override
     @Event(handlers = HomeDemandsPresenter.class)
-    void getDataCount(SearchModuleDataHolder detail);
+    void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
 
     @Override
     @Event(handlers = HomeDemandsPresenter.class)

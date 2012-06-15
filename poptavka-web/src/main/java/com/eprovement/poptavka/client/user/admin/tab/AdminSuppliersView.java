@@ -4,34 +4,30 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.user.BusinessType;
+import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
-import com.eprovement.poptavka.domain.user.BusinessType;
-import com.eprovement.poptavka.domain.user.Verification;
-
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -43,25 +39,35 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
 
     interface AdminSuppliersViewUiBinder extends UiBinder<Widget, AdminSuppliersView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // DETAIL
-    @UiField SimplePanel adminSupplierDetail;
+    @UiField
+    AdminSupplierInfoView adminSupplierDetail;
     // TABLE
-    @UiField(provided = true) DataGrid<FullSupplierDetail> dataGrid;
-    private SingleSelectionModel<FullSupplierDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
+    @UiField(provided = true)
+    UniversalAsyncGrid<FullSupplierDetail> dataGrid;
+    // Editable Columns in dataGrid.
     private Column<FullSupplierDetail, String> idColumn;
     private Column<FullSupplierDetail, String> supplierNameColumn;
     private Column<FullSupplierDetail, String> supplierTypeColumn;
     private Column<FullSupplierDetail, Boolean> certifiedColumn;
     private Column<FullSupplierDetail, String> verificationColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "businessUser.businessUserData.companyName",
+                "businessUser.businessType.businessType", "certified", "verification"
+            });
     // The key provider that provides the unique ID of a FullSupplierDetail.
     private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
 
@@ -70,9 +76,10 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
             return item == null ? null : item.getSupplierId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
+
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
     /**
      * creates WIDGET view.
      */
@@ -97,7 +104,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         GWT.log("init AdminSuppliers DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<FullSupplierDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -108,11 +115,6 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-        // SELECTION MODEL
-        selectionModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<FullSupplierDetail>createCheckboxManager());
-
         // COLUMNS
         initGridColumns();
     }
@@ -122,102 +124,73 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     private void initGridColumns() {
         // Supplier ID.
-        idColumn = addColumn(new ClickableTextCell(), "ID", true, 30, new GetValue<String>() {
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), "ID", true, 30,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return String.valueOf(object.getSupplierId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((FullSupplierDetail) object).getSupplierId());
+                    }
+                });
 
         // Company name.
-        supplierNameColumn = addColumn(new EditTextCell(), "CompanyName", true, 50, new GetValue<String>() {
+        supplierNameColumn = dataGrid.addColumn(new EditTextCell(), "CompanyName", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return String.valueOf(object.getCompanyName());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((FullSupplierDetail) object).getCompanyName());
+                    }
+                });
 
         // SupplierType.
         ArrayList<String> types = new ArrayList<String>();
         for (BusinessType type : BusinessType.values()) {
             types.add(type.getValue());
         }
-        supplierTypeColumn = addColumn(new SelectionCell(types), "Type", true, 50, new GetValue<String>() {
+        supplierTypeColumn = dataGrid.addColumn(new SelectionCell(types), "Type", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return object.getBusinessType();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((FullSupplierDetail) object).getBusinessType();
+                    }
+                });
 
         // Certified.
-        certifiedColumn = addColumn(new CheckboxCell(), "Cert.", true, 15, new GetValue<Boolean>() {
+        certifiedColumn = dataGrid.addColumn(new CheckboxCell(), "Cert.", true, 15,
+                new GetValue<Boolean>() {
 
-            @Override
-            public Boolean getValue(FullSupplierDetail object) {
-                return object.isCertified();
-            }
-        });
+                    @Override
+                    public Boolean getValue(Object object) {
+                        return ((FullSupplierDetail) object).isCertified();
+                    }
+                });
 
         // Verification.
         ArrayList<String> verTypes = new ArrayList<String>();
         for (Verification type : Verification.values()) {
             verTypes.add(type.name());
         }
-        verificationColumn = addColumn(new SelectionCell(verTypes), "Verified", true, 50, new GetValue<String>() {
+        verificationColumn = dataGrid.addColumn(new SelectionCell(verTypes), "Verified", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullSupplierDetail object) {
-                return object.getVerification();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((FullSupplierDetail) object).getVerification();
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
-            final GetValue<C> getter) {
-        Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
-
-            @Override
-            public C getValue(FullSupplierDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
-
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<FullSupplierDetail> getDataGrid() {
+    public UniversalAsyncGrid<FullSupplierDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -260,14 +233,6 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     public Column<FullSupplierDetail, String> getVerificationColumn() {
         return verificationColumn;
 
-    }
-
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<FullSupplierDetail> getSelectionModel() {
-        return selectionModel;
     }
 
     //                         *** PAGER ***
@@ -333,7 +298,7 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      * @return widget AdminSupplierInfoView as it is
      */
     @Override
-    public SimplePanel getAdminSupplierDetail() {
+    public AdminSupplierInfoView getAdminSupplierDetail() {
         return adminSupplierDetail;
     }
 

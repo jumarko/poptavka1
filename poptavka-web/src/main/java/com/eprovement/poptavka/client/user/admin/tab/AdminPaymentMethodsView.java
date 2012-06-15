@@ -4,14 +4,13 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
@@ -21,11 +20,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -38,20 +37,28 @@ public class AdminPaymentMethodsView extends Composite
 
     interface AdminPaymentMethodsViewUiBinder extends UiBinder<Widget, AdminPaymentMethodsView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<PaymentMethodDetail> dataGrid;
-    private SingleSelectionModel<PaymentMethodDetail> selectionModel;
+    @UiField(provided = true)
+    UniversalAsyncGrid<PaymentMethodDetail> dataGrid;
     // Editable Columns
     private Column<PaymentMethodDetail, String> nameColumn;
     private Column<PaymentMethodDetail, String> descriptionColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "name", "description"
+            });
     // The key provider that provides the unique ID of a PaymentMethodDetail.
     private static final ProvidesKey<PaymentMethodDetail> KEY_PROVIDER = new ProvidesKey<PaymentMethodDetail>() {
 
@@ -61,9 +68,9 @@ public class AdminPaymentMethodsView extends Composite
         }
     };
 
-    //
-    //                          ***** INITIALIZATION *****
-    //
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************///
     /**
      * creates WIDGET view.
      */
@@ -88,7 +95,7 @@ public class AdminPaymentMethodsView extends Composite
         GWT.log("init AdminPaymentMethods DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<PaymentMethodDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<PaymentMethodDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -98,11 +105,6 @@ public class AdminPaymentMethodsView extends Composite
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-
-        // SELECTION MODEL
-        selectionModel = new SingleSelectionModel<PaymentMethodDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<PaymentMethodDetail>createCheckboxManager());
 
         // COLUMNS
         initTableColumns();
@@ -114,74 +116,45 @@ public class AdminPaymentMethodsView extends Composite
     private void initTableColumns() {
 
         // ID
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PaymentMethodDetail object) {
-                return String.valueOf(object.getId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((PaymentMethodDetail) object).getId());
+                    }
+                });
 
         // Name
-        nameColumn = addColumn(new EditTextCell(), "Name", 100, new GetValue<String>() {
+        nameColumn = dataGrid.addColumn(new EditTextCell(), "Name", true, 100,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PaymentMethodDetail object) {
-                return String.valueOf(object.getName());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((PaymentMethodDetail) object).getName());
+                    }
+                });
 
         // Description
-        descriptionColumn = addColumn(new EditTextCell(), "Description", 100, new GetValue<String>() {
+        descriptionColumn = dataGrid.addColumn(new EditTextCell(), "Description", true, 100,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PaymentMethodDetail object) {
-                return object.getDescription();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((PaymentMethodDetail) object).getDescription();
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(PaymentMethodDetail paymentMethodDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<PaymentMethodDetail, C> addColumn(Cell<C> cell, String headerText, int width,
-            final GetValue<C> getter) {
-        Column<PaymentMethodDetail, C> column = new Column<PaymentMethodDetail, C>(cell) {
-
-            @Override
-            public C getValue(PaymentMethodDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        column.setSortable(true);
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<PaymentMethodDetail> getDataGrid() {
+    public UniversalAsyncGrid<PaymentMethodDetail> getDataGrid() {
         return dataGrid;
     }
     /*
@@ -201,19 +174,10 @@ public class AdminPaymentMethodsView extends Composite
         return descriptionColumn;
     }
 
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<PaymentMethodDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
     //                         *** PAGER ***
     /*
      * @return pager
      */
-
     @Override
     public SimplePager getPager() {
         return pager;

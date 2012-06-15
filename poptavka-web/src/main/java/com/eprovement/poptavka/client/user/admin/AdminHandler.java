@@ -1,23 +1,21 @@
 package com.eprovement.poptavka.client.user.admin;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
-import com.mvp4g.client.annotation.EventHandler;
-import com.mvp4g.client.event.BaseEventHandler;
-
+import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
-import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.AdminRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.address.LocalityType;
 import com.eprovement.poptavka.domain.common.OrderType;
-import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
@@ -29,7 +27,10 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.mvp4g.client.annotation.EventHandler;
+import com.mvp4g.client.event.BaseEventHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +46,106 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     private AdminRPCServiceAsync generalService = null;
     private ErrorDialogPopupView errorDialog;
 
+    //*************************************************************************/
+    // Overriden methods of IEventBusData interface.                          */
+    //*************************************************************************/
+    public void onGetDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.ADMIN_ACCESS_ROLE:
+                getAdminAccessRolesCount(grid, detail);
+                break;
+            case Constants.ADMIN_CLIENTS:
+                getAdminClientsCount(grid, detail);
+                break;
+            case Constants.ADMIN_DEMANDS:
+                getAdminDemandsCount(grid, detail);
+                break;
+            case Constants.ADMIN_EMAILS_ACTIVATION:
+                getAdminEmailsActivationCount(grid, detail);
+                break;
+            case Constants.ADMIN_INVOICES:
+                getAdminInvoicesCount(grid, detail);
+                break;
+            case Constants.ADMIN_MESSAGES:
+                getAdminMessagesCount(grid, detail);
+                break;
+            case Constants.ADMIN_OFFERS:
+                getAdminOffersCount(grid, detail);
+                break;
+            case Constants.ADMIN_OUR_PAYMENT_DETAILS:
+                getAdminOurPaymentDetailsCount(grid, detail);
+                break;
+            case Constants.ADMIN_PAYMENT_METHODS:
+                getAdminOurPaymentDetailsCount(grid, detail);
+                break;
+            case Constants.ADMIN_PERMISSIONS:
+                getAdminPermissionsCount(grid, detail);
+                break;
+            case Constants.ADMIN_PREFERENCES:
+                getAdminPreferencesCount(grid, detail);
+                break;
+            case Constants.ADMIN_PROBLEMS:
+                getAdminProblemsCount(grid, detail);
+                break;
+            case Constants.ADMIN_SUPPLIERS:
+                getAdminSuppliersCount(grid, detail);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void onGetData(int start, int maxResults,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.ADMIN_ACCESS_ROLE:
+                getAdminAccessRoles(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_CLIENTS:
+                getAdminClients(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_DEMANDS:
+                getAdminDemands(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_EMAILS_ACTIVATION:
+                getAdminEmailsActivation(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_INVOICES:
+                getAdminInvoices(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_MESSAGES:
+                getAdminMessages(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_OFFERS:
+                getAdminOffers(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_OUR_PAYMENT_DETAILS:
+                getAdminOurPaymentDetails(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_PAYMENT_METHODS:
+                getAdminOurPaymentDetails(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_PERMISSIONS:
+                getAdminPermissions(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_PREFERENCES:
+                getAdminPreferences(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_PROBLEMS:
+                getAdminProblems(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.ADMIN_SUPPLIERS:
+                getAdminSuppliers(start, maxResults, detail, orderColumns);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**********************************************************************************************
      ***********************  DEMAND SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminDemandsCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminDemandsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminDemandsCount(searchDataHolder, new AsyncCallback<Long>() {
 
             @Override
@@ -60,12 +157,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminDemandsAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminDemands(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminDemands(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminDemands(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<FullDemandDetail>>() {
@@ -193,7 +290,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  SUPPLIER SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminSuppliersCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminSuppliersCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -203,12 +300,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminSuppliersAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminSuppliers(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminSuppliers(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminSuppliers(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<FullSupplierDetail>>() {
@@ -335,7 +432,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  OFFER SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminOffersCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminOffersCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminOffersCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -345,12 +442,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminOffersAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminOffers(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminOffers(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminOffers(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<OfferDetail>>() {
@@ -387,7 +484,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  CLIENT SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminClientsCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminClientsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminClientsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -399,12 +496,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminClientsAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminClients(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminClients(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminClients(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<ClientDetail>>() {
@@ -441,7 +538,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  ACCESS ROLE SECTION. *************************************************
      **********************************************************************************************/
-    public void onGetAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminAccessRolesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminAccessRolesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -453,12 +550,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminAccessRoleAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminAccessRoles(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<AccessRoleDetail>>() {
@@ -497,7 +594,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  EMAIL ACTIVATION SECTION.*********************************************
      **********************************************************************************************/
-    public void onGetAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminEmailsActivationCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminEmailsActivationCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -509,12 +606,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminEmailsActivationAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminEmailsActivation(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<ActivationEmailDetail>>() {
@@ -553,7 +650,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  INVOICE SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminInvoicesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminInvoicesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -563,12 +660,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminInvoicesAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminInvoices(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminInvoices(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminInvoices(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<InvoiceDetail>>() {
@@ -603,7 +700,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  Message SECTION. *****************************************************
      **********************************************************************************************/
-    public void onGetAdminMessagesCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminMessagesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminMessagesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -613,12 +710,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminMessagesAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminMessages(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminMessages(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminMessages(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<MessageDetail>>() {
@@ -653,7 +750,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  OUR PAYMENT DETAILS SECTION. *****************************************
      **********************************************************************************************/
-    public void onGetAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminOurPaymentDetailsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminOurPaymentDetailsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -663,12 +760,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminOurPaymentDetailAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminOurPaymentDetails(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminOurPaymentDetails(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminOurPaymentDetails(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<PaymentDetail>>() {
@@ -680,7 +777,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                     }
                     @Override
                     public void onSuccess(List<PaymentDetail> result) {
-                        eventBus.showAdminTabOurPaymentDetails(result);
+                        eventBus.displayAdminTabOurPaymentDetails(result);
                     }
                 });
     }
@@ -703,7 +800,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  PAYMENT METHOD SECTION. *****************************************
      **********************************************************************************************/
-    public void onGetAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminPaymentMethodsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminPaymentMethodsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -713,12 +810,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminPaymentMethodAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminPaymentMethods(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminPaymentMethods(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminPaymentMethods(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<PaymentMethodDetail>>() {
@@ -753,7 +850,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  PERMISSIONS SECTION. *****************************************
      **********************************************************************************************/
-    public void onGetAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminPermissionsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminPermissionsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -763,12 +860,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminPermissionAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminPermissions(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminPermissions(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminPermissions(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<PermissionDetail>>() {
@@ -803,7 +900,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  PREFERENCES SECTION. *****************************************
      **********************************************************************************************/
-    public void onGetAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminPreferencesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminPreferencesCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -813,12 +910,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminPreferenceAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminPreferences(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminPreferences(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminPreferences(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<PreferenceDetail>>() {
@@ -853,7 +950,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**********************************************************************************************
      ***********************  PROBLEM SECTION. *****************************************
      **********************************************************************************************/
-    public void onGetAdminProblemsCount(SearchModuleDataHolder searchDataHolder) {
+    public void getAdminProblemsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
         generalService.getAdminProblemsCount(searchDataHolder, new AsyncCallback<Long>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -863,12 +960,12 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             }
             @Override
             public void onSuccess(Long result) {
-                eventBus.createAdminProblemAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetAdminProblems(int start, int count, SearchModuleDataHolder searchDataHolder,
+    public void getAdminProblems(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminProblems(start, count, searchDataHolder, orderColumns,
                 new AsyncCallback<List<ProblemDetail>>() {

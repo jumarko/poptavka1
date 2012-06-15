@@ -4,17 +4,16 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
@@ -24,13 +23,13 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
+import java.util.Arrays;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -43,20 +42,28 @@ public class AdminEmailActivationsView extends Composite
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminEmailActivationsView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<ActivationEmailDetail> dataGrid;
+    @UiField(provided = true)
+    UniversalAsyncGrid<ActivationEmailDetail> dataGrid;
     // Editable Columns
     private Column<ActivationEmailDetail, String> activationColumn;
     private Column<ActivationEmailDetail, Date> timeoutColumn;
-    private SingleSelectionModel<ActivationEmailDetail> selectionModel;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "activationLink", "timeout"
+            });
     // The key provider that provides the unique ID of a EmailActivationDetail.
     private static final ProvidesKey<ActivationEmailDetail> KEY_PROVIDER = new ProvidesKey<ActivationEmailDetail>() {
 
@@ -65,10 +72,9 @@ public class AdminEmailActivationsView extends Composite
             return item == null ? null : item.getId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
-
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
     /**
      * creates WIDGET view.
      */
@@ -93,7 +99,7 @@ public class AdminEmailActivationsView extends Composite
         GWT.log("init AdminEmailActivations DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<ActivationEmailDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<ActivationEmailDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -103,11 +109,6 @@ public class AdminEmailActivationsView extends Composite
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-
-        //SELECTION MODEL
-        selectionModel = new SingleSelectionModel<ActivationEmailDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<ActivationEmailDetail>createCheckboxManager());
 
         // COLUMNS
         initTableColumns();
@@ -119,75 +120,46 @@ public class AdminEmailActivationsView extends Composite
     private void initTableColumns() {
 
         // ID
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ActivationEmailDetail object) {
-                return String.valueOf(object.getId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((ActivationEmailDetail) object).getId());
+                    }
+                });
 
         // Activation link
-        activationColumn = addColumn(new EditTextCell(), "ActivationLink", 100, new GetValue<String>() {
+        activationColumn = dataGrid.addColumn(new EditTextCell(), "ActivationLink", true, 100,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ActivationEmailDetail object) {
-                return object.getActivationLink();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((ActivationEmailDetail) object).getActivationLink();
+                    }
+                });
 
         // timeout
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        timeoutColumn = addColumn(new DatePickerCell(dateFormat), "Timeout", 100, new GetValue<Date>() {
+        timeoutColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Timeout", true, 100,
+                new GetValue<Date>() {
 
-            @Override
-            public Date getValue(ActivationEmailDetail object) {
-                return object.getTimeout();
-            }
-        });
+                    @Override
+                    public Date getValue(Object object) {
+                        return ((ActivationEmailDetail) object).getTimeout();
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(ActivationEmailDetail emailActivationDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<ActivationEmailDetail, C> addColumn(Cell<C> cell, String headerText, int width,
-            final GetValue<C> getter) {
-        Column<ActivationEmailDetail, C> column = new Column<ActivationEmailDetail, C>(cell) {
-
-            @Override
-            public C getValue(ActivationEmailDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        column.setSortable(true);
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<ActivationEmailDetail> getDataGrid() {
+    public UniversalAsyncGrid<ActivationEmailDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -205,14 +177,6 @@ public class AdminEmailActivationsView extends Composite
     @Override
     public Column<ActivationEmailDetail, String> getActivationLinkColumn() {
         return activationColumn;
-    }
-
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<ActivationEmailDetail> getSelectionModel() {
-        return selectionModel;
     }
 
     //                         *** PAGER ***

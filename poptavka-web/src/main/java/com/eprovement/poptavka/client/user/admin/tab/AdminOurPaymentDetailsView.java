@@ -4,39 +4,24 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.DatePickerCell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
 import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
-
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
-import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
-
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,106 +32,41 @@ public class AdminOurPaymentDetailsView extends Composite
         implements AdminOurPaymentDetailsPresenter.AdminOurPaymentDetailsInterface {
 
     private static AdminDemandsViewUiBinder uiBinder = GWT.create(AdminDemandsViewUiBinder.class);
+
+    interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminOurPaymentDetailsView> {
+    }
+//*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
     @UiField
     Button commit, rollback, refresh;
     @UiField
     Label changesLabel;
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getDemandTypeColumn() {
-        return demandTypeColumn;
-    }
-
-    /**
-     * @return the demandTypeColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getDemandTitleColumn() {
-        return demandTitleColumn;
-    }
-
-    /**
-     * @return the demandStatusColumn
-     */
-    @Override
-    public Column<FullDemandDetail, String> getDemandStatusColumn() {
-        return demandStatusColumn;
-    }
-
-    /**
-     * @return the demandExpirationColumn
-     */
-    @Override
-    public Column<FullDemandDetail, Date> getDemandExpirationColumn() {
-        return demandExpirationColumn;
-    }
-
-    /**
-     * @return the demandEndColumn
-     */
-    @Override
-    public Column<FullDemandDetail, Date> getDemandEndColumn() {
-        return demandEndColumn;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public DataGrid<FullDemandDetail> getDataGrid() {
-        return dataGrid;
-    }
-
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
-    /**
-     * @return the adminDemandDetail
-     */
-    @Override
-    public SimplePanel getAdminDemandDetail() {
-        return adminDemandDetail;
-    }
-
-    interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminOurPaymentDetailsView> {
-    }
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
-    @UiField(provided = true)
-    DataGrid<FullDemandDetail> dataGrid;
-    /**
-     * The pager used to change the range of data. It must be created before uiBinder.createAndBindUi(this)
-     */
+    // PAGER
     @UiField(provided = true)
     SimplePager pager;
     @UiField(provided = true)
     ListBox pageSizeCombo;
-    /**
-     * Detail of selected Demand.
-     */
-    @UiField
-    SimplePanel adminDemandDetail;
-    /**
-     * Data provider that will cell table with data.
-     */
-    private SingleSelectionModel<FullDemandDetail> selectionModel;
-    /** Editable Columns in dataGrid. **/
-    private Column<FullDemandDetail, String> demandTypeColumn;
-    private Column<FullDemandDetail, String> demandTitleColumn;
-    private Column<FullDemandDetail, String> demandStatusColumn;
-    private Column<FullDemandDetail, Date> demandExpirationColumn;
-    private Column<FullDemandDetail, Date> demandEndColumn;
+    // TABLE
+    @UiField(provided = true)
+    UniversalAsyncGrid<PaymentDetail> dataGrid;
+    // Editable Columns in dataGrid. *
+    private Column<PaymentDetail, String> bankAccountColumn;
+    private Column<PaymentDetail, String> bankCodeColumn;
+    private Column<PaymentDetail, String> ibanColumn;
+    private Column<PaymentDetail, String> swiftCodeColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "bankAccount", "bankCode", "iban", "swiftCode"
+            });
+    // The key provider that provides the unique ID of a PaymentDetail.
+    private static final ProvidesKey<PaymentDetail> KEY_PROVIDER = new ProvidesKey<PaymentDetail>() {
+
+        @Override
+        public Object getKey(PaymentDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
 
     @Override
     public void createView() {
@@ -168,7 +88,7 @@ public class AdminOurPaymentDetailsView extends Composite
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new DataGrid<FullDemandDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<PaymentDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -179,10 +99,6 @@ public class AdminOurPaymentDetailsView extends Composite
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-        selectionModel = new SingleSelectionModel<FullDemandDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<FullDemandDetail>createCheckboxManager());
-
         // Initialize the columns.
         initTableColumns();
     }
@@ -192,127 +108,83 @@ public class AdminOurPaymentDetailsView extends Composite
      */
     private void initTableColumns() {
         // Demand ID.
-        addColumn(new TextCell(), "DID", 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return String.valueOf(object.getDemandId());
-            }
-        });
-
-        // Clietn ID.
-        addColumn(new TextCell(), "CID", 50, new GetValue<String>() {
-
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return String.valueOf(object.getClientId());
-            }
-        });
-
-        // DemandTitle
-        demandTitleColumn = addColumn(new EditTextCell(), "Title", 160, new GetValue<String>() {
-
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return String.valueOf(object.getTitle());
-            }
-        });
-
-        // DemandType.
-        List<String> demandTypeNames = new ArrayList<String>();
-        for (ClientDemandType clientDemandType : ClientDemandType.values()) {
-            // TODO ivlcek - add Localizable name of ClientDemandType enum
-            demandTypeNames.add(clientDemandType.getValue());
-        }
-        demandTypeColumn = addColumn(new SelectionCell(demandTypeNames), "Type", 100, new GetValue<String>() {
-
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return object.getDemandType();
-            }
-        });
-
-        // DemandStatus.
-        List<String> demandStatusNames = new ArrayList<String>();
-        for (DemandStatusType demandStatusType : DemandStatusType.values()) {
-            demandStatusNames.add(demandStatusType.getValue());
-        }
-        demandStatusColumn = addColumn(new SelectionCell(demandStatusNames), "Status", 140, new GetValue<String>() {
-
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return object.getDemandStatus();
-            }
-        });
-
-        // Demand expiration date.
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration", 40,
-                new GetValue<Date>() {
+        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
                     @Override
-                    public Date getValue(FullDemandDetail fullDemandDetail) {
-                        return fullDemandDetail.getValidToDate();
+                    public String getValue(Object object) {
+                        return String.valueOf(((PaymentDetail) object).getId());
                     }
                 });
 
-        // Demand end date.
-        demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End", 40,
-                new GetValue<Date>() {
+        // Bank Account
+        bankAccountColumn = dataGrid.addColumn(new EditTextCell(), "BankAccount", true, 50,
+                new GetValue<String>() {
 
                     @Override
-                    public Date getValue(FullDemandDetail fullDemandDetail) {
-                        return fullDemandDetail.getEndDate();
+                    public String getValue(Object object) {
+                        return String.valueOf(((PaymentDetail) object).getBankAccount());
                     }
                 });
+
+        // Bank Code
+        bankCodeColumn = dataGrid.addColumn(new EditTextCell(), "BankCode", true, 160,
+                new GetValue<String>() {
+
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((PaymentDetail) object).getBankCode());
+                    }
+                });
+
+        // Iban
+        ibanColumn = dataGrid.addColumn(new EditTextCell(), "Iban", true, 100,
+                new GetValue<String>() {
+
+                    @Override
+                    public String getValue(Object object) {
+                        return ((PaymentDetail) object).getIban();
+                    }
+                });
+
+        // Swift Code
+        swiftCodeColumn = dataGrid.addColumn(new EditTextCell(), "SwiftCode", true, 140,
+                new GetValue<String>() {
+
+                    @Override
+                    public String getValue(Object object) {
+                        return ((PaymentDetail) object).getSwiftCode();
+                    }
+                });
+
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
 
-        C getValue(FullDemandDetail fullDemandDetail);
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell, String headerText, int width,
-            final GetValue<C> getter) {
-        Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
-
-            @Override
-            public C getValue(FullDemandDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
-            column.setSortable(true);
-            dataGrid.addColumn(column, headerText);
-        }
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
+    @Override
+    public UniversalAsyncGrid<PaymentDetail> getDataGrid() {
+        return dataGrid;
     }
-    /**
-     * The key provider that provides the unique ID of a FullDemandDetail.
-     */
-    private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
 
-        @Override
-        public Object getKey(FullDemandDetail item) {
-            return item == null ? null : item.getDemandId();
-        }
-    };
+    public Column<PaymentDetail, String> getBankAccountColumn() {
+        return bankAccountColumn;
+    }
+
+    public Column<PaymentDetail, String> getBankCodeColumn() {
+        return bankCodeColumn;
+    }
+
+    public Column<PaymentDetail, String> getIbanColumn() {
+        return ibanColumn;
+    }
+
+    public Column<PaymentDetail, String> getSwiftCodeColumn() {
+        return swiftCodeColumn;
+    }
 
     @Override
     public SimplePager getPager() {

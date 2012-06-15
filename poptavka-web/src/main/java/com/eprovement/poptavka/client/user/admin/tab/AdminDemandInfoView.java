@@ -4,6 +4,9 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
+import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -20,10 +23,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
-import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
 import java.math.BigDecimal;
 
 /**
@@ -34,9 +33,7 @@ public class AdminDemandInfoView extends Composite implements
         AdminDemandInfoPresenter.AdminDemandInfoInterface {
 
     private static AdminDemandInfoViewUiBinder uiBinder = GWT.create(AdminDemandInfoViewUiBinder.class);
-
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-
     private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     interface AdminDemandInfoViewUiBinder extends
@@ -152,8 +149,7 @@ public class AdminDemandInfoView extends Composite implements
         return locPath;
     }
 
-    @Override
-    public void createView() {
+    public AdminDemandInfoView() {
         initWidget(uiBinder.createAndBindUi(this));
         editCatPanel.setVisible(false);
         editLocPanel.setVisible(false);

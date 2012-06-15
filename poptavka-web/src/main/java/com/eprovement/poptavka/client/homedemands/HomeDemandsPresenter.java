@@ -22,8 +22,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +120,7 @@ public class HomeDemandsPresenter extends BasePresenter<
 
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
-        view.getDataGrid().getDataCount(eventBus, searchDataHolder, getGridColumns());
+        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
 
         this.searchDataHolder = searchDataHolder;
     }
@@ -143,21 +141,13 @@ public class HomeDemandsPresenter extends BasePresenter<
         view.getDemandDetailPanel().setVisible(true);
         view.getOfferBtn().setVisible(true);
         view.getDemandDetail().setDemanDetail(demand);
-//        view.setDemand(demand);
     }
 
-    public List<String> getGridColumns() {
-        if (Storage.getCurrentlyLoadedView() == Constants.HOME_DEMANDS) {
-            final String[] columnNames = new String[]{
-                "createdDate", "category", "title", "locality", "price"
-            };
-            return Arrays.asList(columnNames);
-        }
-        return new ArrayList<String>();
-    }
-
-    public void onGetDataCount(SearchModuleDataHolder detail) {
-        eventBus.getDemandsCount(view.getDataGrid(), detail);
+    /**************************************************************************/
+    /* Getter methods                                                         */
+    /**************************************************************************/
+    public void onGetDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+        eventBus.getDemandsCount(grid, detail);
     }
 
     public void onGetData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {

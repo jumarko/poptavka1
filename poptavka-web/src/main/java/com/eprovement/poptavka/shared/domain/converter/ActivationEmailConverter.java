@@ -14,7 +14,7 @@ public class ActivationEmailConverter extends AbstractConverter<ActivationEmail,
 
         detail.setId(source.getId());
         detail.setActivationLink(source.getActivationLink());
-        detail.setTimeout(source.getValidTo());
+        detail.setTimeout(convertDate(source.getValidTo()));
 
         return detail;
     }

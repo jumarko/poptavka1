@@ -4,15 +4,13 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
@@ -22,11 +20,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -38,20 +36,28 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminPreferencesView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<PreferenceDetail> dataGrid;
-    private SingleSelectionModel<PreferenceDetail> selectionModel;
+    @UiField(provided = true)
+    UniversalAsyncGrid<PreferenceDetail> dataGrid;
     // Editable Columns
     private Column<PreferenceDetail, String> valueColumn;
     private Column<PreferenceDetail, String> descriptionColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "key", "value", "description"
+            });
     // The key provider that provides the unique ID of a PreferenceDetail.
     private static final ProvidesKey<PreferenceDetail> KEY_PROVIDER = new ProvidesKey<PreferenceDetail>() {
 
@@ -60,9 +66,10 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
             return item == null ? null : item.getId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
+
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************///
     /**
      * creates WIDGET view.
      */
@@ -87,7 +94,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
         GWT.log("init AdminPreferences DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<PreferenceDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<PreferenceDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -98,11 +105,6 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-        // SELECTION MODEL
-        selectionModel = new SingleSelectionModel<PreferenceDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<PreferenceDetail>createCheckboxManager());
-
         // COLUMNS
         initTableColumns();
     }
@@ -112,87 +114,55 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
      */
     private void initTableColumns() {
         // ID
-        addColumn(new TextCell(), "ID", 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PreferenceDetail object) {
-                return String.valueOf(object.getId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((PreferenceDetail) object).getId());
+                    }
+                });
 
         // key
-        addColumn(new TextCell(), "Key", 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "Key", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PreferenceDetail object) {
-                return object.getKey();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((PreferenceDetail) object).getKey();
+                    }
+                });
 
         // Value
-        valueColumn = addColumn(new EditTextCell(), "Value", 100, new GetValue<String>() {
+        valueColumn = dataGrid.addColumn(new EditTextCell(), "Value", true, 100,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PreferenceDetail object) {
-                return object.getValue();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((PreferenceDetail) object).getValue();
+                    }
+                });
 
         // description
-        descriptionColumn = addColumn(new EditTextCell(), "Description", 160, new GetValue<String>() {
+        descriptionColumn = dataGrid.addColumn(new EditTextCell(), "Description", true, 160,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(PreferenceDetail object) {
-                return object.getDescription();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((PreferenceDetail) object).getDescription();
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(PreferenceDetail preferenceDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<PreferenceDetail, C> addColumn(Cell<C> cell, String headerText, int width,
-            final GetValue<C> getter) {
-        Column<PreferenceDetail, C> column = new Column<PreferenceDetail, C>(cell) {
-
-            @Override
-            public C getValue(PreferenceDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (headerText.endsWith("<br/>")) {
-            dataGrid.addColumn(column, SafeHtmlUtils.fromSafeConstant("<br/>"));
-        } else {
-            column.setSortable(true);
-            dataGrid.addColumn(column, headerText);
-        }
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<PreferenceDetail> getDataGrid() {
+    public UniversalAsyncGrid<PreferenceDetail> getDataGrid() {
         return dataGrid;
     }
     /*
@@ -210,14 +180,6 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
     @Override
     public Column<PreferenceDetail, String> getDescriptionColumn() {
         return descriptionColumn;
-    }
-
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<PreferenceDetail> getSelectionModel() {
-        return selectionModel;
     }
 
     //                         *** PAGER ***

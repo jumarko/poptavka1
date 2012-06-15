@@ -4,15 +4,18 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.client.user.admin.AdminEventBus;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -21,20 +24,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import com.eprovement.poptavka.client.main.Constants;
-import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.user.admin.AdminEventBus;
-import com.eprovement.poptavka.domain.common.OrderType;
-import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,16 +45,6 @@ public class AdminAccessRolesPresenter
     private Map<Long, AccessRoleDetail> originalData = new HashMap<Long, AccessRoleDetail>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
-    //for asynch data retrieving
-    private AsyncDataProvider dataProvider = null;
-    private int start = 0;
-    //for asynch data sorting
-    private AsyncHandler sortHandler = null;
-    private final Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    private final String[] columnNames = new String[]{
-        "id", "code", "name", "description", "permissions"
-    };
-    private List<String> gridColumns = Arrays.asList(columnNames);
 
     /**
      * Interface for widget AdminAccessRolesView
@@ -69,15 +52,13 @@ public class AdminAccessRolesPresenter
     public interface AdminAccessRolesInterface extends LazyView {
 
         // TABLE
-        DataGrid<AccessRoleDetail> getDataGrid();
+        UniversalAsyncGrid<AccessRoleDetail> getDataGrid();
 
         Column<AccessRoleDetail, String> getNameColumn();
 
         Column<AccessRoleDetail, String> getDescriptionColumn();
 
         Column<AccessRoleDetail, String> getPermissionsColumn();
-
-        SingleSelectionModel<AccessRoleDetail> getSelectionModel();
 
         // PAGER
         SimplePager getPager();
@@ -99,85 +80,40 @@ public class AdminAccessRolesPresenter
         Widget getWidgetView();
     }
 
-    /*** INIT ***
-     *
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
+    /**
      * Initial methods for handling starting.
+     *
      * @param filter
      */
     public void onInitAccessRoles(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_ACCESS_ROLE);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        eventBus.getAdminAccessRolesCount(searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
-    /*** DISPLAY ***
-     *
+    //*************************************************************************/
+    //                              DISPLAY                                   */
+    //*************************************************************************/
+    /**
      * Displays retrieved data.
+     *
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabAccessRoles(List<AccessRoleDetail> accessRoles) {
-        dataProvider.updateRowData(start, accessRoles);
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
+        view.getDataGrid().updateRowData(accessRoles);
         Storage.hideLoading();
     }
 
-    /*** DATA PROVIDER ***
-     *
-     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
-     * @param totalFound - count of all data in DB displayed in pager
-     */
-    public void onCreateAdminAccessRoleAsyncDataProvider(final int totalFound) {
-        this.start = 0;
-        orderColumns.clear();
-        orderColumns.put(columnNames[1], OrderType.ASC);
-        dataProvider = new AsyncDataProvider<AccessRoleDetail>() {
-
-            @Override
-            protected void onRangeChanged(HasData<AccessRoleDetail> display) {
-                display.setRowCount(totalFound);
-                start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
-                eventBus.getAdminAccessRoles(start, start + length, searchDataHolder, orderColumns);
-                Storage.showLoading(Storage.MSGS.getAccessRoleData());
-            }
-        };
-        this.dataProvider.addDataDisplay(view.getDataGrid());
-        createAsyncSortHandler();
-    }
-
-    /*** SORTING HANDLER ***
-     *
-     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
-     */
-    public void createAsyncSortHandler() {
-        sortHandler = new AsyncHandler(view.getDataGrid()) {
-
-            @Override
-            public void onColumnSort(ColumnSortEvent event) {
-                orderColumns.clear();
-                OrderType orderType = OrderType.DESC;
-                if (event.isSortAscending()) {
-                    orderType = OrderType.ASC;
-                }
-                Column<AccessRoleDetail, String> column = (Column<AccessRoleDetail, String>) event.getColumn();
-                if (column == null) {
-                    return;
-                }
-                orderColumns.put(gridColumns.get(
-                        view.getDataGrid().getColumnIndex(column)), orderType);
-
-                eventBus.getAdminAccessRoles(start, view.getPageSize(), searchDataHolder, orderColumns);
-            }
-        };
-        view.getDataGrid().addColumnSortHandler(sortHandler);
-    }
-
-    /*** DATA CHANGE ***
-     *
+    //*************************************************************************/
+    //                              DATA CHANGE                               */
+    //*************************************************************************/
+    /**
      * Store changes made in table data.
      */
     public void onAddAccessRoleToCommit(AccessRoleDetail data) {
@@ -208,8 +144,10 @@ public class AdminAccessRolesPresenter
         dialogBox.show();
     }
 
-    /*** ACTION HANDLERS ***
-     *
+    //*************************************************************************/
+    //                           ACTION HANDLERS                              */
+    //*************************************************************************/
+    /**
      * Register handlers for widget actions.
      */
     @Override
@@ -226,7 +164,7 @@ public class AdminAccessRolesPresenter
     }
 
     /*
-     * TABLE PAGE CHANGER
+     * TABLE PAGE HANDLER
      */
     private void addPageChangedHandler() {
         view.getPageSizeCombo().addChangeHandler(new ChangeHandler() {
@@ -353,11 +291,8 @@ public class AdminAccessRolesPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminAccessRolesCount(searchDataHolder);
+                    view.getDataGrid().updateRowData(new ArrayList<AccessRoleDetail>());
+                    view.getDataGrid().getDataCount(eventBus, searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }

@@ -2,8 +2,9 @@
 <ui:UiBinder
     xmlns:ui="urn:ui:com.google.gwt.uibinder"
     xmlns:g="urn:import:com.google.gwt.user.client.ui"
+    xmlns:ug="urn:import:com.eprovement.poptavka.client.user.widget.grid"
+    xmlns:d="urn:import:com.eprovement.poptavka.client.user.admin.tab"
     xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-    xmlns:lsv="com.eprovement.poptavka.client.main.common.locality"
     ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
     ui:generateLocales='default'>
 
@@ -30,13 +31,13 @@
                     </g:HorizontalPanel>
                 </g:south>
                 <g:center>
-                    <c:DataGrid ui:field='dataGrid' />
+                    <ug:UniversalAsyncGrid ui:field='dataGrid' />
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>
         <g:center>
             <g:ScrollPanel>
-                <g:SimplePanel ui:field="adminDemandDetail"></g:SimplePanel>
+                <d:AdminDemandInfoView ui:field="adminDemandDetail"/>
             </g:ScrollPanel>
         </g:center>
     </g:SplitLayoutPanel>

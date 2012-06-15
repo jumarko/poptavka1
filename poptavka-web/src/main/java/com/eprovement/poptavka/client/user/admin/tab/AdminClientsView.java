@@ -4,27 +4,25 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
-
-import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -36,26 +34,35 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
 
     interface AdminClientsViewUiBinder extends UiBinder<Widget, AdminClientsView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // DETAIL
-    @UiField AdminClientInfoView adminClientDetail;
-//    @UiField DemandDetailView demandDetail;
+    @UiField
+    AdminClientInfoView adminClientDetail;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<ClientDetail> dataGrid;
-    private SingleSelectionModel<ClientDetail> selectionModel;
+    @UiField(provided = true)
+    UniversalAsyncGrid<ClientDetail> dataGrid;
     // Editable Columns
     private Column<ClientDetail, String> idColumn;
     private Column<ClientDetail, String> companyColumn;
     private Column<ClientDetail, String> firstNameColumn;
     private Column<ClientDetail, String> lastNameColumn;
     private Column<ClientDetail, String> ratingColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "businessUser.businessUserData.companyName", "businessUser.businessUserData.firstName",
+                "businessUser.businessUserData.lastName", "overalRating"
+            });
     // The key provider that provides the unique ID of a ClientDetail.
     private static final ProvidesKey<ClientDetail> KEY_PROVIDER = new ProvidesKey<ClientDetail>() {
 
@@ -64,10 +71,9 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
             return item == null ? null : item.getId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
-
+    //*************************************************************************/
+    //                              INITIALIZATION                            */
+    //*************************************************************************/
     /**
      * creates WIDGET view.
      */
@@ -92,7 +98,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         GWT.log("init AdminClientsView DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<ClientDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<ClientDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -102,10 +108,6 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-
-        // SELECTION MODEL
-        selectionModel = new SingleSelectionModel<ClientDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel());
 
         // COLUMNS
         initTableColumns();
@@ -117,98 +119,69 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        idColumn = addColumn(new ClickableTextCell(), "ID", true, 50, new GetValue<String>() {
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ClientDetail object) {
-                return String.valueOf(object.getId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((ClientDetail) object).getId());
+                    }
+                });
 
         // company
-        companyColumn = addColumn(new EditTextCell(), "Company", true, 50, new GetValue<String>() {
+        companyColumn = dataGrid.addColumn(new EditTextCell(), "Company", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ClientDetail object) {
-                return String.valueOf(object.getUserDetail().getCompanyName());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((ClientDetail) object).getUserDetail().getCompanyName());
+                    }
+                });
 
         // firstName
-        firstNameColumn = addColumn(new EditTextCell(), "Name", true, 80, new GetValue<String>() {
+        firstNameColumn = dataGrid.addColumn(new EditTextCell(), "Name", true, 80,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ClientDetail object) {
-                return object.getUserDetail().getFirstName();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((ClientDetail) object).getUserDetail().getFirstName();
+                    }
+                });
 
         // lastName
-        lastNameColumn = addColumn(new EditTextCell(), "Surname", true, 80, new GetValue<String>() {
+        lastNameColumn = dataGrid.addColumn(new EditTextCell(), "Surname", true, 80,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ClientDetail object) {
-                return object.getUserDetail().getLastName();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((ClientDetail) object).getUserDetail().getLastName();
+                    }
+                });
 
         // rating
-        ratingColumn = addColumn(new EditTextCell(), "Rating", true, 40, new GetValue<String>() {
+        ratingColumn = dataGrid.addColumn(new EditTextCell(), "Rating", true, 40,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ClientDetail object) {
-                if (object.getOveralRating() == -1) {
-                    return "";
-                } else {
-                    return Integer.toString(object.getOveralRating());
-                }
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        if (((ClientDetail) object).getOveralRating() == -1) {
+                            return "";
+                        } else {
+                            return Integer.toString(((ClientDetail) object).getOveralRating());
+                        }
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(ClientDetail clientDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<ClientDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
-            final GetValue<C> getter) {
-        Column<ClientDetail, C> column = new Column<ClientDetail, C>(cell) {
-
-            @Override
-            public C getValue(ClientDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                     GETTER METHODS (defined by interface)              */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<ClientDetail> getDataGrid() {
+    public UniversalAsyncGrid<ClientDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -250,14 +223,6 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     @Override
     public Column<ClientDetail, String> getRatingColumn() {
         return ratingColumn;
-    }
-
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<ClientDetail> getSelectionModel() {
-        return selectionModel;
     }
 
     //                         *** PAGER ***

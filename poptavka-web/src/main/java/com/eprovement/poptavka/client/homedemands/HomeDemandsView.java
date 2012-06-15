@@ -4,6 +4,11 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.main.common.OverflowComposite;
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -21,16 +26,13 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.eprovement.poptavka.client.main.common.OverflowComposite;
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This view is to replace DemandsView.java.
+ *
  * @author praso
  */
 public class HomeDemandsView extends OverflowComposite implements HomeDemandsPresenter.HomeDemandsViewInterface {
@@ -42,6 +44,10 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     // Table
     @UiField(provided = true)
     UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "createdDate", "category", "title", "locality", "price"
+            });
     // Pager
     @UiField(provided = true)
     SimplePager pager;
@@ -56,7 +62,6 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     SimplePanel demandDetailPanel;
     @UiField
     Button offerBtn;
-
     private LocalizableMessages bundle = (LocalizableMessages) GWT.create(LocalizableMessages.class);
     private NumberFormat currencyFormat = NumberFormat.getFormat(bundle.currencyFormat());
 
@@ -110,7 +115,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      */
     private void initCellTable() {
         // Create a CellTable.
-        dataGrid = new UniversalAsyncGrid<FullDemandDetail>();
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns);
         dataGrid.setWidth("800px");
         dataGrid.setHeight("500px");
 //        dataGrid.setEmptyTableWidget(new Label("No data available."));

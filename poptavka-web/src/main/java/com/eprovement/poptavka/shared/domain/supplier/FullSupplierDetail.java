@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class FullSupplierDetail implements Serializable {
 
@@ -45,11 +46,11 @@ public class FullSupplierDetail implements Serializable {
     //for simplicity List<AddressDetail> and single String of city, street, zip added.
     //in poptavka 2.0 implement GWT validation for List<AddressDetail> addresses = new ArrayList<AddressDetail>();
     //in poptavka 2.0 when implement validation for upper code, delete below code:
-    @NotNull(message = "{supplierNotNullStreet}")
+    @NotEmpty(message = "{supplierNotNullStreet}")
     private String street;
-    @NotNull(message = "{supplierNotNullCity}")
+    @NotEmpty(message = "{supplierNotNullCity}")
     private String city;
-    @NotNull(message = "{supplierNotNullZipCode}")
+    @NotEmpty(message = "{supplierNotNullZipCode}")
     private String zipCode;
     //Others
     private int overallRating = -1;

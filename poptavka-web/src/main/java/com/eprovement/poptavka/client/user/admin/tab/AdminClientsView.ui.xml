@@ -3,6 +3,7 @@
   xmlns:ui="urn:ui:com.google.gwt.uibinder"
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+  xmlns:ug="urn:import:com.eprovement.poptavka.client.user.widget.grid"
   xmlns:detail="urn:import:com.eprovement.poptavka.client.user.admin.tab"
   xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
 
@@ -27,7 +28,7 @@
                     </g:HorizontalPanel>
                 </g:south>
                 <g:center>
-                    <c:DataGrid ui:field='dataGrid' />
+                    <ug:UniversalAsyncGrid ui:field='dataGrid' />
                 </g:center>
             </g:DockLayoutPanel>
         </g:west>

@@ -4,19 +4,18 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
@@ -24,14 +23,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.type.OfferStateType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -43,27 +42,34 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
 
     interface AdministrationViewUiBinder extends UiBinder<Widget, AdminOffersView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // DETAIL
 //    @UiField AdminOfferInfoView adminOfferDetail;
     // TABLE
-    @UiField(provided = true) DataGrid<OfferDetail> dataGrid;
-    private SingleSelectionModel<OfferDetail> selectionModel;
+    @UiField(provided = true)
+    UniversalAsyncGrid<OfferDetail> dataGrid;
     // Editable Columns
     private Column<OfferDetail, String> priceColumn;
     private Column<OfferDetail, String> offerStatusColumn;
     private Column<OfferDetail, Date> offerCreationDateColumn;
     private Column<OfferDetail, Date> offerFinishDateColumn;
-
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "demand.id", "supplier.id", "price", "state", "", "finnishDate"
+            });
+    // i18n
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-
     private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
     // The key provider that provides the unique ID of a DemandDetail.
     private static final ProvidesKey<OfferDetail> KEY_PROVIDER = new ProvidesKey<OfferDetail>() {
@@ -73,10 +79,10 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
             return item == null ? null : item.getId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
 
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************///
     /**
      * creates WIDGET view.
      */
@@ -103,7 +109,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new DataGrid<OfferDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<OfferDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -114,11 +120,6 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
 
-        // Add a selection model to handle user selection.
-        selectionModel = new SingleSelectionModel<OfferDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<OfferDetail>createCheckboxManager());
-
         // Initialize the columns.
         initGridColumns();
     }
@@ -128,112 +129,86 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
      */
     private void initGridColumns() {
         // Offer ID
-        addColumn(new TextCell(), "OID", true, 40, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "OID", true, 40,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(OfferDetail offerDetail) {
-                return Long.toString(offerDetail.getId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return Long.toString(((OfferDetail) object).getId());
+                    }
+                });
         // Demand ID.
-        addColumn(new TextCell(), "DID", true, 40, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "DID", true, 40,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(OfferDetail offerDetail) {
-                return Long.toString(offerDetail.getDemandId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return Long.toString(((OfferDetail) object).getDemandId());
+                    }
+                });
         // Supplier ID
-        addColumn(new TextCell(), "SID", true, 40, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "SID", true, 40,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(OfferDetail offerDetail) {
-                return Long.toString(offerDetail.getSupplierId());
-            }
-        });
-        priceColumn = addColumn(new EditTextCell(), "Price", true, 40, new GetValue<String>() {
+                    @Override
+                    public String getValue(Object object) {
+                        return Long.toString(((OfferDetail) object).getSupplierId());
+                    }
+                });
+        priceColumn = dataGrid.addColumn(new EditTextCell(), "Price", true, 40,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(OfferDetail offerDetail) {
-                return currencyFormat.format(offerDetail.getPrice());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return currencyFormat.format(((OfferDetail) object).getPrice());
+                    }
+                });
 
         // OfferStatus.
         ArrayList<String> stateList = new ArrayList<String>();
         for (OfferStateType offerStatusDetail : OfferStateType.values()) {
             stateList.add(offerStatusDetail.getValue());
         }
-        offerStatusColumn = addColumn(new SelectionCell(stateList), "State", true, 60, new GetValue<String>() {
+        offerStatusColumn = dataGrid.addColumn(new SelectionCell(stateList), "State", true, 60,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(OfferDetail offerDetail) {
-                return offerDetail.getState();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((OfferDetail) object).getState();
+                    }
+                });
 
         // Creation date
-        offerCreationDateColumn = addColumn(new DateCell(), "Created", false, 60, new GetValue<Date>() {
+        offerCreationDateColumn = dataGrid.addColumn(new DateCell(), "Created", false, 60,
+                new GetValue<Date>() {
 
-            @Override
-            public Date getValue(OfferDetail offerDetail) {
-                return offerDetail.getFinishDate(); //TODO Martin - dorobit ceration date
-            }
-        });
+                    @Override
+                    public Date getValue(Object object) {
+                        return ((OfferDetail) object).getFinishDate();
+                        //TODO Martin - dorobit creation date
+                    }
+                });
 
         // Demand end date.
-        offerFinishDateColumn = addColumn(new DateCell(), "Finnish", true, 60, new GetValue<Date>() {
+        offerFinishDateColumn = dataGrid.addColumn(new DateCell(), "Finnish", true, 60,
+                new GetValue<Date>() {
 
-            @Override
-            public Date getValue(OfferDetail offerDetail) {
-                return offerDetail.getFinishDate();
-            }
-        });
+                    @Override
+                    public Date getValue(Object object) {
+                        return ((OfferDetail) object).getFinishDate();
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(OfferDetail offerDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<OfferDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
-            final GetValue<C> getter) {
-        Column<OfferDetail, C> column = new Column<OfferDetail, C>(cell) {
-
-            @Override
-            public C getValue(OfferDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<OfferDetail> getDataGrid() {
+    public UniversalAsyncGrid<OfferDetail> getDataGrid() {
         return dataGrid;
     }
     /*
@@ -267,14 +242,6 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
     @Override
     public Column<OfferDetail, Date> getOfferFinishDateColumn() {
         return offerFinishDateColumn;
-    }
-
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<OfferDetail> getSelectionModel() {
-        return selectionModel;
     }
 
     //                         *** PAGER ***

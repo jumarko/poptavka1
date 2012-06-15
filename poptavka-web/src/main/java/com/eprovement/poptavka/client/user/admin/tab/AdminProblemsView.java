@@ -4,28 +4,24 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
-
-import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
-
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -37,19 +33,27 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminProblemsView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // TABLE
-    @UiField(provided = true) DataGrid<ProblemDetail> dataGrid;
-    private SingleSelectionModel<ProblemDetail> selectionModel;
+    @UiField(provided = true)
+    UniversalAsyncGrid<ProblemDetail> dataGrid;
     // Editable Columns
     private Column<ProblemDetail, String> textColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "text"
+            });
     // The key provider that provides the unique ID of a ProblemDetail.
     private static final ProvidesKey<ProblemDetail> KEY_PROVIDER = new ProvidesKey<ProblemDetail>() {
 
@@ -58,9 +62,10 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
             return item == null ? null : item.getId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
+
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
     /**
      * creates WIDGET view.
      */
@@ -85,7 +90,7 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
         GWT.log("init AdminProblems DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<ProblemDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<ProblemDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("700px");
         dataGrid.setHeight("500px");
@@ -95,11 +100,6 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-
-        // SELECTION MODEL
-        selectionModel = new SingleSelectionModel<ProblemDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<ProblemDetail>createCheckboxManager());
 
         // COLUMNS
         initTableColumns();
@@ -111,64 +111,34 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
     private void initTableColumns() {
 
         // ID
-        addColumn(new EditTextCell(), "ID", 50, new GetValue<String>() {
+        dataGrid.addColumn(new EditTextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ProblemDetail object) {
-                return Long.toString(object.getId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return Long.toString(((ProblemDetail) object).getId());
+                    }
+                });
         // DemandName
-        textColumn = addColumn(new EditTextCell(), "Text", 100, new GetValue<String>() {
+        textColumn = dataGrid.addColumn(new EditTextCell(), "Text", true, 100,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(ProblemDetail object) {
-                return object.getText();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((ProblemDetail) object).getText();
+                    }
+                });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(ProblemDetail problemDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<ProblemDetail, C> addColumn(Cell<C> cell, String headerText, int width,
-            final GetValue<C> getter) {
-        Column<ProblemDetail, C> column = new Column<ProblemDetail, C>(cell) {
-
-            @Override
-            public C getValue(ProblemDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        column.setSortable(true);
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+//*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<ProblemDetail> getDataGrid() {
+    public UniversalAsyncGrid<ProblemDetail> getDataGrid() {
         return dataGrid;
     }
     /*
@@ -180,19 +150,10 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
         return textColumn;
     }
 
-    /**
-     * @return the selectionModel
-     */
-    @Override
-    public SingleSelectionModel<ProblemDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
     //                         *** PAGER ***
     /*
      * @return pager
      */
-
     @Override
     public SimplePager getPager() {
         return pager;

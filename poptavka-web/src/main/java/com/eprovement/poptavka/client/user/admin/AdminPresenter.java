@@ -1,5 +1,10 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
+import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -7,17 +12,10 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-
 import com.mvp4g.client.presenter.LazyPresenter;
-
 import com.mvp4g.client.view.LazyView;
-import com.eprovement.poptavka.client.main.Constants;
-import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
-import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 
-@Presenter(view = AdminView.class)//, multiple = true)
+@Presenter(view = AdminView.class)
 public class AdminPresenter
         extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus> {
 

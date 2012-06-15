@@ -10,18 +10,12 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -29,10 +23,9 @@ import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
-import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,17 +43,6 @@ public class AdminClientsPresenter
     private Map<Long, ClientDetail> originalData = new HashMap<Long, ClientDetail>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
-    //for asynch data retrieving
-    private AsyncDataProvider dataProvider = null;
-    private int start = 0;
-    //for asynch data sorting
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    private final String[] columnNames = new String[]{
-        "id", "businessUser.businessUserData.companyName", "businessUser.businessUserData.firstName",
-        "businessUser.businessUserData.lastName", "overalRating"
-    };
-    private List<String> gridColumns = Arrays.asList(columnNames);
     //detail related
     private Boolean detailDisplayed = false;
 
@@ -70,7 +52,7 @@ public class AdminClientsPresenter
     public interface AdminClientsInterface extends LazyView {
 
         // TABLE
-        DataGrid<ClientDetail> getDataGrid();
+        UniversalAsyncGrid<ClientDetail> getDataGrid();
 
         Column<ClientDetail, String> getIdColumn();
 
@@ -81,8 +63,6 @@ public class AdminClientsPresenter
         Column<ClientDetail, String> getLastNameColumn();
 
         Column<ClientDetail, String> getRatingColumn();
-
-        SingleSelectionModel<ClientDetail> getSelectionModel();
 
         // PAGET
         ListBox getPageSizeCombo();
@@ -122,8 +102,10 @@ public class AdminClientsPresenter
         Widget getWidgetView();
     }
 
-    /*** INIT ***
-     *
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
+    /**
      * Initial methods for handling starting.
      * @param filter
      */
@@ -131,78 +113,27 @@ public class AdminClientsPresenter
         Storage.setCurrentlyLoadedView(Constants.ADMIN_CLIENTS);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        eventBus.getAdminClientsCount(searchDataHolder);
-        view.getAdminClientDetail().setVisible(false);
+        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
-    /*** DISPLAY ***
-     *
+    //*************************************************************************/
+    //                              DISPLAY                                   */
+    //*************************************************************************/
+    /**
      * Displays retrieved data.
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabClients(List<ClientDetail> clients) {
-        dataProvider.updateRowData(start, clients);
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
+        view.getDataGrid().updateRowData(clients);
         Storage.hideLoading();
     }
 
-    /*** DATA PROVIDER ***
-     *
-     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
-     * @param totalFound - count of all data in DB displayed in pager
-     */
-    public void onCreateAdminClientsAsyncDataProvider(final int totalFound) {
-        this.start = 0;
-        orderColumns.clear();
-        orderColumns.put(columnNames[1], OrderType.DESC);
-        dataProvider = new AsyncDataProvider<ClientDetail>() {
-
-            @Override
-            protected void onRangeChanged(HasData<ClientDetail> display) {
-                display.setRowCount(totalFound);
-                start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
-//                eventBus.getSortedClients(start, start + length, orderColumns);
-                eventBus.getAdminClients(start, start + length, searchDataHolder, orderColumns);
-                Storage.hideLoading();
-            }
-        };
-        this.dataProvider.addDataDisplay(view.getDataGrid());
-        createAsyncSortHandler();
-    }
-
-    /*** SORTING HANDLER ***
-     *
-     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
-     */
-    public void createAsyncSortHandler() {
-        //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
-        sortHandler = new AsyncHandler(view.getDataGrid()) {
-
-            @Override
-            public void onColumnSort(ColumnSortEvent event) {
-                orderColumns.clear();
-                OrderType orderType = OrderType.DESC;
-                if (event.isSortAscending()) {
-                    orderType = OrderType.ASC;
-                }
-                Column<ClientDetail, String> column = (Column<ClientDetail, String>) event.getColumn();
-                if (column == null) {
-                    return;
-                }
-                orderColumns.put(gridColumns.get(
-                        view.getDataGrid().getColumnIndex(column)), orderType);
-                eventBus.getAdminClients(start, view.getPageSize(), searchDataHolder, orderColumns);
-            }
-        };
-        view.getDataGrid().addColumnSortHandler(sortHandler);
-    }
-
-    /*** DATA CHANGE ***
-     *
+    //*************************************************************************/
+    //                              DATA CHANGE                               */
+    //*************************************************************************/
+    /**
      * Store changes made in table data.
      */
     public void onAddClientToCommit(ClientDetail data) {
@@ -216,8 +147,10 @@ public class AdminClientsPresenter
         view.getDataGrid().redraw();
     }
 
-    /*** ACTION HANDLERS ***
-     *
+    //*************************************************************************/
+    //                           ACTION HANDLERS                              */
+    //*************************************************************************/
+    /**
      * Register handlers for widget actions.
      */
     @Override
@@ -259,6 +192,7 @@ public class AdminClientsPresenter
 
             @Override
             public void update(int index, ClientDetail object, String value) {
+                view.getAdminClientDetail().setClientDetail(object);
                 view.getAdminClientDetail().setVisible(true);
                 detailDisplayed = true;
             }
@@ -397,11 +331,8 @@ public class AdminClientsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminClientsCount(searchDataHolder);
+                    view.getDataGrid().updateRowData(new ArrayList<ClientDetail>());
+                    eventBus.getDataCount(view.getDataGrid(), searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -418,7 +349,6 @@ public class AdminClientsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.addClientToCommit(view.getAdminClientDetail().getUpdatedClientDetail());
-                Window.alert("Client updated TODO. It's not acctualy doing it.");
             }
         });
     }

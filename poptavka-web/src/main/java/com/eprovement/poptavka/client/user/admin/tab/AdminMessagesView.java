@@ -4,36 +4,31 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.message.MessageState;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
-
-import com.eprovement.poptavka.domain.message.MessageState;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-
-import com.eprovement.poptavka.shared.domain.type.MessageType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -47,9 +42,9 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
 
     interface AdminMessagesViewUiBinder extends UiBinder<Widget, AdminMessagesView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -61,8 +56,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     ListBox pageSizeCombo;
     // TABLE
     @UiField(provided = true)
-    DataGrid<MessageDetail> dataGrid;
-    private SingleSelectionModel<MessageDetail> selectionModel;
+    UniversalAsyncGrid<MessageDetail> dataGrid;
     // Editable Columns
     private Column<MessageDetail, String> subjectColumn;
     private Column<MessageDetail, String> bodyColumn;
@@ -70,6 +64,11 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     private Column<MessageDetail, String> typeColumn;
     private Column<MessageDetail, Date> createdColumn;
     private Column<MessageDetail, Date> sentColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "demand.id", "parent.id", "sender.id", "receiver.id",
+                "subject", "messageState", "", "sent", "body"
+            });
     // The key provider that provides the unique ID of a MessageDetail.
     private static final ProvidesKey<MessageDetail> KEY_PROVIDER = new ProvidesKey<MessageDetail>() {
 
@@ -78,10 +77,10 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
             return item == null ? null : item.getMessageId();
         }
     };
-    //
-    //                          ***** INITIALIZATION *****
-    //
 
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
     /**
      * creates WIDGET view.
      */
@@ -108,7 +107,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new DataGrid<MessageDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<MessageDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("1000px");
         dataGrid.setHeight("500px");
@@ -118,10 +117,6 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-
-        selectionModel = new SingleSelectionModel<MessageDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<MessageDetail>createCheckboxManager());
 
         // Initialize the columns.
         initTableColumns();
@@ -146,33 +141,34 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addBodyColumn() {
-        bodyColumn = addColumn(new EditTextCell(), "Body", true, 200, new GetValue<String>() {
+        bodyColumn = dataGrid.addColumn(new EditTextCell(), "Body", true, 200,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getBody();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((MessageDetail) object).getBody();
+                    }
+                });
     }
 
     private void addSentDateColumn(DateTimeFormat dateFormat) {
-        sentColumn = addColumn(new DatePickerCell(dateFormat), "Sent", true, 60,
+        sentColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Sent", true, 60,
                 new GetValue<Date>() {
 
                     @Override
-                    public Date getValue(MessageDetail messageDetail) {
-                        return messageDetail.getSent();
+                    public Date getValue(Object object) {
+                        return ((MessageDetail) object).getSent();
                     }
                 });
     }
 
     private void addCreatedDateColumn(DateTimeFormat dateFormat) {
-        createdColumn = addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
+        createdColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
                 new GetValue<Date>() {
 
                     @Override
-                    public Date getValue(MessageDetail messageDetail) {
-                        return messageDetail.getCreated();
+                    public Date getValue(Object object) {
+                        return ((MessageDetail) object).getCreated();
                     }
                 });
     }
@@ -182,13 +178,14 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageState msgState : MessageState.values()) {
             msgStates.add(msgState.name());
         }
-        stateColumn = addColumn(new SelectionCell(msgStates), "State", true, 150, new GetValue<String>() {
+        stateColumn = dataGrid.addColumn(new SelectionCell(msgStates), "State", true, 150,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getMessageState();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((MessageDetail) object).getMessageState();
+                    }
+                });
     }
 
     private void addMessageTypeColumn() {
@@ -196,118 +193,91 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageType msgState : MessageType.values()) {
             msgTypes.add(msgState.name());
         }
-        typeColumn = addColumn(new SelectionCell(msgTypes), "Type", true, 150, new GetValue<String>() {
+        typeColumn = dataGrid.addColumn(new SelectionCell(msgTypes), "Type", true, 150,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getMessageType();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((MessageDetail) object).getMessageType();
+                    }
+                });
     }
 
     private void addMessageTitleColumn() {
-        subjectColumn = addColumn(new EditTextCell(), "Subject", true, 150, new GetValue<String>() {
+        subjectColumn = dataGrid.addColumn(new EditTextCell(), "Subject", true, 150,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return object.getSubject();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((MessageDetail) object).getSubject();
+                    }
+                });
     }
 
     private void addReceiverIdColumn() {
-        addColumn(new TextCell(), "RID", true, 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "RID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getReceiverId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((MessageDetail) object).getReceiverId());
+                    }
+                });
     }
 
     private void addSenderIdColumn() {
-        addColumn(new TextCell(), "SID", true, 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "SID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getSenderId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((MessageDetail) object).getSenderId());
+                    }
+                });
     }
 
     private void addParentIdColumn() {
-        addColumn(new TextCell(), "PID", true, 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "PID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getParentId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((MessageDetail) object).getParentId());
+                    }
+                });
     }
 
     private void addDemandIdColumn() {
-        addColumn(new TextCell(), "DID", true, 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "DID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getMessageId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((MessageDetail) object).getMessageId());
+                    }
+                });
     }
 
     private void addIdColumn() {
-        addColumn(new TextCell(), "ID", true, 50, new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(MessageDetail object) {
-                return String.valueOf(object.getMessageId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((MessageDetail) object).getMessageId());
+                    }
+                });
     }
-
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(MessageDetail messageDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<MessageDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
-            final GetValue<C> getter) {
-        Column<MessageDetail, C> column = new Column<MessageDetail, C>(cell) {
-
-            @Override
-            public C getValue(MessageDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
 
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<MessageDetail> getDataGrid() {
+    public UniversalAsyncGrid<MessageDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -359,18 +329,10 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         return sentColumn;
     }
 
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<MessageDetail> getSelectionModel() {
-        return selectionModel;
-    }
     //                         *** PAGER ***
     /*
      * @return pager
      */
-
     @Override
     public SimplePager getPager() {
         return pager;

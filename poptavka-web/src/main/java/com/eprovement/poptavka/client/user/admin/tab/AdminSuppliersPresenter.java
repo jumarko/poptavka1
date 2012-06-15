@@ -4,6 +4,14 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.client.user.admin.AdminEventBus;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.domain.user.BusinessType;
+import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -11,32 +19,16 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import com.eprovement.poptavka.client.main.Constants;
-import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.user.admin.AdminEventBus;
-import com.eprovement.poptavka.domain.common.OrderType;
-import com.eprovement.poptavka.domain.user.BusinessType;
-import com.eprovement.poptavka.domain.user.Verification;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,17 +46,6 @@ public class AdminSuppliersPresenter
     private Map<Long, FullSupplierDetail> originalData = new HashMap<Long, FullSupplierDetail>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
-    //for asynch data retrieving
-    private AsyncDataProvider dataProvider = null;
-    private int start = 0;
-    //for asynch data sorting
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    private final String[] columnNames = new String[]{
-        "id", "businessUser.businessUserData.companyName", "businessUser.businessType.businessType",
-        "certified", "verification"
-    };
-    private List<String> gridColumns = Arrays.asList(columnNames);
     //detail related
     private Boolean detailDisplayed = false;
 
@@ -74,7 +55,7 @@ public class AdminSuppliersPresenter
     public interface AdminSuppliersInterface extends LazyView {
 
         // TABLE
-        DataGrid<FullSupplierDetail> getDataGrid();
+        UniversalAsyncGrid<FullSupplierDetail> getDataGrid();
 
         Column<FullSupplierDetail, String> getSupplierIdColumn();
 
@@ -85,8 +66,6 @@ public class AdminSuppliersPresenter
         Column<FullSupplierDetail, Boolean> getCertifiedColumn();
 
         Column<FullSupplierDetail, String> getVerificationColumn();
-
-        SingleSelectionModel<FullSupplierDetail> getSelectionModel();
 
         // PAGER
         SimplePager getPager();
@@ -105,120 +84,65 @@ public class AdminSuppliersPresenter
         Label getChangesLabel();
 
         // WIDGETS
-        SimplePanel getAdminSupplierDetail();
+        AdminSupplierInfoView getAdminSupplierDetail();
 
         Widget getWidgetView();
     }
 
-    /*** INIT ***
-     *
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
+    /**
      * Initial methods for handling starting.
+     *
      * @param filter
      */
     public void onInitSuppliers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_SUPPLIERS);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        eventBus.getAdminSuppliersCount(searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
-    /*** DISPLAY ***
-     *
+    //*************************************************************************/
+    //                              DISPLAY                                   */
+    //*************************************************************************/
+    /**
      * Displays retrieved data.
+     *
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabSuppliers(List<FullSupplierDetail> suppliers) {
         if (suppliers == null) {
             GWT.log("suppliers are null");
         }
-        dataProvider.updateRowData(start, suppliers);
+        view.getDataGrid().updateRowData(suppliers);
         Storage.hideLoading();
     }
 
-    /*** DATA PROVIDER ***
-     *
-     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
-     * @param totalFound - count of all data in DB displayed in pager
-     */
-    public void onCreateAdminSuppliersAsyncDataProvider(final int totalFound) {
-        this.start = 0;
-        orderColumns.clear();
-        orderColumns.put(columnNames[0], OrderType.ASC);
-        dataProvider = new AsyncDataProvider<FullSupplierDetail>() {
-
-            @Override
-            protected void onRangeChanged(HasData<FullSupplierDetail> display) {
-                display.setRowCount(totalFound);
-                start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
-                eventBus.getAdminSuppliers(start, start + length, searchDataHolder, orderColumns);
-
-                Storage.hideLoading();
-            }
-        };
-        this.dataProvider.addDataDisplay(view.getDataGrid());
-        createAsyncSortHandler();
-    }
-
-    /*** SORTING HANDLER ***
-     *
-     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
-     */
-    public void createAsyncSortHandler() {
-        sortHandler = new AsyncHandler(view.getDataGrid()) {
-
-            @Override
-            public void onColumnSort(ColumnSortEvent event) {
-                orderColumns.clear();
-                OrderType orderType = OrderType.DESC;
-
-                if (event.isSortAscending()) {
-                    orderType = OrderType.ASC;
-                }
-                Column<FullSupplierDetail, String> column = (Column<FullSupplierDetail, String>) event.getColumn();
-                if (column == null) {
-                    return;
-                }
-                orderColumns.put(gridColumns.get(
-                        view.getDataGrid().getColumnIndex(column)), orderType);
-
-                eventBus.getAdminSuppliers(start, view.getPageSize(), searchDataHolder, orderColumns);
-            }
-        };
-        view.getDataGrid().addColumnSortHandler(sortHandler);
-    }
-
-    /*** DATA CHANGE ***
-     *
+    //*************************************************************************/
+    //                              DATA CHANGE                               */
+    //*************************************************************************/
+    /**
      * Store changes made in table data.
      */
     public void onAddSupplierToCommit(FullSupplierDetail data) {
         dataToUpdate.remove(data.getSupplierId());
         dataToUpdate.put(data.getSupplierId(), data);
         if (detailDisplayed) {
-            eventBus.showAdminSupplierDetail(data);
+            view.getAdminSupplierDetail().setSupplierDetail(data);
         }
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
 
-    public void onSetDetailDisplayedSupplier(Boolean displayed) {
-        detailDisplayed = displayed;
-    }
-
-    public void displayDetailContent(FullSupplierDetail detail) {
-        eventBus.showAdminSupplierDetail(detail);
-    }
-
-    public void onResponseAdminSupplierDetail(Widget widget) {
-        view.getAdminSupplierDetail().setWidget(widget);
-    }
-
-    /*** ACTION HANDLERS ***
-     *
+    //*************************************************************************/
+    //                           ACTION HANDLERS                              */
+    //*************************************************************************/
+    /**
      * Register handlers for widget actions.
      */
     @Override
@@ -234,6 +158,7 @@ public class AdminSuppliersPresenter
         addCommitButtonHandler();
         addRollbackButtonHandler();
         addRefreshButtonHandler();
+        addDetailUpdateBtnHandler();
     }
 
     /*
@@ -341,7 +266,7 @@ public class AdminSuppliersPresenter
 
             @Override
             public void update(int index, FullSupplierDetail object, String value) {
-                eventBus.showAdminSupplierDetail(object);
+                view.getAdminSupplierDetail().setSupplierDetail(object);
             }
         });
     }
@@ -403,14 +328,24 @@ public class AdminSuppliersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminDemandsCount(searchDataHolder);
+                    view.getDataGrid().updateRowData(new ArrayList<FullSupplierDetail>());
+                    eventBus.getDataCount(view.getDataGrid(), searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
+            }
+        });
+    }
+
+    /*
+     * UPDATE (in detail widget)
+     */
+    private void addDetailUpdateBtnHandler() {
+        view.getAdminSupplierDetail().getUpdateBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.addSupplierToCommit(view.getAdminSupplierDetail().getUpdatedSupplierDetail());
             }
         });
     }

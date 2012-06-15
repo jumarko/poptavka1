@@ -73,15 +73,6 @@ public class AdminSupplierInfoPresenter
         VerticalPanel getEditLocPanel();
     }
 
-    public void onShowAdminSupplierDetail(FullSupplierDetail selectedObject) {
-//        eventBus.displayContent(view.getWidgetView());
-        view.getEditCatPanel().setVisible(false);
-        view.getEditLocPanel().setVisible(false);
-        view.setSupplierDetail(selectedObject);
-        eventBus.responseAdminSupplierDetail(view.getWidgetView());
-
-    }
-
     @Override
     public void bindView() {
         addUpdateButtonHandler();

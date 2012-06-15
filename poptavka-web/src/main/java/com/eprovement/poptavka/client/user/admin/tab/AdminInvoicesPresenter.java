@@ -13,18 +13,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -32,11 +26,10 @@ import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
-import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
-
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,22 +48,9 @@ public class AdminInvoicesPresenter
     private Map<Long, InvoiceDetail> originalData = new HashMap<Long, InvoiceDetail>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
-    //for asynch data retrieving
-    private AsyncDataProvider dataProvider = null;
-    private int start = 0;
-    //for asynch data sorting
-    private AsyncHandler sortHandler = null;
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "id", "invoiceNumber", "variableSymbol", "totalPrice", "paymentMethod"
-    };
-    private List<String> gridColumns = Arrays.asList(columnNames);
-    //detail related
+    //detail related, TODO Martin implement Detail if needed
     private Boolean detailDisplayed = false;
-
     private LocalizableMessages messages = GWT.create(LocalizableMessages.class);
-
     private NumberFormat currencyFormat = NumberFormat.getFormat(messages.currencyFormat());
 
     /**
@@ -79,7 +59,7 @@ public class AdminInvoicesPresenter
     public interface AdminInvoicesInterface extends LazyView {
 
         // TABLE
-        DataGrid<InvoiceDetail> getDataGrid();
+        UniversalAsyncGrid<InvoiceDetail> getDataGrid();
 
         Column<InvoiceDetail, String> getIdColumn();
 
@@ -90,8 +70,6 @@ public class AdminInvoicesPresenter
         Column<InvoiceDetail, String> getVariableSymbolColumn();
 
         Column<InvoiceDetail, String> getInvoiceNumberColumn();
-
-        SingleSelectionModel<InvoiceDetail> getSelectionModel();
 
         // PAGER
         SimplePager getPager();
@@ -129,109 +107,55 @@ public class AdminInvoicesPresenter
         Widget getWidgetView();
     }
 
-    /*** INIT ***
-     *
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
+    /**
      * Initial methods for handling starting.
+     *
      * @param filter
      */
     public void onInitInvoices(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_INVOICES);
         eventBus.clearSearchContent();
         searchDataHolder = filter;
-        eventBus.getAdminInvoicesCount(searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
         view.getAdminInvoiceDetail().setVisible(false);
         view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
     }
 
-    /*** DISPLAY ***
-     *
+    //*************************************************************************/
+    //                              DISPLAY                                   */
+    //*************************************************************************/
+    /**
      * Displays retrieved data.
+     *
      * @param accessRoles -- list to display
      */
     public void onDisplayAdminTabInvoices(List<InvoiceDetail> invoices) {
-        dataProvider.updateRowData(start, invoices);
-        view.getDataGrid().flush();
-        view.getDataGrid().redraw();
+        view.getDataGrid().updateRowData(invoices);
         Storage.hideLoading();
     }
 
-    /*** DATA PROVIDER ***
-     *
-     * Creates asynchronous data provider for datagrid. Also sets sorting on ID column.
-     * @param totalFound - count of all data in DB displayed in pager
-     */
-    public void onCreateAdminInvoicesAsyncDataProvider(final int totalFound) {
-        this.start = 0;
-        orderColumns.clear();
-        orderColumns.put(columnNames[1], OrderType.ASC);
-        dataProvider = new AsyncDataProvider<InvoiceDetail>() {
-
-            @Override
-            protected void onRangeChanged(HasData<InvoiceDetail> display) {
-                display.setRowCount(totalFound);
-                start = display.getVisibleRange().getStart();
-                int length = display.getVisibleRange().getLength();
-                eventBus.getAdminInvoices(start, start + length, searchDataHolder, orderColumns);
-                Storage.hideLoading();
-            }
-        };
-        this.dataProvider.addDataDisplay(view.getDataGrid());
-        createAsyncSortHandler();
-    }
-
-    /*** SORTING HANDLER ***
-     *
-     * Creates asynchronous sort handler. Handle sorting of data provided by asynchronous data provider.
-     */
-    public void createAsyncSortHandler() {
-        //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
-        sortHandler = new AsyncHandler(view.getDataGrid()) {
-
-            @Override
-            public void onColumnSort(ColumnSortEvent event) {
-                orderColumns.clear();
-                OrderType orderType = OrderType.DESC;
-                if (event.isSortAscending()) {
-                    orderType = OrderType.ASC;
-                }
-                Column<InvoiceDetail, String> column = (Column<InvoiceDetail, String>) event.getColumn();
-                if (column == null) {
-                    return;
-                }
-                orderColumns.put(gridColumns.get(
-                        view.getDataGrid().getColumnIndex(column)), orderType);
-
-                eventBus.getAdminInvoices(start, view.getPageSize(), searchDataHolder, orderColumns);
-            }
-        };
-        view.getDataGrid().addColumnSortHandler(sortHandler);
-    }
-
-    /*** DATA CHANGE ***
-     *
+    //*************************************************************************/
+    //                              DATA CHANGE                               */
+    //*************************************************************************/
+    /**
      * Store changes made in table data.
      */
     public void onAddInvoiceToCommit(InvoiceDetail data) {
-        //TODO Martin - otestovat, alebo celkom zrusit cistocne auktualizovanie
-        if (metadataToUpdate.containsKey(data.getId())) {
-            dataToUpdate.remove(data.getId());
-            metadataToUpdate.remove(data.getId());
-            metadataToUpdate.put(data.getId(), "all");
-        } else {
-            dataToUpdate.put(data.getId(), data);
-//            metadataToUpdate.put(data.getId(), dataType);
-        }
-        if (detailDisplayed) {
-            view.getAdminInvoiceDetail().setInvoiceDetail(data);
-        }
+        dataToUpdate.remove(data.getId());
+        dataToUpdate.put(data.getId(), data);
         view.getChangesLabel().setText(Integer.toString(dataToUpdate.size()));
         view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
 
-    /*** ACTION HANDLERS ***
-     *
+    //*************************************************************************/
+    //                           ACTION HANDLERS                              */
+    //*************************************************************************/
+    /**
      * Register handlers for widget actions.
      */
     @Override
@@ -291,6 +215,7 @@ public class AdminInvoicesPresenter
                     if (!originalData.containsKey(object.getId())) {
                         originalData.put(object.getId(), new InvoiceDetail(object));
                     }
+                    //TODO Martin
 //                    object.setPaymentMethod(value);
                     eventBus.addInvoiceToCommit(object);
                 }
@@ -413,11 +338,8 @@ public class AdminInvoicesPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (dataToUpdate.isEmpty()) {
-                    dataProvider.updateRowCount(0, true);
-                    dataProvider = null;
-                    view.getDataGrid().flush();
-                    view.getDataGrid().redraw();
-                    eventBus.getAdminInvoicesCount(searchDataHolder);
+                    view.getDataGrid().updateRowData(new ArrayList<InvoiceDetail>());
+                    eventBus.getDataCount(view.getDataGrid(), searchDataHolder);
                 } else {
                     Window.alert("You have some uncommited data. Do commit or rollback first");
                 }
@@ -433,7 +355,7 @@ public class AdminInvoicesPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-//                eventBus.addInvoiceToCommit(view.getUpdatedInvoiceDetail(), "all");
+                eventBus.addInvoiceToCommit(view.getAdminInvoiceDetail().getUpdatedInvoiceDetail());
                 Window.alert("Demand updated, NOT IMPLENETED");
             }
         });

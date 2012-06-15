@@ -4,18 +4,17 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.google.gwt.cell.client.Cell;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
@@ -24,17 +23,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,19 +45,24 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
     interface AdminDemandsViewUiBinder extends UiBinder<Widget, AdminDemandsView> {
     }
-    //
-    //                          ***** ATTRIBUTES *****
-    //
-    @UiField Button commit, rollback, refresh;
-    @UiField Label changesLabel;
+    //*************************************************************************/
+    //                              ATTRIBUTES                                */
+    //*************************************************************************/
+    @UiField
+    Button commit, rollback, refresh;
+    @UiField
+    Label changesLabel;
     // PAGER
-    @UiField(provided = true) SimplePager pager;
-    @UiField(provided = true) ListBox pageSizeCombo;
+    @UiField(provided = true)
+    SimplePager pager;
+    @UiField(provided = true)
+    ListBox pageSizeCombo;
     // DETAIL
-    @UiField SimplePanel adminDemandDetail;
+    @UiField
+    AdminDemandInfoView adminDemandDetail;
     // TABLE
-    @UiField(provided = true) DataGrid<FullDemandDetail> dataGrid;
-    private SingleSelectionModel<FullDemandDetail> selectionModel;
+    @UiField(provided = true)
+    UniversalAsyncGrid<FullDemandDetail> dataGrid;
     // Editable Columns in dataGrid
     private Column<FullDemandDetail, String> idColumn;
     private Column<FullDemandDetail, String> cidColumn;
@@ -69,6 +71,10 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private Column<FullDemandDetail, String> statusColumn;
     private Column<FullDemandDetail, Date> demandExpirationColumn;
     private Column<FullDemandDetail, Date> demandEndColumn;
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "id", "client.id", "title", "type", "status", "validTo", "endDate"
+            });
     // The key provider that provides the unique ID of a FullDemandDetail.
     private static final ProvidesKey<FullDemandDetail> KEY_PROVIDER = new ProvidesKey<FullDemandDetail>() {
 
@@ -78,9 +84,9 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         }
     };
 
-    //
-    //                          ***** INITIALIZATION *****
-    //
+    //*************************************************************************/
+    //                          INITIALIZATOIN                                */
+    //*************************************************************************/
     /**
      * creates WIDGET view.
      */
@@ -105,7 +111,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         GWT.log("init AdminDemands DataGrid initialized");
 
         // TABLE
-        dataGrid = new DataGrid<FullDemandDetail>(KEY_PROVIDER);
+        dataGrid = new UniversalAsyncGrid<FullDemandDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setPageSize(this.getPageSize());
         dataGrid.setWidth("100%");
         dataGrid.setEmptyTableWidget(new Label("No data available."));
@@ -114,11 +120,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
         pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setDisplay(dataGrid);
-
-        // SELECTION MODEL
-        selectionModel = new SingleSelectionModel<FullDemandDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(getSelectionModel(),
-                DefaultSelectionEventManager.<FullDemandDetail>createCheckboxManager());
 
         // COLUMNS
         initTableColumns();
@@ -130,31 +131,34 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        idColumn = addColumn(new ClickableTextCell(), "ID", true, 50, new GetValue<String>() {
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), "ID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return String.valueOf(object.getDemandId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((FullDemandDetail) object).getDemandId());
+                    }
+                });
 
         // Client ID.
-        cidColumn = addColumn(new ClickableTextCell(), "CID", true, 50, new GetValue<String>() {
+        cidColumn = dataGrid.addColumn(new ClickableTextCell(), "CID", true, 50,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return String.valueOf(object.getClientId());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((FullDemandDetail) object).getClientId());
+                    }
+                });
 
         // DemandTitle
-        demandTitleColumn = addColumn(new EditTextCell(), "Title", true, 160, new GetValue<String>() {
+        demandTitleColumn = dataGrid.addColumn(new EditTextCell(), "Title", true, 160,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return String.valueOf(object.getTitle());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return String.valueOf(((FullDemandDetail) object).getTitle());
+                    }
+                });
 
         // DemandType.
         List<String> demandTypeNames = new ArrayList<String>();
@@ -162,92 +166,60 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
             // TODO ivlcek - add Localizable name of ClientDemandType enum
             demandTypeNames.add(clientDemandType.getValue());
         }
-        demandTypeColumn = addColumn(new SelectionCell(demandTypeNames), "Type", true, 100, new GetValue<String>() {
+        demandTypeColumn = dataGrid.addColumn(new SelectionCell(demandTypeNames), "Type", true, 100,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return object.getDemandType();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((FullDemandDetail) object).getDemandType();
+                    }
+                });
 
         // DemandStatus.
         List<String> demandStatusNames = new ArrayList<String>();
         for (DemandStatusType demandStatusType : DemandStatusType.values()) {
             demandStatusNames.add(demandStatusType.getValue());
         }
-        statusColumn = addColumn(new SelectionCell(demandStatusNames), "Status", true, 140, new GetValue<String>() {
+        statusColumn = dataGrid.addColumn(new SelectionCell(demandStatusNames), "Status", true, 140,
+                new GetValue<String>() {
 
-            @Override
-            public String getValue(FullDemandDetail object) {
-                return object.getDemandStatus();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((FullDemandDetail) object).getDemandStatus();
+                    }
+                });
 
         // Demand expiration date.
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        demandExpirationColumn = addColumn(new DatePickerCell(dateFormat), "Expiration", true, 40,
+        demandExpirationColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Expiration", true, 40,
                 new GetValue<Date>() {
 
                     @Override
-                    public Date getValue(FullDemandDetail fullDemandDetail) {
-                        return fullDemandDetail.getValidToDate();
+                    public Date getValue(Object object) {
+                        return ((FullDemandDetail) object).getValidToDate();
                     }
                 });
 
         // Demand end date.
-        demandEndColumn = addColumn(new DatePickerCell(dateFormat), "End", true, 40,
+        demandEndColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "End", true, 40,
                 new GetValue<Date>() {
 
                     @Override
-                    public Date getValue(FullDemandDetail fullDemandDetail) {
-                        return fullDemandDetail.getEndDate();
+                    public Date getValue(Object object) {
+                        return ((FullDemandDetail) object).getEndDate();
                     }
                 });
     }
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(FullDemandDetail fullDemandDetail);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<FullDemandDetail, C> addColumn(Cell<C> cell, String headerText, boolean sort, int width,
-            final GetValue<C> getter) {
-        Column<FullDemandDetail, C> column = new Column<FullDemandDetail, C>(cell) {
-
-            @Override
-            public C getValue(FullDemandDetail object) {
-                return getter.getValue(object);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-
-    //******************* GETTER METHODS (defined by interface) ****************
-    //
+    //*************************************************************************/
+    //                      GETTER METHODS (defined by interface)             */
+    //*************************************************************************/
     //                          *** TABLE ***
     /**
      * @return TABLE (DataGrid)
      */
     @Override
-    public DataGrid<FullDemandDetail> getDataGrid() {
+    public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
         return dataGrid;
     }
 
@@ -306,15 +278,6 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     public Column<FullDemandDetail, Date> getDemandEndColumn() {
         return demandEndColumn;
     }
-
-    /**
-     * @return table's selection model
-     */
-    @Override
-    public SingleSelectionModel<FullDemandDetail> getSelectionModel() {
-        return selectionModel;
-    }
-
 
     //                         *** PAGER ***
     /*
@@ -379,7 +342,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
      * @return widget AdminDemandInfoView as it is
      */
     @Override
-    public SimplePanel getAdminDemandDetail() {
+    public AdminDemandInfoView getAdminDemandDetail() {
         return adminDemandDetail;
     }
 

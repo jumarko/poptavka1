@@ -13,12 +13,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.mvp4g.client.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +27,9 @@ import java.util.List;
  */
 @Presenter(view = AdminDemandInfoView.class)
 public class AdminDemandInfoPresenter
-        extends LazyPresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, AdminEventBus> {
+        extends BasePresenter<AdminDemandInfoPresenter.AdminDemandInfoInterface, AdminEventBus> {
 
-    public interface AdminDemandInfoInterface extends LazyView {
+    public interface AdminDemandInfoInterface {
 
         Widget getWidgetView();
 
@@ -73,16 +72,8 @@ public class AdminDemandInfoPresenter
         VerticalPanel getEditLocPanel();
     }
 
-    public void onShowAdminDemandDetail(FullDemandDetail selectedObject) {
-//        eventBus.displayContent(view.getWidgetView());
-        view.getEditCatPanel().setVisible(false);
-        view.setDemandDetail(selectedObject);
-        eventBus.responseAdminDemandDetail(view.getWidgetView());
-
-    }
-
     @Override
-    public void bindView() {
+    public void bind() {
         addUpdateButtonHandler();
         addEditCatButtonHandler();
         addEditLocationButtonHandler();
