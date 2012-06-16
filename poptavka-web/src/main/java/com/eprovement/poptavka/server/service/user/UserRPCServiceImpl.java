@@ -65,6 +65,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         UserDetail userDetail = new UserDetail();
 
         List<BusinessUserRole> roles = user.getBusinessUserRoles();
+
         for (BusinessUserRole role : roles) {
             if (role instanceof Client) {
                 userDetail.setClientId(role.getId());

@@ -1,5 +1,17 @@
 package com.eprovement.poptavka.service.user;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.Validate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
 import com.eprovement.poptavka.domain.common.Status;
 import com.eprovement.poptavka.domain.product.Service;
@@ -15,14 +27,6 @@ import com.eprovement.poptavka.service.mail.MailService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
-import java.util.Arrays;
-import java.util.List;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.Validate;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Common ancestor for all implementations of service methods for {@link BusinessUserRole}-s.
@@ -111,13 +115,17 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private SimpleMailMessage createActivationMailMessage(String userMail, String activationLink) {
         final SimpleMailMessage activationMessage = new SimpleMailMessage();
+
+        Locale englishLocale = new Locale("en", "EN");
+        ResourceBundle rb = ResourceBundle.getBundle("localization", englishLocale);
+        String activationEmailText = rb.getString("uc10.mail.sentence1");
+
         activationMessage.setFrom("poptavka1@gmail.com");
         activationMessage.setTo(userMail);
 
         activationMessage.setSubject("Poptavka account activation");
-        activationMessage.setText("Welcome to Poptavka!\n\n"
-                + "Your account has been created and needs to be activated.\n"
-                + "Please, Click the following link to complete your registration: " + activationLink);
+
+        activationMessage.setText(activationEmailText + " \n" + activationLink);
         return activationMessage;
 
     }

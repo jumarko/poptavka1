@@ -130,6 +130,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
                 @Override
                 public void onSuccess(LoggedUserDetail loggedUser) {
+                    GWT.log("user id " + loggedUser.getUserId());
                     final String sessionId = "id=" + loggedUser.getUserId();
                     if (sessionId != null) {
                         // TODO Praso - workaround for developoment purposes
