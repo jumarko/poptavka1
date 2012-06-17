@@ -107,7 +107,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Autowired
     public void setFulltextSearchService(FulltextSearchService fulltextSearchService) {
         this.fulltextSearchService = fulltextSearchService;
-        this.fulltextSearchService.createInitialFulltextIndex();
     }
 
     // ***********************************************************************
