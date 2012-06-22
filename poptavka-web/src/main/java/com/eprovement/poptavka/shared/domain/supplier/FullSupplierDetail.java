@@ -5,7 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class FullSupplierDetail implements Serializable {
@@ -16,26 +17,27 @@ public class FullSupplierDetail implements Serializable {
     private static final long serialVersionUID = -8271479725303195283L;
     private long supplierId;
     //Info
-    @NotNull(message = "{supplierNotNullEmail}")
+    @NotBlank(message = "{supplierNotBlankEmail}")
     @Email(message = "{supplierEmail}")
     private String email;
-    @NotNull(message = "{supplierNotNullCompanyName}")
+    @NotBlank(message = "{supplierNotBlankCompanyName}")
     private String companyName;
-    @NotNull(message = "{supplierNotNullIdentifNumber}")
+    @NotBlank(message = "{supplierNotBlankIdentifNumber}")
     private String identificationNumber;
-    @NotNull(message = "{supplierNotNullFirstName}")
+    @NotBlank(message = "{supplierNotBlankFirstName}")
     private String firstName;
-    @NotNull(message = "{supplierNotNullLastName}")
+    @NotBlank(message = "{supplierNotBlankLastName}")
     private String lastName;
-    @NotNull(message = "{supplierNotNullPhone}")
+    @Pattern(regexp = "[0-9]+", message = "{supplierPatternPhone}")
+    @NotBlank(message = "{supplierNotBlankPhone}")
     private String phone;
-    @NotNull(message = "{supplierNotNullPassword}")
+    @NotBlank(message = "{supplierNotBlankPassword}")
     private String password;
-    @NotNull(message = "{supplierNotNullPassword}")
+    @NotBlank(message = "{supplierNotBlankPassword}")
     private String passwordConfirm;
-    @NotNull(message = "{supplierNotNullDescription}")
+    @NotBlank(message = "{supplierNotBlankDescription}")
     private String description;
-    @NotNull(message = "{supplierNotNullTaxNumber}")
+    @NotBlank(message = "{supplierNotBlankTaxNumber}")
     private String taxId;
     private String website;
     //Lists
@@ -46,11 +48,12 @@ public class FullSupplierDetail implements Serializable {
     //for simplicity List<AddressDetail> and single String of city, street, zip added.
     //in poptavka 2.0 implement GWT validation for List<AddressDetail> addresses = new ArrayList<AddressDetail>();
     //in poptavka 2.0 when implement validation for upper code, delete below code:
-    @NotEmpty(message = "{supplierNotNullStreet}")
+    @NotEmpty(message = "{supplierNotBlankStreet}")
     private String street;
-    @NotEmpty(message = "{supplierNotNullCity}")
+    @NotEmpty(message = "{supplierNotBlankCity}")
     private String city;
-    @NotEmpty(message = "{supplierNotNullZipCode}")
+    @Pattern(regexp = "[0-9]{5}", message = "{supplierPatternZipCode}")
+    @NotEmpty(message = "{supplierNotBlankZipCode}")
     private String zipCode;
     //Others
     private int overallRating = -1;

@@ -105,48 +105,54 @@ public interface ValidationMessages extends ConstantsWithLookup {
     /**
      * ***********************************************************************
      */
-    @Key("supplier.notNull.email")
-    String supplierNotNullEmail();
+    @Key("supplier.notBlank.email")
+    String supplierNotBlankEmail();
 
     @Key("supplier.email")
     String supplierEmail();
 
-    @Key("supplier.notNull.companyName")
-    String supplierNotNullCompanyName();
+    @Key("supplier.notBlank.companyName")
+    String supplierNotBlankCompanyName();
 
-    @Key("supplier.notNull.identifNumber")
-    String supplierNotNullIdentifNumber();
+    @Key("supplier.notBlank.identifNumber")
+    String supplierNotBlankIdentifNumber();
 
-    @Key("supplier.notNull.taxNumber")
-    String supplierNotNullTaxNumber();
+    @Key("supplier.notBlank.taxNumber")
+    String supplierNotBlankTaxNumber();
 
-    @Key("supplier.notNull.firstName")
-    String supplierNotNullFirstName();
+    @Key("supplier.notBlank.firstName")
+    String supplierNotBlankFirstName();
 
-    @Key("supplier.notNull.lastName")
-    String supplierNotNullLastName();
+    @Key("supplier.notBlank.lastName")
+    String supplierNotBlankLastName();
 
-    @Key("supplier.notNull.phone")
-    String supplierNotNullPhone();
+    @Key("supplier.notBlank.phone")
+    String supplierNotBlankPhone();
 
-    @Key("supplier.notNull.description")
-    String supplierNotNullDescription();
+    @Key("supplier.pattern.phone")
+    String supplierPatternPhone();
 
-    @Key("supplier.notNull.password")
-    String supplierNotNullPassword();
+    @Key("supplier.notBlank.description")
+    String supplierNotBlankDescription();
+
+    @Key("supplier.notBlank.password")
+    String supplierNotBlankPassword();
 
     @Key("supplier.min.password")
     String supplierMinPassword();
 
-    @Key("supplier.notNull.passwordConfirm")
-    String supplierNotNullPassrowdConfirm();
+    @Key("supplier.notBlank.passwordConfirm")
+    String supplierNotBlankPassrowdConfirm();
 
-    @Key("supplier.notNull.street")
-    String supplierNotNullStreet();
+    @Key("supplier.notBlank.street")
+    String supplierNotBlankStreet();
 
-    @Key("supplier.notNull.city")
-    String supplierNotNullCity();
+    @Key("supplier.notBlank.city")
+    String supplierNotBlankCity();
 
-    @Key("supplier.notNull.zipCode")
-    String supplierNotNullZipCode();
+    @Key("supplier.notBlank.zipCode")
+    String supplierNotBlankZipCode();
+
+    @Key("supplier.pattern.zipCode")
+    String supplierPatternZipCode();
 }
