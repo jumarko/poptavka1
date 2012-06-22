@@ -57,6 +57,7 @@ public interface LocalizableMessages extends Messages {
     String passwordsUnmatch();
 
     //supplier registration
+    String agreementMessage();
     //service definitions
     String serviceOne();
     String serviceOneDescription();

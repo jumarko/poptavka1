@@ -39,6 +39,8 @@ public class FullSupplierDetail implements Serializable {
     private String description;
     @NotBlank(message = "{supplierNotBlankTaxNumber}")
     private String taxId;
+    @Pattern(regexp = "(www.|http://|ftp://|https://)([a-zA-Z0-9\\-]+)\\.([a-zA-Z0-9\\-]+)",
+            message = "{supplierPatternWebsite}")
     private String website;
     //Lists
     private Map<String, String> localities; //<codes, value>

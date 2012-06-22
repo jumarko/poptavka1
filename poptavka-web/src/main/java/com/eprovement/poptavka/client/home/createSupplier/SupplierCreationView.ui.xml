@@ -1,16 +1,16 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cl="urn:import:com.eprovement.poptavka.client.main.common.locality"
-    xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cl="urn:import:com.eprovement.poptavka.client.main.common.locality"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
     <!-- injecting style resources -->
     <ui:with field='res'
-        type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:HTMLPanel styleName='{res.layout.bodyContainer}'>
         <g:StackLayoutPanel ui:field='mainPanel'
-            styleName='{res.layout.stackLayout}' height="90%">
+                            styleName='{res.layout.stackLayout}' height="90%">
             <g:stack>
                 <g:customHeader size="30">
                     <g:HTML stylePrimaryName="{res.layout.stackLayoutPanelHeader}">
@@ -21,8 +21,8 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='basicStatus'
-                            style='{res.common.infoMessage}' message='{text.basicMessage}'
-                            description='{text.basicDescription}' />
+                                            style='{res.common.infoMessage}' message='{text.basicMessage}'
+                                            description='{text.basicDescription}' />
                     </g:south>
                     <g:center>
                         <g:SimplePanel ui:field="supplierInfoHolder" />
@@ -39,8 +39,8 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='categoryStatus'
-                            style='{res.common.infoMessage}' message='{text.catMessage}'
-                            description='{text.catDescription}' />
+                                            style='{res.common.infoMessage}' message='{text.catMessage}'
+                                            description='{text.catDescription}' />
                     </g:south>
                     <g:center>
                         <g:SimplePanel ui:field="categoryHolder" />
@@ -57,8 +57,8 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='localityStatus'
-                            style='{res.common.infoMessage}' message='{text.locMessage}'
-                            description='{text.locDescription}' />
+                                            style='{res.common.infoMessage}' message='{text.locMessage}'
+                                            description='{text.locDescription}' />
                     </g:south>
                     <g:center>
                         <g:SimplePanel ui:field="localityHolder" />
@@ -75,17 +75,21 @@
                 <g:DockLayoutPanel unit="EM" height="100%">
                     <g:south size="4">
                         <cm:StatusIconLabel ui:field='serviceStatus'
-                            style='{res.common.infoMessage}' message='{text.advMessage}'
-                            description='{text.advDescription}' />
+                                            style='{res.common.infoMessage}' message='{text.advMessage}'
+                                            description='{text.advDescription}' />
                     </g:south>
                     <g:center>
                         <g:HTMLPanel>
                             <g:SimplePanel ui:field="serviceHolder" />
-                            <g:CheckBox ui:field="agreedCheck" />
-                            <ui:msg key="agreement">Agreement</ui:msg>
-                            <g:Anchor ui:field="conditionLink">
-                                <ui:msg key="conditions">Conditions</ui:msg>
-                            </g:Anchor>
+                            <g:HorizontalPanel ui:field="agreementPanel">
+                                <g:CheckBox ui:field="agreedCheck" />
+                                <g:Label>
+                                    <ui:msg key="agreement">Agreement</ui:msg>
+                                </g:Label>
+                                <g:Anchor ui:field="conditionLink">
+                                    <ui:msg key="conditions">Conditions</ui:msg>
+                                </g:Anchor>
+                            </g:HorizontalPanel>
                             <br />
                             <g:Button ui:field="registerBtn">
                                 <ui:msg key="registerSupplier">Register Supplier</ui:msg>
