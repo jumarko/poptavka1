@@ -56,9 +56,9 @@ public interface LayoutResource extends CssResource {
     String submenuList();
 
     /** DemandCreation.class **/
-    @ClassName("stackLayout")
+    @ClassName("stack-layout")
     String stackLayout();
-    @ClassName("stackLayoutPanelHeader")
+    @ClassName("stack-layout-panel-header")
     String stackLayoutPanelHeader();
 
     /** DELETE AFTER THIS LINE **/

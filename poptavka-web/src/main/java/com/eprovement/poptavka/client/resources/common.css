@@ -23,8 +23,8 @@
 
 .info-message div {
     padding: 5px;
-    border: solid #F4E6C4 1px;
-    background-color: #F7F9F2;
+    border: 1px solid #D7C289;
+    background-color: #FDF3D7;
 }
 
 .info-message div:hover {
