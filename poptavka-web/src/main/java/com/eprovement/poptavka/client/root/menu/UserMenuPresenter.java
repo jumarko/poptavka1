@@ -5,9 +5,11 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView.IUserMenuPresenter;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 
 @Presenter(view = UserMenuView.class)
 public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus>
@@ -17,10 +19,16 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
     }
 
     /**
-     * Jedina matoda, ktora nahra UserMenu pohlad do Root menu layoutu.
+     * Jedina matoda, ktora nahra UserMenu pohlad do Root menu layoutu. Ak je prave
+     * prihlaseny uzivatel administrator, zobrazi administatorsky tab.
      */
     public void onAtAccount() {
         GWT.log("User menu view loaded");
+        if (Storage.getUser().getAccessRoles().contains(new AccessRoleDetail("admin"))) {
+            view.setAdminTabVisibility(true);
+        } else {
+            view.setAdminTabVisibility(false);
+        }
         eventBus.setMenu(view);
     }
 

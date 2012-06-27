@@ -48,7 +48,9 @@ public class ClientRPCServiceTest {
 
     @Test
     public void testCreateNewClient() throws Exception {
-        final BusinessUserDetail testUser = new BusinessUserDetail("test@poptavka.com", "testpasswd");
+        final BusinessUserDetail testUser = new BusinessUserDetail();
+        testUser.setEmail("test@poptavka.com");
+        testUser.setPassword("testpasswd");
 
         this.clientRPCService.createNewClient(testUser);
     }

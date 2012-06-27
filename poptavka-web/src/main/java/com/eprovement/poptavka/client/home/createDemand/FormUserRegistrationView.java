@@ -113,8 +113,10 @@ public class FormUserRegistrationView extends Composite
 
     @Override
     public BusinessUserDetail getNewClient() {
-        BusinessUserDetail client = new BusinessUserDetail(mailBox.getText(), passBox.getText());
+        BusinessUserDetail client = new BusinessUserDetail();
 
+        client.setEmail(mailBox.getText());
+        client.setPassword(passBox.getText());
         client.setCompanyName(companyNameBox.getText());
         client.setIdentificationNumber(companyIdBox.getText());
         client.setTaxId(companyTaxBox.getText());

@@ -25,7 +25,6 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -118,7 +117,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 GWT.log("exception during login");
             }
             //DEVEL ONLY FOR FAST LOGIN
-            userService.loginUser(new BusinessUserDetail(username, password), new AsyncCallback<UserDetail>() {
+            userService.loginUser(username, password, new AsyncCallback<UserDetail>() {
 
                 @Override
                 public void onFailure(Throwable caught) {
@@ -131,6 +130,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 @Override
                 public void onSuccess(UserDetail loggedUser) {
                     GWT.log("user id " + loggedUser.getUserId());
+                    Storage.setUser(loggedUser);
                     final String sessionId = "id=" + loggedUser.getUserId();
                     if (sessionId != null) {
                         // TODO Praso - workaround for developoment purposes

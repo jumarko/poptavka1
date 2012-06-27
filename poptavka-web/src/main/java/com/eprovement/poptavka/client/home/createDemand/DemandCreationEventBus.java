@@ -120,7 +120,7 @@ public interface DemandCreationEventBus extends EventBus {
 
     // TODO praso - check if this one is used in suppliserCreationModule. we shouln't have duplicates
     @Event(handlers = DemandCreationHandler.class)
-    void verifyExistingClient(BusinessUserDetail client);
+    void verifyExistingClient(String email, String password);
 //    @Event(handlers = SupplierCreationHandler.class)
 //    void checkFreeEmail(String value);
 

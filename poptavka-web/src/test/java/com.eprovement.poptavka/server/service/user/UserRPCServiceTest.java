@@ -21,7 +21,6 @@ import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.domain.user.rights.Permission;
 import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 public class UserRPCServiceTest {
@@ -44,10 +43,7 @@ public class UserRPCServiceTest {
         when(loginServiceMock.loginUser(eq(TEST_USER_MAIL), anyString()))
                 .thenReturn(createTestUser());
 
-        final BusinessUserDetail userDetailForLogin = new BusinessUserDetail();
-        userDetailForLogin.setEmail(TEST_USER_MAIL);
-        userDetailForLogin.setPassword("myPassword");
-        final UserDetail loggedUserDetail = userRPCService.loginUser(userDetailForLogin);
+        final UserDetail loggedUserDetail = userRPCService.loginUser(TEST_USER_MAIL, "myPassword");
         assertThat(loggedUserDetail.getUserId(), is(123L));
         assertThat(loggedUserDetail.getEmail(), is(TEST_USER_MAIL));
         assertThat(loggedUserDetail.getAccessRoles().size(), is(2));

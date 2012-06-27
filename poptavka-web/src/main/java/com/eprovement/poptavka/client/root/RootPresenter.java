@@ -31,6 +31,8 @@ import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
+import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 
 @Presenter(view = RootView.class)
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
@@ -39,7 +41,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private PopupPanel popup = null;
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
-    private BusinessUserDetail user = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -122,14 +123,14 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onAtAccount() {
         GWT.log("User has logged in and his user data are about to be retrieved");
-        if (Storage.getUser() == null) {
+        //Po prihlaseni je v Storage ulozeny len UserDetail prihlaseneho uzivatela.
+        //Pre dalsiu pracu budeme potrebovat BusinessUserDetail, takze ho ziskaj.
+        if (Storage.getUser() instanceof UserDetail) {
             // TODO praso - zakomentovane kvoli refaktorinu na standarny wait loading
             // cez onBefore, onAfter eventy v Root module. Potom to bude treba znovu
             // upravit aby sa volal cakacia smycka aj pri logovani.
             eventBus.loadingShow(Storage.MSGS.progressGetUserDetail());
-            eventBus.getUser();
-        } else {
-            onSetUser(Storage.getUser());
+            eventBus.getUser(Storage.getUser().getUserId());
         }
     }
 
@@ -243,23 +244,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         popup.show();
     }
 
-    /* For logging */
-    public void onSetUser(BusinessUserDetail userDetail) {
-        Storage.setUser(userDetail);
-        //this should be removed and all references replaces by Storage calls
-        user = userDetail;
-
-        showDevelUserInfoPopupThatShouldBedeletedAfter();
-
-//        eventBus.setUserLayout();
-//        eventBus.setHomeBodyHolderWidget(new Label("TA CO"));
-//        eventBus.setHeader(new Label("TA CO HEADER?"));
-//        eventBus.setMenu(view);
-//        eventBus.initDemandModule();
-
-        eventBus.loadingHide();
-    }
-
     // TODO delete for production
     private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
         final DialogBox userInfoPanel = new DialogBox(false, false);
@@ -267,12 +251,12 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.setWidth("200px");
         String br = "<br />";
         StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
-        user = Storage.getUser();
+        BusinessUserDetail user = (BusinessUserDetail) Storage.getUser();
         sb.append("ID: " + user.getUserId() + br);
 
         sb.append("<i>-- user roles --</i>" + br);
         if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
-            sb.append("<b><i>CLIENT</i></b>" + br);
+            sb.append("<b><i>BusinessRole: CLIENT</i></b>" + br);
             sb.append("ClientID: " + user.getClientId() + br);
             sb.append("Demand Count: " + user.getDemandsId().size() + br);
             sb.append("Demands Messages: " + "n/a" + " / " + "n/a" + br);
@@ -280,21 +264,21 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             sb.append("<i>-- -- -- --</i>" + br);
         }
         if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
-            sb.append("<b><i>SUPPLIER</i></b>" + br);
+            sb.append("<b><i>BusinessRole: SUPPLIER</i></b>" + br);
             sb.append("SupplierID: " + user.getSupplierId() + br);
             sb.append("Potentional Demands: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
         if (user.getBusinessRoles().contains(BusinessRole.PARTNER)) {
-            sb.append("<b><i>PARTNER</i></b>" + br);
+            sb.append("<b><i>BusinessRole: PARTNER</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
-            sb.append("<b><i>OPERATOR</i></b>" + br);
+        if (user.getAccessRoles().contains(new AccessRoleDetail("user"))) {
+            sb.append("<b><i>AccessRole: USER</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getBusinessRoles().contains(BusinessRole.ADMIN)) {
-            sb.append("<b><i>ADMIN</i></b>" + br);
+        if (user.getAccessRoles().contains(new AccessRoleDetail("admin"))) {
+            sb.append("<b><i>AccessRole: ADMIN</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
         sb.append("Messages: " + "n/a" + " / " + "n/a" + br);

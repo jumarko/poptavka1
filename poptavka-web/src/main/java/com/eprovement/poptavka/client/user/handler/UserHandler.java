@@ -2,7 +2,6 @@ package com.eprovement.poptavka.client.user.handler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -41,14 +40,8 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     /**
      * Get User according to stored sessionID from DB after login.
      */
-    public void onGetUser() {
-        // get sessionId cookie
-        String sessionID = Cookies.getCookie("sid");
-        if (sessionID == null) {
-            Window.alert("sessionID is null and it shouldn't be");
-            return;
-        }
-        userService.getSignedUser(sessionID, new AsyncCallback<BusinessUserDetail>() {
+    public void onGetUser(long userId) {
+        userService.getUserById(userId, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {

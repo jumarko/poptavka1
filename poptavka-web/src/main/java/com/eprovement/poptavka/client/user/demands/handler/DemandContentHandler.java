@@ -15,6 +15,7 @@ import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.DemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
@@ -34,9 +35,10 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     private ErrorDialogPopupView errorDialog;
 
     public void onRequestClientsDemands(SearchModuleDataHolder searchModuleDataHolder) {
-        GWT.log("DemandModuleContentHandler > UserId: " + Storage.getUser().getUserId() + " ,ClientId: "
-                + Storage.getUser().getClientId());
-        demandsService.getListOfClientDemandMessages(Storage.getUser().getUserId(), Storage.getUser().getClientId(),
+        GWT.log("DemandModuleContentHandler > UserId: " + ((BusinessUserDetail) Storage.getUser()).getUserId()
+                + " ,ClientId: " + ((BusinessUserDetail) Storage.getUser()).getClientId());
+        demandsService.getListOfClientDemandMessages(Storage.getUser().getUserId(),
+                ((BusinessUserDetail) Storage.getUser()).getClientId(),
                 new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
 
                     @Override
@@ -55,8 +57,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     }
 
     /**
-     * Get Supplier's potential demands list. No parameter is needed.
-     * Business UserID is fetched from Storage
+     * Get Supplier's potential demands list. No parameter is needed. Business
+     * UserID is fetched from Storage
      */
     public void onRequestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
         demandsService.getPotentialDemands(Storage.getUser().getUserId(),
@@ -83,7 +85,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     }
 
     /**
-     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
+     * Changes demands Read status. Changes are displayed immediately on
+     * frontend. No onSuccess code is needed.
      *
      * @param list list of demands which read status should be changed
      * @param newStatus of demandList
@@ -108,7 +111,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     }
 
     /**
-     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
+     * Changes demands star status. Changes are displayed immediately on
+     * frontend. No onSuccess code is needed.
      *
      * @param list list od demands which star status should be changed
      * @param newStatus of demandList

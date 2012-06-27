@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.root;
 
-import com.google.gwt.user.client.Cookies;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -139,14 +138,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**
      * Get User according to stored sessionID from DB after login.
      */
-    public void onGetUser() {
-        // get sessionId cookie
-        String sessionID = Cookies.getCookie("sid");
-        if (sessionID == null) {
-            Window.alert("sessionID is null and it shouldn't be");
-            return;
-        }
-        userService.getSignedUser(sessionID, new AsyncCallback<BusinessUserDetail>() {
+    public void onGetUser(long userId) {
+        userService.getUserById(userId, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -165,7 +158,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.loadingShow(Storage.MSGS.progressCreatingUserInterface());
-                eventBus.setUser(result);
+                Storage.setUser(result);
+                eventBus.loadingHide();
+//                eventBus.setUser(result);
             }
 
         });

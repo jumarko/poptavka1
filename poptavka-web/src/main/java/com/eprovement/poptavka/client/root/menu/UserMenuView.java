@@ -116,4 +116,9 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
         administration.addStyleName(StyleResource.INSTANCE.layout().selected());
     }
+
+    @Override
+    public void setAdminTabVisibility(boolean visible) {
+        administration.setVisible(visible);
+    }
 }

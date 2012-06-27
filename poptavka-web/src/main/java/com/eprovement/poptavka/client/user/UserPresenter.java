@@ -22,6 +22,7 @@ import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.IUserMenuView.IUserMenuPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
+import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -78,12 +79,12 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         GWT.log("User Presenter at account");
         Cookies.setCookie("user-presenter", "loaded");
 //        eventBus.initSearchModule(view.getSearchPanel());
-        if (Storage.getUser() == null) {
+        if (Storage.getUser() instanceof UserDetail) {
             eventBus.loadingShow(MSGS.progressGetUserDetail());
             eventBus.getUser();
-        } else {
-            onSetUser(Storage.getUser());
-        }
+        } //else {
+//            onSetUser(Storage.getUser());
+//        }
         view.asWidget().getElement().getStyle().setDisplay(Display.BLOCK);
     }
 
@@ -226,7 +227,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         userInfoPanel.setWidth("200px");
         String br = "<br />";
         StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
-        user = Storage.getUser();
+        BusinessUserDetail user = (BusinessUserDetail) Storage.getUser();
         sb.append("ID: " + user.getUserId() + br);
 
         sb.append("<i>-- user roles --</i>" + br);
@@ -248,14 +249,14 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
             sb.append("<b><i>PARTNER</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
-            sb.append("<b><i>OPERATOR</i></b>" + br);
-            sb.append("<i>-- -- -- --</i>" + br);
-        }
-        if (user.getBusinessRoles().contains(BusinessRole.ADMIN)) {
-            sb.append("<b><i>ADMIN</i></b>" + br);
-            sb.append("<i>-- -- -- --</i>" + br);
-        }
+//        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
+//            sb.append("<b><i>OPERATOR</i></b>" + br);
+//            sb.append("<i>-- -- -- --</i>" + br);
+//        }
+//        if (user.getBusinessRoles().contains(BusinessRole.ADMIN)) {
+//            sb.append("<b><i>ADMIN</i></b>" + br);
+//            sb.append("<i>-- -- -- --</i>" + br);
+//        }
         sb.append("Messages: " + "n/a" + " / " + "n/a" + br);
 
         HTML content = new HTML(sb.toString());

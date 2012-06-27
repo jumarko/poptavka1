@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.main.common.LoadingPopup;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.UserDetail;
 
 /**
  * Global controller for events such as loading and stuff like that.
@@ -41,7 +41,7 @@ public final class Storage {
     private static final int OFFSET_Y = 35;
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
-    private static BusinessUserDetail user = null;
+    private static UserDetail user = null;
 
     //getters for global final classes
     public LocalizableMessages getMessages() {
@@ -88,11 +88,11 @@ public final class Storage {
         }
     }
 
-    public static void setUser(BusinessUserDetail user) {
+    public static void setUser(UserDetail user) {
         Storage.user = user;
     }
 
-    public static BusinessUserDetail getUser() {
+    public static UserDetail getUser() {
         return user;
     }
 

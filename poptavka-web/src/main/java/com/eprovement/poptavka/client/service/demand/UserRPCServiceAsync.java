@@ -7,9 +7,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 public interface UserRPCServiceAsync {
 
-    void loginUser(BusinessUserDetail user, AsyncCallback<UserDetail> callback);
-
-    void getSignedUser(String sessionId, AsyncCallback<BusinessUserDetail> callback);
+    void loginUser(String email, String password, AsyncCallback<UserDetail> callback);
 
     void getUserById(Long userId, AsyncCallback<BusinessUserDetail> callback);
 

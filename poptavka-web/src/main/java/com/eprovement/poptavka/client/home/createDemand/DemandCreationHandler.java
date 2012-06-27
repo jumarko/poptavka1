@@ -48,9 +48,9 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      *
      * @param client existing user detail
      */
-    public void onVerifyExistingClient(final BusinessUserDetail client) {
+    public void onVerifyExistingClient(String email, String password) {
         LOGGER.fine("verify start");
-        userRpcService.loginUser(client, new AsyncCallback<UserDetail>() {
+        userRpcService.loginUser(email, password, new AsyncCallback<UserDetail>() {
             @Override
             public void onFailure(Throwable loginException) {
                 LOGGER.info("login error:" + loginException.getMessage());

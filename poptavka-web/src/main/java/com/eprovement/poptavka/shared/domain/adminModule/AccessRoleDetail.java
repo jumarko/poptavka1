@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents full detail of domain object <b>AccessRole</b> used in <i>Administration Module</i>.
- * Contains 2 static methods:  1. creating detail object
- *                             2. updating domain object
+ * Represents full detail of domain object <b>AccessRole</b> used in
+ * <i>Administration Module</i>. Contains 2 static methods: 1. creating detail
+ * object 2. updating domain object
  *
  * @author Martin Slavkovsky
  *
@@ -24,8 +24,14 @@ public class AccessRoleDetail implements Serializable {
     private String code;
     private List<PermissionDetail> permissions;
 
-    /** for serialization. **/
+    /**
+     * for serialization. *
+     */
     public AccessRoleDetail() {
+    }
+
+    public AccessRoleDetail(String roleName) {
+        name = roleName;
     }
 
     public AccessRoleDetail(AccessRoleDetail role) {
@@ -102,10 +108,10 @@ public class AccessRoleDetail implements Serializable {
             return false;
         }
         final AccessRoleDetail other = (AccessRoleDetail) obj;
-        if (this.id != other.getId()) {
-            return false;
+        if (this.name.equalsIgnoreCase(other.getName())) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

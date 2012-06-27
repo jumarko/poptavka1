@@ -23,7 +23,7 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
 
     public enum BusinessRole {
 
-        CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMIN
+        CLIENT, SUPPLIER, PARTNER//, OPERATOR, ADMIN
     }
     /** Instances of roles. **/
     private SupplierDetail supplier = null;
@@ -32,7 +32,6 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
     private Long clientId = -1L;
     private Long supplierId = -1L;
-    private String email;
     private String password;
     private String firstName;
     private String lastName;
@@ -48,11 +47,6 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private boolean verified = false;
 
     public BusinessUserDetail() {
-    }
-
-    public BusinessUserDetail(String email, String password) {
-        this.email = email;
-        this.password = password;
     }
 
     public static BusinessUserDetail createUserDetail(BusinessUser user) {

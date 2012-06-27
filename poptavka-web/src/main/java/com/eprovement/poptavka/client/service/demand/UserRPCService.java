@@ -12,9 +12,7 @@ public interface UserRPCService extends RemoteService {
 
     String URL = "service/user";
 
-    UserDetail loginUser(BusinessUserDetail user) throws RPCException;
-
-    BusinessUserDetail getSignedUser(String sessionId) throws RPCException;
+    UserDetail loginUser(String email, String password) throws RPCException;
 
     BusinessUserDetail getUserById(Long userId) throws RPCException;
 
