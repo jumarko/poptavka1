@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import com.eprovement.poptavka.domain.common.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.Map;
@@ -17,11 +17,11 @@ public interface ClientRPCService extends RemoteService {
 
     String URL = "service/cs";
 
-    ArrayList<UserDetail> getAllClients() throws RPCException;
+    ArrayList<BusinessUserDetail> getAllClients() throws RPCException;
 
     ArrayList<ClientDetail> getClients(int start, int count) throws RPCException;
 
-    UserDetail createNewClient(UserDetail clientDetail) throws RPCException;
+    BusinessUserDetail createNewClient(BusinessUserDetail clientDetail) throws RPCException;
 
     Integer getClientsCount() throws RPCException;
 

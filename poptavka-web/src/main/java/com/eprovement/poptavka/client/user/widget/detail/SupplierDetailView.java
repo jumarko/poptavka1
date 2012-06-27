@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 
 public class SupplierDetailView extends Composite {
@@ -117,7 +117,7 @@ public class SupplierDetailView extends Composite {
     }
 
 
-    public void displaySuppliersDetail(UserDetail userDetail) {
+    public void displaySuppliersDetail(BusinessUserDetail userDetail) {
         detail.setVisible(true);
 
         description.setText(userDetail.getSupplier().getDescription());

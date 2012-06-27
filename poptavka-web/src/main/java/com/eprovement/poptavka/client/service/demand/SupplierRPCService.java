@@ -9,7 +9,7 @@ import com.eprovement.poptavka.domain.common.OrderType;
 
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface SupplierRPCService extends RemoteService {
 
     String URL = "service/supplier";
 
-    UserDetail createNewSupplier(UserDetail supplier) throws RPCException;
+    BusinessUserDetail createNewSupplier(BusinessUserDetail supplier) throws RPCException;
 
     ArrayList<ServiceDetail> getSupplierServices() throws RPCException;
 

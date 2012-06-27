@@ -30,7 +30,7 @@ import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import java.util.HashMap;
 import java.util.Map;
@@ -153,7 +153,7 @@ public class DemandCreationPresenter
      * @param client detail object that was either created (if new client) or
      * retried from database (if existing client)
      */
-    public void onPrepareNewDemandForNewClient(UserDetail client) {
+    public void onPrepareNewDemandForNewClient(BusinessUserDetail client) {
         eventBus.loadingShow(MSGS.progressGettingDemandData());
 
         FormDemandBasicInterface basicValues =
@@ -219,7 +219,7 @@ public class DemandCreationPresenter
         eventBus.loadingShow(MSGS.progressRegisterClient());
         // ClientDetail instance
         FormRegistrationInterface registerWidget = (FormRegistrationInterface) view.getHolderPanel(LOGIN).getWidget();
-        UserDetail newClient = registerWidget.getNewClient();
+        BusinessUserDetail newClient = registerWidget.getNewClient();
         eventBus.registerNewClient(newClient);
 
     }

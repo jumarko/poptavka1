@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.user.demands;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 public interface IDemandView { //extends IsWidget {
 
@@ -35,5 +35,5 @@ public interface IDemandView { //extends IsWidget {
 
     SimplePanel getContentPanel();
 
-    void setRoleInterface(Role role);
+    void setRoleInterface(BusinessRole role);
 }

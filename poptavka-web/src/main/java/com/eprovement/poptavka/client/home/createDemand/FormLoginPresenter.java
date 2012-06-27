@@ -12,7 +12,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 @Presenter(view = FormLoginView.class)
 public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLoginInterface, DemandCreationEventBus> {
@@ -64,7 +64,7 @@ public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLog
         // TODO hash passwd
 
         //verifying existing user
-        eventBus.verifyExistingClient(new UserDetail(view.getLogin(), view.getPassword()));
+        eventBus.verifyExistingClient(new BusinessUserDetail(view.getLogin(), view.getPassword()));
         //signal event
         eventBus.loadingShow(MSGS.progressLogingUser());
     }

@@ -23,7 +23,7 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -153,7 +153,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
      *
      */
     @Override
-    public UserDetail createNewClient(UserDetail clientDetail) throws RPCException {
+    public BusinessUserDetail createNewClient(BusinessUserDetail clientDetail) throws RPCException {
         Preconditions.checkNotNull(clientDetail);
         final Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
@@ -183,7 +183,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
-    private void setAddresses(UserDetail clientDetail, Client newClient) {
+    private void setAddresses(BusinessUserDetail clientDetail, Client newClient) {
         final List<Address> addresses = new ArrayList<Address>();
         if (clientDetail.getAddresses() != null) {
             for (AddressDetail detail : clientDetail.getAddresses()) {

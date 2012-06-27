@@ -49,7 +49,7 @@ import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 @Events(startView = RootView.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -236,7 +236,7 @@ public interface RootEventBus extends EventBus {
     void notFound();
 
     @Event(handlers = RootPresenter.class)
-    void setUser(UserDetail user);
+    void setUser(BusinessUserDetail user);
 
     // TODO Praso - mozeme odstranit? No usage
     // Martin - ano moze, pouziva ale priamo volane z prezentera

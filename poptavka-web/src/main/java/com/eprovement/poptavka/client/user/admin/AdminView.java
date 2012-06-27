@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.main.common.OverflowComposite;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.StyleInterface;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 public class AdminView extends OverflowComposite implements AdminPresenter.AdminModuleInterface, StyleInterface {
 
@@ -111,7 +111,7 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
 
     /** toggle visible actions/buttons for current user decided by his role. **/
     @Override
-    public void setRoleInterface(Role role) {
+    public void setRoleInterface(BusinessRole role) {
         LOGGER.fine("Set User style for role " + role.toString());
         switch (role) {
             case SUPPLIER:

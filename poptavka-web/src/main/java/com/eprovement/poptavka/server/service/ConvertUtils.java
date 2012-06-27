@@ -12,8 +12,8 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.Verification;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,27 +32,27 @@ public final class ConvertUtils {
         // UTILITY CLASS - DO NOT INSTANTIATE!
     }
 
-    public static UserDetail toUserDetail(Long userId, List<BusinessUserRole> userRoles) {
+    public static BusinessUserDetail toUserDetail(Long userId, List<BusinessUserRole> userRoles) {
         if (userRoles == null) {
             throw new NullPointerException("These roles are not defined");
         }
 
-        UserDetail detail = new UserDetail();
+        BusinessUserDetail detail = new BusinessUserDetail();
         detail.setUserId(userId);
 
-        // Set UserDetail according to his roles
+        // Set BusinessUserDetail according to his roles
         for (BusinessUserRole role : userRoles) {
             if (role instanceof Client) {
                 final Client clientRole = (Client) role;
                 detail.setClientId(clientRole.getId());
-                detail.addRole(Role.CLIENT);
+                detail.addRole(BusinessRole.CLIENT);
 
                 detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
             }
             if (role instanceof Supplier) {
                 final Supplier supplierRole = (Supplier) role;
                 detail.setSupplierId(supplierRole.getId());
-                detail.addRole(Role.SUPPLIER);
+                detail.addRole(BusinessRole.SUPPLIER);
                 detail.setSupplier(toSupplierDetail(supplierRole));
                 detail.setVerified(supplierRole.getVerification().equals(Verification.VERIFIED));
             }

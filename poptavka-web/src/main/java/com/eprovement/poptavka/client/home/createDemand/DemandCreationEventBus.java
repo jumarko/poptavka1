@@ -14,7 +14,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 
 /**
@@ -97,7 +97,7 @@ public interface DemandCreationEventBus extends EventBus {
     void loginError();
 
     @Event(handlers = DemandCreationPresenter.class)
-    void prepareNewDemandForNewClient(UserDetail client);
+    void prepareNewDemandForNewClient(BusinessUserDetail client);
 
 //    @Event(handlers = SupplierCreationPresenter.class)
 //    void initServiceForm(SimplePanel serviceHolder);
@@ -111,7 +111,7 @@ public interface DemandCreationEventBus extends EventBus {
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = DemandCreationHandler.class)
-    void registerNewClient(UserDetail newClient);
+    void registerNewClient(BusinessUserDetail newClient);
 
     // TODO praso - FullDemandDetail will obviosuly fell inside the left-over fragment
     // if it is used in another module. And I think it is bacause I saw it in left-over
@@ -120,7 +120,7 @@ public interface DemandCreationEventBus extends EventBus {
 
     // TODO praso - check if this one is used in suppliserCreationModule. we shouln't have duplicates
     @Event(handlers = DemandCreationHandler.class)
-    void verifyExistingClient(UserDetail client);
+    void verifyExistingClient(BusinessUserDetail client);
 //    @Event(handlers = SupplierCreationHandler.class)
 //    void checkFreeEmail(String value);
 

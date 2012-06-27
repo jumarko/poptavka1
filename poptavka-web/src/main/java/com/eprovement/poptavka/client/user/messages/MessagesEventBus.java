@@ -16,7 +16,7 @@ import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.messages.tab.ComposeMessagePresenter;
 import com.eprovement.poptavka.client.user.messages.tab.ConversationWrapperPresenter;
 import com.eprovement.poptavka.client.user.messages.tab.MessageListPresenter;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
@@ -97,7 +97,7 @@ public interface MessagesEventBus extends EventBus {
     void displayMessages(List<UserMessageDetail> messages);
 
     @Event(handlers = ComposeMessagePresenter.class)
-    void responseUserInfo(UserDetail userDetail);
+    void responseUserInfo(BusinessUserDetail userDetail);
 
     /**************************************************************************/
     /* Business events handled by ConversationWrapperPresenter.               */

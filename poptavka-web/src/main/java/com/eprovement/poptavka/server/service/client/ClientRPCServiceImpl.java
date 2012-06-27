@@ -18,7 +18,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -42,7 +42,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private LocalityService localityService;
     private ClientConverter clientConverter = new ClientConverter();
 
-    public ArrayList<UserDetail> getAllClients() {
+    public ArrayList<BusinessUserDetail> getAllClients() {
         // TODO do we need this method?
         return null;
     }
@@ -74,7 +74,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
      * Vytvorenie noveho klienta.
      *
      */
-    public UserDetail createNewClient(UserDetail clientDetail) throws RPCException {
+    public BusinessUserDetail createNewClient(BusinessUserDetail clientDetail) throws RPCException {
         Preconditions.checkNotNull(clientDetail);
         final Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/

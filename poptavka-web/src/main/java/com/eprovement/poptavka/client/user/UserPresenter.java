@@ -20,8 +20,8 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.IUserMenuView.IUserMenuPresenter;
-import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -67,7 +67,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     private static final Logger LOGGER = Logger.getLogger("UserPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    private UserDetail user = null;
+    private BusinessUserDetail user = null;
     private String eventMarkedToFire;
     private boolean fireMarkedEvent = false;
 
@@ -90,7 +90,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     // setting of user
     // init of demandLayout tab
     //TODO need revision and clean-up
-    public void onSetUser(UserDetail userDetail) {
+    public void onSetUser(BusinessUserDetail userDetail) {
         Storage.setUser(userDetail);
         //this should be removed and all references replaces by Storage calls
         user = userDetail;
@@ -122,11 +122,11 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     public void onSetUserInteface(StyleInterface widget) {
         // TODO
         //set interface according to user roles
-        if (user.getRoleList().contains(Role.CLIENT)) {
-            widget.setRoleInterface(Role.CLIENT);
+        if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
+            widget.setRoleInterface(BusinessRole.CLIENT);
         }
-        if (user.getRoleList().contains(Role.SUPPLIER)) {
-            widget.setRoleInterface(Role.SUPPLIER);
+        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
+            widget.setRoleInterface(BusinessRole.SUPPLIER);
         }
     }
 
@@ -148,7 +148,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     /** REQUESTs && RESPONSEs. **/
     public void onRequestClientId(FullDemandDetail newDemand) {
         // TODO refactor this method to call just demand
-        if (user.getRoleList().contains(Role.CLIENT)) {
+        if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
             newDemand.setClientId(user.getClientId());
             eventBus.createDemand(newDemand, user.getClientId());
         } else {
@@ -180,7 +180,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     }
 
     public void onRequestPotentialDemands() {
-        if (user.getRoleList().contains(Role.SUPPLIER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
             eventBus.getPotentialDemands(user.getUserId());
         } else {
             accessDenied();
@@ -188,7 +188,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     }
 
     public void onRequestClientOfferDemands() {
-        if (user.getRoleList().contains(Role.CLIENT)) {
+        if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
             eventBus.getClientDemandsWithOffers(user.getUserId());
         } else {
             accessDenied();
@@ -197,7 +197,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
 
     /** messaging subsection. **/
     public void onRequestPotentialDemandConversation(long messageId, long userMessageId) {
-        if (user.getRoleList().contains(Role.SUPPLIER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
             eventBus.getPotentialDemandConversation(messageId, user.getUserId(), userMessageId);
         } else {
             accessDenied();
@@ -210,7 +210,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
     }
 
     public void onBubbleOfferSending(OfferMessageDetail offerToSend) {
-        if (user.getRoleList().contains(Role.SUPPLIER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
             offerToSend.setSenderId(user.getUserId());
             offerToSend.setSupplierId(user.getSupplierId());
             eventBus.sendDemandOffer(offerToSend);
@@ -230,7 +230,7 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
         sb.append("ID: " + user.getUserId() + br);
 
         sb.append("<i>-- user roles --</i>" + br);
-        if (user.getRoleList().contains(Role.CLIENT)) {
+        if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
             sb.append("<b><i>CLIENT</i></b>" + br);
             sb.append("ClientID: " + user.getClientId() + br);
             sb.append("Demand Count: " + user.getDemandsId().size() + br);
@@ -238,21 +238,21 @@ public class UserPresenter extends BasePresenter<IUserMenuView, UserEventBus> im
             sb.append("Demands Offers: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.SUPPLIER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
             sb.append("<b><i>SUPPLIER</i></b>" + br);
             sb.append("SupplierID: " + user.getSupplierId() + br);
             sb.append("Potentional Demands: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.PARTNER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.PARTNER)) {
             sb.append("<b><i>PARTNER</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.OPERATOR)) {
+        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
             sb.append("<b><i>OPERATOR</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.ADMIN)) {
+        if (user.getBusinessRoles().contains(BusinessRole.ADMIN)) {
             sb.append("<b><i>ADMIN</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }

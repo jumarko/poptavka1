@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.service.demand.ClientRPCService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class ClientRPCServiceTest {
 
     @Test
     public void testCreateNewClient() throws Exception {
-        final UserDetail testUser = new UserDetail("test@poptavka.com", "testpasswd");
+        final BusinessUserDetail testUser = new BusinessUserDetail("test@poptavka.com", "testpasswd");
 
         this.clientRPCService.createNewClient(testUser);
     }

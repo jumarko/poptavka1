@@ -29,8 +29,8 @@ import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPrese
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
-import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 @Presenter(view = RootView.class)
 public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
@@ -39,7 +39,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private PopupPanel popup = null;
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
-    private UserDetail user = null;
+    private BusinessUserDetail user = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -244,7 +244,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /* For logging */
-    public void onSetUser(UserDetail userDetail) {
+    public void onSetUser(BusinessUserDetail userDetail) {
         Storage.setUser(userDetail);
         //this should be removed and all references replaces by Storage calls
         user = userDetail;
@@ -271,7 +271,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         sb.append("ID: " + user.getUserId() + br);
 
         sb.append("<i>-- user roles --</i>" + br);
-        if (user.getRoleList().contains(Role.CLIENT)) {
+        if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
             sb.append("<b><i>CLIENT</i></b>" + br);
             sb.append("ClientID: " + user.getClientId() + br);
             sb.append("Demand Count: " + user.getDemandsId().size() + br);
@@ -279,21 +279,21 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
             sb.append("Demands Offers: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.SUPPLIER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
             sb.append("<b><i>SUPPLIER</i></b>" + br);
             sb.append("SupplierID: " + user.getSupplierId() + br);
             sb.append("Potentional Demands: " + "n/a" + " / " + "n/a" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.PARTNER)) {
+        if (user.getBusinessRoles().contains(BusinessRole.PARTNER)) {
             sb.append("<b><i>PARTNER</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.OPERATOR)) {
+        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
             sb.append("<b><i>OPERATOR</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }
-        if (user.getRoleList().contains(Role.ADMIN)) {
+        if (user.getBusinessRoles().contains(BusinessRole.ADMIN)) {
             sb.append("<b><i>ADMIN</i></b>" + br);
             sb.append("<i>-- -- -- --</i>" + br);
         }

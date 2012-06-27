@@ -39,8 +39,8 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +109,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return
      */
     @Override
-    public UserDetail createNewSupplier(UserDetail supplier) throws RPCException {
+    public BusinessUserDetail createNewSupplier(BusinessUserDetail supplier) throws RPCException {
         final Supplier newSupplier = new Supplier();
         setNewSupplierBusinessUserData(supplier, newSupplier);
         newSupplier.getBusinessUser().setEmail(supplier.getEmail());
@@ -143,7 +143,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
     }
 
-    private void setNewSupplierBusinessUserData(UserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierBusinessUserData(BusinessUserDetail supplier, Supplier newSupplier) {
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
                 .companyName(supplier.getCompanyName()).taxId(supplier.getTaxId())
                 .identificationNumber(supplier.getIdentificationNumber())
@@ -153,7 +153,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
     }
 
-    private void setNewSupplierAddresses(UserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierAddresses(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Address> addresses = getAddressesFromSupplierCityName(supplier);
 
         newSupplier.getBusinessUser().setAddresses(addresses);
@@ -177,7 +177,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().getSettings().setNotificationItems(notificationItems);
     }
 
-    private void setNewSupplierUserServices(UserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierUserServices(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<UserService> us = new ArrayList<UserService>();
 
         ArrayList<Integer> userServicesId = supplier.getSupplier().getServices();
@@ -193,7 +193,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.getBusinessUser().setUserServices(us);
     }
 
-    private void setNewSupplierCategories(UserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierCategories(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Category> categories = new ArrayList<Category>();
         for (String categoryId : supplier.getSupplier().getCategories()) {
             categories.add(this.getCategory(categoryId));
@@ -201,7 +201,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.setCategories(categories);
     }
 
-    private void setNewSupplierLocalities(UserDetail supplier, Supplier newSupplier) {
+    private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Locality> localities = new ArrayList<Locality>();
         for (String localityCode : supplier.getSupplier().getLocalities()) {
             localities.add(this.getLocality(localityCode));
@@ -209,7 +209,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         newSupplier.setLocalities(localities);
     }
 
-    private List<Address> getAddressesFromSupplierCityName(UserDetail supplier) {
+    private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
         List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail detail : supplier.getAddresses()) {
             Locality cityLoc = (Locality) generalService.searchUnique(
@@ -422,24 +422,24 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return userDetails;
     }
 
-    protected UserDetail toUserDetail(Supplier supplier) {
+    protected BusinessUserDetail toUserDetail(Supplier supplier) {
 
-        UserDetail detail = new UserDetail();
+        BusinessUserDetail detail = new BusinessUserDetail();
         detail.setUserId(supplier.getBusinessUser().getId());
 
-        // Set UserDetail according to his roles
+        // Set BusinessUserDetail according to his roles
         for (BusinessUserRole role : supplier.getBusinessUser().getBusinessUserRoles()) {
             if (role instanceof Client) {
                 Client clientRole = (Client) role;
                 detail.setClientId(clientRole.getId());
-                detail.addRole(Role.CLIENT);
+                detail.addRole(BusinessRole.CLIENT);
 
                 detail.setVerified(clientRole.getVerification().equals(Verification.VERIFIED));
             }
             if (role instanceof Supplier) {
                 Supplier supplierRole = (Supplier) role;
                 detail.setSupplierId(supplierRole.getId());
-                detail.addRole(Role.SUPPLIER);
+                detail.addRole(BusinessRole.SUPPLIER);
                 SupplierDetail supplierDetail = new SupplierDetail();
 
                 // supplierServices

@@ -15,7 +15,7 @@ import com.eprovement.poptavka.client.service.demand.OfferRPCServiceAsync;
 
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.client.user.UserEventBus;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
@@ -48,7 +48,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             Window.alert("sessionID is null and it shouldn't be");
             return;
         }
-        userService.getSignedUser(sessionID, new AsyncCallback<UserDetail>() {
+        userService.getSignedUser(sessionID, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -61,7 +61,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
             }
 
             @Override
-            public void onSuccess(UserDetail result) {
+            public void onSuccess(BusinessUserDetail result) {
                 eventBus.loadingShow(MSGS.progressCreatingUserInterface());
                 eventBus.setUser(result);
             }

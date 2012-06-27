@@ -18,7 +18,7 @@ import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.domain.address.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.History;
@@ -146,7 +146,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             Window.alert("sessionID is null and it shouldn't be");
             return;
         }
-        userService.getSignedUser(sessionID, new AsyncCallback<UserDetail>() {
+        userService.getSignedUser(sessionID, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -163,7 +163,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             }
 
             @Override
-            public void onSuccess(UserDetail result) {
+            public void onSuccess(BusinessUserDetail result) {
                 eventBus.loadingShow(Storage.MSGS.progressCreatingUserInterface());
                 eventBus.setUser(result);
             }

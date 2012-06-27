@@ -17,7 +17,7 @@ import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.messages.MessagesEventBus;
 import com.eprovement.poptavka.client.user.messages.tab.ComposeMessagePresenter.IComposeMessage;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 
 @Presenter(view = ComposeMessageView.class)
@@ -42,7 +42,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
     }
     private String action = null;
     private MessageDetail messageDetail = null;
-    private UserDetail userDetail = null;
+    private BusinessUserDetail userDetail = null;
 
     /** Defines button actions. */
     @Override
@@ -87,7 +87,7 @@ public class ComposeMessagePresenter extends LazyPresenter<IComposeMessage, Mess
         eventBus.displayMain(view.getWidgetView());
     }
 
-    public void onResponseUserInfo(UserDetail userDetail) {
+    public void onResponseUserInfo(BusinessUserDetail userDetail) {
         this.userDetail = userDetail;
         view.getRecipientTextBox().setText(userDetail.getEmail());
     }

@@ -15,7 +15,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 /**
  *
@@ -91,7 +91,7 @@ public interface SupplierCreationEventBus extends EventBus {
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = SupplierCreationHandler.class)
-    void registerSupplier(UserDetail newSupplier);
+    void registerSupplier(BusinessUserDetail newSupplier);
 
     @Event(handlers = SupplierCreationHandler.class)
     void checkFreeEmail(String value);

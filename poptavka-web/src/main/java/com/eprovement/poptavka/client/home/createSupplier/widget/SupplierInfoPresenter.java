@@ -14,7 +14,7 @@ import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationEventB
 
 import com.eprovement.poptavka.client.main.common.StatusIconLabel;
 import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 @Presenter(view = SupplierInfoView.class, multiple = true)
 public class SupplierInfoPresenter
@@ -32,7 +32,7 @@ public class SupplierInfoPresenter
 
         boolean validateEmail();
 
-        UserDetail createSupplier();
+        BusinessUserDetail createSupplier();
     }
 
     @Override

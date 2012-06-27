@@ -23,26 +23,26 @@ import com.mvp4g.client.view.ReverseViewInterface;
 import com.eprovement.poptavka.client.main.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.main.login.LoginPopupPresenter.LoginPopupInterface;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 //public class LoginPopupView extends PopupPanel implements LoginPopupInterface {
 public class LoginPopupView extends PopupPanel
         implements ReverseViewInterface<LoginPopupPresenter>, LoginPopupInterface {
 
     /************** DEVEL ONLY *********/
-    private static HashMap<Role, PrivateUser> privateUsers = new HashMap<Role, PrivateUser>();
+    private static HashMap<BusinessRole, PrivateUser> privateUsers = new HashMap<BusinessRole, PrivateUser>();
 
     class PrivateUser {
 
         private String name;
         private String pass;
 
-        public PrivateUser(Role role) {
-            if (role == Role.CLIENT) {
+        public PrivateUser(BusinessRole role) {
+            if (role == BusinessRole.CLIENT) {
                 name = "client@test.com";
                 pass = "kreslo";
             }
-            if (role == Role.SUPPLIER) {
+            if (role == BusinessRole.SUPPLIER) {
                 name = "moj@supplier.cz";
                 pass = "kreslo";
             }
@@ -58,8 +58,8 @@ public class LoginPopupView extends PopupPanel
     }
 
     {
-        privateUsers.put(Role.CLIENT, new PrivateUser(Role.CLIENT));
-        privateUsers.put(Role.SUPPLIER, new LoginPopupView.PrivateUser(Role.SUPPLIER));
+        privateUsers.put(BusinessRole.CLIENT, new PrivateUser(BusinessRole.CLIENT));
+        privateUsers.put(BusinessRole.SUPPLIER, new LoginPopupView.PrivateUser(BusinessRole.SUPPLIER));
     }
     /************** DEVEL ONLY *********/
     private static final String LOGIN_DIV = "loginDiv";
@@ -101,14 +101,14 @@ public class LoginPopupView extends PopupPanel
             @Override
             public void onClick(ClickEvent event) {
                 String roleString = list.getValue(list.getSelectedIndex());
-                Role role = Role.values()[Role.valueOf(roleString).ordinal()];
+                BusinessRole role = BusinessRole.values()[BusinessRole.valueOf(roleString).ordinal()];
                 setLogin(role);
             }
         });
         panel.add(list);
     }
 
-    private void setLogin(Role role) {
+    private void setLogin(BusinessRole role) {
 
         ((InputElement) Document.get().getElementById(LOGIN_ID)).setValue(privateUsers.get(role).getName());
         ((InputElement) Document.get().getElementById(PASSWORD_ID)).setValue(privateUsers.get(role).getPass());

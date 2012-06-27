@@ -7,7 +7,7 @@ import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
@@ -232,8 +232,8 @@ public class SupplierInfoView extends Composite
     }
 
     @Override
-    public UserDetail createSupplier() {
-        UserDetail user = new UserDetail();
+    public BusinessUserDetail createSupplier() {
+        BusinessUserDetail user = new BusinessUserDetail();
         user.setEmail(email.getText());
         user.setPassword(password.getText());
         user.setCompanyName(companyName.getText());

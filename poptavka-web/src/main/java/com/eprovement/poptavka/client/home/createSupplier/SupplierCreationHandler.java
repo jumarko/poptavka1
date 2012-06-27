@@ -10,7 +10,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -39,8 +39,8 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
         this.userRpcService = userRpcService;
     }
 
-    public void onRegisterSupplier(UserDetail newSupplier) {
-        supplierCreationService.createNewSupplier(newSupplier, new AsyncCallback<UserDetail>() {
+    public void onRegisterSupplier(BusinessUserDetail newSupplier) {
+        supplierCreationService.createNewSupplier(newSupplier, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -51,7 +51,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
             }
 
             @Override
-            public void onSuccess(UserDetail supplier) {
+            public void onSuccess(BusinessUserDetail supplier) {
                 // TODO forward to user/atAccount
                 eventBus.loadingHide();
             }

@@ -19,7 +19,7 @@ import com.eprovement.poptavka.client.user.handler.UserHandler;
 import com.eprovement.poptavka.client.user.problems.MyProblemsPresenter;
 import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
@@ -45,7 +45,7 @@ public interface UserEventBus extends EventBusWithLookup {
     @Event(handlers = UserPresenter.class, historyConverter = UserHistoryConverter.class)
     String atAccount();
 
-    /** getter for UserDetail. **/
+    /** getter for BusinessUserDetail. **/
     @Event(handlers = UserHandler.class)
     void getUser();
 
@@ -56,7 +56,7 @@ public interface UserEventBus extends EventBusWithLookup {
      * @param user
      */
     @Event(handlers = UserPresenter.class)
-    void setUser(UserDetail user);
+    void setUser(BusinessUserDetail user);
 
     /** Client demands list GETTER/SETTER **/
     @Event(handlers = UserPresenter.class)

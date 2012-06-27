@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class ClientDetail implements Serializable {
     private static final long serialVersionUID = -530982467233195456L;
     private Long id;
     private int overalRating = -1;
-    private UserDetail userDetail = null;
+    private BusinessUserDetail userDetail = null;
     private String verification = null;
     private List<Long> supplierBlackListIds = null;
     private List<Long> demandsIds = null;
@@ -83,11 +83,11 @@ public class ClientDetail implements Serializable {
         this.supplierBlackListIds = supplierBlackListIds;
     }
 
-    public UserDetail getUserDetail() {
+    public BusinessUserDetail getUserDetail() {
         return userDetail;
     }
 
-    public void setUserDetail(UserDetail userDetail) {
+    public void setUserDetail(BusinessUserDetail userDetail) {
         this.userDetail = userDetail;
     }
 

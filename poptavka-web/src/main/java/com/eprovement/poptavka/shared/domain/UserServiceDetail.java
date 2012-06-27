@@ -18,7 +18,7 @@ public class UserServiceDetail implements Serializable {
      */
     private static final long serialVersionUID = -530982467233195456L;
     private ServiceDetail service;
-    private UserDetail user;
+    private BusinessUserDetail user;
     private String status;
 
     /** for serialization. **/
@@ -39,7 +39,7 @@ public class UserServiceDetail implements Serializable {
 
         detail.setService(ServiceDetail.createServiceDetail(service.getService()));
         detail.setStatus(service.getStatus().name());
-        detail.setUser(UserDetail.createUserDetail(service.getUser()));
+        detail.setUser(BusinessUserDetail.createUserDetail(service.getUser()));
 
         return detail;
     }
@@ -67,11 +67,11 @@ public class UserServiceDetail implements Serializable {
         this.status = status;
     }
 
-    public UserDetail getUser() {
+    public BusinessUserDetail getUser() {
         return user;
     }
 
-    public void setUser(UserDetail user) {
+    public void setUser(BusinessUserDetail user) {
         this.user = user;
     }
 

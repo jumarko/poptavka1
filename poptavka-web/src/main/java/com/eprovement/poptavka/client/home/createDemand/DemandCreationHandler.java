@@ -10,8 +10,8 @@ import com.mvp4g.client.event.BaseEventHandler;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.LoggedUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -48,9 +48,9 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      *
      * @param client existing user detail
      */
-    public void onVerifyExistingClient(final UserDetail client) {
+    public void onVerifyExistingClient(final BusinessUserDetail client) {
         LOGGER.fine("verify start");
-        userRpcService.loginUser(client, new AsyncCallback<LoggedUserDetail>() {
+        userRpcService.loginUser(client, new AsyncCallback<UserDetail>() {
             @Override
             public void onFailure(Throwable loginException) {
                 LOGGER.info("login error:" + loginException.getMessage());
@@ -59,8 +59,8 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
             }
 
             @Override
-            public void onSuccess(final LoggedUserDetail loggedUser) {
-                userRpcService.getUserById(loggedUser.getUserId(), new AsyncCallback<UserDetail>() {
+            public void onSuccess(final UserDetail loggedUser) {
+                userRpcService.getUserById(loggedUser.getUserId(), new AsyncCallback<BusinessUserDetail>() {
                     @Override
                     public void onFailure(Throwable caught) {
                         // TODO
@@ -72,7 +72,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                     }
 
                     @Override
-                    public void onSuccess(UserDetail businessUserDetail) {
+                    public void onSuccess(BusinessUserDetail businessUserDetail) {
                         eventBus.prepareNewDemandForNewClient(businessUserDetail);
                     }
                 });
@@ -85,8 +85,8 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      *
      * @param client newly created client
      */
-    public void onRegisterNewClient(UserDetail client) {
-        demandCreationService.createNewClient(client, new AsyncCallback<UserDetail>() {
+    public void onRegisterNewClient(BusinessUserDetail client) {
+        demandCreationService.createNewClient(client, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable arg0) {
@@ -96,7 +96,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
             }
 
             @Override
-            public void onSuccess(UserDetail client) {
+            public void onSuccess(BusinessUserDetail client) {
                 if (client.getClientId() != -1) {
                     eventBus.prepareNewDemandForNewClient(client);
                 }

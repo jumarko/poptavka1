@@ -14,7 +14,7 @@ import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 //import com.eprovement.poptavka.client.service.demand.GeneralRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
@@ -210,7 +210,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onRequestUserInfo(Long recipientId) {
-        userService.getUserById(recipientId, new AsyncCallback<UserDetail>() {
+        userService.getUserById(recipientId, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -220,7 +220,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             }
 
             @Override
-            public void onSuccess(UserDetail result) {
+            public void onSuccess(BusinessUserDetail result) {
                 eventBus.responseUserInfo(result);
             }
         });

@@ -11,9 +11,9 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
-import com.eprovement.poptavka.shared.domain.LoggedUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.domain.converter.AccessRoleConverter;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -46,14 +46,14 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Override
-    public LoggedUserDetail loginUser(UserDetail userDetail) throws RPCException {
+    public UserDetail loginUser(BusinessUserDetail userDetail) throws RPCException {
         final User user = this.loginService.loginUser(userDetail.getEmail(), userDetail.getPassword());
-        return new LoggedUserDetail(user.getId(), user.getEmail(),
+        return new UserDetail(user.getId(), user.getEmail(),
                 roleConverter.convertToTargetList(user.getAccessRoles()));
     }
 
     @Override
-    public UserDetail getSignedUser(String sessionId) throws RPCException {
+    public BusinessUserDetail getSignedUser(String sessionId) throws RPCException {
         // TODO make real implementation of getting user according to sessionID
         // now it's just fake string, that needs to be parsed
         String[] parsedSession = sessionId.split("=");
@@ -62,18 +62,18 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         final BusinessUser user = (BusinessUser) generalService.searchUnique(
                 new Search(User.class).addFilterEqual("id", userId));
 
-        UserDetail userDetail = new UserDetail();
+        BusinessUserDetail userDetail = new BusinessUserDetail();
 
         List<BusinessUserRole> roles = user.getBusinessUserRoles();
 
         for (BusinessUserRole role : roles) {
             if (role instanceof Client) {
                 userDetail.setClientId(role.getId());
-                userDetail.addRole(Role.CLIENT);
+                userDetail.addRole(BusinessRole.CLIENT);
             }
             if (role instanceof Supplier) {
                 userDetail.setSupplierId(role.getId());
-                userDetail.addRole(Role.SUPPLIER);
+                userDetail.addRole(BusinessRole.SUPPLIER);
             }
             //add other roles
         }
@@ -85,8 +85,8 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Override
-    public UserDetail getUserById(Long userId) throws RPCException {
-        return UserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
+    public BusinessUserDetail getUserById(Long userId) throws RPCException {
+        return BusinessUserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
     }
 
     @Override

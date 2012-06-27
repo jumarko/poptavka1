@@ -33,7 +33,7 @@ import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -169,7 +169,7 @@ public class SupplierCreationPresenter
         CategorySelectorInterface cats = (CategorySelectorInterface) view.getCategoryHolder().getWidget();
         ServiceWidget service = (ServiceWidget) view.getServiceHolder().getWidget();
 
-        UserDetail newSupplier = info.createSupplier();
+        BusinessUserDetail newSupplier = info.createSupplier();
         newSupplier.getSupplier().setLocalities(locs.getSelectedLocalityCodes());
         newSupplier.getSupplier().setCategories(cats.getSelectedCategoryCodes());
         newSupplier.getSupplier().addService(service.getSelectedService());

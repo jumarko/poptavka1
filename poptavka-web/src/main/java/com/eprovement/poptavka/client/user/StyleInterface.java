@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.user;
 
-import com.eprovement.poptavka.shared.domain.UserDetail.Role;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 
 /**
  * Interface for uniting User Layout Tab Views for handling role-dependent usability.
@@ -8,6 +8,6 @@ import com.eprovement.poptavka.shared.domain.UserDetail.Role;
  */
 public interface StyleInterface {
 
-    void setRoleInterface(Role role);
+    void setRoleInterface(BusinessRole role);
 
 }

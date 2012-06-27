@@ -17,7 +17,7 @@ import com.eprovement.poptavka.client.main.common.StatusIconLabel;
 import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import java.util.List;
 
 public class FormUserRegistrationView extends Composite
@@ -112,8 +112,8 @@ public class FormUserRegistrationView extends Composite
     }
 
     @Override
-    public UserDetail getNewClient() {
-        UserDetail client = new UserDetail(mailBox.getText(), passBox.getText());
+    public BusinessUserDetail getNewClient() {
+        BusinessUserDetail client = new BusinessUserDetail(mailBox.getText(), passBox.getText());
 
         client.setCompanyName(companyNameBox.getText());
         client.setIdentificationNumber(companyIdBox.getText());

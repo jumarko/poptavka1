@@ -8,13 +8,13 @@ import com.eprovement.poptavka.domain.common.OrderType;
 
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import java.util.List;
 import java.util.Map;
 
 public interface SupplierRPCServiceAsync {
 
-    void createNewSupplier(UserDetail supplier, AsyncCallback<UserDetail> callback);
+    void createNewSupplier(BusinessUserDetail supplier, AsyncCallback<BusinessUserDetail> callback);
 
     void getSupplierServices(AsyncCallback<ArrayList<ServiceDetail>> callback);
 
