@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.service.user;
 
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.user.SupplierDao;
@@ -14,10 +16,13 @@ import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.util.notification.NotificationUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.Validate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -39,6 +44,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     public Supplier create(Supplier businessUserRole) {
         createDefaultNotifications(businessUserRole);
+        createDefaultAccessRole(businessUserRole);
         return super.create(businessUserRole);
     }
 
@@ -222,6 +228,17 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
                         Registers.Notification.SUPPLIER_OFFER_STATUS_CHANGED, false));
 
         businessUserRole.getBusinessUser().getSettings().setNotificationItems(notificationItems);
+    }
+
+
+    private void createDefaultAccessRole(Supplier businessUserRole) {
+        Validate.notNull(businessUserRole);
+        Preconditions.checkNotNull(businessUserRole.getBusinessUser(), "Supplier.businessUser must not be null!");
+        if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
+            businessUserRole.getBusinessUser().setAccessRoles(Collections.singletonList(
+                    getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class)));
+        }
+
     }
 
 }

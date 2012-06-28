@@ -5,6 +5,9 @@
 
 package com.eprovement.poptavka.service.user;
 
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.user.ClientDao;
 import com.eprovement.poptavka.domain.register.Registers;
@@ -14,7 +17,10 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.util.notification.NotificationUtils;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.Validate;
 
 /**
  * @author Excalibur
@@ -46,10 +52,21 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
 
         /** Notifications for new client. **/
         createDefaultNotifications(businessUserRole);
+        createDefaultAccessRole(businessUserRole);
 
         /** TODO ivlcek - email activation. **/
 
         return super.create(businessUserRole);
+    }
+
+    private void createDefaultAccessRole(Client businessUserRole) {
+        Validate.notNull(businessUserRole);
+        Preconditions.checkNotNull(businessUserRole.getBusinessUser(), "Client.businessUser must not be null!");
+        if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
+            businessUserRole.getBusinessUser().setAccessRoles(Collections.singletonList(
+                    getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class)));
+        }
+
     }
 
     private void createDefaultNotifications(Client businessUserRole) {
