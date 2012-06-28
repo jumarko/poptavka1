@@ -188,7 +188,7 @@
         <!-- See http://checkstyle.sf.net/config_coding.html -->
         <!-- Inline conditionals are handy in some situations therefore allow them -->
         <!--<module name="AvoidInlineConditionals"/>-->
-        <module name="DoubleCheckedLocking"/>
+        <!--<module name="DoubleCheckedLocking"/>-->
         <module name="EmptyStatement">
             <property name="severity" value="warning"/>
         </module>

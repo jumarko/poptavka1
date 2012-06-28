@@ -26,6 +26,15 @@ public interface FulltextSearchService {
      */
     <T extends DomainObject> List<T> search(Class<T> entityClass, String[] propertyNames, String fulltextQuery);
 
+    /**
+     * Return estimated number of all instances of given {@code entityClass} which satisfy given {@code fulltextQuery}.
+     * @param entityClass
+     * @param propertyNames
+     * @param fulltextQuery
+     * @param <T>
+     * @return
+     */
+    <T extends DomainObject> int searchCount(Class<T> entityClass, String[] propertyNames, String fulltextQuery);
 
     /**
      * Creates initial fulltext index using properties from configuration file (persistence.xml).
@@ -33,4 +42,6 @@ public interface FulltextSearchService {
      * This method should be used carefully.
      */
     void createInitialFulltextIndex();
+
+
 }
