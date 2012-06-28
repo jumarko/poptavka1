@@ -77,15 +77,27 @@
     </properties>
 
     <pluginRepositories>
+        <!--override the built-in central and snapshots repositories of Maven, so that no request will be ever sent directly to them.-->
         <pluginRepository>
-            <id>gwt-maven.snapshots</id>
-            <url>http://nexus.codehaus.org/snapshots</url>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven2/</url>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>snapshots</id>
+            <url>http://repo1.maven.org/maven2/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>gwt-maven.snapshots</id>
+            <url>http://nexus.codehaus.org/snapshots</url>
+            <snapshots><enabled>true</enabled></snapshots>
+            <releases><enabled>false</enabled></releases>
         </pluginRepository>
 
         <pluginRepository>
@@ -125,17 +137,12 @@
     </pluginRepositories>
 
     <repositories>
-        <!-- Our own repository -->
+
         <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </releases>
-            <id>poptavka.maven.repository</id>
-            <name>Maven repository for Poptavka project</name>
-            <url>http://46.137.95.172:8080/maven</url>
+            <id>Poptavka-Artifactory</id>
+            <name>Poptavka Artifactory maven repo</name>
             <layout>default</layout>
+            <url>http://46.137.95.172:8081/artifactory/repo</url>
         </repository>
 
         <repository>
