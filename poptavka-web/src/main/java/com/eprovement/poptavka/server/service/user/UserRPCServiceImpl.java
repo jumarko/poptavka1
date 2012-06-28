@@ -10,6 +10,7 @@ import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.converter.AccessRoleConverter;
+import com.eprovement.poptavka.shared.domain.converter.UserConverter;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Override
     public BusinessUserDetail getUserById(Long userId) throws RPCException {
         //Find vs. SearchUnique ??
-        return BusinessUserDetail.createUserDetail(generalService.find(BusinessUser.class, userId));
+        return new UserConverter().convertToTarget(generalService.find(BusinessUser.class, userId));
     }
 
     @Override

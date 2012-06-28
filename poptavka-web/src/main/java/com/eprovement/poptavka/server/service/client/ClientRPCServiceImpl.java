@@ -52,6 +52,8 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         final Search search = new Search(Client.class);
         search.setFirstResult(start);
         search.setMaxResults(count);
+        //mohlo by byt nie?
+        //return clientConverter.convertToTargetList(generalService.search(search));
         return this.createClientDetailList(generalService.search(search));
     }
 
@@ -107,7 +109,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setEmail(clientDetail.getEmail());
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
         final Client newClientFromDB = clientService.create(newClient);
-        //UserConverter
+        //use UserConverter???
         return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
                 newClientFromDB.getBusinessUser().getBusinessUserRoles());
     }

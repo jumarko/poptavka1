@@ -6,7 +6,6 @@ package com.eprovement.poptavka.shared.domain.converter;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class ClientConverter extends AbstractConverter<Client, ClientDetail> {
         if (source.getVerification() != null) {
             detail.setVerification(source.getVerification().name());
         }
-        detail.setUserDetail(BusinessUserDetail.createUserDetail(source.getBusinessUser()));
+        detail.setUserDetail(new UserConverter().convertToTarget(source.getBusinessUser()));
         if (source.getSupplierBlacklist() != null) {
             List<Long> supplierBlackListIds = new ArrayList<Long>();
             for (Supplier supplier : source.getSupplierBlacklist().getSuppliers()) {

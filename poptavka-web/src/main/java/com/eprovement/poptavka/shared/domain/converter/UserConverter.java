@@ -19,7 +19,12 @@ public class UserConverter extends AbstractConverter<BusinessUser, BusinessUserD
     @Override
     public BusinessUserDetail convertToTarget(BusinessUser source) {
         BusinessUserDetail detail = new BusinessUserDetail();
+        //User
         detail.setUserId(source.getId());
+        detail.setEmail(source.getEmail());
+        detail.setPassword(source.getPassword());
+        detail.setAccessRoles(new AccessRoleConverter().convertToTargetList(source.getAccessRoles()));
+        //BusinessUser
         List<AddressDetail> addresses = new ArrayList<AddressDetail>();
         for (Address addr : source.getAddresses()) {
             addresses.add(AddressDetail.createAddressDetail(addr));
@@ -45,11 +50,8 @@ public class UserConverter extends AbstractConverter<BusinessUser, BusinessUserD
             detail.setIdentificationNumber(source.getBusinessUserData().getIdentificationNumber());
             detail.setPhone(source.getBusinessUserData().getPhone());
         }
-        detail.setPassword(source.getPassword());
-        detail.setEmail(source.getEmail());
 
         return detail;
-
     }
 
     @Override

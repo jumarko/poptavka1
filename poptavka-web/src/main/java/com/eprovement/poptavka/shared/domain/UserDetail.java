@@ -25,7 +25,7 @@ public class UserDetail implements Serializable {
      */
     private long userId;
     private String email;
-    private ArrayList<AccessRoleDetail> accessRoles;
+    private List<AccessRoleDetail> accessRoles;
 
     /**
      * Required for GWT
@@ -56,11 +56,11 @@ public class UserDetail implements Serializable {
         this.email = email;
     }
 
-    public ArrayList<AccessRoleDetail> getAccessRoles() {
+    public List<AccessRoleDetail> getAccessRoles() {
         return accessRoles;
     }
 
-    public void setAccessRoles(ArrayList<AccessRoleDetail> accessRoles) {
+    public void setAccessRoles(List<AccessRoleDetail> accessRoles) {
         this.accessRoles = accessRoles;
     }
 }

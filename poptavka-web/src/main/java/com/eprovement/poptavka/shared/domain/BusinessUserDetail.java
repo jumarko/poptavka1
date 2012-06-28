@@ -1,10 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.domain.user.BusinessUserRole;
-import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.domain.user.Supplier;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +12,6 @@ import java.util.List;
  */
 public class BusinessUserDetail extends UserDetail implements Serializable {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 6224665779446848218L;
 
     public enum BusinessRole {
@@ -47,38 +40,6 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private boolean verified = false;
 
     public BusinessUserDetail() {
-    }
-
-    public static BusinessUserDetail createUserDetail(BusinessUser user) {
-        BusinessUserDetail detail = new BusinessUserDetail();
-        detail.setUserId(user.getId());
-        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-        for (Address addr : user.getAddresses()) {
-            addresses.add(AddressDetail.createAddressDetail(addr));
-        }
-        detail.setAddresses(addresses);
-        for (BusinessUserRole role : user.getBusinessUserRoles()) {
-            if (role instanceof Client) {
-                detail.setClientId(role.getId());
-                detail.getBusinessRoles().add(BusinessRole.CLIENT);
-            }
-            if (role instanceof Supplier) {
-                detail.setSupplierId(role.getId());
-                detail.getBusinessRoles().add(BusinessRole.SUPPLIER);
-            }
-        }
-        if (user.getBusinessUserData() != null) {
-            detail.setCompanyName(user.getBusinessUserData().getCompanyName());
-            detail.setDescription(user.getBusinessUserData().getDescription());
-            detail.setFirstName(user.getBusinessUserData().getPersonFirstName());
-            detail.setLastName(user.getBusinessUserData().getPersonLastName());
-            detail.setIdentificationNumber(user.getBusinessUserData().getIdentificationNumber());
-            detail.setPhone(user.getBusinessUserData().getPhone());
-        }
-        detail.setPassword(user.getPassword());
-        detail.setEmail(user.getEmail());
-
-        return detail;
     }
 
     public static BusinessUser updateBusinessUser(BusinessUser domain, BusinessUserDetail detail) {

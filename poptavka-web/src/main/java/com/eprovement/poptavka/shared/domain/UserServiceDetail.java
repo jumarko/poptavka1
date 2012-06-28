@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.domain.product.UserService;
+import com.eprovement.poptavka.shared.domain.converter.UserConverter;
 import java.io.Serializable;
 
 
@@ -39,7 +40,7 @@ public class UserServiceDetail implements Serializable {
 
         detail.setService(ServiceDetail.createServiceDetail(service.getService()));
         detail.setStatus(service.getStatus().name());
-        detail.setUser(BusinessUserDetail.createUserDetail(service.getUser()));
+        detail.setUser(new UserConverter().convertToTarget(service.getUser()));
 
         return detail;
     }
