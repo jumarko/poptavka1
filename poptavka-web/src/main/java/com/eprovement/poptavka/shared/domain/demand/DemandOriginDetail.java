@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
-import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
@@ -31,21 +30,6 @@ public class DemandOriginDetail implements Serializable {
         this.updateWholeDemandOrigin(demand);
     }
 
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
-     * @return DemandDetail
-     */
-    public static DemandOriginDetail createDemandOriginDetail(DemandOrigin demand) {
-        DemandOriginDetail detail = new DemandOriginDetail();
-
-        detail.setId(demand.getId());
-        detail.setName(demand.getName());
-        detail.setDescription(demand.getDescription());
-        detail.setUrl(demand.getUrl());
-
-        return detail;
-    }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeDemandOrigin(DemandOriginDetail demandOriginDetail) {

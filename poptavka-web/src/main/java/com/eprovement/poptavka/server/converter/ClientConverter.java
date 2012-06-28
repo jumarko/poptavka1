@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package com.eprovement.poptavka.shared.domain.converter;
+package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Client;
@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientConverter extends AbstractConverter<Client, ClientDetail> {
+
+    private BusinessUserConverter businessUserConverter = new BusinessUserConverter();
+
     @Override
     public ClientDetail convertToTarget(Client source) {
         ClientDetail detail = new ClientDetail();
@@ -21,7 +24,7 @@ public class ClientConverter extends AbstractConverter<Client, ClientDetail> {
         if (source.getVerification() != null) {
             detail.setVerification(source.getVerification().name());
         }
-        detail.setUserDetail(new UserConverter().convertToTarget(source.getBusinessUser()));
+        detail.setUserDetail(businessUserConverter.convertToTarget(source.getBusinessUser()));
         if (source.getSupplierBlacklist() != null) {
             List<Long> supplierBlackListIds = new ArrayList<Long>();
             for (Supplier supplier : source.getSupplierBlacklist().getSuppliers()) {

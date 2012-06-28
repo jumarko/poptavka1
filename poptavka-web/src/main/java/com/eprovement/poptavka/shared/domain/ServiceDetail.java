@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.domain.product.Service;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -26,17 +25,6 @@ public class ServiceDetail implements Serializable {
         this.description = desc;
         this.price = price;
         this.prepaidMonths = months;
-    }
-
-    public static ServiceDetail createServiceDetail(Service service) {
-        ServiceDetail detail = new ServiceDetail();
-        detail.setId(service.getId());
-        detail.setTitle(service.getTitle());
-        detail.setDescription(service.getDescription());
-        detail.setPrice(service.getPrice());
-        detail.setPrepaidMonths(service.getPrepaidMonths());
-        detail.setType(service.getServiceType().getValue());
-        return detail;
     }
 
     public String getTitle() {

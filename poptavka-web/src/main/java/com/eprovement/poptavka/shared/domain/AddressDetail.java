@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.domain.address.Address;
 import java.io.Serializable;
 
 public class AddressDetail implements Serializable {
@@ -22,25 +21,6 @@ public class AddressDetail implements Serializable {
         this.zipCode = address.getZipCode();
     }
 
-    public static AddressDetail createAddressDetail(Address address) {
-        AddressDetail detail = new AddressDetail();
-        if (address.getCity() != null) {
-            detail.setCity(address.getCity().getName());
-        }
-        if (address.getStreet() != null) {
-            StringBuilder fullStreet = new StringBuilder(address.getStreet());
-            fullStreet.append(" ");
-            if (address.getFlatNum() != null && !address.getFlatNum().equals("")) {
-                fullStreet.append(address.getFlatNum());
-            }
-            if (address.getHouseNum() != null && !address.getHouseNum().equals("")) {
-                fullStreet.append(address.getHouseNum());
-            }
-        }
-        detail.setStreet(address.getStreet());
-        detail.setZipCode(address.getZipCode());
-        return detail;
-    }
 
     public String getCity() {
         return city;

@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.server.service.messages;
 
+import com.eprovement.poptavka.server.converter.UserMessageConverter;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
@@ -14,7 +15,7 @@ import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
-import com.eprovement.poptavka.shared.domain.converter.MessageConverter;
+import com.eprovement.poptavka.server.converter.MessageConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
@@ -53,6 +54,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     private MessageService messageService;
     private UserMessageService userMessageService;
     private MessageConverter messageConverter = new MessageConverter();
+    private UserMessageConverter userMessageConverter = new UserMessageConverter();
 
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
@@ -192,7 +194,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
                 }
             }
 
-            inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+            inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return inboxMessagesDetail;
@@ -285,7 +287,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         List<UserMessageDetail> deletedMessagesDetail = new ArrayList<UserMessageDetail>();
 
         for (UserMessage userMessage : rootDeletedMessages.values()) {
-            deletedMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+            deletedMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return deletedMessagesDetail;
@@ -391,7 +393,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
             }
             List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
             for (UserMessage userMessage : inboxMessages) {
-                inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+                inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
             }
         }
         return null;

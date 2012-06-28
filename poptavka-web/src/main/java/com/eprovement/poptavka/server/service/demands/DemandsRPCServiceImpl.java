@@ -6,8 +6,11 @@ package com.eprovement.poptavka.server.service.demands;
 
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.DemandsRPCService;
-import com.eprovement.poptavka.shared.domain.converter.DemandConverter;
-import com.eprovement.poptavka.shared.domain.converter.MessageConverter;
+import com.eprovement.poptavka.server.converter.BaseDemandConverter;
+import com.eprovement.poptavka.server.converter.ClientDemandMessageConverter;
+import com.eprovement.poptavka.server.converter.FullDemandConverter;
+import com.eprovement.poptavka.server.converter.MessageConverter;
+import com.eprovement.poptavka.server.converter.PotentialDemandMessageConverter;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -65,7 +68,13 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     private MessageService messageService;
     private RatingService ratingService;
     private MessageConverter messageConverter = new MessageConverter();
-    private DemandConverter demandConverter = new DemandConverter();
+    private FullDemandConverter demandConverter = new FullDemandConverter();
+
+    private final ClientDemandMessageConverter clientDemandMessageConverter = new ClientDemandMessageConverter();
+    private final PotentialDemandMessageConverter potentialDemandMessageConverter =
+            new PotentialDemandMessageConverter();
+    private final BaseDemandConverter baseDemandConverter = new BaseDemandConverter();
+
 
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
@@ -124,7 +133,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
         for (UserMessage userMessage : userMessages) {
-            ClientDemandMessageDetail detail = ClientDemandMessageDetail.createDetail(userMessage);
+            ClientDemandMessageDetail detail = clientDemandMessageConverter.convertToTarget(userMessage);
             if (submessageCounts.get(userMessage.getMessage()) == null) {
                 detail.setMessageCount(0);
             } else {
@@ -162,7 +171,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
         // fill list
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
         for (UserMessage um : userMessages) {
-            PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
+            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
             detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
@@ -280,7 +289,7 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     @Override
     public BaseDemandDetail getBaseDemandDetail(Long demandId) throws RPCException {
 
-        return BaseDemandDetail.createDemandDetail(this.demandService.getById(demandId));
+        return baseDemandConverter.convertToTarget(this.demandService.getById(demandId));
 
     }
 

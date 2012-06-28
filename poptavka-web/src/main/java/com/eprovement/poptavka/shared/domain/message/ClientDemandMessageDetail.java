@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 import com.google.gwt.view.client.ProvidesKey;
 
-import com.eprovement.poptavka.domain.message.UserMessage;
 
 /**
  *
@@ -24,25 +23,6 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
     private String clientName;
     private int clientRating;
 
-    public static DemandMessageDetail fillMessageDetail(ClientDemandMessageDetail detail,
-            UserMessage userMessage) {
-        MessageDetail.fillMessageDetail(detail, userMessage);
-        if (userMessage.getMessage() != null
-                && userMessage.getMessage().getDemand() != null
-                && userMessage.getMessage().getDemand().getClient() != null
-                && userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
-                && userMessage.getMessage().getDemand().getClient().getBusinessUser().getBusinessUserData() != null) {
-            detail.setClientName(userMessage.getMessage().getDemand()
-                    .getClient().getBusinessUser().getBusinessUserData().getDisplayName());
-        }
-        return detail;
-    }
-
-    public static ClientDemandMessageDetail createDetail(UserMessage userMessage) {
-        ClientDemandMessageDetail detail = new ClientDemandMessageDetail();
-        ClientDemandMessageDetail.fillMessageDetail(detail, userMessage);
-        return detail;
-    }
 
     @Override
     public String toString() {

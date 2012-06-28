@@ -3,16 +3,16 @@ package com.eprovement.poptavka.server.service.user;
 import com.eprovement.poptavka.client.service.demand.UserRPCService;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.server.converter.AccessRoleConverter;
+import com.eprovement.poptavka.server.converter.BusinessUserConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
-import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.converter.AccessRoleConverter;
+import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.converter.UserConverter;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +24,8 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private LoginService loginService;
     private ClientService clientService;
     private AccessRoleConverter roleConverter = new AccessRoleConverter();
+
+    private BusinessUserConverter businessUserConverter = new BusinessUserConverter();
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {

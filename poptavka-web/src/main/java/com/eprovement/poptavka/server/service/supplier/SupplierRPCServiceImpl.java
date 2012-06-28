@@ -25,7 +25,7 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.shared.domain.converter.SupplierConverter;
+import com.eprovement.poptavka.server.converter.SupplierConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;

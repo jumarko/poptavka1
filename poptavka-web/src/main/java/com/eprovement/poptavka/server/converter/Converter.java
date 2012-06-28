@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package com.eprovement.poptavka.shared.domain.converter;
+package com.eprovement.poptavka.server.converter;
 
 import java.util.Collection;
 import java.util.List;

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
 
 
@@ -34,24 +33,6 @@ public class BaseDemandDetail implements Serializable {
     private String description;
     private BigDecimal price;
 
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
-     * @return FullDemandDetail
-     */
-    public static BaseDemandDetail createDemandDetail(Demand demand) {
-        return fillDemandDetail(new BaseDemandDetail(), demand);
-    }
-
-    public static BaseDemandDetail fillDemandDetail(BaseDemandDetail detail, Demand demand) {
-        detail.setDemandId(demand.getId());
-        detail.setTitle(demand.getTitle());
-        detail.setDescription(demand.getDescription());
-        detail.setPrice(demand.getPrice());
-        detail.setEndDate(demand.getEndDate());
-        detail.setValidToDate(demand.getValidTo());
-        return detail;
-    }
 
 
     public BaseDemandDetail() {    }

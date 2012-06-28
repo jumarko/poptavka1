@@ -4,7 +4,7 @@ import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandType;
+import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.util.messaging.demand.TestingDemand;
 import org.junit.Assert;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Test of processing of incoming crawled demands.
  * <p>
  *     Must extend {@link DBUnitBaseTest} because it required some basic data to be presented when storing crawled
- *     demands - e.g. required {@link com.eprovement.poptavka.domain.enums.DemandType}.
+ *     demands - e.g. required {@link com.eprovement.poptavka.domain.demand.DemandType}.
  * @author Juraj Martinka
  *         Date: 16.5.11
  */

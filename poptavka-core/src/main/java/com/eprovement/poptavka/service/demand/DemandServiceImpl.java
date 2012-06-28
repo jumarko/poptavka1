@@ -12,7 +12,7 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
-import com.eprovement.poptavka.domain.enums.DemandType;
+import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.enums.MessageContext;

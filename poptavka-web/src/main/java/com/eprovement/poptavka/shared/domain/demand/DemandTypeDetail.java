@@ -3,7 +3,6 @@ package com.eprovement.poptavka.shared.domain.demand;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-import com.eprovement.poptavka.domain.enums.DemandType;
 
 /**
  * Represents full detail of demandType. Serves for creating new
@@ -29,21 +28,6 @@ public class DemandTypeDetail implements Serializable {
 
     public DemandTypeDetail(DemandTypeDetail demand) {
         this.updateWholeDemandType(demand);
-    }
-
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param demand
-     * @return DemandDetail
-     */
-    public static DemandTypeDetail createDemandTypeDetail(DemandType demand) {
-        DemandTypeDetail detail = new DemandTypeDetail();
-
-        detail.setId(demand.getId());
-        detail.setValue(demand.getType().getValue());
-        detail.setDescription(demand.getDescription());
-
-        return detail;
     }
 
     //---------------------------- GETTERS AND SETTERS --------------------

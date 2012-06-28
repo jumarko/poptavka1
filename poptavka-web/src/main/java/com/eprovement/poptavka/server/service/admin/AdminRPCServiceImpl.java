@@ -10,19 +10,19 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Problem;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.shared.domain.converter.AccessRoleConverter;
-import com.eprovement.poptavka.shared.domain.converter.ActivationEmailConverter;
-import com.eprovement.poptavka.shared.domain.converter.ClientConverter;
-import com.eprovement.poptavka.shared.domain.converter.DemandConverter;
-import com.eprovement.poptavka.shared.domain.converter.InvoiceConverter;
-import com.eprovement.poptavka.shared.domain.converter.MessageConverter;
-import com.eprovement.poptavka.shared.domain.converter.OfferConverter;
-import com.eprovement.poptavka.shared.domain.converter.PaymentConverter;
-import com.eprovement.poptavka.shared.domain.converter.PaymentMethodConverter;
-import com.eprovement.poptavka.shared.domain.converter.PermissionConverter;
-import com.eprovement.poptavka.shared.domain.converter.PreferenceConverter;
-import com.eprovement.poptavka.shared.domain.converter.ProblemConverter;
-import com.eprovement.poptavka.shared.domain.converter.SupplierConverter;
+import com.eprovement.poptavka.server.converter.AccessRoleConverter;
+import com.eprovement.poptavka.server.converter.ActivationEmailConverter;
+import com.eprovement.poptavka.server.converter.ClientConverter;
+import com.eprovement.poptavka.server.converter.FullDemandConverter;
+import com.eprovement.poptavka.server.converter.InvoiceConverter;
+import com.eprovement.poptavka.server.converter.MessageConverter;
+import com.eprovement.poptavka.server.converter.OfferConverter;
+import com.eprovement.poptavka.server.converter.PaymentConverter;
+import com.eprovement.poptavka.server.converter.PaymentMethodConverter;
+import com.eprovement.poptavka.server.converter.PermissionConverter;
+import com.eprovement.poptavka.server.converter.PreferenceConverter;
+import com.eprovement.poptavka.server.converter.ProblemConverter;
+import com.eprovement.poptavka.server.converter.SupplierConverter;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -138,7 +138,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         search = this.setSortSearch(orderColumns, search);
         search.setFirstResult(start);
         search.setMaxResults(count);
-        return new DemandConverter().convertToTargetList(generalService.search(search));
+        return new FullDemandConverter().convertToTargetList(generalService.search(search));
     }
 
     @Override

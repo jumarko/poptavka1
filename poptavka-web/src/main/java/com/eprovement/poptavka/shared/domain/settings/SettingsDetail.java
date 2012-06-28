@@ -1,11 +1,8 @@
 package com.eprovement.poptavka.shared.domain.settings;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.eprovement.poptavka.domain.address.Address;
-import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 
@@ -46,25 +43,6 @@ public class SettingsDetail implements Serializable {
         this.email = email;
     }
 
-    public static SettingsDetail createUserDetail(BusinessUser user) {
-        SettingsDetail detail = new SettingsDetail();
-        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-        for (Address addr : user.getAddresses()) {
-            addresses.add(AddressDetail.createAddressDetail(addr));
-        }
-        detail.setAddresses(addresses);
-        if (user.getBusinessUserData() != null) {
-            detail.setCompanyName(user.getBusinessUserData().getCompanyName());
-            detail.setDescription(user.getBusinessUserData().getDescription());
-            detail.setFirstName(user.getBusinessUserData().getPersonFirstName());
-            detail.setLastName(user.getBusinessUserData().getPersonLastName());
-            detail.setIdentificationNumber(user.getBusinessUserData().getIdentificationNumber());
-            detail.setPhone(user.getBusinessUserData().getPhone());
-        }
-        detail.setEmail(user.getEmail());
-
-        return detail;
-    }
 
     public String getFirstName() {
         return firstName;

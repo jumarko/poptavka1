@@ -40,6 +40,7 @@ public class UserDetail implements Serializable {
         this.accessRoles = new ArrayList<AccessRoleDetail>(accessRoles);
     }
 
+
     public long getUserId() {
         return userId;
     }

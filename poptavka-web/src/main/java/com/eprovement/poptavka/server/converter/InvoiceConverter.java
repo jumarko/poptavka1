@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package com.eprovement.poptavka.shared.domain.converter;
+package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.invoice.Invoice;
 import com.eprovement.poptavka.domain.product.UserService;
@@ -13,6 +13,8 @@ import java.util.List;
 public class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDetail> {
 
     private final PaymentMethodConverter paymentMethodConverter = new PaymentMethodConverter();
+    private final UserServiceConverter userServiceConverter = new UserServiceConverter();
+
 
     @Override
     public InvoiceDetail convertToTarget(Invoice source) {
@@ -31,7 +33,8 @@ public class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDetail> 
         detail.setTotalPrice(source.getTotalPrice());
         List<UserServiceDetail> userServices = new ArrayList<UserServiceDetail>();
         for (UserService userService : source.getUserServices()) {
-            userServices.add(UserServiceDetail.createAccessRoleDetail(userService));
+            userServices.add(userServiceConverter.convertToTarget(userService));
+            userServices.add(userServiceConverter.convertToTarget(userService));
         }
         detail.setUserServices(userServices);
         detail.setVariableSymbol(source.getVariableSymbol());

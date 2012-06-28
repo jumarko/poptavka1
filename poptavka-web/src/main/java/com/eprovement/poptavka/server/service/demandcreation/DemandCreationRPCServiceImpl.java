@@ -5,6 +5,7 @@
  */
 package com.eprovement.poptavka.server.service.demandcreation;
 
+import com.eprovement.poptavka.server.converter.FullDemandConverter;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -15,7 +16,6 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.exception.MessageException;
-import com.eprovement.poptavka.shared.domain.converter.DemandConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.server.service.ConvertUtils;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -48,7 +48,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private LocalityService localityService;
     private CategoryService categoryService;
     private ClientService clientService;
-    private DemandConverter demandConverter = new DemandConverter();
+    private FullDemandConverter demandConverter = new FullDemandConverter();
 
     @Autowired
     public void setDemandService(DemandService demandService) {

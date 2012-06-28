@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.admin.searchViews;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,8 +16,6 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
-import com.eprovement.poptavka.domain.enums.OfferState;
-import com.eprovement.poptavka.domain.enums.OfferState.Type;
 import java.util.ArrayList;
 
 public class AdminOffersViewView extends Composite implements
@@ -40,7 +39,7 @@ public class AdminOffersViewView extends Composite implements
     public AdminOffersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         state.addItem(Storage.MSGS.select());
-        for (Type type : OfferState.Type.values()) {
+        for (OfferStateType type : OfferStateType.values()) {
             state.addItem(type.name());
         }
     }

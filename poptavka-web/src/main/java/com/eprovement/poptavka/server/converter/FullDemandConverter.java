@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package com.eprovement.poptavka.shared.domain.converter;
+package com.eprovement.poptavka.server.converter;
 
 
 import com.eprovement.poptavka.domain.address.Locality;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
+public class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
 
     private static SupplierConverter supplierConverter = new SupplierConverter();
 

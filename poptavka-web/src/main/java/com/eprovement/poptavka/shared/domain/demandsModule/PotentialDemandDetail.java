@@ -1,15 +1,13 @@
 package com.eprovement.poptavka.shared.domain.demandsModule;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
 import java.io.Serializable;
 import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
 
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.DemandType;
-import com.eprovement.poptavka.domain.message.UserMessage;
 import java.math.BigDecimal;
-
 public class PotentialDemandDetail implements Serializable {
 
     /**
@@ -30,40 +28,10 @@ public class PotentialDemandDetail implements Serializable {
     private Date createdDate;
     private Date endDate;
     private Date validToDate;
-    private DemandType demandType;
+    private DemandTypeDetail demandType;
     private DemandStatus demandStatus;
 
-    public static PotentialDemandDetail createMessageDetail(UserMessage userMessage) {
-        PotentialDemandDetail detail = new PotentialDemandDetail();
-        detail.setUserMessageId(userMessage.getId());
-        detail.setRead(userMessage.isRead());
-        detail.setStarred(userMessage.isStarred());
-        if (userMessage.getMessage() != null) {
-            detail.setMessageId(userMessage.getMessage().getId());
-            if (userMessage.getMessage().getDemand() != null) {
-                detail.setDemandId(userMessage.getMessage().getDemand().getId());
-                detail.setTitle(userMessage.getMessage().getDemand().getTitle());
-                detail.setPrice(userMessage.getMessage().getDemand().getPrice());
-                detail.setDemandType(userMessage.getMessage().getDemand().getType());
-                detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
-                // TODO move to the own converter and use convertDate method for dates!!!
-                detail.setCreatedDate(userMessage.getMessage().getCreated());
-                detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
-                detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
-                if (userMessage.getMessage().getDemand().getClient() != null) {
-                    detail.setRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
-                    if (userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
-                            && userMessage.getMessage().getDemand().getClient()
-                                .getBusinessUser().getBusinessUserData() != null) {
-                        detail.setSender(userMessage.getMessage().getDemand().getClient()
-                                    .getBusinessUser().getBusinessUserData().getDisplayName());
-                    }
-                }
-            }
-        }
 
-        return detail;
-    }
     public static final ProvidesKey<PotentialDemandDetail> KEY_PROVIDER = new ProvidesKey<PotentialDemandDetail>() {
 
         @Override
@@ -110,11 +78,11 @@ public class PotentialDemandDetail implements Serializable {
         this.demandTitle = demandTitle;
     }
 
-    public DemandType getDemandType() {
+    public DemandTypeDetail getDemandType() {
         return demandType;
     }
 
-    public void setDemandType(DemandType demandType) {
+    public void setDemandType(DemandTypeDetail demandType) {
         this.demandType = demandType;
     }
 

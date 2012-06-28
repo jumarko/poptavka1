@@ -5,8 +5,6 @@ import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
 
-import com.eprovement.poptavka.domain.message.UserMessage;
-
 public class PotentialDemandMessage extends DemandMessageDetail implements Serializable, TableDisplay {
 
     /**
@@ -25,18 +23,6 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
                 }
             };
 
-    public static PotentialDemandMessage createMessageDetail(UserMessage message) {
-        return fillMessageDetail(new PotentialDemandMessage(), message);
-    }
-
-    public static PotentialDemandMessage fillMessageDetail(PotentialDemandMessage detail,
-            UserMessage userMessage) {
-        DemandMessageDetail.fillMessageDetail(detail, userMessage);
-        detail.setClientName(userMessage.getMessage().getDemand().getClient()
-                .getBusinessUser().getBusinessUserData().getDisplayName());
-        detail.setClientRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
-        return detail;
-    }
 
     @Override
     public int getClientRating() {

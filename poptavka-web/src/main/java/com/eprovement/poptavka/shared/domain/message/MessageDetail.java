@@ -4,9 +4,6 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
-import com.eprovement.poptavka.domain.message.Message;
-import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.shared.domain.type.MessageType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -48,45 +45,7 @@ public class MessageDetail implements Serializable {
         this.updateWholeMessage(detail);
     }
 
-    public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {
-        detail.setMessageId(message.getId());
-        detail.setParentId(message.getParent() == null ? -1 : message.getParent().getId());
-        detail.setSenderId(message.getSender() == null ? -1 : message.getSender().getId());
-        detail.setThreadRootId(message.getThreadRoot() == null ? -1 : message.getThreadRoot().getId());
-        detail.setBody(message.getBody());
-        detail.setCreated(message.getCreated());
-        //still get annoying nullPE at PotentialDemandMessage
-        //so that's the reason for this check    -Beho. 29.11.11
-        if (message.getSent() == null) {
-            detail.setSent(message.getCreated());
-        } else {
-            detail.setSent(message.getSent());
-        }
 
-//        m.setFirstBornId(serialVersionUID);
-        if (message.getMessageState() != null) {
-            detail.setMessageState(message.getMessageState().name());
-        }
-        detail.setMessageType(MessageType.CONVERSATION.name());
-//        m.setNexSiblingId(serialVersionUID);
-//        m.setReceiverId();
-
-        detail.setSent(message.getSent());
-        detail.setSubject(message.getSubject());
-
-        return detail;
-    }
-
-    public static MessageDetail fillMessageDetail(MessageDetail detail,
-            UserMessage userMessage) {
-        fillMessageDetail(detail, userMessage.getMessage());
-        detail.setRead(userMessage.isRead());
-        detail.setStarred(userMessage.isStarred());
-        detail.setMessageCount(detail.getMessageCount());
-        detail.setUserMessageId(userMessage.getId());
-        detail.setUnreadSubmessages(detail.getUnreadSubmessages());
-        return detail;
-    }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeMessage(MessageDetail detail) {

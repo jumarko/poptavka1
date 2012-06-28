@@ -1,12 +1,11 @@
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.DemandType;
-import com.eprovement.poptavka.domain.message.UserMessage;
 
 public class DemandMessageDetail extends MessageDetail implements
         Serializable {
@@ -21,26 +20,10 @@ public class DemandMessageDetail extends MessageDetail implements
     private Date validToDate;
     private long demandId;
 
-    private DemandType demandType;
+    private DemandTypeDetail demandType;
 
     private DemandStatus demandStatus;
 
-    public static DemandMessageDetail createMessageDetail(UserMessage message) {
-        return fillMessageDetail(new DemandMessageDetail(), message);
-    }
-
-    public static DemandMessageDetail fillMessageDetail(DemandMessageDetail detail,
-            UserMessage userMessage) {
-        MessageDetail.fillMessageDetail(detail, userMessage);
-        detail.setDemandId(userMessage.getMessage().getDemand().getId());
-        detail.setDemandTitle(userMessage.getMessage().getDemand().getTitle());
-        detail.setPrice(userMessage.getMessage().getDemand().getPrice());
-        detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
-        detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
-        detail.setDemandType(userMessage.getMessage().getDemand().getType());
-        detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
-        return detail;
-    }
 
     public String getDemandTitle() {
         return demandTitle;
@@ -90,11 +73,11 @@ public class DemandMessageDetail extends MessageDetail implements
         this.demandId = demandId;
     }
 
-    public DemandType getDemandType() {
+    public DemandTypeDetail getDemandType() {
         return demandType;
     }
 
-    public void setDemandType(DemandType demandType) {
+    public void setDemandType(DemandTypeDetail demandType) {
         this.demandType = demandType;
     }
 

@@ -6,8 +6,6 @@ package com.eprovement.poptavka.shared.domain.message;
 
 import com.google.gwt.view.client.ProvidesKey;
 import com.eprovement.poptavka.client.user.messages.tab.MessageTableDisplay;
-import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.shared.domain.converter.MessageConverter;
 import java.io.Serializable;
 
 /**
@@ -36,16 +34,6 @@ public class UserMessageDetail implements Serializable, MessageTableDisplay {
         this.updateWholeUserMessage(detail);
     }
 
-    public static UserMessageDetail createUserMessageDetail(UserMessage userMessage) {
-        UserMessageDetail detail = new UserMessageDetail();
-        detail.setId(userMessage.getId());
-        detail.setRead(userMessage.isRead());
-        detail.setStarred(userMessage.isStarred());
-        detail.setMessageDetail(new MessageConverter().convertToTarget(userMessage.getMessage()));
-        detail.setSenderEmail(userMessage.getMessage().getSender().getEmail()); //User().getEmail());
-
-        return detail;
-    }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeUserMessage(UserMessageDetail detail) {

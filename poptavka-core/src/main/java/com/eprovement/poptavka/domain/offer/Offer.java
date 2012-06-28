@@ -7,7 +7,6 @@ package com.eprovement.poptavka.domain.offer;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.OfferState;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.util.strings.ToStringUtils;
 

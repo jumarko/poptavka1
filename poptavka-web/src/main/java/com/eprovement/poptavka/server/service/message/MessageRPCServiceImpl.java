@@ -4,6 +4,10 @@
  */
 package com.eprovement.poptavka.server.service.message;
 
+import com.eprovement.poptavka.server.converter.ClientDemandMessageConverter;
+import com.eprovement.poptavka.server.converter.OfferDemandMessageConverter;
+import com.eprovement.poptavka.server.converter.PotentialDemandMessageConverter;
+import com.eprovement.poptavka.server.converter.UserMessageConverter;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
@@ -19,7 +23,7 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
-import com.eprovement.poptavka.shared.domain.converter.MessageConverter;
+import com.eprovement.poptavka.server.converter.MessageConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.common.TreeItemService;
@@ -74,6 +78,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private DemandService demandService;
     private RatingService ratingService;
     private MessageConverter messageConverter = new MessageConverter();
+
+    private final ClientDemandMessageConverter clientDemandMessageConverter = new ClientDemandMessageConverter();
+    private final PotentialDemandMessageConverter potentialDemandMessageConverter =
+            new PotentialDemandMessageConverter();
+    private final OfferDemandMessageConverter offerDemandMessageConverter = new OfferDemandMessageConverter();
+    private final UserMessageConverter userMessageConverter = new UserMessageConverter();
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -177,7 +187,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         List<UserMessage> userMessages = userMessageService.getUserMessages(
                 new ArrayList(submessageCounts.keySet()), businessUser, MessageFilter.EMPTY_FILTER);
         for (UserMessage userMessage : userMessages) {
-            ClientDemandMessageDetail detail = ClientDemandMessageDetail.createDetail(userMessage);
+            ClientDemandMessageDetail detail = clientDemandMessageConverter.convertToTarget(userMessage);
             if (submessageCounts.get(userMessage.getMessage()) == null) {
                 detail.setMessageCount(0);
             } else {
@@ -386,7 +396,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         // fill list
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
         for (UserMessage um : userMessages) {
-            PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
+            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), businessUser));
             detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), businessUser));
@@ -442,7 +452,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         // fill list
         ArrayList<PotentialDemandMessage> potentailDemands = new ArrayList<PotentialDemandMessage>();
         for (UserMessage um : potentialDemandUserMessages) {
-            PotentialDemandMessage detail = PotentialDemandMessage.createMessageDetail(um);
+            PotentialDemandMessage detail = potentialDemandMessageConverter.convertToTarget(um);
             detail.setClientRating(ratingService.getAvgRating(um.getMessage().getDemand().getClient()));
             detail.setMessageCount(messageService.getAllDescendantsCount(um.getMessage(), user));
             detail.setUnreadSubmessages(messageService.getUnreadDescendantsCount(um.getMessage(), user));
@@ -479,7 +489,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
 
         ArrayList<OfferDemandMessage> offerDemands = new ArrayList<OfferDemandMessage>();
         for (UserMessage m : userMessages) {
-            OfferDemandMessage om = OfferDemandMessage.createMessageDetail(m);
+            OfferDemandMessage om = offerDemandMessageConverter.convertToTarget(m);
             System.out.println("X X " + m.getMessage().getDemand().getEndDate());
             offerDemands.add(om);
         }
@@ -538,7 +548,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private List<UserMessageDetail> createUserMessageDetailList(Collection<UserMessage> userMessages) {
         List<UserMessageDetail> userMessageDetails = new ArrayList<UserMessageDetail>();
         for (UserMessage userMessage : userMessages) {
-            UserMessageDetail demandDetail = UserMessageDetail.createUserMessageDetail(userMessage);
+            UserMessageDetail demandDetail = userMessageConverter.convertToTarget(userMessage);
             userMessageDetails.add(demandDetail);
         }
         return userMessageDetails;
@@ -625,7 +635,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
                 }
             }
 
-            inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+            inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return inboxMessagesDetail;
@@ -733,7 +743,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         }
         List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
         for (UserMessage userMessage : inboxMessages) {
-            inboxMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+            inboxMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return inboxMessagesDetail;
@@ -773,7 +783,7 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         List<UserMessageDetail> deletedMessagesDetail = new ArrayList<UserMessageDetail>();
 
         for (UserMessage userMessage : rootDeletedMessages.values()) {
-            deletedMessagesDetail.add(UserMessageDetail.createUserMessageDetail(userMessage));
+            deletedMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
 
         return deletedMessagesDetail;

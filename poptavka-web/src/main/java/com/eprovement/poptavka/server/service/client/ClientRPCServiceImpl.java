@@ -11,7 +11,7 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.shared.domain.converter.ClientConverter;
+import com.eprovement.poptavka.server.converter.ClientConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.server.service.ConvertUtils;
 import com.eprovement.poptavka.service.GeneralService;

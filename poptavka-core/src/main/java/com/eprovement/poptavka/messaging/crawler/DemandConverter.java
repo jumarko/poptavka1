@@ -8,7 +8,7 @@ import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.enums.AddressType;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.DemandType;
+import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;

@@ -2,7 +2,6 @@ package com.eprovement.poptavka.shared.domain.message;
 
 import java.io.Serializable;
 
-import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.type.OfferStateType;
 
 public class OfferMessageDetail extends DemandMessageDetail
@@ -17,16 +16,6 @@ public class OfferMessageDetail extends DemandMessageDetail
     private String supplierName;
     private OfferStateType offerState;
 
-    public static OfferMessageDetail createMessageDetail(
-            UserMessage userMessage) {
-        return fillMessageDetail(new OfferMessageDetail(), userMessage);
-    }
-
-    public static OfferMessageDetail fillMessageDetail(OfferMessageDetail detail,
-                    UserMessage userMessage) {
-        DemandMessageDetail.fillMessageDetail(detail, userMessage);
-        return detail;
-    }
 
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.server.service.offer;
 
+import com.eprovement.poptavka.server.converter.FullOfferConverter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
-import com.eprovement.poptavka.domain.enums.OfferState;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
@@ -54,6 +55,8 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     private OfferService offerService;
     private SupplierService supplierService;
     private AuditService auditService;
+
+    private final FullOfferConverter fullOfferConverter = new FullOfferConverter();
 
     @Autowired
     public void setAuditService(AuditService auditService) {
@@ -145,7 +148,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
         for (UserMessage userMessage : userMessages) {
             Message message = userMessage.getMessage();
 
-            FullOfferDetail fullOfferDetail = FullOfferDetail.createOfferDetail(message);
+            FullOfferDetail fullOfferDetail = fullOfferConverter.convertToTarget(message);
 
             List<Number> revisions = auditService.getRevisions(Offer.class, message.getOffer().getId());
             //get first occurance, should by the oldest

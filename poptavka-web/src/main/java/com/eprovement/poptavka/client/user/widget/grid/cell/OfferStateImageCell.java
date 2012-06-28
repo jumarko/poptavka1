@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.dom.client.Element;
@@ -9,9 +10,8 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.domain.enums.OfferState;
 
-public class OfferStateImageCell extends AbstractCell<OfferState.Type> {
+public class OfferStateImageCell extends AbstractCell<OfferStateType> {
 
     private static ImageResourceRenderer renderer;
     private PopupPanel popup = new PopupPanel(true);
@@ -26,7 +26,7 @@ public class OfferStateImageCell extends AbstractCell<OfferState.Type> {
 
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
-            OfferState.Type value, SafeHtmlBuilder sb) {
+            OfferStateType value, SafeHtmlBuilder sb) {
 
         if (value.getValue().equals("ACCEPTED")) {
             sb.append(renderer.render(Storage.RSCS.images().statusWork()));
@@ -41,8 +41,8 @@ public class OfferStateImageCell extends AbstractCell<OfferState.Type> {
 
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-            Element parent, OfferState.Type value, NativeEvent event,
-            ValueUpdater<OfferState.Type> valueUpdater) {
+            Element parent, OfferStateType value, NativeEvent event,
+            ValueUpdater<OfferStateType> valueUpdater) {
         if (("click".equals(event.getType())) || ("keydown".equals(event.getType()))) {
             onEnterKeyDown(context, parent, value, event, valueUpdater);
         }
@@ -57,7 +57,7 @@ public class OfferStateImageCell extends AbstractCell<OfferState.Type> {
     @Override
     protected void onEnterKeyDown(
             com.google.gwt.cell.client.Cell.Context context, Element parent,
-            OfferState.Type value, NativeEvent event, ValueUpdater<OfferState.Type> valueUpdater) {
+            OfferStateType value, NativeEvent event, ValueUpdater<OfferStateType> valueUpdater) {
         if (valueUpdater != null) {
             valueUpdater.update(value);
         }

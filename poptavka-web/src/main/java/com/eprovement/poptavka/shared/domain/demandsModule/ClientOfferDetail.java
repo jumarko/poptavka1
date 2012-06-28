@@ -1,12 +1,11 @@
 package com.eprovement.poptavka.shared.domain.demandsModule;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.view.client.ProvidesKey;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.enums.OfferState;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 
 public class ClientOfferDetail implements Serializable {
@@ -15,7 +14,7 @@ public class ClientOfferDetail implements Serializable {
     //
     private boolean read;
     private boolean starred;
-    private OfferState.Type offerStateType;
+    private OfferStateType offerStateType;
     private String sender;
     private int clientRating;
     private BigDecimal offerPrice;
@@ -37,12 +36,6 @@ public class ClientOfferDetail implements Serializable {
                     return item == null ? null : item.getOfferId();
                 }
             };
-
-    public static ClientOfferDetail createMessageDetail(UserMessage message) {
-        ClientOfferDetail detail = new ClientOfferDetail();
-        //TODO Martin
-        return detail;
-    }
 
     public long getOfferId() {
         return offerId;
@@ -112,11 +105,11 @@ public class ClientOfferDetail implements Serializable {
         this.offerPrice = price;
     }
 
-    public OfferState.Type getOfferState() {
+    public OfferStateType getOfferState() {
         return offerStateType;
     }
 
-    public void setOfferState(OfferState.Type offerState) {
+    public void setOfferState(OfferStateType offerState) {
         this.offerStateType = offerState;
     }
 

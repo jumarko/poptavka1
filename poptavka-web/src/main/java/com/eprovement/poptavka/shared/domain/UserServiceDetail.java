@@ -1,7 +1,5 @@
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.domain.product.UserService;
-import com.eprovement.poptavka.shared.domain.converter.UserConverter;
 import java.io.Serializable;
 
 
@@ -19,7 +17,7 @@ public class UserServiceDetail implements Serializable {
      */
     private static final long serialVersionUID = -530982467233195456L;
     private ServiceDetail service;
-    private BusinessUserDetail user;
+    private UserDetail user;
     private String status;
 
     /** for serialization. **/
@@ -30,20 +28,6 @@ public class UserServiceDetail implements Serializable {
         this.updateWholeUserService(role);
     }
 
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     * @param service
-     * @return DemandDetail
-     */
-    public static UserServiceDetail createAccessRoleDetail(UserService service) {
-        UserServiceDetail detail = new UserServiceDetail();
-
-        detail.setService(ServiceDetail.createServiceDetail(service.getService()));
-        detail.setStatus(service.getStatus().name());
-        detail.setUser(new UserConverter().convertToTarget(service.getUser()));
-
-        return detail;
-    }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeUserService(UserServiceDetail detail) {
@@ -68,11 +52,11 @@ public class UserServiceDetail implements Serializable {
         this.status = status;
     }
 
-    public BusinessUserDetail getUser() {
+    public UserDetail getUser() {
         return user;
     }
 
-    public void setUser(BusinessUserDetail user) {
+    public void setUser(UserDetail user) {
         this.user = user;
     }
 

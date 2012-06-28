@@ -14,6 +14,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.domain.demand.DemandLocality;
+import com.eprovement.poptavka.server.converter.FullDemandConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -24,7 +25,6 @@ import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.converter.DemandConverter;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.googlecode.genericdao.search.Search;
@@ -67,7 +67,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private LocalityService localityService;
     private AuditService auditService;
     private TreeItemService treeItemService;
-    private DemandConverter demandConverter = new DemandConverter();
+    private FullDemandConverter demandConverter = new FullDemandConverter();
     private FulltextSearchService fulltextSearchService;
 
     // ***********************************************************************

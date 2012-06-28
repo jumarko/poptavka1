@@ -1,33 +1,32 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package com.eprovement.poptavka.domain.enums;
+package com.eprovement.poptavka.domain.demand;
 
 import com.eprovement.poptavka.domain.register.Register;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;
 
 /**
+ * Type of demand. It is closely connected to the business relation to the
+ * {@link com.eprovement.poptavka.domain.user.User}
+ * and {@link com.eprovement.poptavka.domain.product.UserService}.
  *
- * TODO ivlcek - prerobit na standardny ciselnik s kodmi
- * @author Vojtech Hubr
- *         Date 12.4.11
-
+ * @author Juraj Martinka
+ *         Date: 31.1.11
  */
 @Entity
-public class OfferState extends Register {
+@Audited
+public class DemandType extends Register {
 
     /**
      * Enum for handy work with demand type.
      * @see #getType()
      */
     public static enum Type {
+        NORMAL("normal"),
 
-        ACCEPTED("ACCEPTED"),
         /** Special demand at top positions. */
-        PENDING("PENDING"),
-        DECLINED("DECLINED");
+        ATTRACTIVE("attractive");
+
         private final String value;
 
         Type(String value) {
@@ -37,7 +36,7 @@ public class OfferState extends Register {
         /**
          * Get enum constant for given type code
          *
-         * @param
+          * @param
          * @return
          */
         public static Type fromValue(String typeCode) {
@@ -46,7 +45,7 @@ public class OfferState extends Register {
                     return type;
                 }
             }
-            throw new IllegalArgumentException("No OfferState enum constant for type code [" + typeCode + "].");
+            throw new IllegalArgumentException("No DemandType enum constant for type code [" + typeCode + "].");
         }
 
         public String getValue() {
@@ -54,14 +53,18 @@ public class OfferState extends Register {
         }
     }
 
+
     private String description;
 
-    public OfferState() {
+
+    public DemandType() {
     }
 
-    public Type getType() {
-        return Type.fromValue(getCode());
+    public DemandType(String code, String description) {
+        super(code);
+        this.description = description;
     }
+
 
     public String getDescription() {
         return description;
@@ -71,10 +74,17 @@ public class OfferState extends Register {
         this.description = description;
     }
 
+
+    public Type getType() {
+        return Type.fromValue(getCode());
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("OfferState");
+        sb.append("DemandType");
+        sb.append("{code='").append(getCode()).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append('}');
         return sb.toString();

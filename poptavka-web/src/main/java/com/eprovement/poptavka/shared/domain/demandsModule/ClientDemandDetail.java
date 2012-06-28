@@ -1,12 +1,9 @@
 package com.eprovement.poptavka.shared.domain.demandsModule;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.view.client.ProvidesKey;
 
-import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-
-import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.enums.OfferState;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -44,41 +41,6 @@ public class ClientDemandDetail implements Serializable { //, TableDisplay {
                 }
             };
 
-    /**
-     * Method created FullDemandDetail from provided Demand domain object.
-     *
-     * @param demand
-     * @return ClientDemandDetail
-     */
-    public static ClientDemandDetail createDemandDetail(UserMessage userMessage) {
-        ClientDemandDetail detail = new ClientDemandDetail();
-        detail.setUserMessageId(userMessage.getId());
-        if (userMessage.getMessage() != null && userMessage.getMessage().getDemand() != null) {
-            detail.setDemandId(userMessage.getMessage().getDemand().getId());
-            detail.setDemandStatus(userMessage.getMessage().getDemand().getStatus());
-            detail.setTitle(userMessage.getMessage().getDemand().getTitle());
-            detail.setPrice(userMessage.getMessage().getDemand().getPrice());
-            detail.setEndDate(userMessage.getMessage().getDemand().getEndDate());
-            detail.setValidToDate(userMessage.getMessage().getDemand().getValidTo());
-        }
-        detail.setRead(userMessage.isRead());
-        detail.setStarred(userMessage.isStarred());
-        return detail;
-    }
-
-    public static ClientDemandDetail createDemandDetail(Demand demand) {
-        ClientDemandDetail detail = new ClientDemandDetail();
-        detail.setUserMessageId(-1);
-        detail.setDemandId(demand.getId());
-        detail.setDemandStatus(demand.getStatus());
-        detail.setTitle(demand.getTitle());
-        detail.setPrice(demand.getPrice());
-        detail.setEndDate(demand.getEndDate());
-        detail.setValidToDate(demand.getValidTo());
-        detail.setRead(false);
-        detail.setStarred(false);
-        return detail;
-    }
 
     //---------------------------- GETTERS AND SETTERS --------------------
     public long getDemandId() {
@@ -213,7 +175,7 @@ public class ClientDemandDetail implements Serializable { //, TableDisplay {
         demandTitle = title;
     }
 
-    public OfferState.Type getOfferState() {
+    public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

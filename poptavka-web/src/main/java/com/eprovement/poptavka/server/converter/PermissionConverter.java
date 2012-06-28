@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package com.eprovement.poptavka.shared.domain.converter;
+package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.user.rights.Permission;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;

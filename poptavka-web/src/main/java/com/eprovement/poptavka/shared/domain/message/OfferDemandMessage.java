@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 
 public class OfferDemandMessage implements Serializable {
@@ -36,33 +35,6 @@ public class OfferDemandMessage implements Serializable {
     private long senderId;
     private long receiverId;
 
-    public static OfferDemandMessage createMessageDetail(UserMessage message) {
-        OfferDemandMessage detail = new OfferDemandMessage();
-        detail.setMessageId(message.getId());
-        detail.setBody(message.getMessage().getBody());
-        detail.setCreated(message.getMessage().getCreated());
-//        m.setFirstBornId(serialVersionUID);
-        detail.setMessageState(message.getMessage().getMessageState().name());
-//        m.setNexSiblingId(serialVersionUID);
-        detail.setParentId(message.getMessage().getParent() == null ? detail.getThreadRootId()
-                : message.getMessage().getParent().getId());
-//        m.setReceiverId();
-        detail.setSenderId(message.getMessage().getSender().getId());
-        detail.setSent(message.getMessage().getSent());
-        detail.setSubject(message.getMessage().getSubject());
-        detail.setThreadRootId(message.getMessage().getThreadRoot().getId());
-        detail.setUserMessageId(message.getId());
-        detail.setDemandId(message.getMessage().getDemand().getId());
-        detail.setPrice(message.getMessage().getDemand().getPrice());
-        detail.setRead(message.isRead());
-        detail.setStarred(message.isStarred());
-        detail.setEndDate(message.getMessage().getDemand().getEndDate());
-        detail.setValidToDate(message.getMessage().getDemand().getValidTo());
-        detail.setDemandTitle(message.getMessage().getDemand().getTitle());
-        detail.setOfferCount(message.getMessage().getDemand().getOffers().size());
-        detail.setMaxOfferCount(message.getMessage().getDemand().getMaxSuppliers());
-        return detail;
-    }
 
     public void setOfferCount(int offerCount) {
         this.offerCount = offerCount;

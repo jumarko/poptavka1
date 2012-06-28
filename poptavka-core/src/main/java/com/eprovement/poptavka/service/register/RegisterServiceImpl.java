@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * This class has no explicit test right now. However, so test must work with concrete register classes
- * (such as {@link com.eprovement.poptavka.domain.enums.DemandType}) therefore the satisfying test case for this
+ * (such as {@link com.eprovement.poptavka.domain.demand.DemandType}) therefore the satisfying test case for this
  * should be e.g. <code>DemandServiceIntegrationTest</code>.
  *
  * @see RegisterService
