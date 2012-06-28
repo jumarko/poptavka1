@@ -40,6 +40,7 @@
         <mockito.version>1.8.5</mockito.version>
         <powermock.version>1.4.7</powermock.version>
         <mvp4g.version>1.3.1</mvp4g.version>
+        <cglib.version>2.2.2</cglib.version>
         <aopalliance.version>1.0</aopalliance.version>
         <commons-lang.version>2.5</commons-lang.version>
         <commons-collections.version>3.2.1</commons-collections.version>
@@ -434,6 +435,12 @@
             </dependency>
 
             <!-- AOP -->
+            <!-- cglib required for proxing target classes -->
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>${cglib.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aspects</artifactId>
