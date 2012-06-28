@@ -25,7 +25,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
  * @author kolkar
  *
  */
-@Events(startView = MainView.class, historyOnStart = true, module = MainModule.class)
+@Events(startPresenter = MainPresenter.class, historyOnStart = true, module = MainModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface MainEventBus extends EventBus {
 
@@ -50,18 +50,18 @@ public interface MainEventBus extends EventBus {
     // should be only for UserPresenter
     // TODO MainPage login button text, should be handled by children modules
     // TODO check - maybe this should be the UserModule load method
-    @Event(modulesToLoad = UserModule.class, handlers = MainPresenter.class)
+    @Event(forwardToModules = UserModule.class, handlers = MainPresenter.class)
     void atAccount();
 
     // TODO
     // from event handler automatic redirection
-    // @Event(modulesToLoad = UserModule.class, passive = true)
+    // @Event(forwardToModules = UserModule.class, passive = true)
     // void addNewDemand(FullDemandDetail result);
     // TODO praso - where did thismetod come from? Figure out.
-    // @Event(modulesToLoad = HomeModule.class)
+    // @Event(forwardToModules = HomeModule.class)
     // void goToCreateDemand();
     /*
-     * @Event(modulesToLoad = HomeModule.class) void goToCreateSupplier();
+     * @Event(forwardToModules = HomeModule.class) void goToCreateSupplier();
      */
 
     /**
@@ -130,7 +130,7 @@ public interface MainEventBus extends EventBus {
     // void checkFreeEmail(String value);
     //
     // // @Event(handlers = SupplierInfoPresenter.class,
-    // @Event(modulesToLoad = HomeModule.class)
+    // @Event(forwardToModules = HomeModule.class)
     // void checkFreeEmailResponse(Boolean result);
     /**
      * NO EDITING AFTER THIS LINE Every Child Module HAVE TO implement this
@@ -174,12 +174,12 @@ public interface MainEventBus extends EventBus {
     @Event(handlers = MainPresenter.class)
     void initLoginWindow();
 
-    @Event(modulesToLoad = UserModule.class, passive = true)
+    @Event(forwardToModules = UserModule.class, passive = true)
     void clearUserOnUnload();
 
     // Navigation event
     /*
-     * @Event(modulesToLoad = HomeModule.class) void goToCreateDemand();
+     * @Event(forwardToModules = HomeModule.class) void goToCreateDemand();
      */
 
 }

@@ -25,7 +25,7 @@ import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = DemandView.class, module = DemandModule.class)
+@Events(startPresenter = DemandPresenter.class, module = DemandModule.class)
 public interface DemandEventBus extends EventBus {
 
     /**

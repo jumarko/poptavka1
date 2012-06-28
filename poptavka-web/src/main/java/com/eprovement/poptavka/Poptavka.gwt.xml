@@ -8,6 +8,9 @@
     <inherits name='com.google.gwt.inject.Inject'/>
     <inherits name="com.google.gwt.uibinder.UiBinder" />
     <inherits name="com.google.gwt.http.HTTP"/>
+    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+    <inherits name='com.mvp4g.Mvp4gModule'/>
+    <inherits name='org.adamtacy.GWTEffects'/>
 
     <!-- GWT validation BEGIN -->
     <inherits name='com.google.gwt.editor.Editor' />
@@ -26,13 +29,8 @@
     </replace-with>
     <!-- GWT validation END -->
 
-    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-
     <inherits name='com.eprovement.poptavka.DomainEnums' />
     <inherits name='com.eprovement.poptavka.Exception' />
-
-    <inherits name='com.mvp4g.Mvp4gModule'/>
-    <inherits name='org.adamtacy.GWTEffects'/>
 
     <entry-point class="com.eprovement.poptavka.client.Poptavka"/>
 

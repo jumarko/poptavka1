@@ -8,7 +8,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = SearchModuleView.class, module = SearchModule.class)
+@Events(startPresenter = SearchModulePresenter.class, module = SearchModule.class)
 public interface SearchModuleEventBus extends EventBus {
 
     // MODULES INIT METHODS

@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author martin.slavkovsky
  */
-@Events(startView = HomeSuppliersView.class, module = HomeSuppliersModule.class)
+@Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeSuppliersEventBus extends EventBus {
 

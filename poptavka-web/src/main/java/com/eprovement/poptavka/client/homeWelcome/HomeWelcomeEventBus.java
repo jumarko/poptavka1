@@ -16,7 +16,7 @@ import com.mvp4g.client.event.EventBus;
 
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 
-@Events(startView = HomeWelcomeView.class, module = HomeWelcomeModule.class)
+@Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeWelcomeEventBus extends EventBus {
 

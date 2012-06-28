@@ -21,7 +21,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
  *
  * @author ivan.vlcek
  */
-@Events(startView = SupplierCreationView.class, module = SupplierCreationModule.class)
+@Events(startPresenter = SupplierCreationPresenter.class, module = SupplierCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface SupplierCreationEventBus extends EventBus {
 

@@ -37,7 +37,7 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
  *
  * @author beho
  */
-@Events(startView = UserView.class, module = UserModule.class)
+@Events(startPresenter = UserPresenter.class, module = UserModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserEventBus extends EventBusWithLookup {
 

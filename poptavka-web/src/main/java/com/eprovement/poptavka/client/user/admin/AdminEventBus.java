@@ -48,7 +48,7 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.Map;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = AdminView.class, module = AdminModule.class)
+@Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
 public interface AdminEventBus extends EventBus, IEventBusData {
 
     /**

@@ -11,7 +11,7 @@ import com.mvp4g.client.event.EventBus;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = SettingsView.class, module = SettingsModule.class)
+@Events(startPresenter = SettingsPresenter.class, module = SettingsModule.class)
 public interface SettingsEventBus extends EventBus {
 
     /**

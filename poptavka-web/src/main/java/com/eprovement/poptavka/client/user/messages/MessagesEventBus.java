@@ -22,7 +22,7 @@ import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
 @Debug(logLevel = LogLevel.DETAILED)
-@Events(startView = MessagesView.class, module = MessagesModule.class)
+@Events(startPresenter = MessagesPresenter.class, module = MessagesModule.class)
 public interface MessagesEventBus extends EventBus {
 
     /**

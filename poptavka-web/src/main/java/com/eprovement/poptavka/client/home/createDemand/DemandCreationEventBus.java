@@ -21,7 +21,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
  *
  * @author ivan.vlcek
  */
-@Events(startView = DemandCreationView.class, module = DemandCreationModule.class)
+@Events(startPresenter = DemandCreationPresenter.class, module = DemandCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface DemandCreationEventBus extends EventBus {
 

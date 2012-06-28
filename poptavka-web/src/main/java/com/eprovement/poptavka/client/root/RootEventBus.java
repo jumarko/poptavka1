@@ -50,7 +50,7 @@ import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 
-@Events(startView = RootView.class)
+@Events(startPresenter = RootPresenter.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @ChildModules({
     @ChildModule(moduleClass = HomeWelcomeModule.class, async = false, autoDisplay = true),
@@ -121,30 +121,30 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     // TODO praso - nechyba tu nahodou historyConverter?
     // Martin - este neviem, skusal som, ale boli problemy s tym
-    @Event(modulesToLoad = HomeWelcomeModule.class)//, historyConverter = RootHistoryConverter.class)
+    @Event(forwardToModules = HomeWelcomeModule.class)//, historyConverter = RootHistoryConverter.class)
     void goToHomeWelcomeModule(SearchModuleDataHolder filter);
 //    String goToHomeWelcomeModule(SearchModuleDataHolder filter);
 
-    @Event(modulesToLoad = HomeDemandsModule.class)
+    @Event(forwardToModules = HomeDemandsModule.class)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
-    @Event(modulesToLoad = HomeSuppliersModule.class)
+    @Event(forwardToModules = HomeSuppliersModule.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?
-    @Event(modulesToLoad = SupplierCreationModule.class)
+    @Event(forwardToModules = SupplierCreationModule.class)
     void goToCreateSupplierModule();
 
     // TODO martin - Preco v tychto metodach nepouzivas filter? Search Bar predsa bude aj v tychto
     // pohladoch. Alebo je tam nejaky default filter?
-    @Event(modulesToLoad = DemandCreationModule.class)
+    @Event(forwardToModules = DemandCreationModule.class)
     void goToCreateDemandModule();
 
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
     /**************************************************************************/
-    @Event(modulesToLoad = DemandModule.class) //, historyConverter = RootHistoryConverter.class)
+    @Event(forwardToModules = DemandModule.class) //, historyConverter = RootHistoryConverter.class)
     void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 //    String goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
@@ -152,21 +152,21 @@ public interface RootEventBus extends EventBus {
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid
      * @param filter - provided by search module
      */
-    @Event(modulesToLoad = MessagesModule.class)
+    @Event(forwardToModules = MessagesModule.class)
     void goToMessagesModule(SearchModuleDataHolder filter, int loadWidget);
 
-    @Event(modulesToLoad = SettingsModule.class)
+    @Event(forwardToModules = SettingsModule.class)
     void goToSettingsModule();
 
-    @Event(modulesToLoad = AdminModule.class)
+    @Event(forwardToModules = AdminModule.class)
     void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
 
     /* Both Home and User menut control section */
-    @Event(modulesToLoad = SearchModule.class)
+    @Event(forwardToModules = SearchModule.class)
     void goToSearchModule();
 
     // TODO Praso - mozeme odstranit? No usage
-    @Event(modulesToLoad = SearchModule.class)
+    @Event(forwardToModules = SearchModule.class)
     void clearSearchContent();
 
     /**************************************************************************/

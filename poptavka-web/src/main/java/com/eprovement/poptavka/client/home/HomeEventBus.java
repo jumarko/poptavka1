@@ -6,7 +6,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBus;
 
 
-@Events(startView = HomeView.class, module = HomeModule.class)
+@Events(startPresenter = HomePresenter.class, module = HomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeEventBus extends EventBus {
 
@@ -29,19 +29,19 @@ public interface HomeEventBus extends EventBus {
 //    @Event(forwardToParent = true)
 //    void initHomeWelcomeModule(Object object);
 //
-//    @Event(modulesToLoad = HomeSuppliersModule.class)
+//    @Event(forwardToModules = HomeSuppliersModule.class)
 //    void initHomeSuppliersModule(SearchModuleDataHolder filter, String location);
 //
-//    @Event(modulesToLoad = HomeDemandsModule.class)
+//    @Event(forwardToModules = HomeDemandsModule.class)
 //    void initHomeDemandsModule(SearchModuleDataHolder filter, String location);
 //
-//    @Event(modulesToLoad = SupplierCreationModule.class)
+//    @Event(forwardToModules = SupplierCreationModule.class)
 //    void goToCreateSupplier(String location);
 //
-//    @Event(modulesToLoad = DemandCreationModule.class)
+//    @Event(forwardToModules = DemandCreationModule.class)
 //    void goToCreateDemand(String location);
 //
-//    @Event(modulesToLoad = SearchModule.class)
+//    @Event(forwardToModules = SearchModule.class)
 //    void initSearchModule(SimplePanel panel);
 //
 //    /**************************************************************************/
