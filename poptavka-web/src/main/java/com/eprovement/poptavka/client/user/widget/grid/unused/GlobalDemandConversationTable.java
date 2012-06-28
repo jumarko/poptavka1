@@ -19,7 +19,7 @@ import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.domain.demand.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 
 import java.util.Random;

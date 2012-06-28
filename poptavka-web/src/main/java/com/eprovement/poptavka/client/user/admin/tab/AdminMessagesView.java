@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.message.MessageState;
+import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.google.gwt.cell.client.DatePickerCell;

@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.invoice.Invoice;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.util.orm.OrmConstants;

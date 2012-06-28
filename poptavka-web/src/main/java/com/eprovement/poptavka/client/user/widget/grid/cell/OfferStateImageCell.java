@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.enums.OfferState;
 
 public class OfferStateImageCell extends AbstractCell<OfferState.Type> {
 

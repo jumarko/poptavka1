@@ -6,6 +6,8 @@
 package com.eprovement.poptavka.domain.message;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.MessageContext;
+import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 

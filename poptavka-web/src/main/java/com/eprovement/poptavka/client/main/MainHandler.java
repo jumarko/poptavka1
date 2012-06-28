@@ -1,25 +1,21 @@
 package com.eprovement.poptavka.client.main;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
-
+import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.ClientRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
+import com.eprovement.poptavka.domain.enums.LocalityType;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-
-import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
-import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.ClientRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.DemandRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
-import com.eprovement.poptavka.domain.address.LocalityType;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Handler for common used RPC calls for localities and categories and other
@@ -35,8 +31,6 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
     private LocalityRPCServiceAsync localityService = null;
     @Inject
     private CategoryRPCServiceAsync categoryService = null;
-    @Inject
-    private DemandRPCServiceAsync demandService = null;
     @Inject
     private ClientRPCServiceAsync clientService = null;
     private ErrorDialogPopupView errorDialog;
@@ -136,50 +130,4 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
         }
         LOGGER.info("ending category service call");
     }
-
-    // TODO remove these methods.
-    // /**
-    // * Creates new demand.
-    // *
-    // * @param detail
-    // * front-end entity of demand
-    // * @param clientId
-    // * client id
-    // */
-    public void onCreateDemand(FullDemandDetail detail, Long clientId) {
-        // GWT.log("Am I here?");
-        // demandService.createNewDemand(detail, clientId,
-        // new AsyncCallback<FullDemandDetail>() {
-        // @Override
-        // public void onFailure(Throwable arg0) {
-        // eventBus.loadingHide();
-        // Window.alert(arg0.getMessage());
-        // }
-        //
-        // @Override
-        // public void onSuccess(FullDemandDetail result) {
-        // // signal event
-        // eventBus.loadingHide();
-        // // TODO forward to user/atAccount
-        // // eventBus.addNewDemand(result);
-        // }
-        // });
-        // LOGGER.info("submitting new demand");
-    }
-
-    // public void onCheckFreeEmail(String email) {
-    // clientService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
-    // @Override
-    // public void onFailure(Throwable arg0) {
-    // }
-    //
-    // @Override
-    // public void onSuccess(Boolean result) {
-    // LOGGER.fine("result of compare " + result);
-    // eventBus.checkFreeEmailResponse(result);
-    // // eventBus.checkFreeEmailResponse();
-    // }
-    // });
-    // }
-
 }

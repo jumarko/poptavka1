@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.dao.message;
 
 import com.eprovement.poptavka.domain.common.ResultCriteria;
-import com.eprovement.poptavka.domain.message.MessageContext;
-import com.eprovement.poptavka.domain.message.MessageUserRoleType;
+import com.eprovement.poptavka.domain.enums.MessageContext;
+import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 
 /**
  * Class represents a filter that can be used for applying various restrictions on messages returned

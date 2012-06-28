@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.domain.product;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
-import com.eprovement.poptavka.domain.common.Status;
+import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 import org.hibernate.envers.Audited;

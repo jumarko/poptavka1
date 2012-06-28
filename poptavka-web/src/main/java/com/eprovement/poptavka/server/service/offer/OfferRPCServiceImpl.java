@@ -16,7 +16,7 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
-import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.enums.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;

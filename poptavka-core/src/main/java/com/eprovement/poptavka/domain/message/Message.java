@@ -7,6 +7,7 @@ package com.eprovement.poptavka.domain.message;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.Problem;
 import com.eprovement.poptavka.domain.user.User;

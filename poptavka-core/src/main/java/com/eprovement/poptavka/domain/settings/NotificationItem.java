@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.domain.settings;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 
 import javax.persistence.Column;

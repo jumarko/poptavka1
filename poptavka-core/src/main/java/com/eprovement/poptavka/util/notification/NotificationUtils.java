@@ -6,7 +6,7 @@ package com.eprovement.poptavka.util.notification;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
-import com.eprovement.poptavka.domain.settings.Period;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.service.register.RegisterService;
 
 /**

@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.common.AdditionalInfo;
 import com.eprovement.poptavka.domain.common.AdditionalInfoAware;
 import com.eprovement.poptavka.domain.common.TreeItem;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;

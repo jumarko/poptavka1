@@ -4,7 +4,7 @@
  * file a sent message in the Inbox, but its state will show that it is a sent
  * message.
  */
-package com.eprovement.poptavka.domain.message;
+package com.eprovement.poptavka.domain.enums;
 
 /**
  *

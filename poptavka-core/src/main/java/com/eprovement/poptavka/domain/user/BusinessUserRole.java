@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 import org.hibernate.envers.Audited;
 
@@ -40,7 +41,7 @@ public abstract class BusinessUserRole extends DomainObject {
 
     /**
      *  Verification state of client. No default value!
-     * @see {@link com.eprovement.poptavka.domain.user.Verification} enum
+     * @see {@link com.eprovement.poptavka.domain.enums.Verification} enum
      */
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)

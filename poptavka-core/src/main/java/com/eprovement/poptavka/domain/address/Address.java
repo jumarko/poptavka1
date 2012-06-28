@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.domain.address;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.AddressType;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 
 import javax.persistence.Column;
@@ -12,8 +13,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Represents an address in the system, e.g. client's permanent address.
- * From all localities it contains reference only to the {@link LocalityType#CITY} - other levels
- * such as district, region and country can be found easily by city.
+ * From all localities it contains reference only to the {@link com.eprovement.poptavka.domain.enums.LocalityType#CITY}
+ * - other levels such as district, region and country can be found easily by city.
  *
  * @author Juraj Martinka
  *         Date: 29.1.11

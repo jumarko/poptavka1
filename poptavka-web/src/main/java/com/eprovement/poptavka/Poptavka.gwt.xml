@@ -28,7 +28,7 @@
 
     <inherits name='com.google.gwt.user.theme.standard.Standard'/>
 
-    <inherits name='com.eprovement.poptavka.Domain' />
+    <inherits name='com.eprovement.poptavka.DomainEnums' />
     <inherits name='com.eprovement.poptavka.Exception' />
 
     <inherits name='net.sf.gilead.Gilead4Gwt'/>

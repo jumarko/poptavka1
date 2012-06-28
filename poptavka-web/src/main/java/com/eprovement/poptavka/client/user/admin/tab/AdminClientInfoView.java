@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 
 /**

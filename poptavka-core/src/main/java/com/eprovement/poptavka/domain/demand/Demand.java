@@ -7,6 +7,8 @@ package com.eprovement.poptavka.domain.demand;
 
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandType;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -129,7 +131,7 @@ public class Demand extends DomainObject {
     /**
      * Demand's type.
      * <p>
-     * Many times is more handy to work with {@link com.eprovement.poptavka.domain.demand.DemandType#getType()}
+     * Many times is more handy to work with {@link com.eprovement.poptavka.domain.enums.DemandType#getType()}
      * instead of wrapper object.
      * <p>
      *     If this type is not specified then it should be automatically set to the "attractive" when storing

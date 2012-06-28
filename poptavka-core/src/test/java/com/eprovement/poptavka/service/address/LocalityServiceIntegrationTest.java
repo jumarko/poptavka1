@@ -4,7 +4,7 @@ import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.address.LocalityType;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.service.common.TreeItemService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;

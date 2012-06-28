@@ -3,7 +3,7 @@ package com.eprovement.poptavka.shared.domain.demand;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandType;
 
 /**
  * Represents full detail of demandType. Serves for creating new

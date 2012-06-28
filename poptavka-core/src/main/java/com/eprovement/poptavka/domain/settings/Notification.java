@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.domain.settings;
 
+import com.eprovement.poptavka.domain.enums.NotificationType;
 import com.eprovement.poptavka.domain.register.Register;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 

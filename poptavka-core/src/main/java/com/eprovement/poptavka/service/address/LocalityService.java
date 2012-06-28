@@ -3,7 +3,7 @@ package com.eprovement.poptavka.service.address;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.address.LocalityDao;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.address.LocalityType;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.service.GenericService;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     List<Locality> getLocalities(LocalityType localityType);
 
     /**
-     * Same as {@link #getLocalities(com.eprovement.poptavka.domain.address.LocalityType)}
+     * Same as {@link #getLocalities(com.eprovement.poptavka.domain.enums.LocalityType)}
      * but additional criteria can be applied.
      * @param localityType
      * @param resultCriteria optional additional criteria which can be applied to the localities

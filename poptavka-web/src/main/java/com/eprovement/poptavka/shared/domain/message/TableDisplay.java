@@ -2,7 +2,7 @@ package com.eprovement.poptavka.shared.domain.message;
 
 import java.util.Date;
 
-import com.eprovement.poptavka.domain.demand.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 
 
 public interface TableDisplay {

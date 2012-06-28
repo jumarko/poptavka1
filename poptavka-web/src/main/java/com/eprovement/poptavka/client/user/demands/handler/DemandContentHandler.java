@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.demands.handler;
 
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.DemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
@@ -26,10 +26,6 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 @EventHandler
 public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
 
-//    @Inject
-//    private MessageRPCServiceAsync messageService;
-//    @Inject
-//    private DemandRPCServiceAsync demandService;
     @Inject
     private DemandsRPCServiceAsync demandsService;
     private ErrorDialogPopupView errorDialog;
@@ -57,8 +53,8 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     }
 
     /**
-     * Get Supplier's potential demands list. No parameter is needed. Business
-     * UserID is fetched from Storage
+     * Get Supplier's potential demands list. No parameter is needed.
+     * Business UserID is fetched from Storage
      */
     public void onRequestSupplierNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
         demandsService.getPotentialDemands(Storage.getUser().getUserId(),
@@ -85,10 +81,9 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     }
 
     /**
-     * Changes demands Read status. Changes are displayed immediately on
-     * frontend. No onSuccess code is needed.
+     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
      *
-     * @param list list of demands which read status should be changed
+     * @param selectedIdList list of demands which read status should be changed
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
@@ -111,10 +106,9 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
     }
 
     /**
-     * Changes demands star status. Changes are displayed immediately on
-     * frontend. No onSuccess code is needed.
+     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
      *
-     * @param list list od demands which star status should be changed
+     * @param userMessageIdList list od demands which star status should be changed
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {

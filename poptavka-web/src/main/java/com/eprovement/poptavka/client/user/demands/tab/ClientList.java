@@ -27,7 +27,7 @@ import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.demands.tab.ClientListPresenter.IList;
 import com.eprovement.poptavka.client.user.widget.grid.ColumnFactory;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
-import com.eprovement.poptavka.domain.demand.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.demandsModule.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 

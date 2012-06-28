@@ -3,7 +3,7 @@ package com.eprovement.poptavka.dao.address;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.address.LocalityType;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 

@@ -6,7 +6,7 @@ package com.eprovement.poptavka.service.offer;
 
 import com.eprovement.poptavka.dao.offer.OfferDao;
 import com.eprovement.poptavka.domain.offer.Offer;
-import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.enums.OfferState;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.google.common.base.Preconditions;

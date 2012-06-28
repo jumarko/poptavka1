@@ -35,7 +35,7 @@ public interface BusinessUserVerificationService {
      * Verifies user using given {@code activationLink}, that means if correct activation link is provided,
      * then appropriate {@link BusinessUser} instance is loaded and for all its {@link BusinessUser#businessUserRoles}
      * verification status ( {@link com.eprovement.poptavka.domain.user.BusinessUserRole#verification} ) is set to
-     * {@link com.eprovement.poptavka.domain.user.Verification#VERIFIED}.
+     * {@link com.eprovement.poptavka.domain.enums.Verification#VERIFIED}.
      *
      * @param activationLink activation link which will be checked and corresponded user will be verified
      * @return user which has already been verified

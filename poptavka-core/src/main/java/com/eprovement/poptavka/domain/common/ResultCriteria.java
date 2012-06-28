@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.domain.common;
 
+import com.eprovement.poptavka.domain.enums.OrderType;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;

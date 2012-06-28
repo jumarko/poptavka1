@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.domain.address.Address;
-import com.eprovement.poptavka.domain.address.LocalityType;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
@@ -12,7 +12,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
-import com.eprovement.poptavka.domain.settings.Period;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Supplier;

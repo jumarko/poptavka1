@@ -15,8 +15,8 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
-import com.eprovement.poptavka.domain.demand.DemandType;
-import com.eprovement.poptavka.domain.demand.DemandType.Type;
+import com.eprovement.poptavka.domain.enums.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandType.Type;
 import java.util.ArrayList;
 
 public class HomeDemandViewView extends Composite implements

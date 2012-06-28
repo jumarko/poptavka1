@@ -3,7 +3,7 @@ package com.eprovement.poptavka.server.service.locality;
 
 import com.eprovement.poptavka.client.service.demand.LocalityRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.address.LocalityType;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;

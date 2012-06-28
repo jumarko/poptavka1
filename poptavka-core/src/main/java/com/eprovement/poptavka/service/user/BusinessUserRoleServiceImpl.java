@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
-import com.eprovement.poptavka.domain.common.Status;
+import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.mail.MailService;

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.eprovement.poptavka.domain.demand.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandType;
 import com.eprovement.poptavka.domain.message.UserMessage;
 
 public class DemandMessageDetail extends MessageDetail implements

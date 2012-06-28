@@ -8,14 +8,13 @@ import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.domain.demand.DemandLocality;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.server.service.demand.DemandRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.audit.AuditService;
@@ -31,8 +30,8 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +60,7 @@ import org.springframework.stereotype.Component;
 @Component(HomeDemandsRPCService.URL)
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DemandRPCServiceImpl.class);
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HomeDemandsRPCServiceImpl.class);
     private GeneralService generalService;
     private DemandService demandService;
     private CategoryService categoryService;

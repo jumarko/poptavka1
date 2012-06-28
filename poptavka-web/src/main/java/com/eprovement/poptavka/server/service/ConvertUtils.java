@@ -10,7 +10,7 @@ import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
-import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;

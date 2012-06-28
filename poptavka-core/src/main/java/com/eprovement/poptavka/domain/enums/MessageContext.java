@@ -3,7 +3,7 @@
  * context the Message belongs to. Message can be associated with Problem/
  * Demand/Offer/ or ordinary mail.
  */
-package com.eprovement.poptavka.domain.message;
+package com.eprovement.poptavka.domain.enums;
 
 /**
  * MessageContext gives meaning to the Message.
@@ -11,12 +11,13 @@ package com.eprovement.poptavka.domain.message;
  * to the client and it is a potential offer.
  *
  * <p>
- *     WATCH OUT for storing these values to the DB in entity {@link UserMessage}.
+ *     WATCH OUT for storing these values to the DB in entity
+ *     {@link com.eprovement.poptavka.domain.message.UserMessage}.
  *     They are stored as integers numbered from 0!
  * </p>
  *
- * @see UserMessage#messageContext
- * @see MessageUserRole#messageContext
+ * @see com.eprovement.poptavka.domain.message.UserMessage#messageContext
+ * @see com.eprovement.poptavka.domain.message.MessageUserRole#messageContext
  * @author ivan.vlcek
  */
 public enum MessageContext {

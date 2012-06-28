@@ -8,7 +8,7 @@ import com.eprovement.poptavka.application.security.SymmetricKeyEncryptor;
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
-import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.exception.ExpiredActivationLinkException;
 import com.eprovement.poptavka.exception.IncorrectActivationLinkException;
 import com.eprovement.poptavka.exception.UserNotExistException;

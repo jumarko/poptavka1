@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.enums.OfferState;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 
 public class ClientOfferDetail implements Serializable {

@@ -2,7 +2,7 @@ package com.eprovement.poptavka.service;
 
 import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.domain.common.DomainObject;
-import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.exception.DomainObjectNotFoundException;
 import com.eprovement.poptavka.util.collection.GenericComparator;

@@ -1,12 +1,8 @@
 package com.eprovement.poptavka.client.user.problems;
 
+import com.eprovement.poptavka.client.user.UserEventBus;
+import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.Logger;
-
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -15,9 +11,11 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
-
-import com.eprovement.poptavka.client.user.UserEventBus;
-import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author Martin Slavkovsky

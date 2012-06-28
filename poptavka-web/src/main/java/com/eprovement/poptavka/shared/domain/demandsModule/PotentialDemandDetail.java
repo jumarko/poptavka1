@@ -5,8 +5,8 @@ import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
 
-import com.eprovement.poptavka.domain.demand.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandType;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import java.math.BigDecimal;
 

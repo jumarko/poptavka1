@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.domain.message.MessageState;
+import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.google.gwt.cell.client.FieldUpdater;

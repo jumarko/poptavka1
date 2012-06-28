@@ -11,7 +11,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
 
 import javax.persistence.Query;

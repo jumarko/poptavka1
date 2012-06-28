@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
-import com.eprovement.poptavka.domain.user.BusinessType;
-import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.domain.enums.BusinessType;
+import com.eprovement.poptavka.domain.enums.Verification;
 import java.util.ArrayList;
 
 public class AdminSuppliersViewView extends Composite implements

@@ -6,7 +6,7 @@
 package com.eprovement.poptavka.dao;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
-import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;

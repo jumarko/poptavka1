@@ -3,10 +3,10 @@ package com.eprovement.poptavka.shared.domain.demandsModule;
 import com.google.gwt.view.client.ProvidesKey;
 
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.enums.OfferState;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

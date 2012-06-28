@@ -6,8 +6,8 @@ package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
-import com.eprovement.poptavka.domain.user.BusinessType;
-import com.eprovement.poptavka.domain.user.Verification;
+import com.eprovement.poptavka.domain.enums.BusinessType;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.ClickableTextCell;

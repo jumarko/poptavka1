@@ -4,7 +4,7 @@ import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
-import com.eprovement.poptavka.domain.message.MessageUserRoleType;
+import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.User;
 import java.util.ArrayList;

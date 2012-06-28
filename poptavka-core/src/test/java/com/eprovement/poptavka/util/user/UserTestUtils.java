@@ -5,7 +5,7 @@ package com.eprovement.poptavka.util.user;
 
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
-import com.eprovement.poptavka.domain.settings.Period;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.user.User;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;

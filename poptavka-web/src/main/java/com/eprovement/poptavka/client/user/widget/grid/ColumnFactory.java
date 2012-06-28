@@ -20,7 +20,7 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.ClickableDateCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
-import com.eprovement.poptavka.domain.demand.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 

@@ -30,7 +30,7 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminSupplierInfoPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminSuppliersPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.domain.common.OrderType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;

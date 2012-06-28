@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.domain.product;
 
+import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.register.Register;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 
