@@ -19,7 +19,7 @@ public final class CommonAccessRoles {
 
     @Override
     public String toString() {
-        return "CommonAcessRoles:" + Arrays.toString(new String[]{
+        return "CommonAcessRoles:" + Arrays.toString(new String[] {
             CLIENT_ACCESS_ROLE_CODE,
             SUPPLIER_ACCESS_ROLE_CODE
         });
