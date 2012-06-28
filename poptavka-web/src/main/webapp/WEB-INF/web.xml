@@ -109,16 +109,6 @@
     <!--
     Mapping an RPC service defined in handler-servlet.xml
     -->
-    
-    <servlet>
-        <servlet-name>UserActivationRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.user.activation.UserActivationRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UserActivationRPCService</servlet-name>
-        <url-pattern>/poptavka/useractivation</url-pattern>
-    </servlet-mapping>
-    
     <servlet>
         <servlet-name>DemandCreationRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.demandcreation.DemandCreationRPCServiceImpl</servlet-class>
