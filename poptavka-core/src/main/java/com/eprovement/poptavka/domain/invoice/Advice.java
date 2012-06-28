@@ -34,6 +34,8 @@ public class Advice extends DomainObject {
     @Column(length = 10)
     private String variableSymbol;
 
+    // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
+    @Column(columnDefinition = "BIT")
     private boolean recognized;
 
     private BigDecimal bounty;

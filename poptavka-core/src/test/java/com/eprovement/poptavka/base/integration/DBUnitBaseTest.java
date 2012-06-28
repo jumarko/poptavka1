@@ -12,6 +12,7 @@ import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
+import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +65,16 @@ public abstract class DBUnitBaseTest extends BasicIntegrationTest {
      * <a href="http://theflashesofinsight.wordpress.com/2009/03/07/dbunitoracle-fix-issue-with-inserting-date-field/">
      *     Fix issue with inserting DATE Field</a>
      */
-    private static final IDataTypeFactory DATA_TYPE_FACTORY =  new org.dbunit.ext.hsqldb.HsqldbDataTypeFactory();
+//    private static final IDataTypeFactory DATA_TYPE_FACTORY =  new org.dbunit.ext.hsqldb.HsqldbDataTypeFactory();
+    private static final IDataTypeFactory DATA_TYPE_FACTORY =  new H2DataTypeFactory();
 
     // Commands for disabling/enabling foreign key checks - useful in some corner cases, e.g. circular
     // foreign key references
-    private static final String DISABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET DATABASE REFERENTIAL INTEGRITY FALSE";
-    private static final String ENABLE_FOREIGN_KEY_CHECKS_STATEMENT = "SET DATABASE REFERENTIAL INTEGRITY TRUE";
+    private static final String DISABLE_FOREIGN_KEY_CHECKS_STATEMENT_HSQLDB =
+            "SET DATABASE REFERENTIAL INTEGRITY FALSE";
+    private static final String ENABLE_FOREIGN_KEY_CHECKS_STATEMENT_HSQLDB = "SET DATABASE REFERENTIAL INTEGRITY TRUE";
+    private static final String DISABLE_FOREIGN_KEY_CHECKS_STATEMENT_H2 = "SET REFERENTIAL_INTEGRITY FALSE";
+    private static final String ENABLE_FOREIGN_KEY_CHECKS_STATEMENT_H2 = "SET REFERENTIAL_INTEGRITY TRUE";
     private boolean foreignKeyChecksDisabled = false;
 
     @Autowired
@@ -105,11 +110,11 @@ public abstract class DBUnitBaseTest extends BasicIntegrationTest {
     private synchronized void disableForeignKeyChecksIfRequired() throws Exception {
         if (this.getClass().getAnnotation(DataSet.class).disableForeignKeyChecks()) {
             // if disabling foreign key checks is required by annotation then do that
-            getConnection().getConnection().prepareStatement(DISABLE_FOREIGN_KEY_CHECKS_STATEMENT).execute();
+            getConnection().getConnection().prepareStatement(DISABLE_FOREIGN_KEY_CHECKS_STATEMENT_H2).execute();
             foreignKeyChecksDisabled = true;
         } else if (foreignKeyChecksDisabled) {
             // enable referential integrity checks again - if it has been disabled
-            getConnection().getConnection().prepareStatement(ENABLE_FOREIGN_KEY_CHECKS_STATEMENT).execute();
+            getConnection().getConnection().prepareStatement(ENABLE_FOREIGN_KEY_CHECKS_STATEMENT_H2).execute();
             foreignKeyChecksDisabled = false;
         }
     }

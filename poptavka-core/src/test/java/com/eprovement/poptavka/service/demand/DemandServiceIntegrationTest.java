@@ -2,6 +2,7 @@ package com.eprovement.poptavka.service.demand;
 
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
@@ -13,9 +14,10 @@ import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
-import com.eprovement.poptavka.util.date.DateUtils;
 import java.util.HashMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -57,6 +59,9 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private GeneralService generalService;
 
 
     @Test
@@ -379,20 +384,30 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
         final Demand demand = new Demand();
         demand.setTitle("Title poptavka");
+        demand.setDescription("Test poptavka description");
         demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
         final BigDecimal price = BigDecimal.valueOf(10000);
         demand.setPrice(price);
         demand.setMaxSuppliers(20);
         demand.setMinRating(99);
         demand.setStatus(DemandStatus.NEW);
-        final Date endDate = DateUtils.parseDate("2011-05-01");
+        // one day to the future
+        final Date endDate = new Date(System.currentTimeMillis() + 8640000);
         demand.setEndDate(endDate);
-        final Date validTo = DateUtils.parseDate("2011-06-01");
+        // ten days to the future
+        final Date validTo = new Date(System.currentTimeMillis() + 86400000);
         demand.setValidTo(validTo);
 
 
         final Client newClient = new Client();
         newClient.getBusinessUser().setEmail("test@poptavam.com");
+        newClient.getBusinessUser().setPassword("myPassword");
+        newClient.getBusinessUser().setAccessRoles(Arrays.asList(this.generalService.find(AccessRole.class, 1L)));
+        final Address clientAddress = new Address();
+        clientAddress.setCity(this.localityService.getLocality("loc211"));
+        clientAddress.setStreet("Gotham city");
+        clientAddress.setZipCode("12");
+        newClient.getBusinessUser().setAddresses(Arrays.asList(clientAddress));
         final String clientSurname = "Client";
         newClient.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("Test").personLastName(clientSurname).build());

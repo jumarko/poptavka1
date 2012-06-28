@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.messaging.crawler;
 
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.crawldemands.demand.Demand;
@@ -157,6 +158,12 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
             if (StringUtils.isBlank(client.getBusinessUser().getEmail())) {
                 client.getBusinessUser().setEmail(userEmail);
             }
+            if (StringUtils.isBlank(client.getBusinessUser().getPassword())) {
+                client.getBusinessUser().setPassword("ClientForCrawledDemand");
+            }
+            if (CollectionUtils.isEmpty(client.getBusinessUser().getAccessRoles())) {
+                client.getBusinessUser().setAccessRoles(generalService.findAll(AccessRole.class));
+            }
             domainDemand.setClient(client);
         } else if (CollectionUtils.isEmpty(domainDemand.getSuppliers())) {
             final Supplier supplier = new Supplier();
@@ -165,6 +172,12 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
             }
             if (StringUtils.isBlank(supplier.getBusinessUser().getEmail())) {
                 supplier.getBusinessUser().setEmail(userEmail);
+            }
+            if (StringUtils.isBlank(supplier.getBusinessUser().getPassword())) {
+                supplier.getBusinessUser().setPassword("supplierForCrawledDemand");
+            }
+            if (CollectionUtils.isEmpty(supplier.getBusinessUser().getAccessRoles())) {
+                supplier.getBusinessUser().setAccessRoles(generalService.findAll(AccessRole.class));
             }
             domainDemand.setSuppliers(Arrays.asList(supplier));
         }

@@ -49,20 +49,6 @@
                 <entry key="hibernate.connection.useUnicode" value="true"/>
                 <entry key="hibernate.connection.characterEncoding" value="UTF-8"/>
 
-                <!-- Hibernate Envers -->
-                <entry key="hibernate.ejb.event.post-insert"
-                       value="org.hibernate.ejb.event.EJB3PostInsertEventListener,org.hibernate.envers.event.AuditEventListener"/>
-                <entry key="hibernate.ejb.event.post-update"
-                       value="org.hibernate.ejb.event.EJB3PostUpdateEventListener,org.hibernate.envers.event.AuditEventListener"/>
-                <entry key="hibernate.ejb.event.post-delete"
-                       value="org.hibernate.ejb.event.EJB3PostDeleteEventListener,org.hibernate.envers.event.AuditEventListener"/>
-                <entry key="hibernate.ejb.event.pre-collection-update"
-                       value="org.hibernate.envers.event.AuditEventListener"/>
-                <entry key="hibernate.ejb.event.pre-collection-remove"
-                       value="org.hibernate.envers.event.AuditEventListener"/>
-                <entry key="hibernate.ejb.event.post-collection-recreate"
-                       value="org.hibernate.envers.event.AuditEventListener"/>
-
                 <!-- Hibernate Search
              -       see http://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-configuration-directory -->
                 <entry key="hibernate.search.default.directory_provider" value="${fulltext.directory_provider}"/>
@@ -79,6 +65,9 @@
           class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
+    <!--<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">-->
+        <!--<property name="sessionFactory" ref="sessionFactory"/>-->
+    <!--</bean>-->
 
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
@@ -102,18 +91,18 @@
     </bean>
 
     <!-- Gilead configuration -->
-    <bean id="persistenceUtil" class="net.sf.gilead.core.hibernate.jpa.HibernateJpaUtil">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
+    <!--<bean id="persistenceUtil" class="net.sf.gilead.core.hibernate.jpa.HibernateJpaUtil">-->
+        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
+    <!--</bean>-->
 
-    <bean id="proxyStore" class="net.sf.gilead.core.store.stateful.HttpSessionProxyStore">
-        <property name="persistenceUtil" ref="persistenceUtil"/>
-    </bean>
+    <!--<bean id="proxyStore" class="net.sf.gilead.core.store.stateful.HttpSessionProxyStore">-->
+        <!--<property name="persistenceUtil" ref="persistenceUtil"/>-->
+    <!--</bean>-->
 
-    <bean id="beanManager" class="net.sf.gilead.core.PersistentBeanManager">
-        <property name="proxyStore" ref="proxyStore"/>
-        <property name="persistenceUtil" ref="persistenceUtil"/>
-    </bean>
+    <!--<bean id="beanManager" class="net.sf.gilead.core.PersistentBeanManager">-->
+        <!--<property name="proxyStore" ref="proxyStore"/>-->
+        <!--<property name="persistenceUtil" ref="persistenceUtil"/>-->
+    <!--</bean>-->
 
 
 </beans>

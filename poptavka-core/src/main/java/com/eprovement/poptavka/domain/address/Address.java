@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Represents an address in the system, e.g. client's permanent address.
@@ -27,9 +28,13 @@ public class Address extends DomainObject {
     @ManyToOne
     private Locality city;
 
+    @NotBlank
     private String street;
+
     private String zipCode;
+
     private String houseNum;
+
     private String flatNum;
 
     public Locality getCity() {

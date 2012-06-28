@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class NotificationItem extends DomainObject {
+    // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
+    @Column(columnDefinition = "BIT")
     private boolean enabled;
 
     @Enumerated(value = EnumType.STRING)

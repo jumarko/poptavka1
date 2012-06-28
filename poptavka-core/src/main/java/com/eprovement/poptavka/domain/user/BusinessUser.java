@@ -6,6 +6,7 @@ import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.util.orm.OrmConstants;
 import com.eprovement.poptavka.util.strings.ToStringUtils;
 import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
@@ -18,6 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Represents essential group users in application that have business relationship to us.
@@ -36,23 +38,32 @@ import java.util.List;
 @Audited
 public class BusinessUser extends User {
     @OneToMany(mappedBy = "businessUser")
+    @NotEmpty
     private List<BusinessUserRole> businessUserRoles = new ArrayList<BusinessUserRole>();
+
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private BusinessType businessType;
+
     /** Business user data about company and contact person. */
     @OneToOne
     @Cascade(value = CascadeType.ALL)
+    @NotNull
     private BusinessUserData businessUserData;
+
     /** All user's addresses. */
     @NotAudited
     @OneToMany
     @Cascade(value = CascadeType.ALL)
+    // At least one address must be specified
+    @NotEmpty
     private List<Address> addresses;
+
     @NotAudited
     @OneToMany(mappedBy = "user")
     @Cascade(value = CascadeType.ALL)
     private List<UserService> userServices;
+
     @OneToMany
     @NotAudited
     private List<Invoice> invoices;

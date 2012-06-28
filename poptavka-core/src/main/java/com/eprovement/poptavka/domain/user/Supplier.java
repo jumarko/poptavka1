@@ -7,6 +7,7 @@ package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
+import javax.persistence.Column;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -17,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.util.List;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -51,6 +53,8 @@ public class Supplier extends BusinessUserRole {
         joinColumns = @JoinColumn(name = "SUPPLIER_ID"),
         inverseJoinColumns = @JoinColumn(name = "LOCALITY_ID")
     )
+    // at least one locality
+    @NotEmpty
     private List<Locality> localities;
 
     @ManyToMany
@@ -60,9 +64,13 @@ public class Supplier extends BusinessUserRole {
         joinColumns = @JoinColumn(name = "SUPPLIER_ID"),
         inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID")
     )
+    // at least one category
+    @NotEmpty
     private List<Category> categories;
 
     /** Flag indicates wheter supplier is certified or not. TODO: the type of ceritification should be available!*/
+    // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
+    @Column(columnDefinition = "BIT")
     private Boolean certified;
 
     /** Total rating of supplier for all his "processed" demands .*/

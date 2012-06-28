@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.List;
+import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -14,6 +15,8 @@ import org.hibernate.annotations.CascadeType;
  *         Date: 11.4.11
  */
 @Entity
+// "SETTINGS" is some special table in H2 database - SETTINGS (NAME, VALUE, ID), therefore we need to use different name
+@Table(name = "SettingsT")
 public class Settings extends DomainObject {
 
     /**

@@ -1,5 +1,8 @@
 package com.eprovement.poptavka.service.user;
 
+import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.address.LocalityType;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
@@ -190,9 +193,18 @@ public class SupplierServiceIntegrationTest extends DBUnitBaseTest {
     public void testCreateSupplier() {
         final Supplier newSupplier = new Supplier();
         newSupplier.getBusinessUser().setEmail("new@supplier.com");
+        newSupplier.getBusinessUser().setPassword("myPassword");
+        newSupplier.getBusinessUser().setAccessRoles(Arrays.asList(this.generalService.find(AccessRole.class, 1L)));
+        final Address clientAddress = new Address();
+        clientAddress.setCity(this.localityService.getLocality("loc211"));
+        clientAddress.setStreet("Gotham city");
+        clientAddress.setZipCode("12");
+        newSupplier.getBusinessUser().setAddresses(Arrays.asList(clientAddress));
         newSupplier.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("New").personLastName("Supplier").build());
         newSupplier.getBusinessUser().setSettings(new Settings());
+        newSupplier.setLocalities(localityService.getLocalities(LocalityType.CITY));
+        newSupplier.setCategories(categoryService.getRootCategories());
         this.supplierService.create(newSupplier);
 
         final List<Supplier> persistedSuppliers = this.supplierService.searchByCriteria(

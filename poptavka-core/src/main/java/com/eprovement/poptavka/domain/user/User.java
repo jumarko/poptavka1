@@ -5,6 +5,7 @@ import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -18,6 +19,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Represents ordinary user in application without further specification.
@@ -33,15 +37,19 @@ import java.util.List;
 public class User extends DomainObject {
 
     @Column(length = 64)
+    @NotBlank
     private String password;
 
     @Column(nullable = false, unique = true, length = 128)
     /** User's email, serves also as a login.  */
+    @Email
     private String email;
 
     /** Roles assigned to this user in the application. */
     @ManyToMany
     @NotAudited
+    // Each user must have at least one access role!
+    @NotEmpty
     private List<AccessRole> accessRoles;
 
     /**
@@ -50,6 +58,7 @@ public class User extends DomainObject {
      */
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     @NotAudited
+    @NotNull
     private Settings settings = new Settings();
 
 

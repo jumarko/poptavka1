@@ -11,7 +11,7 @@
         <property name="locations">
             <list>
                 <value>classpath:/crypto.properties</value>
-                <value>classpath:/database-hsqldb.properties</value>
+                <value>classpath:/database-test.properties</value>
                 <value>classpath:/deployment.properties</value>
                 <value>classpath:/messaging.properties</value>
                 <value>classpath:/fulltext-test.properties</value>
@@ -21,9 +21,10 @@
     </bean>
 
 
-    <bean id="hibernateTemplate" class="org.springframework.orm.jpa.JpaTemplate">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
+    <!--TODO REMOVE IF NOT USED-->
+    <!--<bean id="hibernateTemplate" class="org.springframework.orm.jpa.JpaTemplate">-->
+        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
+    <!--</bean>-->
 
     <!-- Use only for specific (rare) cases when programmatic transaction handling is required! -->
     <bean id="sharedTransactionTemplate"

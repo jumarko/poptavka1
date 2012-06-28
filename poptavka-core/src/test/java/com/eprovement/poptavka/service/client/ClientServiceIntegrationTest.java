@@ -1,5 +1,8 @@
 package com.eprovement.poptavka.service.client;
 
+import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import com.eprovement.poptavka.service.address.LocalityService;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
@@ -15,6 +18,7 @@ import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.util.user.UserTestUtils;
+import java.util.Arrays;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
@@ -30,6 +34,7 @@ import java.util.List;
  *         Date: 20.12.10
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml" },
          dtd = "classpath:test.dtd")
@@ -43,6 +48,9 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
 
     @Autowired
     private RegisterService registerService;
+
+    @Autowired
+    private LocalityService localityService;
 
 
     @Test
@@ -129,6 +137,13 @@ public class ClientServiceIntegrationTest extends DBUnitBaseTest {
     public void testCreateClient() {
         final Client newClient = new Client();
         newClient.getBusinessUser().setEmail("new@client.com");
+        newClient.getBusinessUser().setPassword("myPassword");
+        newClient.getBusinessUser().setAccessRoles(Arrays.asList(this.generalService.find(AccessRole.class, 1L)));
+        final Address clientAddress = new Address();
+        clientAddress.setCity(this.localityService.getLocality("loc211"));
+        clientAddress.setStreet("Gotham city");
+        clientAddress.setZipCode("12");
+        newClient.getBusinessUser().setAddresses(Arrays.asList(clientAddress));
         newClient.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("New").personLastName("Client").build());
         newClient.getBusinessUser().setSettings(new Settings());

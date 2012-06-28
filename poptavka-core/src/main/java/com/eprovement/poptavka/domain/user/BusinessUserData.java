@@ -6,6 +6,7 @@ import org.hibernate.envers.NotAudited;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Represents personal or contact data abou business user.
@@ -25,9 +26,11 @@ public class BusinessUserData extends DomainObject {
     private String companyName;
 
     @Column(length = 64)
+    @NotBlank
     private String personFirstName;
 
     @Column(length = 64)
+    @NotBlank
     private String personLastName;
 
     @NotAudited

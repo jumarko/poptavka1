@@ -31,15 +31,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * The core domain class which represents demand entered by client.
@@ -75,9 +79,11 @@ public class Demand extends DomainObject {
     public static final String[] DEMAND_FULLTEXT_FIELDS = new String[] {"title" , "description"};
 
     @Column(length = 100, nullable = false)
-    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Field
     // title is most important - boost twice as much as other fields
     @Boost(2)
+    @NotBlank
+    @Size(min = 5)
     private String title;
 
     /**
@@ -89,21 +95,27 @@ public class Demand extends DomainObject {
      */
     @Lob
     @Column(name = "description")
-    @Field(index = Index.TOKENIZED, store = Store.NO)
+    @Field
+    @NotBlank
+    @Size(min = 20)
     private String description;
 
+    @DecimalMin(value = "0")
     private BigDecimal price;
 
     /** The max date when the demand should be finished. */
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Past
     private Date createdDate = new Date();
 
     /** The max date when the demand should be finished. */
     @Temporal(value = TemporalType.DATE)
+    @Future
     private Date endDate;
 
     /** This demand is considered to be valid in system until this day. */
     @Temporal(value = TemporalType.DATE)
+    @Future
     private Date validTo;
 
     /** Path in the sotrage file system where all attachments are saved. */
@@ -111,6 +123,7 @@ public class Demand extends DomainObject {
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
+    @NotNull
     private DemandStatus status;
 
     /**
@@ -124,6 +137,7 @@ public class Demand extends DomainObject {
      */
     @Audited
     @ManyToOne(optional = false)
+    @NotNull
     private DemandType type;
 
     @ManyToOne

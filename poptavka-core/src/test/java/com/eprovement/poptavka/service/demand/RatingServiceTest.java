@@ -16,9 +16,9 @@ import org.junit.Before;
  * @author Vojtech Hubr
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")

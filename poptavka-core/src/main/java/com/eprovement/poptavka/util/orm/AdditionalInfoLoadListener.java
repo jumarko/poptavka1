@@ -8,8 +8,8 @@ import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.SupplierService;
-import org.hibernate.event.PostLoadEvent;
-import org.hibernate.event.PostLoadEventListener;
+import org.hibernate.event.spi.PostLoadEvent;
+import org.hibernate.event.spi.PostLoadEventListener;
 
 /**
  *

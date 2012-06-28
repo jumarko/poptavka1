@@ -86,7 +86,11 @@ public class UserMessage extends DomainObject {
     private MessageContext messageContext;
 
     /** Column cannot be named "read" because that is MySQL reserved key word */
+    // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
+    @Column(columnDefinition = "BIT")
     private boolean isRead;
+    // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
+    @Column(columnDefinition = "BIT")
     private boolean starred;
 
 

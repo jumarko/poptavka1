@@ -1,10 +1,10 @@
 <!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
 <dataset>
 
-    <SETTINGS ID="11" />
-    <SETTINGS ID="12" />
-    <SETTINGS ID="13" />
-    <SETTINGS ID="14" />
+    <SETTINGST ID="11" />
+    <SETTINGST ID="12" />
+    <SETTINGST ID="13" />
+    <SETTINGST ID="14" />
 
     <!--################################ Suppliers ##################################################################-->
     <USERT ID="11" EMAIL="elvira11@email.com" PASSWORD="ahoj" SETTINGS_ID="11"/>

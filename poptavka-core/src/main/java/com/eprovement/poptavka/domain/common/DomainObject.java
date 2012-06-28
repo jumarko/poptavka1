@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.domain.common;
 
-import com.eprovement.poptavka.service.fulltext.FulltextAnalyzer;
+import org.apache.lucene.analysis.cz.CzechAnalyzer;
 import org.hibernate.search.annotations.Analyzer;
 
 import javax.persistence.GeneratedValue;
@@ -22,7 +22,7 @@ import java.io.Serializable;
  * </ol>
  *
  */
-@Analyzer(impl = FulltextAnalyzer.class)
+@Analyzer(impl = CzechAnalyzer.class)
 @MappedSuperclass
 public abstract class DomainObject implements Serializable {
 

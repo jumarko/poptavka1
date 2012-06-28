@@ -247,7 +247,7 @@ public final class Searcher {
             Method getter = ReflectionUtils.getGetterMethod(baseClass,
                     properties[i]);
             if (getter == null) {
-                throw new SearcherException("Ivalid path to property supplied."
+                throw new SearcherException("Invalid path to property supplied."
                         + "\npath: \"" + property + "\""
                         + "\nThe class \"" + baseClass.getCanonicalName() + "\""
                         + "\nhas no property \"" + properties[i] + "\"");

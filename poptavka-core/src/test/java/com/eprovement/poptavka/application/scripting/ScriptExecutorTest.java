@@ -21,7 +21,10 @@ import java.io.IOException;
  * @author Juraj Martinka
  *         Date: 24.1.11
  */
-@DataSet(path = "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
+@DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml"
+        },
         dtd = "classpath:test.dtd")
 public class ScriptExecutorTest extends DBUnitBaseTest {
 
