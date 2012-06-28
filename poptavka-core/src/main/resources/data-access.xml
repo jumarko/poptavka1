@@ -90,19 +90,4 @@
         <constructor-arg ref="mySearchProcessor"/>
     </bean>
 
-    <!-- Gilead configuration -->
-    <!--<bean id="persistenceUtil" class="net.sf.gilead.core.hibernate.jpa.HibernateJpaUtil">-->
-        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="proxyStore" class="net.sf.gilead.core.store.stateful.HttpSessionProxyStore">-->
-        <!--<property name="persistenceUtil" ref="persistenceUtil"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="beanManager" class="net.sf.gilead.core.PersistentBeanManager">-->
-        <!--<property name="proxyStore" ref="proxyStore"/>-->
-        <!--<property name="persistenceUtil" ref="persistenceUtil"/>-->
-    <!--</bean>-->
-
-
 </beans>
