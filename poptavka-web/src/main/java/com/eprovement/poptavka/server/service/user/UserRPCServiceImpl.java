@@ -11,7 +11,7 @@ import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.converter.UserConverter;
+import com.eprovement.poptavka.server.converter.UserConverter;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

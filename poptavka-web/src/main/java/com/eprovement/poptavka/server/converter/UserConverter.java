@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
  */
-package com.eprovement.poptavka.shared.domain.converter;
+package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.user.BusinessUser;
@@ -16,6 +16,8 @@ import java.util.List;
 
 public class UserConverter extends AbstractConverter<BusinessUser, BusinessUserDetail> {
 
+    private AddressConverter addressConverter;
+
     @Override
     public BusinessUserDetail convertToTarget(BusinessUser source) {
         BusinessUserDetail detail = new BusinessUserDetail();
@@ -27,7 +29,8 @@ public class UserConverter extends AbstractConverter<BusinessUser, BusinessUserD
         //BusinessUser
         List<AddressDetail> addresses = new ArrayList<AddressDetail>();
         for (Address addr : source.getAddresses()) {
-            addresses.add(AddressDetail.createAddressDetail(addr));
+            addressConverter = new AddressConverter();
+            addresses.add(addressConverter.convertToTarget(addr));
         }
         detail.setAddresses(addresses);
         //Roles - CLIENT, SUPPLIER, PARTNER, OPERATOR, ADMINISTRATOR, ...

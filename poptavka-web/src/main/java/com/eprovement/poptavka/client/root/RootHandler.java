@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 

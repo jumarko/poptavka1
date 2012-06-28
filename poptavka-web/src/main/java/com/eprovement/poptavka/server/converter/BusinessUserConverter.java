@@ -7,24 +7,25 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 
 public class BusinessUserConverter extends AbstractConverter<BusinessUser, UserDetail> {
 
     private final AddressConverter addressConverter = new AddressConverter();
     @Override
-    public UserDetail convertToTarget(BusinessUser businessUser) {
-        final UserDetail detail = new UserDetail();
+    public BusinessUserDetail convertToTarget(BusinessUser businessUser) {
+        final BusinessUserDetail detail = new BusinessUserDetail();
         detail.setUserId(businessUser.getId());
         detail.setAddresses(addressConverter.convertToTargetList(businessUser.getAddresses()));
         for (BusinessUserRole role : businessUser.getBusinessUserRoles()) {
             if (role instanceof Client) {
                 detail.setClientId(role.getId());
-                detail.getRoleList().add(UserDetail.Role.CLIENT);
+                detail.getBusinessRoles().add(BusinessUserDetail.BusinessRole.CLIENT);
             }
             if (role instanceof Supplier) {
                 detail.setSupplierId(role.getId());
-                detail.getRoleList().add(UserDetail.Role.SUPPLIER);
+                detail.getBusinessRoles().add(BusinessUserDetail.BusinessRole.SUPPLIER);
             }
         }
         if (businessUser.getBusinessUserData() != null) {
