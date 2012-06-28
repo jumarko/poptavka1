@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.base.integration;
 
+import java.util.concurrent.Executor;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.sql.DataSource;
@@ -282,6 +283,31 @@ public class SpringConnection implements Connection {
     @Override
     public Struct createStruct(String typeName, Object[] attributes) throws SQLException {
         return conn.createStruct(typeName, attributes);
+    }
+
+    @Override
+    public void setSchema(String schema) throws SQLException {
+        conn.setSchema(schema);
+    }
+
+    @Override
+    public String getSchema() throws SQLException {
+        return conn.getSchema();
+    }
+
+    @Override
+    public void abort(Executor executor) throws SQLException {
+        conn.abort(executor);
+    }
+
+    @Override
+    public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        conn.setNetworkTimeout(executor, milliseconds);
+    }
+
+    @Override
+    public int getNetworkTimeout() throws SQLException {
+        return conn.getNetworkTimeout();
     }
 
     @Override
