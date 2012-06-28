@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.rest.user;
 
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,12 @@ public class UserActivationResource {
 
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody
-    ResponseEntity<String> activateUser(@RequestParam("link") String activationLink) {
+    ResponseEntity<String> activateUser(@RequestParam("link") String activationLink, HttpServletRequest request) {
         Validate.notEmpty(activationLink);
 
         final BusinessUser businessUser = verificationService.verifyUser(activationLink);
 
-        String url = "/Activation.html";
+        String url = request.getContextPath() + "/Activation.html";
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
         headers.add("Location", url);
         ResponseEntity<String> response = new ResponseEntity(headers, HttpStatus.MOVED_TEMPORARILY);
