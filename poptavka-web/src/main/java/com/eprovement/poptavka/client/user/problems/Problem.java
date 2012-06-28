@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.user.problems;
 
-import com.eprovement.poptavka.domain.message.Message;
-
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +15,8 @@ public class Problem {
     private String state;
     private Date date;
     private String price;
-    private Message root;
-    private List<Message> answers;
+    private MessageDetail root;
+    private List<MessageDetail> answers;
 
     public Problem(String demandName, String state, Date date, String price) {
         this.demandName = demandName;
@@ -42,19 +41,19 @@ public class Problem {
         return price;
     }
 
-    public void setRoot(Message root) {
+    public void setRoot(MessageDetail root) {
         this.root = root;
     }
 
-    public Message getRoot() {
+    public MessageDetail getRoot() {
         return this.root;
     }
 
-    public void setAnswers(List<Message> answers) {
+    public void setAnswers(List<MessageDetail> answers) {
         this.answers = answers;
     }
 
-    public List<Message> getAnswers() {
+    public List<MessageDetail> getAnswers() {
         return this.answers;
     }
 }
