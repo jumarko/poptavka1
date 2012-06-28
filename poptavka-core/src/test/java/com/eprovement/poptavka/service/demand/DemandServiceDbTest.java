@@ -3,7 +3,7 @@ package com.eprovement.poptavka.service.demand;
 import com.eprovement.poptavka.base.RealDbTest;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.user.ClientService;
@@ -41,7 +41,7 @@ public class DemandServiceDbTest extends RealDbTest {
     public void testCreateDemand() {
         final Demand demand = new Demand();
         demand.setTitle("TEST poptavka");
-        demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
+        demand.setType(this.demandService.getDemandType(DemandTypeType.NORMAL.getValue()));
         demand.setPrice(BigDecimal.valueOf(10000));
         demand.setMaxSuppliers(20);
         demand.setMinRating(99);

@@ -6,7 +6,7 @@ import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.enums.AddressType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.util.messaging.demand.TestingDemand;
@@ -93,6 +93,6 @@ public class DemandConverterTest extends DBUnitBaseTest {
         attractiveDemand.setAttractive("attractive");
         final com.eprovement.poptavka.domain.demand.Demand domainDemand =
                 this.demandConverter.convert(attractiveDemand);
-        Assert.assertEquals(DemandType.Type.ATTRACTIVE, domainDemand.getType().getType());
+        Assert.assertEquals(DemandTypeType.ATTRACTIVE, domainDemand.getType().getType());
     }
 }

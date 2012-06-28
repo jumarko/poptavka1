@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.domain.demand;
 
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.register.Register;
 import org.hibernate.envers.Audited;
 
@@ -16,42 +17,6 @@ import javax.persistence.Entity;
 @Entity
 @Audited
 public class DemandType extends Register {
-
-    /**
-     * Enum for handy work with demand type.
-     * @see #getType()
-     */
-    public static enum Type {
-        NORMAL("normal"),
-
-        /** Special demand at top positions. */
-        ATTRACTIVE("attractive");
-
-        private final String value;
-
-        Type(String value) {
-            this.value = value;
-        }
-
-        /**
-         * Get enum constant for given type code
-         *
-          * @param
-         * @return
-         */
-        public static Type fromValue(String typeCode) {
-            for (Type type : Type.values()) {
-                if (type.value.equals(typeCode)) {
-                    return type;
-                }
-            }
-            throw new IllegalArgumentException("No DemandType enum constant for type code [" + typeCode + "].");
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
 
 
     private String description;
@@ -75,8 +40,8 @@ public class DemandType extends Register {
     }
 
 
-    public Type getType() {
-        return Type.fromValue(getCode());
+    public DemandTypeType getType() {
+        return DemandTypeType.fromValue(getCode());
     }
 
 

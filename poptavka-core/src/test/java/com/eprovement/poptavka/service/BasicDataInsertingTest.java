@@ -1,11 +1,11 @@
 package com.eprovement.poptavka.service;
 
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.base.RealDbTest;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
@@ -69,7 +69,7 @@ public class BasicDataInsertingTest extends RealDbTest {
 
         final Demand demand = new Demand();
         demand.setTitle("Title poptavka");
-        demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
+        demand.setType(this.demandService.getDemandType(DemandTypeType.NORMAL.getValue()));
         final BigDecimal price = BigDecimal.valueOf(10000);
         demand.setPrice(price);
         demand.setMaxSuppliers(20);

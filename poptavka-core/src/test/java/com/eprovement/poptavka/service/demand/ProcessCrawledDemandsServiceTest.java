@@ -1,12 +1,12 @@
 package com.eprovement.poptavka.service.demand;
 
-import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.util.messaging.demand.TestingDemand;
+import com.googlecode.genericdao.search.Search;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +46,6 @@ public class ProcessCrawledDemandsServiceTest extends DBUnitBaseTest {
 
         Assert.assertNotNull(testDemand1.getClient());
         Assert.assertEquals(TestingDemand.TEST_DEMAND_1_EMAIL, testDemand1.getClient().getBusinessUser().getEmail());
-        Assert.assertEquals(DemandType.Type.NORMAL, testDemand1.getType().getType());
+        Assert.assertEquals(DemandTypeType.NORMAL, testDemand1.getType().getType());
     }
 }

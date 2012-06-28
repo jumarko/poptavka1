@@ -4,8 +4,6 @@
  */
 package com.eprovement.poptavka.service.demand;
 
-import com.google.common.base.Preconditions;
-import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.demand.DemandDao;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
@@ -14,11 +12,12 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
-import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.enums.MessageContext;
 import com.eprovement.poptavka.domain.enums.MessageState;
-import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
+import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
@@ -27,12 +26,8 @@ import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.google.common.base.Preconditions;
+import com.googlecode.ehcache.annotations.Cacheable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -41,6 +36,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -79,7 +79,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     public Demand create(Demand demand) {
         if (demand.getType() == null) {
             // default demand type is "normal"
-            demand.setType(getDemandType(DemandType.Type.NORMAL.getValue()));
+            demand.setType(getDemandType(DemandTypeType.NORMAL.getValue()));
         }
 
         if (isNewClient(demand)) {

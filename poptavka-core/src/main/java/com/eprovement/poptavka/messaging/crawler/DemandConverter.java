@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.messaging.crawler;
 
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
@@ -8,7 +9,6 @@ import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.enums.AddressType;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
@@ -195,7 +195,7 @@ public class DemandConverter implements Converter<Demand, com.eprovement.poptavk
     private void setDemandType(Demand sourceDemand, com.eprovement.poptavka.domain.demand.Demand domainDemand) {
         if (sourceDemand.getAttractive() != null) {
             // set "attractive" type - otherwise the "normal" type is implicit -> see {@link DemandServiceImpl#create}
-            domainDemand.setType(this.demandService.getDemandType(DemandType.Type.ATTRACTIVE.getValue()));
+            domainDemand.setType(this.demandService.getDemandType(DemandTypeType.ATTRACTIVE.getValue()));
         }
     }
 

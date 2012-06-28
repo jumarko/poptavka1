@@ -4,13 +4,14 @@ import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.demand.DemandType;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
+import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
@@ -18,21 +19,20 @@ import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Juraj Martinka
@@ -355,9 +355,9 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
 
     @Test
     public void testDemandTypes() {
-        checkDemandType(1L, DemandType.Type.NORMAL);
-        checkDemandType(2L, DemandType.Type.ATTRACTIVE);
-        checkDemandType(3L, DemandType.Type.NORMAL);
+        checkDemandType(1L, DemandTypeType.NORMAL);
+        checkDemandType(2L, DemandTypeType.ATTRACTIVE);
+        checkDemandType(3L, DemandTypeType.NORMAL);
     }
 
 
@@ -385,7 +385,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
         final Demand demand = new Demand();
         demand.setTitle("Title poptavka");
         demand.setDescription("Test poptavka description");
-        demand.setType(this.demandService.getDemandType(DemandType.Type.NORMAL.getValue()));
+        demand.setType(this.demandService.getDemandType(DemandTypeType.NORMAL.getValue()));
         final BigDecimal price = BigDecimal.valueOf(10000);
         demand.setPrice(price);
         demand.setMaxSuppliers(20);
@@ -591,7 +591,7 @@ public class DemandServiceIntegrationTest extends DBUnitBaseTest {
     }
 
 
-    private void checkDemandType(long demandId, DemandType.Type expectedType) {
+    private void checkDemandType(long demandId, DemandTypeType expectedType) {
         final Demand demand = this.demandService.getById(demandId);
         Assert.assertEquals(expectedType, demand.getType().getType());
     }

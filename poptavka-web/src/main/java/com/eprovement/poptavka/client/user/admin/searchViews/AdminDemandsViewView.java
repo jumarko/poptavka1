@@ -1,5 +1,10 @@
 package com.eprovement.poptavka.client.user.admin.searchViews;
 
+import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
+import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,12 +17,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.demand.DemandType;
-import com.eprovement.poptavka.domain.demand.DemandType.Type;
 import java.util.ArrayList;
 
 public class AdminDemandsViewView extends Composite implements SearchModulePresenter.SearchModulesViewInterface {
@@ -38,7 +37,7 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
     public AdminDemandsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
         demandType.addItem(Storage.MSGS.select());
-        for (Type type : DemandType.Type.values()) {
+        for (DemandTypeType type : DemandTypeType.values()) {
             demandType.addItem(type.name());
         }
         demandStatus.addItem(Storage.MSGS.select());
