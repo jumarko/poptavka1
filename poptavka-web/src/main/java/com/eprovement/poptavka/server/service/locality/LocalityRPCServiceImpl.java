@@ -61,8 +61,12 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public Locality getLocality(long id) throws RPCException {
-        return localityService.getById(id);
+    public LocalityDetail getLocality(long id) throws RPCException {
+        final Locality locality = localityService.getById(id);
+        if (locality == null) {
+            throw new IllegalArgumentException("Cannot find locality with id=" + id);
+        }
+        return new LocalityDetail(locality.getId(), locality.getName(), locality.getCode());
     }
 
     @Override

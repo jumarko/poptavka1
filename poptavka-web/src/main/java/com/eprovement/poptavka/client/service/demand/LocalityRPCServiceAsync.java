@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.address.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 
@@ -15,7 +14,7 @@ public interface LocalityRPCServiceAsync {
 
     void getLocalities(String locCode, AsyncCallback<ArrayList<LocalityDetail>> callback);
 
-    void getLocality(long id, AsyncCallback<Locality> callback);
+    void getLocality(long id, AsyncCallback<LocalityDetail> callback);
 
     void getAllRootLocalities(AsyncCallback<ArrayList<LocalityDetail>> callback);
 
