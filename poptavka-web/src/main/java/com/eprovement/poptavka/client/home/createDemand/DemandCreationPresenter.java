@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -46,7 +47,7 @@ public class DemandCreationPresenter
     private FormDemandBasicPresenter demandBasicForm = null;
     private FormDemandAdvPresenter demandAdvForm = null;
 
-    public interface CreationViewInterface extends LazyView {
+    public interface CreationViewInterface extends LazyView, IsWidget {
 
         StackLayoutPanel getMainPanel();
 

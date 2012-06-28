@@ -34,7 +34,7 @@ import java.util.List;
 public class SearchModulePresenter
         extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
 
-    public interface SearchModuleInterface extends LazyView {
+    public interface SearchModuleInterface extends LazyView, IsWidget {
 
         Widget getWidgetView();
 

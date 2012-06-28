@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
@@ -44,7 +45,7 @@ import java.util.Map;
 public class HomeSuppliersPresenter
         extends LazyPresenter<HomeSuppliersPresenter.SuppliersViewInterface, HomeSuppliersEventBus> {
 
-    public interface SuppliersViewInterface extends LazyView {
+    public interface SuppliersViewInterface extends LazyView, IsWidget {
         //******** ROOT SECTION **********
 
         HorizontalPanel getRootSection();

@@ -15,6 +15,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -34,7 +35,7 @@ import java.util.Map;
 public class HomeDemandsPresenter extends BasePresenter<
         HomeDemandsPresenter.HomeDemandsViewInterface, HomeDemandsEventBus> {
 
-    public interface HomeDemandsViewInterface {
+    public interface HomeDemandsViewInterface extends IsWidget {
 
         DemandDetailView getDemandDetail();
 

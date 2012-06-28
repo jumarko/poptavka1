@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.user.settings;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
@@ -16,7 +17,7 @@ import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 public class SettingsPresenter
         extends BasePresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus> {
 
-    public interface HomeSettingsViewInterface {
+    public interface HomeSettingsViewInterface extends IsWidget {
 
         Widget getWidgetView();
 

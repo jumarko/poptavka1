@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.main;
 
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -34,7 +35,7 @@ public class MainPresenter extends BasePresenter<MainPresenter.MainViewInterface
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private PopupPanel popup = null;
 
-    public interface MainViewInterface {
+    public interface MainViewInterface extends IsWidget {
         void setBodyWidget(Widget body);
 
         void toggleMainLayout(boolean switchToUserLayout);

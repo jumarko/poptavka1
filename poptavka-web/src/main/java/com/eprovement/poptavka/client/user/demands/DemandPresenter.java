@@ -26,7 +26,7 @@ import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 public class DemandPresenter
         extends BasePresenter<DemandPresenter.DemandsLayoutInterface, DemandEventBus> {
 
-    public interface DemandsLayoutInterface {
+    public interface DemandsLayoutInterface extends IsWidget {
 
         Widget getWidgetView();
 

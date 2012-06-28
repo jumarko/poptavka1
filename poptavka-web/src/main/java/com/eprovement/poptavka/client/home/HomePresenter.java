@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.home;
 
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
 
 
@@ -14,7 +15,7 @@ public class HomePresenter extends LazyPresenter<HomePresenter.HomeInterface, Ho
 //    private static final Logger LOGGER = Logger.getLogger("HomePresenter");
 //    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    public interface HomeInterface extends LazyView {
+    public interface HomeInterface extends LazyView, IsWidget {
 
 //        SearchModuleView getSearchView();
 //        AdvancedSearchView getAdvancedSearchView();

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public class SupplierCreationPresenter
     private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
 
-    public interface CreationViewInterface extends LazyView {
+    public interface CreationViewInterface extends LazyView, IsWidget {
 
         StackLayoutPanel getMainPanel();
 

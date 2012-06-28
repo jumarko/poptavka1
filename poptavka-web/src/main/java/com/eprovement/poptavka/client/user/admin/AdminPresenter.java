@@ -9,6 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
@@ -19,7 +20,7 @@ import com.mvp4g.client.view.LazyView;
 public class AdminPresenter
         extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus> {
 
-    public interface AdminModuleInterface extends LazyView {
+    public interface AdminModuleInterface extends LazyView, IsWidget {
 
         Widget getWidgetView();
 
