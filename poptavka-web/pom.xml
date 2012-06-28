@@ -191,13 +191,6 @@
         </dependency>
         <!-- END list -->
 
-        <!-- Gilead (Hibernate4GWT) -->
-        <dependency>
-            <groupId>net.sf.gilead</groupId>
-            <artifactId>gilead4gwt</artifactId>
-        </dependency>
-
-
         <!-- GWT testing -->
         <dependency>
             <groupId>com.googlecode.gwt</groupId>

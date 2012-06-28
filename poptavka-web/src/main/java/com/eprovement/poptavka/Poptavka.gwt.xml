@@ -31,7 +31,6 @@
     <inherits name='com.eprovement.poptavka.DomainEnums' />
     <inherits name='com.eprovement.poptavka.Exception' />
 
-    <inherits name='net.sf.gilead.Gilead4Gwt'/>
     <inherits name='com.mvp4g.Mvp4gModule'/>
     <inherits name='org.adamtacy.GWTEffects'/>
 
