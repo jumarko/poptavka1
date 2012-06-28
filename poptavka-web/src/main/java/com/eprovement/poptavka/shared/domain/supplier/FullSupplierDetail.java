@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 public class FullSupplierDetail implements Serializable {
 
+    private static final int ZIP_SIZE = 4;
     /**
      * Generated serialVersionUID.
      */
@@ -54,8 +56,9 @@ public class FullSupplierDetail implements Serializable {
     private String street;
     @NotEmpty(message = "{supplierNotBlankCity}")
     private String city;
-    @Pattern(regexp = "[0-9]{5}", message = "{supplierPatternZipCode}")
     @NotEmpty(message = "{supplierNotBlankZipCode}")
+    @Pattern(regexp = "[0-9]+", message = "{supplierPatternZipCode}")
+    @Size(min = ZIP_SIZE, message = "{supplierSizeZipCode}")
     private String zipCode;
     //Others
     private int overallRating = -1;

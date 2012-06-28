@@ -156,6 +156,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("supplier.pattern.zipCode")
     String supplierPatternZipCode();
 
+    @Key("supplier.size.zipCode")
+    String supplierSizeZipCode();
+
     @Key("supplier.pattern.website")
     String supplierPatternWebsite();
 }
