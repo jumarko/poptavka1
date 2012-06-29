@@ -34,6 +34,14 @@ public final class ReflectionUtils {
 
     /**
      * Tries to find GETTER for property with name <code>propertyName</code> on class <code>aClass</code>.
+     * <p>
+     *     It will find methods starting with "get" as well as "is". However, this is ambiguous, therefore
+     *     be aware to not use this for class which has both such methods, e.g.:
+     *     <pre>
+     *         public Message getThreadRoot() { return threadRoot; }
+     *         public boolean isThreadRoot() { return threadRoot == null; }
+     *     </pre>
+     * </p>
      *
      * @param aClass
      * @param propertyName

@@ -156,10 +156,6 @@ public class Message extends DomainObject {
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
 
-    public boolean isThreadRoot() {
-        return parent == null;
-    }
-
     public Message getThreadRoot() {
         return threadRoot;
     }
