@@ -3,24 +3,20 @@
  */
 package com.eprovement.poptavka.server.service.client;
 
-import com.google.common.base.Preconditions;
+import com.eprovement.poptavka.base.BasicIntegrationTest;
 import com.eprovement.poptavka.client.service.demand.ClientRPCService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.google.common.base.Preconditions;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @Ignore
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
-public class ClientRPCServiceTest {
+public class ClientRPCServiceTest extends BasicIntegrationTest {
 
     private ClientRPCService clientRPCService;
 

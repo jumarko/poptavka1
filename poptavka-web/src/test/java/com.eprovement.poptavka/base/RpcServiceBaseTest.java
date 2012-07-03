@@ -2,9 +2,6 @@ package com.eprovement.poptavka.base;
 
 import com.gdevelop.gwt.syncrpc.SyncProxy;
 import com.google.common.base.Preconditions;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  *
@@ -33,9 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Juraj Martinka
  *         Date: 15.5.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
-public abstract class RpcServiceBaseTest {
+public abstract class RpcServiceBaseTest extends BasicIntegrationTest {
 
     private static final String POPTAVKA_MODULE_BASE_URL = "http://46.137.95.172:8080/poptavka/";
     private static final String RPC_SERVICE_TEST_CLASS_SUFFIX = "RpcServiceTest";

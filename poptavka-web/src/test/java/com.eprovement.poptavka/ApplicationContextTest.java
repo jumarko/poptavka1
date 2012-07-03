@@ -1,22 +1,17 @@
 package com.eprovement.poptavka;
 
+import com.eprovement.poptavka.base.BasicIntegrationTest;
+import javax.servlet.ServletException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.servlet.ServletException;
 
 /**
  * @author Juraj Martinka
  *         Date: 30.1.11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
-public class ApplicationContextTest {
+public class ApplicationContextTest extends BasicIntegrationTest {
 
     @Autowired
     private ApplicationContext applicationContext;
