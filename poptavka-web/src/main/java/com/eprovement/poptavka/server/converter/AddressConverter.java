@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 
-public class AddressConverter extends AbstractConverter<Address, AddressDetail> {
+public final class AddressConverter extends AbstractConverter<Address, AddressDetail> {
+
+    private AddressConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public AddressDetail convertToTarget(Address address) {
         AddressDetail detail = new AddressDetail();

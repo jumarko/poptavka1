@@ -3,12 +3,21 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
 import com.eprovement.poptavka.shared.domain.demandsModule.PotentialDemandDetail;
+import org.apache.commons.lang.Validate;
 
-public class PotentialDemandConverter extends AbstractConverter<UserMessage, PotentialDemandDetail> {
+public final class PotentialDemandConverter extends AbstractConverter<UserMessage, PotentialDemandDetail> {
 
-    private final DemandTypeConverter demandTypeConverter = new DemandTypeConverter();
+    private final Converter<DemandType, DemandTypeDetail> demandTypeConverter;
+
+    private PotentialDemandConverter(Converter<DemandType, DemandTypeDetail> demandTypeConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(demandTypeConverter);
+        this.demandTypeConverter = demandTypeConverter;
+    }
 
     @Override
     public PotentialDemandDetail convertToTarget(UserMessage userMessage) {

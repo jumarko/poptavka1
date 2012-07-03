@@ -14,7 +14,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.domain.demand.DemandLocality;
-import com.eprovement.poptavka.server.converter.FullDemandConverter;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -67,7 +68,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private LocalityService localityService;
     private AuditService auditService;
     private TreeItemService treeItemService;
-    private FullDemandConverter demandConverter = new FullDemandConverter();
+    private Converter<Demand, FullDemandDetail> demandConverter;
     private FulltextSearchService fulltextSearchService;
 
     // ***********************************************************************
@@ -106,6 +107,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     @Autowired
     public void setFulltextSearchService(FulltextSearchService fulltextSearchService) {
         this.fulltextSearchService = fulltextSearchService;
+    }
+
+    @Autowired
+    public void setDemandConverter(
+            @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
+        this.demandConverter = demandConverter;
     }
 
     // ***********************************************************************

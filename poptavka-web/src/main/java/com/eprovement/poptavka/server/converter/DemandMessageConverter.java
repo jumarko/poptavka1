@@ -3,15 +3,29 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
 import com.eprovement.poptavka.shared.domain.message.DemandMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import org.apache.commons.lang.Validate;
 
-public class DemandMessageConverter extends AbstractConverter<UserMessage, DemandMessageDetail> {
+public final class DemandMessageConverter extends AbstractConverter<UserMessage, DemandMessageDetail> {
 
-    private final DemandTypeConverter demandTypeConverter = new DemandTypeConverter();
+    private final Converter<DemandType, DemandTypeDetail> demandTypeConverter;
 
-    private final MessageDetailFromUserMessageConverter messageDetailConverter =
-            new MessageDetailFromUserMessageConverter();
+    private final Converter<UserMessage, MessageDetail> messageDetailConverter;
+
+    private DemandMessageConverter(Converter<DemandType, DemandTypeDetail> demandTypeConverter,
+            Converter<UserMessage, MessageDetail> messageDetailConverter) {
+        // Spring instantiates converters - see converters.xml
+
+        Validate.notNull(demandTypeConverter);
+        Validate.notNull(messageDetailConverter);
+
+        this.demandTypeConverter = demandTypeConverter;
+        this.messageDetailConverter = messageDetailConverter;
+    }
 
     @Override
     public DemandMessageDetail convertToTarget(UserMessage userMessage) {
@@ -31,6 +45,36 @@ public class DemandMessageConverter extends AbstractConverter<UserMessage, Deman
 
 
     }
+
+    // TODO:
+//    public static MessageDetail fillMessageDetail(MessageDetail detail, Message message) {
+//        detail.setMessageId(message.getId());
+//        detail.setParentId(message.getParent() == null ? -1 : message.getParent().getId());
+//        detail.setSenderId(message.getSender() == null ? -1 : message.getSender().getId());
+//        detail.setThreadRootId(message.getThreadRoot() == null ? -1 : message.getThreadRoot().getId());
+//        detail.setBody(message.getBody());
+//        detail.setCreated(message.getCreated());
+//        //still get annoying nullPE at PotentialDemandMessage
+//        //so that's the reason for this check    -Beho. 29.11.11
+//        if (message.getSent() == null) {
+//            detail.setSent(message.getCreated());
+//        } else {
+//            detail.setSent(message.getSent());
+//        }
+//
+////        m.setFirstBornId(serialVersionUID);
+//        if (message.getMessageState() != null) {
+//            detail.setMessageState(message.getMessageState().name());
+//        }
+//        detail.setMessageType(MessageType.CONVERSATION.name());
+////        m.setNexSiblingId(serialVersionUID);
+////        m.setReceiverId();
+//
+//        detail.setSent(message.getSent());
+//        detail.setSubject(message.getSubject());
+//
+//        return detail;
+//    }
 
     @Override
     public UserMessage converToSource(DemandMessageDetail demandMessageDetail) {

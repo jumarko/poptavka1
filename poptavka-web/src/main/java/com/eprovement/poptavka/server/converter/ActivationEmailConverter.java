@@ -6,7 +6,11 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 
-public class ActivationEmailConverter extends AbstractConverter<ActivationEmail, ActivationEmailDetail> {
+public final class ActivationEmailConverter extends AbstractConverter<ActivationEmail, ActivationEmailDetail> {
+
+    private ActivationEmailConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
 
     @Override
     public ActivationEmailDetail convertToTarget(ActivationEmail source) {

@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 
-public class ServiceConverter extends AbstractConverter<Service, ServiceDetail> {
+public final class ServiceConverter extends AbstractConverter<Service, ServiceDetail> {
+
+    private ServiceConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public ServiceDetail convertToTarget(Service service) {
         ServiceDetail detail = new ServiceDetail();

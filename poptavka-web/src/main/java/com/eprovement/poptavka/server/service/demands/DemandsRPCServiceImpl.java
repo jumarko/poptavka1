@@ -6,11 +6,7 @@ package com.eprovement.poptavka.server.service.demands;
 
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.DemandsRPCService;
-import com.eprovement.poptavka.server.converter.BaseDemandConverter;
-import com.eprovement.poptavka.server.converter.ClientDemandMessageConverter;
-import com.eprovement.poptavka.server.converter.FullDemandConverter;
-import com.eprovement.poptavka.server.converter.MessageConverter;
-import com.eprovement.poptavka.server.converter.PotentialDemandMessageConverter;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -39,6 +35,7 @@ import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,13 +64,12 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     private GeneralService generalService;
     private MessageService messageService;
     private RatingService ratingService;
-    private MessageConverter messageConverter = new MessageConverter();
-    private FullDemandConverter demandConverter = new FullDemandConverter();
+    private Converter<Message, MessageDetail> messageConverter;
+    private Converter<Demand, FullDemandDetail> demandConverter;
 
-    private final ClientDemandMessageConverter clientDemandMessageConverter = new ClientDemandMessageConverter();
-    private final PotentialDemandMessageConverter potentialDemandMessageConverter =
-            new PotentialDemandMessageConverter();
-    private final BaseDemandConverter baseDemandConverter = new BaseDemandConverter();
+    private Converter<UserMessage, ClientDemandMessageDetail> clientDemandMessageConverter;
+    private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
+    private Converter<Demand, BaseDemandDetail> baseDemandConverter;
 
 
     public void setRatingService(RatingService ratingService) {
@@ -98,6 +94,35 @@ public class DemandsRPCServiceImpl extends AutoinjectingRemoteService implements
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
+    }
+
+    @Autowired
+    public void setMessageConverter(@Qualifier("messageConverter") Converter<Message, MessageDetail> messageConverter) {
+        this.messageConverter = messageConverter;
+    }
+
+    @Autowired
+    public void setDemandConverter(
+            @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
+        this.demandConverter = demandConverter;
+    }
+
+    @Autowired
+    public void setClientDemandMessageConverter(@Qualifier("clientDemandMessageConverter")
+            Converter<UserMessage, ClientDemandMessageDetail> clientDemandMessageConverter) {
+        this.clientDemandMessageConverter = clientDemandMessageConverter;
+    }
+
+    @Autowired
+    public void setPotentialDemandMessageConverter(@Qualifier("potentialDemandMessageConverter")
+            Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter) {
+        this.potentialDemandMessageConverter = potentialDemandMessageConverter;
+    }
+
+    @Autowired
+    public void setBaseDemandConverter(
+            @Qualifier("baseDemandConverter") Converter<Demand, BaseDemandDetail> baseDemandConverter) {
+        this.baseDemandConverter = baseDemandConverter;
     }
 
     /**

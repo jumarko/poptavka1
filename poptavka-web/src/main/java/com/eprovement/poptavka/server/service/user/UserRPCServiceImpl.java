@@ -3,17 +3,18 @@ package com.eprovement.poptavka.server.service.user;
 import com.eprovement.poptavka.client.service.demand.UserRPCService;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
-import com.eprovement.poptavka.server.converter.AccessRoleConverter;
-import com.eprovement.poptavka.server.converter.BusinessUserConverter;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.server.converter.UserConverter;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component(UserRPCService.URL)
@@ -23,9 +24,9 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private GeneralService generalService;
     private LoginService loginService;
     private ClientService clientService;
-    private AccessRoleConverter roleConverter = new AccessRoleConverter();
+    private Converter<AccessRole, AccessRoleDetail> roleConverter;
 
-    private BusinessUserConverter businessUserConverter = new BusinessUserConverter();
+    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -42,6 +43,18 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
         this.clientService = clientService;
     }
 
+    @Autowired
+    public void setRoleConverter(
+            @Qualifier("accessRoleConverter") Converter<AccessRole, AccessRoleDetail> roleConverter) {
+        this.roleConverter = roleConverter;
+    }
+
+    @Autowired
+    public void setBusinessUserConverter(
+            @Qualifier("businessUserConverter") Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
+        this.businessUserConverter = businessUserConverter;
+    }
+
     @Override
     public UserDetail loginUser(String email, String password) throws RPCException {
         final User user = this.loginService.loginUser(email, password);
@@ -52,7 +65,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     @Override
     public BusinessUserDetail getUserById(Long userId) throws RPCException {
         //Find vs. SearchUnique ??
-        return new UserConverter().convertToTarget(generalService.find(BusinessUser.class, userId));
+        return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));
     }
 
     @Override

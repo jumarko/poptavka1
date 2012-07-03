@@ -10,7 +10,12 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
+public final class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
+
+    private SupplierConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public FullSupplierDetail convertToTarget(Supplier source) {
         FullSupplierDetail detail = new FullSupplierDetail();

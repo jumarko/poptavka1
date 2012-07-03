@@ -3,12 +3,21 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import org.apache.commons.lang.Validate;
 
-public class MessageDetailFromUserMessageConverter extends AbstractConverter<UserMessage, MessageDetail> {
+public final class MessageDetailFromUserMessageConverter extends AbstractConverter<UserMessage, MessageDetail> {
 
-    private final MessageConverter messageConverter = new MessageConverter();
+    private final Converter<Message, MessageDetail> messageConverter;
+
+    private MessageDetailFromUserMessageConverter(Converter<Message, MessageDetail> messageConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(messageConverter);
+
+        this.messageConverter = messageConverter;
+    }
 
     @Override
     public MessageDetail convertToTarget(UserMessage userMessage) {

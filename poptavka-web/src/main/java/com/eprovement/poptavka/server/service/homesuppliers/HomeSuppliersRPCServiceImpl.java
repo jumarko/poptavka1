@@ -15,6 +15,7 @@ import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -23,7 +24,6 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.server.converter.SupplierConverter;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.core.client.GWT;
@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -50,7 +51,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private LocalityService localityService;
     private CategoryService categoryService;
     private SupplierService supplierService;
-    private SupplierConverter supplierConverter = new SupplierConverter();
+    private Converter<Supplier, FullSupplierDetail> supplierConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -75,6 +76,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     @Autowired
     public void setTreeItemService(TreeItemService treeItemService) {
         this.treeItemService = treeItemService;
+    }
+
+    @Autowired
+    public void setSupplierConverter(
+            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        this.supplierConverter = supplierConverter;
     }
 
     // ***********************************************************************
@@ -478,7 +485,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private ArrayList<FullSupplierDetail> createSupplierDetailListCat(Collection<SupplierCategory> suppliersCat) {
         ArrayList<FullSupplierDetail> userDetails = new ArrayList<FullSupplierDetail>();
         for (SupplierCategory supplierCat : suppliersCat) {
-            userDetails.add(new SupplierConverter().convertToTarget(supplierCat.getSupplier()));
+            userDetails.add(supplierConverter.convertToTarget(supplierCat.getSupplier()));
         }
         GWT.log("supplierDetailList created: " + userDetails.size());
         return userDetails;

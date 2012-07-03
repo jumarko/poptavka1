@@ -7,7 +7,11 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 
-public class MessageConverter extends AbstractConverter<Message, MessageDetail> {
+public final class MessageConverter extends AbstractConverter<Message, MessageDetail> {
+
+    private MessageConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
 
     @Override
     public MessageDetail convertToTarget(Message source) {
@@ -38,6 +42,7 @@ public class MessageConverter extends AbstractConverter<Message, MessageDetail> 
 
     @Override
     public Message converToSource(MessageDetail source) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Conversion from MessageDetail to domain object Message "
+                + "is not implemented yet!");
     }
 }

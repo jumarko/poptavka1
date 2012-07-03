@@ -6,7 +6,11 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.user.rights.Permission;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 
-public class PermissionConverter extends AbstractConverter<Permission, PermissionDetail> {
+public final class PermissionConverter extends AbstractConverter<Permission, PermissionDetail> {
+
+    private PermissionConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
 
     @Override
     public PermissionDetail convertToTarget(Permission source) {

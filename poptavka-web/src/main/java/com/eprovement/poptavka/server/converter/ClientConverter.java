@@ -4,15 +4,22 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientConverter extends AbstractConverter<Client, ClientDetail> {
+public final class ClientConverter extends AbstractConverter<Client, ClientDetail> {
 
-    private BusinessUserConverter businessUserConverter = new BusinessUserConverter();
+    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+
+    private ClientConverter(Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
+        // Spring instantiates converters - see converters.xml
+        this.businessUserConverter = businessUserConverter;
+    }
 
     @Override
     public ClientDetail convertToTarget(Client source) {

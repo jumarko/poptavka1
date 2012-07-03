@@ -25,6 +25,7 @@ import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,8 +54,8 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     private GeneralService generalService;
     private MessageService messageService;
     private UserMessageService userMessageService;
-    private MessageConverter messageConverter = new MessageConverter();
-    private UserMessageConverter userMessageConverter = new UserMessageConverter();
+    private MessageConverter messageConverter;
+    private UserMessageConverter userMessageConverter;
 
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
@@ -69,6 +70,16 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     @Autowired
     public void setMessageService(MessageService messageService) {
         this.messageService = messageService;
+    }
+
+    @Autowired
+    public void setMessageConverter(@Qualifier("messageConverter") MessageConverter messageConverter) {
+        this.messageConverter = messageConverter;
+    }
+
+    @Autowired
+    public void setUserMessageConverter(@Qualifier("userMessageConverter") UserMessageConverter userMessageConverter) {
+        this.userMessageConverter = userMessageConverter;
     }
 
     /**

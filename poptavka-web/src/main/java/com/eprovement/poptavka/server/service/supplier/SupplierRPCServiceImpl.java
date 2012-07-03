@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.server.service.supplier;
 
+import com.eprovement.poptavka.server.converter.Converter;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
@@ -25,7 +26,6 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.server.converter.SupplierConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -44,6 +44,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private LocalityService localityService;
     private CategoryService categoryService;
     private TreeItemService treeItemService;
-    private SupplierConverter supplierConverter = new SupplierConverter();
+    private Converter<Supplier, FullSupplierDetail> supplierConverter;
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -95,6 +96,12 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     @Autowired
     public void setTreeItemService(TreeItemService treeItemService) {
         this.treeItemService = treeItemService;
+    }
+
+    @Autowired
+    public void setSupplierConverter(
+            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        this.supplierConverter = supplierConverter;
     }
 
     /**

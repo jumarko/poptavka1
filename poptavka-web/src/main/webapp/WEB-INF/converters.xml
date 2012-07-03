@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <bean id="accessRoleConverter" class="com.eprovement.poptavka.server.converter.AccessRoleConverter">
+        <constructor-arg ref="permissionConverter"/>
+    </bean>
+    <bean id="activationEmailConverter" class="com.eprovement.poptavka.server.converter.ActivationEmailConverter" />
+    <bean id="addressConverter" class="com.eprovement.poptavka.server.converter.AddressConverter" />
+    <bean id="baseDemandConverter" class="com.eprovement.poptavka.server.converter.BaseDemandConverter" />
+    <bean id="businessUserConverter" class="com.eprovement.poptavka.server.converter.BusinessUserConverter">
+        <constructor-arg ref="addressConverter"/>
+    </bean>
+    <bean id="clientConverter" class="com.eprovement.poptavka.server.converter.ClientConverter" >
+        <constructor-arg ref="businessUserConverter"/>
+    </bean>
+    <bean id="clientDemandConverter" class="com.eprovement.poptavka.server.converter.ClientDemandConverter" />
+    <bean id="clientDemandMessageConverter" class="com.eprovement.poptavka.server.converter.ClientDemandMessageConverter" />
+    <bean id="clientDemandUserMessageConverter" class="com.eprovement.poptavka.server.converter.ClientDemandUserMessageConverter" />
+    <bean id="clientOfferConverter" class="com.eprovement.poptavka.server.converter.ClientOfferConverter" />
+    <bean id="demandMessageConverter" class="com.eprovement.poptavka.server.converter.DemandMessageConverter" >
+        <constructor-arg index="0" ref="demandTypeConverter"/>
+        <constructor-arg index="1" ref="messageDetailConverter"/>
+    </bean>
+    <bean id="demandOriginConverter" class="com.eprovement.poptavka.server.converter.DemandOriginConverter"/>
+    <bean id="demandTypeConverter" class="com.eprovement.poptavka.server.converter.DemandTypeConverter"/>
+    <bean id="fullDemandConverter" class="com.eprovement.poptavka.server.converter.FullDemandConverter">
+        <constructor-arg ref="supplierConverter"/>
+    </bean>
+    <bean id="fullOfferConverter" class="com.eprovement.poptavka.server.converter.FullOfferConverter">
+        <constructor-arg ref="offerConverter"/>
+    </bean>
+    <bean id="invoiceConverter" class="com.eprovement.poptavka.server.converter.InvoiceConverter">
+        <constructor-arg index="0" ref="paymentMethodConverter"/>
+        <constructor-arg index="1" ref="userServiceConverter"/>
+    </bean>
+    <bean id="messageConverter" class="com.eprovement.poptavka.server.converter.MessageConverter"/>
+    <bean id="messageDetailConverter" class="com.eprovement.poptavka.server.converter.MessageDetailFromUserMessageConverter">
+        <constructor-arg ref="messageConverter"/>
+    </bean>
+    <bean id="offerConverter" class="com.eprovement.poptavka.server.converter.OfferConverter"/>
+    <bean id="offerDemandMessageConverter" class="com.eprovement.poptavka.server.converter.OfferDemandMessageConverter"/>
+    <bean id="paymentConverter" class="com.eprovement.poptavka.server.converter.PaymentConverter"/>
+    <bean id="paymentMethodConverter" class="com.eprovement.poptavka.server.converter.PaymentMethodConverter"/>
+    <bean id="permissionConverter" class="com.eprovement.poptavka.server.converter.PermissionConverter"/>
+    <bean id="potentialDemandConverter" class="com.eprovement.poptavka.server.converter.PotentialDemandConverter">
+        <constructor-arg ref="demandTypeConverter"/>
+    </bean>
+    <bean id="potentialDemandMessageConverter" class="com.eprovement.poptavka.server.converter.PotentialDemandMessageConverter" />
+    <bean id="preferenceConverter" class="com.eprovement.poptavka.server.converter.PreferenceConverter" />
+    <bean id="problemConverter" class="com.eprovement.poptavka.server.converter.ProblemConverter" />
+    <bean id="serviceConverter" class="com.eprovement.poptavka.server.converter.ServiceConverter"/>
+    <bean id="settingsBusinessUserConverter" class="com.eprovement.poptavka.server.converter.SettingsBusinessUserConverter">
+        <constructor-arg ref="addressConverter"/>
+    </bean>
+    <bean id="supplierConverter" class="com.eprovement.poptavka.server.converter.SupplierConverter"/>
+    <bean id="userConverter" class="com.eprovement.poptavka.server.converter.UserConverter">
+        <constructor-arg index="0" ref="addressConverter"/>
+        <constructor-arg index="1" ref="accessRoleConverter"/>
+    </bean>
+    <bean id="userMessageConverter" class="com.eprovement.poptavka.server.converter.UserMessageConverter"/>
+    <bean id="userServiceConverter"
+          class="com.eprovement.poptavka.server.converter.UserServiceConverter">
+        <constructor-arg index="0" ref="serviceConverter"/>
+        <constructor-arg index="1" ref="businessUserConverter"/>
+    </bean>
+
+</beans>

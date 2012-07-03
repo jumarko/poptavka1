@@ -6,7 +6,11 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.invoice.PaymentMethod;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 
-public class PaymentMethodConverter extends AbstractConverter<PaymentMethod, PaymentMethodDetail> {
+public final class PaymentMethodConverter extends AbstractConverter<PaymentMethod, PaymentMethodDetail> {
+
+    private PaymentMethodConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
 
     @Override
     public PaymentMethodDetail convertToTarget(PaymentMethod source) {

@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 
-public class OfferConverter extends AbstractConverter<Offer, OfferDetail> {
+public final class OfferConverter extends AbstractConverter<Offer, OfferDetail> {
+
+    private OfferConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public OfferDetail convertToTarget(Offer source) {
         OfferDetail detail = new OfferDetail();

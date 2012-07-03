@@ -9,6 +9,7 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
    
     <beans:import resource="security.xml"/>
+    <beans:import resource="converters.xml"/>
     
         <!-- Service -->
     <context:annotation-config/>

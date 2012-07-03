@@ -9,10 +9,17 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang.Validate;
 
-public class SettingsBusinessUserConverter extends AbstractConverter<BusinessUser, SettingsDetail> {
+public final class SettingsBusinessUserConverter extends AbstractConverter<BusinessUser, SettingsDetail> {
 
-    private final AddressConverter addressConverter = new AddressConverter();
+    private final Converter<Address, AddressDetail> addressConverter;
+
+    private SettingsBusinessUserConverter(Converter<Address, AddressDetail> addressConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(addressConverter);
+        this.addressConverter = addressConverter;
+    }
 
     @Override
     public SettingsDetail convertToTarget(BusinessUser businessUser) {

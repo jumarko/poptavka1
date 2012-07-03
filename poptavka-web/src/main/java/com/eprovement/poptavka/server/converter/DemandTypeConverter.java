@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
 
-public class DemandTypeConverter extends AbstractConverter<DemandType, DemandTypeDetail> {
+public final class DemandTypeConverter extends AbstractConverter<DemandType, DemandTypeDetail> {
+
+    private DemandTypeConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public DemandTypeDetail convertToTarget(DemandType demandType) {
         DemandTypeDetail detail = new DemandTypeDetail();

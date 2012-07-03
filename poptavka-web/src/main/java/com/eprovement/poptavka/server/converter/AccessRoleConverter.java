@@ -10,10 +10,17 @@ import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.lang.Validate;
 
-public class AccessRoleConverter extends AbstractConverter<AccessRole, AccessRoleDetail> {
+public final class AccessRoleConverter extends AbstractConverter<AccessRole, AccessRoleDetail> {
 
-    private final Converter<Permission, PermissionDetail> permissionConverter = new PermissionConverter();
+    private final Converter<Permission, PermissionDetail> permissionConverter;
+
+    private AccessRoleConverter(Converter<Permission, PermissionDetail> permissionConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(permissionConverter);
+        this.permissionConverter = permissionConverter;
+    }
 
     @Override
     public AccessRoleDetail convertToTarget(AccessRole source) {

@@ -4,10 +4,7 @@
  */
 package com.eprovement.poptavka.server.service.message;
 
-import com.eprovement.poptavka.server.converter.ClientDemandMessageConverter;
-import com.eprovement.poptavka.server.converter.OfferDemandMessageConverter;
-import com.eprovement.poptavka.server.converter.PotentialDemandMessageConverter;
-import com.eprovement.poptavka.server.converter.UserMessageConverter;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
@@ -23,7 +20,6 @@ import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
-import com.eprovement.poptavka.server.converter.MessageConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.common.TreeItemService;
@@ -41,6 +37,7 @@ import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,13 +74,12 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
     private TreeItemService treeItemService;
     private DemandService demandService;
     private RatingService ratingService;
-    private MessageConverter messageConverter = new MessageConverter();
 
-    private final ClientDemandMessageConverter clientDemandMessageConverter = new ClientDemandMessageConverter();
-    private final PotentialDemandMessageConverter potentialDemandMessageConverter =
-            new PotentialDemandMessageConverter();
-    private final OfferDemandMessageConverter offerDemandMessageConverter = new OfferDemandMessageConverter();
-    private final UserMessageConverter userMessageConverter = new UserMessageConverter();
+    private Converter<Message, MessageDetail> messageConverter;
+    private Converter<UserMessage, ClientDemandMessageDetail> clientDemandMessageConverter;
+    private Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter;
+    private Converter<UserMessage, OfferDemandMessage> offerDemandMessageConverter;
+    private Converter<UserMessage, UserMessageDetail> userMessageConverter;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -115,11 +111,41 @@ public class MessageRPCServiceImpl extends AutoinjectingRemoteService implements
         this.treeItemService = treeItemService;
     }
 
+    @Autowired
     public void setRatingService(RatingService ratingService) {
         this.ratingService = ratingService;
     }
 
-    // TODO verify
+    @Autowired
+    public void setMessageConverter(@Qualifier("messageConverter") Converter<Message, MessageDetail> messageConverter) {
+        this.messageConverter = messageConverter;
+    }
+
+    @Autowired
+    public void setClientDemandMessageConverter(@Qualifier("clientDemandMessageConverter")
+            Converter<UserMessage, ClientDemandMessageDetail> clientDemandMessageConverter) {
+        this.clientDemandMessageConverter = clientDemandMessageConverter;
+    }
+
+    @Autowired
+    public void setPotentialDemandMessageConverter(@Qualifier("potentialDemandMessageConverter")
+            Converter<UserMessage, PotentialDemandMessage> potentialDemandMessageConverter) {
+        this.potentialDemandMessageConverter = potentialDemandMessageConverter;
+    }
+
+    @Autowired
+    public void setOfferDemandMessageConverter(@Qualifier("offerDemandMessageConverter")
+            Converter<UserMessage, OfferDemandMessage> offerDemandMessageConverter) {
+        this.offerDemandMessageConverter = offerDemandMessageConverter;
+    }
+
+    @Autowired
+    public void setUserMessageConverter(
+            @Qualifier("userMessageConverter") Converter<UserMessage, UserMessageDetail> userMessageConverter) {
+        this.userMessageConverter = userMessageConverter;
+    }
+
+// TODO verify
     /**
      * if used somewhere. In the past (before 14.7.) used for MyDemands list of clients
      * demands. Now it is maybe unused. MAYBE I'm wrong

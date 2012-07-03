@@ -9,14 +9,27 @@ import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Partner;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang.Validate;
 
-public class UserConverter extends AbstractConverter<BusinessUser, BusinessUserDetail> {
+public final class UserConverter extends AbstractConverter<BusinessUser, BusinessUserDetail> {
 
-    private AddressConverter addressConverter;
+    private final Converter<Address, AddressDetail> addressConverter;
+    private final Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
+
+    private UserConverter(Converter<Address, AddressDetail> addressConverter,
+            Converter<AccessRole, AccessRoleDetail> accessRoleConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(addressConverter);
+        Validate.notNull(accessRoleConverter);
+        this.addressConverter = addressConverter;
+        this.accessRoleConverter = accessRoleConverter;
+    }
 
     @Override
     public BusinessUserDetail convertToTarget(BusinessUser source) {
@@ -25,11 +38,10 @@ public class UserConverter extends AbstractConverter<BusinessUser, BusinessUserD
         detail.setUserId(source.getId());
         detail.setEmail(source.getEmail());
         detail.setPassword(source.getPassword());
-        detail.setAccessRoles(new AccessRoleConverter().convertToTargetList(source.getAccessRoles()));
+        detail.setAccessRoles(accessRoleConverter.convertToTargetList(source.getAccessRoles()));
         //BusinessUser
         List<AddressDetail> addresses = new ArrayList<AddressDetail>();
         for (Address addr : source.getAddresses()) {
-            addressConverter = new AddressConverter();
             addresses.add(addressConverter.convertToTarget(addr));
         }
         detail.setAddresses(addresses);

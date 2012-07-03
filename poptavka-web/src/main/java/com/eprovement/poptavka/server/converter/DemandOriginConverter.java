@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.shared.domain.demand.DemandOriginDetail;
 
-public class DemandOriginConverter extends AbstractConverter<DemandOrigin, DemandOriginDetail> {
+public final class DemandOriginConverter extends AbstractConverter<DemandOrigin, DemandOriginDetail> {
+
+    private DemandOriginConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public DemandOriginDetail convertToTarget(DemandOrigin demandOrigin) {
         final DemandOriginDetail detail = new DemandOriginDetail();

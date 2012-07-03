@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 
-public class PotentialDemandMessageConverter extends AbstractConverter<UserMessage, PotentialDemandMessage> {
+public final class PotentialDemandMessageConverter extends AbstractConverter<UserMessage, PotentialDemandMessage> {
+
+    private PotentialDemandMessageConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public PotentialDemandMessage convertToTarget(UserMessage userMessage) {
         final PotentialDemandMessage potentialDemandMessage = new PotentialDemandMessage();

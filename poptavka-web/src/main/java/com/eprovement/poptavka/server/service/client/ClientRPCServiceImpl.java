@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.server.service.client;
 
+import com.eprovement.poptavka.server.converter.Converter;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
@@ -11,7 +12,6 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.server.converter.ClientConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.server.service.ConvertUtils;
 import com.eprovement.poptavka.service.GeneralService;
@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component(ClientRPCService.URL)
@@ -40,7 +41,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private GeneralService generalService;
     private ClientService clientService;
     private LocalityService localityService;
-    private ClientConverter clientConverter = new ClientConverter();
+    private Converter<Client, ClientDetail> clientConverter;
 
     public ArrayList<BusinessUserDetail> getAllClients() {
         // TODO do we need this method?
@@ -70,6 +71,11 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
+    }
+
+    @Autowired
+    public void setClientConverter(@Qualifier("clientConverter") Converter<Client, ClientDetail> clientConverter) {
+        this.clientConverter = clientConverter;
     }
 
     /**

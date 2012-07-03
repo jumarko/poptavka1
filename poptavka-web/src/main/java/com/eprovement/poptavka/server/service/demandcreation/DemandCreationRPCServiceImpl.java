@@ -5,7 +5,7 @@
  */
 package com.eprovement.poptavka.server.service.demandcreation;
 
-import com.eprovement.poptavka.server.converter.FullDemandConverter;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,7 +49,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private LocalityService localityService;
     private CategoryService categoryService;
     private ClientService clientService;
-    private FullDemandConverter demandConverter = new FullDemandConverter();
+    private Converter<Demand, FullDemandDetail> demandConverter;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -68,6 +69,12 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    @Autowired
+    public void setDemandConverter(
+            @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
+        this.demandConverter = demandConverter;
     }
 
     /**

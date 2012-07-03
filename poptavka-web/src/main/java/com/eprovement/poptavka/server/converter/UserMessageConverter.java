@@ -3,17 +3,29 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import org.apache.commons.lang.Validate;
 
-public class UserMessageConverter extends AbstractConverter<UserMessage, UserMessageDetail> {
+public final class UserMessageConverter extends AbstractConverter<UserMessage, UserMessageDetail> {
+
+    private final Converter<Message, MessageDetail> messageConverter;
+
+    private UserMessageConverter(Converter<Message, MessageDetail> messageConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(messageConverter);
+        this.messageConverter = messageConverter;
+    }
+
     @Override
     public UserMessageDetail convertToTarget(UserMessage userMessage) {
         final UserMessageDetail detail = new UserMessageDetail();
         detail.setId(userMessage.getId());
         detail.setRead(userMessage.isRead());
         detail.setStarred(userMessage.isStarred());
-        detail.setMessageDetail(new MessageConverter().convertToTarget(userMessage.getMessage()));
+        detail.setMessageDetail(messageConverter.convertToTarget(userMessage.getMessage()));
         detail.setSenderEmail(userMessage.getMessage().getSender().getEmail()); //User().getEmail());
 
         return detail;

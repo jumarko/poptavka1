@@ -14,10 +14,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang.Validate;
 
-public class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
+public final class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
 
-    private static SupplierConverter supplierConverter = new SupplierConverter();
+    private static Converter<Supplier, FullSupplierDetail> supplierConverter;
+
+    private FullDemandConverter(Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(supplierConverter);
+        this.supplierConverter = supplierConverter;
+    }
 
     @Override
     public FullDemandDetail convertToTarget(Demand source) {
@@ -60,7 +67,8 @@ public class FullDemandConverter extends AbstractConverter<Demand, FullDemandDet
 
     @Override
     public Demand converToSource(FullDemandDetail source) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        throw new UnsupportedOperationException("Conversion from FullDemandDetail to domain object Demand"
+                + " is not implemented yet!");
     }
 
 

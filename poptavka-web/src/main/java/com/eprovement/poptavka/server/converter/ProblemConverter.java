@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.user.Problem;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 
-public class ProblemConverter extends AbstractConverter<Problem, ProblemDetail> {
+public final class ProblemConverter extends AbstractConverter<Problem, ProblemDetail> {
+
+    private ProblemConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public ProblemDetail convertToTarget(Problem source) {
         ProblemDetail detail = new ProblemDetail();

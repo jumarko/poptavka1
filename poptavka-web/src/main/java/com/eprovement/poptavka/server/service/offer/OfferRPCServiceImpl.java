@@ -4,11 +4,12 @@
  */
 package com.eprovement.poptavka.server.service.offer;
 
-import com.eprovement.poptavka.server.converter.FullOfferConverter;
+import com.eprovement.poptavka.server.converter.Converter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.eprovement.poptavka.client.service.demand.OfferRPCService;
@@ -56,7 +57,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     private SupplierService supplierService;
     private AuditService auditService;
 
-    private final FullOfferConverter fullOfferConverter = new FullOfferConverter();
+    private Converter<Message, FullOfferDetail> fullOfferConverter;
 
     @Autowired
     public void setAuditService(AuditService auditService) {
@@ -95,6 +96,12 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
+    }
+
+    @Autowired
+    public void setFullOfferConverter(
+            @Qualifier("fullOfferConverter") Converter<Message, FullOfferDetail> fullOfferConverter) {
+        this.fullOfferConverter = fullOfferConverter;
     }
 
     /**

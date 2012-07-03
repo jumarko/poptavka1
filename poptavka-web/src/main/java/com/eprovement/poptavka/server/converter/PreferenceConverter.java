@@ -6,7 +6,12 @@ package com.eprovement.poptavka.server.converter;
 import com.eprovement.poptavka.domain.settings.Preference;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 
-public class PreferenceConverter extends AbstractConverter<Preference, PreferenceDetail> {
+public final class PreferenceConverter extends AbstractConverter<Preference, PreferenceDetail> {
+
+    private PreferenceConverter() {
+        // Spring instantiates converters - see converters.xml
+    }
+
     @Override
     public PreferenceDetail convertToTarget(Preference source) {
         PreferenceDetail detail = new PreferenceDetail();

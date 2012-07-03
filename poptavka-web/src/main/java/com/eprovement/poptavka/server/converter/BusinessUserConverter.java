@@ -3,16 +3,26 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.UserDetail;
+import org.apache.commons.lang.Validate;
 
-public class BusinessUserConverter extends AbstractConverter<BusinessUser, UserDetail> {
+public final class BusinessUserConverter extends AbstractConverter<BusinessUser, BusinessUserDetail> {
 
-    private final AddressConverter addressConverter = new AddressConverter();
+    private final Converter<Address, AddressDetail> addressConverter;
+
+    private BusinessUserConverter(Converter<Address, AddressDetail> addressConverter) {
+        // Spring instantiates converters - see converters.xml
+        Validate.notNull(addressConverter);
+        this.addressConverter = addressConverter;
+    }
+
+
     @Override
     public BusinessUserDetail convertToTarget(BusinessUser businessUser) {
         final BusinessUserDetail detail = new BusinessUserDetail();
@@ -44,7 +54,7 @@ public class BusinessUserConverter extends AbstractConverter<BusinessUser, UserD
     }
 
     @Override
-    public BusinessUser converToSource(UserDetail userDetail) {
+    public BusinessUser converToSource(BusinessUserDetail userDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
