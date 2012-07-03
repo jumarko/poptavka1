@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  *         Date: 24.4.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-core.xml" })
 @Transactional(readOnly = true)
 public abstract class RealDbTest {
 

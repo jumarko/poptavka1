@@ -24,7 +24,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     private GeneralService generalService;
     private LoginService loginService;
     private ClientService clientService;
-    private Converter<AccessRole, AccessRoleDetail> roleConverter;
+    private Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
 
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
@@ -44,9 +44,9 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     }
 
     @Autowired
-    public void setRoleConverter(
-            @Qualifier("accessRoleConverter") Converter<AccessRole, AccessRoleDetail> roleConverter) {
-        this.roleConverter = roleConverter;
+    public void setAccessRoleConverter(
+            @Qualifier("accessRoleConverter") Converter<AccessRole, AccessRoleDetail> accessRoleConverter) {
+        this.accessRoleConverter = accessRoleConverter;
     }
 
     @Autowired
@@ -59,7 +59,7 @@ public class UserRPCServiceImpl extends AutoinjectingRemoteService implements Us
     public UserDetail loginUser(String email, String password) throws RPCException {
         final User user = this.loginService.loginUser(email, password);
         return new UserDetail(user.getId(), user.getEmail(),
-                roleConverter.convertToTargetList(user.getAccessRoles()));
+                accessRoleConverter.convertToTargetList(user.getAccessRoles()));
     }
 
     @Override

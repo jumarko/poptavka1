@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:applicationContext.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
 public class ClientRPCServiceTest {
 
     private ClientRPCService clientRPCService;

@@ -27,7 +27,8 @@
 
     <!-- JPA EntityManagerFactory -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="poptavkaPU" />
+        <!--<property name="persistenceUnitName" value="poptavkaPU" />-->
+        <property name="packagesToScan" value="com.eprovement.poptavka.domain" />
         <property name="dataSource" ref="poptavkaDataSource" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">

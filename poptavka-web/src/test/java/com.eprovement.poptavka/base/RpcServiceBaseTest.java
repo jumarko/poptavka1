@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *         Date: 15.5.11
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:applicationContext-test.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-web-test.xml" })
 public abstract class RpcServiceBaseTest {
 
     private static final String POPTAVKA_MODULE_BASE_URL = "http://46.137.95.172:8080/poptavka/";

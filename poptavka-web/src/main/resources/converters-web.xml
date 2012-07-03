@@ -29,7 +29,8 @@
         <constructor-arg ref="supplierConverter"/>
     </bean>
     <bean id="fullOfferConverter" class="com.eprovement.poptavka.server.converter.FullOfferConverter">
-        <constructor-arg ref="offerConverter"/>
+        <constructor-arg index="0" ref="offerConverter"/>
+        <constructor-arg index="1" ref="messageConverter"/>
     </bean>
     <bean id="invoiceConverter" class="com.eprovement.poptavka.server.converter.InvoiceConverter">
         <constructor-arg index="0" ref="paymentMethodConverter"/>
@@ -59,7 +60,9 @@
         <constructor-arg index="0" ref="addressConverter"/>
         <constructor-arg index="1" ref="accessRoleConverter"/>
     </bean>
-    <bean id="userMessageConverter" class="com.eprovement.poptavka.server.converter.UserMessageConverter"/>
+    <bean id="userMessageConverter" class="com.eprovement.poptavka.server.converter.UserMessageConverter">
+        <constructor-arg ref="messageConverter"/>
+    </bean>
     <bean id="userServiceConverter"
           class="com.eprovement.poptavka.server.converter.UserServiceConverter">
         <constructor-arg index="0" ref="serviceConverter"/>
