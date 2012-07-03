@@ -23,7 +23,7 @@ public abstract class AutoinjectingRemoteService extends RemoteServiceServlet {
         WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(
                 this.getServletContext());
         AutowireCapableBeanFactory beanFactory = ctx.getAutowireCapableBeanFactory();
-        beanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_NAME, true);
+        beanFactory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, true);
     }
 
 }
