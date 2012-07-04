@@ -24,7 +24,7 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
      */
     public void onAtAccount() {
         GWT.log("User menu view loaded");
-        if (Storage.getUser().getAccessRoles().contains(new AccessRoleDetail("admin"))) {
+        if (Storage.getUser().getAccessRoles().contains(AccessRoleDetail.ADMIN)) {
             view.setAdminTabVisibility(true);
         } else {
             view.setAdminTabVisibility(false);

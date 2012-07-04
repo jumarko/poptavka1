@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class AccessRoleDetail implements Serializable {
 
+    public static final AccessRoleDetail ADMIN = new AccessRoleDetail("admin");
+    public static final AccessRoleDetail CLIENT = new AccessRoleDetail("client");
+    public static final AccessRoleDetail SUPPLIER = new AccessRoleDetail("supplier");
+
     /**
      * Generated serialVersionUID.
      */
@@ -30,8 +34,8 @@ public class AccessRoleDetail implements Serializable {
     public AccessRoleDetail() {
     }
 
-    public AccessRoleDetail(String roleName) {
-        name = roleName;
+    public AccessRoleDetail(String roleCode) {
+        code = roleCode;
     }
 
     public AccessRoleDetail(AccessRoleDetail role) {
@@ -108,7 +112,7 @@ public class AccessRoleDetail implements Serializable {
             return false;
         }
         final AccessRoleDetail other = (AccessRoleDetail) obj;
-        if (this.name.equalsIgnoreCase(other.getName())) {
+        if (this.code.equalsIgnoreCase(other.getCode())) {
             return true;
         }
         return false;
