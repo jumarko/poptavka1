@@ -186,9 +186,10 @@ public class SupplierDetailView extends Composite {
         lastName.setText(detail.getLastName());
         phone.setText(detail.getPhone());
         website.setText(detail.getWebsite());
-        street.setText(detail.getStreet());
-        city.setText(detail.getCity());
-        zipCode.setText(detail.getZipCode());
+        //TODO Martin - ako zobrazit tie adresy ked ich je viac?
+        street.setText(detail.getAddresses().get(0).getStreet());
+        city.setText(detail.getAddresses().get(0).getCity());
+        zipCode.setText(detail.getAddresses().get(0).getZipCode());
 //        websiteContactPerson.setText(detail.getWebsite());
         taxId.setText(detail.getTaxId());
 

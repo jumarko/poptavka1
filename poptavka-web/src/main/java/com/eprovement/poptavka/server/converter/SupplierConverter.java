@@ -3,14 +3,26 @@
  */
 package com.eprovement.poptavka.server.converter;
 
+import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public final class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
+
+    private Converter<Address, AddressDetail> addressConverter;
+
+    @Autowired
+    public void setAddressConverter(
+            @Qualifier("addressConverter") Converter<Address, AddressDetail> addressConverter) {
+        this.addressConverter = addressConverter;
+    }
 
     private SupplierConverter() {
         // Spring instantiates converters - see converters.xml
@@ -42,9 +54,9 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         }
         detail.setLocalities(locMap);
         if (source.getBusinessUser() != null) {
-            detail.setCity(source.getBusinessUser().getAddresses().get(0).getCity().getName());
-            detail.setStreet(source.getBusinessUser().getAddresses().get(0).getStreet());
-            detail.setZipCode(source.getBusinessUser().getAddresses().get(0).getZipCode());
+            for (Address address : source.getBusinessUser().getAddresses()) {
+                detail.addAddress(addressConverter.convertToTarget(address));
+            }
             detail.setEmail(source.getBusinessUser().getEmail());
             if (source.getBusinessUser().getBusinessUserData() != null) {
                 detail.setDescription(source.getBusinessUser().getBusinessUserData().getDescription());

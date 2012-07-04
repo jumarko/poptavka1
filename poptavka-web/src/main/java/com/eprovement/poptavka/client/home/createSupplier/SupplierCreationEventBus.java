@@ -68,6 +68,15 @@ public interface SupplierCreationEventBus extends EventBus {
     void initLocalityWidget(SimplePanel holderWidget);
 
     @Event(forwardToParent = true)
+    void activateLocalityWidgetPresenter();
+
+    @Event(forwardToParent = true)
+    void activateAddressWidgetPresenter();
+
+    @Event(forwardToParent = true)
+    void initAddressWidget(SimplePanel holderWidget);
+
+    @Event(forwardToParent = true)
     void setUpSearchBar(IsWidget searchView, boolean cat, boolean loc, boolean advBtn);
 
     @Event(forwardToParent = true)

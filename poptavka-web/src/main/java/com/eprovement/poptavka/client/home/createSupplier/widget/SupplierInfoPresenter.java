@@ -33,6 +33,8 @@ public class SupplierInfoPresenter
         boolean validateEmail();
 
         BusinessUserDetail createSupplier();
+
+        SimplePanel getAddressHolder();
     }
 
     @Override
@@ -53,6 +55,7 @@ public class SupplierInfoPresenter
 
     public void onInitSupplierForm(SimplePanel embedToWidget) {
         embedToWidget.setWidget(view.getWidgetView());
+        eventBus.initAddressWidget(view.getAddressHolder());
     }
 
     public void onCheckFreeEmailResponse(Boolean isAvailable) {

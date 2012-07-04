@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.home.createSupplier.widget;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.StatusIconLabel;
 import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
+import com.eprovement.poptavka.client.main.common.address.AddressSelectorView;
 import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
@@ -26,11 +27,10 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.validation.client.Validation;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
@@ -50,7 +50,8 @@ public class SupplierInfoView extends Composite
     @UiField TextBox phone, email, website;
     @UiField
     TextArea description;
-    @UiField TextBox street, city, zipCode;
+//    @UiField TextBox street, city, zipCode;
+    @UiField SimplePanel addressHolder;
     @UiField
     PasswordTextBox password, passwordConfirm;
     //StatusIconLabels
@@ -63,9 +64,6 @@ public class SupplierInfoView extends Composite
     @UiField @Ignore Label identificationNumberErrorLabel;
     @UiField @Ignore Label taxIdErrorLabel;
     @UiField @Ignore Label websiteErrorLabel;
-    @UiField @Ignore Label streetErrorLabel;
-    @UiField @Ignore Label cityErrorLabel;
-    @UiField @Ignore Label zipErrorLabel;
     @UiField @Ignore Label firstNameErrorLabel;
     @UiField @Ignore Label lastNameErrorLabel;
     @UiField @Ignore Label phoneErrorLabel;
@@ -83,9 +81,6 @@ public class SupplierInfoView extends Composite
     private final static String COMPANY_NAME = "companyName";
     private final static String IDENTIFICATION_NUMBER = "identificationNumber";
     private final static String TAX_ID = "taxId";
-    private final static String STREET = "street";
-    private final static String CITY = "city";
-    private final static String ZIP_CODE = "zipCode";
     private final static String FIRST_NAME = "firstName";
     private final static String LAST_NAME = "lastName";
     private final static String PHONE = "phone";
@@ -122,9 +117,6 @@ public class SupplierInfoView extends Composite
         companyName.setName(COMPANY_NAME);
         identificationNumber.setName(IDENTIFICATION_NUMBER);
         taxId.setName(TAX_ID);
-        street.setName(STREET);
-        city.setName(CITY);
-        zipCode.setName(ZIP_CODE);
         firstName.setName(FIRST_NAME);
         lastName.setName(LAST_NAME);
         phone.setName(PHONE);
@@ -137,9 +129,6 @@ public class SupplierInfoView extends Composite
         widgets.put(companyName, companyNameErrorLabel);
         widgets.put(identificationNumber, identificationNumberErrorLabel);
         widgets.put(taxId, taxIdErrorLabel);
-        widgets.put(street, streetErrorLabel);
-        widgets.put(city, cityErrorLabel);
-        widgets.put(zipCode, zipErrorLabel);
         widgets.put(firstName, firstNameErrorLabel);
         widgets.put(lastName, lastNameErrorLabel);
         widgets.put(email, emailErrorLabel);
@@ -182,12 +171,6 @@ public class SupplierInfoView extends Composite
             return fullSupplierDetail.getFirstName();
         } else if (attributeName.equals(LAST_NAME)) {
             return fullSupplierDetail.getLastName();
-        } else if (attributeName.equals(STREET)) {
-            return fullSupplierDetail.getStreet();
-        } else if (attributeName.equals(CITY)) {
-            return fullSupplierDetail.getCity();
-        } else if (attributeName.equals(ZIP_CODE)) {
-            return fullSupplierDetail.getZipCode();
         } else if (attributeName.equals(TAX_ID)) {
             return fullSupplierDetail.getTaxId();
         } else if (attributeName.equals(PHONE)) {
@@ -214,7 +197,13 @@ public class SupplierInfoView extends Composite
         }
         initVisualPasswordCheck(null);
         initVisualPasswordConfirmCheck(null);
-        return valid.isEmpty();
+        boolean validAddress = ((AddressSelectorView) addressHolder.getWidget()).isValid();
+        return (valid.isEmpty() && validAddress);
+    }
+
+    @Override
+    public SimplePanel getAddressHolder() {
+        return addressHolder;
     }
 
     public Widget getWidgetView() {
@@ -244,14 +233,16 @@ public class SupplierInfoView extends Composite
         user.setSupplier(supplier);
         user.setFirstName(firstName.getText());
         user.setLastName(lastName.getText());
+        //Address
         AddressDetail address = new AddressDetail();
-        address.setCity(city.getText());
-        address.setStreet(street.getText());
-        address.setZipCode(zipCode.getText());
+//        address.setCountry(addressSelector.getCountryText());
+        address.setRegion(((AddressSelectorView) addressHolder.getWidget()).getRegionText());
+        address.setCity(((AddressSelectorView) addressHolder.getWidget()).getCityText());
+        address.setDistrict(((AddressSelectorView) addressHolder.getWidget()).getDistrictText());
+        address.setStreet(((AddressSelectorView) addressHolder.getWidget()).getStreetText());
+        address.setZipCode(((AddressSelectorView) addressHolder.getWidget()).getZipCodeText());
 
-        List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-        addresses.add(address);
-        user.setAddresses(addresses);
+        user.addAddress(address);
 
         return user;
     }

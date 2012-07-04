@@ -1,18 +1,19 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
 import com.eprovement.poptavka.client.main.common.validation.Email;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class FullSupplierDetail implements Serializable {
 
-    private static final int ZIP_SIZE = 4;
     /**
      * Generated serialVersionUID.
      */
@@ -42,7 +43,7 @@ public class FullSupplierDetail implements Serializable {
     @NotBlank(message = "{supplierNotBlankTaxNumber}")
     private String taxId;
     @Pattern(regexp = "(www.|http://|ftp://|https://)([a-zA-Z0-9\\-]+)\\.([a-zA-Z0-9\\-]+)",
-            message = "{supplierPatternWebsite}")
+    message = "{supplierPatternWebsite}")
     private String website;
     //Lists
     private Map<String, String> localities; //<codes, value>
@@ -50,16 +51,17 @@ public class FullSupplierDetail implements Serializable {
     private ArrayList<Integer> services = new ArrayList<Integer>();
     //Martin - In poptavka 1.0 only one supplier's address is implemented, therefore
     //for simplicity List<AddressDetail> and single String of city, street, zip added.
-    //in poptavka 2.0 implement GWT validation for List<AddressDetail> addresses = new ArrayList<AddressDetail>();
-    //in poptavka 2.0 when implement validation for upper code, delete below code:
-    @NotEmpty(message = "{supplierNotBlankStreet}")
-    private String street;
-    @NotEmpty(message = "{supplierNotBlankCity}")
-    private String city;
-    @NotEmpty(message = "{supplierNotBlankZipCode}")
-    @Pattern(regexp = "[0-9]+", message = "{supplierPatternZipCode}")
-    @Size(min = ZIP_SIZE, message = "{supplierSizeZipCode}")
-    private String zipCode;
+    @Valid
+    @Size(min = 1)
+    private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
+//    @NotEmpty(message = "{supplierNotBlankStreet}")
+//    private String street;
+//    @NotEmpty(message = "{supplierNotBlankCity}")
+//    private String city;
+//    @NotEmpty(message = "{supplierNotBlankZipCode}")
+//    @Pattern(regexp = "[0-9]+", message = "{supplierPatternZipCode}")
+//    @Size(min = ZIP_SIZE, message = "{supplierSizeZipCode}")
+//    private String zipCode;
     //Others
     private int overallRating = -1;
     private boolean certified = false;
@@ -88,9 +90,7 @@ public class FullSupplierDetail implements Serializable {
         for (String locCode : supplier.getLocalities().keySet()) {
             localities.put(locCode, supplier.getLocalities().get(locCode));
         }
-        street = supplier.getStreet();
-        city = supplier.getCity();
-        zipCode = supplier.getZipCode();
+        addresses = new ArrayList<AddressDetail>(supplier.getAddresses());
         email = supplier.getEmail();
         description = supplier.getDescription();
         businessType = supplier.getBusinessType();
@@ -261,28 +261,16 @@ public class FullSupplierDetail implements Serializable {
         this.website = website;
     }
 
-    public String getCity() {
-        return city;
+    public List<AddressDetail> getAddresses() {
+        return addresses;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setAddresses(List<AddressDetail> addresses) {
+        this.addresses = addresses;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void addAddress(AddressDetail addressDetail) {
+        this.addresses.add(addressDetail);
     }
 
     @Override

@@ -15,6 +15,7 @@
  */
 package com.eprovement.poptavka.client.main.common.validation;
 
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
@@ -36,7 +37,8 @@ public final class SampleValidatorFactory extends AbstractGwtValidatorFactory {
      * Validator marker for the Validation Sample project. Only the classes
      * listed in the {@link GwtValidation} annotation can be validated.
      */
-    @GwtValidation(value = {FullSupplierDetail.class, FullDemandDetail.class }, groups = { Default.class })
+    @GwtValidation(value = {FullSupplierDetail.class, FullDemandDetail.class, AddressDetail.class },
+            groups = { Default.class })
     public interface GwtValidator extends Validator {
     }
 

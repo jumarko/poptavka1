@@ -24,6 +24,7 @@ import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter.SupplierServiceInterface;
 import com.eprovement.poptavka.client.main.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.main.common.StatusIconLabel;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
@@ -37,6 +38,8 @@ import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
@@ -68,7 +71,6 @@ public class SupplierCreationPresenter
         void showConditions();
 
         boolean isValid();
-
     }
     private SupplierInfoPresenter presenter = null;
 
@@ -87,7 +89,45 @@ public class SupplierCreationPresenter
                     }
                 }
             }
+        });
+        view.getMainPanel().addSelectionHandler(new SelectionHandler<Integer>() {
 
+            @Override
+            public void onSelection(SelectionEvent<Integer> event) {
+                switch (event.getSelectedItem()) {
+                    case 0:
+                        LOGGER.info(" -> Supplier Info Form");
+                        //If already loaded, just activate presenter for holding requests
+                        if (view.getMainPanel().getWidget(0) instanceof SupplierInfoInterface) {
+                            eventBus.activateAddressWidgetPresenter();
+                        } else {
+                            //Otherwise load widget
+                            eventBus.initSupplierForm(view.getSupplierInfoHolder());
+                        }
+                    case 1:
+                        LOGGER.info(" -> Category Widget");
+                        if (!(view.getMainPanel().getWidget(1) instanceof CategorySelectorInterface)) {
+                            eventBus.initCategoryWidget(view.getCategoryHolder());
+                        }
+                        break;
+                    case 2:
+                        LOGGER.info(" -> Locality Widget");
+                        if (view.getMainPanel().getWidget(2) instanceof LocalitySelectorInterface) {
+                            eventBus.activateLocalityWidgetPresenter();
+                        } else {
+                            eventBus.initLocalityWidget(view.getLocalityHolder());
+                        }
+                        break;
+                    case 3:
+                        LOGGER.info(" -> init Service Form supplierService");
+                        if (!(view.getMainPanel().getWidget(3) instanceof SupplierServiceInterface)) {
+                            initServices();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
         });
         view.getRegisterButton().addClickHandler(new ClickHandler() {
 
@@ -100,7 +140,6 @@ public class SupplierCreationPresenter
                     LOGGER.fine("cannot continue");
                 }
             }
-
         });
         view.getConditionLink().addClickHandler(new ClickHandler() {
 
@@ -108,13 +147,18 @@ public class SupplierCreationPresenter
             public void onClick(ClickEvent arg0) {
                 view.showConditions();
             }
-
         });
     }
 
-    /**************************************************************************/
-    /* General Module events                                                  */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * General Module events
+     */
+    /**
+     * ***********************************************************************
+     */
     public void onStart() {
         // nothing
     }
@@ -123,25 +167,29 @@ public class SupplierCreationPresenter
         eventBus.setUpSearchBar(null, false, false, false);
     }
 
-    /**************************************************************************/
-    /* Navigation events                                                      */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Navigation events
+     */
+    /**
+     * ***********************************************************************
+     */
     public void onGoToCreateSupplierModule() {
         LOGGER.info("SupplierCreationPresenter loaded");
-        //init parts
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());
-        LOGGER.info(" -> Category Widget");
-        eventBus.initCategoryWidget(view.getCategoryHolder());
-        LOGGER.info(" -> Locality Widget");
-        eventBus.initLocalityWidget(view.getLocalityHolder());
-        LOGGER.info(" -> init Service Form supplierService");
-        initServices();
     }
-
-    /**************************************************************************/
-    /* Business events handled by presenter                                   */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Business events handled by presenter
+     */
+    /**
+     * ***********************************************************************
+     */
     private SupplierServicePresenter supplierService = null;
     private SupplierInfoPresenter supplierInfo = null;
 
@@ -161,9 +209,15 @@ public class SupplierCreationPresenter
         supplierInfo.onInitSupplierForm(supplierInfoHolder);
     }
 
-    /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /*
+     * Business events handled by eventbus or RPC
+     */
+    /**
+     * ***********************************************************************
+     */
     private void registerSupplier() {
         SupplierInfoInterface info = (SupplierInfoInterface) view.getSupplierInfoHolder().getWidget();
         LocalitySelectorInterface locs = (LocalitySelectorInterface) view.getLocalityHolder().getWidget();
@@ -179,7 +233,6 @@ public class SupplierCreationPresenter
         //signal event
         eventBus.loadingShow(MSGS.progressRegisterClient());
     }
-
     private static final int INFO = 1;
     private static final int CATEGORY = 2;
     private static final int LOCALITY = 3;
@@ -207,7 +260,6 @@ public class SupplierCreationPresenter
         //can't reach
         return false;
     }
-
     // TODO preco mame v presenteri SupplierRPCServiceAsync objekt??? Tymto uplne porusujeme
     // MVP model. Rozhranim ma byt predsa eventbus. OPRAVIT !!! a nerobit taketo chyby !!!
     @Inject
@@ -241,8 +293,6 @@ public class SupplierCreationPresenter
                 view.getServiceHolder().setWidget(serviceWidget);
                 serviceWidget.setData(data);
             }
-
         });
     }
-
 }

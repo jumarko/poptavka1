@@ -33,7 +33,7 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
     private String description;
     private String taxId;
     private String website;
-    private List<AddressDetail> addresses;
+    private List<AddressDetail> addresses = new ArrayList<AddressDetail>();
     // TODO check if used, otherwise delete
     private ArrayList<String> demandsId = new ArrayList<String>();
     private boolean verified = false;
@@ -120,6 +120,10 @@ public class BusinessUserDetail extends UserDetail implements Serializable {
 
     public void setAddresses(List<AddressDetail> addresses) {
         this.addresses = addresses;
+    }
+
+    public void addAddress(AddressDetail addressDetail) {
+        this.addresses.add(addressDetail);
     }
 
     public ArrayList<String> getDemandsId() {

@@ -70,39 +70,10 @@
                                     <td colspan="3">&nbsp;</td>
                                 </tr>
                             </tbody>
-                            <thead>
-                                <tr>
-                                    <th colspan="3">
-                                        <ui:msg key="address">Address</ui:msg>
-                                    </th>
-                                </tr>
-                            </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <ui:msg key="street">Street</ui:msg>
-                                    </td>
-                                    <td>
-                                        <g:TextBox ui:field="street"/>
-                                        <g:Label styleName="{style.error}" ui:field="streetErrorLabel"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <ui:msg key="city">City</ui:msg>
-                                    </td>
-                                    <td>
-                                        <g:TextBox ui:field="city"/>
-                                        <g:Label styleName="{style.error}" ui:field="cityErrorLabel"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <ui:msg key="zipcode">Zipcode</ui:msg>
-                                    </td>
-                                    <td>
-                                        <g:TextBox ui:field="zipCode"/>
-                                        <g:Label styleName="{style.error}" ui:field="zipErrorLabel"/>
+                                    <td colspan="3">
+                                        <g:SimplePanel ui:field="addressHolder"/>
                                     </td>
                                 </tr>
                             </tbody>
