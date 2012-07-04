@@ -38,20 +38,29 @@ public interface ValidationMessages extends ConstantsWithLookup {
     /**
      * ***********************************************************************
      */
-    @Key("address.notNull.state")
-    String addressNotNullState();
+    @Key("address.notBlank.country")
+    String addressNotBlankCountry();
 
-    @Key("address.notNull.city")
-    String addressNotNullCity();
+    @Key("address.notBlank.region")
+    String addressNotBlankRegion();
 
-    @Key("address.notNull.street")
-    String addressNotNullStreet();
+    @Key("address.notBlank.city")
+    String addressNotBlankCity();
 
-    @Key("address.notNull.zip")
-    String addressNotNullZip();
+    @Key("address.notBlank.district")
+    String addressNotBlankDistrict();
 
-    @Key("address.pattern.zip")
-    String addressPatternZip();
+    @Key("address.notBlank.street")
+    String addressNotBlankStreet();
+
+    @Key("address.notBlank.zipCode")
+    String addressNotBlankZipCode();
+
+    @Key("address.size.zipCode")
+    String addressSizeZipCode();
+
+    @Key("address.pattern.zipCode")
+    String addressPatternZipCode();
 
     /**
      * ***********************************************************************
@@ -143,21 +152,6 @@ public interface ValidationMessages extends ConstantsWithLookup {
 
     @Key("supplier.notBlank.passwordConfirm")
     String supplierNotBlankPassrowdConfirm();
-
-    @Key("supplier.notBlank.street")
-    String supplierNotBlankStreet();
-
-    @Key("supplier.notBlank.city")
-    String supplierNotBlankCity();
-
-    @Key("supplier.notBlank.zipCode")
-    String supplierNotBlankZipCode();
-
-    @Key("supplier.pattern.zipCode")
-    String supplierPatternZipCode();
-
-    @Key("supplier.size.zipCode")
-    String supplierSizeZipCode();
 
     @Key("supplier.pattern.website")
     String supplierPatternWebsite();
