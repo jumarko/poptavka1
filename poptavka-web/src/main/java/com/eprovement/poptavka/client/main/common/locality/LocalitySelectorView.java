@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 
 public class LocalitySelectorView extends Composite
     implements LocalitySelectorPresenter.LocalitySelectorInterface, ProvidesValidate  {
@@ -66,29 +66,29 @@ public class LocalitySelectorView extends Composite
     }
 
     @Override
-    public String getSelectedItem(int localityType) {
+    public String getSelectedItem(LocalityType localityType) {
         switch (localityType) {
-            case LocalityDetail.REGION:
+            case REGION:
                 return regionList.getValue(regionList.getSelectedIndex());
-            case LocalityDetail.DISTRICT:
+            case DISTRICT:
                 return districtList.getValue(districtList.getSelectedIndex());
             default:
                 return cityList.getValue(cityList.getSelectedIndex());
         }
     }
 
-    public void addToSelectedList(int localityType) {
+    public void addToSelectedList(LocalityType localityType) {
         String itemText = null;
         String itemValue = null;
         int index = -1;
 
         switch (localityType) {
-            case LocalityDetail.DISTRICT:
+            case DISTRICT:
                 index = districtList.getSelectedIndex();
                 itemText = districtList.getItemText(index);
                 itemValue = districtList.getValue(index);
                 break;
-            case LocalityDetail.REGION:
+            case REGION:
                 index = regionList.getSelectedIndex();
                 itemText = regionList.getItemText(index);
                 itemValue = regionList.getValue(index);

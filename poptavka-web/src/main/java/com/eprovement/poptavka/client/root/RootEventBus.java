@@ -33,6 +33,7 @@ import com.eprovement.poptavka.client.home.widget.category.CategoryDisplayPresen
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
+import com.eprovement.poptavka.client.main.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.main.common.search.SearchModule;
@@ -47,6 +48,7 @@ import com.eprovement.poptavka.client.user.admin.AdminModule;
 import com.eprovement.poptavka.client.user.demands.DemandModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 
@@ -236,7 +238,6 @@ public interface RootEventBus extends EventBus {
 
 //    @Event(handlers = RootPresenter.class)
 //    void setUser(BusinessUserDetail user);
-
     // TODO Praso - mozeme odstranit? No usage
     // Martin - ano moze, pouziva ale priamo volane z prezentera
     @Event(handlers = LoginPopupPresenter.class)
@@ -278,9 +279,24 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void initLocalityWidget(SimplePanel embedToWidget);
 
-    @Event(handlers = LocalitySelectorPresenter.class)
-    void setLocalityData(int localityType,
-            ArrayList<LocalityDetail> localityList);
+    //Musi byt takto, lebo ak sa vrati v stack layout paneli, tak dany presenter uz bude neaktivny
+    //a pre response na pripadne zmeny uzivatelom nebude fungovat spravny widget
+    @Event(activate = LocalitySelectorPresenter.class, deactivate = AddressSelectorPresenter.class)
+    void activateLocalityWidgetPresenter();
+
+    @Event(handlers = RootPresenter.class)
+    void initAddressWidget(SimplePanel embedToWidget);
+
+    @Event(activate = AddressSelectorPresenter.class, deactivate = LocalitySelectorPresenter.class)
+    void activateAddressWidgetPresenter();
+
+    /**
+     * Decide which presenter to use according to previous calls of initLocalityWidget and initAddressWidget methods.
+     * @param localityType
+     * @param localityList
+     */
+    @Event(handlers = {LocalitySelectorPresenter.class, AddressSelectorPresenter.class })
+    void setLocalityData(LocalityType localityType, ArrayList<LocalityDetail> localityList);
 
     // TODO Praso - mozeme odstranit? No usage
     /** Demand Creation common method calls. */
@@ -313,10 +329,10 @@ public interface RootEventBus extends EventBus {
     void getChildListCategories(int newListPosition, String categoryId);
 
     @Event(handlers = RootHandler.class)
-    void getChildLocalities(int localityType, String locCode);
+    void getChildLocalities(final LocalityType localityType, String locCode);
 
     @Event(handlers = RootHandler.class)
-    void getRootLocalities();
+    void getLocalities(final LocalityType localityType);
 
     /**************************************************************************/
     /* Business events handled by MenuPresenter --- HOME MENU                 */

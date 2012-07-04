@@ -15,6 +15,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 
 @Presenter(view = LocalitySelectorView.class, multiple = true)
@@ -32,13 +33,13 @@ public class LocalitySelectorPresenter
 
         ListBox getSelectedList();
 
-        String getSelectedItem(int localityType);
+        String getSelectedItem(LocalityType localityType);
 
         void toggleLoader();
 
         boolean isValid();
 
-        void addToSelectedList(int type);
+        void addToSelectedList(LocalityType type);
 
         void removeFromSelectedList();
 
@@ -56,7 +57,7 @@ public class LocalitySelectorPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (event.isControlKeyDown()) {
-                    view.addToSelectedList(LocalityDetail.REGION);
+                    view.addToSelectedList(LocalityType.REGION);
                 } else {
                     if (preventMultipleCalls) {
                         return;
@@ -66,7 +67,7 @@ public class LocalitySelectorPresenter
                     view.toggleLoader();
                     view.getDistrictList().setVisible(false);
                     view.getCityList().setVisible(false);
-                    eventBus.getChildLocalities(LocalityDetail.DISTRICT, view.getSelectedItem(LocalityDetail.REGION));
+                    eventBus.getChildLocalities(LocalityType.DISTRICT, view.getSelectedItem(LocalityType.REGION));
                 }
             }
         });
@@ -74,7 +75,7 @@ public class LocalitySelectorPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (event.isControlKeyDown()) {
-                    view.addToSelectedList(LocalityDetail.DISTRICT);
+                    view.addToSelectedList(LocalityType.DISTRICT);
                 } else {
                     if (preventMultipleCalls) {
                         return;
@@ -83,14 +84,14 @@ public class LocalitySelectorPresenter
                     preventMultipleCalls = true;
                     view.toggleLoader();
                     view.getCityList().setVisible(false);
-                    eventBus.getChildLocalities(LocalityDetail.CITY, view.getSelectedItem(LocalityDetail.DISTRICT));
+                    eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.DISTRICT));
                 }
             }
         });
         view.getCityList().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent arg0) {
-                view.addToSelectedList(LocalityDetail.CITY);
+                view.addToSelectedList(LocalityType.CITY);
             }
         });
         view.getSelectedList().addChangeHandler(new ChangeHandler() {
@@ -102,20 +103,20 @@ public class LocalitySelectorPresenter
     }
 
     public void initLocalityWidget(SimplePanel embedWidget) {
-        eventBus.getRootLocalities();
+        eventBus.getLocalities(LocalityType.REGION);
         embedWidget.setWidget(view.getWidgetView());
     }
 
-    public void onSetLocalityData(int localityType, ArrayList<LocalityDetail> list) {
+    public void onSetLocalityData(LocalityType localityType, ArrayList<LocalityDetail> list) {
         switch (localityType) {
-            case LocalityDetail.DISTRICT:
+            case DISTRICT:
                 view.toggleLoader();
                 setData(view.getDistrictList(), list);
                 break;
-            case LocalityDetail.REGION:
+            case REGION:
                 setData(view.getRegionList(), list);
                 break;
-            case LocalityDetail.CITY:
+            case CITY:
                 view.toggleLoader();
                 setData(view.getCityList(), list);
                 break;
@@ -129,8 +130,6 @@ public class LocalitySelectorPresenter
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                if (list.size() == 0) {
-                }
                 for (int i = 0; i < list.size(); i++) {
                     box.addItem(list.get(i).getName(), list.get(i).getCode());
                 }

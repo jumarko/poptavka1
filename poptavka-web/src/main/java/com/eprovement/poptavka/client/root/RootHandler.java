@@ -34,13 +34,13 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     private ErrorDialogPopupView errorDialog;
     private static final Logger LOGGER = Logger.getLogger("MainHandler");
 
-    public void onGetRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION,
+    public void onGetLocalities(final LocalityType localityType) {
+        localityService.getLocalities(localityType,
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
 
                     @Override
                     public void onSuccess(ArrayList<LocalityDetail> list) {
-                        eventBus.setLocalityData(LocalityDetail.REGION, list);
+                        eventBus.setLocalityData(localityType, list);
                     }
 
                     @Override
@@ -53,7 +53,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 });
     }
 
-    public void onGetChildLocalities(final int localityType, String locCode) {
+    public void onGetChildLocalities(final LocalityType localityType, String locCode) {
         localityService.getLocalities(locCode,
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
 

@@ -24,6 +24,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.LoadingPopup;
+import com.eprovement.poptavka.client.main.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;
@@ -41,6 +42,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private PopupPanel popup = null;
     private CategorySelectorPresenter categorySelector = null;
     private LocalitySelectorPresenter localitySelector = null;
+    private AddressSelectorPresenter addressSelector = null;
 
     /**************************************************************************/
     /* Layout events.                                                         */
@@ -210,6 +212,14 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         }
         localitySelector = eventBus.addHandler(LocalitySelectorPresenter.class);
         localitySelector.initLocalityWidget(holderPanel);
+    }
+
+    public void onInitAddressWidget(SimplePanel holderPanel) {
+        if (addressSelector != null) {
+            eventBus.removeHandler(localitySelector);
+        }
+        addressSelector = eventBus.addHandler(AddressSelectorPresenter.class);
+        addressSelector.initAddressWidget(holderPanel);
     }
 
     public void onInitDemandBasicForm(SimplePanel holderWidget) {

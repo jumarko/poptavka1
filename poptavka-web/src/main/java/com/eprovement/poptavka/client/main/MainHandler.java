@@ -24,6 +24,9 @@ import java.util.logging.Logger;
  * @author Beho
  *
  */
+/**
+ * Martin - vymazat nie??
+ */
 @EventHandler
 public class MainHandler extends BaseEventHandler<MainEventBus> {
 
@@ -42,7 +45,7 @@ public class MainHandler extends BaseEventHandler<MainEventBus> {
                 new AsyncCallback<ArrayList<LocalityDetail>>() {
                     @Override
                     public void onSuccess(ArrayList<LocalityDetail> list) {
-                        eventBus.setLocalityData(LocalityDetail.REGION, list);
+//                        eventBus.setLocalityData(LocalityDetail.REGION, list);
                     }
 
                     @Override
