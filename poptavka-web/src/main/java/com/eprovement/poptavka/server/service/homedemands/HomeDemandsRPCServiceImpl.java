@@ -169,7 +169,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             } else if (detail.getAttibutes().isEmpty()) {
                 return filterWithoutAttributes(start, maxResult, detail, orderColumns);
             } else {
-                return filterWithoutAttributes(start, maxResult, detail, orderColumns);
+                return filterWithAttributes(start, maxResult, detail, orderColumns);
             }
         }
     }
@@ -340,9 +340,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     // Get demands by Fulltext search
     // ***********************************************************************
     public long fullTextSearchCount(String searchText) {
-        final List<Demand> foundDemands =
-                this.fulltextSearchService.search(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
-        return foundDemands.size();
+        return this.fulltextSearchService.searchCount(Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, searchText);
     }
 
     public List<FullDemandDetail> fullTextSearch(String searchText) {
@@ -460,21 +458,27 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * make decision
      * @return demand detail list
      */
-    private List<FullDemandDetail> filterWithAttributes(SearchModuleDataHolder detail,
-            Map<String, OrderType> orderColumns) {
+    private List<FullDemandDetail> filterWithAttributes(int start, int count,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         //0 0
         if (detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
             Search search = this.getFilter(detail, orderColumns);
+            search.setFirstResult(start);
+            search.setMaxResults(count);
             return demandConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 0
         if (!detail.getCategories().isEmpty() && detail.getLocalities().isEmpty()) {
             Search search = this.getFilter(detail, orderColumns);
+            search.setFirstResult(start);
+            search.setMaxResults(count);
             return this.createDemandDetailListCat(this.generalService.searchAndCount(search).getResult());
         }
         //0 1
         if (detail.getCategories().isEmpty() && !detail.getLocalities().isEmpty()) {
             Search search = this.getFilter(detail, orderColumns);
+            search.setFirstResult(start);
+            search.setMaxResults(count);
             return this.createDemandDetailListLoc(this.generalService.searchAndCount(search).getResult());
         }
         //1 1  --> perform join if filtering by category and locality was used
@@ -491,7 +495,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
                     demands.add(demandCat);
                 }
             }
-            return demands;
+            return demands.subList(start, count);
         }
         return null;
     }

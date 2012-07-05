@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.main.common.service;
+package com.eprovement.poptavka.client.home.createSupplier.widget;
 
 import java.util.ArrayList;
 

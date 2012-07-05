@@ -30,7 +30,7 @@ import com.eprovement.poptavka.client.main.common.StatusIconLabel;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
-import com.eprovement.poptavka.client.main.common.service.ServiceWidget;
+import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
