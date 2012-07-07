@@ -6,6 +6,8 @@
  */
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -27,7 +29,7 @@ import java.util.Map;
  */
 @Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeSuppliersEventBus extends EventBus {
+public interface HomeSuppliersEventBus extends EventBus, IEventBusData {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -117,13 +119,6 @@ public interface HomeSuppliersEventBus extends EventBus {
     String addToPath(CategoryDetail categoryDetail);
 
     /**************************************************************************/
-    /* Business events handled by Presenters - Data events                    */
-    /**************************************************************************/
-    // PROVIDER
-    @Event(handlers = HomeSuppliersPresenter.class)
-    void createAsyncDataProvider(final int totalFound);
-
-    /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     // CATEGORIES
@@ -138,9 +133,9 @@ public interface HomeSuppliersEventBus extends EventBus {
 
     // SUPPLIERS
     @Event(handlers = HomeSuppliersHandler.class)
-    void getSuppliersCount(SearchModuleDataHolder detail);
+    void getDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail);
 
     @Event(handlers = HomeSuppliersHandler.class)
-    void getSuppliers(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+    void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 
 }

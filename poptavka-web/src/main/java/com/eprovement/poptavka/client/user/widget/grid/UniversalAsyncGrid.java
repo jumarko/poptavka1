@@ -24,6 +24,8 @@ import java.util.Map;
  * To use this class, eventBus of a witget that uses this class, must extend
  * interface IEventBusData. Therefore getDataCount and getData methods must be
  * implemented in module, which uses this class.
+ * Then to get data call "view.getDataGrid().getDataCount(eventBus, searchDataHolder);"
+ * in presenter.
  *
  * @author Martin
  * @param <T>

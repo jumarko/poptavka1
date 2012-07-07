@@ -10,6 +10,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCServiceAsync;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -107,7 +108,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
     }
 
     //*************** GET SUPPLIERS DATA *********************
-    public void onGetSuppliersCount(SearchModuleDataHolder detail) {
+    public void onGetDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
         homeSuppliersService.getSuppliersCount(detail, new AsyncCallback<Long>() {
 
             @Override
@@ -119,13 +120,12 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
             @Override
             public void onSuccess(Long result) {
-//                eventBus.resetDisplaySuppliersPager(result.intValue());
-                eventBus.createAsyncDataProvider(result.intValue());
+                grid.createAsyncDataProvider(result.intValue());
             }
         });
     }
 
-    public void onGetSuppliers(int start, int count, SearchModuleDataHolder search,
+    public void onGetData(int start, int count, SearchModuleDataHolder search,
             Map<String, OrderType> orderColumns) {
         homeSuppliersService.getSuppliers(start, count, search, orderColumns,
                 new AsyncCallback<List<FullSupplierDetail>>() {

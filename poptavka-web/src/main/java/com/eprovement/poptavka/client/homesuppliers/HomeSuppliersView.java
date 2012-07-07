@@ -4,11 +4,11 @@ import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.OverflowComposite;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -16,8 +16,6 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
@@ -31,6 +29,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class HomeSuppliersView extends OverflowComposite
@@ -51,7 +51,7 @@ public class HomeSuppliersView extends OverflowComposite
     @UiField(provided = true)
     CellList categoriesList;
     @UiField(provided = true)
-    DataGrid dataGrid;
+    UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true)
     SimplePager pager;
     @UiField
@@ -70,9 +70,22 @@ public class HomeSuppliersView extends OverflowComposite
     Button contactBtn;
     private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
             new SingleSelectionModel<CategoryDetail>();
-    private SingleSelectionModel<FullSupplierDetail> selectionSupplierModel;
     private final SingleSelectionModel<CategoryDetail> selectionRootModel =
             new SingleSelectionModel<CategoryDetail>();
+    private List<String> gridColumns = Arrays.asList(
+            new String[]{
+                "businessUser.businessUserData.companyName", "overalRating", "", ""
+            });
+    /**
+     * The key provider that provides the unique ID of a FullSupplierDetail.
+     */
+    private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
+
+        @Override
+        public Object getKey(FullSupplierDetail item) {
+            return item == null ? null : item.getSupplierId();
+        }
+    };
 
     @Override
     public void createView() {
@@ -134,7 +147,7 @@ public class HomeSuppliersView extends OverflowComposite
     }
 
     @Override
-    public DataGrid getDataGrid() {
+    public UniversalAsyncGrid getDataGrid() {
         return dataGrid;
     }
 
@@ -151,11 +164,6 @@ public class HomeSuppliersView extends OverflowComposite
     @Override
     public SingleSelectionModel getSelectionCategoryModel() {
         return selectionCategoryModel;
-    }
-
-    @Override
-    public SingleSelectionModel getSelectionSupplierModel() {
-        return selectionSupplierModel;
     }
 
     @Override
@@ -241,10 +249,8 @@ public class HomeSuppliersView extends OverflowComposite
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        dataGrid = new DataGrid<FullSupplierDetail>();
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
-        selectionSupplierModel = new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER);
-        dataGrid.setSelectionModel(selectionSupplierModel);
 
         dataGrid.setMinimumTableWidth(SUPPLIER_NAME_COL_WIDTH + RATING_COL_WIDTH
                 + ADDRESS_COL_WIDTH + LOCALITY_COL_WIDTH, Unit.PX);
@@ -267,37 +273,37 @@ public class HomeSuppliersView extends OverflowComposite
     private void initTableColumns() {
 
         // Company name.
-        addColumn(new TextCell(), Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
-                new GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
 
                     @Override
-                    public String getValue(FullSupplierDetail object) {
-                        return object.getCompanyName();
+                    public String getValue(Object object) {
+                        return ((FullSupplierDetail) object).getCompanyName();
                     }
                 });
 
         // SupplierRating.
-        addColumn(new TextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
-                new GetValue() {
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue() {
 
                     @Override
-                    public String getValue(FullSupplierDetail object) {
-                        if (object.getOverallRating() == -1) {
+                    public String getValue(Object object) {
+                        if (((FullSupplierDetail) object).getOverallRating() == -1) {
                             return "";
                         } else {
-                            return Integer.toString(object.getOverallRating());
+                            return Integer.toString(((FullSupplierDetail) object).getOverallRating());
                         }
                     }
                 });
 
         // Address.
-        addColumn(new TextCell(), Storage.MSGS.address(), false, ADDRESS_COL_WIDTH,
-                new GetValue() {
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.address(), false, ADDRESS_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue() {
 
                     @Override
-                    public String getValue(FullSupplierDetail object) {
+                    public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
-                        for (AddressDetail detail : object.getAddresses()) {
+                        for (AddressDetail detail : ((FullSupplierDetail) object).getAddresses()) {
                             str.append(detail.getCity());
                             str.append(", ");
                         }
@@ -309,14 +315,14 @@ public class HomeSuppliersView extends OverflowComposite
                 });
 
         // Locality.
-        addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
-                new GetValue() {
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue() {
 
                     @Override
-                    public String getValue(FullSupplierDetail object) {
+                    public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
-                        if (object.getLocalities() != null) {
-                            for (String loc : object.getLocalities().values()) {
+                        if (((FullSupplierDetail) object).getLocalities() != null) {
+                            for (String loc : ((FullSupplierDetail) object).getLocalities().values()) {
                                 str.append(loc);
                                 str.append(", ");
                             }
@@ -328,51 +334,6 @@ public class HomeSuppliersView extends OverflowComposite
                     }
                 });
     }
-
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private interface GetValue<C> {
-
-        C getValue(FullSupplierDetail supplierDetailForDisplaySuppliers);
-    }
-
-    /**
-     * Add a column with a header.
-     *
-     * @param <C> the cell type
-     * @param cell the cell used to render the column
-     * @param headerText the header string
-     * @param getter the value getter for the cell
-     */
-    private <C> Column<FullSupplierDetail, C> addColumn(Cell<C> cell,
-            String headerText, boolean sort, int width, final GetValue<C> getter) {
-        Column<FullSupplierDetail, C> column = new Column<FullSupplierDetail, C>(cell) {
-
-            @Override
-            public C getValue(FullSupplierDetail demand) {
-                return getter.getValue(demand);
-            }
-        };
-        if (sort) {
-            column.setSortable(true);
-        }
-        dataGrid.addColumn(column, headerText);
-        dataGrid.setColumnWidth(column, width, Unit.PX);
-        return column;
-    }
-    /**
-     * The key provider that provides the unique ID of a FullSupplierDetail.
-     */
-    private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
-
-        @Override
-        public Object getKey(FullSupplierDetail item) {
-            return item == null ? null : item.getSupplierId();
-        }
-    };
 }
 
 /**

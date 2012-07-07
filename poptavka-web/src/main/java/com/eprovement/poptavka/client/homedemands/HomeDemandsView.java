@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.OverflowComposite;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
@@ -116,6 +117,7 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     private void initCellTable() {
         // Create a CellTable.
         dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns);
+        dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         dataGrid.setWidth("800px");
         dataGrid.setHeight("500px");
 //        dataGrid.setEmptyTableWidget(new Label("No data available."));

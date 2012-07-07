@@ -5,10 +5,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.cellview.client.CellList;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -20,8 +16,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.AsyncDataProvider;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
@@ -30,16 +24,12 @@ import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
@@ -75,15 +65,13 @@ public class HomeSuppliersPresenter
 
         void removePath(); //removes last one
 
-        DataGrid getDataGrid();
+        UniversalAsyncGrid getDataGrid();
 
         SimplePager getPager();
 
         Widget getWidgetView();
 
         SingleSelectionModel getSelectionCategoryModel();
-
-        SingleSelectionModel getSelectionSupplierModel();
 
         SplitLayoutPanel getSplitter();
 
@@ -93,17 +81,6 @@ public class HomeSuppliersPresenter
     }
     //differ if category was selected from menu, or from path
     private Boolean wasSelection = false;
-    //for asynch data retrieving
-    private AsyncDataProvider dataProvider = null;
-    private int start = 0;
-    private int length = 0;
-    //for asynch data sorting
-    private Map<String, OrderType> orderColumns = new HashMap<String, OrderType>();
-    //list of grid columns, used to sort them. First must by blank (checkbox in table)
-    private final String[] columnNames = new String[]{
-        "businessUser.businessUserData.companyName", "overalRating", "", ""
-    };
-    private List<String> gridColumns = Arrays.asList(columnNames);
     //others
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
@@ -171,62 +148,14 @@ public class HomeSuppliersPresenter
         }
     }
 
-    /**************************************************************************/
-    /* Business events handled by presenter                                   */
-    /**************************************************************************/
-    public void onCreateAsyncDataProvider(final int totalFound) {
-        this.start = 0;
-        this.dataProvider = new AsyncDataProvider<SupplierDetail>() {
-
-            @Override
-            protected void onRangeChanged(HasData<SupplierDetail> display) {
-                display.setRowCount(totalFound);
-                if (totalFound == 0) {
-                    return;
-                }
-                start = display.getVisibleRange().getStart();
-                length = display.getVisibleRange().getLength();
-
-                orderColumns.clear();
-                orderColumns.put(gridColumns.get(0), OrderType.ASC);
-                eventBus.getSuppliers(start, start + length, searchDataHolder, orderColumns);
-            }
-        };
-        this.dataProvider.addDataDisplay(view.getDataGrid());
-        this.createAsyncSortHandler();
-    }
-
-    public void createAsyncSortHandler() {
-        AsyncHandler sortHandler = new AsyncHandler(view.getDataGrid()) {
-
-            @Override
-            public void onColumnSort(ColumnSortEvent event) {
-                orderColumns.clear();
-                OrderType orderType = OrderType.DESC;
-                if (event.isSortAscending()) {
-                    orderType = OrderType.ASC;
-                }
-                Column<FullSupplierDetail, String> column = (Column<FullSupplierDetail, String>) event.getColumn();
-                if (column == null) {
-                    return;
-                }
-                orderColumns.put(gridColumns.get(
-                        view.getDataGrid().getColumnIndex(column)), orderType);
-
-                eventBus.getSuppliers(start, start + length, searchDataHolder, orderColumns);
-            }
-        };
-        view.getDataGrid().addColumnSortHandler(sortHandler);
-    }
-
     @Override
     public void bindView() {
         view.getSelectionRootModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (dataProvider != null) {
-                    dataProvider.updateRowCount(0, false);
+                if (view.getDataGrid().getDataProvider() != null) {
+                    view.getDataGrid().getDataProvider().updateRowCount(0, false);
                 }
 
                 CategoryDetail selected = (CategoryDetail) view.getSelectionRootModel().getSelectedObject();
@@ -247,7 +176,7 @@ public class HomeSuppliersPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                dataProvider.updateRowCount(0, false);
+                view.getDataGrid().getDataProvider().updateRowCount(0, false);
 
                 CategoryDetail selected = (CategoryDetail) view.getSelectionCategoryModel().getSelectedObject();
 
@@ -257,8 +186,8 @@ public class HomeSuppliersPresenter
                     view.getCategoriesList().setVisible(false);
                     wasSelection = true;
                     view.hideSuppliersDetail();
-                    view.getSelectionSupplierModel().setSelected(
-                            view.getSelectionSupplierModel().getSelectedObject(), false);
+                    view.getDataGrid().getSelectionModel().setSelected(
+                            view.getDataGrid().getSelectionModel().getSelectedObject(), false);
 
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
@@ -270,11 +199,12 @@ public class HomeSuppliersPresenter
                 }
             }
         });
-        view.getSelectionSupplierModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                FullSupplierDetail selected = (FullSupplierDetail) view.getSelectionSupplierModel().getSelectedObject();
+                FullSupplierDetail selected =
+                        (FullSupplierDetail) view.getDataGrid().getSelectionModel().getSelectedObject();
 
                 if (selected != null) {
                     view.displaySuppliersDetail(selected);
@@ -331,7 +261,7 @@ public class HomeSuppliersPresenter
         if (!wasSelection) { // ak nebola vybrana kategoria zo zoznamu, ale klik na hyperlink na vyvolanie historie
             searchDataHolder.getCategories().add(new CategoryDetail(parentCategory, ""));
         }
-        eventBus.getSuppliersCount(searchDataHolder);
+        view.getDataGrid().getDataCount(eventBus, searchDataHolder);
         wasSelection = false;
     }
 
@@ -344,7 +274,7 @@ public class HomeSuppliersPresenter
         // TODO Praso - neviem ci tu musi byt ten flush alebo nie? Aky ma vyznam?
         // TODO Martin - zakomentovane flush, zatial nerobi problemi pri zobrazovani,
         //               ak ok, moze sa to vyhodic uplne.
-        dataProvider.updateRowData(start, list);
+        view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
 //        view.getDataGrid().flush();
         view.getDataGrid().redraw();
     }
