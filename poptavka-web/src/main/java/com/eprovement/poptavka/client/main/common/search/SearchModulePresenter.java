@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.main.common.search;
 
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,8 +20,8 @@ import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorView;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
 import com.eprovement.poptavka.client.user.admin.searchViews.AdminInvoicesViewView;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import java.util.ArrayList;
 import java.util.List;

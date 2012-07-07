@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.main.common.search;
 
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -130,7 +131,8 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     @Override
     public void setFilterSearchContent() {
         if (!searchContent.getText().isEmpty()
-                && !searchContent.getText().equals(Storage.MSGS.searchContent())) {
+                && !searchContent.getText().equals(Storage.MSGS.searchContent())
+                && getFilters().getAttibutes().isEmpty()) {
             filters.setSearchText(searchContent.getText());
         }
     }

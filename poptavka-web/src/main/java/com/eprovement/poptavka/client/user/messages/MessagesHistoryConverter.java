@@ -5,7 +5,7 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 import com.eprovement.poptavka.client.main.Constants;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
  * History converter class. Handles history for MessagesModule.

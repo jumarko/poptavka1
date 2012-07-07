@@ -1,10 +1,10 @@
 package com.eprovement.poptavka.server.service.supplier;
 
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.SupplierRPCService;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
@@ -34,12 +34,12 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 

@@ -2,8 +2,8 @@ package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -65,7 +65,7 @@ public class HomeDemandViewView extends Composite implements
         if (!priceTo.getText().equals("")) {
             filters.add(new FilterItem("price", FilterItem.OPERATION_TO, priceTo.getText()));
         }
-        if (creationDate.getSelectedIndex() > 0) {
+        if (creationDate.getSelectedIndex() != 4) {
             filters.add(new FilterItem("creation", FilterItem.OPERATION_FROM, creationDate.getSelectedIndex()));
         }
         if (finnishDateFrom.getValue() != null) {
@@ -97,7 +97,7 @@ public class HomeDemandViewView extends Composite implements
         demandTypes.setSelectedIndex(0);
         priceFrom.setText("");
         priceTo.setText("");
-        creationDate.setSelectedIndex(0);
+        creationDate.setSelectedIndex(4);
     }
 
     @Override

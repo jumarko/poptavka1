@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import java.util.ArrayList;
 
 public class AdminInvoicesViewView extends Composite implements

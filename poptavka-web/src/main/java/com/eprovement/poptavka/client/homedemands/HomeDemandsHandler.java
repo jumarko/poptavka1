@@ -4,7 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -27,7 +27,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         homeDemandsService = service;
     }
 
-    public void onGetDemandsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+    public void onGetDataCount(final UniversalAsyncGrid grid, final SearchModuleDataHolder detail) {
         homeDemandsService.getDemandsCount(detail, new AsyncCallback<Long>() {
 
             @Override
@@ -44,7 +44,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
         });
     }
 
-    public void onGetDemands(int start, int count, SearchModuleDataHolder detail,
+    public void onGetData(int start, int count, SearchModuleDataHolder detail,
             Map<String, OrderType> orderColumns) {
         homeDemandsService.getDemands(start, count, detail, orderColumns,
                 new AsyncCallback<List<FullDemandDetail>>() {

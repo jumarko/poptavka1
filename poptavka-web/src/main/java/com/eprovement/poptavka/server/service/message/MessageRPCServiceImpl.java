@@ -6,8 +6,7 @@ package com.eprovement.poptavka.server.service.message;
 
 import com.eprovement.poptavka.server.converter.Converter;
 import com.googlecode.genericdao.search.Search;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.MessageRPCService;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
@@ -28,6 +27,7 @@ import com.eprovement.poptavka.service.demand.RatingService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;

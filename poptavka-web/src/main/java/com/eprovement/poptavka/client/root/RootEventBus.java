@@ -37,7 +37,7 @@ import com.eprovement.poptavka.client.main.common.address.AddressSelectorPresent
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;
 import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.main.common.search.SearchModule;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;

@@ -5,8 +5,7 @@ package com.eprovement.poptavka.server.service.messages;
 
 import com.eprovement.poptavka.server.converter.UserMessageConverter;
 import com.googlecode.genericdao.search.Search;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCService;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.enums.MessageState;
@@ -20,6 +19,7 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;

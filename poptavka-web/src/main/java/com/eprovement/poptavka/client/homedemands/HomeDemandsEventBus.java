@@ -6,7 +6,7 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -79,11 +79,11 @@ public interface HomeDemandsEventBus extends EventBus, IEventBusData {
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Override
-    @Event(handlers = HomeDemandsPresenter.class)
+    @Event(handlers = HomeDemandsHandler.class)
     void getDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
 
     @Override
-    @Event(handlers = HomeDemandsPresenter.class)
+    @Event(handlers = HomeDemandsHandler.class)
     void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 
     @Event(handlers = HomeDemandsPresenter.class)
@@ -91,13 +91,4 @@ public interface HomeDemandsEventBus extends EventBus, IEventBusData {
 
     @Event(handlers = HomeDemandsPresenter.class)
     void setDemand(FullDemandDetail demand);
-
-    /**************************************************************************/
-    /* Business events handled by Handlers.                                   */
-    /**************************************************************************/
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemandsCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail);
-
-    @Event(handlers = HomeDemandsHandler.class)
-    void getDemands(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
 }

@@ -18,7 +18,7 @@ import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
 import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;

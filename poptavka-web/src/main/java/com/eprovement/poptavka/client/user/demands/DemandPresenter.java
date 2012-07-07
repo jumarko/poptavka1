@@ -11,7 +11,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
  * For every user - default tab

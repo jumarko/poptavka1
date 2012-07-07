@@ -26,8 +26,7 @@ import org.springframework.stereotype.Component;
 import com.googlecode.genericdao.search.Search;
 import com.googlecode.genericdao.search.Sort;
 
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.AdminRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -49,6 +48,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;

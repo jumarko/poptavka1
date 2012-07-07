@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.OrderType;

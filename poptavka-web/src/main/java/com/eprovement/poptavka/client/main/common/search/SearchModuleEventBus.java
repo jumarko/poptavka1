@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.main.common.search;
 
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;

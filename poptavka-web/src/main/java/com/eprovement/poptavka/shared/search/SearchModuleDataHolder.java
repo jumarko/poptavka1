@@ -1,6 +1,5 @@
-package com.eprovement.poptavka.client.main.common.search;
+package com.eprovement.poptavka.shared.search;
 
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import java.io.Serializable;
@@ -26,6 +25,9 @@ public class SearchModuleDataHolder implements Serializable {
     private ArrayList<LocalityDetail> localities = new ArrayList<LocalityDetail>();
     //4. part of search bar ... store additional filters on certaing domain object attribute
     private ArrayList<FilterItem> attributes = new ArrayList<FilterItem>();
+
+    public SearchModuleDataHolder() {
+    }
 
     public String getSearchText() {
         return searchText;

@@ -10,7 +10,7 @@ import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.demands.tab.old.MyDemandsPresenter;
 import com.eprovement.poptavka.client.user.demands.tab.old.OffersPresenter;
 import com.eprovement.poptavka.client.user.demands.tab.old.PotentialDemandsPresenter;

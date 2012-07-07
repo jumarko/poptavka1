@@ -5,7 +5,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;

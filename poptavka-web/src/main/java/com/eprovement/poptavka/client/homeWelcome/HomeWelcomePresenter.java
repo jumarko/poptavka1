@@ -5,7 +5,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 @Presenter(view = HomeWelcomeView.class)
 public class HomeWelcomePresenter extends BasePresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements

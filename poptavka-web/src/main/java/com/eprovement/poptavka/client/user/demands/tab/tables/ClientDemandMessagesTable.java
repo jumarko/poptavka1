@@ -14,7 +14,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.demands.tab.ClientListPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.ColumnFactory;
 import com.eprovement.poptavka.domain.enums.OrderType;

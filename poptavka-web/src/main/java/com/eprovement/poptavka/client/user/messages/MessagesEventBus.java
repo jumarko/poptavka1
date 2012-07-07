@@ -12,7 +12,7 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
 
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.messages.tab.ComposeMessagePresenter;
 import com.eprovement.poptavka.client.user.messages.tab.ConversationWrapperPresenter;
 import com.eprovement.poptavka.client.user.messages.tab.MessageListPresenter;

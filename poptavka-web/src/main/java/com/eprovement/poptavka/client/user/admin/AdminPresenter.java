@@ -2,7 +2,7 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;

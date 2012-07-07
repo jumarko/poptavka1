@@ -6,10 +6,9 @@ package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -24,7 +23,6 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This presenter is to replace DemandsPresenter.java.
@@ -116,14 +114,9 @@ public class HomeDemandsPresenter extends BasePresenter<
      * Navigation events
      * ***********************************************************************
      */
-    //need to remember for asynchDataProvider if asking for more data
-    private SearchModuleDataHolder searchDataHolder = null;
-
     public void onGoToHomeDemandsModule(SearchModuleDataHolder searchDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS);
         view.getDataGrid().getDataCount(eventBus, searchDataHolder);
-
-        this.searchDataHolder = searchDataHolder;
     }
 
     /**
@@ -142,16 +135,5 @@ public class HomeDemandsPresenter extends BasePresenter<
         view.getDemandDetailPanel().setVisible(true);
         view.getOfferBtn().setVisible(true);
         view.getDemandDetail().setDemanDetail(demand);
-    }
-
-    /**************************************************************************/
-    /* Getter methods                                                         */
-    /**************************************************************************/
-    public void onGetDataCount(UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
-        eventBus.getDemandsCount(grid, detail);
-    }
-
-    public void onGetData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        eventBus.getDemands(start, count, detail, orderColumns);
     }
 }

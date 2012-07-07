@@ -4,8 +4,7 @@
  */
 package com.eprovement.poptavka.server.service.homedemands;
 
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.common.search.dataHolders.FilterItem;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -24,6 +23,7 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;

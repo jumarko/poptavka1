@@ -5,7 +5,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import java.util.Map;

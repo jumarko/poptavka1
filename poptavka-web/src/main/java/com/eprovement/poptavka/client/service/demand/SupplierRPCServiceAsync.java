@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.service.demand;
 import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 
 import com.eprovement.poptavka.shared.domain.ServiceDetail;

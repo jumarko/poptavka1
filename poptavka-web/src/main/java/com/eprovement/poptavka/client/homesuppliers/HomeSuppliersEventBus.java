@@ -13,7 +13,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import com.eprovement.poptavka.client.main.common.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
