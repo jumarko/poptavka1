@@ -37,6 +37,7 @@ public final class Constants {
     public static final int HOME_SUPPLIER_CREATION_MODULE = -5;
 
     public static final int USER_CLIENT_MODULE = -10;
+    public static final int USER_SUPPLIER_MODULE = -11;
     public static final int USER_DEMANDS_MODULE = -6;
     public static final int USER_MESSAGES_MODULE = -7;
     public static final int USER_SETTINGS_MODULE = -8;

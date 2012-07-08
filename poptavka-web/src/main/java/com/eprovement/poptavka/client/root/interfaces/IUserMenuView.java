@@ -15,6 +15,8 @@ public interface IUserMenuView extends IsWidget {
         void goToDemands();
 
         void goToClient();
+
+        void goToSupplier();
     }
 
     void userMenuStyleChange(int loadedModule);

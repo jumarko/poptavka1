@@ -34,6 +34,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param filter - define searching criteria if any
      * @return count
      */
+    @Override
     public long getClientDemandsCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
         return -1L;
@@ -50,6 +51,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param orderColumns
      * @return list of demand's detail objects
      */
+    @Override
     public List<FullDemandDetail> getClientDemands(int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
@@ -67,6 +69,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param filter - define searching criteria if any
      * @return count
      */
+    @Override
     public long getClientDemandConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
         return -1L;
@@ -76,7 +79,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * When supplier asks something about a demand of some client.
      * The conversation has more messages of course but I want count of threads. As
      * Client: "Questions made by suppliers to demands made by me."
-     *         "How many suppliers are asing something about a certain demand."
+     * "How many suppliers are asing something about a certain demand."
      *
      * @param clientID - client's
      * @param demandID - demand's
@@ -86,6 +89,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param orderColumns
      * @return
      */
+    @Override
     public List<UserMessageDetail> getClientDemandConversations(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
@@ -102,6 +106,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param filter
      * @return
      */
+    @Override
     public long getClientOffersCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
         return -1L;
@@ -120,6 +125,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param orderColumns
      * @return
      */
+    @Override
     public List<FullDemandDetail> getClientOffersCount(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
@@ -133,6 +139,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      *
      * @return offers count of given demand
      */
+    @Override
     public long getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
         return -1L;
@@ -151,6 +158,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param orderColumns
      * @return
      */
+    @Override
     public List<OfferDetail> getClientDemandOffers(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
@@ -167,6 +175,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param filter
      * @return
      */
+    @Override
     public long getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
         return -1L;
@@ -184,10 +193,10 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @param orderColumns
      * @return
      */
+    @Override
     public List<OfferDetail> getClientAssignedDemands(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
         return new ArrayList<OfferDetail>();
     }
-
 }

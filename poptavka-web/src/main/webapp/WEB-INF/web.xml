@@ -185,6 +185,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>SupplierDemandsRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.supplierdemands.SupplierDemandsRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SupplierDemandsRPCService</servlet-name>
+        <url-pattern>/poptavka/service/supplierdemandsmodule</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ClientRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.client.ClientRPCServiceImpl</servlet-class>
     </servlet>

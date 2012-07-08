@@ -1,17 +1,17 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
     <ui:with field='res'
-		type='com.eprovement.poptavka.client.resources.StyleResource' />
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <ui:style>
-		.important {
-			font-weight: bold;
-		}
+        .important {
+        font-weight: bold;
+        }
 
-		.background {
-			background-color: red;
-		}
+        .background {
+        background-color: red;
+        }
     </ui:style>
     <g:DecoratorPanel>
         <g:HorizontalPanel>
@@ -23,6 +23,12 @@
 <!--                                        <ui:msg key="demands">Demands</ui:msg>-->Client
                             </g:Button>
                         </li>
+                        <li>
+                            <g:Button ui:field="supplier">
+<!--                                        <ui:msg key="demands">Demands</ui:msg>-->Supplier
+                            </g:Button>
+                        </li>
+
                         <li>
                             <g:Button ui:field="demands">
 <!--                                        <ui:msg key="demands">Demands</ui:msg>-->Demands

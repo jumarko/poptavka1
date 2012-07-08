@@ -49,6 +49,7 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
 import com.eprovement.poptavka.client.user.demands.DemandModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
+import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -64,6 +65,7 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
     @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = ClientDemandsModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = SupplierDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = true) })
@@ -109,6 +111,7 @@ public interface RootEventBus extends EventBus {
         DemandCreationModule.class,
         DemandModule.class,
         ClientDemandsModule.class,
+        SupplierDemandsModule.class,
         MessagesModule.class,
         SettingsModule.class,
         AdminModule.class })
@@ -151,6 +154,9 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     @Event(forwardToModules = ClientDemandsModule.class)
     void goToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget);
+
+    @Event(forwardToModules = SupplierDemandsModule.class)
+    void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(forwardToModules = DemandModule.class)
     void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
