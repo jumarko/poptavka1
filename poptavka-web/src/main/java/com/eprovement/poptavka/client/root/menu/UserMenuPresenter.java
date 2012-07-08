@@ -55,6 +55,11 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
         eventBus.goToDemandModule(null, Constants.NONE);
     }
 
+    @Override
+    public void goToClient() {
+        eventBus.goToClientDemandsModule(null, Constants.NONE);
+    }
+
     /**************************************************************************/
     /* Style change methods.                                                  */
     /**************************************************************************/

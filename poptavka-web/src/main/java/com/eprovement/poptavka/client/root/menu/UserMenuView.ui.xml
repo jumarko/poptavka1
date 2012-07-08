@@ -19,6 +19,11 @@
                 <div ui:field="homeMenu" styleName='{res.layout.homeMenu}'>
                     <ul ui:field="menuList">
                         <li>
+                            <g:Button ui:field="client">
+<!--                                        <ui:msg key="demands">Demands</ui:msg>-->Client
+                            </g:Button>
+                        </li>
+                        <li>
                             <g:Button ui:field="demands">
 <!--                                        <ui:msg key="demands">Demands</ui:msg>-->Demands
                             </g:Button>

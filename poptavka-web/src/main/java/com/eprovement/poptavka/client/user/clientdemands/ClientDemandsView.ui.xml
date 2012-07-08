@@ -1,0 +1,60 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+                 
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+
+    <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
+        <g:west size="15">
+            <g:HTMLPanel>
+                <!-- Client submenu -->
+                <div class='{res.layout.submenuHeader}'>
+                    Menu Client
+                </div>
+                <ul class='{res.layout.submenuList}'>
+                    <li>
+                        <g:Button ui:field="cliNewDemands">
+                            <ui:msg key="myDemands">New Projects</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="cliOffers">
+                            <ui:msg key="offers">Bidders</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="cliAssignedDemands">
+                            ** INACTIVE **
+                            <ui:msg key="assignedDemands">Projects in progress</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="cliCreateDemand">
+                            <ui:msg key="createDemandLink">Create Demand</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="cliCreateSupplier">
+                            <ui:msg key="createSupplierLink">Create supplier</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="allDemands">
+                            <ui:msg key="allDemandsLink">All Demands</ui:msg>
+                        </g:Button>
+                    </li>
+                    <li>
+                        <g:Button ui:field="allSuppliers">
+                            <ui:msg key="allSuppliersLink">All Suppliers</ui:msg>
+                        </g:Button>
+                    </li>
+                </ul>
+            </g:HTMLPanel>
+        </g:west>
+        <g:center>
+            <g:ScrollPanel styleName='{res.layout.demandTabContent}'>
+                <g:SimplePanel ui:field="contentPanel"/>
+            </g:ScrollPanel>
+        </g:center>
+    </g:DockLayoutPanel>
+</ui:UiBinder>

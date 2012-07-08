@@ -45,6 +45,7 @@ import com.eprovement.poptavka.client.root.menu.MenuPresenter;
 import com.eprovement.poptavka.client.root.menu.UserMenuPresenter;
 import com.eprovement.poptavka.client.root.searchBar.SearchBarPresenter;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
+import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
 import com.eprovement.poptavka.client.user.demands.DemandModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
@@ -62,6 +63,7 @@ import com.eprovement.poptavka.shared.domain.LocalityDetail;
     @ChildModule(moduleClass = HomeDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = HomeSuppliersModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = DemandModule.class, async = true, autoDisplay = true),
+    @ChildModule(moduleClass = ClientDemandsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = true),
     @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = true) })
@@ -106,6 +108,7 @@ public interface RootEventBus extends EventBus {
         SupplierCreationModule.class,
         DemandCreationModule.class,
         DemandModule.class,
+        ClientDemandsModule.class,
         MessagesModule.class,
         SettingsModule.class,
         AdminModule.class })
@@ -117,7 +120,7 @@ public interface RootEventBus extends EventBus {
 
     /**************************************************************************/
     /* Navigation events.                                                     */
-    /**************************************************************************/
+   /**************************************************************************/
     /**************************************************************************/
     /* Navigation events - Home menu control section                          */
     /**************************************************************************/
@@ -146,9 +149,11 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
     /**************************************************************************/
-    @Event(forwardToModules = DemandModule.class) //, historyConverter = RootHistoryConverter.class)
+    @Event(forwardToModules = ClientDemandsModule.class)
+    void goToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget);
+
+    @Event(forwardToModules = DemandModule.class)
     void goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
-//    String goToDemandModule(SearchModuleDataHolder filter, int loadWidget);
 
     /**
      * @param action - inbox, sent, trash, draft, composeNew, composeNewForwarded, composeReply, displayGrid

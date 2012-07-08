@@ -24,7 +24,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @UiField
     UListElement menuList;
     @UiField
-    Button demands, messages, settings, administration;
+    Button client, demands, messages, settings, administration;
 
     public UserMenuView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -35,6 +35,11 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     /**************************************************************************/
     /* UiHanders.                                                             */
     /**************************************************************************/
+    @UiHandler("client")
+    public void onClickclient(ClickEvent e) {
+        presenter.goToClient();
+        clientUserMenuStyleChange();
+    }
     @UiHandler("demands")
     public void onClickDemands(ClickEvent e) {
         presenter.goToDemands();
@@ -69,6 +74,9 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     @Override
     public void userMenuStyleChange(int loadedModule) {
         switch (loadedModule) {
+            case Constants.USER_CLIENT_MODULE:
+                clientUserMenuStyleChange();
+                break;
             case Constants.USER_DEMANDS_MODULE:
                 demandsUserMenuStyleChange();
                 break;
@@ -89,7 +97,16 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    private void clientUserMenuStyleChange() {
+        client.addStyleName(StyleResource.INSTANCE.layout().selected());
+        demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
+        administration.removeStyleName(StyleResource.INSTANCE.layout().selected());
+    }
+
     private void demandsUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.addStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -97,6 +114,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     }
 
     private void messagesUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.addStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
@@ -104,6 +122,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     }
 
     private void settingsUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.addStyleName(StyleResource.INSTANCE.layout().selected());
@@ -111,6 +130,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     }
 
     private void administrationUserMenuStyleChange() {
+        client.removeStyleName(StyleResource.INSTANCE.layout().selected());
         demands.removeStyleName(StyleResource.INSTANCE.layout().selected());
         messages.removeStyleName(StyleResource.INSTANCE.layout().selected());
         settings.removeStyleName(StyleResource.INSTANCE.layout().selected());
