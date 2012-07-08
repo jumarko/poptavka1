@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.BusinessType;
@@ -42,6 +43,13 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 30;
+    private static final int COMPANY_NAME_COL_WIDTH = 50;
+    private static final int BUSINESS_TYPE_COL_WIDTH = 50;
+    private static final int CERTIFIED_COL_WIDTH = 15;
+    private static final int VERIFICATION_COL_WIDTH = 50;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -124,7 +132,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
      */
     private void initGridColumns() {
         // Supplier ID.
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), "ID", true, 30,
+        idColumn = dataGrid.addColumn(
+                new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -134,7 +143,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
                 });
 
         // Company name.
-        supplierNameColumn = dataGrid.addColumn(new EditTextCell(), "CompanyName", true, 50,
+        supplierNameColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.companyName(), true, COMPANY_NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -148,7 +158,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         for (BusinessType type : BusinessType.values()) {
             types.add(type.getValue());
         }
-        supplierTypeColumn = dataGrid.addColumn(new SelectionCell(types), "Type", true, 50,
+        supplierTypeColumn = dataGrid.addColumn(
+                new SelectionCell(types), Storage.MSGS.businessType(), true, BUSINESS_TYPE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -158,7 +169,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
                 });
 
         // Certified.
-        certifiedColumn = dataGrid.addColumn(new CheckboxCell(), "Cert.", true, 15,
+        certifiedColumn = dataGrid.addColumn(
+                new CheckboxCell(), Storage.MSGS.certified(), true, CERTIFIED_COL_WIDTH,
                 new GetValue<Boolean>() {
 
                     @Override
@@ -172,7 +184,8 @@ public class AdminSuppliersView extends Composite implements AdminSuppliersPrese
         for (Verification type : Verification.values()) {
             verTypes.add(type.name());
         }
-        verificationColumn = dataGrid.addColumn(new SelectionCell(verTypes), "Verified", true, 50,
+        verificationColumn = dataGrid.addColumn(
+                new SelectionCell(verTypes), Storage.MSGS.verified(), true, VERIFICATION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.EditTextCell;
@@ -39,6 +40,12 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int KEY_COL_WIDTH = 50;
+    private static final int VALUE_COL_WIDTH = 100;
+    private static final int DESCRIPTION_COL_WIDTH = 160;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -114,7 +121,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
      */
     private void initTableColumns() {
         // ID
-        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -124,7 +131,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
                 });
 
         // key
-        dataGrid.addColumn(new TextCell(), "Key", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.key(), true, KEY_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -134,7 +141,7 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
                 });
 
         // Value
-        valueColumn = dataGrid.addColumn(new EditTextCell(), "Value", true, 100,
+        valueColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.value(), true, VALUE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -144,7 +151,8 @@ public class AdminPreferencesView extends Composite implements AdminPreferencesP
                 });
 
         // description
-        descriptionColumn = dataGrid.addColumn(new EditTextCell(), "Description", true, 160,
+        descriptionColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

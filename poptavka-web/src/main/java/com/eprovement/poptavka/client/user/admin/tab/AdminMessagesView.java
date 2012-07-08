@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.domain.enums.MessageState;
@@ -45,6 +46,19 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int BODY_COL_WIDTH = 200;
+    private static final int SENT_COL_WIDTH = 60;
+    private static final int CREATED_COL_WIDTH = 60;
+    private static final int STATE_COL_WIDTH = 150;
+    private static final int TYPE_COL_WIDTH = 150;
+    private static final int SUBJECT_COL_WIDTH = 150;
+    private static final int ID_COL_WIDTH = 50;
+    private static final int DID_COL_WIDTH = 50;
+    private static final int RID_COL_WIDTH = 50;
+    private static final int SID_COL_WIDTH = 50;
+    private static final int PID_COL_WIDTH = 50;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -141,7 +155,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addBodyColumn() {
-        bodyColumn = dataGrid.addColumn(new EditTextCell(), "Body", true, 200,
+        bodyColumn = dataGrid.addColumn(new EditTextCell(), "Body", true, BODY_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -152,7 +166,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addSentDateColumn(DateTimeFormat dateFormat) {
-        sentColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Sent", true, 60,
+        sentColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Sent", true, SENT_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override
@@ -163,7 +177,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addCreatedDateColumn(DateTimeFormat dateFormat) {
-        createdColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Created", false, 60,
+        createdColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Created", false, CREATED_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override
@@ -178,7 +192,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageState msgState : MessageState.values()) {
             msgStates.add(msgState.name());
         }
-        stateColumn = dataGrid.addColumn(new SelectionCell(msgStates), "State", true, 150,
+        stateColumn = dataGrid.addColumn(new SelectionCell(msgStates), "State", true, STATE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -193,7 +207,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
         for (MessageType msgState : MessageType.values()) {
             msgTypes.add(msgState.name());
         }
-        typeColumn = dataGrid.addColumn(new SelectionCell(msgTypes), "Type", true, 150,
+        typeColumn = dataGrid.addColumn(
+                new SelectionCell(msgTypes), Storage.MSGS.type(), true, TYPE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -204,7 +219,8 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addMessageTitleColumn() {
-        subjectColumn = dataGrid.addColumn(new EditTextCell(), "Subject", true, 150,
+        subjectColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.subject(), true, SUBJECT_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -215,7 +231,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addReceiverIdColumn() {
-        dataGrid.addColumn(new TextCell(), "RID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.rid(), true, RID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -226,7 +242,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addSenderIdColumn() {
-        dataGrid.addColumn(new TextCell(), "SID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.sid(), true, SID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -237,7 +253,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addParentIdColumn() {
-        dataGrid.addColumn(new TextCell(), "PID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.pid(), true, PID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -248,7 +264,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addDemandIdColumn() {
-        dataGrid.addColumn(new TextCell(), "DID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.did(), true, DID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -259,7 +275,7 @@ public class AdminMessagesView extends Composite implements AdminMessagesPresent
     }
 
     private void addIdColumn() {
-        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

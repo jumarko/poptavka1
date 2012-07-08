@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.DateCell;
@@ -45,6 +46,15 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int OID_COL_WIDTH = 40;
+    private static final int DID_COL_WIDTH = 40;
+    private static final int SID_COL_WIDTH = 40;
+    private static final int PRICE_COL_WIDTH = 40;
+    private static final int STATE_COL_WIDTH = 50;
+    private static final int CREATED_COL_WIDTH = 50;
+    private static final int FINNISTH_COL_WIDTH = 50;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -129,7 +139,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
      */
     private void initGridColumns() {
         // Offer ID
-        dataGrid.addColumn(new TextCell(), "OID", true, 40,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.oid(), true, OID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -138,7 +148,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                     }
                 });
         // Demand ID.
-        dataGrid.addColumn(new TextCell(), "DID", true, 40,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.did(), true, DID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -147,7 +157,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                     }
                 });
         // Supplier ID
-        dataGrid.addColumn(new TextCell(), "SID", true, 40,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.sid(), true, SID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -155,7 +165,7 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                         return Long.toString(((OfferDetail) object).getSupplierId());
                     }
                 });
-        priceColumn = dataGrid.addColumn(new EditTextCell(), "Price", true, 40,
+        priceColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.price(), true, PRICE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -169,7 +179,8 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
         for (OfferStateType offerStatusDetail : OfferStateType.values()) {
             stateList.add(offerStatusDetail.getValue());
         }
-        offerStatusColumn = dataGrid.addColumn(new SelectionCell(stateList), "State", true, 60,
+        offerStatusColumn = dataGrid.addColumn(
+                new SelectionCell(stateList), Storage.MSGS.state(), true, STATE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -179,7 +190,8 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                 });
 
         // Creation date
-        offerCreationDateColumn = dataGrid.addColumn(new DateCell(), "Created", false, 60,
+        offerCreationDateColumn = dataGrid.addColumn(
+                new DateCell(), Storage.MSGS.createdDate(), false, CREATED_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override
@@ -190,7 +202,8 @@ public class AdminOffersView extends Composite implements AdminOffersPresenter.A
                 });
 
         // Demand end date.
-        offerFinishDateColumn = dataGrid.addColumn(new DateCell(), "Finnish", true, 60,
+        offerFinishDateColumn = dataGrid.addColumn(
+                new DateCell(), Storage.MSGS.finnishDate(), true, FINNISTH_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.DatePickerCell;
@@ -45,6 +46,11 @@ public class AdminEmailActivationsView extends Composite
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int ACTIVATION_COL_WIDTH = 100;
+    private static final int TIMEOUT_COL_WIDTH = 100;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -120,7 +126,7 @@ public class AdminEmailActivationsView extends Composite
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -130,7 +136,8 @@ public class AdminEmailActivationsView extends Composite
                 });
 
         // Activation link
-        activationColumn = dataGrid.addColumn(new EditTextCell(), "ActivationLink", true, 100,
+        activationColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.activationLink(), true, ACTIVATION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -141,7 +148,8 @@ public class AdminEmailActivationsView extends Composite
 
         // timeout
         DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_MEDIUM);
-        timeoutColumn = dataGrid.addColumn(new DatePickerCell(dateFormat), "Timeout", true, 100,
+        timeoutColumn = dataGrid.addColumn(
+                new DatePickerCell(dateFormat), Storage.MSGS.timeout(), true, TIMEOUT_COL_WIDTH,
                 new GetValue<Date>() {
 
                     @Override

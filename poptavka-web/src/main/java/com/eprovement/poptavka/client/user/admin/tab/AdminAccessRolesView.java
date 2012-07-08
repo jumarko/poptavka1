@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.EditTextCell;
@@ -40,6 +41,13 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int CODE_COL_WIDTH = 50;
+    private static final int NAME_COL_WIDTH = 100;
+    private static final int DESCRIPTION_COL_WIDTH = 160;
+    private static final int PREFERENCES_COL_WIDTH = 140;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -116,7 +124,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
     private void initTableColumns() {
 
         // AccessRole ID.
-        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -126,7 +134,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 });
 
         // Code
-        dataGrid.addColumn(new TextCell(), "Code", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.code(), true, CODE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -136,7 +144,7 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 });
 
         // Name
-        nameColumn = dataGrid.addColumn(new EditTextCell(), "Name", true, 100,
+        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.name(), true, NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -146,7 +154,8 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 });
 
         // Description
-        descriptionColumn = dataGrid.addColumn(new EditTextCell(), "Description", true, 160,
+        descriptionColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -156,7 +165,8 @@ public class AdminAccessRolesView extends Composite implements AdminAccessRolesP
                 });
 
         // Preferences
-        permissionsColumn = dataGrid.addColumn(new TextCell(), "Permissions", false, 140,
+        permissionsColumn = dataGrid.addColumn(
+                new TextCell(), Storage.MSGS.permissions(), false, PREFERENCES_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

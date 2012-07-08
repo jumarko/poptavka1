@@ -90,7 +90,36 @@ public interface LocalizableMessages extends Messages {
     String close();
 
     //common
+    String id();
+    String cid();
+    String rid();
+    String did();
+    String pid();
+    String sid();
+    String oid();
+    String code();
+    String name();
     String title();
+    String permissions();
+    String company();
+    String firstName();
+    String lastName();
+    String expiration();
+    String activationLink();
+    String timeout();
+    String invoiceNumber();
+    String varSymb();
+    String totalPrice();
+    String payMethod();
+    String subject();
+    String state();
+    String key();
+    String value();
+    String text();
+    String companyName();
+    String businessType();
+    String certified();
+    String verified();
     String description();
     String duration();
     String from();

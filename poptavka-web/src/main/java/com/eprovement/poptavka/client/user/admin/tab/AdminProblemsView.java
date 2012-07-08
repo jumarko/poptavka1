@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
@@ -36,6 +37,10 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int TEXT_COL_WIDTH = 100;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -111,7 +116,7 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new EditTextCell(), "ID", true, 50,
+        dataGrid.addColumn(new EditTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -120,7 +125,8 @@ public class AdminProblemsView extends Composite implements AdminProblemsPresent
                     }
                 });
         // DemandName
-        textColumn = dataGrid.addColumn(new EditTextCell(), "Text", true, 100,
+        textColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.text(), true, TEXT_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

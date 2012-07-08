@@ -42,7 +42,14 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
 
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
-    // Table
+    //Table constants
+    private static final int CREATED_DATE_COL_WIDTH = 35;
+    private static final int CATEGORY_COL_WIDTH = 60;
+    private static final int TITLE_COL_WIDTH = 100;
+    private static final int LOCALITY_COL_WIDTH = 60;
+    private static final int PRICE_WIDTH = 40;
+    private static final int URGENCY_COL_WIDTH = 20;
+    // Table definitions
     @UiField(provided = true)
     UniversalAsyncGrid<FullDemandDetail> dataGrid;
     private List<String> gridColumns = Arrays.asList(
@@ -138,83 +145,89 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
      */
     private void initGridColumns() {
         // Date of creation
-        dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, 35, new UniversalAsyncGrid.GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.createdDate(), true, CREATED_DATE_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
 
-            public String getValue(Object object) {
-                FullDemandDetail demandDetail = (FullDemandDetail) object;
-                if (demandDetail.getCreated() == null) {
-                    return "not defined";
-                } else {
-                    Date now = new Date();
-                    long millis = now.getTime() - demandDetail.getCreated().getTime();
-                    if (millis < 86400000) {
-                        return DateTimeFormat.getFormat("hh:mm").format(demandDetail.getCreated());
+                    public String getValue(Object object) {
+                        FullDemandDetail demandDetail = (FullDemandDetail) object;
+                        if (demandDetail.getCreated() == null) {
+                            return "not defined";
+                        } else {
+                            Date now = new Date();
+                            long millis = now.getTime() - demandDetail.getCreated().getTime();
+                            if (millis < 86400000) {
+                                return DateTimeFormat.getFormat("hh:mm").format(demandDetail.getCreated());
 //                        return "dnes";
-                    } else if (86400000 <= millis && millis < 172800000) {
-                        return "vcera";
-                    } else {
-                        return DateTimeFormat.getFormat("dd.MM.yyyy").format(demandDetail.getCreated());
+                            } else if (86400000 <= millis && millis < 172800000) {
+                                return "vcera";
+                            } else {
+                                return DateTimeFormat.getFormat("dd.MM.yyyy").format(demandDetail.getCreated());
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
         // Root category info
-        dataGrid.addColumn(new TextCell(), bundle.category(), false, 60, new UniversalAsyncGrid.GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.category(), false, CATEGORY_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
 
-            @Override
-            public String getValue(Object object) {
-                StringBuilder str = new StringBuilder();
-                for (String cat : ((FullDemandDetail) object).getCategories().values()) {
-                    str.append(cat);
-                    str.append(",\n");
-                }
-                str.delete(str.length() - 2, str.length());
-                return str.toString();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        StringBuilder str = new StringBuilder();
+                        for (String cat : ((FullDemandDetail) object).getCategories().values()) {
+                            str.append(cat);
+                            str.append(",\n");
+                        }
+                        str.delete(str.length() - 2, str.length());
+                        return str.toString();
+                    }
+                });
 
         // Demand Info
-        dataGrid.addColumn(new TextCell(), bundle.demand(), true, 100, new UniversalAsyncGrid.GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.demand(), true, TITLE_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
 
-            @Override
-            public String getValue(Object object) {
-                return ((FullDemandDetail) object).getTitle();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return ((FullDemandDetail) object).getTitle();
+                    }
+                });
 
         // Locality
-        dataGrid.addColumn(new TextCell(), bundle.locality(), false, 60, new UniversalAsyncGrid.GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.locality(), false, LOCALITY_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
 
-            @Override
-            public String getValue(Object object) {
-                StringBuilder str = new StringBuilder();
-                for (String cat : ((FullDemandDetail) object).getLocalities().values()) {
-                    str.append(cat);
-                    str.append(",\n");
-                }
-                str.delete(str.length() - 2, str.length());
-                return str.toString();
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        StringBuilder str = new StringBuilder();
+                        for (String cat : ((FullDemandDetail) object).getLocalities().values()) {
+                            str.append(cat);
+                            str.append(",\n");
+                        }
+                        str.delete(str.length() - 2, str.length());
+                        return str.toString();
+                    }
+                });
 
         // Cena
-        dataGrid.addColumn(new TextCell(), bundle.price(), true, 40, new UniversalAsyncGrid.GetValue<String>() {
+        dataGrid.addColumn(new TextCell(), bundle.price(), true, PRICE_WIDTH,
+                new UniversalAsyncGrid.GetValue<String>() {
 
-            @Override
-            public String getValue(Object object) {
-                return currencyFormat.format(((FullDemandDetail) object).getPrice());
-            }
-        });
+                    @Override
+                    public String getValue(Object object) {
+                        return currencyFormat.format(((FullDemandDetail) object).getPrice());
+                    }
+                });
 
         // Urgencia
-        dataGrid.addColumn(new ImageStatus(), "", true, 20, new UniversalAsyncGrid.GetValue<Date>() {
+        dataGrid.addColumn(new ImageStatus(), "", true, URGENCY_COL_WIDTH,
+                new UniversalAsyncGrid.GetValue<Date>() {
 
-            @Override
-            public Date getValue(Object object) {
-                return ((FullDemandDetail) object).getEndDate();
-            }
-        });
+                    @Override
+                    public Date getValue(Object object) {
+                        return ((FullDemandDetail) object).getEndDate();
+                    }
+                });
     }
 
     @Override

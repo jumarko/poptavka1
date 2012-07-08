@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.EditTextCell;
@@ -39,6 +40,12 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int CODE_COL_WIDTH = 50;
+    private static final int NAME_COL_WIDTH = 100;
+    private static final int DESCRIPTION_COL_WIDTH = 100;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -115,7 +122,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
     private void initTableColumns() {
 
         // ID
-        dataGrid.addColumn(new TextCell(), "ID", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -125,7 +132,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
                 });
 
         // Code
-        dataGrid.addColumn(new TextCell(), "Code", true, 50,
+        dataGrid.addColumn(new TextCell(), Storage.MSGS.code(), true, CODE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -135,7 +142,7 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
                 });
 
         // name
-        nameColumn = dataGrid.addColumn(new EditTextCell(), "Name", true, 100,
+        nameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.name(), true, NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -145,7 +152,8 @@ public class AdminPermissionsView extends Composite implements AdminPermissionsP
                 });
 
         // description
-        descriptionColumn = dataGrid.addColumn(new EditTextCell(), "Description", true, 100,
+        descriptionColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.description(), true, DESCRIPTION_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.google.gwt.cell.client.ClickableTextCell;
@@ -42,6 +43,13 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int INVOICE_COL_WIDTH = 50;
+    private static final int VAR_SYMB_COL_WIDTH = 60;
+    private static final int TOTAL_PRICE_COL_WIDTH = 60;
+    private static final int PAY_METHOD_COL_WIDTH = 60;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -128,7 +136,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
      */
     private void initTableColumns() {
         // ID
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), "ID", true, 50,
+        idColumn = dataGrid.addColumn(
+                new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -138,7 +147,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
                 });
 
         // Invoice number
-        invoiceNumberColumn = dataGrid.addColumn(new EditTextCell(), "InvoiceNumber", true, 50,
+        invoiceNumberColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.invoiceNumber(), true, INVOICE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -148,7 +158,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
                 });
 
         // variable symbol
-        varSymbolColumn = dataGrid.addColumn(new EditTextCell(), "Var. Symb", true, 60,
+        varSymbolColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.varSymb(), true, VAR_SYMB_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -158,7 +169,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
                 });
 
         // total price
-        priceColumn = dataGrid.addColumn(new EditTextCell(), "Total price", true, 60,
+        priceColumn = dataGrid.addColumn(
+                new EditTextCell(), Storage.MSGS.totalPrice(), true, TOTAL_PRICE_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -168,7 +180,8 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
                 });
 
         // DemandStatus.
-        payMethodColumn = dataGrid.addColumn(new TextCell(), "Pay Method", false, 60,
+        payMethodColumn = dataGrid.addColumn(
+                new TextCell(), Storage.MSGS.payMethod(), false, PAY_METHOD_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override

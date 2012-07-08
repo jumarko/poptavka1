@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -37,6 +38,13 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     //*************************************************************************/
     //                              ATTRIBUTES                                */
     //*************************************************************************/
+    //Table constants
+    private static final int ID_COL_WIDTH = 50;
+    private static final int COMPANY_COL_WIDTH = 50;
+    private static final int FIRST_NAME_COL_WIDTH = 80;
+    private static final int LAST_NAME_COL_WIDTH = 80;
+    private static final int RATING_COL_WIDTH = 40;
+    //
     @UiField
     Button commit, rollback, refresh;
     @UiField
@@ -74,6 +82,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     //*************************************************************************/
     //                              INITIALIZATION                            */
     //*************************************************************************/
+
     /**
      * creates WIDGET view.
      */
@@ -119,7 +128,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        idColumn = dataGrid.addColumn(new ClickableTextCell(), "ID", true, 50,
+        idColumn = dataGrid.addColumn(new ClickableTextCell(), Storage.MSGS.id(), true, ID_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -129,7 +138,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // company
-        companyColumn = dataGrid.addColumn(new EditTextCell(), "Company", true, 50,
+        companyColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.company(), true, COMPANY_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -139,7 +148,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // firstName
-        firstNameColumn = dataGrid.addColumn(new EditTextCell(), "Name", true, 80,
+        firstNameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.firstName(), true, FIRST_NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -149,7 +158,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // lastName
-        lastNameColumn = dataGrid.addColumn(new EditTextCell(), "Surname", true, 80,
+        lastNameColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.lastName(), true, LAST_NAME_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
@@ -159,7 +168,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 });
 
         // rating
-        ratingColumn = dataGrid.addColumn(new EditTextCell(), "Rating", true, 40,
+        ratingColumn = dataGrid.addColumn(new EditTextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
                 new GetValue<String>() {
 
                     @Override
