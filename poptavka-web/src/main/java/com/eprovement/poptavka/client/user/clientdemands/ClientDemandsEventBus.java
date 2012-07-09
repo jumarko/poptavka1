@@ -4,10 +4,14 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedProjectsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientContestsPresenter;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientProjectsPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -46,12 +50,37 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = ClientDemandsPresenter.class, historyConverter = ClientDemandsHistoryConverter.class)
     String goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
+    @Event(handlers = ClientProjectsPresenter.class)
+    void initClientProjects(SearchModuleDataHolder filter);
+
+    @Event(handlers = ClientContestsPresenter.class)
+    void initClientContests(SearchModuleDataHolder filter);
+
+    @Event(handlers = ClientAssignedProjectsPresenter.class)
+    void initClientAssignedProjects(SearchModuleDataHolder filter);
+
     /**************************************************************************/
-    /* Parent events */
+    /* Navigation Parent events */
     /**************************************************************************/
+
+    @Event(forwardToParent = true)
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void goToCreateDemandModule();
+
+    @Event(forwardToParent = true)
+    void goToCreateSupplierModule();
+
     /**************************************************************************/
     /* Business events handled by Presenters. */
     /**************************************************************************/
+    @Event(handlers = ClientDemandsPresenter.class)
+    void displayView(IsWidget content);
+
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/
