@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.eprovement.poptavka.client.user.clientdemands;
+package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,23 +10,22 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
-
 /**
  *
  * @author Martin Slavkovsky
  */
-public class ClientDemandsWelcomeView extends Composite {
+public class SupplierDemandsWelcomeView extends Composite {
 
-    private static ClientDemandsModuleWelcomeViewUiBinder uiBinder =
-            GWT.create(ClientDemandsModuleWelcomeViewUiBinder.class);
+    private static SupplierDemandsModuleWelcomeViewUiBinder uiBinder =
+            GWT.create(SupplierDemandsModuleWelcomeViewUiBinder.class);
 
-    interface ClientDemandsModuleWelcomeViewUiBinder extends UiBinder<Widget, ClientDemandsWelcomeView> {
+    interface SupplierDemandsModuleWelcomeViewUiBinder extends UiBinder<Widget, SupplierDemandsWelcomeView> {
     }
 
     /**
      * creates WIDGET view
      */
-    public ClientDemandsWelcomeView() {
+    public SupplierDemandsWelcomeView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 

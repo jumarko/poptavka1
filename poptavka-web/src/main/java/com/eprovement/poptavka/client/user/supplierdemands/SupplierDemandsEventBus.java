@@ -4,10 +4,14 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedProjectsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierContestsPresenter;
+import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierProjectsPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -46,16 +50,38 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = SupplierDemandsPresenter.class, historyConverter = SupplierDemandsHistoryConverter.class)
     String goToSupplierDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
+    @Event(handlers = SupplierProjectsPresenter.class)
+    void initSupplierProjects(SearchModuleDataHolder filter);
+
+    @Event(handlers = SupplierContestsPresenter.class)
+    void initSupplierContests(SearchModuleDataHolder filter);
+
+    @Event(handlers = SupplierAssignedProjectsPresenter.class)
+    void initSupplierAssignedProjects(SearchModuleDataHolder filter);
+
     /**************************************************************************/
     /* Parent events */
     /**************************************************************************/
+    @Event(forwardToParent = true)
+    void goToHomeDemandsModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void goToHomeSuppliersModule(SearchModuleDataHolder filter);
+
+    @Event(forwardToParent = true)
+    void goToCreateDemandModule();
+
+    @Event(forwardToParent = true)
+    void goToCreateSupplierModule();
+
     /**************************************************************************/
     /* Business events handled by Presenters. */
     /**************************************************************************/
+    @Event(handlers = SupplierDemandsPresenter.class)
+    void displayView(IsWidget content);
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/
-
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */
     /* Should be called only from UniversalAsyncGrid. */
