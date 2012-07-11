@@ -17,8 +17,6 @@ import com.eprovement.poptavka.client.user.demands.handler.DemandContentHandler;
 import com.eprovement.poptavka.client.user.demands.handler.DemandMessageHandler;
 import com.eprovement.poptavka.client.user.demands.tab.ClientListPresenter;
 import com.eprovement.poptavka.client.user.demands.tab.SupplierListPresenter;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
@@ -149,8 +147,8 @@ public interface DemandEventBus extends EventBus {
     @Event(handlers = DemandContentHandler.class)
     void requestDemandDetail(Long demandId, ViewType type);
 
-    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
-    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
+//    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+//    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
 
     /*
      * Request/Response method pair
@@ -162,7 +160,7 @@ public interface DemandEventBus extends EventBus {
     @Event(handlers = DemandMessageHandler.class)
     void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
 
-    @Event(handlers = DevelDetailWrapperPresenter.class)
-    void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+//    @Event(handlers = DevelDetailWrapperPresenter.class)
+//    void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
 
 }

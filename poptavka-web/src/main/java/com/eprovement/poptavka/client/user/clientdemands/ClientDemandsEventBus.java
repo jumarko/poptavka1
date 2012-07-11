@@ -7,9 +7,14 @@ package com.eprovement.poptavka.client.user.clientdemands;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedProjectsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientContestsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientProjectsPresenter;
+import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
@@ -18,6 +23,8 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -76,10 +83,71 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     void goToCreateSupplierModule();
 
     /**************************************************************************/
-    /* Business events handled by Presenters. */
+    /* Business events handled by DemandModulePresenter.                      */
     /**************************************************************************/
+    // Forward methods don't need history converter because they have its owns
     @Event(handlers = ClientDemandsPresenter.class)
     void displayView(IsWidget content);
+
+    /**************************************************************************/
+    /* Business events handled by ALL VIEW presenters.                        */
+    /**************************************************************************/
+    /**
+     * Send/Response method pair
+     * Sends message and receive the answer in a form of the same message to be displayed on UI.
+     * @param messageToSend
+     * @param type type of handling view
+     */
+    @Event(handlers = ClientDemandsHandler.class)
+    void sendMessage(MessageDetail messageToSend, ViewType type);
+    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
+
+    @Event(handlers = ClientProjectsPresenter.class, passive = true)
+    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
+    /**************************************************************************/
+    /* Business events handled by ListPresenters.                             */
+    /**************************************************************************/
+    @Event(handlers = ClientProjectsPresenter.class)
+    void responseClientsProjects(List<ClientDemandMessageDetail> result);
+
+//    @Event(handlers = SupplierProjectsPresenter.class)
+//    void responseSupplierProjects(ArrayList<PotentialDemandMessage> result);
+
+    /**************************************************************************/
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
+
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
+    /**************************************************************************/
+    /* Business events handled by DevelDetailWrapperPresenter.                */
+    /**************************************************************************/
+    /*
+     * Request/Response Method pair
+     * DemandDetail for detail section
+     * @param demandId
+     * @param type
+     */
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestDemandDetail(Long demandId, ViewType type);
+
+    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
+
+    /*
+     * Request/Response method pair
+     * Fetch and display chat(conversation) for supplier new demands list
+     * @param messageId
+     * @param userMessageId
+     * @param userId
+     */
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
+
+    @Event(handlers = DevelDetailWrapperPresenter.class)
+    void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+
 
     /**************************************************************************/
     /* Business events handled by Handlers. */

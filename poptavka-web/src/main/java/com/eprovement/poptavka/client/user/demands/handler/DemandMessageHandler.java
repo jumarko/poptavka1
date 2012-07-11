@@ -56,7 +56,7 @@ public class DemandMessageHandler extends BaseEventHandler<DemandEventBus> {
 
                 @Override
                 public void onSuccess(ArrayList<MessageDetail> result) {
-                    eventBus.responseChatForSupplierList(result, ViewType.POTENTIAL);
+//                    eventBus.responseChatForSupplierList(result, ViewType.POTENTIAL);
                 }
             });
     }

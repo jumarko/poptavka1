@@ -5,13 +5,17 @@
 package com.eprovement.poptavka.server.service.clientdemands;
 
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCService;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -35,9 +39,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return count
      */
     @Override
-    public long getClientDemandsCount(long clientID, SearchModuleDataHolder filter) {
+    public long getClientProjectsCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 1L;
     }
 
     /**
@@ -52,10 +56,16 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return list of demand's detail objects
      */
     @Override
-    public List<FullDemandDetail> getClientDemands(int start, int maxResult,
+    public List<ClientDemandMessageDetail> getClientProjects(int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullDemandDetail>();
+        ClientDemandMessageDetail cdmd1 = new ClientDemandMessageDetail();
+        cdmd1.setDemandStatus(DemandStatus.NEW);
+        cdmd1.setDemandTitle("Poptavka1");
+        cdmd1.setPrice(BigDecimal.valueOf(10000));
+        cdmd1.setEndDate(new Date());
+        cdmd1.setEndDate(new Date());
+        return new ArrayList<ClientDemandMessageDetail>();
     }
 
     /**

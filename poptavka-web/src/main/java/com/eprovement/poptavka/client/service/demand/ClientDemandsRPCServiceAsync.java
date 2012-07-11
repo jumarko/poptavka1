@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.service.demand;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -16,12 +17,12 @@ import java.util.Map;
  */
 public interface ClientDemandsRPCServiceAsync {
 
-    void getClientDemandsCount(long clientID, SearchModuleDataHolder filter,
-            AsyncCallback<Long> callback) throws RPCException;
+    void getClientProjectsCount(long clientID, SearchModuleDataHolder filter,
+            AsyncCallback<Long> callback);
 
-    void getClientDemands(int start, int maxResult,
+    void getClientProjects(int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<FullDemandDetail>> callback) throws RPCException;
+            AsyncCallback<List<ClientDemandMessageDetail>> callback);
 
     void getClientDemandConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback) throws RPCException;

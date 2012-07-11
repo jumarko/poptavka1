@@ -12,7 +12,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.user.demands.DemandEventBus;
+import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionPresenter;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -21,7 +21,7 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
 
 @Presenter(view = DevelDetailWrapperView.class, multiple = true)
 public class DevelDetailWrapperPresenter extends
-        LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, DemandEventBus> {
+        LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, ClientDemandsEventBus> {
 
     public static final int DETAIL = 0;
     public static final int CHAT = 1;

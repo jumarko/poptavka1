@@ -3,6 +3,7 @@ package com.eprovement.poptavka.client.service.demand;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -30,7 +31,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientDemandsCount(long clientID, SearchModuleDataHolder filter) throws RPCException;
+    long getClientProjectsCount(long clientID, SearchModuleDataHolder filter);
 
     /**
      * Get all demands that has been created by client.
@@ -43,8 +44,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return list of demand's detail objects
      */
-    List<FullDemandDetail> getClientDemands(int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws RPCException;
+    List<ClientDemandMessageDetail> getClientProjects(int start, int maxResult,
+            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**
      * When supplier asks something about a demand of some client.

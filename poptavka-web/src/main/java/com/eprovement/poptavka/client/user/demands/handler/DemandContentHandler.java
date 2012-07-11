@@ -144,7 +144,7 @@ public class DemandContentHandler extends BaseEventHandler<DemandEventBus> {
 
             @Override
             public void onSuccess(FullDemandDetail result) {
-                eventBus.responseDemandDetail(result, type);
+//                eventBus.responseDemandDetail(result, type);
             }
         });
     }
