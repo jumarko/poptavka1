@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 import java.util.List;
@@ -64,7 +65,9 @@ public class HomeDemandsPresenter extends BasePresenter<
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                FullDemandDetail selected = view.getDataGrid().getSelectionModel().getSelectedObject();
+                FullDemandDetail selected =
+                        (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                        .getSelectedObject();
                 if (selected != null) {
                     view.getBannerLabel().setVisible(false);
                     view.getDemandDetailPanel().setVisible(true);
@@ -109,6 +112,7 @@ public class HomeDemandsPresenter extends BasePresenter<
     public void onForward() {
         eventBus.setUpSearchBar(new HomeDemandViewView(), true, true, true);
     }
+
     /**
      * ***********************************************************************
      * Navigation events

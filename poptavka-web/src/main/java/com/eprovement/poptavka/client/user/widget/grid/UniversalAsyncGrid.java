@@ -13,7 +13,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +111,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * Holds filtering criteria. See class (@link SearchModuleDataHolder).
      */
     private SearchModuleDataHolder searchDataHolder = null;
-    private final SingleSelectionModel<T> selectionModel = new SingleSelectionModel<T>();
 
     /**
      * Constructor of UniversalAsyncGrid.
@@ -121,7 +119,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public UniversalAsyncGrid(List<String> gridColumns) {
         super();
-        setSelectionModel(selectionModel);
         this.gridColumns = gridColumns;
     }
 
@@ -133,7 +130,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
-        setSelectionModel(selectionModel);
         this.gridColumns = gridColumns;
     }
 
@@ -270,16 +266,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public AsyncHandler getSortHandler() {
         return sortHandler;
-    }
-
-    /**
-     * Gets single selection model provided by UniversalAsyncGrid class.
-     *
-     * @return
-     */
-    @Override
-    public SingleSelectionModel<T> getSelectionModel() {
-        return selectionModel;
     }
 
     /**

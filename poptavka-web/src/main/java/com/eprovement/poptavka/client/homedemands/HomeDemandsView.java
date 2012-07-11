@@ -27,6 +27,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -127,8 +128,9 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         dataGrid.setWidth("800px");
         dataGrid.setHeight("500px");
-//        dataGrid.setEmptyTableWidget(new Label("No data available."));
-//        dataGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
+        // Selection handler
+        dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
+
         dataGrid.setRowCount(Integer.valueOf(pageSize.getItemText(pageSize.getSelectedIndex())), true);
         dataGrid.setPageSize(this.getPageSize());
 

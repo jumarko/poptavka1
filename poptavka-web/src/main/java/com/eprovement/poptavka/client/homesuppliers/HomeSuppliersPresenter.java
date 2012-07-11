@@ -187,7 +187,7 @@ public class HomeSuppliersPresenter
                     wasSelection = true;
                     view.hideSuppliersDetail();
                     view.getDataGrid().getSelectionModel().setSelected(
-                            view.getDataGrid().getSelectionModel().getSelectedObject(), false);
+                            ((SingleSelectionModel) view.getDataGrid().getSelectionModel()).getSelectedObject(), false);
 
                     if (searchDataHolder == null) {
                         searchDataHolder = new SearchModuleDataHolder();
@@ -204,7 +204,8 @@ public class HomeSuppliersPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 FullSupplierDetail selected =
-                        (FullSupplierDetail) view.getDataGrid().getSelectionModel().getSelectedObject();
+                        (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                        .getSelectedObject();
 
                 if (selected != null) {
                     view.displaySuppliersDetail(selected);

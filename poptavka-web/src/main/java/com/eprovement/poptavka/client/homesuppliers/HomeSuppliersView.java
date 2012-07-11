@@ -252,6 +252,8 @@ public class HomeSuppliersView extends OverflowComposite
         dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(KEY_PROVIDER, gridColumns);
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
 
+        dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER));
+
         dataGrid.setMinimumTableWidth(SUPPLIER_NAME_COL_WIDTH + RATING_COL_WIDTH
                 + ADDRESS_COL_WIDTH + LOCALITY_COL_WIDTH, Unit.PX);
         dataGrid.setHeight(Integer.toString(TABLE_HEIGHT) + "px");
