@@ -136,7 +136,6 @@ public class ClientProjectsView extends Composite
                 });
         // Create a CellTable.
         demandGrid = new UniversalAsyncGrid<ClientProjectDetail>(gridColumns);
-        demandGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         demandGrid.setWidth("800px");
         demandGrid.setHeight("500px");
 //        demandGrid.setLoadingIndicator(new Label("Loading, please wait ..."));
@@ -163,7 +162,6 @@ public class ClientProjectsView extends Composite
         List<String> gridColumns = Arrays.asList(new String[]{"supplierName", "body", "date"});
         // Create a CellTable.
         conversationGrid = new UniversalAsyncGrid<ClientProjectConversationDetail>(gridColumns);
-        conversationGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
         conversationGrid.setWidth("800px");
         conversationGrid.setHeight("500px");
 

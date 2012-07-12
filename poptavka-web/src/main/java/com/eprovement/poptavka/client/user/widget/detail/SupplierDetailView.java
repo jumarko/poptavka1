@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.google.gwt.dom.client.Style;
 
 public class SupplierDetailView extends Composite {
 
@@ -117,7 +118,7 @@ public class SupplierDetailView extends Composite {
     }
 
 
-    public void displaySuppliersDetail(BusinessUserDetail userDetail) {
+    public void setSupplierDetail(BusinessUserDetail userDetail) {
         detail.setVisible(true);
 
         description.setText(userDetail.getSupplier().getDescription());
@@ -153,7 +154,7 @@ public class SupplierDetailView extends Composite {
 
     }
 
-    public void displaySuppliersDetail(FullSupplierDetail detail) {
+    public void setSupplierDetail(FullSupplierDetail detail) {
 //        detail.setVisible(true);
         if (detail.getOverallRating() == -1) {
             overallRating.setText("");
@@ -193,5 +194,13 @@ public class SupplierDetailView extends Composite {
 //        websiteContactPerson.setText(detail.getWebsite());
         taxId.setText(detail.getTaxId());
 
+    }
+
+    public void toggleVisible() {
+        if (detail.isVisible()) {
+            detail.getElement().getStyle().setDisplay(Style.Display.NONE);
+        } else {
+            detail.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+        }
     }
 }

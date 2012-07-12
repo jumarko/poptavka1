@@ -181,7 +181,7 @@ public class HomeSuppliersView extends OverflowComposite
         reklama.setVisible(false);
         detail.setVisible(true);
 
-        supplierDetail.displaySuppliersDetail(fullSupplierDetail);
+        supplierDetail.setSupplierDetail(fullSupplierDetail);
     }
 
     @Override

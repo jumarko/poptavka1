@@ -18,6 +18,10 @@
         <w:ClickableDiv ui:field="demandHeader" text="Demand Detail Section Header"/>
         <w:DemandDetailView ui:field="demandDetail"></w:DemandDetailView>
         <hr />
+        <!-- supplier detail section with always visible header able to display loading and close button -->
+        <w:ClickableDiv ui:field="supplierHeader" text="Supplier Detail Section Header"/>
+        <w:SupplierDetailView ui:field="supplierDetail"></w:SupplierDetailView>
+        <hr />
         <!-- conversation section with always visible header able to display loading and close button -->
         <w:ClickableDiv ui:field="conversationHeader" text="Conversation Section Header"/>
         <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>

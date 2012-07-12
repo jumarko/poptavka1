@@ -16,20 +16,24 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionPresenter;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
 @Presenter(view = DevelDetailWrapperView.class, multiple = true)
-public class DevelDetailWrapperPresenter extends
-        LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, ClientDemandsEventBus> {
+public class DevelDetailWrapperPresenter
+        extends LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, ClientDemandsEventBus> {
 
     public static final int DETAIL = 0;
     public static final int CHAT = 1;
 
     public interface IDetailWrapper extends LazyView {
+
         Widget getWidgetView();
 
-        void setDetail(FullDemandDetail demandDetail);
+        void setDemandDetail(FullDemandDetail demandDetail);
+
+        void setSupplierDetail(FullSupplierDetail supplierDetail);
 
         UserConversationPanel getConversationPanel();
 
@@ -37,14 +41,13 @@ public class DevelDetailWrapperPresenter extends
 
         void toggleDemandLoading();
 
+        void toggleSupplierLoading();
+
         void toggleConversationLoading();
 
         void setChat(ArrayList<MessageDetail> chatMessages, boolean collapsed);
-
     }
-
     private ViewType type;
-
     /**
      * TODO.
      * IMPORTANT ..... NEED TO BE DISCUSSED
@@ -75,7 +78,6 @@ public class DevelDetailWrapperPresenter extends
         }
     }
 
-
     /**
      * Initialize widget and sets his type.
      *
@@ -88,7 +90,6 @@ public class DevelDetailWrapperPresenter extends
         detailSection.setWidget(view.getWidgetView());
         this.type = viewType;
     }
-
 
     /**
      * Initializes reply widget, when first demand is clicked.
@@ -108,7 +109,19 @@ public class DevelDetailWrapperPresenter extends
     public void onResponseDemandDetail(FullDemandDetail demandDetail, ViewType wrapperType) {
         //neccessary check for method to be executed only in appropriate presenter
         if (type.equals(wrapperType)) {
-            view.setDetail(demandDetail);
+            view.setDemandDetail(demandDetail);
+        }
+    }
+
+    /**
+     * Response method for fetching supplierDetail.
+     *
+     * @param demandDetail detail to be displayed
+     */
+    public void onResponseSupplierDetail(FullSupplierDetail supplierDetail, ViewType wrapperType) {
+        //neccessary check for method to be executed only in appropriate presenter
+        if (type.equals(wrapperType)) {
+            view.setSupplierDetail(supplierDetail);
         }
     }
 
@@ -143,23 +156,22 @@ public class DevelDetailWrapperPresenter extends
      */
     private ClickHandler bindReplyWindowAction() {
         return new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 GWT.log(" - ReplyWidget: CLICK ACTION called");
-              // sending message only when valid
+                // sending message only when valid
                 if (offerQuestionReply.isMessageValid()) {
-                  // distinguish what kind of message should be sent
+                    // distinguish what kind of message should be sent
                     if (offerQuestionReply.hasResponseQuestion()) {
-                        MessageDetail messageToSend = offerQuestionReply
-                              .getCreatedMessage();
-                        messageToSend = view.getConversationPanel()
-                              .updateSendingMessage(messageToSend);
+                        MessageDetail messageToSend = offerQuestionReply.getCreatedMessage();
+                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                         messageToSend.setSenderId(Storage.getUser().getUserId());
                         eventBus.sendMessage(messageToSend, type);
 //                        Window.alert(messageToSend.getMessageId() + "");
                     } else {
-                      // TODO
-                      //finish sending of offer
+                        // TODO
+                        //finish sending of offer
 //                      OfferMessageDetail offer = new OfferMessageDetail();
 //                      offer = (OfferMessageDetail) view
 //                              .getConversationPanel().updateSendingOfferMessage(
@@ -201,7 +213,6 @@ public class DevelDetailWrapperPresenter extends
             view.toggleConversationLoading();
         }
     }
-
     /**
      * Response when user click demand to see the details. DemandDetails widget,
      * past conversation regarding this demand and reply widget is created.
@@ -216,7 +227,6 @@ public class DevelDetailWrapperPresenter extends
 //        // GUI visual event
 //        toggleDetailLoading();
 //    }
-
 //    public void onSetBaseDemandDetail(BaseDemandDetail detail) {
 //        view.setDetail(new DemandDetailView(detail));
 //        // GUI visual event
@@ -254,7 +264,6 @@ public class DevelDetailWrapperPresenter extends
 //        view.getConversationPanel().setMessageList(messageList, true);
 //        toggleConversationLoading();
 //    }
-
     // TODO merge with method above, the same method body + different options
     // for different types
 //    public void onSetSingleDemandConversation(
@@ -273,7 +282,6 @@ public class DevelDetailWrapperPresenter extends
 //        view.getConversationPanel().setMessageList(messageList, true);
 //        toggleConversationLoading();
 //    }
-
 //    public void onAddMessageToPotentailDemandConversation(MessageDetail result,
 //            ViewType wrapperhandlerType) {
 //        if (!wrapperhandlerType.equals(type)) {
@@ -291,7 +299,6 @@ public class DevelDetailWrapperPresenter extends
 //        }
 //
 //    }
-
     /**
      * Visual sign, that demand detail is loading it's children. clear all it's
      * children;
@@ -317,7 +324,6 @@ public class DevelDetailWrapperPresenter extends
 //
 //        // reply window stay always loaded, do not do anything
 //    }
-
     /**
      * Visual SIGN ONLY. For getting conversation
      *
@@ -331,7 +337,6 @@ public class DevelDetailWrapperPresenter extends
 //            toggleConversationLoading();
 //        }
 //    }
-
     /**
      * CLIENT ONLY Display offer message from presenter. Client can react to it.
      *
@@ -346,7 +351,6 @@ public class DevelDetailWrapperPresenter extends
 //        GWT.log("OFFER ID: " + offerDetail.getOfferId());
 //        view.getConversationPanel().addOfferMessagePresenter(presenter);
 //    }
-
     /**
      * SUPPLIER ONLY Creates reply window for creating Offer/Question message.
      *
@@ -362,7 +366,6 @@ public class DevelDetailWrapperPresenter extends
 //        potentialViewReplyWiget.initReplyWindow(view.getReplyHolder());
 //        potentialViewReplyWiget.addSubmitHandler(bindReplyWindowAction());
 //    }
-
 //    private ClickHandler bindReplyWindowAction() {
 //        return new ClickHandler() {
 //            @Override
@@ -392,7 +395,6 @@ public class DevelDetailWrapperPresenter extends
 //            }
 //        };
 //    }
-
 //    private void setMyDemandsViewReplyWidget() {
 //        if (myDemandsViewReplyWiget != null) {
 //            eventBus.removeHandler(myDemandsViewReplyWiget);
@@ -402,7 +404,6 @@ public class DevelDetailWrapperPresenter extends
 //        myDemandsViewReplyWiget
 //                .addSubmitHandler(bindConversationReplyWindowAction());
 //    }
-
 //    private ClickHandler bindConversationReplyWindowAction() {
 //        return new ClickHandler() {
 //            @Override
@@ -419,7 +420,6 @@ public class DevelDetailWrapperPresenter extends
 //            }
 //        };
 //    }
-
     /** loading events **/
     // just to enable loading
 //    public void onRequestPotentialDemandConversation(long messageId,
@@ -437,7 +437,6 @@ public class DevelDetailWrapperPresenter extends
 //            detailLoader = null;
 //        }
 //    }
-
 //    public void toggleConversationLoading() {
 //        if (conversationLoader == null) {
 //            GWT.log("  - loading created");
@@ -450,5 +449,4 @@ public class DevelDetailWrapperPresenter extends
 //            conversationLoader = null;
 //        }
 //    }
-
 }

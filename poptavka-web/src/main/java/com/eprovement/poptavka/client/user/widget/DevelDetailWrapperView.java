@@ -14,8 +14,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.user.widget.detail.ClickableDiv;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 
 public class DevelDetailWrapperView extends Composite
@@ -25,8 +27,9 @@ public class DevelDetailWrapperView extends Composite
     interface DetailWrapperViewUiBinder extends UiBinder<Widget, DevelDetailWrapperView> {   }
 
     @UiField HTMLPanel container;
-    @UiField ClickableDiv demandHeader, conversationHeader;
+    @UiField ClickableDiv demandHeader, supplierHeader, conversationHeader;
     @UiField DemandDetailView demandDetail;
+    @UiField SupplierDetailView supplierDetail;
     @UiField UserConversationPanel conversationPanel;
     @UiField SimplePanel replyHolder;
 
@@ -39,6 +42,14 @@ public class DevelDetailWrapperView extends Composite
             public void onClick(ClickEvent event) {
                 demandHeader.toggleOpen();
                 demandDetail.toggleVisible();
+            }
+        });
+        supplierHeader.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                supplierHeader.toggleOpen();
+                supplierDetail.toggleVisible();
             }
         });
         conversationHeader.addClickHandler(new ClickHandler() {
@@ -57,9 +68,15 @@ public class DevelDetailWrapperView extends Composite
     }
 
     @Override
-    public void setDetail(FullDemandDetail demand) {
+    public void setDemandDetail(FullDemandDetail demand) {
         demandDetail.setDemanDetail(demand);
         demandHeader.toggleLoading();
+    }
+
+    @Override
+    public void setSupplierDetail(FullSupplierDetail supplier) {
+        supplierDetail.setSupplierDetail(supplier);
+        supplierHeader.toggleLoading();
     }
 
     @Override
@@ -82,6 +99,12 @@ public class DevelDetailWrapperView extends Composite
     public void toggleDemandLoading() {
         //toggle actual visible state
         demandHeader.toggleLoading();
+    }
+
+    @Override
+    public void toggleSupplierLoading() {
+        //toggle actual visible state
+        supplierHeader.toggleLoading();
     }
 
     @Override
