@@ -64,7 +64,7 @@ public class DemandPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_MY_DEMANDS);
+                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_PROJECTS);
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
@@ -189,7 +189,7 @@ public class DemandPresenter
          */
         //Client
         switch (loadWidget) {
-            case Constants.DEMANDS_CLIENT_MY_DEMANDS:
+            case Constants.DEMANDS_CLIENT_PROJECTS:
                 eventBus.initClientList(filter);
                 break;
             case Constants.DEMANDS_CLIENT_OFFERS:

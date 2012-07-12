@@ -60,7 +60,7 @@ public class ClientDemandsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.DEMANDS_CLIENT_MY_DEMANDS);
+                eventBus.goToClientDemandsModule(null, Constants.DEMANDS_CLIENT_PROJECTS);
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
@@ -112,7 +112,7 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
-            case Constants.DEMANDS_CLIENT_MY_DEMANDS:
+            case Constants.DEMANDS_CLIENT_PROJECTS:
                 eventBus.initClientProjects(filter);
                 break;
             case Constants.DEMANDS_CLIENT_OFFERS:

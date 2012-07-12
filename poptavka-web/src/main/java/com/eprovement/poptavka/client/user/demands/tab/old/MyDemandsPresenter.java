@@ -21,7 +21,7 @@ import com.eprovement.poptavka.client.user.UserEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.unused.GlobalDemandConversationTable;
 import com.eprovement.poptavka.client.user.widget.grid.unused.SingleDemandConversationTable;
 import com.eprovement.poptavka.client.user.widget.unused.OldDetailWrapperPresenter;
-import com.eprovement.poptavka.shared.domain.demandsModule.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.DemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
@@ -95,7 +95,7 @@ public class MyDemandsPresenter extends
     }
 
     // PARENT TABLE
-    public void onSetClientDemandWithConversations(ArrayList<ClientDemandDetail> demandMessageList) {
+    public void onSetClientDemandWithConversations(ArrayList<ClientProjectDetail> demandMessageList) {
 //        List<ClientDemandMessageDetail> list = view.getDemandProvider().getList();
 //        list.clear();
 //        for (ClientDemandMessageDetail m : demandMessageList) {

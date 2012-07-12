@@ -2,10 +2,9 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -44,7 +43,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return list of demand's detail objects
      */
-    List<ClientDemandMessageDetail> getClientProjects(int start, int maxResult,
+    List<ClientProjectDetail> getClientProjects(int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**
@@ -58,8 +57,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter - define searching criteria if any
      * @return count
      */
-    long getClientDemandConversationsCount(long clientID, long demandID,
-            SearchModuleDataHolder filter) throws RPCException;
+    long getClientProjectConversationsCount(long clientID, long demandID,
+            SearchModuleDataHolder filter);
 
     /**
      * When supplier asks something about a demand of some client.
@@ -75,8 +74,8 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<UserMessageDetail> getClientDemandConversations(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws RPCException;
+    List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID, int start,
+            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     //************************* CLIENT - My Offers ****************************/
     /**
@@ -89,7 +88,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientOffersCount(long clientID, SearchModuleDataHolder filter) throws RPCException;
+    long getClientOffersCount(long clientID, SearchModuleDataHolder filter);
 
     /**
      * Get all demands where have been placed an offer by some supplier.
@@ -105,7 +104,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @return
      */
     List<FullDemandDetail> getClientOffersCount(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws RPCException;
+            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**
      * Get all offers of given demand.
@@ -114,7 +113,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      *
      * @return offers count of given demand
      */
-    long getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter) throws RPCException;
+    long getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter);
 
     /**
      * Get all offers of given demand.
@@ -130,7 +129,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @return
      */
     List<OfferDetail> getClientDemandOffers(long clientID, long demandID, int start,
-            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws RPCException;
+            int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     //******************** CLIENT - My Assigned Demands ***********************/
     /**
@@ -142,7 +141,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter) throws RPCException;
+    long getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter);
 
     /**
      * Get all offers that were accepted by client to solve a demand.
@@ -157,5 +156,5 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @return
      */
     List<OfferDetail> getClientAssignedDemands(long clientID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws RPCException;
+            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 }

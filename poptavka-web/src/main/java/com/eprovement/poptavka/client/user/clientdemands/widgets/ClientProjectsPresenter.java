@@ -9,7 +9,8 @@ import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.demandsModule.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -21,6 +22,8 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -35,13 +38,15 @@ public class ClientProjectsPresenter
     public interface ClientProjectsLayoutInterface extends LazyView, IsWidget {
 
         // Columns
-        Column<ClientDemandDetail, Date> getFinnishDateColumn();
+        Column<ClientProjectDetail, Date> getFinnishDateColumn();
 
-        Column<ClientDemandDetail, String> getPriceColumn();
+        Column<ClientProjectDetail, String> getPriceColumn();
 
-        Column<ClientDemandDetail, String> getTitleColumn();
+        Column<ClientProjectDetail, String> getTitleColumn();
 
-        Column<ClientDemandDetail, Date> getValidToDateColumn();
+        Column<ClientProjectDetail, Date> getValidToDateColumn();
+
+        Column<ClientProjectConversationDetail, Boolean> getStarColumn();
 
         // Buttons
         Button getReadBtn();
@@ -52,18 +57,29 @@ public class ClientProjectsPresenter
 
         Button getUnstarBtn();
 
-        // Others
-        UniversalAsyncGrid<ClientDemandDetail> getDemandGrid();
+        Button getBackBtn();
 
-        int getPageSize();
+        // Others
+        UniversalAsyncGrid<ClientProjectDetail> getDemandGrid();
+
+        UniversalAsyncGrid<ClientProjectConversationDetail> getConversationGrid();
+
+        int getDemandPageSize();
+
+        int getConversationPageSize();
 
         List<Long> getSelectedIdList();
 
-        Set<ClientDemandDetail> getSelectedMessageList();
+        Set<ClientProjectDetail> getSelectedMessageList();
 
         SimplePanel getWrapperPanel();
 
         IsWidget getWidgetView();
+
+        // Setters
+        void setConversationTableVisible(boolean visible);
+
+        void setDemandTitleLabel(String text);
     }
     /**************************************************************************/
     /* Attributes                                                             */
@@ -75,6 +91,8 @@ public class ClientProjectsPresenter
     @SuppressWarnings("unused")
     private boolean initialized = false;
     private SearchModuleDataHolder searchDataHolder;
+    //attrribute preventing repeated loading of demand detail, when clicked on the same demand
+    private long lastOpenedProjectConversation = -1;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -92,10 +110,65 @@ public class ClientProjectsPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
-        addTitleColumnFieldUpdater();
-        addPriceColumnFieldUpdater();
-        addFinnishDateColumnFieldUpdater();
-        addValidToDateColumnFieldUpdater();
+        view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECT_CONVERSATIONS);
+                ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
+                        view.getDemandGrid().getSelectionModel()).getSelectedObject();
+                if (selected != null) {
+                    selected.setRead(true);
+                    Storage.setDemandId(selected.getDemandId());
+                    view.setDemandTitleLabel(selected.getDemandTitle());
+                    view.setConversationTableVisible(true);
+                    view.getConversationGrid().getDataCount(eventBus, null);
+                }
+            }
+        });
+        view.getConversationGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                ClientProjectConversationDetail selected = (ClientProjectConversationDetail) ((SingleSelectionModel)
+                        view.getConversationGrid().getSelectionModel()).getSelectedObject();
+                if (selected != null) {
+                    if (lastOpenedProjectConversation != selected.getUserMessageId()) {
+                        lastOpenedProjectConversation = selected.getUserMessageId();
+                        selected.setRead(true);
+                        //Nacitaj detaili
+                    }
+                }
+
+            }
+        });
+        view.getBackBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getDemandGrid().getSelectionModel().setSelected(
+                        (ClientProjectDetail) ((SingleSelectionModel)
+                        view.getDemandGrid().getSelectionModel()).getSelectedObject(), false);
+                view.setConversationTableVisible(false);
+//                view.getDemandGrid().flush();
+//                view.getDemandGrid().redraw();
+            }
+        });
+        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientProjectConversationDetail, Boolean>() {
+
+            @Override
+            public void update(int index, ClientProjectConversationDetail object, Boolean value) {
+//              TableDisplay obj = (TableDisplay) object;
+                object.setStarred(!value);
+                view.getConversationGrid().redraw();
+                Long[] item = new Long[]{object.getUserMessageId()};
+//                    updateStarStatus(Arrays.asList(item), !value);
+            }
+        });
+//        addTitleColumnFieldUpdater();
+//        addPriceColumnFieldUpdater();
+//        addFinnishDateColumnFieldUpdater();
+//        addValidToDateColumnFieldUpdater();
         // Buttons Actions
         addReadButtonHandler();
         addUnreadButtonHandler();
@@ -107,7 +180,7 @@ public class ClientProjectsPresenter
     /* Navigation events */
     /**************************************************************************/
     public void onInitClientProjects(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_MY_DEMANDS);
+        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECTS);
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, searchDataHolder);
 //        }
@@ -139,14 +212,20 @@ public class ClientProjectsPresenter
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onResponseClientsProjects(List<ClientDemandDetail> data) {
+    public void onDisplayClientsProjects(List<ClientProjectDetail> data) {
         GWT.log("++ onResponseClientsProjects");
 
         view.getDemandGrid().updateRowData(data);
     }
+
+    public void onDisplayClientsProjectConversations(List<ClientProjectConversationDetail> data) {
+        GWT.log("++ onResponseClientsProjects");
+
+        view.getConversationGrid().updateRowData(data);
+    }
+
     //call eventBus to update READ status
     //called in ClickEvent of action button.
-
     public void updateReadStatus(List<Long> selectedIdList, boolean newStatus) {
         eventBus.requestReadStatusUpdate(selectedIdList, newStatus);
     }
@@ -238,10 +317,10 @@ public class ClientProjectsPresenter
     /**************************************************************************/
     // Field Updaters
     public void addTitleColumnFieldUpdater() {
-        view.getTitleColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
+        view.getTitleColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, String>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object, String value) {
+            public void update(int index, ClientProjectDetail object, String value) {
 //                TableDisplay obj = (TableDisplay) object;
 //                obj.setRead(true);
 //                dataGrid.redraw();
@@ -251,20 +330,20 @@ public class ClientProjectsPresenter
     }
 
     public void addPriceColumnFieldUpdater() {
-        view.getPriceColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, String>() {
+        view.getPriceColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, String>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object, String value) {
+            public void update(int index, ClientProjectDetail object, String value) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
     }
 
     public void addFinnishDateColumnFieldUpdater() {
-        view.getFinnishDateColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, Date>() {
+        view.getFinnishDateColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, Date>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object, Date value) {
+            public void update(int index, ClientProjectDetail object, Date value) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
@@ -272,10 +351,10 @@ public class ClientProjectsPresenter
     }
 
     public void addValidToDateColumnFieldUpdater() {
-        view.getValidToDateColumn().setFieldUpdater(new FieldUpdater<ClientDemandDetail, Date>() {
+        view.getValidToDateColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, Date>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object, Date value) {
+            public void update(int index, ClientProjectDetail object, Date value) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });

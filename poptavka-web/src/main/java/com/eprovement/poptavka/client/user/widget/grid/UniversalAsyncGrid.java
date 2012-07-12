@@ -4,7 +4,12 @@ import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -111,6 +116,20 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * Holds filtering criteria. See class (@link SearchModuleDataHolder).
      */
     private SearchModuleDataHolder searchDataHolder = null;
+    // for EVERY text display
+    // providing HTML safe display
+    public static final TextCell TABLE_TEXT_CELL = new TextCell(new SafeHtmlRenderer<String>() {
+
+        @Override
+        public SafeHtml render(String object) {
+            return SafeHtmlUtils.fromTrustedString(object);
+        }
+
+        @Override
+        public void render(String object, SafeHtmlBuilder builder) {
+            builder.appendHtmlConstant(object);
+        }
+    });
 
     /**
      * Constructor of UniversalAsyncGrid.

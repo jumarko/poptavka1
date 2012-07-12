@@ -28,7 +28,7 @@ import com.eprovement.poptavka.client.user.demands.tab.ClientListPresenter.IList
 import com.eprovement.poptavka.client.user.widget.grid.ColumnFactory;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.demandsModule.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 
 /**
@@ -53,7 +53,7 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
 
     //DataGridattributes
     @UiField(provided = true)
-    UniversalGrid<ClientDemandDetail> demandGrid;
+    UniversalGrid<ClientProjectDetail> demandGrid;
     @UiField(provided = true)
     SimplePager pager;
 
@@ -78,12 +78,12 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
         //load custom grid cssStyle
         Storage.RSCS.grid().ensureInjected();
         //demandGrid init
-        demandGrid = new UniversalGrid<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
+        demandGrid = new UniversalGrid<ClientProjectDetail>(ClientProjectDetail.KEY_PROVIDER);
         // Add a selection model so we can select cells.
-        final SelectionModel<ClientDemandDetail> selectionModel =
-            new MultiSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
+        final SelectionModel<ClientProjectDetail> selectionModel =
+            new MultiSelectionModel<ClientProjectDetail>(ClientProjectDetail.KEY_PROVIDER);
         demandGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager
-            .<ClientDemandDetail>createCheckboxManager());
+            .<ClientProjectDetail>createCheckboxManager());
 
         //init table
         initTableColumns(selectionModel);
@@ -102,28 +102,28 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
     }
 
     @Override
-    public UniversalGrid<ClientDemandDetail> getGrid() {
+    public UniversalGrid<ClientProjectDetail> getGrid() {
         return demandGrid;
     }
 
     @Override
-    public ListDataProvider<ClientDemandDetail> getDataProvider() {
+    public ListDataProvider<ClientProjectDetail> getDataProvider() {
         return demandGrid.getDataProvider();
     }
 
     /**
      * Create all columns to the grid and define click actions.
      */
-    public void initTableColumns(final SelectionModel<ClientDemandDetail> selectionModel) {
+    public void initTableColumns(final SelectionModel<ClientProjectDetail> selectionModel) {
         //init column factory
-        ColumnFactory<ClientDemandDetail> factory = new ColumnFactory<ClientDemandDetail>();
+        ColumnFactory<ClientProjectDetail> factory = new ColumnFactory<ClientProjectDetail>();
 
 // **** definition of all needed FieldUpdaters
         //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
-        FieldUpdater<ClientDemandDetail, String> action = new FieldUpdater<ClientDemandDetail, String>() {
+        FieldUpdater<ClientProjectDetail, String> action = new FieldUpdater<ClientProjectDetail, String>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object,
+            public void update(int index, ClientProjectDetail object,
                     String value) {
                 TableDisplay obj = (TableDisplay) object;
                 obj.setRead(true);
@@ -134,41 +134,41 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
 
         //DATE FIELD UPDATER displaying of demand detail. The fieldUpdater 'action' cannot be used,
         //because this is working with Date instead of String
-        FieldUpdater<ClientDemandDetail, Date> dateAction = new FieldUpdater<ClientDemandDetail,
+        FieldUpdater<ClientProjectDetail, Date> dateAction = new FieldUpdater<ClientProjectDetail,
             Date>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object,
+            public void update(int index, ClientProjectDetail object,
                     Date value) {
                 //for pure display detail action
 //presenter.displayDetailContent(object.getDemandId(), object.getMessageId(), object.getUserMessageId());
             }
         };
 
-        Column<ClientDemandDetail, DemandStatus> statusColumn =
+        Column<ClientProjectDetail, DemandStatus> statusColumn =
             factory.createStatusColumn(demandGrid.getSortHandler());
         demandGrid.addColumn(statusColumn, Storage.MSGS.status());
 
 // **** demand title column
-        Column<ClientDemandDetail, String> titleCol =
+        Column<ClientProjectDetail, String> titleCol =
             factory.createTitleColumn(demandGrid.getSortHandler(), true);
         titleCol.setFieldUpdater(action);
         demandGrid.addColumn(titleCol, Storage.MSGS.title());
 
 // **** demand price column
-        Column<ClientDemandDetail, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
+        Column<ClientProjectDetail, String> priceCol = factory.createPriceColumn(demandGrid.getSortHandler());
         priceCol.setFieldUpdater(action);
         demandGrid.addColumn(priceCol, Storage.MSGS.price());
 
  // **** finishDate column
-        Column<ClientDemandDetail, Date> finishCol =
+        Column<ClientProjectDetail, Date> finishCol =
             factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_FINISHED);
         finishCol.setFieldUpdater(dateAction);
         demandGrid.addColumn(finishCol, Storage.MSGS.finnishDate());
 
 // **** expireDate column
         //Martin uncoment if ColumnFactory.DATE_VALIDTO is implemented
-        Column<ClientDemandDetail, Date> expireCol =
+        Column<ClientProjectDetail, Date> expireCol =
             factory.createDateColumn(demandGrid.getSortHandler(), ColumnFactory.DATE_EXPIRE);
         expireCol.setFieldUpdater(dateAction);
         demandGrid.addColumn(expireCol, Storage.MSGS.validTo());
@@ -197,8 +197,8 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
     @Override
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
-        Set<ClientDemandDetail> set = getSelectedMessageList();
-        Iterator<ClientDemandDetail> it = set.iterator();
+        Set<ClientProjectDetail> set = getSelectedMessageList();
+        Iterator<ClientProjectDetail> it = set.iterator();
         while (it.hasNext()) {
 //            idList.add(it.next().getUserMessageId());
         }
@@ -207,9 +207,9 @@ public class ClientList extends Composite implements ReverseViewInterface<Client
 
     @SuppressWarnings("unchecked")
     @Override
-    public Set<ClientDemandDetail> getSelectedMessageList() {
-        MultiSelectionModel<ClientDemandDetail> model
-            = (MultiSelectionModel<ClientDemandDetail>) demandGrid.getSelectionModel();
+    public Set<ClientProjectDetail> getSelectedMessageList() {
+        MultiSelectionModel<ClientProjectDetail> model
+            = (MultiSelectionModel<ClientProjectDetail>) demandGrid.getSelectionModel();
         return model.getSelectedSet();
     }
 

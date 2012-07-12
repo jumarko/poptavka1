@@ -24,8 +24,10 @@
         <g:center>
             <g:DockLayoutPanel unit="PX">
                 <g:north size="45">
-                    <g:HTMLPanel styleName='{res.layout.demandTabContentHeader}'>
-                        <div>
+                    <g:HorizontalPanel>
+<!--                        <g:HTMLPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>-->
+                        <g:HorizontalPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>
+<!--                            <div>-->
                             <g:Button ui:field="readBtn">
                                 Read
                             </g:Button>
@@ -38,20 +40,36 @@
                             <g:Button ui:field="unstarBtn">
                                 Unstar
                             </g:Button>
-                        </div>
-                    </g:HTMLPanel>
+<!--                            </div>-->
+<!--                        </g:HTMLPanel>-->
+                        </g:HorizontalPanel>
+<!--                        <g:HTMLPanel ui:field="ConversationHeader" styleName='{res.layout.demandTabContentHeader}'>-->
+                        <g:HorizontalPanel ui:field="conversationHeader" styleName='{res.layout.demandTabContentHeader}'>
+<!--                            <div>-->
+                            <g:Button ui:field="backBtn">
+                                Spat na vsetky nove poptavky
+                            </g:Button>
+                            <g:Label ui:field="demandTitlelabel"/>
+<!--                            </div>-->
+<!--                        </g:HTMLPanel>-->
+                        </g:HorizontalPanel>
+                    </g:HorizontalPanel>
                 </g:north>
                 <g:center>
-                    <s:UniversalAsyncGrid ui:field="demandGrid" />
-<!--                    <s:UniversalAsyncGrid ui:field="contestGrid" />-->
+                    <g:VerticalPanel>
+                        <s:UniversalAsyncGrid ui:field="demandGrid" />
+                        <s:UniversalAsyncGrid ui:field="conversationGrid" />
+                    </g:VerticalPanel>
                 </g:center>
                 <g:south size="32">
                     <g:HTMLPanel styleName='{res.layout.pager}'>
                         <table style="width:100%">
                             <tr>
                                 <td align='center'>
-                                    <c:SimplePager ui:field='pager' />
-                                    <g:ListBox ui:field='pageSize' />
+                                    <c:SimplePager ui:field='demandPager' />
+                                    <c:SimplePager ui:field='conversationPager' />
+                                    <g:ListBox ui:field='demandPageSize' />
+                                    <g:ListBox ui:field='conversationPageSize' />
                                 </td>
                             </tr>
                         </table>

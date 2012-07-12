@@ -53,7 +53,8 @@ public final class Constants {
 
     /* Demands module */
     // Client
-    public static final int DEMANDS_CLIENT_MY_DEMANDS = 10;
+    public static final int DEMANDS_CLIENT_PROJECTS = 10;
+    public static final int DEMANDS_CLIENT_PROJECT_CONVERSATIONS = 18;
     public static final int DEMANDS_CLIENT_OFFERS = 11;
     public static final int DEMANDS_CLIENT_ASSIGNED_DEMANDS = 12;
     // Supplier
@@ -95,7 +96,7 @@ public final class Constants {
     public static ArrayList<Integer> getDemandsConstants() {
         ArrayList<Integer> admins = new ArrayList<Integer>();
         admins.add(DEMANDS_CLIENT_ASSIGNED_DEMANDS);
-        admins.add(DEMANDS_CLIENT_MY_DEMANDS);
+        admins.add(DEMANDS_CLIENT_PROJECTS);
         admins.add(DEMANDS_CLIENT_OFFERS);
         admins.add(DEMANDS_SUPPLIER_ASSIGNED_DEMANDS);
         admins.add(DEMANDS_SUPPLIER_MY_DEMANDS);

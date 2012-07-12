@@ -2,10 +2,9 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
@@ -22,33 +21,33 @@ public interface ClientDemandsRPCServiceAsync {
 
     void getClientProjects(int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<ClientDemandMessageDetail>> callback);
+            AsyncCallback<List<ClientProjectDetail>> callback);
 
-    void getClientDemandConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter,
-            AsyncCallback<Long> callback) throws RPCException;
+    void getClientProjectConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter,
+            AsyncCallback<Long> callback);
 
-    void getClientDemandConversations(long clientID, long demandID, int start,
+    void getClientProjectConversations(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<UserMessageDetail>> callback) throws RPCException;
+            AsyncCallback<List<ClientProjectConversationDetail>> callback);
 
     void getClientOffersCount(long clientID, SearchModuleDataHolder filter,
-            AsyncCallback<Long> callback) throws RPCException;
+            AsyncCallback<Long> callback);
 
     void getClientOffersCount(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<FullDemandDetail>> callback) throws RPCException;
+            AsyncCallback<List<FullDemandDetail>> callback);
 
     void getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter,
-            AsyncCallback<Long> callback) throws RPCException;
+            AsyncCallback<Long> callback);
 
     void getClientDemandOffers(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<OfferDetail>> callback) throws RPCException;
+            AsyncCallback<List<OfferDetail>> callback);
 
     void getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter,
-            AsyncCallback<Long> callback) throws RPCException;
+            AsyncCallback<Long> callback);
 
     void getClientAssignedDemands(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<OfferDetail>> callback) throws RPCException;
+            AsyncCallback<List<OfferDetail>> callback);
 }

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
+import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCServiceAsync;
@@ -7,8 +8,9 @@ import com.eprovement.poptavka.client.service.demand.DemandsRPCServiceAsync;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
@@ -35,12 +37,31 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     // Overriden methods of IEventBusData interface.                          */
     //*************************************************************************/
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
-        getClientProjectsCount(grid, detail);
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.DEMANDS_CLIENT_PROJECTS:
+                getClientProjectsCount(grid, detail);
+                break;
+            case Constants.DEMANDS_CLIENT_PROJECT_CONVERSATIONS:
+                getClientProjectConversationsCount(grid, detail);
+                break;
+            default:
+                break;
+        }
     }
 
     public void onGetData(int start, int maxResults,
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         getClientProjects(start, maxResults, detail, orderColumns);
+        switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.DEMANDS_CLIENT_PROJECTS:
+                getClientProjects(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.DEMANDS_CLIENT_PROJECT_CONVERSATIONS:
+                getClientProjectConversations(start, maxResults, detail, orderColumns);
+                break;
+            default:
+                break;
+        }
     }
 
     //*************************************************************************/
@@ -67,7 +88,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     private void getClientProjects(int start, int maxResults,
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         clientDemandsService.getClientProjects(start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<ClientDemandMessageDetail>>() {
+                new AsyncCallback<List<ClientProjectDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -75,8 +96,42 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                     }
 
                     @Override
-                    public void onSuccess(List<ClientDemandMessageDetail> result) {
-                        eventBus.responseClientsProjects(result);
+                    public void onSuccess(List<ClientProjectDetail> result) {
+                        eventBus.displayClientsProjects(result);
+                    }
+                });
+    }
+
+    private void getClientProjectConversationsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+        clientDemandsService.getClientProjectConversationsCount(
+                Storage.getUser().getUserId(), Storage.getDemandId(), detail,
+                new AsyncCallback<Long>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        throw new UnsupportedOperationException("Not supported yet.");
+                    }
+
+                    @Override
+                    public void onSuccess(Long result) {
+                        grid.createAsyncDataProvider(result.intValue());
+                    }
+                });
+    }
+
+    private void getClientProjectConversations(int start, int maxResults,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+        clientDemandsService.getClientProjectConversations(start, start, start, maxResults, detail, orderColumns,
+                new AsyncCallback<List<ClientProjectConversationDetail>>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        throw new UnsupportedOperationException("Not supported yet.");
+                    }
+
+                    @Override
+                    public void onSuccess(List<ClientProjectConversationDetail> result) {
+                        eventBus.displayClientsProjectConversations(result);
                     }
                 });
     }

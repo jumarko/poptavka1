@@ -9,9 +9,10 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -56,16 +57,21 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return list of demand's detail objects
      */
     @Override
-    public List<ClientDemandMessageDetail> getClientProjects(int start, int maxResult,
+    public List<ClientProjectDetail> getClientProjects(int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        ClientDemandMessageDetail cdmd1 = new ClientDemandMessageDetail();
+        ClientProjectDetail cdmd1 = new ClientProjectDetail();
+        cdmd1.setRead(false);
+        cdmd1.setDemandId(1L);
         cdmd1.setDemandStatus(DemandStatus.NEW);
         cdmd1.setDemandTitle("Poptavka1");
         cdmd1.setPrice(BigDecimal.valueOf(10000));
         cdmd1.setEndDate(new Date());
-        cdmd1.setEndDate(new Date());
-        return new ArrayList<ClientDemandMessageDetail>();
+        cdmd1.setValidToDate(new Date());
+
+        List<ClientProjectDetail> list = new ArrayList<ClientProjectDetail>();
+        list.add(cdmd1);
+        return list;
     }
 
     /**
@@ -80,9 +86,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return count
      */
     @Override
-    public long getClientDemandConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
+    public long getClientProjectConversationsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 1L;
     }
 
     /**
@@ -100,10 +106,20 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<UserMessageDetail> getClientDemandConversations(long clientID, long demandID, int start,
+    public List<ClientProjectConversationDetail> getClientProjectConversations(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<UserMessageDetail>();
+        ClientProjectConversationDetail a = new ClientProjectConversationDetail();
+        a.setRead(false);
+        a.setUserMessageId(1L);
+        a.setSupplierName("Good Data");
+        MessageDetail md = new MessageDetail();
+        md.setBody("Tak ak date cenu o 10% dole ta to beriem.");
+        a.setMessageDetail(md);
+        a.setDate(new Date());
+        List<ClientProjectConversationDetail> list = new ArrayList<ClientProjectConversationDetail>();
+        list.add(a);
+        return list;
     }
 
     //************************* CLIENT - My Offers ****************************/

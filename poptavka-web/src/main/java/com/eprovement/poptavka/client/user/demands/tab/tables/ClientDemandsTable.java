@@ -18,7 +18,7 @@ import com.eprovement.poptavka.client.user.demands.tab.ClientListPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.ColumnFactory;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.demandsModule.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import java.util.ArrayList;
@@ -35,13 +35,13 @@ import java.util.Map;
  *
  * @author Mato
  */
-public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
+public class ClientDemandsTable extends DataGrid<ClientProjectDetail> {
 
     private final static long ID = Storage.getUser().getUserId();
     // Search Data Holder
     private SearchModuleDataHolder searchDataHolder;
     private ClientListPresenter presenter;
-    private SingleSelectionModel<ClientDemandDetail> selectionModel;
+    private SingleSelectionModel<ClientProjectDetail> selectionModel;
     private SimplePager pager;
 //    private int pageSize;
     // Data Provider
@@ -62,10 +62,10 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
         this.searchDataHolder = searchDataHolder;
         this.start = 0;
         this.count = 0;
-        this.dataProvider = new AsyncDataProvider<ClientDemandDetail>() {
+        this.dataProvider = new AsyncDataProvider<ClientProjectDetail>() {
 
             @Override
-            protected void onRangeChanged(HasData<ClientDemandDetail> display) {
+            protected void onRangeChanged(HasData<ClientProjectDetail> display) {
                 display.setRowCount(resultCount);
                 start = display.getVisibleRange().getStart();
                 count = display.getVisibleRange().getLength();
@@ -91,7 +91,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
                 if (event.isSortAscending()) {
                     orderType = OrderType.ASC;
                 }
-                Column<ClientDemandDetail, String> column = (Column<ClientDemandDetail, String>) event.getColumn();
+                Column<ClientProjectDetail, String> column = (Column<ClientProjectDetail, String>) event.getColumn();
                 if (column == null) {
                     return;
                 }
@@ -105,7 +105,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
     }
 
     public ClientDemandsTable(ClientListPresenter presenter, int pageSize) {
-        super(ClientDemandDetail.KEY_PROVIDER);
+        super(ClientProjectDetail.KEY_PROVIDER);
         setPageSize(pageSize);
 
         this.presenter = presenter;
@@ -114,7 +114,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
 
     private void initClientDemandTable() {
         // Add a selection model so we can select cells.
-        selectionModel = new SingleSelectionModel<ClientDemandDetail>(ClientDemandDetail.KEY_PROVIDER);
+        selectionModel = new SingleSelectionModel<ClientProjectDetail>(ClientProjectDetail.KEY_PROVIDER);
         this.setSelectionModel(selectionModel);
         setEmptyTableWidget(new Label(Storage.MSGS.noData()));
 
@@ -132,14 +132,14 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
      */
     private void initTableColumns() {
         //init column factory
-        ColumnFactory<ClientDemandDetail> factory = new ColumnFactory<ClientDemandDetail>();
+        ColumnFactory<ClientProjectDetail> factory = new ColumnFactory<ClientProjectDetail>();
 
 // **** definition of all needed FieldUpdaters
         //TEXT FIELD UPDATER create common demand display fieldUpdater for demand and related conversation display
-        FieldUpdater<ClientDemandDetail, String> action = new FieldUpdater<ClientDemandDetail, String>() {
+        FieldUpdater<ClientProjectDetail, String> action = new FieldUpdater<ClientProjectDetail, String>() {
 
             @Override
-            public void update(int index, ClientDemandDetail object,
+            public void update(int index, ClientProjectDetail object,
                     String value) {
                 TableDisplay obj = (TableDisplay) object;
                 obj.setRead(true);
@@ -150,16 +150,16 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
         };
 
 // **** demand status column
-        Column<ClientDemandDetail, DemandStatus> statusColumn = factory.createStatusColumn(null);
+        Column<ClientProjectDetail, DemandStatus> statusColumn = factory.createStatusColumn(null);
         this.addColumn(statusColumn, Storage.MSGS.status());
 
 // **** demand title column
-        Column<ClientDemandDetail, String> titleCol = factory.createTitleColumn(null, true);
+        Column<ClientProjectDetail, String> titleCol = factory.createTitleColumn(null, true);
         titleCol.setFieldUpdater(action);
         this.addColumn(titleCol, Storage.MSGS.title());
 
 // **** demand price column
-        Column<ClientDemandDetail, String> priceCol = factory.createPriceColumn(null);
+        Column<ClientProjectDetail, String> priceCol = factory.createPriceColumn(null);
         priceCol.setFieldUpdater(action);
         this.addColumn(priceCol, Storage.MSGS.price());
 
@@ -176,7 +176,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
     }
 
     @Override
-    public SingleSelectionModel<ClientDemandDetail> getSelectionModel() {
+    public SingleSelectionModel<ClientProjectDetail> getSelectionModel() {
         return selectionModel;
     }
 
@@ -184,7 +184,7 @@ public class ClientDemandsTable extends DataGrid<ClientDemandDetail> {
         return this.pager;
     }
 
-    public void display(ArrayList<ClientDemandDetail> data) {
+    public void display(ArrayList<ClientProjectDetail> data) {
         dataProvider.updateRowData(start, data);
         flush();
         redraw();

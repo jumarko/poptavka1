@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.shared.domain.demandsModule;
+package com.eprovement.poptavka.shared.domain.clientdemands;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientDemandDetail implements Serializable { //, TableDisplay {
+public class ClientProjectDetail implements Serializable { //, TableDisplay {
 
     /**
      * Generated serialVersionUID.
@@ -32,11 +32,11 @@ public class ClientDemandDetail implements Serializable { //, TableDisplay {
     private int messageCount = -1;
     private int unreadSubmessages = -1;
 
-    public static final ProvidesKey<ClientDemandDetail> KEY_PROVIDER =
-            new ProvidesKey<ClientDemandDetail>() {
+    public static final ProvidesKey<ClientProjectDetail> KEY_PROVIDER =
+            new ProvidesKey<ClientProjectDetail>() {
 
                 @Override
-                public Object getKey(ClientDemandDetail item) {
+                public Object getKey(ClientProjectDetail item) {
                     return item == null ? null : item.getDemandId();
                 }
             };
@@ -177,5 +177,19 @@ public class ClientDemandDetail implements Serializable { //, TableDisplay {
 
     public OfferStateType getOfferState() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Display string as HTML. We suppose calling of this method always come from trusted (programmed) source.
+     * User CANNOT call this nethod due to security issues.
+     * @param trustedHtml
+     * @return string in html tags
+     */
+    public static String displayHtml(String trustedHtml, boolean isRead) {
+        if (isRead) {
+            return trustedHtml;
+        } else {
+            return "<strong>" + trustedHtml + "</strong>";
+        }
     }
 }

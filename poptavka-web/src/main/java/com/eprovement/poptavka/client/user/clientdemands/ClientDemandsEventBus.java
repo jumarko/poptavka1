@@ -11,8 +11,9 @@ import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.ClientDemandMessageDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -108,7 +109,10 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     /* Business events handled by ListPresenters.                             */
     /**************************************************************************/
     @Event(handlers = ClientProjectsPresenter.class)
-    void responseClientsProjects(List<ClientDemandMessageDetail> result);
+    void displayClientsProjects(List<ClientProjectDetail> result);
+
+    @Event(handlers = ClientProjectsPresenter.class)
+    void displayClientsProjectConversations(List<ClientProjectConversationDetail> result);
 
 //    @Event(handlers = SupplierProjectsPresenter.class)
 //    void responseSupplierProjects(ArrayList<PotentialDemandMessage> result);

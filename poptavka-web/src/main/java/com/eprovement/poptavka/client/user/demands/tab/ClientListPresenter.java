@@ -21,7 +21,7 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
 import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
-import com.eprovement.poptavka.shared.domain.demandsModule.ClientDemandDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
@@ -42,13 +42,13 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
         Button getUnstarBtn();
 
         //table getters
-        UniversalGrid<ClientDemandDetail> getGrid();
+        UniversalGrid<ClientProjectDetail> getGrid();
 
-        ListDataProvider<ClientDemandDetail> getDataProvider();
+        ListDataProvider<ClientProjectDetail> getDataProvider();
 
         List<Long> getSelectedIdList();
 
-        Set<ClientDemandDetail> getSelectedMessageList();
+        Set<ClientProjectDetail> getSelectedMessageList();
 
         //detail wrapper
         SimplePanel getWrapperPanel();
@@ -111,7 +111,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
     public void onInitClientList(SearchModuleDataHolder searchModuleDataHolder) {
 //        commented code is from production code
 //        if (!initialized) {
-        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_MY_DEMANDS);
+        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECTS);
         searchDataHolder = searchModuleDataHolder;
         eventBus.requestClientsDemands(searchDataHolder);
 //        }
@@ -140,13 +140,13 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onResponseClientsDemands(ArrayList<ClientDemandDetail> data) {
+    public void onResponseClientsDemands(ArrayList<ClientProjectDetail> data) {
         GWT.log("++ onResponseClientsDemands");
 
         if (data.size() > 0) {
-            List<ClientDemandDetail> list = view.getDataProvider().getList();
+            List<ClientProjectDetail> list = view.getDataProvider().getList();
             list.clear();
-            for (ClientDemandDetail d : data) {
+            for (ClientProjectDetail d : data) {
                 list.add(d);
             }
             view.getDataProvider().refresh();

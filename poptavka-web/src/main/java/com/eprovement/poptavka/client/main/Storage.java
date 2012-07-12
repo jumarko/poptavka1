@@ -42,6 +42,8 @@ public final class Storage {
     private static PopupPanel popup = null;
     private static LoadingDiv loading = null;
     private static UserDetail user = null;
+    //client projects - selected demand
+    private static long demandId = -1L;
 
     //getters for global final classes
     public LocalizableMessages getMessages() {
@@ -125,4 +127,11 @@ public final class Storage {
         Storage.actionLoginHomeHistory = actionLoginHomeHistory;
     }
 
+    public static long getDemandId() {
+        return demandId;
+    }
+
+    public static void setDemandId(long demandId) {
+        Storage.demandId = demandId;
+    }
 }
