@@ -14,10 +14,6 @@ import java.util.List;
  */
 public class AccessRoleDetail implements Serializable {
 
-    public static final AccessRoleDetail ADMIN = new AccessRoleDetail("admin");
-    public static final AccessRoleDetail CLIENT = new AccessRoleDetail("client");
-    public static final AccessRoleDetail SUPPLIER = new AccessRoleDetail("supplier");
-
     /**
      * Generated serialVersionUID.
      */

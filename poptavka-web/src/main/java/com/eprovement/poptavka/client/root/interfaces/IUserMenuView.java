@@ -21,5 +21,5 @@ public interface IUserMenuView extends IsWidget {
 
     void userMenuStyleChange(int loadedModule);
 
-    void setAdminTabVisibility(boolean visible);
+    void setTabVisibility(int module, boolean visible);
 }

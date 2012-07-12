@@ -76,6 +76,7 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     /**************************************************************************/
     /**
      * Loads right styles to menu buttons.
+     *
      * @param loadedModule - use module constants from class Contants.
      */
     @Override
@@ -162,7 +163,19 @@ public class UserMenuView extends ReverseCompositeView<IUserMenuPresenter> imple
     }
 
     @Override
-    public void setAdminTabVisibility(boolean visible) {
-        administration.setVisible(visible);
+    public void setTabVisibility(int module, boolean visible) {
+        switch (module) {
+            case Constants.USER_CLIENT_MODULE:
+                client.setVisible(visible);
+                break;
+            case Constants.USER_SUPPLIER_MODULE:
+                supplier.setVisible(visible);
+                break;
+            case Constants.USER_ADMININSTRATION_MODULE:
+                administration.setVisible(visible);
+                break;
+            default:
+                break;
+        }
     }
 }

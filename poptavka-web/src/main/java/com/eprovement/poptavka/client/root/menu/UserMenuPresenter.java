@@ -6,10 +6,10 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.main.common.CommonAccessRoles;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IUserMenuView.IUserMenuPresenter;
-import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 
 @Presenter(view = UserMenuView.class)
 public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus>
@@ -24,11 +24,13 @@ public class UserMenuPresenter extends BasePresenter<IUserMenuView, RootEventBus
      */
     public void onAtAccount() {
         GWT.log("User menu view loaded");
-        if (Storage.getUser().getAccessRoles().contains(AccessRoleDetail.ADMIN)) {
-            view.setAdminTabVisibility(true);
+        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
+            view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, true);
         } else {
-            view.setAdminTabVisibility(false);
+            view.setTabVisibility(Constants.USER_ADMININSTRATION_MODULE, false);
         }
+        //TODO Martin - pridat podmienky pre zobrazovanie client vs supplier tabu
+        //podla business role uzivatela - viem to zistit v tejto fazi?
         eventBus.setMenu(view);
     }
 
