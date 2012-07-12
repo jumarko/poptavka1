@@ -15,19 +15,22 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -38,15 +41,17 @@ public class ClientProjectsPresenter
     public interface ClientProjectsLayoutInterface extends LazyView, IsWidget {
 
         // Columns
-        Column<ClientProjectDetail, Date> getFinnishDateColumn();
+        Header getCheckHeader();
 
-        Column<ClientProjectDetail, String> getPriceColumn();
-
-        Column<ClientProjectDetail, String> getTitleColumn();
-
-        Column<ClientProjectDetail, Date> getValidToDateColumn();
+        Column<ClientProjectConversationDetail, Boolean> getCheckColumn();
 
         Column<ClientProjectConversationDetail, Boolean> getStarColumn();
+
+        Column<ClientProjectConversationDetail, String> getSupplierNameColumn();
+
+        Column<ClientProjectConversationDetail, String> getBodyPreviewColumn();
+
+        Column<ClientProjectConversationDetail, String> getDateColumn();
 
         // Buttons
         Button getReadBtn();
@@ -70,7 +75,7 @@ public class ClientProjectsPresenter
 
         List<Long> getSelectedIdList();
 
-        Set<ClientProjectDetail> getSelectedMessageList();
+        Set<ClientProjectConversationDetail> getSelectedMessageList();
 
         SimplePanel getWrapperPanel();
 
@@ -87,9 +92,6 @@ public class ClientProjectsPresenter
     //viewType
     private ViewType type = ViewType.EDITABLE;
     private DevelDetailWrapperPresenter detailSection = null;
-    //remove this annotation for production
-    @SuppressWarnings("unused")
-    private boolean initialized = false;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedProjectConversation = -1;
@@ -110,66 +112,14 @@ public class ClientProjectsPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
-        view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECT_CONVERSATIONS);
-                ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
-                        view.getDemandGrid().getSelectionModel()).getSelectedObject();
-                if (selected != null) {
-                    selected.setRead(true);
-                    Storage.setDemandId(selected.getDemandId());
-                    view.setDemandTitleLabel(selected.getDemandTitle());
-                    view.setConversationTableVisible(true);
-                    view.getConversationGrid().getDataCount(eventBus, null);
-                }
-            }
-        });
-        view.getConversationGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                ClientProjectConversationDetail selected = (ClientProjectConversationDetail) ((SingleSelectionModel)
-                        view.getConversationGrid().getSelectionModel()).getSelectedObject();
-                if (selected != null) {
-                    if (lastOpenedProjectConversation != selected.getUserMessageId()) {
-                        lastOpenedProjectConversation = selected.getUserMessageId();
-                        selected.setRead(true);
-                        //Nacitaj detaili
-                    }
-                }
-
-            }
-        });
-        view.getBackBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                view.getDemandGrid().getSelectionModel().setSelected(
-                        (ClientProjectDetail) ((SingleSelectionModel)
-                        view.getDemandGrid().getSelectionModel()).getSelectedObject(), false);
-                view.setConversationTableVisible(false);
-//                view.getDemandGrid().flush();
-//                view.getDemandGrid().redraw();
-            }
-        });
-        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientProjectConversationDetail, Boolean>() {
-
-            @Override
-            public void update(int index, ClientProjectConversationDetail object, Boolean value) {
-//              TableDisplay obj = (TableDisplay) object;
-                object.setStarred(!value);
-                view.getConversationGrid().redraw();
-                Long[] item = new Long[]{object.getUserMessageId()};
-//                    updateStarStatus(Arrays.asList(item), !value);
-            }
-        });
-//        addTitleColumnFieldUpdater();
-//        addPriceColumnFieldUpdater();
-//        addFinnishDateColumnFieldUpdater();
-//        addValidToDateColumnFieldUpdater();
+        // Selection Handlers
+        addDemandTableSelectionHandler();
+        // Field Updaters
+        addCheckHeaderUpdater();
+        addStarColumnFieldUpdater();
+        addTextColumnFieldUpdaters();
         // Buttons Actions
+        addBackButtonHandler();
         addReadButtonHandler();
         addUnreadButtonHandler();
         addStarButtonHandler();
@@ -183,7 +133,7 @@ public class ClientProjectsPresenter
         Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECTS);
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, searchDataHolder);
-//        }
+
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
@@ -191,7 +141,6 @@ public class ClientProjectsPresenter
             detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
             detailSection.initDetailWrapper(view.getWrapperPanel(), type);
         }
-        initialized = true;
     }
 
     /**************************************************************************/
@@ -224,58 +173,6 @@ public class ClientProjectsPresenter
         view.getConversationGrid().updateRowData(data);
     }
 
-    //call eventBus to update READ status
-    //called in ClickEvent of action button.
-    public void updateReadStatus(List<Long> selectedIdList, boolean newStatus) {
-        eventBus.requestReadStatusUpdate(selectedIdList, newStatus);
-    }
-
-    /**
-     * Triggered by action button: read/unread button
-     * When changing read of multiple demands by action button. Visible change has to be done manually;
-     *
-     * @param isRead
-     */
-    /*
-     private void internalReadUpdate(boolean isRead) {
-     Iterator<PotentialDemandMessage> it = view.getSelectedMessageList().iterator();
-     while (it.hasNext()) {
-     PotentialDemandMessage message = it.next();
-     message.setRead(isRead);
-     }
-     view.getDataProvider().refresh();
-     view.getGrid().redraw();
-     }
-     */
-    /**
-     * Call eventBus to update STARRED status.
-     * T
-     * his method is called by clicking star image on single demand by default. Also is called in ClickEvent of
-     * action button.
-     * @param list
-     * @param newStatus
-     */
-    public void updateStarStatus(List<Long> list, boolean newStatus) {
-        eventBus.requestStarStatusUpdate(list, newStatus);
-    }
-
-    /**
-     * Triggered by action button: star/unstar buttons
-     * when starring multiple demands by action button. Visible change has to be done manually;
-     *
-     * @param isStared
-     */
-    /*
-     private void internalStarUpdate(boolean isStared) {
-     Iterator<PotentialDemandMessage> it = view.getSelectedMessageList().iterator();
-     while (it.hasNext()) {
-     PotentialDemandMessage message = it.next();
-     message.setStarred(isStared);
-     }
-     view.getDataProvider().refresh();
-     view.getGrid().redraw();
-     }
-     */
     /**
      * New data are fetched from db.
      *
@@ -316,58 +213,69 @@ public class ClientProjectsPresenter
     /* Bind View helper methods                                               */
     /**************************************************************************/
     // Field Updaters
-    public void addTitleColumnFieldUpdater() {
-        view.getTitleColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, String>() {
+    public void addCheckHeaderUpdater() {
+        view.getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
 
             @Override
-            public void update(int index, ClientProjectDetail object, String value) {
-//                TableDisplay obj = (TableDisplay) object;
-//                obj.setRead(true);
-//                dataGrid.redraw();
-//presenter.displayDetailContent(object.getDemandId(),object.getMessageId(), object.getUserMessageId());
+            public void update(Boolean value) {
+                List<ClientProjectConversationDetail> rows = view.getConversationGrid().getVisibleItems();
+                for (ClientProjectConversationDetail row : rows) {
+                    ((MultiSelectionModel) view.getConversationGrid().getSelectionModel()).setSelected(row, value);
+                }
             }
         });
     }
 
-    public void addPriceColumnFieldUpdater() {
-        view.getPriceColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, String>() {
+    public void addStarColumnFieldUpdater() {
+        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientProjectConversationDetail, Boolean>() {
 
             @Override
-            public void update(int index, ClientProjectDetail object, String value) {
-                throw new UnsupportedOperationException("Not supported yet.");
+            public void update(int index, ClientProjectConversationDetail object, Boolean value) {
+//              TableDisplay obj = (TableDisplay) object;
+                object.setStarred(!value);
+                view.getConversationGrid().redraw();
+                Long[] item = new Long[]{object.getUserMessageId()};
+                eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
             }
         });
     }
 
-    public void addFinnishDateColumnFieldUpdater() {
-        view.getFinnishDateColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, Date>() {
+    public void addTextColumnFieldUpdaters() {
+        FieldUpdater textFieldUpdater = new FieldUpdater<ClientProjectConversationDetail, String>() {
 
             @Override
-            public void update(int index, ClientProjectDetail object, Date value) {
-                throw new UnsupportedOperationException("Not supported yet.");
+            public void update(int index, ClientProjectConversationDetail object, String value) {
+                //Neviem ci porovnamam so spravnym atributoms
+                if (lastOpenedProjectConversation != object.getUserMessageId()) {
+                    //DisplayDetail
+                }
             }
-        });
-
+        };
+        view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getBodyPreviewColumn().setFieldUpdater(textFieldUpdater);
+        view.getDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
-    public void addValidToDateColumnFieldUpdater() {
-        view.getValidToDateColumn().setFieldUpdater(new FieldUpdater<ClientProjectDetail, Date>() {
-
-            @Override
-            public void update(int index, ClientProjectDetail object, Date value) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-    }
     // Buttons
+    private void addBackButtonHandler() {
+        view.getBackBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getDemandGrid().getSelectionModel().setSelected(
+                        (ClientProjectDetail) ((SingleSelectionModel)
+                        view.getDemandGrid().getSelectionModel()).getSelectedObject(), false);
+                view.setConversationTableVisible(false);
+            }
+        });
+    }
 
     private void addReadButtonHandler() {
         view.getReadBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-//                internalReadUpdate(true);
-                updateReadStatus(view.getSelectedIdList(), true);
+                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
             }
         });
     }
@@ -377,8 +285,7 @@ public class ClientProjectsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-//                internalReadUpdate(false);
-                updateReadStatus(view.getSelectedIdList(), false);
+                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
             }
         });
     }
@@ -388,8 +295,7 @@ public class ClientProjectsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-//                internalStarUpdate(true);
-                updateStarStatus(view.getSelectedIdList(), true);
+                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
             }
         });
 
@@ -400,8 +306,27 @@ public class ClientProjectsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-//                internalStarUpdate(false);
-                updateStarStatus(view.getSelectedIdList(), false);
+                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
+            }
+        });
+    }
+
+    //SelectionHandlers
+    private void addDemandTableSelectionHandler() {
+        view.getDemandGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECT_CONVERSATIONS);
+                ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
+                        view.getDemandGrid().getSelectionModel()).getSelectedObject();
+                if (selected != null) {
+                    selected.setRead(true);
+                    Storage.setDemandId(selected.getDemandId());
+                    view.setDemandTitleLabel(selected.getDemandTitle());
+                    view.setConversationTableVisible(true);
+                    view.getConversationGrid().getDataCount(eventBus, null);
+                }
             }
         });
     }

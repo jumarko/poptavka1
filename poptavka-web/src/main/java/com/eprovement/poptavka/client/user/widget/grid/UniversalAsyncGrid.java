@@ -1,9 +1,15 @@
 package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -14,10 +20,12 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +87,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     //*************************************************************************/
     //                          ATTRIBUTES                                    */
     //*************************************************************************/
+    private static final int CHECKBOX_COLUMN_WIDTH = 10;
+    private static final int STAR_COLUMN_WIDTH = 10;
+    private static final int STATUS_COLUMN_WIDTH = 10;
+    private static final int URGENCY_COLUMN_WIDTH = 10;
     /**
      * Asynchronous Data Provider. When all data count is known, asynchronous
      * data provider is created {@link #createAsyncDataProvider(final int resultCount)}.
@@ -139,6 +151,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     public UniversalAsyncGrid(List<String> gridColumns) {
         super();
         this.gridColumns = gridColumns;
+        this.setCustomEmptyTableNotification();
     }
 
     /**
@@ -150,6 +163,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, List<String> gridColumns) {
         super(keyProvider);
         this.gridColumns = gridColumns;
+        this.setCustomEmptyTableNotification();
     }
 
     /**
@@ -223,9 +237,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         addColumnSortHandler(sortHandler);
     }
 
-    //*************************************************************************/
-    // ADDITIONAL "OVERRIDE" METHODS
-    //*************************************************************************/
+    /**************************************************************************/
+    /* COLUMN DEFINITIONS                                                     */
+    /**************************************************************************/
     /**
      * Add a column with a header. When creating table in module using this
      * class, it uses this method to create table columns.
@@ -254,6 +268,104 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         return column;
     }
 
+    /**
+     * Create checkbox column providing selecting whole row/rows.
+     *
+     * @param selectionModel
+     * @return checkColumn
+     */
+    public Column<T, Boolean> addCheckboxColumn(Header header) {
+        Column<T, Boolean> checkColumn = new Column<T, Boolean>(new CheckboxCell(true, false)) {
+
+            @Override
+            public Boolean getValue(T object) {
+                // Get the value from the selection model.
+                return getSelectionModel().isSelected(object);
+            }
+        };
+        addColumn(checkColumn, header);
+        setColumnWidth(checkColumn, CHECKBOX_COLUMN_WIDTH, Unit.PX);
+        return checkColumn;
+    }
+
+    /**
+     * Creates star-column depending on messages' isRead value. By clicking this cell, STAR attribute is immediately
+     * updated in database.
+     *
+     * NOTE:
+     * Sorting is not implemented now.
+     * //TODO
+     * Implement sorting according to star status
+     *
+     * @return star column
+     */
+    public Column<T, DemandStatus> addStatusColumn(String headerText) {
+        Column<T, DemandStatus> col = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
+
+            @Override
+            public DemandStatus getValue(T object) {
+                TableDisplay obj = (TableDisplay) object;
+                return obj.getDemandStatus();
+            }
+        };
+        //set column style
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+        addColumn(col, headerText);
+        setColumnWidth(col, STATUS_COLUMN_WIDTH, Unit.PX);
+        return col;
+    }
+
+    /**
+     * Creates urgencyDisplay column.
+     *
+     * @param sortHandler
+     * @return urgencyColumn
+     */
+    public Column<T, Date> addUrgentColumn(String headerText) {
+        Column<T, Date> urgencyColumn = new Column<T, Date>(new UrgentImageCell()) {
+
+            @Override
+            public Date getValue(T object) {
+                TableDisplay obj = (TableDisplay) object;
+                return obj.getEndDate();
+            }
+        };
+        urgencyColumn.setSortable(true);
+        addColumn(urgencyColumn, headerText);
+        setColumnWidth(urgencyColumn, URGENCY_COLUMN_WIDTH, Unit.PX);
+        return urgencyColumn;
+    }
+
+    /**
+     * Creates star-column depending on messages' isRead value. By clicking this cell, STAR attribute is immediately
+     * updated in database.
+     *
+     * NOTE:
+     * Sorting is not implemented now.
+     * //TODO
+     * Implement sorting according to star status
+     *
+     * @return star column
+     */
+    public Column<T, Boolean> addStarColumn() {
+        Column<T, Boolean> col = new Column<T, Boolean>(new StarCell()) {
+
+            @Override
+            public Boolean getValue(T object) {
+                TableDisplay obj = (TableDisplay) object;
+                return obj.isStarred();
+            }
+        };
+        //set column style
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+        addColumn(col);
+        setColumnWidth(col, STAR_COLUMN_WIDTH, Unit.PX);
+        return col;
+    }
+
+    //*************************************************************************/
+    // "OVERRIDE" METHODS
+    //*************************************************************************/
     /**
      * Updates data provider content. When new data for are available, call this
      * method for display it.
@@ -292,7 +404,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * method content for user delight. Calls when instance of this class is
      * created.
      */
-    public void displayEmptyTable() {
+    public void setCustomEmptyTableNotification() {
         this.setEmptyTableWidget(new HTML("<div style=\"text-align: center;\">"
                 + Storage.MSGS.emptyTable() + "</div>"));
     }

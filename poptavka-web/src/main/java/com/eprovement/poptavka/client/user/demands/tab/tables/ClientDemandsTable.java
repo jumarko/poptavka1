@@ -154,14 +154,14 @@ public class ClientDemandsTable extends DataGrid<ClientProjectDetail> {
         this.addColumn(statusColumn, Storage.MSGS.status());
 
 // **** demand title column
-        Column<ClientProjectDetail, String> titleCol = factory.createTitleColumn(null, true);
-        titleCol.setFieldUpdater(action);
-        this.addColumn(titleCol, Storage.MSGS.title());
+//        Column<ClientProjectDetail, String> titleCol = factory.createTitleColumn(null, true);
+//        titleCol.setFieldUpdater(action);
+//        this.addColumn(titleCol, Storage.MSGS.title());
 
 // **** demand price column
-        Column<ClientProjectDetail, String> priceCol = factory.createPriceColumn(null);
-        priceCol.setFieldUpdater(action);
-        this.addColumn(priceCol, Storage.MSGS.price());
+//        Column<ClientProjectDetail, String> priceCol = factory.createPriceColumn(null);
+//        priceCol.setFieldUpdater(action);
+//        this.addColumn(priceCol, Storage.MSGS.price());
 
         //uncoment if implemented
         // **** finishDate column

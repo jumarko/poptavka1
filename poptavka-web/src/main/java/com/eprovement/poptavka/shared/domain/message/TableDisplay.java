@@ -7,9 +7,9 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 
 public interface TableDisplay {
 
-    long getMessageId();
-
-    String getDemandTitle();
+//    long getMessageId();
+//
+//    String getDemandTitle();
 
     boolean isRead();
 
@@ -19,24 +19,24 @@ public interface TableDisplay {
 
     void setStarred(boolean value);
 
-    Date getCreated();
+//    Date getCreated();
 
     Date getEndDate();
 
-    String getDemandPrice();
+//    String getDemandPrice();
 
-    String getFormattedMessageCount();
+//    String getFormattedMessageCount();
 
     /**
      * @return demand-related conversation messages
      */
-    int getMessageCount();
+//    int getMessageCount();
 
-    String getClientName();
+//    String getClientName();
 
-    int getClientRating();
+//    int getClientRating();
 
     DemandStatus getDemandStatus();
 
-    Date getExpireDate();
+//    Date getExpireDate();
 }

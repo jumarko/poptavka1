@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
 
 import java.io.Serializable;
@@ -11,7 +13,7 @@ import java.util.Date;
  *
  * @author Beho
  */
-public class ClientProjectConversationDetail implements Serializable { //, TableDisplay {
+public class ClientProjectConversationDetail implements Serializable, TableDisplay {
 
     /**
      * Generated serialVersionUID.
@@ -141,5 +143,15 @@ public class ClientProjectConversationDetail implements Serializable { //, Table
         } else {
             return "<strong>" + trustedHtml + "</strong>";
         }
+    }
+
+    @Override
+    public Date getEndDate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public DemandStatus getDemandStatus() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

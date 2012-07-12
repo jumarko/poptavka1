@@ -25,9 +25,14 @@
             <g:DockLayoutPanel unit="PX">
                 <g:north size="45">
                     <g:HorizontalPanel>
-<!--                        <g:HTMLPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>-->
                         <g:HorizontalPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>
-<!--                            <div>-->
+                            <g:Label>Vypis klientovych poptaviek</g:Label>
+                        </g:HorizontalPanel>
+                        <g:HorizontalPanel ui:field="conversationHeader" styleName='{res.layout.demandTabContentHeader}'>
+                            <g:Button ui:field="backBtn">
+                                Spat na vsetky nove poptavky
+                            </g:Button>
+                            <g:Label ui:field="demandTitlelabel"/>
                             <g:Button ui:field="readBtn">
                                 Read
                             </g:Button>
@@ -40,18 +45,6 @@
                             <g:Button ui:field="unstarBtn">
                                 Unstar
                             </g:Button>
-<!--                            </div>-->
-<!--                        </g:HTMLPanel>-->
-                        </g:HorizontalPanel>
-<!--                        <g:HTMLPanel ui:field="ConversationHeader" styleName='{res.layout.demandTabContentHeader}'>-->
-                        <g:HorizontalPanel ui:field="conversationHeader" styleName='{res.layout.demandTabContentHeader}'>
-<!--                            <div>-->
-                            <g:Button ui:field="backBtn">
-                                Spat na vsetky nove poptavky
-                            </g:Button>
-                            <g:Label ui:field="demandTitlelabel"/>
-<!--                            </div>-->
-<!--                        </g:HTMLPanel>-->
                         </g:HorizontalPanel>
                     </g:HorizontalPanel>
                 </g:north>

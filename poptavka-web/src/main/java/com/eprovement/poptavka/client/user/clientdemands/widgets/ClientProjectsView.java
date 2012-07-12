@@ -2,15 +2,11 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -32,7 +28,6 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -50,13 +45,7 @@ public class ClientProjectsView extends Composite
     //table definition
     @UiField(provided = true)
     UniversalAsyncGrid<ClientProjectDetail> demandGrid;
-    //table columns
-    private Column<ClientProjectDetail, String> titleColumn;
-    private Column<ClientProjectDetail, String> priceColumn;
-    private Column<ClientProjectDetail, Date> finnishDateColumn;
-    private Column<ClientProjectDetail, Date> validToDateColumn;
     //table column width constatnts
-    private static final int STATUS_COL_WIDTH = 15;
     private static final int TITLE_COL_WIDTH = 50;
     private static final int PRICE_COL_WIDTH = 30;
     private static final int FINNISH_DATE_COL_WIDTH = 30;
@@ -73,10 +62,12 @@ public class ClientProjectsView extends Composite
     @UiField(provided = true)
     UniversalAsyncGrid<ClientProjectConversationDetail> conversationGrid;
     //table columns
+    private Header checkHeader;
+    private Column<ClientProjectConversationDetail, Boolean> checkColumn;
     private Column<ClientProjectConversationDetail, Boolean> starColumn;
     private Column<ClientProjectConversationDetail, String> supplierNameColumn;
     private Column<ClientProjectConversationDetail, String> bodyPreviewColumn;
-    private Column<ClientProjectConversationDetail, Date> dateColumn;
+    private Column<ClientProjectConversationDetail, String> dateColumn;
     //table column width constatnts
     private static final int SUPPLIER_NAME_COL_WIDTH = 20;
     private static final int BODY_PREVIEW_COL_WIDTH = 30;
@@ -199,18 +190,9 @@ public class ClientProjectsView extends Composite
      */
     public void initDemandTableColumns() {
         // Demand Status column
-        demandGrid.addColumn(
-                new DemandStatusImageCell(), Storage.MSGS.status(), true, STATUS_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue<DemandStatus>() {
-
-                    @Override
-                    public DemandStatus getValue(Object object) {
-                        return ((ClientProjectDetail) object).getDemandStatus();
-                    }
-                });
-
+        demandGrid.addStatusColumn(Storage.MSGS.status());
         // Demand title column
-        titleColumn = demandGrid.addColumn(
+        demandGrid.addColumn(
                 conversationGrid.TABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
@@ -222,7 +204,7 @@ public class ClientProjectsView extends Composite
                 });
 
         // Demand price column
-        priceColumn = demandGrid.addColumn(
+        demandGrid.addColumn(
                 conversationGrid.TABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
@@ -267,37 +249,16 @@ public class ClientProjectsView extends Composite
      */
     public void initConversationTableColumns() {
         // CheckBox column
-        Header header = new Header<Boolean>(new CheckboxCell()) {
+        checkHeader = new Header<Boolean>(new CheckboxCell()) {
 
             @Override
             public Boolean getValue() {
                 return false;
             }
         };
-        Column<ClientProjectConversationDetail, Boolean> checkColumn =
-                new Column<ClientProjectConversationDetail, Boolean>(new CheckboxCell(true, false)) {
-
-                    @Override
-                    public Boolean getValue(ClientProjectConversationDetail object) {
-                        // Get the value from the selection model.
-                        return conversationGrid.getSelectionModel().isSelected(object);
-                    }
-                };
-        conversationGrid.addColumn(checkColumn, header);
-        conversationGrid.setColumnWidth(checkColumn, 10, Style.Unit.PX);
+        checkColumn = conversationGrid.addCheckboxColumn(checkHeader);
         // Star Column
-        starColumn = new Column<ClientProjectConversationDetail, Boolean>(new StarCell()) {
-
-            @Override
-            public Boolean getValue(ClientProjectConversationDetail object) {
-//                TableDisplay obj = (TableDisplay) object;
-                return object.isStarred();
-            }
-        };
-        //set column style
-        starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        conversationGrid.addColumn(starColumn);
-        conversationGrid.setColumnWidth(starColumn, 10, Style.Unit.PX);
+        starColumn = conversationGrid.addStarColumn();
         // Demand title column
         supplierNameColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
@@ -325,8 +286,8 @@ public class ClientProjectsView extends Composite
                     }
                 });
 
-        // Finnish date column
-        conversationGrid.addColumn(
+        // Date column
+        dateColumn = conversationGrid.addColumn(
                 conversationGrid.TABLE_TEXT_CELL, Storage.MSGS.date(), true, DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
@@ -345,28 +306,33 @@ public class ClientProjectsView extends Composite
     /**************************************************************************/
     // Columns
     @Override
-    public Column<ClientProjectDetail, Date> getFinnishDateColumn() {
-        return finnishDateColumn;
+    public Header getCheckHeader() {
+        return checkHeader;
     }
 
     @Override
-    public Column<ClientProjectDetail, String> getPriceColumn() {
-        return priceColumn;
-    }
-
-    @Override
-    public Column<ClientProjectDetail, String> getTitleColumn() {
-        return titleColumn;
-    }
-
-    @Override
-    public Column<ClientProjectDetail, Date> getValidToDateColumn() {
-        return validToDateColumn;
+    public Column<ClientProjectConversationDetail, Boolean> getCheckColumn() {
+        return checkColumn;
     }
 
     @Override
     public Column<ClientProjectConversationDetail, Boolean> getStarColumn() {
         return starColumn;
+    }
+
+    @Override
+    public Column<ClientProjectConversationDetail, String> getSupplierNameColumn() {
+        return supplierNameColumn;
+    }
+
+    @Override
+    public Column<ClientProjectConversationDetail, String> getBodyPreviewColumn() {
+        return bodyPreviewColumn;
+    }
+
+    @Override
+    public Column<ClientProjectConversationDetail, String> getDateColumn() {
+        return dateColumn;
     }
 
     // Buttons
@@ -421,8 +387,8 @@ public class ClientProjectsView extends Composite
     @Override
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
-        Set<ClientProjectDetail> set = getSelectedMessageList();
-        Iterator<ClientProjectDetail> it = set.iterator();
+        Set<ClientProjectConversationDetail> set = getSelectedMessageList();
+        Iterator<ClientProjectConversationDetail> it = set.iterator();
         while (it.hasNext()) {
             idList.add(it.next().getUserMessageId());
         }
@@ -431,9 +397,9 @@ public class ClientProjectsView extends Composite
 
     @SuppressWarnings("unchecked")
     @Override
-    public Set<ClientProjectDetail> getSelectedMessageList() {
-        MultiSelectionModel<ClientProjectDetail> model =
-                (MultiSelectionModel<ClientProjectDetail>) demandGrid.getSelectionModel();
+    public Set<ClientProjectConversationDetail> getSelectedMessageList() {
+        MultiSelectionModel<ClientProjectConversationDetail> model =
+                (MultiSelectionModel<ClientProjectConversationDetail>) conversationGrid.getSelectionModel();
         return model.getSelectedSet();
     }
 

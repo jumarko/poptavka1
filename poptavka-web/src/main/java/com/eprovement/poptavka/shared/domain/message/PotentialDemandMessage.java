@@ -24,7 +24,7 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
             };
 
 
-    @Override
+//    @Override
     public int getClientRating() {
         return (clientRating == null ? 0 : clientRating.intValue());
     }
@@ -33,7 +33,7 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
         this.clientRating = clientRating;
     }
 
-    @Override
+//    @Override
     public String getClientName() {
         return clientName;
     }

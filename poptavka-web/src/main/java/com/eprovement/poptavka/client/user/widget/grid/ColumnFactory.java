@@ -21,7 +21,6 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCel
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 
 /**
@@ -184,10 +183,12 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return BaseDemandDetail.displayHtml(obj.getDemandTitle()
-                            + " " + obj.getFormattedMessageCount(), obj.isRead());
+//                    return BaseDemandDetail.displayHtml(obj.getDemandTitle()
+//                            + " " + obj.getFormattedMessageCount(), obj.isRead());
+                    return "";
                 } else {
-                    return BaseDemandDetail.displayHtml(obj.getDemandTitle(), obj.isRead());
+//                    return BaseDemandDetail.displayHtml(obj.getDemandTitle(), obj.isRead());
+                    return "";
                 }
             }
         });
@@ -198,7 +199,8 @@ public class ColumnFactory<T> {
                 @Override
                 public int compare(T o1, T o2) {
 
-                    return ((TableDisplay) o1).getDemandTitle().compareTo(((TableDisplay) o2).getDemandTitle());
+//                    return ((TableDisplay) o1).getDemandTitle().compareTo(((TableDisplay) o2).getDemandTitle());
+                    return 0;
                 }
             });
         }
@@ -217,7 +219,8 @@ public class ColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return BaseDemandDetail.displayHtml(obj.getClientName(), obj.isRead());
+//                return BaseDemandDetail.displayHtml(obj.getClientName(), obj.isRead());
+                return "";
             }
         });
         if (sortHandler != null) {
@@ -226,7 +229,8 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    return ((TableDisplay) o1).getDemandPrice().compareTo(((TableDisplay) o2).getDemandPrice());
+//                    return ((TableDisplay) o1).getDemandPrice().compareTo(((TableDisplay) o2).getDemandPrice());
+                    return 0;
                 }
             });
         }
@@ -276,7 +280,8 @@ public class ColumnFactory<T> {
             @Override
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
-                return obj.getClientRating() + "%";
+//                return obj.getClientRating() + "%";
+                return "";
             }
         };
         if (sortHandler != null) {
@@ -285,9 +290,10 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    Integer count1 = ((TableDisplay) o1).getClientRating();
-                    Integer count2 = ((TableDisplay) o2).getClientRating();
-                    return count1.compareTo(count2);
+//                    Integer count1 = ((TableDisplay) o1).getClientRating();
+//                    Integer count2 = ((TableDisplay) o2).getClientRating();
+//                    return count1.compareTo(count2);
+                    return 0;
                 }
             });
         }
@@ -314,9 +320,11 @@ public class ColumnFactory<T> {
             public String getValue(T object) {
                 TableDisplay obj = (TableDisplay) object;
                 if (displayMessages) {
-                    return obj.getClientName() + " " + obj.getFormattedMessageCount();
+//                    return obj.getClientName() + " " + obj.getFormattedMessageCount();
+                    return "";
                 } else {
-                    return obj.getClientName();
+//                    return obj.getClientName();
+                    return "";
                 }
             }
         };
@@ -326,9 +334,10 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    Integer count1 = ((TableDisplay) o1).getMessageCount();
-                    Integer count2 = ((TableDisplay) o2).getMessageCount();
-                    return count1.compareTo(count2);
+//                    Integer count1 = ((TableDisplay) o1).getMessageCount();
+//                    Integer count2 = ((TableDisplay) o2).getMessageCount();
+//                    return count1.compareTo(count2);
+                    return 0;
                 }
             });
         }
@@ -355,10 +364,10 @@ public class ColumnFactory<T> {
                 Date date = null;
                 switch (type) {
                     case DATE_CREATED:
-                        date = obj.getCreated();
+//                        date = obj.getCreated();
                         break;
                     case DATE_EXPIRE:
-                        date = obj.getExpireDate();
+//                        date = obj.getExpireDate();
                         break;
                     case DATE_FINISHED:
                         date = obj.getEndDate();
@@ -375,7 +384,8 @@ public class ColumnFactory<T> {
 
                 @Override
                 public int compare(T o1, T o2) {
-                    return ((TableDisplay) o1).getCreated().compareTo(((TableDisplay) o2).getCreated());
+//                    return ((TableDisplay) o1).getCreated().compareTo(((TableDisplay) o2).getCreated());
+                    return 0;
                 }
             });
         }
