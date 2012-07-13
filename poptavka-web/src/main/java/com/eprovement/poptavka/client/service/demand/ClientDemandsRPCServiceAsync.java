@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -53,12 +52,12 @@ public interface ClientDemandsRPCServiceAsync {
             AsyncCallback<List<ClientProjectContestantDetail>> callback);
 
     //
-    void getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter,
+    void getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientAssignedDemands(long clientID, int start, int maxResult,
+    void getClientAssignedProjects(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<OfferDetail>> callback);
+            AsyncCallback<List<ClientProjectContestantDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */

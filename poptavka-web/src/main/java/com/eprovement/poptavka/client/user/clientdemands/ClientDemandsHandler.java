@@ -49,6 +49,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
             case Constants.CLIENT_PROJECT_CONTESTANTS:
                 getClientProjectContestantsCount(grid, detail);
                 break;
+            case Constants.CLIENT_ASSIGNED_PROJECTS:
+                getClientAssignedProjectsCount(grid, detail);
+                break;
             default:
                 break;
         }
@@ -69,6 +72,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                 break;
             case Constants.CLIENT_PROJECT_CONTESTANTS:
                 getClientProjectContestants(start, maxResults, detail, orderColumns);
+                break;
+            case Constants.CLIENT_ASSIGNED_PROJECTS:
+                getClientAssignedProjects(start, maxResults, detail, orderColumns);
                 break;
             default:
                 break;
@@ -226,6 +232,49 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                     }
                 });
     }
+
+    /**************************************************************************/
+    /* Retrieving methods - CLIENT PROJECTS                                   */
+    /**************************************************************************/
+    private void getClientAssignedProjectsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
+        clientDemandsService.getClientAssignedProjectsCount(
+                Storage.getUser().getUserId(), detail,
+                new AsyncCallback<Long>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(Long result) {
+                        grid.createAsyncDataProvider(result.intValue());
+                    }
+                });
+    }
+
+    private void getClientAssignedProjects(int start, int maxResults,
+            SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
+        clientDemandsService.getClientAssignedProjects(
+                Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
+                new AsyncCallback<List<ClientProjectContestantDetail>>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        throw new UnsupportedOperationException("Not supported yet.");
+                    }
+
+                    @Override
+                    public void onSuccess(List<ClientProjectContestantDetail> result) {
+                        eventBus.displayClientAssignedProjects(result);
+                    }
+                });
+    }
+    //*************************************************************************/
+    // Other                                                                    */
+    //*************************************************************************/
 
     /**
      * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.

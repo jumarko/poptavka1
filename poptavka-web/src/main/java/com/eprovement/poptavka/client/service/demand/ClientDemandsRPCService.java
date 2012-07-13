@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -149,7 +148,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter);
+    long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter);
 
     /**
      * Get all offers that were accepted by client to solve a demand.
@@ -163,7 +162,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<OfferDetail> getClientAssignedDemands(long clientID, int start, int maxResult,
+    List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**************************************************************************/

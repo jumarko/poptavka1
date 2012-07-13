@@ -122,8 +122,9 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = ClientContestsPresenter.class)
     void displayClientProjectContestants(List<ClientProjectContestantDetail> result);
 
-//    @Event(handlers = SupplierProjectsPresenter.class)
-//    void responseSupplierProjects(ArrayList<PotentialDemandMessage> result);
+    @Event(handlers = ClientAssignedProjectsPresenter.class)
+    void displayClientAssignedProjects(List<ClientProjectContestantDetail> result);
+
     /**************************************************************************/
     @Event(handlers = ClientDemandsHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);

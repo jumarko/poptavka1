@@ -174,7 +174,8 @@ public class ClientContestsView extends Composite
      * Initialize this example.
      */
     private void initContestTable() {
-        List<String> gridColumns = Arrays.asList(new String[]{"supplierName", "body", "date"});
+        List<String> gridColumns = Arrays.asList(
+                new String[]{"supplierName", "price", "receivedDate", "rating", "acceptedDate"});
         // Create a CellTable.
         contestGrid = new UniversalAsyncGrid<ClientProjectContestantDetail>(gridColumns);
         contestGrid.setWidth("800px");
@@ -384,8 +385,6 @@ public class ClientContestsView extends Composite
     public Column<ClientProjectContestantDetail, String> getAcceptedColumn() {
         return acceptedDateColumn;
     }
-
-
 
     //Header
     @Override

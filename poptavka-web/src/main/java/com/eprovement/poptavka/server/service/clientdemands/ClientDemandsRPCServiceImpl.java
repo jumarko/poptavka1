@@ -19,7 +19,6 @@ import com.eprovement.poptavka.server.service.demands.DemandsRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -269,9 +268,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter) {
+    public long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 0L;
     }
 
     /**
@@ -287,10 +286,10 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<OfferDetail> getClientAssignedDemands(long clientID, int start, int maxResult,
+    public List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<OfferDetail>();
+        return new ArrayList<ClientProjectContestantDetail>();
     }
 
     /**************************************************************************/
