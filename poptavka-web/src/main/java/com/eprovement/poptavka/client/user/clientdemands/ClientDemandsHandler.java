@@ -4,7 +4,6 @@ import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.DemandsRPCServiceAsync;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -12,6 +11,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversa
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -29,8 +29,6 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
 
     @Inject
     private ClientDemandsRPCServiceAsync clientDemandsService;
-    @Inject
-    private DemandsRPCServiceAsync demandsService;
     private ErrorDialogPopupView errorDialog;
 
     //*************************************************************************/
@@ -143,7 +141,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        demandsService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
+        clientDemandsService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -168,7 +166,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        demandsService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
+        clientDemandsService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -187,7 +185,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
     }
 
     public void onRequestDemandDetail(Long demandId, final ViewType type) {
-        demandsService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
+        clientDemandsService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -205,6 +203,25 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
         });
     }
 
+    public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
+        clientDemandsService.getFullSupplierDetail(supplierId, new AsyncCallback<FullSupplierDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
+                        + caught.getMessage());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
+                }
+            }
+
+            @Override
+            public void onSuccess(FullSupplierDetail result) {
+                eventBus.responseSupplierDetail(result, type);
+            }
+        });
+    }
+
     /**
      * Load demand/related conversation from DB.
      *
@@ -212,8 +229,8 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
      * @param userMessageId
      * @param userId
      */
-    public void onRequestChatForSupplierList(long messageId, Long userMessageId, Long userId) {
-        demandsService.loadSuppliersPotentialDemandConversation(messageId, userId, userMessageId,
+    public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
+        clientDemandsService.getSuppliersPotentialDemandConversation(messageId, userId, userMessageId,
                 new AsyncCallback<ArrayList<MessageDetail>>() {
 
                     @Override
@@ -227,7 +244,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
 
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
-                        eventBus.responseChatForSupplierList(result, ViewType.POTENTIAL);
+                        eventBus.responseConversation(result, ViewType.POTENTIAL);
                     }
                 });
     }
@@ -240,7 +257,7 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
      * @param type
      */
     public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
-        demandsService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
+        clientDemandsService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {

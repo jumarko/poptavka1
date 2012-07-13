@@ -10,7 +10,7 @@ import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -130,18 +130,19 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     private SearchModuleDataHolder searchDataHolder = null;
     // for EVERY text display
     // providing HTML safe display
-    public static final TextCell TABLE_TEXT_CELL = new TextCell(new SafeHtmlRenderer<String>() {
+    public static final ClickableTextCell TABLE_CLICKABLE_TEXT_CELL = new ClickableTextCell(
+            new SafeHtmlRenderer<String>() {
 
-        @Override
-        public SafeHtml render(String object) {
-            return SafeHtmlUtils.fromTrustedString(object);
-        }
+                @Override
+                public SafeHtml render(String object) {
+                    return SafeHtmlUtils.fromTrustedString(object);
+                }
 
-        @Override
-        public void render(String object, SafeHtmlBuilder builder) {
-            builder.appendHtmlConstant(object);
-        }
-    });
+                @Override
+                public void render(String object, SafeHtmlBuilder builder) {
+                    builder.appendHtmlConstant(object);
+                }
+            });
 
     /**
      * Constructor of UniversalAsyncGrid.

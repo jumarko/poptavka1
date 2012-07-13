@@ -180,19 +180,27 @@ public class ClientProjectsPresenter
      * @param messageId ID for demand related conversation
      * @param userMessageId ID for demand related conversation
      */
-    public void displayDetailContent(Long demandId, long messageId, Long userMessageId) {
+    public void displayDetailContent(ClientProjectConversationDetail detail) {
         //TODO
         //copy role check from old implementation
         //
         //
 
         //can be solved by enum in future or can be accesed from storage class
-        detailSection.showLoading(DevelDetailWrapperPresenter.DETAIL);
-        eventBus.requestDemandDetail(demandId, type);
+        detailSection.showLoading(DevelDetailWrapperPresenter.DEMAND);
+//        eventBus.requestDemandDetail(detail.getDemandId(), type);
+        eventBus.requestDemandDetail(123L, type);
+
+        //can be solved by enum in future or can be accesed from storage class
+        detailSection.showLoading(DevelDetailWrapperPresenter.SUPPLIER);
+//        eventBus.requestSupplierDetail(detail.getSupplierId(), type);
+        eventBus.requestSupplierDetail(142811L, type);
 
         //add conversation loading events and so on
         detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
-        eventBus.requestChatForSupplierList(messageId, userMessageId, Storage.getUser().getUserId());
+//        eventBus.requestConversation(detail.getMessageId(),
+//                detail.getUserMessageId(), Storage.getUser().getUserId());
+        eventBus.requestConversation(124L, 289L, 149L);
 
         //init default replyWidget
         //it is initalized now, because we do not need to have it visible before first demand selection
@@ -245,9 +253,11 @@ public class ClientProjectsPresenter
 
             @Override
             public void update(int index, ClientProjectConversationDetail object, String value) {
-                //Neviem ci porovnamam so spravnym atributoms
                 if (lastOpenedProjectConversation != object.getUserMessageId()) {
-                    //DisplayDetail
+                    lastOpenedProjectConversation = object.getUserMessageId();
+                    object.setRead(true);
+                    view.getConversationGrid().redraw();
+                    displayDetailContent(object);
                 }
             }
         };
@@ -275,7 +285,7 @@ public class ClientProjectsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
+                eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
             }
         });
     }
@@ -285,7 +295,7 @@ public class ClientProjectsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
+                eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
             }
         });
     }

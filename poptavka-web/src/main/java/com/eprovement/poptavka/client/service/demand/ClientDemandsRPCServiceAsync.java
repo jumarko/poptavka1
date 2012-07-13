@@ -5,8 +5,11 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +19,9 @@ import java.util.Map;
  */
 public interface ClientDemandsRPCServiceAsync {
 
+    /**************************************************************************/
+    /* Table getter methods                                                   */
+    /**************************************************************************/
     void getClientProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
@@ -50,4 +56,26 @@ public interface ClientDemandsRPCServiceAsync {
     void getClientAssignedDemands(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
             AsyncCallback<List<OfferDetail>> callback);
+
+    /**************************************************************************/
+    /* Other getter methods                                                   */
+    /**************************************************************************/
+    void getFullDemandDetail(long demandId, AsyncCallback<FullDemandDetail> callback);
+
+    void getFullSupplierDetail(long supplierId, AsyncCallback<FullSupplierDetail> callback);
+
+    void getSuppliersPotentialDemandConversation(
+            long threadId, long userId, long userMessageId, AsyncCallback<ArrayList<MessageDetail>> callback);
+
+    /**************************************************************************/
+    /* Setter methods                                                         */
+    /**************************************************************************/
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
+
+    void setMessageStarStatus(List<Long> list, boolean newStatus, AsyncCallback<Void> callback);
+
+    /**************************************************************************/
+    /* Messages methods                                                       */
+    /**************************************************************************/
+    void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 }

@@ -15,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversa
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -139,6 +140,12 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
     void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
 
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestSupplierDetail(Long supplierId, ViewType type);
+
+    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    void responseSupplierDetail(FullSupplierDetail supplierDetail, ViewType type);
+
     /*
      * Request/Response method pair
      * Fetch and display chat(conversation) for supplier new demands list
@@ -147,10 +154,10 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
      * @param userId
      */
     @Event(handlers = ClientDemandsHandler.class)
-    void requestChatForSupplierList(long messageId, Long userMessageId, Long userId);
+    void requestConversation(long messageId, Long userMessageId, Long userId);
 
     @Event(handlers = DevelDetailWrapperPresenter.class)
-    void responseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
 
 
     /**************************************************************************/

@@ -24,8 +24,9 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
 public class DevelDetailWrapperPresenter
         extends LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, ClientDemandsEventBus> {
 
-    public static final int DETAIL = 0;
-    public static final int CHAT = 1;
+    public static final int DEMAND = 0;
+    public static final int SUPPLIER = 1;
+    public static final int CHAT = 2;
 
     public interface IDetailWrapper extends LazyView {
 
@@ -132,7 +133,7 @@ public class DevelDetailWrapperPresenter
      * @param chatMessages - demand-related conversation
      * @param supplierListType
      */
-    public void onResponseChatForSupplierList(ArrayList<MessageDetail> chatMessages, ViewType wrapperType) {
+    public void onResponseConversation(ArrayList<MessageDetail> chatMessages, ViewType wrapperType) {
         //neccessary check for method to be executed only in appropriate presenter
         if (type.equals(wrapperType)) {
             //display chat
@@ -206,11 +207,18 @@ public class DevelDetailWrapperPresenter
      * @param value value of component do toggle loading image.
      */
     public void showLoading(int value) {
-        if (value == DETAIL) {
-            view.toggleDemandLoading();
-        }
-        if (value == CHAT) {
-            view.toggleConversationLoading();
+        switch (value) {
+            case DEMAND:
+                view.toggleDemandLoading();
+                break;
+            case SUPPLIER:
+                view.toggleSupplierLoading();
+                break;
+            case CHAT:
+                view.toggleConversationLoading();
+                break;
+            default:
+                break;
         }
     }
     /**

@@ -219,7 +219,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
         //
 
         //can be solved by enum in future or can be accesed from storage class
-        detailSection.showLoading(DevelDetailWrapperPresenter.DETAIL);
+        detailSection.showLoading(DevelDetailWrapperPresenter.DEMAND);
         eventBus.requestDemandDetail(demandId, type);
 
         //add conversation loading events and so on

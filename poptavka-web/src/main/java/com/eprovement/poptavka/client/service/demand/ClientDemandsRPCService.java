@@ -5,9 +5,13 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +24,9 @@ public interface ClientDemandsRPCService extends RemoteService {
 
     String URL = "service/clientdemandsmodule";
 
+    /**************************************************************************/
+    /* Table getter methods                                                   */
+    /**************************************************************************/
     //************************* CLIENT - My Demands ***************************/
     /**
      * Get all demand's count that has been created by client.
@@ -157,4 +164,26 @@ public interface ClientDemandsRPCService extends RemoteService {
      */
     List<OfferDetail> getClientAssignedDemands(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
+
+    /**************************************************************************/
+    /* Other getter methods                                                   */
+    /**************************************************************************/
+    FullDemandDetail getFullDemandDetail(long demandId);
+
+    FullSupplierDetail getFullSupplierDetail(long supplierId);
+
+    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
+            long userMessageId) throws RPCException;
+
+    /**************************************************************************/
+    /* Setter methods                                                         */
+    /**************************************************************************/
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
+
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
+
+    /**************************************************************************/
+    /* Messages methods                                                       */
+    /**************************************************************************/
+    MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException;
 }
