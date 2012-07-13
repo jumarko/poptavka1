@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
@@ -71,7 +72,6 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     /* Navigation Parent events */
     /**************************************************************************/
-
     @Event(forwardToParent = true)
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
@@ -106,18 +106,24 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
 
     @Event(handlers = ClientProjectsPresenter.class, passive = true)
     void sendMessageResponse(MessageDetail sentMessage, ViewType type);
+
     /**************************************************************************/
     /* Business events handled by ListPresenters.                             */
     /**************************************************************************/
     @Event(handlers = ClientProjectsPresenter.class)
-    void displayClientsProjects(List<ClientProjectDetail> result);
+    void displayClientProjects(List<ClientProjectDetail> result);
 
     @Event(handlers = ClientProjectsPresenter.class)
-    void displayClientsProjectConversations(List<ClientProjectConversationDetail> result);
+    void displayClientProjectConversations(List<ClientProjectConversationDetail> result);
+
+    @Event(handlers = ClientContestsPresenter.class)
+    void displayClientOfferedProjects(List<ClientProjectDetail> result);
+
+    @Event(handlers = ClientContestsPresenter.class)
+    void displayClientProjectContestants(List<ClientProjectContestantDetail> result);
 
 //    @Event(handlers = SupplierProjectsPresenter.class)
 //    void responseSupplierProjects(ArrayList<PotentialDemandMessage> result);
-
     /**************************************************************************/
     @Event(handlers = ClientDemandsHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
@@ -159,11 +165,9 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = DevelDetailWrapperPresenter.class)
     void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
 
-
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/
-
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */
     /* Should be called only from UniversalAsyncGrid. */

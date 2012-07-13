@@ -60,21 +60,21 @@ public class ClientDemandsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.DEMANDS_CLIENT_PROJECTS);
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_PROJECTS);
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.DEMANDS_CLIENT_OFFERS);
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_PROJECTS);
             }
         });
         view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToClientDemandsModule(null, Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS);
+                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_PROJECTS);
             }
         });
         view.getCliCreateDemand().addClickHandler(new ClickHandler() {
@@ -112,13 +112,13 @@ public class ClientDemandsPresenter
     /**************************************************************************/
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
-            case Constants.DEMANDS_CLIENT_PROJECTS:
+            case Constants.CLIENT_PROJECTS:
                 eventBus.initClientProjects(filter);
                 break;
-            case Constants.DEMANDS_CLIENT_OFFERS:
+            case Constants.CLIENT_OFFERED_PROJECTS:
                 eventBus.initClientContests(filter);
                 break;
-            case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
+            case Constants.CLIENT_ASSIGNED_PROJECTS:
                 eventBus.initClientAssignedProjects(filter);
                 break;
             default:

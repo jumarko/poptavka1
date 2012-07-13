@@ -191,7 +191,7 @@ public class ClientProjectsView extends Composite
         demandGrid.addStatusColumn(Storage.MSGS.status());
         // Demand title column
         demandGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
                     @Override
@@ -203,7 +203,7 @@ public class ClientProjectsView extends Composite
 
         // Demand price column
         demandGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.price(), true, PRICE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
                     @Override
@@ -215,7 +215,7 @@ public class ClientProjectsView extends Composite
 
         // Finnish date column
         demandGrid.addColumn(
-                conversationGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.finnishDate(), true, FINNISH_DATE_COL_WIDTH,
+                demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.finnishDate(), true, FINNISH_DATE_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
                     @Override
@@ -280,7 +280,7 @@ public class ClientProjectsView extends Composite
                         StringBuilder str = new StringBuilder();
                         str.append(((ClientProjectConversationDetail) object).getMessageDetail().getBody());
                         str.append("...");
-                        return ClientProjectDetail.displayHtml(str.toString(), detail.isRead());
+                        return ClientProjectConversationDetail.displayHtml(str.toString(), detail.isRead());
                     }
                 });
 
@@ -292,7 +292,7 @@ public class ClientProjectsView extends Composite
                     @Override
                     public String getValue(Object object) {
                         ClientProjectConversationDetail detail = (ClientProjectConversationDetail) object;
-                        return ClientProjectDetail.displayHtml(
+                        return ClientProjectConversationDetail.displayHtml(
                                 formatter.format(detail.getDate()),
                                 detail.isRead());
                     }

@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
@@ -95,7 +96,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getClientOffersCount(long clientID, SearchModuleDataHolder filter);
+    long getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter);
 
     /**
      * Get all demands where have been placed an offer by some supplier.
@@ -110,20 +111,20 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<FullDemandDetail> getClientOffersCount(long clientID, long demandID, int start,
+    List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**
-     * Get all offers of given demand.
+     * Get all contestants and their offers of given demand.
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
      * @return offers count of given demand
      */
-    long getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter);
+    long getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter);
 
     /**
-     * Get all offers of given demand.
+     * Get all contestants and their offers of given demand.
      * When supplier place an offer to client's demand, the offer will be involved here.
      * As Client: "How many suppliers placed an offers to a certain demand."
      *
@@ -135,7 +136,7 @@ public interface ClientDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<OfferDetail> getClientDemandOffers(long clientID, long demandID, int start,
+    List<ClientProjectContestantDetail> getClientProjectContestants(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     //******************** CLIENT - My Assigned Demands ***********************/

@@ -114,7 +114,7 @@ public class SupplierListPresenter extends LazyPresenter<SupplierListPresenter.I
     public void onInitSupplierList(SearchModuleDataHolder filter) {
 //        commented code is from production code
 //        if (!initialized) {
-        Storage.setCurrentlyLoadedView(Constants.DEMANDS_SUPPLIER_MY_DEMANDS);
+        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_PROJECTS);
         searchDataHolder = filter;
         eventBus.requestSupplierNewDemands(searchDataHolder);
 //        }

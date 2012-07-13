@@ -64,21 +64,21 @@ public class DemandPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_PROJECTS);
+                eventBus.goToDemandModule(null, Constants.CLIENT_PROJECTS);
             }
         });
         view.getCliOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_OFFERS);
+                eventBus.goToDemandModule(null, Constants.CLIENT_OFFERED_PROJECTS);
             }
         });
         view.getCliAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS);
+                eventBus.goToDemandModule(null, Constants.CLIENT_ASSIGNED_PROJECTS);
             }
         });
         view.getCliCreateDemand().addClickHandler(new ClickHandler() {
@@ -115,21 +115,21 @@ public class DemandPresenter
 
             @Override
             public void onClick(ClickEvent arg0) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_MY_DEMANDS);
+                eventBus.goToDemandModule(null, Constants.SUPPLIER_POTENTIAL_PROJECTS);
             }
         });
         view.getSupOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_OFFERS);
+                eventBus.goToDemandModule(null, Constants.SUPPLIER_CONTESTS);
             }
         });
         view.getSupAssignedButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToDemandModule(null, Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS);
+                eventBus.goToDemandModule(null, Constants.SUPPLIER_ASSIGNED_PROJECTS);
             }
         });
 
@@ -189,19 +189,19 @@ public class DemandPresenter
          */
         //Client
         switch (loadWidget) {
-            case Constants.DEMANDS_CLIENT_PROJECTS:
+            case Constants.CLIENT_PROJECTS:
                 eventBus.initClientList(filter);
                 break;
-            case Constants.DEMANDS_CLIENT_OFFERS:
+            case Constants.CLIENT_OFFERED_PROJECTS:
                 break;
-            case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
+            case Constants.CLIENT_ASSIGNED_PROJECTS:
                 break;
-            case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
+            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
                 eventBus.initSupplierList(filter);
                 break;
-            case Constants.DEMANDS_SUPPLIER_OFFERS:
+            case Constants.SUPPLIER_CONTESTS:
                 break;
-            case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
+            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
                 break;
             default:
                 Storage.setCurrentlyLoadedView(Constants.NONE);

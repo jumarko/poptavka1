@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
@@ -36,20 +37,22 @@ public interface ClientDemandsRPCServiceAsync {
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
             AsyncCallback<List<ClientProjectConversationDetail>> callback);
 
-    void getClientOffersCount(long clientID, SearchModuleDataHolder filter,
+    //
+    void getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientOffersCount(long clientID, long demandID, int start,
+    void getClientOfferedProjects(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<FullDemandDetail>> callback);
+            AsyncCallback<List<ClientProjectDetail>> callback);
 
-    void getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter,
+    void getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientDemandOffers(long clientID, long demandID, int start,
+    void getClientProjectContestants(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<OfferDetail>> callback);
+            AsyncCallback<List<ClientProjectContestantDetail>> callback);
 
+    //
     void getClientAssignedDemandsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 

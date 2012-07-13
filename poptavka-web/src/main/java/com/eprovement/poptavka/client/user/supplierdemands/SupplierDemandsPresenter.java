@@ -60,21 +60,21 @@ public class SupplierDemandsPresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToSupplierDemandsModule(null, Constants.DEMANDS_SUPPLIER_MY_DEMANDS);
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_PROJECTS);
             }
         });
         view.getSupOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToSupplierDemandsModule(null, Constants.DEMANDS_SUPPLIER_OFFERS);
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CONTESTS);
             }
         });
         view.getSupAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToSupplierDemandsModule(null, Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS);
+                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_PROJECTS);
             }
         });
         view.getSupCreateDemand().addClickHandler(new ClickHandler() {
@@ -112,13 +112,13 @@ public class SupplierDemandsPresenter
     /**************************************************************************/
     public void onGoToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
-            case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
+            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
                 eventBus.initSupplierProjects(filter);
                 break;
-            case Constants.DEMANDS_SUPPLIER_OFFERS:
+            case Constants.SUPPLIER_CONTESTS:
                 eventBus.initSupplierContests(filter);
                 break;
-            case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
+            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
                 eventBus.initSupplierAssignedProjects(filter);
                 break;
             default:

@@ -127,6 +127,11 @@ public interface LocalizableMessages extends Messages {
     String noData();
     String rating();
     String address();
+    String action();
+    String read();
+    String unread();
+    String star();
+    String unstar();
 
     String month();
     String fewMonths();

@@ -31,17 +31,17 @@ public class DemandHistoryConverter implements HistoryConverter<DemandEventBus> 
      */
     public String onGoToDemandModule(SearchModuleDataHolder filter, int loadWidget) {
         switch (loadWidget) {
-            case Constants.DEMANDS_CLIENT_PROJECTS:
+            case Constants.CLIENT_PROJECTS:
                 return DEMANDS_CLIENT_MY_DEMANDS_TEXT;
-            case Constants.DEMANDS_CLIENT_OFFERS:
+            case Constants.CLIENT_OFFERED_PROJECTS:
                 return DEMANDS_CLIENT_OFFERS_TEXT;
-            case Constants.DEMANDS_CLIENT_ASSIGNED_DEMANDS:
+            case Constants.CLIENT_ASSIGNED_PROJECTS:
                 return DEMANDS_CLIENT_ASSIGNED_DEMANDS_TEXT;
-            case Constants.DEMANDS_SUPPLIER_MY_DEMANDS:
+            case Constants.SUPPLIER_POTENTIAL_PROJECTS:
                 return DEMANDS_SUPPLIER_MY_DEMANDS_TEXT;
-            case Constants.DEMANDS_SUPPLIER_OFFERS:
+            case Constants.SUPPLIER_CONTESTS:
                 return DEMANDS_SUPPLIER_OFFERS_TEXT;
-            case Constants.DEMANDS_SUPPLIER_ASSIGNED_DEMANDS:
+            case Constants.SUPPLIER_ASSIGNED_PROJECTS:
                 return DEMANDS_SUPPLIER_ASSIGNED_DEMANDS_TEXT;
             default:
                 return DEMANDS_NONE_TEXT;

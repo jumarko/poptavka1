@@ -111,7 +111,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
     public void onInitClientList(SearchModuleDataHolder searchModuleDataHolder) {
 //        commented code is from production code
 //        if (!initialized) {
-        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECTS);
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECTS);
         searchDataHolder = searchModuleDataHolder;
         eventBus.requestClientsDemands(searchDataHolder);
 //        }

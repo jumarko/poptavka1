@@ -53,14 +53,15 @@ public final class Constants {
 
     /* Demands module */
     // Client
-    public static final int DEMANDS_CLIENT_PROJECTS = 10;
-    public static final int DEMANDS_CLIENT_PROJECT_CONVERSATIONS = 18;
-    public static final int DEMANDS_CLIENT_OFFERS = 11;
-    public static final int DEMANDS_CLIENT_ASSIGNED_DEMANDS = 12;
+    public static final int CLIENT_PROJECTS = 10;
+    public static final int CLIENT_PROJECT_DISCUSSIONS = 18;
+    public static final int CLIENT_OFFERED_PROJECTS = 11;
+    public static final int CLIENT_PROJECT_CONTESTANTS = 19;
+    public static final int CLIENT_ASSIGNED_PROJECTS = 12;
     // Supplier
-    public static final int DEMANDS_SUPPLIER_MY_DEMANDS = 15;
-    public static final int DEMANDS_SUPPLIER_OFFERS = 16;
-    public static final int DEMANDS_SUPPLIER_ASSIGNED_DEMANDS = 17;
+    public static final int SUPPLIER_POTENTIAL_PROJECTS = 15;
+    public static final int SUPPLIER_CONTESTS = 16;
+    public static final int SUPPLIER_ASSIGNED_PROJECTS = 17;
 
     /* Messages module constants */
     public static final int MESSAGES_INBOX = 20;
@@ -93,14 +94,32 @@ public final class Constants {
         return admins;
     }
 
+    public static ArrayList<Integer> getClientConstants() {
+        ArrayList<Integer> clients = new ArrayList<Integer>();
+        clients.add(CLIENT_PROJECTS);
+        clients.add(CLIENT_PROJECT_DISCUSSIONS);
+        clients.add(CLIENT_OFFERED_PROJECTS);
+        clients.add(CLIENT_PROJECT_CONTESTANTS);
+        clients.add(CLIENT_ASSIGNED_PROJECTS);
+        return clients;
+    }
+
+    public static ArrayList<Integer> getSupplierConstants() {
+        ArrayList<Integer> suppliers = new ArrayList<Integer>();
+        suppliers.add(SUPPLIER_POTENTIAL_PROJECTS);
+        suppliers.add(SUPPLIER_CONTESTS);
+        suppliers.add(SUPPLIER_ASSIGNED_PROJECTS);
+        return suppliers;
+    }
+
+    //TODO Martin - remove and redirect usage to getClientCOnstatnts and SuppliersConstants
     public static ArrayList<Integer> getDemandsConstants() {
         ArrayList<Integer> admins = new ArrayList<Integer>();
-        admins.add(DEMANDS_CLIENT_ASSIGNED_DEMANDS);
-        admins.add(DEMANDS_CLIENT_PROJECTS);
-        admins.add(DEMANDS_CLIENT_OFFERS);
-        admins.add(DEMANDS_SUPPLIER_ASSIGNED_DEMANDS);
-        admins.add(DEMANDS_SUPPLIER_MY_DEMANDS);
-        admins.add(DEMANDS_SUPPLIER_OFFERS);
+        admins.add(CLIENT_ASSIGNED_PROJECTS);
+        admins.add(CLIENT_PROJECTS);
+        admins.add(SUPPLIER_ASSIGNED_PROJECTS);
+        admins.add(SUPPLIER_POTENTIAL_PROJECTS);
+        admins.add(SUPPLIER_CONTESTS);
         return admins;
     }
 

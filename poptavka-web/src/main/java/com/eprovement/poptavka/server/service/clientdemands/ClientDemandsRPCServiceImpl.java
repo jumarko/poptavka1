@@ -20,6 +20,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
@@ -199,9 +200,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getClientOffersCount(long clientID, SearchModuleDataHolder filter) {
+    public long getClientOfferedProjectsCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 0L;
     }
 
     /**
@@ -218,10 +219,10 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<FullDemandDetail> getClientOffersCount(long clientID, long demandID, int start,
+    public List<ClientProjectDetail> getClientOfferedProjects(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullDemandDetail>();
+        return new ArrayList<ClientProjectDetail>();
     }
 
     /**
@@ -232,9 +233,9 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return offers count of given demand
      */
     @Override
-    public long getClientDemandOffersCount(long clientID, long demandID, SearchModuleDataHolder filter) {
+    public long getClientProjectContestantsCount(long clientID, long demandID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 0L;
     }
 
     /**
@@ -251,10 +252,10 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<OfferDetail> getClientDemandOffers(long clientID, long demandID, int start,
+    public List<ClientProjectContestantDetail> getClientProjectContestants(long clientID, long demandID, int start,
             int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<OfferDetail>();
+        return new ArrayList<ClientProjectContestantDetail>();
     }
 
     //******************** CLIENT - My Assigned Demands ***********************/

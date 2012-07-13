@@ -130,7 +130,7 @@ public class ClientProjectsPresenter
     /* Navigation events */
     /**************************************************************************/
     public void onInitClientProjects(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECTS);
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECTS);
         searchDataHolder = filter;
         view.getDemandGrid().getDataCount(eventBus, searchDataHolder);
 
@@ -161,13 +161,13 @@ public class ClientProjectsPresenter
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientsProjects(List<ClientProjectDetail> data) {
+    public void onDisplayClientProjects(List<ClientProjectDetail> data) {
         GWT.log("++ onResponseClientsProjects");
 
         view.getDemandGrid().updateRowData(data);
     }
 
-    public void onDisplayClientsProjectConversations(List<ClientProjectConversationDetail> data) {
+    public void onDisplayClientProjectConversations(List<ClientProjectConversationDetail> data) {
         GWT.log("++ onResponseClientsProjects");
 
         view.getConversationGrid().updateRowData(data);
@@ -327,7 +327,7 @@ public class ClientProjectsPresenter
 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.DEMANDS_CLIENT_PROJECT_CONVERSATIONS);
+                Storage.setCurrentlyLoadedView(Constants.CLIENT_PROJECT_DISCUSSIONS);
                 ClientProjectDetail selected = (ClientProjectDetail) ((SingleSelectionModel)
                         view.getDemandGrid().getSelectionModel()).getSelectedObject();
                 if (selected != null) {
