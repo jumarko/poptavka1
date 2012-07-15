@@ -35,12 +35,10 @@ public final class ReflectionUtils {
     /**
      * Tries to find GETTER for property with name <code>propertyName</code> on class <code>aClass</code>.
      * <p>
-     *     It will find methods starting with "get" as well as "is". However, this is ambiguous, therefore
-     *     be aware to not use this for class which has both such methods, e.g.:
-     *     <pre>
-     *         public Message getThreadRoot() { return threadRoot; }
-     *         public boolean isThreadRoot() { return threadRoot == null; }
-     *     </pre>
+     *     It will first search for a method prefixed with <code>get</code>
+     *     if there's none, it will search for a method prefixed with
+     *     <code>is</code>. If even this isn't found, <code>null</code> is
+     *     returned.
      * </p>
      *
      * @param aClass
@@ -107,34 +105,17 @@ public final class ReflectionUtils {
             return null;
         }
 
-        for (Method publicMethod : allPublicMethods) {
-            if (publicMethod.getName().endsWith(ReflectionUtils.getFieldNameFirstLetterUpperCase(field))
-                    && startsWithSomePrefix(publicMethod.getName(), accessorPrefixes)) {
-                return publicMethod;
-            }
-            // special case are boolean properties which names start with "is" - they can have getter with same name
-            if (field.getName().startsWith(GETTER_BOOLEAN_PREFIX) && publicMethod.getName().equals(field.getName())) {
-                return publicMethod;
+        for (String prefix : accessorPrefixes) {
+            for (Method publicMethod : allPublicMethods) {
+                if (publicMethod.getName().endsWith(ReflectionUtils.getFieldNameFirstLetterUpperCase(field))
+                        && publicMethod.getName().startsWith(prefix)) {
+                    return publicMethod;
+                }
             }
         }
 
         return null;
     }
-
-    private static boolean startsWithSomePrefix(String name, String[] allPrefixes) {
-        if (StringUtils.isBlank(name)) {
-            return false;
-        }
-
-        for (String prefix : allPrefixes) {
-            if (name.startsWith(prefix)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     private static String getFieldNameFirstLetterUpperCase(Field field) {
         return field.getName().substring(0, 1).toUpperCase() // first letter with Upper case
