@@ -111,6 +111,10 @@ public final class ReflectionUtils {
                         && publicMethod.getName().startsWith(prefix)) {
                     return publicMethod;
                 }
+                if (publicMethod.getName().endsWith(removeStartingIs(field.getName()))
+                        && publicMethod.getName().startsWith(prefix)) {
+                    return publicMethod;
+                }
             }
         }
 
@@ -122,5 +126,10 @@ public final class ReflectionUtils {
                 + field.getName().substring(1, field.getName().length()); // the rest of name without change
     }
 
-
+    private static String removeStartingIs(String name) {
+        if (name.startsWith("is")) {
+            return name.substring(2);
+        }
+        return name;
+    }
 }
