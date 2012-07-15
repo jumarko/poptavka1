@@ -123,7 +123,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return list of demand's detail objects
      */
     @Override
-    public List<ClientProjectDetail> getClientProjects(int start, int maxResult,
+    public List<ClientProjectDetail> getClientProjects(long clientId, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
         ClientProjectDetail cdmd1 = new ClientProjectDetail();
@@ -270,7 +270,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public long getClientAssignedProjectsCount(long clientID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return 0L;
+        return 1L;
     }
 
     /**
@@ -289,7 +289,19 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     public List<ClientProjectContestantDetail> getClientAssignedProjects(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<ClientProjectContestantDetail>();
+        ClientProjectContestantDetail detail = new ClientProjectContestantDetail();
+        detail.setDemandId(1L);
+        detail.setDemandStatus(DemandStatus.ASSIGNED);
+        detail.setSupplierName("dodavatel");
+        detail.setPrice("10000");
+        detail.setReceiveDate(new Date());
+        detail.setRating(90);
+        detail.setAcceptedDate(new Date());
+        detail.setRead(false);
+        detail.setStarred(false);
+        List<ClientProjectContestantDetail> list = new ArrayList<ClientProjectContestantDetail>();
+        list.add(detail);
+        return list;
     }
 
     /**************************************************************************/

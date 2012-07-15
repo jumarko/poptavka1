@@ -22,6 +22,7 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
     private long messageId;
     private long userMessageId;
     private long supplierId;
+    private DemandStatus demandStatus;
     private String supplierName;
     private String price;
     private Date receiveDate;
@@ -169,6 +170,10 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
 
     @Override
     public DemandStatus getDemandStatus() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return demandStatus;
+    }
+
+    public void setDemandStatus(DemandStatus demandStatus) {
+        this.demandStatus = demandStatus;
     }
 }

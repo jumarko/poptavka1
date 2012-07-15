@@ -5,16 +5,33 @@
 package com.eprovement.poptavka.server.service.supplierdemands;
 
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCService;
+import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -23,6 +40,48 @@ import org.springframework.stereotype.Component;
 @Component(SupplierDemandsRPCService.URL)
 public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
         implements SupplierDemandsRPCService {
+
+    //Services
+    private GeneralService generalService;
+    private UserMessageService userMessageService;
+    private MessageService messageService;
+    //Converters
+    private Converter<Demand, FullDemandDetail> demandConverter;
+    private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<Message, MessageDetail> messageConverter;
+
+    /**************************************************************************/
+    /* Autowired methods                                                      */
+    /**************************************************************************/
+    //Services
+    @Autowired
+    public void setGeneralService(GeneralService generalService) {
+        this.generalService = generalService;
+    }
+
+    @Autowired
+    public void setUserMessageService(UserMessageService userMessageService) {
+        this.userMessageService = userMessageService;
+    }
+
+    //Converters
+    @Autowired
+    public void setDemandConverter(
+            @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
+        this.demandConverter = demandConverter;
+    }
+
+    @Autowired
+    public void setSupplierConverter(
+            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        this.supplierConverter = supplierConverter;
+    }
+
+    @Autowired
+    public void setMessageConverter(
+            @Qualifier("messageConverter") Converter<Message, MessageDetail> messageConverter) {
+        this.messageConverter = messageConverter;
+    }
 
     //************************ SUPPLIER - My Demands **************************/
     /**
@@ -37,9 +96,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getSupplierDemandsCount(long supplierID, SearchModuleDataHolder filter) {
+    public long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 0L;
     }
 
     /**
@@ -57,46 +116,12 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<FullDemandDetail> getSupplierDemands(long supplierID, int start, int maxResult,
+    public List<SupplierPotentialProjectDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<FullDemandDetail>();
+        return new ArrayList<SupplierPotentialProjectDetail>();
     }
 
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Supplier: "Questions made by me to demands made by clients."
-     * "How many suppliers are asing something about a certain demand."
-     *
-     * @param supplierID
-     * @param demandID
-     * @param search
-     * @return
-     */
-    @Override
-    public long getSupplierDemandConversationsCount(long supplierID, long demandID,
-            SearchModuleDataHolder search) {
-        //TODO Martin - implement when implemented on backend
-        return -1L;
-    }
-
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Supplier: "Questions made by me to demands made by clients."
-     * "How many suppliers are asing something about a certain demand."
-     *
-     * @param supplierID
-     * @param demnad
-     * @return
-     */
-    @Override
-    public List<UserMessageDetail> getSupplierDemandConversations(long supplierID, long demnadID,
-            int start, int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
-        //TODO Martin - implement when implemented on backend
-        return new ArrayList<UserMessageDetail>();
-    }
     //************************ SUPPLIER - My Offers ***************************/
 
     /**
@@ -109,9 +134,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getSupplierOffersCount(long supplierID, SearchModuleDataHolder filter) {
+    public long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 0L;
     }
 
     /**
@@ -127,10 +152,10 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<OfferDetail> getSupplierOffers(long supplierID, int start, int maxResult,
+    public List<ClientProjectContestantDetail> getSupplierContests(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<OfferDetail>();
+        return new ArrayList<ClientProjectContestantDetail>();
     }
 
     //******************* SUPPLIER - My Assigned Demands **********************/
@@ -144,9 +169,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getSupplierAssignedDemandsCount(long supplierID, SearchModuleDataHolder filter) {
+    public long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return -1L;
+        return 0L;
     }
 
     /**
@@ -162,9 +187,70 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<OfferDetail> getSupplierAssignedDemands(long supplierID, int start, int maxResult,
+    public List<ClientProjectContestantDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<OfferDetail>();
+        return new ArrayList<ClientProjectContestantDetail>();
+    }
+
+    /**************************************************************************/
+    /* Other getter methods                                                         */
+    /**************************************************************************/
+    @Override
+    public FullDemandDetail getFullDemandDetail(long demandId) {
+        return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
+    }
+
+    @Override
+    public FullSupplierDetail getFullSupplierDetail(long supplierId) {
+        return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
+    }
+
+    @Override
+    // TODO call setMessageReadStatus in body
+    public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
+            long threadId, long userId, long userMessageId) throws RPCException {
+        Message threadRoot = messageService.getById(threadId);
+
+        setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
+
+        User user = this.generalService.find(User.class, userId);
+        ArrayList<Message> messages = (ArrayList<Message>) this.messageService.getPotentialDemandConversation(
+                threadRoot, user);
+        ArrayList<MessageDetail> messageDetailImpls = new ArrayList<MessageDetail>();
+        for (Message message : messages) {
+            messageDetailImpls.add(messageConverter.convertToTarget(message));
+        }
+        return messageDetailImpls;
+    }
+
+    /**************************************************************************/
+    /* Setter methods                                                         */
+    /**************************************************************************/
+    /**
+     * COMMON.
+     * Change 'read' status of sent messages to chosen value
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException {
+        for (Long userMessageId : userMessageIds) {
+            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
+            userMessage.setRead(isRead);
+            this.userMessageService.update(userMessage);
+        }
+    }
+
+    /**
+     * COMMON.
+     * Change 'star' status of sent messages to chosen value
+     */
+    @Override
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
+        for (Long userMessageId : userMessageIds) {
+            UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
+            userMessage.setStarred(isStarred);
+            this.userMessageService.update(userMessage);
+        }
     }
 }

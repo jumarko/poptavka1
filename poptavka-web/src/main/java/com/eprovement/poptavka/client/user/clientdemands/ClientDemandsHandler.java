@@ -104,7 +104,8 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
 
     private void getClientProjects(int start, int maxResults,
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
-        clientDemandsService.getClientProjects(start, maxResults, detail, orderColumns,
+        clientDemandsService.getClientProjects(
+                Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
                 new AsyncCallback<List<ClientProjectDetail>>() {
 
                     @Override

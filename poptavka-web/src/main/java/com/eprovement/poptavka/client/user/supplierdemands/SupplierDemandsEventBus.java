@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierProje
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
@@ -18,6 +19,7 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
+import java.util.List;
 import java.util.Map;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -79,9 +81,59 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     @Event(handlers = SupplierDemandsPresenter.class)
     void displayView(IsWidget content);
+
+    @Event(handlers = SupplierProjectsPresenter.class)
+    void displaySupplierPotentialProjects(List<SupplierPotentialProjectDetail> result);
+
+//    @Event(handlers = SupplierContestsPresenter.class)
+//    void displaySupplierProjectContests(List<ClientProjectContestantDetail> result);
+//
+//    @Event(handlers = SupplierAssignedProjectsPresenter.class)
+//    void displaySupplierAssignedProjects(List<ClientProjectContestantDetail> result);
+
+    /**************************************************************************/
+    /* Business events handled by DevelDetailWrapperPresenter.                */
+    /**************************************************************************/
+    /*
+     * Request/Response Method pair
+     * DemandDetail for detail section
+     * @param demandId
+     * @param type
+     */
+//    @Event(handlers = ClientDemandsHandler.class)
+//    void requestDemandDetail(Long demandId, ViewType type);
+//
+//    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+//    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
+//
+//    @Event(handlers = ClientDemandsHandler.class)
+//    void requestSupplierDetail(Long supplierId, ViewType type);
+//
+//    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+//    void responseSupplierDetail(FullSupplierDetail supplierDetail, ViewType type);
+
+    /*
+     * Request/Response method pair
+     * Fetch and display chat(conversation) for supplier new demands list
+     * @param messageId
+     * @param userMessageId
+     * @param userId
+     */
+//    @Event(handlers = ClientDemandsHandler.class)
+//    void requestConversation(long messageId, Long userMessageId, Long userId);
+//
+//    @Event(handlers = DevelDetailWrapperPresenter.class)
+//    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
+
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/
+    @Event(handlers = SupplierDemandsHandler.class)
+    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
+
+    @Event(handlers = SupplierDemandsHandler.class)
+    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */
     /* Should be called only from UniversalAsyncGrid. */

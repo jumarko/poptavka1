@@ -1,12 +1,16 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
+import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +35,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierDemandsCount(long supplierID, SearchModuleDataHolder filter);
+    long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter);
 
     /**
      * Get demands of categories that I am interested in.
@@ -47,35 +51,9 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<FullDemandDetail> getSupplierDemands(long supplierID, int start, int maxResult,
+    List<SupplierPotentialProjectDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Supplier: "Questions made by me to demands made by clients."
-     * "How many suppliers are asing something about a certain demand."
-     *
-     * @param supplierID
-     * @param demandID
-     * @param search
-     * @return
-     */
-    long getSupplierDemandConversationsCount(long supplierID, long demandID,
-            SearchModuleDataHolder search);
-
-    /**
-     * When supplier asks something about a demand of some client.
-     * The conversation has more messages of course but I want count of threads.
-     * As Supplier: "Questions made by me to demands made by clients."
-     * "How many suppliers are asing something about a certain demand."
-     *
-     * @param supplierID
-     * @param demnad
-     * @return
-     */
-    List<UserMessageDetail> getSupplierDemandConversations(long supplierID, long demnadID,
-            int start, int maxResult, SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
     //************************ SUPPLIER - My Offers ***************************/
 
     /**
@@ -87,7 +65,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierOffersCount(long supplierID, SearchModuleDataHolder filter);
+    long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter);
 
     /**
      * Get offers sent by supplier.
@@ -101,7 +79,8 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<OfferDetail> getSupplierOffers(long supplierID, int start, int maxResult,
+    //TODO Martin premenovat ClientProjectContestantDetail na ContestDetail alebo nieco podobne
+    List<ClientProjectContestantDetail> getSupplierContests(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     //******************* SUPPLIER - My Assigned Demands **********************/
@@ -114,7 +93,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param filter
      * @return
      */
-    long getSupplierAssignedDemandsCount(long supplierID, SearchModuleDataHolder filter);
+    long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter);
 
     /**
      * Get supplier's offers that have been accepted.
@@ -128,6 +107,23 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<OfferDetail> getSupplierAssignedDemands(long supplierID, int start, int maxResult,
+    List<ClientProjectContestantDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
+
+    /**************************************************************************/
+    /* Other getter methods                                                   */
+    /**************************************************************************/
+    FullDemandDetail getFullDemandDetail(long demandId);
+
+    FullSupplierDetail getFullSupplierDetail(long supplierId);
+
+    ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(long threadId, long userId,
+            long userMessageId) throws RPCException;
+
+    /**************************************************************************/
+    /* Setter methods                                                         */
+    /**************************************************************************/
+    void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
+
+    void setMessageStarStatus(List<Long> list, boolean newStatus) throws RPCException;
 }

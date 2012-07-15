@@ -25,7 +25,7 @@ public interface ClientDemandsRPCServiceAsync {
     void getClientProjectsCount(long clientID, SearchModuleDataHolder filter,
             AsyncCallback<Long> callback);
 
-    void getClientProjects(int start, int maxResult,
+    void getClientProjects(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
             AsyncCallback<List<ClientProjectDetail>> callback);
 

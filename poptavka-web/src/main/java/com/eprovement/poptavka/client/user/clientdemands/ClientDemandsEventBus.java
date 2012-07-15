@@ -126,13 +126,6 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     void displayClientAssignedProjects(List<ClientProjectContestantDetail> result);
 
     /**************************************************************************/
-    @Event(handlers = ClientDemandsHandler.class)
-    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
-
-    @Event(handlers = ClientDemandsHandler.class)
-    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
-
-    /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter.                */
     /**************************************************************************/
     /*
@@ -169,6 +162,12 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
+
+    @Event(handlers = ClientDemandsHandler.class)
+    void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
+
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface. */
     /* Should be called only from UniversalAsyncGrid. */

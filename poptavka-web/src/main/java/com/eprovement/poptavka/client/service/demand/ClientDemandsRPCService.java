@@ -44,13 +44,14 @@ public interface ClientDemandsRPCService extends RemoteService {
      * When new demand is created by client, will be involved here.
      * As Client: "All demands created by me."
      *
+     * @param clientID
      * @param start
      * @param maxResult
      * @param filter
      * @param orderColumns
      * @return list of demand's detail objects
      */
-    List<ClientProjectDetail> getClientProjects(int start, int maxResult,
+    List<ClientProjectDetail> getClientProjects(long clientID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**
