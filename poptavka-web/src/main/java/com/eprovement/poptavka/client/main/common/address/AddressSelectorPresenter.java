@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.client.main.common.address;
 
 import com.eprovement.poptavka.client.main.Storage;
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -17,6 +16,7 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import java.util.List;
 
 @Presenter(view = AddressSelectorView.class, multiple = true)
 public class AddressSelectorPresenter
@@ -81,7 +81,7 @@ public class AddressSelectorPresenter
         embedWidget.setWidget(view.getWidgetView());
     }
 
-    public void onSetLocalityData(LocalityType localityType, ArrayList<LocalityDetail> list) {
+    public void onSetLocalityData(LocalityType localityType, List<LocalityDetail> list) {
         switch (localityType) {
             case COUNTRY:
                 setData(view.getCountry(), list);
@@ -100,7 +100,7 @@ public class AddressSelectorPresenter
         }
     }
 
-    private void setData(final ListBox box, final ArrayList<LocalityDetail> list) {
+    private void setData(final ListBox box, final List<LocalityDetail> list) {
         box.clear();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 

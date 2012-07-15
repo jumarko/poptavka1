@@ -13,11 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
@@ -26,7 +22,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBus;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +44,16 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = ClientDemandsPresenter.class)
     void forward();
 
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void requestDetailWrapperPresenter();
+
+//    @Event(handlers = {ClientProjectsPresenter.class, ClientContestsPresenter.class,
+//    ClientAssignedProjectsPresenter.class}, passive = true)
+    @Event(handlers = ClientProjectsPresenter.class)
+    void responseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -92,22 +97,6 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     void displayView(IsWidget content);
 
     /**************************************************************************/
-    /* Business events handled by ALL VIEW presenters.                        */
-    /**************************************************************************/
-    /**
-     * Send/Response method pair
-     * Sends message and receive the answer in a form of the same message to be displayed on UI.
-     * @param messageToSend
-     * @param type type of handling view
-     */
-    @Event(handlers = ClientDemandsHandler.class)
-    void sendMessage(MessageDetail messageToSend, ViewType type);
-    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
-
-    @Event(handlers = ClientProjectsPresenter.class, passive = true)
-    void sendMessageResponse(MessageDetail sentMessage, ViewType type);
-
-    /**************************************************************************/
     /* Business events handled by ListPresenters.                             */
     /**************************************************************************/
     @Event(handlers = ClientProjectsPresenter.class)
@@ -124,40 +113,6 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
 
     @Event(handlers = ClientAssignedProjectsPresenter.class)
     void displayClientAssignedProjects(List<ClientProjectContestantDetail> result);
-
-    /**************************************************************************/
-    /* Business events handled by DevelDetailWrapperPresenter.                */
-    /**************************************************************************/
-    /*
-     * Request/Response Method pair
-     * DemandDetail for detail section
-     * @param demandId
-     * @param type
-     */
-    @Event(handlers = ClientDemandsHandler.class)
-    void requestDemandDetail(Long demandId, ViewType type);
-
-    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
-    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
-
-    @Event(handlers = ClientDemandsHandler.class)
-    void requestSupplierDetail(Long supplierId, ViewType type);
-
-    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
-    void responseSupplierDetail(FullSupplierDetail supplierDetail, ViewType type);
-
-    /*
-     * Request/Response method pair
-     * Fetch and display chat(conversation) for supplier new demands list
-     * @param messageId
-     * @param userMessageId
-     * @param userId
-     */
-    @Event(handlers = ClientDemandsHandler.class)
-    void requestConversation(long messageId, Long userMessageId, Long userId);
-
-    @Event(handlers = DevelDetailWrapperPresenter.class)
-    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
 
     /**************************************************************************/
     /* Business events handled by Handlers. */

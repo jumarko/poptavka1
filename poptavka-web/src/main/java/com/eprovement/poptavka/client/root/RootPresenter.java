@@ -30,6 +30,7 @@ import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPrese
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
+import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -308,5 +309,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.add(m);
         userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
         userInfoPanel.show();
+    }
+
+    public void onRequestDetailWrapperPresenter() {
+        DevelDetailWrapperPresenter detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
+        detailSection.initReplyWidget(eventBus);
+        eventBus.responseDetailWrapperPresenter(detailSection);
     }
 }

@@ -9,11 +9,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.Window;
@@ -21,7 +17,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -323,97 +318,6 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
-            }
-        });
-    }
-
-    public void onRequestDemandDetail(Long demandId, final ViewType type) {
-        clientDemandsService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
-                        + caught.getMessage());
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
-            @Override
-            public void onSuccess(FullDemandDetail result) {
-                eventBus.responseDemandDetail(result, type);
-            }
-        });
-    }
-
-    public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
-        clientDemandsService.getFullSupplierDetail(supplierId, new AsyncCallback<FullSupplierDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
-                        + caught.getMessage());
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
-            @Override
-            public void onSuccess(FullSupplierDetail result) {
-                eventBus.responseSupplierDetail(result, type);
-            }
-        });
-    }
-
-    /**
-     * Load demand/related conversation from DB.
-     *
-     * @param messageId
-     * @param userMessageId
-     * @param userId
-     */
-    public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
-        clientDemandsService.getSuppliersPotentialDemandConversation(messageId, userId, userMessageId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        Window.alert("DemandModuleMessageHandler: onRequestConversationForSupplierList:\n\n"
-                                + caught.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(ArrayList<MessageDetail> result) {
-                        eventBus.responseConversation(result, ViewType.POTENTIAL);
-                    }
-                });
-    }
-
-    /**
-     * Send message.
-     * IMPORTANT: further implementation of other parts will show, if we need more than this method
-     * for chat related stuff
-     * @param messageToSend
-     * @param type
-     */
-    public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
-        clientDemandsService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
-                        + caught.getMessage());
-            }
-
-            @Override
-            public void onSuccess(MessageDetail sentMessage) {
-                eventBus.sendMessageResponse(sentMessage, type);
             }
         });
     }

@@ -80,7 +80,7 @@
         <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+
     <!-- Securing RPC services against XSRF attack using GWT token service -->
     <servlet>
 		<servlet-name>xsrf</servlet-name>
@@ -92,7 +92,7 @@
 	<servlet-name>xsrf</servlet-name>
 		<url-pattern>/gwt/xsrf</url-pattern>
 	</servlet-mapping>
-	
+
 	<context-param>
 		<param-name>gwt.xsrf.session_cookie_name</param-name>
 		<param-value>JSESSIONID</param-value>
@@ -106,10 +106,19 @@
 		<servlet-name>gwt-request-handler</servlet-name>
 		<url-pattern>/poptavka/service/*</url-pattern>
 	</servlet-mapping>
-	
+
     <!--
     Mapping an RPC service defined in handler-servlet.xml
     -->
+    <servlet>
+        <servlet-name>RootRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.root.RootRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RootRPCService</servlet-name>
+        <url-pattern>/poptavka/service/root</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>DemandCreationRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.demandcreation.DemandCreationRPCServiceImpl</servlet-class>
@@ -118,8 +127,8 @@
         <servlet-name>DemandCreationRPCService</servlet-name>
         <url-pattern>/poptavka/service/demandcreation</url-pattern>
     </servlet-mapping>
-    
-        <servlet>
+
+    <servlet>
         <servlet-name>MailRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.mail.MailRPCServiceImpl</servlet-class>
     </servlet>
@@ -136,7 +145,7 @@
         <servlet-name>HomeDemandsRPCService</servlet-name>
         <url-pattern>/poptavka/service/homedemands</url-pattern>
     </servlet-mapping>
-    
+
     <servlet>
         <servlet-name>SupplierCreationRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.suppliercreation.SupplierCreationRPCServiceImpl</servlet-class>

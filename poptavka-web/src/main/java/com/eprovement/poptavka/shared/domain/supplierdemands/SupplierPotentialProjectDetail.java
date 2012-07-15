@@ -110,7 +110,7 @@ public class SupplierPotentialProjectDetail implements Serializable, TableDispla
     }
 
     public int getRating() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return rating;
     }
 
     public Date getExpireDate() {
@@ -118,7 +118,7 @@ public class SupplierPotentialProjectDetail implements Serializable, TableDispla
     }
 
     public Date getReceivedDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return receivedDate;
     }
 
     public Date getAcceptedDate() {

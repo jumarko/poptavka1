@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.widget;
 
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -19,6 +18,7 @@ import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPane
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import java.util.List;
 
 public class DevelDetailWrapperView extends Composite
     implements DevelDetailWrapperPresenter.IDetailWrapper {
@@ -90,7 +90,7 @@ public class DevelDetailWrapperView extends Composite
     }
 
     @Override
-    public void setChat(ArrayList<MessageDetail> chatMessages, boolean collapsed) {
+    public void setChat(List<MessageDetail> chatMessages, boolean collapsed) {
         conversationPanel.setMessageList(chatMessages, true);
         conversationHeader.toggleLoading();
     }

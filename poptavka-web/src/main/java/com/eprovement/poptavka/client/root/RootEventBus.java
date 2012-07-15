@@ -50,9 +50,15 @@ import com.eprovement.poptavka.client.user.demands.DemandModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
+import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.type.ViewType;
+import java.util.List;
 
 @Events(startPresenter = RootPresenter.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -123,7 +129,7 @@ public interface RootEventBus extends EventBus {
 
     /**************************************************************************/
     /* Navigation events.                                                     */
-   /**************************************************************************/
+    /**************************************************************************/
     /**************************************************************************/
     /* Navigation events - Home menu control section                          */
     /**************************************************************************/
@@ -283,7 +289,7 @@ public interface RootEventBus extends EventBus {
     void initCategoryWidget(SimplePanel embedToWidget);
 
     @Event(handlers = CategorySelectorPresenter.class)
-    void setCategoryListData(int newListPosition, ArrayList<CategoryDetail> list);
+    void setCategoryListData(int newListPosition, List<CategoryDetail> list);
 
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** LocalitySelector section. **/
@@ -307,7 +313,7 @@ public interface RootEventBus extends EventBus {
      * @param localityList
      */
     @Event(handlers = {LocalitySelectorPresenter.class, AddressSelectorPresenter.class })
-    void setLocalityData(LocalityType localityType, ArrayList<LocalityDetail> localityList);
+    void setLocalityData(LocalityType localityType, List<LocalityDetail> localityList);
 
     // TODO Praso - mozeme odstranit? No usage
     /** Demand Creation common method calls. */
@@ -356,4 +362,65 @@ public interface RootEventBus extends EventBus {
     /**************************************************************************/
     @Event(handlers = UserMenuPresenter.class)
     void userMenuStyleChange(int loadedModule);
+
+    /**************************************************************************/
+    /* Vytvorenie DevelDetailWrapperPresentera.                               */
+    /**************************************************************************/
+    //Musi byt, lebo na vytvorenie DeatilWraper widgetu musim pouzit rootEventBus
+    @Event(handlers = RootPresenter.class)
+    void requestDetailWrapperPresenter();
+
+    //passive = mal by zavoalt metodu len v aktivom prezenteri., funguje aj s modulmi???
+    @Event(forwardToModules = {ClientDemandsModule.class, SupplierDemandsModule.class }, passive = true)
+    void responseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection);
+
+    /**************************************************************************/
+    /* Business events handled by DevelDetailWrapperPresenter.                */
+    /**************************************************************************/
+    /*
+     * Request/Response Method pair
+     * DemandDetail for detail section
+     * @param demandId
+     * @param type
+     */
+    @Event(handlers = RootHandler.class)
+    void requestDemandDetail(Long demandId, ViewType type);
+
+    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
+
+    @Event(handlers = RootHandler.class)
+    void requestSupplierDetail(Long supplierId, ViewType type);
+
+    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    void responseSupplierDetail(FullSupplierDetail supplierDetail, ViewType type);
+
+    /*
+     * Request/Response method pair
+     * Fetch and display chat(conversation) for supplier new demands list
+     * @param messageId
+     * @param userMessageId
+     * @param userId
+     */
+    @Event(handlers = RootHandler.class)
+    void requestConversation(long messageId, Long userMessageId, Long userId);
+
+    @Event(handlers = DevelDetailWrapperPresenter.class)
+    void responseConversation(List<MessageDetail> chatMessages, ViewType supplierListType);
+
+    /**************************************************************************/
+    /* Messages                                                               */
+    /**************************************************************************/
+    /**
+     * Send/Response method pair
+     * Sends message and receive the answer in a form of the same message to be displayed on UI.
+     * @param messageToSend
+     * @param type type of handling view
+     */
+    @Event(handlers = RootHandler.class)
+    void sendMessage(MessageDetail messageToSend, ViewType type);
+    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
+
+    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    void addConversationMessage(MessageDetail sentMessage, ViewType handlingType);
 }

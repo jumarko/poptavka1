@@ -25,6 +25,7 @@ public class MessageDetail implements Serializable {
 //    private long firstBornId;
 //    private long nexSiblingId;
     private String subject;
+    private String title;
     private String body;
     private String messageState;
     private String messageType;
@@ -45,14 +46,13 @@ public class MessageDetail implements Serializable {
         this.updateWholeMessage(detail);
     }
 
-
-
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeMessage(MessageDetail detail) {
         messageId = detail.getMessageId();
         threadRootId = detail.getThreadRootId();
         parentId = detail.getParentId();
         subject = detail.getSubject();
+        title = detail.getTitle();
         body = detail.getBody();
         messageState = detail.getMessageState();
         messageType = detail.getMessageType();
@@ -284,6 +284,14 @@ public class MessageDetail implements Serializable {
 
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getFormattedMessageCount() {

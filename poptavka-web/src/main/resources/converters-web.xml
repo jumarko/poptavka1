@@ -6,6 +6,8 @@
     <bean id="accessRoleConverter" class="com.eprovement.poptavka.server.converter.AccessRoleConverter">
         <constructor-arg ref="permissionConverter"/>
     </bean>
+    <bean id="categoryConverter" class="com.eprovement.poptavka.server.converter.CategoryConverter" />
+    <bean id="localityConverter" class="com.eprovement.poptavka.server.converter.LocalityConverter" />
     <bean id="activationEmailConverter" class="com.eprovement.poptavka.server.converter.ActivationEmailConverter" />
     <bean id="addressConverter" class="com.eprovement.poptavka.server.converter.AddressConverter" />
     <bean id="baseDemandConverter" class="com.eprovement.poptavka.server.converter.BaseDemandConverter" />

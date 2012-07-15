@@ -179,7 +179,7 @@ public class SupplierProjectsView extends Composite
                 });
 // Rating columne
         ratingColumn = grid.addColumn(
-                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.accepted(), true, RATING_COL_WIDTH,
+                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.rating(), true, RATING_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
                     @Override

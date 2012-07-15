@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.Window;
@@ -12,12 +12,14 @@ import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
-import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
+import com.eprovement.poptavka.client.service.demand.RootRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.History;
@@ -26,20 +28,19 @@ import com.google.gwt.user.client.History;
 public class RootHandler extends BaseEventHandler<RootEventBus> {
 
     @Inject
-    private LocalityRPCServiceAsync localityService = null;
-    @Inject
-    private CategoryRPCServiceAsync categoryService = null;
-    @Inject
-    private UserRPCServiceAsync userService = null;
+    private RootRPCServiceAsync rootService;
     private ErrorDialogPopupView errorDialog;
-    private static final Logger LOGGER = Logger.getLogger("MainHandler");
+    private static final Logger LOGGER = Logger.getLogger("RootHandler");
 
+    /**************************************************************************/
+    /* Localities methods                                                     */
+    /**************************************************************************/
     public void onGetLocalities(final LocalityType localityType) {
-        localityService.getLocalities(localityType,
-                new AsyncCallback<ArrayList<LocalityDetail>>() {
+        rootService.getLocalities(localityType,
+                new AsyncCallback<List<LocalityDetail>>() {
 
                     @Override
-                    public void onSuccess(ArrayList<LocalityDetail> list) {
+                    public void onSuccess(List<LocalityDetail> list) {
                         eventBus.setLocalityData(localityType, list);
                     }
 
@@ -49,13 +50,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                             ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
                     }
-
                 });
     }
 
     public void onGetChildLocalities(final LocalityType localityType, String locCode) {
-        localityService.getLocalities(locCode,
-                new AsyncCallback<ArrayList<LocalityDetail>>() {
+        rootService.getLocalities(locCode,
+                new AsyncCallback<List<LocalityDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -65,15 +65,17 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                     }
 
                     @Override
-                    public void onSuccess(ArrayList<LocalityDetail> list) {
+                    public void onSuccess(List<LocalityDetail> list) {
                         eventBus.setLocalityData(localityType, list);
                     }
-
                 });
     }
 
+    /**************************************************************************/
+    /* Categories methods                                                     */
+    /**************************************************************************/
     public void onGetRootCategories() {
-        categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
+        rootService.getCategories(new AsyncCallback<List<CategoryDetail>>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -83,13 +85,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             }
 
             @Override
-            public void onSuccess(ArrayList<CategoryDetail> list) {
+            public void onSuccess(List<CategoryDetail> list) {
                 // eventBus.setCategoryDisplayData(CategoryType.ROOT,
                 // list);
                 Window.alert("fix this method return value"
                         + "onGetRootCategories() - MainHandler.class");
             }
-
         });
     }
 
@@ -98,7 +99,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
         LOGGER.info("starting category service call");
         if (categoryId.equals("ALL_CATEGORIES")) {
             LOGGER.info(" --> root categories");
-            categoryService.getCategories(new AsyncCallback<ArrayList<CategoryDetail>>() {
+            rootService.getCategories(new AsyncCallback<List<CategoryDetail>>() {
 
                 @Override
                 public void onFailure(Throwable caught) {
@@ -108,18 +109,17 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 }
 
                 @Override
-                public void onSuccess(ArrayList<CategoryDetail> list) {
+                public void onSuccess(List<CategoryDetail> list) {
                     eventBus.setCategoryListData(newListPosition, list);
                 }
-
             });
         } else {
             LOGGER.info(" --> child categories");
-            categoryService.getCategoryChildren(Long.valueOf(categoryId),
-                    new AsyncCallback<ArrayList<CategoryDetail>>() {
+            rootService.getCategoryChildren(Long.valueOf(categoryId),
+                    new AsyncCallback<List<CategoryDetail>>() {
 
                         @Override
-                        public void onSuccess(ArrayList<CategoryDetail> list) {
+                        public void onSuccess(List<CategoryDetail> list) {
                             eventBus.setCategoryListData(newListPosition, list);
                         }
 
@@ -129,17 +129,19 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                                 ExceptionUtils.showErrorDialog(errorDialog, caught);
                             }
                         }
-
                     });
         }
         LOGGER.info("ending category service call");
     }
 
+    /**************************************************************************/
+    /* User methods                                                           */
+    /**************************************************************************/
     /**
      * Get User according to stored sessionID from DB after login.
      */
     public void onGetUser(long userId) {
-        userService.getUserById(userId, new AsyncCallback<BusinessUserDetail>() {
+        rootService.getUserById(userId, new AsyncCallback<BusinessUserDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -162,18 +164,104 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 eventBus.loadingHide();
 //                eventBus.setUser(result);
             }
-
         });
     }
 
-    @Inject
-    public void setLocalityService(LocalityRPCServiceAsync service) {
-        localityService = service;
+    /**************************************************************************/
+    /* DevelDetailWrapper widget methods                                      */
+    /**************************************************************************/
+    public void onRequestDemandDetail(Long demandId, final ViewType type) {
+        rootService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
+                        + caught.getMessage());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
+                }
+            }
+
+            @Override
+            public void onSuccess(FullDemandDetail result) {
+                eventBus.responseDemandDetail(result, type);
+            }
+        });
     }
 
-    @Inject
-    public void setCategoryService(CategoryRPCServiceAsync service) {
-        categoryService = service;
+    public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
+        rootService.getFullSupplierDetail(supplierId, new AsyncCallback<FullSupplierDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
+                        + caught.getMessage());
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
+                }
+            }
+
+            @Override
+            public void onSuccess(FullSupplierDetail result) {
+                eventBus.responseSupplierDetail(result, type);
+            }
+        });
     }
 
+    /**
+     * Load demand/related conversation from DB.
+     *
+     * @param messageId
+     * @param userMessageId
+     * @param userId
+     */
+    public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
+        rootService.getConversation(messageId, userId, userMessageId,
+                new AsyncCallback<List<MessageDetail>>() {
+
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
+                        }
+                        Window.alert("DemandModuleMessageHandler: onRequestConversationForSupplierList:\n\n"
+                                + caught.getMessage());
+                    }
+
+                    @Override
+                    public void onSuccess(List<MessageDetail> result) {
+                        eventBus.responseConversation(result, ViewType.POTENTIAL);
+                    }
+                });
+    }
+
+    /**************************************************************************/
+    /* Messages methods                                                       */
+    /**************************************************************************/
+
+    /**
+     * Send message.
+     * IMPORTANT: further implementation of other parts will show, if we need more than this method
+     * for chat related stuff
+     * @param messageToSend
+     * @param type
+     */
+    public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
+        rootService.sendMessage(messageToSend, new AsyncCallback<MessageDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
+                }
+                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
+                        + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(MessageDetail sentMessage) {
+                eventBus.addConversationMessage(sentMessage, type);
+            }
+        });
+    }
 }

@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedProjectsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierContestsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierProjectsPresenter;
+import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -41,6 +42,16 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = SupplierDemandsPresenter.class)
     void forward();
 
+    /**************************************************************************/
+    /* Parent events                                                          */
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void requestDetailWrapperPresenter();
+
+//    @Event(handlers = {SupplierProjectsPresenter.class, SupplierContestsPresenter.class,
+//        SupplierAssignedProjectsPresenter.class}, passive = true)
+    @Event(handlers = SupplierProjectsPresenter.class)
+    void responseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
@@ -90,7 +101,6 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
 //
 //    @Event(handlers = SupplierAssignedProjectsPresenter.class)
 //    void displaySupplierAssignedProjects(List<ClientProjectContestantDetail> result);
-
     /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter.                */
     /**************************************************************************/
@@ -124,7 +134,6 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
 //
 //    @Event(handlers = DevelDetailWrapperPresenter.class)
 //    void responseConversation(ArrayList<MessageDetail> chatMessages, ViewType supplierListType);
-
     /**************************************************************************/
     /* Business events handled by Handlers. */
     /**************************************************************************/

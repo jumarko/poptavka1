@@ -17,6 +17,7 @@ import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import java.util.List;
 
 @Presenter(view = LocalitySelectorView.class, multiple = true)
 public class LocalitySelectorPresenter
@@ -107,7 +108,7 @@ public class LocalitySelectorPresenter
         embedWidget.setWidget(view.getWidgetView());
     }
 
-    public void onSetLocalityData(LocalityType localityType, ArrayList<LocalityDetail> list) {
+    public void onSetLocalityData(LocalityType localityType, List<LocalityDetail> list) {
         switch (localityType) {
             case DISTRICT:
                 view.toggleLoader();
@@ -125,7 +126,7 @@ public class LocalitySelectorPresenter
         }
     }
 
-    private void setData(final ListBox box, final ArrayList<LocalityDetail> list) {
+    private void setData(final ListBox box, final List<LocalityDetail> list) {
         box.clear();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override

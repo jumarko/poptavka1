@@ -17,6 +17,7 @@ import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import java.util.ArrayList;
+import java.util.List;
 
 @Presenter(view = CategorySelectorView.class, multiple = true)
 public class CategorySelectorPresenter
@@ -80,13 +81,13 @@ public class CategorySelectorPresenter
         eventBus.getChildListCategories(index, category);
     }
 
-    public void onSetCategoryListData(int newListPosition, ArrayList<CategoryDetail> list) {
+    public void onSetCategoryListData(int newListPosition, List<CategoryDetail> list) {
         ListBox listBox = view.createListAtIndex(newListPosition);
         setAndDisplayData(listBox, list);
         addCategoryChangeHandler(listBox, newListPosition);
     }
 
-    private void setAndDisplayData(final ListBox box, final ArrayList<CategoryDetail> list) {
+    private void setAndDisplayData(final ListBox box, final List<CategoryDetail> list) {
         int columnCount = view.getListHolder().getColumnCount();
 
         for (CategoryDetail aList : list) {

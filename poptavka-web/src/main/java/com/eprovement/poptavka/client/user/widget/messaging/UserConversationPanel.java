@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.user.widget.messaging.SimpleMessageWindow.MessageDisplayType;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import java.util.List;
 
 /**
  * SimpleMessageWindow holder, enabling features:
@@ -58,7 +59,7 @@ public class UserConversationPanel extends Composite {
      *
      * @param messages list of messages to be displayed
      */
-    public void setMessageList(ArrayList<MessageDetail> messages, boolean collapsed) {
+    public void setMessageList(List<MessageDetail> messages, boolean collapsed) {
         messagePanel.clear();
 
         // Last message is visible, when there are more messages

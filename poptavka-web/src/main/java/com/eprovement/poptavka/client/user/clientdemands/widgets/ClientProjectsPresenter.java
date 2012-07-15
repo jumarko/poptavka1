@@ -11,7 +11,6 @@ import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -137,10 +136,7 @@ public class ClientProjectsPresenter
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        if (detailSection == null) {
-            detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
-            detailSection.initDetailWrapper(view.getWrapperPanel(), type);
-        }
+        eventBus.requestDetailWrapperPresenter();
     }
 
     /**************************************************************************/
@@ -181,42 +177,24 @@ public class ClientProjectsPresenter
      * @param userMessageId ID for demand related conversation
      */
     public void displayDetailContent(ClientProjectConversationDetail detail) {
-        //TODO
-        //copy role check from old implementation
-        //
-        //
+//        detailSection.requestDemandDetail(detail.getDemandId(), type);
+        detailSection.requestDemandDetail(123L, type);
 
-        //can be solved by enum in future or can be accesed from storage class
-        detailSection.showLoading(DevelDetailWrapperPresenter.DEMAND);
-//        eventBus.requestDemandDetail(detail.getDemandId(), type);
-        eventBus.requestDemandDetail(123L, type);
+//        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
+        detailSection.requestSupplierDetail(142811L, type);
 
-        //can be solved by enum in future or can be accesed from storage class
-        detailSection.showLoading(DevelDetailWrapperPresenter.SUPPLIER);
-//        eventBus.requestSupplierDetail(detail.getSupplierId(), type);
-        eventBus.requestSupplierDetail(142811L, type);
-
-        //add conversation loading events and so on
-        detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
-//        eventBus.requestConversation(detail.getMessageId(),
+//        detailSection.requestContest(detail.getMessageId(),
 //                detail.getUserMessageId(), Storage.getUser().getUserId());
-        eventBus.requestConversation(124L, 289L, 149L);
-
-        //init default replyWidget
-        //it is initalized now, because we do not need to have it visible before first demand selection
-        detailSection.initReplyWidget();
-    }
-
-    public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
-        //neccessary check for method to be executed only in appropriate presenter
-        if (type.equals(handlingType)) {
-            detailSection.addConversationMessage(sentMessage);
-        }
+        detailSection.requestConversation(124L, 289L, 149L);
     }
 
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
+    public void onResponseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection) {
+        this.detailSection = detailSection;
+        this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+    }
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/

@@ -23,8 +23,10 @@ import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +121,17 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
     public List<SupplierPotentialProjectDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<SupplierPotentialProjectDetail>();
+        SupplierPotentialProjectDetail detail = new SupplierPotentialProjectDetail();
+        detail.setDemandId(1L);
+        detail.setClientName("Good Data");
+        detail.setDemandTitle("Poptavka 1234");
+        detail.setRating(90);
+        detail.setPrice(BigDecimal.valueOf(10000));
+        detail.setEndDate(new Date());
+        detail.setReceivedDate(new Date());
+        List<SupplierPotentialProjectDetail> list = new ArrayList<SupplierPotentialProjectDetail>();
+        list.add(detail);
+        return list;
     }
 
     //************************ SUPPLIER - My Offers ***************************/

@@ -11,7 +11,9 @@ public class CategoryDetail implements Serializable {
 
     private long id;
     private String name;
+    //vyjadruje pocet alebo ID???
     private long demands;
+    //vyjadruje pocet alebo ID???
     private long suppliers;
     //if parent = false, no child category exists;
     private boolean parent = false;

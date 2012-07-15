@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
+import com.eprovement.poptavka.client.root.RootEventBus;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -7,7 +8,6 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import com.eprovement.poptavka.client.user.demands.DemandEventBus;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 
@@ -18,7 +18,7 @@ import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
  */
 @Presenter(view = DevelOfferQuestionWindow.class, multiple = true)
 public class DevelOfferQuestionPresenter extends LazyPresenter<
-    DevelOfferQuestionPresenter.ReplyInterface, DemandEventBus> {
+    DevelOfferQuestionPresenter.ReplyInterface, RootEventBus> {
 
     public interface ReplyInterface extends LazyView {
         Widget getWidgetView();

@@ -225,16 +225,12 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
         //add conversation loading events and so on
         detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
         eventBus.requestChatForSupplierList(messageId, userMessageId, Storage.getUser().getUserId());
-
-        //init default replyWidget
-        //it is initalized now, because we do not need to have it visible before first demand selection
-        detailSection.initReplyWidget();
     }
 
     public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
         //neccessary check for method to be executed only in appropriate presenter
         if (type.equals(handlingType)) {
-            detailSection.addConversationMessage(sentMessage);
+//            detailSection.addConversationMessage(sentMessage);
         }
     }
 

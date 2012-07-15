@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.widget;
 
-import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,17 +11,19 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.main.Storage;
-import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
+import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionPresenter;
 import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import com.mvp4g.client.event.EventBus;
+import java.util.List;
 
 @Presenter(view = DevelDetailWrapperView.class, multiple = true)
 public class DevelDetailWrapperPresenter
-        extends LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, ClientDemandsEventBus> {
+        extends LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, RootEventBus> {
 
     public static final int DEMAND = 0;
     public static final int SUPPLIER = 1;
@@ -46,7 +47,7 @@ public class DevelDetailWrapperPresenter
 
         void toggleConversationLoading();
 
-        void setChat(ArrayList<MessageDetail> chatMessages, boolean collapsed);
+        void setChat(List<MessageDetail> chatMessages, boolean collapsed);
     }
     private ViewType type;
     /**
@@ -95,7 +96,7 @@ public class DevelDetailWrapperPresenter
     /**
      * Initializes reply widget, when first demand is clicked.
      */
-    public void initReplyWidget() {
+    public void initReplyWidget(EventBus eventBus) {
         if (offerQuestionReply == null) {
             offerQuestionReply = eventBus.addHandler(DevelOfferQuestionPresenter.class);
         }
@@ -133,7 +134,7 @@ public class DevelDetailWrapperPresenter
      * @param chatMessages - demand-related conversation
      * @param supplierListType
      */
-    public void onResponseConversation(ArrayList<MessageDetail> chatMessages, ViewType wrapperType) {
+    public void onResponseConversation(List<MessageDetail> chatMessages, ViewType wrapperType) {
         //neccessary check for method to be executed only in appropriate presenter
         if (type.equals(wrapperType)) {
             //display chat
@@ -193,11 +194,13 @@ public class DevelDetailWrapperPresenter
      *
      * @param sentMessage
      */
-    public void addConversationMessage(MessageDetail sentMessage) {
-        view.getConversationPanel().addMessage(sentMessage);
-        //TODO
-        //if switched to one common interface, this should be replaced.
-        offerQuestionReply.enableResponse();
+    public void onAddConversationMessage(MessageDetail sentMessage, ViewType handlingType) {
+        if (type.equals(handlingType)) {
+            view.getConversationPanel().addMessage(sentMessage);
+            //TODO
+            //if switched to one common interface, this should be replaced.
+            offerQuestionReply.enableResponse();
+        }
     }
 
     /**
@@ -221,6 +224,7 @@ public class DevelDetailWrapperPresenter
                 break;
         }
     }
+
     /**
      * Response when user click demand to see the details. DemandDetails widget,
      * past conversation regarding this demand and reply widget is created.
@@ -457,4 +461,28 @@ public class DevelDetailWrapperPresenter
 //            conversationLoader = null;
 //        }
 //    }
+    /**************************************************************************/
+    /* Get data                                                               */
+    /**************************************************************************/
+    //Radej takto, ako mat v kazdom eventbuse forward metody.
+    /*
+     * Request/Response Method pair
+     * DemandDetail for detail section
+     * @param demandId
+     * @param type
+     */
+    public void requestDemandDetail(Long demandId, ViewType type) {
+        showLoading(DevelDetailWrapperPresenter.DEMAND);
+        eventBus.requestDemandDetail(demandId, type);
+    }
+
+    public void requestSupplierDetail(Long supplierId, ViewType type) {
+        showLoading(DevelDetailWrapperPresenter.SUPPLIER);
+        eventBus.requestSupplierDetail(supplierId, type);
+    }
+
+    public void requestConversation(long messageId, Long userMessageId, Long userId) {
+        showLoading(DevelDetailWrapperPresenter.CHAT);
+        eventBus.requestConversation(messageId, userMessageId, userId);
+    }
 }

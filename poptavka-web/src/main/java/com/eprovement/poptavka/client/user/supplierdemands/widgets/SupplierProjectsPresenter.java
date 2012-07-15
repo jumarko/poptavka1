@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.main.Constants;
 import com.eprovement.poptavka.client.main.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsEventBus;
+import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
@@ -102,7 +103,7 @@ public class SupplierProjectsPresenter
     /**************************************************************************/
     //viewType
     private ViewType type = ViewType.EDITABLE;
-//    private DevelDetailWrapperPresenter detailSection = null;
+    private DevelDetailWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedProjectContest = -1;
@@ -139,14 +140,15 @@ public class SupplierProjectsPresenter
         //TODO myslisiet, aby sa DevelDetailWeapperPresenter mohol pouzivat vo viacerych moduloch
         //Ide to to, ze on ma nadefinovany jeden eventBus a ked sa pouziva vo viacerych, tak to pada
         //teda eventBus.addHandler(presenter) musi byt ten eventBus, ktory ma daty prezenter ako definovany
-//        if (detailSection == null) {
-//            detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
-//            detailSection.initDetailWrapper(view.getWrapperPanel(), type);
-//        }
+        eventBus.requestDetailWrapperPresenter();
     }
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
+    public void onResponseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection) {
+        this.detailSection = detailSection;
+        this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+    }
     /**
      * DEVEL METHOD
      *
@@ -154,8 +156,8 @@ public class SupplierProjectsPresenter
      * SupplierListPresenter. it has to remove it's detailWrapper first.
      */
     public void develRemoveDetailWrapper() {
-//        detailSection.develRemoveReplyWidget();
-//        eventBus.removeHandler(detailSection);
+        detailSection.develRemoveReplyWidget();
+        eventBus.removeHandler(detailSection);
     }
 
     /**
@@ -176,30 +178,15 @@ public class SupplierProjectsPresenter
      * @param userMessageId ID for demand related contest
      */
     public void displayDetailContent(SupplierPotentialProjectDetail detail) {
-        //TODO
-        //copy role check from old implementation
-        //
-        //
+//        detailSection.requestDemandDetail(detail.getDemandId(), type);
+        detailSection.requestDemandDetail(123L, type);
 
-        //can be solved by enum in future or can be accesed from storage class
-//        detailSection.showLoading(DevelDetailWrapperPresenter.DEMAND);
-//        eventBus.requestDemandDetail(detail.getDemandId(), type);
-//        eventBus.requestDemandDetail(123L, type);
+//        detailSection.requestSupplierDetail(detail.getSupplierId(), type);
+        detailSection.requestSupplierDetail(142811L, type);
 
-        //can be solved by enum in future or can be accesed from storage class
-//        detailSection.showLoading(DevelDetailWrapperPresenter.SUPPLIER);
-//        eventBus.requestSupplierDetail(detail.getSupplierId(), type);
-//        eventBus.requestSupplierDetail(142811L, type);
-
-        //add contest loading events and so on
-//        detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
-//        eventBus.requestContest(detail.getMessageId(),
+//        detailSection.requestContest(detail.getMessageId(),
 //                detail.getUserMessageId(), Storage.getUser().getUserId());
-//        eventBus.requestConversation(124L, 289L, 149L);
-
-        //init default replyWidget
-        //it is initalized now, because we do not need to have it visible before first demand selection
-//        detailSection.initReplyWidget();
+        detailSection.requestConversation(124L, 289L, 149L);
     }
 
     public void onSendMessageResponse(MessageDetail sentMessage, ViewType handlingType) {
