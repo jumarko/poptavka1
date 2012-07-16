@@ -48,14 +48,14 @@ public class SupplierProjectsView extends Composite
     private Header checkHeader;
     private Column<SupplierPotentialProjectDetail, Boolean> checkColumn;
     private Column<SupplierPotentialProjectDetail, Boolean> starColumn;
-    private Column<SupplierPotentialProjectDetail, String> supplierNameColumn;
+    private Column<SupplierPotentialProjectDetail, String> clientNameColumn;
     private Column<SupplierPotentialProjectDetail, String> demandTitleColumn;
     private Column<SupplierPotentialProjectDetail, String> ratingColumn;
     private Column<SupplierPotentialProjectDetail, String> priceColumn;
     private Column<SupplierPotentialProjectDetail, Date> urgencyColumn;
     private Column<SupplierPotentialProjectDetail, String> receiveDateColumn;
     //table column width constatnts
-    private static final int SUPPLIER_NAME_COL_WIDTH = 20;
+    private static final int CLIENT_NAME_COL_WIDTH = 20;
     private static final int DEMAND_TITLE_COL_WIDTH = 30;
     private static final int RATING_COL_WIDTH = 20;
     private static final int PRICE_COL_WIDTH = 30;
@@ -157,8 +157,8 @@ public class SupplierProjectsView extends Composite
         // Star Column
         starColumn = grid.addStarColumn();
         // Demand title column
-        supplierNameColumn = grid.addColumn(
-                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.client(), true, SUPPLIER_NAME_COL_WIDTH,
+        clientNameColumn = grid.addColumn(
+                grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.client(), true, CLIENT_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
 
                     @Override
@@ -239,8 +239,8 @@ public class SupplierProjectsView extends Composite
     }
 
     @Override
-    public Column<SupplierPotentialProjectDetail, String> getSupplierNameColumn() {
-        return supplierNameColumn;
+    public Column<SupplierPotentialProjectDetail, String> getClientNameColumn() {
+        return clientNameColumn;
     }
 
     @Override

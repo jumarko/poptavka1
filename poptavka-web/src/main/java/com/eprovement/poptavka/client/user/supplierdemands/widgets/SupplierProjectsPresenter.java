@@ -49,7 +49,7 @@ public class SupplierProjectsPresenter
 
         Column<SupplierPotentialProjectDetail, Boolean> getStarColumn();
 
-        Column<SupplierPotentialProjectDetail, String> getSupplierNameColumn();
+        Column<SupplierPotentialProjectDetail, String> getClientNameColumn();
 
         Column<SupplierPotentialProjectDetail, String> getDemandTitleColumn();
 
@@ -243,7 +243,7 @@ public class SupplierProjectsPresenter
                 }
             }
         };
-        view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getClientNameColumn().setFieldUpdater(textFieldUpdater);
         view.getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getRatingColumn().setFieldUpdater(textFieldUpdater);
