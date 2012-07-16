@@ -23,7 +23,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 
 /**

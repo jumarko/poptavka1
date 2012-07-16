@@ -1,8 +1,9 @@
+package com.eprovement.poptavka.client.common.session;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.eprovement.poptavka.client.main;
+
 
 import java.util.ArrayList;
 

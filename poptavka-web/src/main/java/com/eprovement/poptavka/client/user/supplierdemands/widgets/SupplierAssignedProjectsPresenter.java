@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsEventBus;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;

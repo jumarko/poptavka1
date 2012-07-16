@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier.widget;
 
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.main.common.StatusIconLabel;
 import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.main.common.address.AddressSelectorView;

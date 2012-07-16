@@ -4,7 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;

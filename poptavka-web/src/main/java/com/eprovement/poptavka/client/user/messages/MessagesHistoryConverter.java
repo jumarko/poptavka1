@@ -4,7 +4,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
-import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**

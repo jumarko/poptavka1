@@ -3,8 +3,8 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import com.eprovement.poptavka.client.main.Constants;
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 
 /**
  * History converter class. Handles history of supplier creation module.

@@ -20,7 +20,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 import com.mvp4g.client.view.ReverseViewInterface;
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.demands.tab.SupplierListPresenter.IList;
 import com.eprovement.poptavka.client.user.widget.grid.ColumnFactory;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;

@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.client.main;
+package com.eprovement.poptavka.client.common.session;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;

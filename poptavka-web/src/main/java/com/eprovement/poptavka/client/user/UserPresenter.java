@@ -18,7 +18,7 @@ import com.mvp4g.client.annotation.Presenter;
 
 import com.mvp4g.client.presenter.BasePresenter;
 
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.IUserMenuView.IUserMenuPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;

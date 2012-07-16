@@ -3,7 +3,7 @@ package com.eprovement.poptavka.client.user.settings;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.common.session.Constants;
 
 /**
  * History converter class. Handles history for HomeSuppliersModule.

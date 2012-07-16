@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.main.common.LoadingPopup;
 import com.eprovement.poptavka.client.main.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;

@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
-import com.eprovement.poptavka.client.main.Constants;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.google.gwt.event.dom.client.ChangeEvent;
 
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -21,7 +21,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import com.eprovement.poptavka.client.main.Storage;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
