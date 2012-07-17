@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,10 +24,9 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.main.common.LoadingPopup;
-import com.eprovement.poptavka.client.main.common.address.AddressSelectorPresenter;
-import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;
-import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter;
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
+import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;

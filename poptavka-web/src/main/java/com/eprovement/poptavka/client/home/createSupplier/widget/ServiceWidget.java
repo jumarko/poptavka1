@@ -8,7 +8,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Composite;
 
-import com.eprovement.poptavka.client.main.common.table.RadioTable;
+import com.eprovement.poptavka.client.common.table.RadioTable;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 
 public class ServiceWidget extends Composite {

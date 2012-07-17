@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 
 public class FormLoginView extends Composite implements FormLoginPresenter.FormLoginInterface, ProvidesValidate {

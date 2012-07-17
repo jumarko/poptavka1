@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
-import com.eprovement.poptavka.client.main.common.validation.Email;
+import com.eprovement.poptavka.client.common.validation.Email;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import java.io.Serializable;
 import java.util.ArrayList;

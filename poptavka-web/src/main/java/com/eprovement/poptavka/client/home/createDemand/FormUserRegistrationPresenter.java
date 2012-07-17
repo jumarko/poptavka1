@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,8 +20,6 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import com.eprovement.poptavka.client.main.common.StatusIconLabel;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 @Presenter(view = FormUserRegistrationView.class)

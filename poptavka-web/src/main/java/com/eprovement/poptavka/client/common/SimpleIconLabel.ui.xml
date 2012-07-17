@@ -1,0 +1,14 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+    xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+
+    <g:HTMLPanel ui:field="wrapper">
+        <div ui:field='inliner'>
+            <g:Image ui:field="image" styleName='' resource="{res.images.infoIcon16}"/>
+            <span ui:field="message" />
+        </div>
+    </g:HTMLPanel>
+</ui:UiBinder>

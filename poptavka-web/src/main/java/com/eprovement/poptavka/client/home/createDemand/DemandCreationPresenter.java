@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.google.gwt.user.client.ui.IsWidget;
 import java.util.logging.Logger;
 
@@ -20,15 +22,13 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.home.createDemand.FormUserRegistrationPresenter.FormRegistrationInterface;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
-import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter.FormDemandAdvViewInterface;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter.FormDemandBasicInterface;
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;

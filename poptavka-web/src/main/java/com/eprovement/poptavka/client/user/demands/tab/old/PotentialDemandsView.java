@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.demands.tab.old;
 
+import com.eprovement.poptavka.client.common.OverflowComposite;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
@@ -14,7 +15,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 
-import com.eprovement.poptavka.client.main.common.OverflowComposite;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.grid.unused.PotentialDemandTable;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;

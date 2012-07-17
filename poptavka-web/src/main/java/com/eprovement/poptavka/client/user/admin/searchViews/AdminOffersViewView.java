@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
+import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import java.util.ArrayList;
 

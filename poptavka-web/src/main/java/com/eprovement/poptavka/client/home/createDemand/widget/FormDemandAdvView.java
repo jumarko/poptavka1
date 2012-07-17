@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import java.util.ArrayList;
 import java.util.HashMap;
 

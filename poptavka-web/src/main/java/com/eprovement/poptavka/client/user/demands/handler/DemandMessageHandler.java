@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
-import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.DemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;

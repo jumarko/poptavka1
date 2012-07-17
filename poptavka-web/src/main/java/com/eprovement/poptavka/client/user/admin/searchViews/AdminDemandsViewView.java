@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.user.admin.searchViews;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.main.common.search.SearchModulePresenter;
+import com.eprovement.poptavka.client.common.search.SearchModulePresenter;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.shared.search.FilterItem;

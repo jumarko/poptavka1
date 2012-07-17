@@ -4,7 +4,7 @@ import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.main.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 
 /**
  * Musime pouzit history aj na methody atHome a atAccount, ktore maju na starosti

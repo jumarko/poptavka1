@@ -9,7 +9,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
 
-//import com.eprovement.poptavka.client.main.MainEventBus;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 
 @Presenter(view = FormDemandAdvView.class, multiple = true)

@@ -1,5 +1,8 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +20,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.main.common.OverflowComposite;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.resources.StyleResource;
 
 public class DemandCreationView extends OverflowComposite implements DemandCreationPresenter.CreationViewInterface {

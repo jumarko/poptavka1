@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.common.SimpleIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.google.gwt.user.client.ui.IsWidget;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -25,13 +27,11 @@ import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPre
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
 import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter.SupplierServiceInterface;
-import com.eprovement.poptavka.client.main.common.SimpleIconLabel;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel;
-import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter.CategorySelectorInterface;
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
-import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;

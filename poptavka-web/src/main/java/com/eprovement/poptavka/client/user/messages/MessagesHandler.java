@@ -10,7 +10,7 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 //import com.eprovement.poptavka.client.service.demand.GeneralRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;

@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
 
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.Editor.Ignore;

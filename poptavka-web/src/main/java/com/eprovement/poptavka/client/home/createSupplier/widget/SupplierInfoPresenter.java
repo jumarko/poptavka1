@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.client.home.createSupplier.widget;
 
+import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -12,8 +14,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationEventBus;
 
-import com.eprovement.poptavka.client.main.common.StatusIconLabel;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 
 @Presenter(view = SupplierInfoView.class, multiple = true)

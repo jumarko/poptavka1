@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:cm="urn:import:com.eprovement.poptavka.client.main.common"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+        xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
 	xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
 
 	<!-- injecting style resources -->

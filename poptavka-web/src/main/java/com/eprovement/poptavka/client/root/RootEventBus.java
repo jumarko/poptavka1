@@ -33,12 +33,12 @@ import com.eprovement.poptavka.client.home.widget.category.CategoryDisplayPresen
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
-import com.eprovement.poptavka.client.main.common.address.AddressSelectorPresenter;
-import com.eprovement.poptavka.client.main.common.category.CategorySelectorPresenter;
-import com.eprovement.poptavka.client.main.common.locality.LocalitySelectorPresenter;
-import com.eprovement.poptavka.client.main.common.search.SearchModule;
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
+import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
+import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.main.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.menu.MenuPresenter;

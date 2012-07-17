@@ -15,15 +15,15 @@
     <!-- GWT validation BEGIN -->
     <inherits name='com.google.gwt.editor.Editor' />
     <inherits name='org.hibernate.validator.HibernateValidator' />
-    
+
     <!-- Specify the Validator for the Validation bootstrap to use. -->
     <replace-with
-        class="com.eprovement.poptavka.client.main.common.validation.SampleValidatorFactory">
+        class="com.eprovement.poptavka.client.common.validation.SampleValidatorFactory">
         <when-type-is class="javax.validation.ValidatorFactory" />
     </replace-with>
     <!--  specify the ValidationMessageResolver to use for your custom validation messages -->
     <replace-with
-        class="com.eprovement.poptavka.client.main.common.validation.CustomValidationMessagesResolver">
+        class="com.eprovement.poptavka.client.common.validation.CustomValidationMessagesResolver">
         <when-type-is
             class="com.google.gwt.validation.client.UserValidationMessagesResolver" />
     </replace-with>

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.common.OverflowComposite;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -9,7 +10,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.main.common.OverflowComposite;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.StyleInterface;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;

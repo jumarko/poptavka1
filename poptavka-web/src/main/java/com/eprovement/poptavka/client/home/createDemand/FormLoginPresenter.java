@@ -11,7 +11,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 
 @Presenter(view = FormLoginView.class)
 public class FormLoginPresenter extends LazyPresenter<FormLoginPresenter.FormLoginInterface, DemandCreationEventBus> {

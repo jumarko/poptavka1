@@ -10,7 +10,7 @@ import com.google.gwt.user.client.Window.ClosingEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
-import com.eprovement.poptavka.client.main.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView.IHeaderPresenter;

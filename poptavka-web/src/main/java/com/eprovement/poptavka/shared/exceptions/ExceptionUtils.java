@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.shared.exceptions;
 
-import com.eprovement.poptavka.client.main.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 
 public final class ExceptionUtils {
 

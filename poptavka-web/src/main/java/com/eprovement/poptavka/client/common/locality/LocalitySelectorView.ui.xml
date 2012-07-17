@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder' xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource'/>
+
+    <g:VerticalPanel>
+        <g:HorizontalPanel>
+            <g:ListBox ui:field='regionList' visibleItemCount='10' width="200" />
+            <g:ListBox ui:field='districtList' visibleItemCount='10' visible='false' width="200" />
+            <g:ListBox ui:field='cityList' visibleItemCount='10' visible='false' width="200" />
+            <g:HTML ui:field='loader' visible='false' styleName='{res.common.smallLoader}' />
+        </g:HorizontalPanel>
+        <g:HorizontalPanel>
+            <g:VerticalPanel>
+                <g:Label>
+                    <ui:msg key="selectedLocs">Selected</ui:msg>:
+                </g:Label>
+                <g:ListBox visibleItemCount="5" width="450" ui:field="selectedList"/>
+            </g:VerticalPanel>
+            <g:VerticalPanel>
+                <g:Label>To select parent category use:</g:Label>
+                <g:Image resource='{res.images.ctrlMouseLeft}'/>
+            </g:VerticalPanel>
+        </g:HorizontalPanel>
+    </g:VerticalPanel>
+</ui:UiBinder>

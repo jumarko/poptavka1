@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui'
         xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
-        xmlns:lsv="com.eprovement.poptavka.client.main.common.locality"
+        xmlns:lsv="com.eprovement.poptavka.client.common.locality"
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateLocales='default'>
 
@@ -155,7 +155,7 @@
                     <td  colspan="2" class='{style.label}'>
 <!--                        <ui:msg key='demandCategoryList'>Category List</ui:msg>-->
                         <g:Label>Category List</g:Label>
-                        
+
                     </td>
                 </tr>
                 <tr>

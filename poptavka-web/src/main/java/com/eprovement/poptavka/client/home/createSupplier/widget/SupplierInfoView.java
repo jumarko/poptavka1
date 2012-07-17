@@ -1,10 +1,10 @@
 package com.eprovement.poptavka.client.home.createSupplier.widget;
 
+import com.eprovement.poptavka.client.common.StatusIconLabel;
+import com.eprovement.poptavka.client.common.StatusIconLabel.State;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel;
-import com.eprovement.poptavka.client.main.common.StatusIconLabel.State;
-import com.eprovement.poptavka.client.main.common.address.AddressSelectorView;
-import com.eprovement.poptavka.client.main.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.common.address.AddressSelectorView;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
