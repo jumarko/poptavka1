@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
@@ -180,7 +181,7 @@ public class AdminDemandInfoView extends Composite implements
         demandInfo.setMaxOffers(Integer.valueOf(maxOffers.getValue()));
         demandInfo.setMinRating(Integer.valueOf(minRating.getValue()));
         demandInfo.setDemandType(demandType.getItemText(demandType.getSelectedIndex()));
-        demandInfo.setDemandStatus(demandStatus.getItemText(demandStatus.getSelectedIndex()));
+        demandInfo.setDemandStatus(DemandStatus.valueOf(demandStatus.getItemText(demandStatus.getSelectedIndex())));
 
         return demandInfo;
     }
@@ -234,7 +235,7 @@ public class AdminDemandInfoView extends Composite implements
             for (DemandStatusType status : statuses) {
                 demandStatus.addItem(status.getValue());
                 if (contact.getDemandStatus() != null
-                        && contact.getDemandStatus().equalsIgnoreCase(status.getValue())) {
+                        && contact.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {
                     j = i;
                 }
                 i++;

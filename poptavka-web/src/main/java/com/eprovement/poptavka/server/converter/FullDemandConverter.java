@@ -51,7 +51,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         }
 
         detail.setLocalities(locMap);
-        detail.setDemandStatus(source.getStatus().getValue());
+        detail.setDemandStatus(source.getStatus());
 
         if (source.getType() != null) {
             detail.setDemandType(source.getType().getDescription());

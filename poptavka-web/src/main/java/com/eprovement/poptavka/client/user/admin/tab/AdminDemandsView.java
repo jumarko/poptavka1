@@ -198,7 +198,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
                     @Override
                     public String getValue(Object object) {
-                        return ((FullDemandDetail) object).getDemandStatus();
+                        return ((FullDemandDetail) object).getDemandStatus().getValue();
                     }
                 });
 

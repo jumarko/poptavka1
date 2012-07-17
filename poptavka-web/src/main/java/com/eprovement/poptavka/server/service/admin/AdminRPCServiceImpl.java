@@ -32,7 +32,6 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.invoice.Invoice;
 import com.eprovement.poptavka.domain.invoice.OurPaymentDetails;
 import com.eprovement.poptavka.domain.invoice.PaymentMethod;
@@ -226,7 +225,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             demand.setMinRating(fullDemandDetail.getMinRating());
         }
         if (!demand.getStatus().getValue().equals(fullDemandDetail.getDemandStatus())) {
-            demand.setStatus(DemandStatus.valueOf(fullDemandDetail.getDemandStatus()));
+            demand.setStatus(fullDemandDetail.getDemandStatus());
         }
         if (!demand.getCreatedDate().equals(fullDemandDetail.getCreated())) {
             demand.setCreatedDate(fullDemandDetail.getCreated());

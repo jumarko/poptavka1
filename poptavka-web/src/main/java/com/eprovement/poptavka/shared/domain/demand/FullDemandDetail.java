@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
 import java.io.Serializable;
@@ -22,7 +24,7 @@ import javax.validation.constraints.Size;
  *
  * @author Beho, Martin Slavkovsky
  */
-public class FullDemandDetail implements Serializable {
+public class FullDemandDetail implements Serializable, TableDisplay {
 
     /**
      * Generated serialVersionUID.
@@ -40,7 +42,7 @@ public class FullDemandDetail implements Serializable {
     private int maxOffers;
     private int minRating;
     private String demandType;
-    private String demandStatus;
+    private DemandStatus demandStatus;
     private static final String HTML_UNREAD_START = "<strong>";
     private static final String HTML_UNREAD_END = "</strong>";
     private DemandDetailType detailType = DemandDetailType.BASE;
@@ -249,11 +251,12 @@ public class FullDemandDetail implements Serializable {
                 + "\n     demandStatus=" + demandStatus;
     }
 
-    public String getDemandStatus() {
+    @Override
+    public DemandStatus getDemandStatus() {
         return demandStatus;
     }
 
-    public void setDemandStatus(String demandStatus) {
+    public void setDemandStatus(DemandStatus demandStatus) {
         this.demandStatus = demandStatus;
     }
 

@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
@@ -230,7 +231,7 @@ public class AdminDemandsPresenter
                             if (!originalData.containsKey(object.getDemandId())) {
                                 originalData.put(object.getDemandId(), new FullDemandDetail(object));
                             }
-                            object.setDemandStatus(demandStatusType.name());
+                            object.setDemandStatus(DemandStatus.valueOf(demandStatusType.name()));
                             eventBus.addDemandToCommit(object);
                         }
                     }
