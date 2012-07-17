@@ -205,7 +205,8 @@ public class MessageColumnFactory<T> {
             public String getValue(T object) {
                 MessageTableDisplay obj = (MessageTableDisplay) object;
                 return BaseDemandDetail.displayHtml(
-                        DateTimeFormat.getFormat("MM/dd/yy").format(obj.getMessageDetail().getCreated()),
+                        DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(
+                        obj.getMessageDetail().getCreated()),
                         obj.isRead());
             }
         };

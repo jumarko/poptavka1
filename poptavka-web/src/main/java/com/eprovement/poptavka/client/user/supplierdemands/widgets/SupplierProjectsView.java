@@ -69,7 +69,7 @@ public class SupplierProjectsView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     //TODO Martin - ako i18n format datumu?
-    private DateTimeFormat formatter = DateTimeFormat.getFormat("dd-mm-yyyy");
+    private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
     //table handling buttons
     @UiField
     Button offerBtn, replyBtn;
