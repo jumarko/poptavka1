@@ -42,19 +42,16 @@ public class SupplierProjectsPresenter
         UniversalTableWidget getTableWidget();
 
         //Buttons
-        Button getOfferBtn();
+        Button getSendOfferToPotentialProjectButton();
 
-        Button getReplyBtn();
+        Button getReplyPotentialProjectButton();
 
         //ListBox
         ListBox getActions();
 
-        SimplePanel getWrapperPanel();
+        SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
-
-        //Setter
-        void setTitleLabel(String text);
     }
 
     /**************************************************************************/
@@ -89,8 +86,8 @@ public class SupplierProjectsPresenter
         // Listbox actions
         addActionChangeHandler();
         // Buttons Actions
-        addOfferBtnClickHandler();
-        addReplyBtnClickHandler();
+        addSendOfferToPotentialProjectButtonClickHandler();
+        addReplyPotentialProjectButtonClickHandler();
     }
 
     /**************************************************************************/
@@ -115,7 +112,7 @@ public class SupplierProjectsPresenter
     /**************************************************************************/
     public void onResponseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection) {
         this.detailSection = detailSection;
-        this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+        this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
     }
 
     /**
@@ -249,8 +246,8 @@ public class SupplierProjectsPresenter
     }
 
     //Buttons
-    private void addOfferBtnClickHandler() {
-        view.getOfferBtn().addClickHandler(new ClickHandler() {
+    private void addSendOfferToPotentialProjectButtonClickHandler() {
+        view.getSendOfferToPotentialProjectButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -259,8 +256,8 @@ public class SupplierProjectsPresenter
         });
     }
 
-    private void addReplyBtnClickHandler() {
-        view.getReplyBtn().addClickHandler(new ClickHandler() {
+    private void addReplyPotentialProjectButtonClickHandler() {
+        view.getReplyPotentialProjectButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {

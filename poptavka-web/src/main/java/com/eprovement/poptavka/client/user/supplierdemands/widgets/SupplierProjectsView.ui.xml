@@ -8,7 +8,7 @@
 
     <g:SplitLayoutPanel styleName='{res.layout.fullSize}'>
         <g:east size="500">
-            <g:SimplePanel ui:field="wrapperPanel">
+            <g:SimplePanel ui:field="detailPanel">
                 <g:HTMLPanel>
                     <div>
                         <strong>Defail detail panel</strong>
@@ -24,14 +24,16 @@
         <g:center>
             <g:VerticalPanel>
                 <g:HorizontalPanel>
-                    <g:VerticalPanel ui:field="header" styleName='{res.layout.demandTabContentHeader}'>
-                        <g:Label ui:field="titlelabel">Vypis potencionalnych poptaviek</g:Label>
+                    <g:VerticalPanel styleName='{res.layout.demandTabContentHeader}'>
+                        <g:Label>
+                            <ui:msg key="supplierPotentialDemandsTableTitle">Vypis novych poptaviek pre dodavatela</ui:msg>
+                        </g:Label>
                         <g:HorizontalPanel>
-                            <g:Button ui:field="replyBtn">
+                            <g:Button ui:field="replyPotentialProjectButton">
                                 Reply
                             </g:Button>
-                            <g:Button ui:field="offerBtn">
-                                Send an offer
+                            <g:Button ui:field="sendOfferToPotentialProjectButton">
+                                Send offer
                             </g:Button>
                             <g:ListBox ui:field="actions"/>
                         </g:HorizontalPanel>

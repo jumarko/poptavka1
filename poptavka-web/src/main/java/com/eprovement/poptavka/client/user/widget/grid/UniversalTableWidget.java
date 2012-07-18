@@ -162,7 +162,7 @@ public class UniversalTableWidget extends Composite {
                 selectionModel, DefaultSelectionEventManager.<SupplierPotentialProjectDetail>createCheckboxManager());
 
         initPager();
-        initContestantsTableColumns();
+        initTableColumns();
     }
 
     /**
@@ -220,7 +220,7 @@ public class UniversalTableWidget extends Composite {
     /**
      * Create all columns to the grid according to needed schema represented by gridColumns attribute.
      */
-    private void initContestantsTableColumns() {
+    public void initTableColumns() {
         // CheckBox column header - always create this header
         checkHeader = new Header<Boolean>(new CheckboxCell()) {
 

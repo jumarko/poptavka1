@@ -9,10 +9,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SupplierProjectsView extends Composite
@@ -34,19 +32,15 @@ public class SupplierProjectsView extends Composite
     /**************************************************************************/
     //table handling buttons
     @UiField
-    Button offerBtn, replyBtn;
+    Button replyPotentialProjectButton, sendOfferToPotentialProjectButton;
     @UiField(provided = true)
     ListBox actions;
     //detail WrapperPanel
     @UiField
-    SimplePanel wrapperPanel;
-    @UiField
-    Label titlelabel;
-    @UiField
-    VerticalPanel header;
+    SimplePanel detailPanel;
 
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
@@ -77,13 +71,13 @@ public class SupplierProjectsView extends Composite
 
     //Buttons
     @Override
-    public Button getOfferBtn() {
-        return offerBtn;
+    public Button getSendOfferToPotentialProjectButton() {
+        return sendOfferToPotentialProjectButton;
     }
 
     @Override
-    public Button getReplyBtn() {
-        return replyBtn;
+    public Button getReplyPotentialProjectButton() {
+        return replyPotentialProjectButton;
     }
 
     //ListBox
@@ -93,20 +87,12 @@ public class SupplierProjectsView extends Composite
     }
 
     @Override
-    public SimplePanel getWrapperPanel() {
-        return wrapperPanel;
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
     }
 
     @Override
     public IsWidget getWidgetView() {
         return this;
-    }
-
-    /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    @Override
-    public void setTitleLabel(String text) {
-        titlelabel.setText(text);
     }
 }

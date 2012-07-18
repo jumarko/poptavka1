@@ -41,22 +41,19 @@ public class SupplierContestsPresenter
         UniversalTableWidget getTableWidget();
 
         //Buttons
-        Button getEditOfferBtn();
+        Button getReplyContestOfferButton();
 
-        Button getDownloadOfferBtn();
+        Button getEditContestOfferButton();
 
-        Button getReplyBtn();
+        Button getCancelContestOfferButton();
 
         //ListBox
         ListBox getActions();
 
         //Other
-        SimplePanel getWrapperPanel();
+        SimplePanel getDetailPanel();
 
         IsWidget getWidgetView();
-
-        //Setter
-        void setTitleLabel(String text);
     }
 
     /**************************************************************************/
@@ -91,9 +88,9 @@ public class SupplierContestsPresenter
         // Listbox actions
         addActionChangeHandler();
         // Buttons Actions
-        addEditOfferBtnClickHandler();
-        addDownloadOfferBtnClickHandler();
-        addReplyBtnClickHandler();
+        addReplyContestOfferButtonClickHandler();
+        addEditContestOfferButtonClickHandler();
+        addCancelContestOfferButtonClickHandler();
     }
 
     /**************************************************************************/
@@ -118,7 +115,7 @@ public class SupplierContestsPresenter
     /**************************************************************************/
     public void onResponseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection) {
         this.detailSection = detailSection;
-        this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+        this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
     }
 
     /**
@@ -249,8 +246,8 @@ public class SupplierContestsPresenter
     }
 
     //Buttons
-    private void addEditOfferBtnClickHandler() {
-        view.getEditOfferBtn().addClickHandler(new ClickHandler() {
+    private void addReplyContestOfferButtonClickHandler() {
+        view.getReplyContestOfferButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -259,8 +256,8 @@ public class SupplierContestsPresenter
         });
     }
 
-    private void addDownloadOfferBtnClickHandler() {
-        view.getDownloadOfferBtn().addClickHandler(new ClickHandler() {
+    private void addEditContestOfferButtonClickHandler() {
+        view.getEditContestOfferButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
@@ -269,8 +266,8 @@ public class SupplierContestsPresenter
         });
     }
 
-    private void addReplyBtnClickHandler() {
-        view.getReplyBtn().addClickHandler(new ClickHandler() {
+    private void addCancelContestOfferButtonClickHandler() {
+        view.getCancelContestOfferButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {

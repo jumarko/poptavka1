@@ -152,6 +152,9 @@ public interface LocalizableMessages extends Messages {
     String progressMessagesLayoutInit();
     String progressAdminLayoutInit();
     String notEntered();
+    String supplierPotentialDemandsTableTitle();
+    String supplierContestsTableTitle();
+    String supplierAssignedDemandsTableTitle();
 
     //used in displying demands
     String date();
