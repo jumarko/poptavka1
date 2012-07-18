@@ -33,7 +33,8 @@ import java.util.List;
 
 @Presenter(view = SupplierProjectsView.class)
 public class SupplierProjectsPresenter
-        extends LazyPresenter<SupplierProjectsPresenter.SupplierProjectsLayoutInterface, SupplierDemandsEventBus> {
+        extends LazyPresenter<SupplierProjectsPresenter.SupplierProjectsLayoutInterface,
+        SupplierDemandsEventBus> {
 
     public interface SupplierProjectsLayoutInterface extends LazyView, IsWidget {
 
@@ -178,7 +179,8 @@ public class SupplierProjectsPresenter
             public void update(Boolean value) {
                 List<SupplierPotentialProjectDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
                 for (SupplierPotentialProjectDetail row : rows) {
-                    ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
+                    ((MultiSelectionModel)
+                            view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
         });
@@ -212,7 +214,6 @@ public class SupplierProjectsPresenter
             }
         };
         view.getTableWidget().getClientNameColumn().setFieldUpdater(textFieldUpdater);
-        view.getTableWidget().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getDemandTitleColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
         view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);

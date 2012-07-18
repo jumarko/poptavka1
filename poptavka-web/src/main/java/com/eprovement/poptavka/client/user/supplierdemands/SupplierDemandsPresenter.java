@@ -21,15 +21,15 @@ public class SupplierDemandsPresenter
 
     public interface SupplierDemandsLayoutInterface extends LazyView, IsWidget {
 
-        Button getSupNewDemandsButton();
+        Button getSupplierNewDemandsButton();
 
-        Button getSupOffersButton();
+        Button getSupplierOffersButton();
 
-        Button getSupAssignedDemandsButton();
+        Button getSupplierAssignedDemandsButton();
 
-        Button getSupCreateDemand();
+        Button getSupplierCreateDemand();
 
-        Button getSupCreateSupplier();
+        Button getSupplierCreateSupplier();
 
         Button getAllDemands();
 
@@ -56,35 +56,35 @@ public class SupplierDemandsPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
-        view.getSupNewDemandsButton().addClickHandler(new ClickHandler() {
+        view.getSupplierNewDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_PROJECTS);
             }
         });
-        view.getSupOffersButton().addClickHandler(new ClickHandler() {
+        view.getSupplierOffersButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CONTESTS);
             }
         });
-        view.getSupAssignedDemandsButton().addClickHandler(new ClickHandler() {
+        view.getSupplierAssignedDemandsButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_PROJECTS);
             }
         });
-        view.getSupCreateDemand().addClickHandler(new ClickHandler() {
+        view.getSupplierCreateDemand().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateDemandModule();
             }
         });
-        view.getSupCreateSupplier().addClickHandler(new ClickHandler() {
+        view.getSupplierCreateSupplier().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {

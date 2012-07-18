@@ -1,42 +1,40 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-                 
+
     <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
 
     <g:DockLayoutPanel unit="EM" styleName='{res.layout.fullSize}'>
         <g:west size="15">
             <g:HTMLPanel>
                 <!-- Supplier submenu -->
-                <div ui:field="supMenu" style="display: block;">
+                <div ui:field="supplierMenu" style="display: block;">
                     <div class='{res.layout.submenuHeader}'>
                         Menu Supplier
                     </div>
                     <ul class='{res.layout.submenuList}'>
                         <li>
-                            <g:Button ui:field="supNewDemands">
-                                <ui:msg key="potentialDemands">Open projects</ui:msg>
+                            <g:Button ui:field="supplierNewDemands">
+                                <ui:msg key="potentialDemands">Potential projects</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="supOffers">
-                                ** INACTIVE **
+                            <g:Button ui:field="supplierOffers">
                                 <ui:msg key="offers">Active Contests</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="supAssignedDemands">
-                                ** INACTIVE **
-                                <ui:msg key="assignedDemands">Current Work</ui:msg>
+                            <g:Button ui:field="supplierAssignedDemands">
+                                <ui:msg key="assignedDemands">Assigned projects</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="supCreateDemand">
+                            <g:Button ui:field="supplierCreateDemand">
                                 <ui:msg key="createDemandLink">Create Demand</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="supCreateSupplier">
+                            <g:Button ui:field="supplierCreateSupplier">
                                 <ui:msg key="createSupplierLink">Create supplier</ui:msg>
                             </g:Button>
                         </li>

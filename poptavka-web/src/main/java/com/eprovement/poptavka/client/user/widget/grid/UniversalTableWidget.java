@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.user.widget.grid;
 
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -26,9 +26,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * MultiSelectionModel used
- * SimplePager used
- * PageSize combo box selection used
+ * This widget was created mainly for ClientAssignedProjects, SupplierPotentialProjects,
+ * SupplierContests, SupplierAssignedProjects widgets. Those listed widgets use similar
+ * tables, therefore this widget was design to cover all common functionality as:
+ * UniversalAsyncGrid - see UniversalAsyncGrid class
+ * MultiSelectionModel
+ * SimplePager
+ * PageSize list box selection for selecting different number of visible items.
+ *
+ * As for this widget has no presenter, action handlers for column field updater
+ * must be defined in widget's presenter that is using this one.
  *
  * @author Martin
  */
@@ -91,9 +98,14 @@ public class UniversalTableWidget extends Composite {
     /**************************************************************************/
     /* Initialization                                                            */
     /**************************************************************************/
+    /**
+     * Constuctor.
+     * @param loadedView - define Constant in Constants class which define widget
+     * for which table schema is generated.
+     */
     public UniversalTableWidget(int loadedView) {
         //load custom grid cssStyle
-        Storage.RSCS.grid().ensureInjected();
+//        Storage.RSCS.grid().ensureInjected();
 
         switch (loadedView) {
             case Constants.CLIENT_ASSIGNED_PROJECTS:
@@ -115,7 +127,10 @@ public class UniversalTableWidget extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    public void initPager() {
+    /**
+     * Initialize pager and page size list box.
+     */
+    private void initPager() {
         pageSize = new ListBox();
         for (int i = 1; i < PAGE_SIZE_ITEMS_COUNT; i++) {
             pageSize.addItem(Integer.toString(i * PAGE_SIZE_MULTIPLICANT));
@@ -130,7 +145,7 @@ public class UniversalTableWidget extends Composite {
     }
 
     /**
-     * Initialize this example.
+     * Initialize table: universalAsyncGrid.
      */
     private void initTable() {
         // Create a CellTable.
@@ -150,6 +165,9 @@ public class UniversalTableWidget extends Composite {
         initContestantsTableColumns();
     }
 
+    /**
+     * Generate table schema for ClientAcceptedOffers widget.
+     */
     private void initClientAcceptedOffers() {
         gridColumns.clear();
         gridColumns.add(SUPPLIER_NAME_COLUMN);
@@ -159,7 +177,10 @@ public class UniversalTableWidget extends Composite {
         gridColumns.add(RECEIVED_DATE_COLUMN);
     }
 
-    public void initSupplierPotentialProjects() {
+    /**
+     * Generate table schema for SupplierPotentialProjects widget.
+     */
+    private void initSupplierPotentialProjects() {
         gridColumns.clear();
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(DEMAND_TITLE_COLUMN);
@@ -170,17 +191,10 @@ public class UniversalTableWidget extends Composite {
         initTable();
     }
 
-    public void initSupplierContests() {
-        gridColumns.clear();
-        gridColumns.add(CLIENT_NAME_COLUMN);
-        gridColumns.add(RATING_COLUMN);
-        gridColumns.add(PRICE_COLUMN);
-        gridColumns.add(DELIVERY_DATE_COLUMN);
-        gridColumns.add(RECEIVED_DATE_COLUMN);
-        initTable();
-    }
-
-    public void initSupplierAssignedProjects() {
+    /**
+     * Generate table schema for SupplierContests widget.
+     */
+    private void initSupplierContests() {
         gridColumns.clear();
         gridColumns.add(CLIENT_NAME_COLUMN);
         gridColumns.add(RATING_COLUMN);
@@ -191,10 +205,23 @@ public class UniversalTableWidget extends Composite {
     }
 
     /**
-     * Create all columns to the grid.
+     * Generate table schema for SupplierAssignedProjects widget.
      */
-    public void initContestantsTableColumns() {
-        // CheckBox column
+    private void initSupplierAssignedProjects() {
+        gridColumns.clear();
+        gridColumns.add(CLIENT_NAME_COLUMN);
+        gridColumns.add(RATING_COLUMN);
+        gridColumns.add(PRICE_COLUMN);
+        gridColumns.add(DELIVERY_DATE_COLUMN);
+        gridColumns.add(RECEIVED_DATE_COLUMN);
+        initTable();
+    }
+
+    /**
+     * Create all columns to the grid according to needed schema represented by gridColumns attribute.
+     */
+    private void initContestantsTableColumns() {
+        // CheckBox column header - always create this header
         checkHeader = new Header<Boolean>(new CheckboxCell()) {
 
             @Override
@@ -202,26 +229,14 @@ public class UniversalTableWidget extends Composite {
                 return false;
             }
         };
+        // CheckBox column - always create this column
         checkColumn = grid.addCheckboxColumn(checkHeader);
-        // Star Column
+        // Star Column - always create this column
         starColumn = grid.addStarColumn();
-        // Demand title column
 
+        // Client name column
         if (gridColumns.contains(CLIENT_NAME_COLUMN)) {
             clientNameColumn = grid.addColumn(
-                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, NAME_COL_WIDTH,
-                    new UniversalAsyncGrid.GetValue<String>() {
-
-                        @Override
-                        public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
-                            return SupplierPotentialProjectDetail.displayHtml(
-                                    detail.getSupplierName(), detail.isRead());
-                        }
-                    });
-        }
-        if (gridColumns.contains(SUPPLIER_NAME_COLUMN)) {
-            supplierNameColumn = grid.addColumn(
                     grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.client(), true, NAME_COL_WIDTH,
                     new UniversalAsyncGrid.GetValue<String>() {
 
@@ -230,6 +245,20 @@ public class UniversalTableWidget extends Composite {
                             SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
                             return SupplierPotentialProjectDetail.displayHtml(
                                     detail.getClientName(), detail.isRead());
+                        }
+                    });
+        }
+        // Supplier name column
+        if (gridColumns.contains(SUPPLIER_NAME_COLUMN)) {
+            supplierNameColumn = grid.addColumn(
+                    grid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.supplierName(), true, NAME_COL_WIDTH,
+                    new UniversalAsyncGrid.GetValue<String>() {
+
+                        @Override
+                        public String getValue(Object object) {
+                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
+                            return SupplierPotentialProjectDetail.displayHtml(
+                                    detail.getSupplierName(), detail.isRead());
                         }
                     });
         }
@@ -276,6 +305,7 @@ public class UniversalTableWidget extends Composite {
                         }
                     });
         }
+        // Urgency column
         if (gridColumns.contains(URGENCY_COLUMN)) {
             urgencyColumn = grid.addUrgentColumn(Storage.MSGS.urgency());
         }
@@ -331,8 +361,9 @@ public class UniversalTableWidget extends Composite {
     public Column<SupplierPotentialProjectDetail, String> getClientNameColumn() {
         return clientNameColumn;
     }
+
     public Column<SupplierPotentialProjectDetail, String> getSupplierNameColumn() {
-        return clientNameColumn;
+        return supplierNameColumn;
     }
 
     public Column<SupplierPotentialProjectDetail, String> getDemandTitleColumn() {
@@ -364,6 +395,21 @@ public class UniversalTableWidget extends Composite {
         return checkHeader;
     }
 
+    /**
+     * Get selected objects.
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Set<SupplierPotentialProjectDetail> getSelectedMessageList() {
+        MultiSelectionModel<SupplierPotentialProjectDetail> model =
+                (MultiSelectionModel<SupplierPotentialProjectDetail>) grid.getSelectionModel();
+        return model.getSelectedSet();
+    }
+
+    /**
+     * Get IDs of selected objects.
+     * @return
+     */
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
         Set<SupplierPotentialProjectDetail> set = getSelectedMessageList();
@@ -372,13 +418,6 @@ public class UniversalTableWidget extends Composite {
             idList.add(it.next().getUserMessageId());
         }
         return idList;
-    }
-
-    @SuppressWarnings("unchecked")
-    public Set<SupplierPotentialProjectDetail> getSelectedMessageList() {
-        MultiSelectionModel<SupplierPotentialProjectDetail> model =
-                (MultiSelectionModel<SupplierPotentialProjectDetail>) grid.getSelectionModel();
-        return model.getSelectedSet();
     }
 
     public IsWidget getWidgetView() {

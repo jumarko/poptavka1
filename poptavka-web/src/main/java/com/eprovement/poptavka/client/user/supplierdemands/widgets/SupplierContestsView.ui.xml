@@ -22,44 +22,28 @@
             </g:SimplePanel>
         </g:east>
         <g:center>
-            <g:DockLayoutPanel unit="PX">
-                <g:north size="45">
-                    <g:HorizontalPanel>
-                        <g:VerticalPanel ui:field="header" styleName='{res.layout.demandTabContentHeader}'>
-                            <g:Label ui:field="titlelabel">Vypis potencionalnych poptaviek</g:Label>
-                            <g:HorizontalPanel>
-                                <g:Button ui:field="replyBtn">
-                                    Reply
-                                </g:Button>
-                                <g:Button ui:field="editOfferBtn">
-                                    Edit offer
-                                </g:Button>
-                                <g:Button ui:field="downloadOfferBtn">
-                                    Download offer
-                                </g:Button>
-                                <g:ListBox ui:field="actions"/>
-                            </g:HorizontalPanel>
-                        </g:VerticalPanel>
-                    </g:HorizontalPanel>
-                </g:north>
-                <g:center>
-                    <g:VerticalPanel>
-                        <s:UniversalAsyncGrid ui:field="grid" />
+            <g:VerticalPanel>
+                <g:HorizontalPanel>
+                    <g:VerticalPanel ui:field="header" styleName='{res.layout.demandTabContentHeader}'>
+                        <g:Label ui:field="titlelabel">Vypis potencionalnych poptaviek</g:Label>
+                        <g:HorizontalPanel>
+                            <g:Button ui:field="replyBtn">
+                                Reply
+                            </g:Button>
+                            <g:Button ui:field="editOfferBtn">
+                                Edit offer
+                            </g:Button>
+                            <g:Button ui:field="downloadOfferBtn">
+                                Download offer
+                            </g:Button>
+                            <g:ListBox ui:field="actions"/>
+                        </g:HorizontalPanel>
                     </g:VerticalPanel>
-                </g:center>
-                <g:south size="32">
-                    <g:HTMLPanel styleName='{res.layout.pager}'>
-                        <table style="width:100%">
-                            <tr>
-                                <td align='center'>
-                                    <c:SimplePager ui:field='pager' />
-                                    <g:ListBox ui:field='pageSize' />
-                                </td>
-                            </tr>
-                        </table>
-                    </g:HTMLPanel>
-                </g:south>
-            </g:DockLayoutPanel>
+                </g:HorizontalPanel>
+
+                <s:UniversalTableWidget ui:field="tableWidget" />
+
+            </g:VerticalPanel>
         </g:center>
     </g:SplitLayoutPanel>
 </ui:UiBinder>

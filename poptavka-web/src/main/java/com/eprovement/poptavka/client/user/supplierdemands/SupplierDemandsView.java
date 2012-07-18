@@ -22,8 +22,8 @@ public class SupplierDemandsView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Button supNewDemands, supOffers, supAssignedDemands,
-    supCreateDemand, supCreateSupplier, allDemands, allSuppliers;
+    Button supplierNewDemands, supplierOffers, supplierAssignedDemands,
+    supplierCreateDemand, supplierCreateSupplier, allDemands, allSuppliers;
 
     /**************************************************************************/
     /* Initialization                                                            */
@@ -44,28 +44,28 @@ public class SupplierDemandsView extends Composite
     /* Getters                                                                */
     /**************************************************************************/
     @Override
-    public Button getSupNewDemandsButton() {
-        return supNewDemands;
+    public Button getSupplierNewDemandsButton() {
+        return supplierNewDemands;
     }
 
     @Override
-    public Button getSupOffersButton() {
-        return supOffers;
+    public Button getSupplierOffersButton() {
+        return supplierOffers;
     }
 
     @Override
-    public Button getSupAssignedDemandsButton() {
-        return supAssignedDemands;
+    public Button getSupplierAssignedDemandsButton() {
+        return supplierAssignedDemands;
     }
 
     @Override
-    public Button getSupCreateDemand() {
-        return supCreateDemand;
+    public Button getSupplierCreateDemand() {
+        return supplierCreateDemand;
     }
 
     @Override
-    public Button getSupCreateSupplier() {
-        return supCreateSupplier;
+    public Button getSupplierCreateSupplier() {
+        return supplierCreateSupplier;
     }
 
     @Override
