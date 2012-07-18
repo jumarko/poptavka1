@@ -133,6 +133,7 @@ public interface LocalizableMessages extends Messages {
     String star();
     String unstar();
     String notDefined();
+    String deliveryDate();
 
     String month();
     String fewMonths();

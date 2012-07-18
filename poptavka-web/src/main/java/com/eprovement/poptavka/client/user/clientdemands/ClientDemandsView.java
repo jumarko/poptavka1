@@ -23,8 +23,8 @@ public class ClientDemandsView extends Composite
     @UiField
     SimplePanel contentPanel;
     @UiField
-    Button cliNewDemands, cliOffers, cliAssignedDemands, cliCreateDemand,
-    allDemands, allSuppliers, cliCreateSupplier;
+    Button clientNewDemands, clientOffers, clientAssignedDemands, clientCreateDemand,
+    allDemands, allSuppliers, clientCreateSupplier;
 
     /**************************************************************************/
     /* Initialization                                                            */
@@ -46,28 +46,28 @@ public class ClientDemandsView extends Composite
     /* Getters                                                                */
     /**************************************************************************/
     @Override
-    public Button getCliNewDemandsButton() {
-        return cliNewDemands;
+    public Button getClientNewDemandsButton() {
+        return clientNewDemands;
     }
 
     @Override
-    public Button getCliOffersButton() {
-        return cliOffers;
+    public Button getClientOffersButton() {
+        return clientOffers;
     }
 
     @Override
-    public Button getCliAssignedDemandsButton() {
-        return cliAssignedDemands;
+    public Button getClientAssignedDemandsButton() {
+        return clientAssignedDemands;
     }
 
     @Override
-    public Button getCliCreateDemand() {
-        return cliCreateDemand;
+    public Button getClientCreateDemand() {
+        return clientCreateDemand;
     }
 
     @Override
-    public Button getCliCreateSupplier() {
-        return cliCreateSupplier;
+    public Button getClientCreateSupplier() {
+        return clientCreateSupplier;
     }
 
     @Override

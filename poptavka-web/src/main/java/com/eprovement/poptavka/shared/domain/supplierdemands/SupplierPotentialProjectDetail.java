@@ -24,11 +24,13 @@ public class SupplierPotentialProjectDetail implements Serializable, TableDispla
     private long messageId;
     private long userMessageId;
     private String clientName;
+    private String supplierName;
     private String demandTitle; //title
     private int rating;
     private BigDecimal price = null;
     private Date endDate; //urgency
     private Date receivedDate;
+    private Date deliveryDate;
     private boolean read = false;
     private boolean starred = false;
     public static final ProvidesKey<SupplierPotentialProjectDetail> KEY_PROVIDER =
@@ -123,6 +125,22 @@ public class SupplierPotentialProjectDetail implements Serializable, TableDispla
 
     public Date getAcceptedDate() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
     public String getTitle() {

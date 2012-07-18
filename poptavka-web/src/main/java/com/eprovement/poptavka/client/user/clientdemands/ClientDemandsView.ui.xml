@@ -14,27 +14,27 @@
                     </div>
                     <ul class='{res.layout.submenuList}'>
                         <li>
-                            <g:Button ui:field="cliNewDemands">
+                            <g:Button ui:field="clientNewDemands">
                                 <ui:msg key="myDemands">New Projects</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="cliOffers">
+                            <g:Button ui:field="clientOffers">
                                 <ui:msg key="offers">Bidders</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="cliAssignedDemands">
+                            <g:Button ui:field="clientAssignedDemands">
                                 <ui:msg key="assignedDemands">Projects in progress</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="cliCreateDemand">
+                            <g:Button ui:field="clientCreateDemand">
                                 <ui:msg key="createDemandLink">Create Demand</ui:msg>
                             </g:Button>
                         </li>
                         <li>
-                            <g:Button ui:field="cliCreateSupplier">
+                            <g:Button ui:field="clientCreateSupplier">
                                 <ui:msg key="createSupplierLink">Create supplier</ui:msg>
                             </g:Button>
                         </li>
