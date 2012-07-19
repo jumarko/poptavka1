@@ -5,6 +5,7 @@
  */
 package com.eprovement.poptavka.server.service.demandcreation;
 
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCService;
@@ -17,7 +18,6 @@ import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.server.service.ConvertUtils;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
@@ -50,6 +50,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private CategoryService categoryService;
     private ClientService clientService;
     private Converter<Demand, FullDemandDetail> demandConverter;
+    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -76,6 +77,13 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
             @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
         this.demandConverter = demandConverter;
     }
+
+    @Autowired
+    public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
+            BusinessUserDetail> businessUserConverter) {
+        this.businessUserConverter = businessUserConverter;
+    }
+
 
     /**
      * Create new entity Demand based on the passed FullDemandDetail object.
@@ -184,8 +192,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
         final Client newClientFromDB = clientService.create(newClient);
 
-        return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
-                newClientFromDB.getBusinessUser().getBusinessUserRoles());
+        return businessUserConverter.convertToTarget(newClientFromDB.getBusinessUser());
     }
 
 

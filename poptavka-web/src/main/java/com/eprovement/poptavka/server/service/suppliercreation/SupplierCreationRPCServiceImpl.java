@@ -4,6 +4,8 @@
  */
 package com.eprovement.poptavka.server.service.suppliercreation;
 
+import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
@@ -20,7 +22,6 @@ import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.server.service.ConvertUtils;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
@@ -34,6 +35,7 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
@@ -49,6 +51,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private GeneralService generalService;
     private LocalityService localityService;
     private CategoryService categoryService;
+    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -74,6 +77,13 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
     }
+
+    @Autowired
+    public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
+            BusinessUserDetail> businessUserConverter) {
+        this.businessUserConverter = businessUserConverter;
+    }
+
 
     /**
      * Metoda vytvara uzivatela -> BusinessUsera -> rolu klienta a dodavatela pretoze
@@ -112,8 +122,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
         clientService.create(client);
 
-        return ConvertUtils.toUserDetail(supplierFromDB.getBusinessUser().getId(),
-                supplierFromDB.getBusinessUser().getBusinessUserRoles());
+        return businessUserConverter.convertToTarget(supplierFromDB.getBusinessUser());
     }
 
     private void setNewSupplierBusinessUserData(BusinessUserDetail supplier, Supplier newSupplier) {

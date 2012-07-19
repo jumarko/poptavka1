@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.server.service.client;
 
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.GWT;
@@ -13,7 +14,6 @@ import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.server.service.ConvertUtils;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.user.ClientService;
@@ -42,6 +42,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     private ClientService clientService;
     private LocalityService localityService;
     private Converter<Client, ClientDetail> clientConverter;
+    private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     public ArrayList<BusinessUserDetail> getAllClients() {
         // TODO do we need this method?
@@ -77,6 +78,13 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setClientConverter(@Qualifier("clientConverter") Converter<Client, ClientDetail> clientConverter) {
         this.clientConverter = clientConverter;
     }
+
+    @Autowired
+    public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
+            BusinessUserDetail> businessUserConverter) {
+        this.businessUserConverter = businessUserConverter;
+    }
+
 
     /**
      * Vytvorenie noveho klienta.
@@ -116,8 +124,7 @@ public class ClientRPCServiceImpl extends AutoinjectingRemoteService implements 
         newClient.getBusinessUser().setPassword(clientDetail.getPassword());
         final Client newClientFromDB = clientService.create(newClient);
         //use UserConverter???
-        return ConvertUtils.toUserDetail(newClientFromDB.getBusinessUser().getId(),
-                newClientFromDB.getBusinessUser().getBusinessUserRoles());
+        return businessUserConverter.convertToTarget(newClientFromDB.getBusinessUser());
     }
 
 
