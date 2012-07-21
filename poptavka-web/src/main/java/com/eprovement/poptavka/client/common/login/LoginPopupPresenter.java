@@ -64,23 +64,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     /** Real html login. SHOULD/WILL be used in prod */
     public void doLogin() {
         if (view.isValid()) {
-            // for testing purpose, if sending mails works
-            mailService.sendMail("kolkar100@gmail.com", "TestMessage", "Test", "poptavka@poptavam.com",
-                    new AsyncCallback<Boolean>() {
-
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            GWT.log("message not sent succesfully");
-                            if (caught instanceof RPCException) {
-                                ExceptionUtils.showErrorDialog(errorDialog, caught);
-                            }
-                        }
-
-                        @Override
-                        public void onSuccess(Boolean result) {
-                            GWT.log("message sent succesfully");
-                        }
-                    });
             view.setLoadingStatus();
             String username = view.getLogin();
             String password = view.getPassword();
