@@ -7,7 +7,7 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
@@ -100,7 +100,7 @@ public class ClientContestsPresenter
     /**************************************************************************/
     //viewType
     private ViewType type = ViewType.EDITABLE;
-    private DevelDetailWrapperPresenter detailSection = null;
+    private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedProjectContest = -1;
@@ -144,7 +144,7 @@ public class ClientContestsPresenter
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (detailSection == null) {
-            detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
+            detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
             detailSection.initDetailWrapper(view.getWrapperPanel(), type);
         }
     }

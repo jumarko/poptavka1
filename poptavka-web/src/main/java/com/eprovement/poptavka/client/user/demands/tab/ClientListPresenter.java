@@ -19,7 +19,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGrid;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -57,7 +57,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
     //viewType
     private ViewType type = ViewType.EDITABLE;
 
-    private DevelDetailWrapperPresenter detailSection = null;
+    private DetailsWrapperPresenter detailSection = null;
 
 
     //remove this annotation for production
@@ -119,7 +119,7 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
         if (detailSection == null) {
-            detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
+            detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
             detailSection.initDetailWrapper(view.getWrapperPanel(), type);
         }
         initialized = true;
@@ -219,11 +219,11 @@ public class ClientListPresenter extends LazyPresenter<ClientListPresenter.IList
         //
 
         //can be solved by enum in future or can be accesed from storage class
-        detailSection.showLoading(DevelDetailWrapperPresenter.DEMAND);
+        detailSection.showLoading(DetailsWrapperPresenter.DEMAND);
         eventBus.requestDemandDetail(demandId, type);
 
         //add conversation loading events and so on
-        detailSection.showLoading(DevelDetailWrapperPresenter.CHAT);
+        detailSection.showLoading(DetailsWrapperPresenter.CHAT);
         eventBus.requestChatForSupplierList(messageId, userMessageId, Storage.getUser().getUserId());
     }
 

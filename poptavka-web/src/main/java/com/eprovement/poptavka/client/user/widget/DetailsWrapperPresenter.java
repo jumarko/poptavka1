@@ -21,9 +21,9 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.mvp4g.client.event.EventBus;
 import java.util.List;
 
-@Presenter(view = DevelDetailWrapperView.class, multiple = true)
-public class DevelDetailWrapperPresenter
-        extends LazyPresenter<DevelDetailWrapperPresenter.IDetailWrapper, RootEventBus> {
+@Presenter(view = DetailsWrapperView.class, multiple = true)
+public class DetailsWrapperPresenter
+        extends LazyPresenter<DetailsWrapperPresenter.IDetailWrapper, RootEventBus> {
 
     public static final int DEMAND = 0;
     public static final int SUPPLIER = 1;
@@ -472,17 +472,17 @@ public class DevelDetailWrapperPresenter
      * @param type
      */
     public void requestDemandDetail(Long demandId, ViewType type) {
-        showLoading(DevelDetailWrapperPresenter.DEMAND);
+        showLoading(DetailsWrapperPresenter.DEMAND);
         eventBus.requestDemandDetail(demandId, type);
     }
 
     public void requestSupplierDetail(Long supplierId, ViewType type) {
-        showLoading(DevelDetailWrapperPresenter.SUPPLIER);
+        showLoading(DetailsWrapperPresenter.SUPPLIER);
         eventBus.requestSupplierDetail(supplierId, type);
     }
 
     public void requestConversation(long messageId, Long userMessageId, Long userId) {
-        showLoading(DevelDetailWrapperPresenter.CHAT);
+        showLoading(DetailsWrapperPresenter.CHAT);
         eventBus.requestConversation(messageId, userMessageId, userId);
     }
 }

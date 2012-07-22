@@ -7,7 +7,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsEventBus;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
@@ -69,7 +69,7 @@ public class SupplierProjectsPresenter
     /**************************************************************************/
     //viewType
     private ViewType type = ViewType.EDITABLE;
-    private DevelDetailWrapperPresenter detailSection = null;
+    private DetailsWrapperPresenter detailSection = null;
     private SearchModuleDataHolder searchDataHolder;
     //attrribute preventing repeated loading of demand detail, when clicked on the same demand
     private long lastOpenedProjectContest = -1;
@@ -110,7 +110,7 @@ public class SupplierProjectsPresenter
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
-    public void onResponseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection) {
+    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         this.detailSection = detailSection;
         this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
     }

@@ -7,7 +7,7 @@ package com.eprovement.poptavka.client.user.supplierdemands;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedProjectsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierContestsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierProjectsPresenter;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
@@ -51,7 +51,7 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
 //    @Event(handlers = {SupplierProjectsPresenter.class, SupplierContestsPresenter.class,
 //        SupplierAssignedProjectsPresenter.class}, passive = true)
     @Event(handlers = SupplierProjectsPresenter.class)
-    void responseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection);
+    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
     /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/

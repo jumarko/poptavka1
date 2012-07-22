@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.messaging"
+             xmlns:w="urn:import:com.eprovement.poptavka.client.user.widget.detail">
+
+    <ui:with field='res' type='com.eprovement.poptavka.client.resources.StyleResource' />
+    <ui:style>
+        .panel {
+        min-width: 500px;
+        }
+        .relative {
+        position: relative;
+        }
+    </ui:style>
+    <g:TabLayoutPanel addStyleNames="{res.tabLayout.decoratedTabBar}" ui:field="container"
+                      height="800px" width="400px" barUnit="PX" barHeight="60" animationDuration="1000">
+        <g:tab>
+            <g:header>
+                <ui:msg key="demandDetail">Demand detail</ui:msg>
+            </g:header>
+            <w:DemandDetailView ui:field="demandDetail"></w:DemandDetailView>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="supplierDetail">Supplier detail</ui:msg>
+            </g:header>
+            <w:SupplierDetailView ui:field="supplierDetail"></w:SupplierDetailView>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="conversationDetail">Conversation detail</ui:msg>
+            </g:header>
+            <g:VerticalPanel>
+                <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
+                <g:SimplePanel ui:field="replyHolder" />
+            </g:VerticalPanel>
+        </g:tab>
+    </g:TabLayoutPanel>
+</ui:UiBinder>

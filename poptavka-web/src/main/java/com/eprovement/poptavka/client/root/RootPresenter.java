@@ -30,7 +30,7 @@ import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
 import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.BusinessRole;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -87,6 +87,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      */
     public void onStart() {
         GWT.log("Root presenter loaded");
+//        Storage.initRequestFactory();
         eventBus.atHome();
         eventBus.goToSearchModule();
         eventBus.goToHomeWelcomeModule(null);
@@ -312,7 +313,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onRequestDetailWrapperPresenter() {
-        DevelDetailWrapperPresenter detailSection = eventBus.addHandler(DevelDetailWrapperPresenter.class);
+        DetailsWrapperPresenter detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
         detailSection.initReplyWidget(eventBus);
         eventBus.responseDetailWrapperPresenter(detailSection);
     }

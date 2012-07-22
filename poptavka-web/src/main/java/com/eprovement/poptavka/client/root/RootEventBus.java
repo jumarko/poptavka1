@@ -50,7 +50,7 @@ import com.eprovement.poptavka.client.user.demands.DemandModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
-import com.eprovement.poptavka.client.user.widget.DevelDetailWrapperPresenter;
+import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -347,9 +347,11 @@ public interface RootEventBus extends EventBus {
 
     @Event(handlers = RootHandler.class)
     void getChildLocalities(final LocalityType localityType, String locCode);
+    //void getChildLocalities(final LocalityType localityType, String locCode, ListDataProvider dataProvider);
 
     @Event(handlers = RootHandler.class)
     void getLocalities(final LocalityType localityType);
+    //void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
 
     /**************************************************************************/
     /* Business events handled by MenuPresenter --- HOME MENU                 */
@@ -372,7 +374,7 @@ public interface RootEventBus extends EventBus {
 
     //passive = mal by zavoalt metodu len v aktivom prezenteri., funguje aj s modulmi???
     @Event(forwardToModules = {ClientDemandsModule.class, SupplierDemandsModule.class }, passive = true)
-    void responseDetailWrapperPresenter(DevelDetailWrapperPresenter detailSection);
+    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter.                */
@@ -386,13 +388,13 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootHandler.class)
     void requestDemandDetail(Long demandId, ViewType type);
 
-    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void responseDemandDetail(FullDemandDetail demandDetail, ViewType type);
 
     @Event(handlers = RootHandler.class)
     void requestSupplierDetail(Long supplierId, ViewType type);
 
-    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void responseSupplierDetail(FullSupplierDetail supplierDetail, ViewType type);
 
     /*
@@ -405,7 +407,7 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootHandler.class)
     void requestConversation(long messageId, Long userMessageId, Long userId);
 
-    @Event(handlers = DevelDetailWrapperPresenter.class)
+    @Event(handlers = DetailsWrapperPresenter.class)
     void responseConversation(List<MessageDetail> chatMessages, ViewType supplierListType);
 
     /**************************************************************************/
@@ -421,6 +423,6 @@ public interface RootEventBus extends EventBus {
     void sendMessage(MessageDetail messageToSend, ViewType type);
     //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
 
-    @Event(handlers = DevelDetailWrapperPresenter.class, passive = true)
+    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void addConversationMessage(MessageDetail sentMessage, ViewType handlingType);
 }

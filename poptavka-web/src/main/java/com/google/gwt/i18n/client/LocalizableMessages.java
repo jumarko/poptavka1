@@ -134,6 +134,9 @@ public interface LocalizableMessages extends Messages {
     String unstar();
     String notDefined();
     String deliveryDate();
+    String demandDetail();
+    String supplierDetail();
+    String conversationDetail();
 
     String month();
     String fewMonths();
