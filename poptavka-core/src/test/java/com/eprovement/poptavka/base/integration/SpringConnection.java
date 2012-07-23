@@ -285,29 +285,29 @@ public class SpringConnection implements Connection {
         return conn.createStruct(typeName, attributes);
     }
 
-    @Override
     public void setSchema(String schema) throws SQLException {
-        conn.setSchema(schema);
+        throw new UnsupportedOperationException("Java 7 is not supported rigth now!");
+//        conn.setSchema(schema);
     }
 
-    @Override
     public String getSchema() throws SQLException {
-        return conn.getSchema();
+        throw new UnsupportedOperationException("Java 7 is not supported rigth now!");
+//        return conn.getSchema();
     }
 
-    @Override
     public void abort(Executor executor) throws SQLException {
-        conn.abort(executor);
+        throw new UnsupportedOperationException("Java 7 is not supported rigth now!");
+//        conn.abort(executor);
     }
 
-    @Override
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-        conn.setNetworkTimeout(executor, milliseconds);
+        throw new UnsupportedOperationException("Java 7 is not supported rigth now!");
+//        conn.setNetworkTimeout(executor, milliseconds);
     }
 
-    @Override
     public int getNetworkTimeout() throws SQLException {
-        return conn.getNetworkTimeout();
+        throw new UnsupportedOperationException("Java 7 is not supported rigth now!");
+//        return conn.getNetworkTimeout();
     }
 
     @Override
