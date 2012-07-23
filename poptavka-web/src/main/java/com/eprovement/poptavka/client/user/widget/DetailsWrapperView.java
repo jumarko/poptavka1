@@ -20,8 +20,8 @@ import java.util.List;
 public class DetailsWrapperView extends Composite
     implements DetailsWrapperPresenter.IDetailWrapper {
 
-    private static DetailWrapperViewUiBinder uiBinder = GWT.create(DetailWrapperViewUiBinder.class);
-    interface DetailWrapperViewUiBinder extends UiBinder<Widget, DetailsWrapperView> {   }
+    private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
+    interface DetailsWrapperViewUiBinder extends UiBinder<Widget, DetailsWrapperView> {   }
 
     @UiField TabLayoutPanel container;
     @UiField DemandDetailView demandDetail;
