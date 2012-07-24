@@ -44,6 +44,10 @@ public interface StyleResource extends ClientBundle {
     @Source("user-message.css")
     UserMessageStyle message();
 
+    @NotStrict
+    @Source("TabLayout.css")
+    TabLayout tabLayout();
+
     Images images();
 
     /**
