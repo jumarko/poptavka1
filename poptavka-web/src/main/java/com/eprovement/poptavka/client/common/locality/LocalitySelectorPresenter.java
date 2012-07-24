@@ -3,10 +3,6 @@ package com.eprovement.poptavka.client.common.locality;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,96 +11,73 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.service.demand.LocalityRPCServiceAsync;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 import java.util.List;
 
 @Presenter(view = LocalitySelectorView.class, multiple = true)
 public class LocalitySelectorPresenter
-    extends LazyPresenter<LocalitySelectorPresenter.LocalitySelectorInterface, RootEventBus> {
+        extends LazyPresenter<LocalitySelectorPresenter.LocalitySelectorInterface, RootEventBus> {
+
+    @Inject
+    private LocalityRPCServiceAsync localityService;
 
     /** View interface methods. **/
     public interface LocalitySelectorInterface extends LazyView {
 
-        ListBox getRegionList();
+        ListDataProvider<LocalityDetail> getCellListDataProvider();
 
-        ListBox getDistrictList();
+        MultiSelectionModel<LocalityDetail> getCellBrowserSelectionModel();
 
-        ListBox getCityList();
-
-        ListBox getSelectedList();
-
-        String getSelectedItem(LocalityType localityType);
+        SingleSelectionModel<LocalityDetail> getCellListSelectionModel();
 
         void toggleLoader();
 
         boolean isValid();
 
-        void addToSelectedList(LocalityType type);
-
-        void removeFromSelectedList();
-
         Widget getWidgetView();
-
-        ArrayList<String> getSelectedLocalityCodes();
     }
-
     // for preventing users from double clicking list item, what would result in multiple instances of
     // same list
     private boolean preventMultipleCalls = false;
 
+    @Override
     public void bindView() {
-        view.getRegionList().addClickHandler(new ClickHandler() {
+        view.getCellBrowserSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
             @Override
-            public void onClick(ClickEvent event) {
-                if (event.isControlKeyDown()) {
-                    view.addToSelectedList(LocalityType.REGION);
-                } else {
-                    if (preventMultipleCalls) {
-                        return;
-                    }
-                    // TODO cursor change would be nice;
-                    preventMultipleCalls = true;
-                    view.toggleLoader();
-                    view.getDistrictList().setVisible(false);
-                    view.getCityList().setVisible(false);
-                    eventBus.getChildLocalities(LocalityType.DISTRICT, view.getSelectedItem(LocalityType.REGION));
-                }
+            public void onSelectionChange(SelectionChangeEvent event) {
+                List<LocalityDetail> selectedList = new ArrayList<LocalityDetail>(
+                        view.getCellBrowserSelectionModel().getSelectedSet());
+                view.getCellListDataProvider().setList(selectedList);
             }
         });
-        view.getDistrictList().addClickHandler(new ClickHandler() {
+        view.getCellListSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
             @Override
-            public void onClick(ClickEvent event) {
-                if (event.isControlKeyDown()) {
-                    view.addToSelectedList(LocalityType.DISTRICT);
-                } else {
-                    if (preventMultipleCalls) {
-                        return;
-                    }
-                    // TODO cursor change would be nice;
-                    preventMultipleCalls = true;
-                    view.toggleLoader();
-                    view.getCityList().setVisible(false);
-                    eventBus.getChildLocalities(LocalityType.CITY, view.getSelectedItem(LocalityType.DISTRICT));
-                }
-            }
-        });
-        view.getCityList().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                view.addToSelectedList(LocalityType.CITY);
-            }
-        });
-        view.getSelectedList().addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent arg0) {
-                view.removeFromSelectedList();
+            public void onSelectionChange(SelectionChangeEvent event) {
+                view.getCellBrowserSelectionModel().setSelected(
+                        view.getCellListSelectionModel().getSelectedObject(),
+                        false);
+                view.getCellListDataProvider().getList().remove(
+                        view.getCellListSelectionModel().getSelectedObject());
             }
         });
     }
 
+    public LocalityRPCServiceAsync getLocalityService() {
+        return localityService;
+    }
+
     public void initLocalityWidget(SimplePanel embedWidget) {
-        eventBus.getLocalities(LocalityType.REGION);
+//        eventBus.getLocalities(LocalityType.REGION, null);
         embedWidget.setWidget(view.getWidgetView());
     }
 
@@ -112,14 +85,14 @@ public class LocalitySelectorPresenter
         switch (localityType) {
             case DISTRICT:
                 view.toggleLoader();
-                setData(view.getDistrictList(), list);
+//                setData(view.getDistrictList(), list);
                 break;
             case REGION:
-                setData(view.getRegionList(), list);
+//                setData(view.getRegionList(), list);
                 break;
             case CITY:
                 view.toggleLoader();
-                setData(view.getCityList(), list);
+//                setData(view.getCityList(), list);
                 break;
             default:
                 break;
@@ -129,6 +102,7 @@ public class LocalitySelectorPresenter
     private void setData(final ListBox box, final List<LocalityDetail> list) {
         box.clear();
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
             @Override
             public void execute() {
                 for (int i = 0; i < list.size(); i++) {
@@ -141,4 +115,11 @@ public class LocalitySelectorPresenter
         preventMultipleCalls = false;
     }
 
+    public void getRootLocalities(AsyncDataProvider dataProvider) {
+        eventBus.getLocalities(LocalityType.COUNTRY, dataProvider);
+    }
+
+    public void getLocalities(ListDataProvider dataProvider, LocalityType localityType, String locCode) {
+        eventBus.getChildLocalities(localityType, locCode, dataProvider);
+    }
 }

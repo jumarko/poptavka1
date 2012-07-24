@@ -47,6 +47,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -91,6 +92,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Preference, PreferenceDetail> preferenceConverter;
     private Converter<Problem, ProblemDetail> problemConverter;
     private Converter<Message, MessageDetail> messageConverter;
+    private Converter<Locality, LocalityDetail> localityConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) throws RPCException {
@@ -141,8 +143,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Autowired
-    public void setActivationEmailConverter(@Qualifier("activationEmailConverter")
-            Converter<ActivationEmail, ActivationEmailDetail> activationEmailConverter) {
+    public void setActivationEmailConverter(@Qualifier("activationEmailConverter") Converter<ActivationEmail,
+            ActivationEmailDetail> activationEmailConverter) {
         this.activationEmailConverter = activationEmailConverter;
     }
 
@@ -173,6 +175,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public void setPreferenceConverter(
             @Qualifier("preferenceConverter") Converter<Preference, PreferenceDetail> preferenceConverter) {
         this.preferenceConverter = preferenceConverter;
+    }
+
+    @Autowired
+    public void setLocalityConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
     }
 
     @Autowired
@@ -256,14 +264,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!demand.getCategories().containsAll(categories)) {
             demand.setCategories(categories);
         }
-        List<Locality> localities = new ArrayList<Locality>();
-        for (String locCode : fullDemandDetail.getLocalities().keySet()) {
-            localities.add(localityService.getLocality(locCode));
-        }
         //Treba zistovat ci sa lokality zmenili? Ak ano, ako aby to nebolo narocne?
-        if (!demand.getLocalities().containsAll(localities)) {
-            demand.setLocalities(localities);
-        }
+        demand.setLocalities(localityConverter.convertToSourceList(fullDemandDetail.getLocalities()));
+
         demandService.update(demand);
     }
 

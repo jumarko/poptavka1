@@ -18,6 +18,7 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
         detail.setId(locality.getId());
         detail.setCode(locality.getCode());
         detail.setName(locality.getName());
+        detail.setLocalityType(locality.getType());
         return detail;
 
     }

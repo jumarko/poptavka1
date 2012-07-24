@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import java.io.Serializable;
 
 /**
@@ -17,6 +18,7 @@ public class LocalityDetail implements Serializable {
     private Long id;
     private String name;
     private String code;
+    private LocalityType localityType;
 
     public LocalityDetail() {
     }
@@ -59,5 +61,13 @@ public class LocalityDetail implements Serializable {
     @Override
     public String toString() {
         return name;
+    }
+
+    public LocalityType getLocalityType() {
+        return localityType;
+    }
+
+    public void setLocalityType(LocalityType localityType) {
+        this.localityType = localityType;
     }
 }

@@ -23,6 +23,8 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.History;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.ListDataProvider;
 
 @EventHandler
 public class RootHandler extends BaseEventHandler<RootEventBus> {
@@ -35,12 +37,15 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**************************************************************************/
     /* Localities methods                                                     */
     /**************************************************************************/
-    public void onGetLocalities(final LocalityType localityType) {
+    public void onGetLocalities(final LocalityType localityType, final AsyncDataProvider dataProvider) {
         rootService.getLocalities(localityType,
                 new AsyncCallback<List<LocalityDetail>>() {
 
                     @Override
                     public void onSuccess(List<LocalityDetail> list) {
+                        if (dataProvider != null) {
+                            dataProvider.updateRowData(0, list);
+                        }
                         eventBus.setLocalityData(localityType, list);
                     }
 
@@ -53,7 +58,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 });
     }
 
-    public void onGetChildLocalities(final LocalityType localityType, String locCode) {
+    public void onGetChildLocalities(final LocalityType localityType, String locCode,
+            final ListDataProvider dataProvider) {
         rootService.getLocalities(locCode,
                 new AsyncCallback<List<LocalityDetail>>() {
 
@@ -66,6 +72,9 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
                     @Override
                     public void onSuccess(List<LocalityDetail> list) {
+                        if (dataProvider != null) {
+                            dataProvider.setList(list);
+                        }
                         eventBus.setLocalityData(localityType, list);
                     }
                 });
@@ -238,7 +247,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**************************************************************************/
     /* Messages methods                                                       */
     /**************************************************************************/
-
     /**
      * Send message.
      * IMPORTANT: further implementation of other parts will show, if we need more than this method

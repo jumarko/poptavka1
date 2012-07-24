@@ -3,11 +3,11 @@
  */
 package com.eprovement.poptavka.server.converter;
 
-
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
@@ -15,15 +15,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.Validate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public final class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
 
     private static Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<Locality, LocalityDetail> localityConverter;
 
     private FullDemandConverter(Converter<Supplier, FullSupplierDetail> supplierConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(supplierConverter);
         this.supplierConverter = supplierConverter;
+    }
+
+    @Autowired
+    public void setFullDemandConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
     }
 
     @Override
@@ -45,12 +54,8 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         }
         detail.setCategories(catMap);
         //localities
-        Map<String, String> locMap = new HashMap<String, String>();
-        for (Locality loc : source.getLocalities()) {
-            locMap.put(loc.getCode(), loc.getName());
-        }
+        detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities()));
 
-        detail.setLocalities(locMap);
         detail.setDemandStatus(source.getStatus());
 
         if (source.getType() != null) {
@@ -71,7 +76,6 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
                 + " is not implemented yet!");
     }
 
-
     //--------------------------------------------------- PRIVATE METHODS ----------------------------------------------
     private static void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
         final List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
@@ -82,5 +86,4 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         }
         detail.setExcludedSuppliers(excludedSuppliers);
     }
-
 }

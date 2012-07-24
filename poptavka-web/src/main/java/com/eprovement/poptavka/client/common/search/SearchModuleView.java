@@ -25,7 +25,6 @@ import com.eprovement.poptavka.client.common.category.CategorySelectorView;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
 import com.eprovement.poptavka.client.common.search.SearchModulePresenter.SearchModulesViewInterface;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 
 public class SearchModuleView extends Composite implements SearchModulePresenter.SearchModuleInterface {
 
@@ -315,12 +314,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         filters.getLocalities().clear();
         LocalitySelectorInterface localityValues =
                 (LocalitySelectorInterface) popupPanel.getWidget();
-
-        for (int i = 0; i < localityValues.getSelectedList().getItemCount(); i++) {
-            filters.getLocalities().add(new LocalityDetail(
-                    localityValues.getSelectedList().getItemText(i),
-                    localityValues.getSelectedList().getValue(i)));
-        }
+        filters.getLocalities().addAll(localityValues.getCellListDataProvider().getList());
     }
 
     /**

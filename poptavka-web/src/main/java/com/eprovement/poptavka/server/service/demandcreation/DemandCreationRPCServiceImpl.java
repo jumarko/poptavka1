@@ -24,6 +24,7 @@ import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -51,6 +52,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private ClientService clientService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+    private Converter<Locality, LocalityDetail> localityConverter;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -79,11 +81,16 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Autowired
-    public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
-            BusinessUserDetail> businessUserConverter) {
+    public void setBusinessUserConverter(@Qualifier("businessUserConverter")
+            Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
         this.businessUserConverter = businessUserConverter;
     }
 
+    @Autowired
+    public void setFullDemandConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
+    }
 
     /**
      * Create new entity Demand based on the passed FullDemandDetail object.
@@ -111,11 +118,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setClient(this.clientService.getById(cliendId));
 
         /** localities **/
-        List<Locality> locs = new ArrayList<Locality>();
-        for (String localityCode : detail.getLocalities().keySet()) {
-            locs.add(getLocality(localityCode));
-        }
-        demand.setLocalities(locs);
+        demand.setLocalities(localityConverter.convertToSourceList(detail.getLocalities()));
         /** categories **/
         List<Category> categories = new ArrayList<Category>();
         for (Long categoryID : detail.getCategories().keySet()) {
@@ -162,7 +165,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         }
     }
 
-
     /**
      * Vytvorenie noveho klienta.
      *
@@ -178,9 +180,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
                 personLastName(clientDetail.getLastName()).
                 phone(clientDetail.getPhone()).
                 identificationNumber(clientDetail.getIdentificationNumber()).
-                taxId(clientDetail.getTaxId())
-                .website(clientDetail.getWebsite())
-                .build();
+                taxId(clientDetail.getTaxId()).website(clientDetail.getWebsite()).build();
 
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
 
@@ -194,7 +194,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
         return businessUserConverter.convertToTarget(newClientFromDB.getBusinessUser());
     }
-
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
     private void setAddresses(BusinessUserDetail clientDetail, Client newClient) {
@@ -212,5 +211,4 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
         newClient.getBusinessUser().setAddresses(addresses);
     }
-
 }

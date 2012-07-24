@@ -58,6 +58,8 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.ListDataProvider;
 import java.util.List;
 
 @Events(startPresenter = RootPresenter.class)
@@ -346,12 +348,12 @@ public interface RootEventBus extends EventBus {
     void getChildListCategories(int newListPosition, String categoryId);
 
     @Event(handlers = RootHandler.class)
-    void getChildLocalities(final LocalityType localityType, String locCode);
-    //void getChildLocalities(final LocalityType localityType, String locCode, ListDataProvider dataProvider);
+//    void getChildLocalities(final LocalityType localityType, String locCode);
+    void getChildLocalities(final LocalityType localityType, String locCode, ListDataProvider dataProvider);
 
     @Event(handlers = RootHandler.class)
-    void getLocalities(final LocalityType localityType);
-    //void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
+//    void getLocalities(final LocalityType localityType);
+    void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
 
     /**************************************************************************/
     /* Business events handled by MenuPresenter --- HOME MENU                 */

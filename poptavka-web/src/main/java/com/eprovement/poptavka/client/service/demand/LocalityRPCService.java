@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -21,7 +21,7 @@ public interface LocalityRPCService extends RemoteService {
      * @param type
      * @return list locality list according to type
      */
-    ArrayList<LocalityDetail> getLocalities(LocalityType type) throws RPCException;
+    List<LocalityDetail> getLocalities(LocalityType type) throws RPCException;
 
     /**
      * Returns locality list.
@@ -29,11 +29,11 @@ public interface LocalityRPCService extends RemoteService {
      * @param locCode
      * @return list locality children list
      */
-    ArrayList<LocalityDetail> getLocalities(String locCode) throws RPCException;
+    List<LocalityDetail> getLocalities(String locCode) throws RPCException;
 
     LocalityDetail getLocality(long id) throws RPCException;
 
-    ArrayList<LocalityDetail> getAllRootLocalities() throws RPCException;
+    List<LocalityDetail> getAllRootLocalities() throws RPCException;
 
-    ArrayList<LocalityDetail> getSubLocalities(String locCode) throws RPCException;
+    List<LocalityDetail> getSubLocalities(String locCode) throws RPCException;
 }

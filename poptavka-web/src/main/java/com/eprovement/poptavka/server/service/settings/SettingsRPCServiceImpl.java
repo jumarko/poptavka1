@@ -18,12 +18,15 @@ import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Component(SettingsRPCService.URL)
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
@@ -32,7 +35,15 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private static final long serialVersionUID = 113266708108432157L;
 
     private GeneralService generalService;
+    private Converter<Locality, LocalityDetail> localityConverter;
 
+    @Autowired
+    public void setFullDemandConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
+    }
+
+    //TODO Nahradit konverterom???
     @Override
     public SettingsDetail getUserSettings(long userId) throws RPCException {
         GWT.log("Getting user settings for user:" + userId);
@@ -58,11 +69,7 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
                 if (supplier.getOveralRating() != null) {
                     supplierDetail.setOverallRating(supplier.getOveralRating());
                 }
-                ArrayList<String> localities = new ArrayList<String>();
-                for (Locality locality : supplier.getLocalities()) {
-                    localities.add(locality.getName());
-                }
-                supplierDetail.setLocalities(localities);
+                supplierDetail.setLocalities(localityConverter.convertToTargetList(supplier.getLocalities()));
                 ArrayList<String> categories = new ArrayList<String>();
                 for (Category category : supplier.getCategories()) {
                     categories.add(category.getName());

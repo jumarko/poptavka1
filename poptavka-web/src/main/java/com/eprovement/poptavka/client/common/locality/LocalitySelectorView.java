@@ -1,44 +1,100 @@
 package com.eprovement.poptavka.client.common.locality;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellBrowser;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.domain.enums.LocalityType;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.mvp4g.client.view.ReverseViewInterface;
 
 public class LocalitySelectorView extends Composite
-    implements LocalitySelectorPresenter.LocalitySelectorInterface, ProvidesValidate  {
+        implements ProvidesValidate, ReverseViewInterface<LocalitySelectorPresenter>, LocalitySelectorInterface {
 
     private static LocalitySelectorUiBinder uiBinder = GWT.create(LocalitySelectorUiBinder.class);
 
     interface LocalitySelectorUiBinder extends UiBinder<Widget, LocalitySelectorView> {
     }
 
-    private HashSet<String> selectedListStrings = new HashSet<String>();
+    /**************************************************************************/
+    /* PRESENTER                                                              */
+    /**************************************************************************/
+    @Override
+    public void setPresenter(LocalitySelectorPresenter presenter) {
+        this.localitySelectorPresenter = presenter;
+    }
 
-    @UiField
-    ListBox regionList;
-    @UiField
-    ListBox districtList;
-    @UiField
-    ListBox cityList;
+    @Override
+    public LocalitySelectorPresenter getPresenter() {
+        return localitySelectorPresenter;
+    }
+    /**************************************************************************/
+    /* ATTRIBUTES                                                              */
+    /**************************************************************************/
+    //Presenter
+    private LocalitySelectorPresenter localitySelectorPresenter;
     @UiField
     HTML loader;
+    //Cell Brower
+    @UiField(provided = true)
+    CellBrowser cellBrowser;
+    //Cell List
+    @UiField(provided = true)
+    CellList<LocalityDetail> cellList;
+    //Selection Moders
+    MultiSelectionModel cellBrowserSelectionModel = new MultiSelectionModel();
+    SingleSelectionModel cellListSelectionModel = new SingleSelectionModel();
+    //Data Providers
+    ListDataProvider<LocalityDetail> cellListDataProvider = new ListDataProvider<LocalityDetail>();
 
-    @UiField ListBox selectedList;
-
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
+    @Override
     public void createView() {
+        cellBrowser = new CellBrowser(new LocalityTreeViewModel(
+                cellBrowserSelectionModel,
+                localitySelectorPresenter.getLocalityService()), null);
+        cellBrowser.setSize("500px", "200px");
+        cellBrowser.setAnimationEnabled(true);
+
+        cellList = new CellList<LocalityDetail>(new LocalityCell());
+        cellList.setSelectionModel(cellListSelectionModel);
+        cellListDataProvider.addDataDisplay(cellList);
+
         initWidget(uiBinder.createAndBindUi(this));
         StyleResource.INSTANCE.layout().ensureInjected();
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public MultiSelectionModel<LocalityDetail> getCellBrowserSelectionModel() {
+        return cellBrowserSelectionModel;
+    }
+
+    @Override
+    public SingleSelectionModel<LocalityDetail> getCellListSelectionModel() {
+        return cellListSelectionModel;
+    }
+
+    public ListDataProvider<LocalityDetail> getCellListDataProvider() {
+        return cellListDataProvider;
+    }
+
+    @Override
+    public boolean isValid() {
+        return !cellListDataProvider.getList().isEmpty();
     }
 
     @Override
@@ -47,87 +103,7 @@ public class LocalitySelectorView extends Composite
     }
 
     @Override
-    public ListBox getDistrictList() {
-        return districtList;
-    }
-
-    @Override
-    public ListBox getRegionList() {
-        return regionList;
-    }
-
-    @Override
-    public ListBox getCityList() {
-        return cityList;
-    }
-
     public void toggleLoader() {
         loader.setVisible(!loader.isVisible());
-    }
-
-    @Override
-    public String getSelectedItem(LocalityType localityType) {
-        switch (localityType) {
-            case REGION:
-                return regionList.getValue(regionList.getSelectedIndex());
-            case DISTRICT:
-                return districtList.getValue(districtList.getSelectedIndex());
-            default:
-                return cityList.getValue(cityList.getSelectedIndex());
-        }
-    }
-
-    public void addToSelectedList(LocalityType localityType) {
-        String itemText = null;
-        String itemValue = null;
-        int index = -1;
-
-        switch (localityType) {
-            case DISTRICT:
-                index = districtList.getSelectedIndex();
-                itemText = districtList.getItemText(index);
-                itemValue = districtList.getValue(index);
-                break;
-            case REGION:
-                index = regionList.getSelectedIndex();
-                itemText = regionList.getItemText(index);
-                itemValue = regionList.getValue(index);
-                break;
-            default:
-                index = cityList.getSelectedIndex();
-                itemText = cityList.getItemText(index);
-                itemValue = cityList.getValue(index);
-                break;
-        }
-        if (!selectedListStrings.contains(itemText)) {
-            selectedList.addItem(itemText, itemValue);
-            selectedListStrings.add(itemText);
-        }
-    }
-
-    @Override
-    public ListBox getSelectedList() {
-        return selectedList;
-    }
-
-    @Override
-    public void removeFromSelectedList() {
-        int index = selectedList.getSelectedIndex();
-        String item = selectedList.getItemText(index);
-        selectedListStrings.remove(item);
-        selectedList.removeItem(index);
-    }
-
-    @Override
-    public boolean isValid() {
-        return selectedList.getItemCount() > 0;
-    }
-
-    public ArrayList<String> getSelectedLocalityCodes() {
-        ArrayList<String> codes = new ArrayList<String>();
-        for (int i = 0; i < selectedList.getItemCount(); i++) {
-            codes.add(selectedList.getValue(i));
-        }
-        return codes;
     }
 }

@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -200,8 +201,8 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
                     @Override
                     public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
-                        for (String cat : ((FullDemandDetail) object).getLocalities().values()) {
-                            str.append(cat);
+                        for (LocalityDetail loc : ((FullDemandDetail) object).getLocalities()) {
+                            str.append(loc.getName());
                             str.append(",\n");
                         }
                         str.delete(str.length() - 2, str.length());

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -102,8 +103,8 @@ public class DemandDetailView extends Composite {
         }
         categories.setText(categoriesBuilder.toString());
         StringBuilder localitiesBuilder = new StringBuilder();
-        for (String s : demand.getLocalities().values()) {
-            localitiesBuilder.append(s);
+        for (LocalityDetail s : demand.getLocalities()) {
+            localitiesBuilder.append(s.getName());
             localitiesBuilder.append("\n");
         }
         localities.setText(localitiesBuilder.toString());

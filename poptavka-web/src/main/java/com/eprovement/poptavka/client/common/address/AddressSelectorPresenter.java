@@ -50,7 +50,7 @@ public class AddressSelectorPresenter
             public void onChange(ChangeEvent event) {
                 if (view.getCountry().getSelectedIndex() != 0) {
                     eventBus.getChildLocalities(LocalityType.REGION,
-                            view.getCountry().getValue(view.getCountry().getSelectedIndex()));
+                            view.getCountry().getValue(view.getCountry().getSelectedIndex()), null);
                 }
             }
         });
@@ -60,7 +60,7 @@ public class AddressSelectorPresenter
             public void onChange(ChangeEvent event) {
                 if (view.getRegion().getSelectedIndex() != 0) {
                     eventBus.getChildLocalities(LocalityType.CITY,
-                            view.getRegion().getValue(view.getRegion().getSelectedIndex()));
+                            view.getRegion().getValue(view.getRegion().getSelectedIndex()), null);
                 }
             }
         });
@@ -70,14 +70,14 @@ public class AddressSelectorPresenter
             public void onChange(ChangeEvent event) {
                 if (view.getCity().getSelectedIndex() != 0) {
                     eventBus.getChildLocalities(LocalityType.DISTRICT,
-                            view.getCity().getValue(view.getCity().getSelectedIndex()));
+                            view.getCity().getValue(view.getCity().getSelectedIndex()), null);
                 }
             }
         });
     }
 
     public void initAddressWidget(SimplePanel embedWidget) {
-        eventBus.getLocalities(LocalityType.COUNTRY);
+        eventBus.getLocalities(LocalityType.COUNTRY, null);
         embedWidget.setWidget(view.getWidgetView());
     }
 

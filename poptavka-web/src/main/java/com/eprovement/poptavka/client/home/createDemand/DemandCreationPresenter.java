@@ -171,13 +171,7 @@ public class DemandCreationPresenter
         demand.setBasicInfo(basicValues.getValues());
 
         //localities
-        Map<String, String> localities = new HashMap<String, String>();
-        for (int i = 0; i < localityValues.getSelectedList().getItemCount(); i++) {
-            localities.put(
-                    localityValues.getSelectedList().getValue(i),
-                    localityValues.getSelectedList().getItemText(i));
-        }
-        demand.setLocalities(localities);
+        demand.setLocalities(localityValues.getCellListDataProvider().getList());
 
         //categories
         Map<Long, String> categories = new HashMap<Long, String>();

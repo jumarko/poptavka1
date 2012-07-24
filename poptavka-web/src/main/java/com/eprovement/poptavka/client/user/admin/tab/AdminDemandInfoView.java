@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
@@ -251,8 +252,8 @@ public class AdminDemandInfoView extends Composite implements
             }
             localityList.clear();
             if (contact.getLocalities() != null) {
-                for (String loc : contact.getLocalities().values()) {
-                    localityList.addItem(loc);
+                for (LocalityDetail loc : contact.getLocalities()) {
+                    localityList.addItem(loc.getName());
                 }
             }
         }

@@ -243,7 +243,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     //------------------- DEMAND SECTION - LOCALITY SECTION. -------------------------------
     public void onGetAdminDemandRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -251,14 +251,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<LocalityDetail> result) {
+            public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminDemandLocalities(result);
             }
         });
     }
 
     public void onGetAdminDemandSubLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -266,14 +266,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<LocalityDetail> result) {
+            public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminDemandLocalities(result);
             }
         });
     }
 
     public void onGetAdminDemandParentLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -281,7 +281,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<LocalityDetail> result) {
+            public void onSuccess(List<LocalityDetail> result) {
                 eventBus.doBackDemandLocalities(result);
             }
         });
@@ -385,7 +385,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     //-------------------------- SUPPLIER SECTION - LOCALITY SECTION. -----------------------------
     public void onGetAdminSupplierRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -393,14 +393,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<LocalityDetail> result) {
+            public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminDemandLocalities(result);
             }
         });
     }
 
     public void onGetAdminSupplierSubLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -408,14 +408,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<LocalityDetail> result) {
+            public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminSupplierLocalities(result);
             }
         });
     }
 
     public void onGetAdminSupplierParentLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<ArrayList<LocalityDetail>>() {
+        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -423,7 +423,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<LocalityDetail> result) {
+            public void onSuccess(List<LocalityDetail> result) {
                 eventBus.doBackSupplierLocalities(result);
             }
         });

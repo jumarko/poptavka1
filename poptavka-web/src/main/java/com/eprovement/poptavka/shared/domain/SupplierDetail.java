@@ -2,6 +2,7 @@ package com.eprovement.poptavka.shared.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SupplierDetail implements Serializable {
@@ -15,7 +16,7 @@ public class SupplierDetail implements Serializable {
     private Integer overallRating;
     private boolean certified;
     private String description;
-    private ArrayList<String> localities;
+    private List<LocalityDetail> localities;
     private ArrayList<String> categories;
     private ArrayList<Integer> services = new ArrayList<Integer>();
 
@@ -38,11 +39,11 @@ public class SupplierDetail implements Serializable {
         this.certified = certified;
     }
 
-    public ArrayList<String> getLocalities() {
+    public List<LocalityDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(ArrayList<String> localities) {
+    public void setLocalities(List<LocalityDetail> localities) {
         this.localities = localities;
     }
 

@@ -225,7 +225,7 @@ public class SupplierCreationPresenter
         ServiceWidget service = (ServiceWidget) view.getServiceHolder().getWidget();
 
         BusinessUserDetail newSupplier = info.createSupplier();
-        newSupplier.getSupplier().setLocalities(locs.getSelectedLocalityCodes());
+        newSupplier.getSupplier().setLocalities(locs.getCellListDataProvider().getList());
         newSupplier.getSupplier().setCategories(cats.getSelectedCategoryCodes());
         newSupplier.getSupplier().addService(service.getSelectedService());
 

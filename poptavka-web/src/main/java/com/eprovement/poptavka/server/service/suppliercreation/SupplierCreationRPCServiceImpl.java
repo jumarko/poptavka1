@@ -30,6 +30,7 @@ import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.ArrayList;
@@ -186,8 +187,8 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
     private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Locality> localities = new ArrayList<Locality>();
-        for (String localityCode : supplier.getSupplier().getLocalities()) {
-            localities.add(this.getLocality(localityCode));
+        for (LocalityDetail localityDetail : supplier.getSupplier().getLocalities()) {
+            localities.add(this.getLocality(localityDetail.getCode()));
         }
         newSupplier.setLocalities(localities);
     }

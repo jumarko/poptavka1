@@ -210,8 +210,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
     private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Locality> localities = new ArrayList<Locality>();
-        for (String localityCode : supplier.getSupplier().getLocalities()) {
-            localities.add(this.getLocality(localityCode));
+        for (LocalityDetail localityDetail : supplier.getSupplier().getLocalities()) {
+            localities.add(this.getLocality(localityDetail.getCode()));
         }
         newSupplier.setLocalities(localities);
     }
@@ -429,6 +429,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
         return userDetails;
     }
 
+    //TODO zmazat a nahradit konvertorom
     protected BusinessUserDetail toUserDetail(Supplier supplier) {
 
         BusinessUserDetail detail = new BusinessUserDetail();
@@ -465,8 +466,8 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
 
                 // localities
                 ArrayList<String> localities = new ArrayList<String>();
-                List<Category> locs = supplierRole.getCategories();
-                for (Category loc : locs) {
+                List<Locality> locs = supplierRole.getLocalities();
+                for (Locality loc : locs) {
                     localities.add(loc.getId() + "");
                 }
 
@@ -481,7 +482,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 detail.setPhone(supplier.getBusinessUser().getBusinessUserData().getPhone());
                 detail.setTaxId(supplier.getBusinessUser().getBusinessUserData().getTaxId());
 
-                supplierDetail.setLocalities(localities);
+//                supplierDetail.setLocalities(localities);
 
                 detail.setSupplier(supplierDetail);
 

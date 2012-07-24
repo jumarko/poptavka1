@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
@@ -36,7 +37,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
-    private Map<String, String> localities;
+    private List<LocalityDetail> localities;
     private Map<Long, String> categories;
     private long clientId;
     private int maxOffers;
@@ -116,10 +117,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
             categories.put(catId, demand.getCategories().get(catId));
         }
         //localities
-        localities = new HashMap<String, String>();
-        for (String locCode : demand.getLocalities().keySet()) {
-            localities.put(locCode, demand.getLocalities().get(locCode));
-        }
+        localities = new ArrayList<LocalityDetail>(demand.getLocalities());
 
         demandStatus = demand.getDemandStatus();
         demandType = demand.getDemandType();
@@ -158,34 +156,13 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 //        }
 //        LOGGER.info("XXX: " + categories.toString());
 //    }
-    public Map<String, String> getLocalities() {
+    public List<LocalityDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(Map<String, String> localities) {
-        if (localities != null) {
-            this.localities = localities;
-        }
+    public void setLocalities(List<LocalityDetail> localities) {
+        this.localities = localities;
     }
-
-    public void addLocality(String code, String value) {
-        if (localities == null) {
-            localities = new HashMap<String, String>();
-        }
-        localities.put(code, value);
-    }
-//    public void setLocalities(LocalitySelectorInterface localitySelector) {
-//        if (localities == null) {
-//            localities = new HashMap<String, String>();
-//        }
-//        for (int i = 0; i < localitySelector.getSelectedList().getItemCount(); i++) {
-//            this.localities.put(
-////                    localitySelector.getSelectedLocalityCodes().get(i),
-//                    localitySelector.getSelectedList().getValue(i),
-//                    localitySelector.getSelectedList().getItemText(i));
-//        }
-//        LOGGER.info("XXX: "+localities.toString());
-//    }
 
     public long getClientId() {
         return clientId;

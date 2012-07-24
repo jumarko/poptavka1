@@ -4,6 +4,7 @@ package com.eprovement.poptavka.server.service.locality;
 import com.eprovement.poptavka.client.service.demand.LocalityRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.enums.LocalityType;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
@@ -12,6 +13,7 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implements LocalityRPCService {
 
     private LocalityService localityService;
+    private Converter<Locality, LocalityDetail> localityConverter;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalityRPCServiceImpl.class);
 
@@ -29,35 +32,29 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
         this.localityService = localityService;
     }
 
+    @Autowired
+    public void setDemandConverter(
+            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+        this.localityConverter = localityConverter;
+    }
+
     @Override
-    public ArrayList<LocalityDetail> getLocalities(LocalityType type) throws RPCException {
+    public List<LocalityDetail> getLocalities(LocalityType type) throws RPCException {
         List<Locality>  localities =  localityService.getLocalities(type);
-        System.out.println(localities.size());
-        return createLocalityDetails(localities);
+        return localityConverter.convertToTargetList(localities);
     }
 
     /**
      * Get children of locality specified by LOCALITY_CODE.
      */
     @Override
-    public ArrayList<LocalityDetail> getLocalities(String locCode) throws RPCException {
+    public List<LocalityDetail> getLocalities(String locCode) throws RPCException {
         LOGGER.info("Getting children localities ");
         final Locality locality = localityService.getLocality(locCode);
         if (locality != null) {
-            return createLocalityDetails(locality.getChildren());
+            return localityConverter.convertToTargetList(locality.getChildren());
         }
         return new ArrayList<LocalityDetail>();
-    }
-
-    /** converts domain entities to front-end classes. **/
-    private ArrayList<LocalityDetail> createLocalityDetails(List<Locality> localities) {
-        ArrayList<LocalityDetail> localityDetails = new ArrayList<LocalityDetail>();
-
-        for (Locality loc : localities) {
-            localityDetails.add(new LocalityDetail(loc.getId(), loc.getName(), loc.getCode()));
-        }
-
-        return localityDetails;
     }
 
     @Override
@@ -70,12 +67,12 @@ public class LocalityRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    public ArrayList<LocalityDetail> getAllRootLocalities() throws RPCException {
-        return createLocalityDetails(localityService.getLocalities(LocalityType.REGION));
+    public List<LocalityDetail> getAllRootLocalities() throws RPCException {
+        return localityConverter.convertToTargetList(localityService.getLocalities(LocalityType.REGION));
     }
 
     @Override
-    public ArrayList<LocalityDetail> getSubLocalities(String locCode) throws RPCException {
-        return createLocalityDetails(localityService.getLocality(locCode).getChildren());
+    public List<LocalityDetail> getSubLocalities(String locCode) throws RPCException {
+        return localityConverter.convertToTargetList(localityService.getLocality(locCode).getChildren());
     }
 }
