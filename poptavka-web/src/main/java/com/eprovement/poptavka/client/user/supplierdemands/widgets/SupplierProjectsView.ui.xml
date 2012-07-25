@@ -30,10 +30,10 @@
                         </g:Label>
                         <g:HorizontalPanel>
                             <g:Button ui:field="replyPotentialProjectButton">
-                                Reply
+                                <ui:msg key="replyButton">Reply</ui:msg>
                             </g:Button>
                             <g:Button ui:field="sendOfferToPotentialProjectButton">
-                                Send offer
+                                <ui:msg key="sendOfferButton">Send offer</ui:msg>
                             </g:Button>
                             <g:ListBox ui:field="actions"/>
                         </g:HorizontalPanel>

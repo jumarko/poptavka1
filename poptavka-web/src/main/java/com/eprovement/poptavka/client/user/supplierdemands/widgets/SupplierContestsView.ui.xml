@@ -30,13 +30,13 @@
                         </g:Label>
                         <g:HorizontalPanel>
                             <g:Button ui:field="replyContestOfferButton">
-                                Reply
+                                <ui:msg key="replyButton">Reply</ui:msg>
                             </g:Button>
                             <g:Button ui:field="editContestOfferButton">
-                                Edit offer
+                                <ui:msg key="editOfferButton">Edit offer</ui:msg>
                             </g:Button>
                             <g:Button ui:field="cancelContestOfferButton">
-                                Cancel offer
+                                <ui:msg key="cancelOfferButton">Cancel offer</ui:msg>
                             </g:Button>
                             <g:ListBox ui:field="actions"/>
                         </g:HorizontalPanel>

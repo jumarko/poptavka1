@@ -155,9 +155,20 @@ public interface LocalizableMessages extends Messages {
     String progressMessagesLayoutInit();
     String progressAdminLayoutInit();
     String notEntered();
+
+    //client demands
+    String clientProjectsTitle();
+    String clientContestsTitle();
+    String clientAssignedProjectsTitle();
+
+    String backToClientProjects();
+    String backToClientContests();
+
+    //supplier demands
     String supplierPotentialDemandsTableTitle();
     String supplierContestsTableTitle();
     String supplierAssignedDemandsTableTitle();
+
 
     //used in displying demands
     String date();
@@ -201,4 +212,14 @@ public interface LocalizableMessages extends Messages {
     //General
     String currencyFormat();
 
+    //Buttons
+    String replyButton();
+    String sendOfferButton();
+    String editOfferButton();
+    String cancelOfferButton();
+    String finnishedButton();
+    String acceptOfferButton();
+    String denyOfferButton();
+    String answerButton();
+    String closeDemandButton();
 }

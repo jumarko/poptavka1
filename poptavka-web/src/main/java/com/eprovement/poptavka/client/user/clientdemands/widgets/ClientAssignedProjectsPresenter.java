@@ -78,9 +78,6 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
         SimplePanel getWrapperPanel();
 
         IsWidget getWidgetView();
-
-        //Setter
-        void setTitleLabel(String text);
     }
     /**************************************************************************/
     /* Attributes                                                             */

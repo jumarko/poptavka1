@@ -30,10 +30,10 @@
                         </g:Label>
                         <g:HorizontalPanel ui:field="assignedProjectsButtonsPanel">
                             <g:Button ui:field="finnishedAssignedProjectButton">
-                                Finnished
+                                <ui:msg key="finnishedButton">Finnished</ui:msg>
                             </g:Button>
                             <g:Button ui:field="replyAssignedProjectButton">
-                                Reply
+                                <ui:msg key="replyButton">Reply</ui:msg>
                             </g:Button>
                         </g:HorizontalPanel>
                         <g:ListBox ui:field="actions"/>

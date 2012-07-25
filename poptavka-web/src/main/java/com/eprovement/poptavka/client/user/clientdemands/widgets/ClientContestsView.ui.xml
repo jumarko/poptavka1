@@ -26,22 +26,24 @@
                 <g:north size="45">
                     <g:HorizontalPanel>
                         <g:HorizontalPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>
-                            <g:Label>Vypis klientovych poptaviek</g:Label>
+                            <g:Label>
+                                <ui:msg key="clientContestsTitle">Vypis klientovych poptaviek s ponukami</ui:msg>
+                            </g:Label>
                         </g:HorizontalPanel>
                         <g:VerticalPanel ui:field="contestHeader" styleName='{res.layout.demandTabContentHeader}'>
                             <g:Button ui:field="backBtn">
-                                Spat na vsetky nove poptavky
+                                <ui:msg key="backToClientContests">Spat na vsetky poptavky s ponukami</ui:msg>
                             </g:Button>
                             <g:Label ui:field="demandTitlelabel"/>
                             <g:HorizontalPanel>
                                 <g:Button ui:field="acceptBtn">
-                                    Accept offer
+                                    <ui:msg key="acceptOfferButton">Accept offer</ui:msg>
                                 </g:Button>
                                 <g:Button ui:field="denyBtn">
-                                    Deny offer
+                                    <ui:msg key="denyOfferButton">Deny offer</ui:msg>
                                 </g:Button>
                                 <g:Button ui:field="replyBtn">
-                                    Reply
+                                    <ui:msg key="replyButton">Reply</ui:msg>
                                 </g:Button>
                                 <g:ListBox ui:field="actions"/>
                             </g:HorizontalPanel>

@@ -26,13 +26,15 @@
                 <g:north size="45">
                     <g:HorizontalPanel>
                         <g:VerticalPanel ui:field="contestantsHeader" styleName='{res.layout.demandTabContentHeader}'>
-                            <g:Label ui:field="titlelabel">pridelene poptavky</g:Label>
+                            <g:Label>
+                                <ui:msg key="clientAssignedProjectsTitle">Vypis pridelenych poptaviek</ui:msg>
+                            </g:Label>
                             <g:HorizontalPanel>
                                 <g:Button ui:field="closeBtn">
-                                    Close demand
+                                    <ui:msg key="closeDemandButton">Close demand</ui:msg>
                                 </g:Button>
                                 <g:Button ui:field="replyBtn">
-                                    Answer
+                                    <ui:msg key="answerButton">Answer</ui:msg>
                                 </g:Button>
                                 <g:ListBox ui:field="actions"/>
                             </g:HorizontalPanel>

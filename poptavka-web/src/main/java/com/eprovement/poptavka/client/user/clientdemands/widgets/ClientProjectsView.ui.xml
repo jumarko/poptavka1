@@ -26,24 +26,26 @@
                 <g:north size="45">
                     <g:HorizontalPanel>
                         <g:HorizontalPanel ui:field="demandHeader" styleName='{res.layout.demandTabContentHeader}'>
-                            <g:Label>Vypis klientovych poptaviek</g:Label>
+                            <g:Label>
+                                <ui:msg key="clientProjectsTitle">Vypis klientovych poptaviek</ui:msg>
+                            </g:Label>
                         </g:HorizontalPanel>
                         <g:HorizontalPanel ui:field="conversationHeader" styleName='{res.layout.demandTabContentHeader}'>
                             <g:Button ui:field="backBtn">
-                                Spat na vsetky nove poptavky
+                                <ui:msg key="backToClientProjects">Spat na vsetky nove poptavky</ui:msg>
                             </g:Button>
                             <g:Label ui:field="demandTitlelabel"/>
                             <g:Button ui:field="readBtn">
-                                Read
+                                <ui:msg key="read">Read</ui:msg>
                             </g:Button>
                             <g:Button ui:field="unreadBtn">
-                                Unread
+                                <ui:msg key="undera">Unread</ui:msg>
                             </g:Button>
                             <g:Button ui:field="starBtn">
-                                Star
+                                <ui:msg key="star">Star</ui:msg>
                             </g:Button>
                             <g:Button ui:field="unstarBtn">
-                                Unstar
+                                <ui:msg key="unstar">Unstar</ui:msg>
                             </g:Button>
                         </g:HorizontalPanel>
                     </g:HorizontalPanel>

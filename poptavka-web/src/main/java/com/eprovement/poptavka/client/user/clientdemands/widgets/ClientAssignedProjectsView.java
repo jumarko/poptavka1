@@ -16,7 +16,6 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -77,8 +76,6 @@ public class ClientAssignedProjectsView extends Composite
     //detail WrapperPanel
     @UiField
     SimplePanel wrapperPanel;
-    @UiField
-    Label titlelabel;
     @UiField
     VerticalPanel contestantsHeader;
 
@@ -321,13 +318,5 @@ public class ClientAssignedProjectsView extends Composite
     @Override
     public IsWidget getWidgetView() {
         return this;
-    }
-
-    /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    @Override
-    public void setTitleLabel(String text) {
-        titlelabel.setText(text);
     }
 }
