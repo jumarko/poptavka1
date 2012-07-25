@@ -84,12 +84,14 @@ public class ClientProjectsView extends Composite
     private DateTimeFormat formatter = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
     //table handling buttons
     @UiField
-    Button readBtn, unreadBtn, starBtn, unstarBtn, backBtn;
+    Button replyButton;
     //detail WrapperPanel
     @UiField
     SimplePanel wrapperPanel;
     @UiField
     Label demandTitlelabel;
+    @UiField(provided = true)
+    ListBox actions;
     @UiField
     HorizontalPanel demandHeader, conversationHeader;
 
@@ -102,22 +104,24 @@ public class ClientProjectsView extends Composite
         Storage.RSCS.grid().ensureInjected();
         //init pagesize lsit
         demandPageSize = new ListBox();
-        demandPageSize.addItem("5");
         demandPageSize.addItem("10");
-        demandPageSize.addItem("15");
         demandPageSize.addItem("20");
-        demandPageSize.addItem("25");
         demandPageSize.addItem("30");
         demandPageSize.setSelectedIndex(2);
 
         conversationPageSize = new ListBox();
-        conversationPageSize.addItem("5");
         conversationPageSize.addItem("10");
-        conversationPageSize.addItem("15");
         conversationPageSize.addItem("20");
-        conversationPageSize.addItem("25");
         conversationPageSize.addItem("30");
         conversationPageSize.setSelectedIndex(2);
+
+        actions = new ListBox();
+        actions.addItem(Storage.MSGS.action());
+        actions.addItem(Storage.MSGS.read());
+        actions.addItem(Storage.MSGS.unread());
+        actions.addItem(Storage.MSGS.star());
+        actions.addItem(Storage.MSGS.unstar());
+        actions.setSelectedIndex(0);
 
         initDemandTable();
         initConversationTable();
@@ -335,23 +339,13 @@ public class ClientProjectsView extends Composite
 
     // Buttons
     @Override
-    public Button getReadBtn() {
-        return readBtn;
+    public Button getReplyButton() {
+        return replyButton;
     }
 
     @Override
-    public Button getStarBtn() {
-        return starBtn;
-    }
-
-    @Override
-    public Button getUnreadBtn() {
-        return unreadBtn;
-    }
-
-    @Override
-    public Button getUnstarBtn() {
-        return unstarBtn;
+    public ListBox getActions() {
+        return actions;
     }
 
     // Others
@@ -363,11 +357,6 @@ public class ClientProjectsView extends Composite
     @Override
     public UniversalAsyncGrid<ClientProjectConversationDetail> getConversationGrid() {
         return conversationGrid;
-    }
-
-    @Override
-    public Button getBackBtn() {
-        return backBtn;
     }
 
     //Nemusi byt override nie?

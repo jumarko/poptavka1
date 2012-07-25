@@ -16,12 +16,15 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -53,15 +56,7 @@ public class ClientProjectsPresenter
         Column<ClientProjectConversationDetail, String> getDateColumn();
 
         // Buttons
-        Button getReadBtn();
-
-        Button getStarBtn();
-
-        Button getUnreadBtn();
-
-        Button getUnstarBtn();
-
-        Button getBackBtn();
+        Button getReplyButton();
 
         // Others
         UniversalAsyncGrid<ClientProjectDetail> getDemandGrid();
@@ -75,6 +70,9 @@ public class ClientProjectsPresenter
         List<Long> getSelectedIdList();
 
         Set<ClientProjectConversationDetail> getSelectedMessageList();
+
+        //ListBox
+        ListBox getActions();
 
         SimplePanel getWrapperPanel();
 
@@ -117,12 +115,10 @@ public class ClientProjectsPresenter
         addCheckHeaderUpdater();
         addStarColumnFieldUpdater();
         addTextColumnFieldUpdaters();
+        // Listbox actions
+        addActionChangeHandler();
         // Buttons Actions
-        addBackButtonHandler();
-        addReadButtonHandler();
-        addUnreadButtonHandler();
-        addStarButtonHandler();
-        addUnstarButtonHandler();
+        addReplyButtonHandler();
     }
 
     /**************************************************************************/
@@ -249,57 +245,38 @@ public class ClientProjectsPresenter
         view.getDateColumn().setFieldUpdater(textFieldUpdater);
     }
 
+    // Widget action handlers
+    private void addActionChangeHandler() {
+        view.getActions().addChangeHandler(new ChangeHandler() {
+
+            @Override
+            public void onChange(ChangeEvent event) {
+                switch (view.getActions().getSelectedIndex()) {
+                    case 1:
+                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
+                        break;
+                    case 2:
+                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
+                        break;
+                    case 3:
+                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
+                        break;
+                    case 4:
+                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+
     // Buttons
-    private void addBackButtonHandler() {
-        view.getBackBtn().addClickHandler(new ClickHandler() {
+    private void addReplyButtonHandler() {
+        view.getReplyButton().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
-                view.getDemandGrid().getSelectionModel().setSelected(
-                        (ClientProjectDetail) ((SingleSelectionModel)
-                        view.getDemandGrid().getSelectionModel()).getSelectedObject(), false);
-                view.setConversationTableVisible(false);
-            }
-        });
-    }
-
-    private void addReadButtonHandler() {
-        view.getReadBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
-            }
-        });
-    }
-
-    private void addUnreadButtonHandler() {
-        view.getUnreadBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
-            }
-        });
-    }
-
-    private void addStarButtonHandler() {
-        view.getStarBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
-            }
-        });
-
-    }
-
-    private void addUnstarButtonHandler() {
-        view.getUnstarBtn().addClickHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
             }
         });
     }

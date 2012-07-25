@@ -35,18 +35,10 @@
                                 <ui:msg key="backToClientProjects">Spat na vsetky nove poptavky</ui:msg>
                             </g:Button>
                             <g:Label ui:field="demandTitlelabel"/>
-                            <g:Button ui:field="readBtn">
-                                <ui:msg key="read">Read</ui:msg>
+                            <g:Button ui:field="replyButton">
+                                <ui:msg key="replyButton">Reply</ui:msg>
                             </g:Button>
-                            <g:Button ui:field="unreadBtn">
-                                <ui:msg key="undera">Unread</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="starBtn">
-                                <ui:msg key="star">Star</ui:msg>
-                            </g:Button>
-                            <g:Button ui:field="unstarBtn">
-                                <ui:msg key="unstar">Unstar</ui:msg>
-                            </g:Button>
+                            <g:ListBox ui:field="actions"/>
                         </g:HorizontalPanel>
                     </g:HorizontalPanel>
                 </g:north>
