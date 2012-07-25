@@ -375,6 +375,9 @@ public interface RootEventBus extends EventBus {
     void requestDetailWrapperPresenter();
 
     //passive = mal by zavoalt metodu len v aktivom prezenteri., funguje aj s modulmi???
+    //Ak funguje, tak tu to staci, pretoze aktivny bude vzdy len jeden modul, podla prihlaseneho uzivatela
+    //alebo moze byt rola, kde budeme chciet mat zobrazene oboje? .. to bude skor zriedkavo, takze
+    //by to nemuselo az tak vadit
     @Event(forwardToModules = {ClientDemandsModule.class, SupplierDemandsModule.class }, passive = true)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 

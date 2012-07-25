@@ -17,6 +17,12 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import java.util.List;
 
+/**
+ * TODOS:
+ * Loading Indicator while getting detail's data
+ *
+ * @author Martin
+ */
 public class DetailsWrapperView extends Composite
     implements DetailsWrapperPresenter.IDetailWrapper {
 

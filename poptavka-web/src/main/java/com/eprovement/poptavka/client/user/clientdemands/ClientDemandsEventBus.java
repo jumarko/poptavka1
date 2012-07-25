@@ -45,14 +45,14 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     void forward();
 
     /**************************************************************************/
-    /* Parent events                                                          */
+    /* Parent events + DetailsWrapper related                                 */
     /**************************************************************************/
     @Event(forwardToParent = true)
     void requestDetailWrapperPresenter();
 
-//    @Event(handlers = {ClientProjectsPresenter.class, ClientContestsPresenter.class,
-//    ClientAssignedProjectsPresenter.class}, passive = true)
-    @Event(handlers = ClientProjectsPresenter.class)
+    //Pozor, staci prezenter zavolat raz a uz je aktivny
+    @Event(handlers = {ClientProjectsPresenter.class, ClientContestsPresenter.class,
+            ClientAssignedProjectsPresenter.class }, passive = true)
     void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
     /**************************************************************************/
     /* Navigation events.                                                     */

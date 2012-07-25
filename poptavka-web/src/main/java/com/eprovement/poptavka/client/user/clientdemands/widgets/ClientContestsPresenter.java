@@ -143,15 +143,21 @@ public class ClientContestsPresenter
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        if (detailSection == null) {
-            detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
-            detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+        if (this.detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
         }
     }
 
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
+    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+        if (this.detailSection == null) {
+            this.detailSection = detailSection;
+            this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+        }
+    }
+
     /**
      * DEVEL METHOD
      *

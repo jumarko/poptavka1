@@ -33,8 +33,7 @@ import java.util.List;
 
 @Presenter(view = SupplierProjectsView.class)
 public class SupplierProjectsPresenter
-        extends LazyPresenter<SupplierProjectsPresenter.SupplierProjectsLayoutInterface,
-        SupplierDemandsEventBus> {
+        extends LazyPresenter<SupplierProjectsPresenter.SupplierProjectsLayoutInterface, SupplierDemandsEventBus> {
 
     public interface SupplierProjectsLayoutInterface extends LazyView, IsWidget {
 
@@ -101,18 +100,19 @@ public class SupplierProjectsPresenter
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        //TODO myslisiet, aby sa DevelDetailWeapperPresenter mohol pouzivat vo viacerych moduloch
-        //Ide to to, ze on ma nadefinovany jeden eventBus a ked sa pouziva vo viacerych, tak to pada
-        //teda eventBus.addHandler(presenter) musi byt ten eventBus, ktory ma daty prezenter ako definovany
-        eventBus.requestDetailWrapperPresenter();
+        if (this.detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        }
     }
 
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
-        this.detailSection = detailSection;
-        this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
+        if (this.detailSection == null) {
+            this.detailSection = detailSection;
+            this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
+        }
     }
 
     /**
@@ -176,8 +176,7 @@ public class SupplierProjectsPresenter
             public void update(Boolean value) {
                 List<SupplierPotentialProjectDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
                 for (SupplierPotentialProjectDetail row : rows) {
-                    ((MultiSelectionModel)
-                            view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
+                    ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
         });

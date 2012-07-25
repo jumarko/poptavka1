@@ -136,12 +136,21 @@ public class ClientProjectsPresenter
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
         //init wrapper widget
-        eventBus.requestDetailWrapperPresenter();
+        if (this.detailSection == null) {
+            eventBus.requestDetailWrapperPresenter();
+        }
     }
 
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
+    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
+        if (this.detailSection == null) {
+            this.detailSection = detailSection;
+            this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
+        }
+    }
+
     /**
      * DEVEL METHOD
      *
@@ -191,10 +200,6 @@ public class ClientProjectsPresenter
     /**************************************************************************/
     /* Business events handled by eventbus or RPC                             */
     /**************************************************************************/
-    public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
-        this.detailSection = detailSection;
-        this.detailSection.initDetailWrapper(view.getWrapperPanel(), type);
-    }
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
