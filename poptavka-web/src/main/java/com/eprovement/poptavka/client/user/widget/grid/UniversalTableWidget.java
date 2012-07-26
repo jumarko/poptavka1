@@ -104,10 +104,10 @@ public class UniversalTableWidget extends Composite {
      * for which table schema is generated.
      */
     public UniversalTableWidget(int loadedView) {
-        //load custom grid cssStyle
-//        Storage.RSCS.grid().ensureInjected();
-
         switch (loadedView) {
+            case Constants.CLIENT_OFFERED_PROJECTS:
+                initClientOffers();
+                break;
             case Constants.CLIENT_ASSIGNED_PROJECTS:
                 initClientAcceptedOffers();
                 break;
@@ -163,6 +163,18 @@ public class UniversalTableWidget extends Composite {
 
         initPager();
         initTableColumns();
+    }
+
+    /**
+     * Generate table schema for ClientAcceptedOffers widget.
+     */
+    private void initClientOffers() {
+        gridColumns.clear();
+        gridColumns.add(SUPPLIER_NAME_COLUMN);
+        gridColumns.add(PRICE_COLUMN);
+        gridColumns.add(DELIVERY_DATE_COLUMN);
+        gridColumns.add(RATING_COLUMN);
+        gridColumns.add(RECEIVED_DATE_COLUMN);
     }
 
     /**

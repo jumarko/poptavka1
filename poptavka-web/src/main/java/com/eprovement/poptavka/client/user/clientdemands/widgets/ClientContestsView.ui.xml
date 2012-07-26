@@ -53,7 +53,7 @@
                 <g:center>
                     <g:VerticalPanel>
                         <s:UniversalAsyncGrid ui:field="demandGrid" />
-                        <s:UniversalAsyncGrid ui:field="contestGrid" />
+                        <s:UniversalTableWidget ui:field="contestGrid" />
                     </g:VerticalPanel>
                 </g:center>
                 <g:south size="32">
@@ -62,9 +62,7 @@
                             <tr>
                                 <td align='center'>
                                     <c:SimplePager ui:field='demandPager' />
-                                    <c:SimplePager ui:field='contestPager' />
                                     <g:ListBox ui:field='demandPageSize' />
-                                    <g:ListBox ui:field='contestPageSize' />
                                 </td>
                             </tr>
                         </table>

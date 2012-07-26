@@ -9,32 +9,27 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Presenter(view = ClientContestsView.class)
 public class ClientContestsPresenter
@@ -45,25 +40,7 @@ public class ClientContestsPresenter
         //Table
         UniversalAsyncGrid<ClientProjectDetail> getDemandGrid();
 
-        UniversalAsyncGrid<ClientProjectContestantDetail> getContestGrid();
-
-        //Columns
-        Column<ClientProjectContestantDetail, Boolean> getCheckColumn();
-
-        Column<ClientProjectContestantDetail, Boolean> getStarColumn();
-
-        Column<ClientProjectContestantDetail, String> getSupplierNameColumn();
-
-        Column<ClientProjectContestantDetail, String> getPriceColumn();
-
-        Column<ClientProjectContestantDetail, String> getReceivedColumn();
-
-        Column<ClientProjectContestantDetail, String> getRatingColumn();
-
-        Column<ClientProjectContestantDetail, String> getAcceptedColumn();
-
-        //Header
-        Header getCheckHeader();
+        UniversalTableWidget getContestGrid();
 
         //Buttons
         Button getBackBtn();
@@ -78,14 +55,6 @@ public class ClientContestsPresenter
         ListBox getActions();
 
         //Other
-        int getDemandPageSize();
-
-        int getContestPageSize();
-
-        List<Long> getSelectedIdList();
-
-        Set<ClientProjectContestantDetail> getSelectedMessageList();
-
         SimplePanel getWrapperPanel();
 
         IsWidget getWidgetView();
@@ -129,7 +98,7 @@ public class ClientContestsPresenter
         addTextColumnFieldUpdaters();
         // Buttons Actions
         addBackButtonHandler();
-        addAcitonChangeHandler();
+        addActionChangeHandler();
     }
 
     /**************************************************************************/
@@ -182,7 +151,8 @@ public class ClientContestsPresenter
     public void onDisplayClientProjectContestants(List<ClientProjectContestantDetail> data) {
         GWT.log("++ onResponseClientsProjectContestants");
 
-        view.getContestGrid().updateRowData(data);
+        //TODO - ked vymeneny detail objekt v UniversalTableWIdgete tak odkomentovat
+//        view.getContestGrid().getGrid().updateRowData(data);
     }
 
     /**
@@ -212,30 +182,33 @@ public class ClientContestsPresenter
     /**************************************************************************/
     // Field Updaters
     public void addCheckHeaderUpdater() {
-        view.getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
-
-            @Override
-            public void update(Boolean value) {
-                List<ClientProjectContestantDetail> rows = view.getContestGrid().getVisibleItems();
-                for (ClientProjectContestantDetail row : rows) {
-                    ((MultiSelectionModel) view.getContestGrid().getSelectionModel()).setSelected(row, value);
-                }
-            }
-        });
+        //TODO odkomentovat ak vymeneny detail
+//        view.getContestGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+//
+//            @Override
+//            public void update(Boolean value) {
+//                List<ClientProjectContestantDetail> rows = view.getContestGrid().getVisibleItems();
+//                for (ClientProjectContestantDetail row : rows) {
+//                    ((MultiSelectionModel) view.getContestGrid().getSelectionModel()).setSelected(row, value);
+//                }
+//            }
+//        });
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientProjectContestantDetail, Boolean>() {
-
-            @Override
-            public void update(int index, ClientProjectContestantDetail object, Boolean value) {
-//              TableDisplay obj = (TableDisplay) object;
-                object.setStarred(!value);
-                view.getContestGrid().redraw();
-                Long[] item = new Long[]{object.getUserMessageId()};
-                eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-            }
-        });
+        //TODO odkomentovat ak vymeneny detail
+//        view.getContestGrid().getStarColumn().setFieldUpdater(
+//        new FieldUpdater<ClientProjectContestantDetail, Boolean>() {
+//
+//            @Override
+//            public void update(int index, ClientProjectContestantDetail object, Boolean value) {
+////              TableDisplay obj = (TableDisplay) object;
+//                object.setStarred(!value);
+//                view.getContestGrid().redraw();
+//                Long[] item = new Long[]{object.getUserMessageId()};
+//                eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+//            }
+//        });
     }
 
     public void addTextColumnFieldUpdaters() {
@@ -246,16 +219,16 @@ public class ClientContestsPresenter
                 if (lastOpenedProjectContest != object.getUserMessageId()) {
                     lastOpenedProjectContest = object.getUserMessageId();
                     object.setRead(true);
-                    view.getContestGrid().redraw();
+                    view.getContestGrid().getGrid().redraw();
                     displayDetailContent(object);
                 }
             }
         };
-        view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
-        view.getPriceColumn().setFieldUpdater(textFieldUpdater);
-        view.getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getAcceptedColumn().setFieldUpdater(textFieldUpdater);
-        view.getReceivedColumn().setFieldUpdater(textFieldUpdater);
+        view.getContestGrid().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getContestGrid().getPriceColumn().setFieldUpdater(textFieldUpdater);
+        view.getContestGrid().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getContestGrid().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
+        view.getContestGrid().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     // Buttons
@@ -272,23 +245,23 @@ public class ClientContestsPresenter
         });
     }
 
-    private void addAcitonChangeHandler() {
+    private void addActionChangeHandler() {
         view.getActions().addChangeHandler(new ChangeHandler() {
 
             @Override
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {
                     case 1:
-                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getContestGrid().getSelectedIdList(), true);
                         break;
                     case 2:
-                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getContestGrid().getSelectedIdList(), false);
                         break;
                     case 3:
-                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getContestGrid().getSelectedIdList(), true);
                         break;
                     case 4:
-                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getContestGrid().getSelectedIdList(), false);
                         break;
                     default:
                         break;
@@ -311,7 +284,7 @@ public class ClientContestsPresenter
                     Storage.setDemandId(selected.getDemandId());
                     view.setDemandTitleLabel(selected.getDemandTitle());
                     view.setContestTableVisible(true);
-                    view.getContestGrid().getDataCount(eventBus, null);
+                    view.getContestGrid().getGrid().getDataCount(eventBus, null);
                 }
             }
         });
