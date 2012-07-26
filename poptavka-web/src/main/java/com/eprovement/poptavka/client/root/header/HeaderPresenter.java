@@ -42,7 +42,9 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                     eventBus.atHome();
                     eventBus.goToHomeWelcomeModule(null);
                 } else {
-                    onInitLoginWindow();
+                    // initialize and display loginPopupView for user to login
+                    login = eventBus.addHandler(LoginPopupPresenter.class);
+//                    login.onLogin();
                 }
             }
         });
@@ -59,11 +61,6 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 Cookies.setCookie("login", "no");
             }
         });
-    }
-
-    public void onInitLoginWindow() {
-        login = eventBus.addHandler(LoginPopupPresenter.class);
-        login.onLogin();
     }
 
     public void onAtHome() {

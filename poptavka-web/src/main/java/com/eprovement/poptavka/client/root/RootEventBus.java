@@ -261,11 +261,6 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
-    // TODO Praso - mozeme odstranit? No usage
-    // Martin - ano moze, toto sa nepouziva cez eventBus
-    @Event(handlers = HeaderPresenter.class)
-    void initLoginWindow();
-
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
 

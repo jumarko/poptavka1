@@ -62,13 +62,11 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
                 Storage.setActionLoginAccountHistory("forward");
             } else {
                 LoginPopupPresenter login = eventBus.addHandler(LoginPopupPresenter.class);
-                login.onLogin();
             }
 
         } else { //    equals("atHome")) {
             if (Storage.getActionLoginHomeHistory().equals("back")) {
                 LoginPopupPresenter login = eventBus.addHandler(LoginPopupPresenter.class);
-                login.onLogin();
             } else {
                 eventBus.setHistoryStoredForNextOne(false);
                 eventBus.atHome();
