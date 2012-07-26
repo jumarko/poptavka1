@@ -43,7 +43,6 @@ import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.menu.MenuPresenter;
 import com.eprovement.poptavka.client.root.menu.UserMenuPresenter;
-import com.eprovement.poptavka.client.root.searchBar.SearchBarPresenter;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
 import com.eprovement.poptavka.client.user.demands.DemandModule;
@@ -85,7 +84,7 @@ public interface RootEventBus extends EventBus {
      */
     @Start
     @InitHistory
-    @Event(handlers = {HeaderPresenter.class, MenuPresenter.class, SearchBarPresenter.class,
+    @Event(handlers = {HeaderPresenter.class, MenuPresenter.class,
             RootPresenter.class, FooterPresenter.class })
     void start();
 
