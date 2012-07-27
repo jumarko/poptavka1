@@ -10,7 +10,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsEventB
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -131,7 +131,7 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplaySupplierPotentialProjects(List<SupplierPotentialProjectDetail> data) {
+    public void onDisplaySupplierDemandsData(List<FullOfferDetail> data) {
         GWT.log("++ onResponseClientsOfferedProjects");
 
         view.getTableWidget().getGrid().updateRowData(data);
@@ -144,7 +144,7 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(SupplierPotentialProjectDetail detail) {
+    public void displayDetailContent(FullOfferDetail detail) {
 //        detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestDemandDetail(123L, type);
 
@@ -175,8 +175,8 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
 
             @Override
             public void update(Boolean value) {
-                List<SupplierPotentialProjectDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
-                for (SupplierPotentialProjectDetail row : rows) {
+                List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
+                for (FullOfferDetail row : rows) {
                     ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
@@ -185,26 +185,26 @@ public class SupplierAssignedProjectsPresenter extends LazyPresenter<
 
     public void addStarColumnFieldUpdater() {
         view.getTableWidget().getStarColumn().setFieldUpdater(
-                new FieldUpdater<SupplierPotentialProjectDetail, Boolean>() {
+                new FieldUpdater<FullOfferDetail, Boolean>() {
 
                     @Override
-                    public void update(int index, SupplierPotentialProjectDetail object, Boolean value) {
-                        object.setStarred(!value);
+                    public void update(int index, FullOfferDetail object, Boolean value) {
+                        object.getMessageDetail().setStarred(!value);
                         view.getTableWidget().getGrid().redraw();
-                        Long[] item = new Long[]{object.getUserMessageId()};
+                        Long[] item = new Long[]{object.getMessageDetail().getUserMessageId()};
                         eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
                     }
                 });
     }
 
     public void addColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<SupplierPotentialProjectDetail, String>() {
+        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
 
             @Override
-            public void update(int index, SupplierPotentialProjectDetail object, String value) {
-                if (lastOpenedProjectContest != object.getUserMessageId()) {
-                    lastOpenedProjectContest = object.getUserMessageId();
-                    object.setRead(true);
+            public void update(int index, FullOfferDetail object, String value) {
+                if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
+                    lastOpenedProjectContest = object.getMessageDetail().getUserMessageId();
+                    object.getMessageDetail().setRead(true);
                     view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
                 }

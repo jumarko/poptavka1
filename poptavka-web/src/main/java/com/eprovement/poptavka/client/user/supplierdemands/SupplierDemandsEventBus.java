@@ -11,7 +11,7 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
@@ -94,14 +94,18 @@ public interface SupplierDemandsEventBus extends EventBus, IEventBusData {
     @Event(handlers = SupplierDemandsPresenter.class)
     void displayView(IsWidget content);
 
-    @Event(handlers = SupplierProjectsPresenter.class)
-    void displaySupplierPotentialProjects(List<SupplierPotentialProjectDetail> result);
+    @Event(handlers = {SupplierProjectsPresenter.class, SupplierContestsPresenter.class,
+            SupplierAssignedProjectsPresenter.class }, passive = true)
+    void displaySupplierDemandsData(List<FullOfferDetail> result);
 
+//    @Event(handlers = SupplierProjectsPresenter.class)
+//    void displaySupplierPotentialProjects(List<FullOfferDetail> result);
+//
 //    @Event(handlers = SupplierContestsPresenter.class)
-//    void displaySupplierProjectContests(List<ClientProjectContestantDetail> result);
+//    void displaySupplierContests(List<FullOfferDetail> result);
 //
 //    @Event(handlers = SupplierAssignedProjectsPresenter.class)
-//    void displaySupplierAssignedProjects(List<ClientProjectContestantDetail> result);
+//    void displaySupplierAssignedProjects(List<FullOfferDetail> result);
     /**************************************************************************/
     /* Business events handled by DevelDetailWrapperPresenter.                */
     /**************************************************************************/

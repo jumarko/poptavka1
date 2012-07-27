@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import java.io.Serializable;
 
-import com.eprovement.poptavka.shared.domain.type.OfferStateType;
 
 public class OfferMessageDetail extends DemandMessageDetail
         implements Serializable {

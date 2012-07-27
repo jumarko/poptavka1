@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -46,4 +47,10 @@ public class PotentialDemandMessage extends DemandMessageDetail implements Seria
     public Date getExpireDate() {
         return null;
     }
+
+    @Override
+    public OfferStateType getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

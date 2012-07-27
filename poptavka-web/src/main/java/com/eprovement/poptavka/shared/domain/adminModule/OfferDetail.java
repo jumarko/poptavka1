@@ -1,7 +1,8 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import java.io.Serializable;
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -19,8 +20,9 @@ public class OfferDetail implements Serializable {
     private static final long serialVersionUID = -563380651738612866L;
     // OfferDetail
     private long id;
-    private BigDecimal price;
-    private String state;
+//    private BigDecimal price;
+    private Number price;
+    private OfferStateType state;
     private Date createdDate;
     private Date finishDate;
     //Demand info
@@ -28,7 +30,9 @@ public class OfferDetail implements Serializable {
     private String demandTitle;
     //Supplier info
     private long supplierId;
+    private String clientName;
     private String supplierName;
+    private int rating;
 
     /** for serialization. **/
     public OfferDetail() {
@@ -102,28 +106,55 @@ public class OfferDetail implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public BigDecimal getPrice() {
+//    public BigDecimal getPrice() {
+//        return price;
+//    }
+//
+//    public void setPrice(BigDecimal price) {
+//        this.price = price;
+//    }
+
+
+    public Number getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Number price) {
         this.price = price;
     }
 
-    public String getState() {
+    public OfferStateType getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(OfferStateType state) {
         this.state = state;
     }
+
+
 
     public String getSupplierName() {
         return supplierName;
     }
 
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     @Override

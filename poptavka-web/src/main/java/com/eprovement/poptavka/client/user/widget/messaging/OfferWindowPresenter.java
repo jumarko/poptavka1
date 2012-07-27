@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
@@ -11,7 +12,6 @@ import com.mvp4g.client.view.CycleView;
 
 import com.eprovement.poptavka.client.user.UserEventBus;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
-import com.eprovement.poptavka.shared.domain.type.OfferStateType;
 
 @Presenter(view = OfferWindow.class, multiple = true)
 public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.ActionMessageInterface, UserEventBus> {
@@ -40,7 +40,7 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
             @Override
             public void onClick(ClickEvent event) {
                 FullOfferDetail d = view.getFullOfferDetail();
-                d.getOfferDetail().setState(OfferStateType.ACCEPTED.getValue());
+                d.getOfferDetail().setState(OfferStateType.ACCEPTED);
                 eventBus.getOfferStatusChange(d.getOfferDetail());
             }
         });
@@ -49,7 +49,7 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
             @Override
             public void onClick(ClickEvent event) {
                 FullOfferDetail d = view.getFullOfferDetail();
-                d.getOfferDetail().setState(OfferStateType.DECLINED.getValue());
+                d.getOfferDetail().setState(OfferStateType.DECLINED);
                 eventBus.getOfferStatusChange(d.getOfferDetail());
             }
         });
@@ -58,7 +58,7 @@ public class OfferWindowPresenter extends CyclePresenter<OfferWindowPresenter.Ac
             @Override
             public void onClick(ClickEvent event) {
                 FullOfferDetail d = view.getFullOfferDetail();
-                d.getOfferDetail().setState(OfferStateType.DECLINED.getValue());
+                d.getOfferDetail().setState(OfferStateType.DECLINED);
                 eventBus.getOfferStatusChange(d.getOfferDetail());
             }
         });

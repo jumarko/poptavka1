@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.server.service.offer;
 
 import com.eprovement.poptavka.server.converter.Converter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,7 +164,7 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
             fullOfferDetail.getOfferDetail().setCreatedDate(createdDate);
             // TODO ivlcek what is this?
-            fullOfferDetail.setIsRead(userMessage.isRead());
+            fullOfferDetail.setRead(userMessage.isRead());
 
             offerDetails.add(fullOfferDetail);
 
@@ -180,10 +181,10 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
 
         System.out.println("is Offer null: " + (offer == null));
 
-        OfferState offerState = this.offerService.getOfferState(offerDetail.getState());
+        OfferState offerState = this.offerService.getOfferState(offerDetail.getState().getValue());
         offer.setState(offerState);
         offer = (Offer) this.generalService.save(offer);
-        offerDetail.setState(offer.getState().getCode());
+        offerDetail.setState(offer.getState().getType());
         return offerDetail;
     }
 
@@ -191,11 +192,11 @@ public class OfferRPCServiceImpl extends AutoinjectingRemoteService implements O
     public FullOfferDetail updateOffer(FullOfferDetail newOffer) throws RPCException {
         Offer offer = offerService.getById(newOffer.getOfferDetail().getId());
 
-        OfferState state = offerService.getOfferState(newOffer.getOfferDetail().getState());
+        OfferState state = offerService.getOfferState(newOffer.getOfferDetail().getState().getValue());
         if (state != null) {
             offer.setState(state);
         }
-        offer.setPrice(newOffer.getOfferDetail().getPrice());
+        offer.setPrice((BigDecimal) newOffer.getOfferDetail().getPrice());
         offer.setFinishDate(newOffer.getOfferDetail().getFinishDate());
 
         offerService.update(offer);

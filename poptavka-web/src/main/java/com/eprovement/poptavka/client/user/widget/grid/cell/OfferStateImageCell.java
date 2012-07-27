@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -8,8 +9,6 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
-
-import com.eprovement.poptavka.client.common.session.Storage;
 
 public class OfferStateImageCell extends AbstractCell<OfferStateType> {
 
@@ -28,13 +27,13 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
     public void render(com.google.gwt.cell.client.Cell.Context context,
             OfferStateType value, SafeHtmlBuilder sb) {
 
-        if (value.getValue().equals("ACCEPTED")) {
+        if (value == OfferStateType.ACCEPTED) {
             sb.append(renderer.render(Storage.RSCS.images().statusWork()));
         }
-        if (value.getValue().equals("PENDING")) {
+        if (value == OfferStateType.PENDING) {
             sb.append(renderer.render(Storage.RSCS.images().statusWork()));
         }
-        if (value.getValue().equals("DECLINED")) {
+        if (value == OfferStateType.DECLINED) {
             sb.append(renderer.render(Storage.RSCS.images().statusWork()));
         }
     }

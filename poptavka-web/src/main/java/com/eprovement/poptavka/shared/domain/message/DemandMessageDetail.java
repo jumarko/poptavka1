@@ -15,6 +15,7 @@ public class DemandMessageDetail extends MessageDetail implements
      */
     private static final long serialVersionUID = -6105359783491407143L;
     private String demandTitle;
+    //Asi bude robit problem, inde mi uz robilo - nechcelo predat na RPC servisu
     private BigDecimal price;
     private Date endDate;
     private Date validToDate;

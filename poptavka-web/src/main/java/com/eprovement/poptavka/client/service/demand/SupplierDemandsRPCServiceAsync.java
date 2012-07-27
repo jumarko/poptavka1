@@ -1,11 +1,10 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public interface SupplierDemandsRPCServiceAsync {
 
     void getSupplierPotentialProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<SupplierPotentialProjectDetail>> callback);
+            AsyncCallback<List<FullOfferDetail>> callback);
 
     //
     void getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter,
@@ -31,7 +30,7 @@ public interface SupplierDemandsRPCServiceAsync {
 
     void getSupplierContests(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<ClientProjectContestantDetail>> callback);
+            AsyncCallback<List<FullOfferDetail>> callback);
 
     //
     void getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter,
@@ -39,7 +38,7 @@ public interface SupplierDemandsRPCServiceAsync {
 
     void getSupplierAssignedProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns,
-            AsyncCallback<List<ClientProjectContestantDetail>> callback);
+            AsyncCallback<List<FullOfferDetail>> callback);
 
     /**************************************************************************/
     /* Other getter methods                                                   */

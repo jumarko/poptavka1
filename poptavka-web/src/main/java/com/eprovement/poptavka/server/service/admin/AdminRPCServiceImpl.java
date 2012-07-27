@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -381,7 +382,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public void updateOffer(OfferDetail offerDetail) {
         Offer offer = generalService.find(Offer.class, offerDetail.getId());
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
-            offer.setPrice(offerDetail.getPrice());
+            offer.setPrice((BigDecimal) offerDetail.getPrice());
         }
         if (!offer.getCreated().equals(offerDetail.getCreatedDate())) {
             offer.setCreated(offerDetail.getCreatedDate());
@@ -395,7 +396,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         }
         //TODO Martin - how to update OfferState??
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
-            offer.setPrice(offerDetail.getPrice());
+            offer.setPrice((BigDecimal) offerDetail.getPrice());
         }
         generalService.merge(offer);
     }

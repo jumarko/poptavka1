@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.supplierdemands;
 
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -16,14 +17,12 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -100,7 +99,7 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return 0L;
+        return 1L;
     }
 
     /**
@@ -118,20 +117,10 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<SupplierPotentialProjectDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
+    public List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        SupplierPotentialProjectDetail detail = new SupplierPotentialProjectDetail();
-        detail.setDemandId(1L);
-        detail.setClientName("Good Data");
-        detail.setDemandTitle("Poptavka 1234");
-        detail.setRating(90);
-        detail.setPrice(BigDecimal.valueOf(10000));
-        detail.setEndDate(new Date());
-        detail.setReceivedDate(new Date());
-        List<SupplierPotentialProjectDetail> list = new ArrayList<SupplierPotentialProjectDetail>();
-        list.add(detail);
-        return list;
+        return getFakeData();
     }
 
     //************************ SUPPLIER - My Offers ***************************/
@@ -148,7 +137,7 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return 0L;
+        return 1L;
     }
 
     /**
@@ -164,10 +153,10 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectContestantDetail> getSupplierContests(long supplierID, int start, int maxResult,
+    public List<FullOfferDetail> getSupplierContests(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<ClientProjectContestantDetail>();
+        return getFakeData();
     }
 
     //******************* SUPPLIER - My Assigned Demands **********************/
@@ -183,7 +172,7 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Override
     public long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter) {
         //TODO Martin - implement when implemented on backend
-        return 0L;
+        return 1L;
     }
 
     /**
@@ -199,10 +188,10 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public List<ClientProjectContestantDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
+    public List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
         //TODO Martin - implement when implemented on backend
-        return new ArrayList<ClientProjectContestantDetail>();
+        return getFakeData();
     }
 
     /**************************************************************************/
@@ -264,5 +253,21 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
             userMessage.setStarred(isStarred);
             this.userMessageService.update(userMessage);
         }
+    }
+
+    public List<FullOfferDetail> getFakeData() {
+        FullOfferDetail detail = new FullOfferDetail();
+        detail.getOfferDetail().setDemandId(1L);
+        detail.getOfferDetail().setState(OfferStateType.ACCEPTED);
+        detail.getOfferDetail().setClientName("Martin Slavkovsky");
+        detail.getOfferDetail().setSupplierName("Good Data");
+        detail.getOfferDetail().setDemandTitle("Poptavka 1234");
+        detail.getOfferDetail().setRating(90);
+        detail.getOfferDetail().setPrice(10000);
+        detail.getOfferDetail().setFinishDate(new Date());
+        detail.getOfferDetail().setCreatedDate(new Date());
+        List<FullOfferDetail> list = new ArrayList<FullOfferDetail>();
+        list.add(detail);
+        return list;
     }
 }

@@ -1,11 +1,10 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -51,7 +50,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<SupplierPotentialProjectDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
+    List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     //************************ SUPPLIER - My Offers ***************************/
@@ -79,8 +78,8 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    //TODO Martin premenovat ClientProjectContestantDetail na ContestDetail alebo nieco podobne
-    List<ClientProjectContestantDetail> getSupplierContests(long supplierID, int start, int maxResult,
+    //TODO Martin premenovat FullOfferDetail na ContestDetail alebo nieco podobne
+    List<FullOfferDetail> getSupplierContests(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     //******************* SUPPLIER - My Assigned Demands **********************/
@@ -107,7 +106,7 @@ public interface SupplierDemandsRPCService extends RemoteService {
      * @param orderColumns
      * @return
      */
-    List<ClientProjectContestantDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
+    List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
             SearchModuleDataHolder filter, Map<String, OrderType> orderColumns);
 
     /**************************************************************************/

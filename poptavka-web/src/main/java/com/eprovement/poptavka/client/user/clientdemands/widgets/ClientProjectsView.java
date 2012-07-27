@@ -192,7 +192,7 @@ public class ClientProjectsView extends Composite
      */
     public void initDemandTableColumns() {
         // Demand Status column
-        demandGrid.addStatusColumn(Storage.MSGS.status());
+        demandGrid.addDemandStatusColumn(Storage.MSGS.status());
         // Demand title column
         demandGrid.addColumn(
                 demandGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.title(), true, TITLE_COL_WIDTH,

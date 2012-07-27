@@ -23,8 +23,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.type.OfferStateType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -192,7 +192,7 @@ public class AdminOffersPresenter
                             if (!originalData.containsKey(object.getDemandId())) {
                                 originalData.put(object.getId(), new OfferDetail(object));
                             }
-                            object.setState(state.name());
+                            object.setState(state);
                             eventBus.addOfferToCommit(object);
                         }
                     }

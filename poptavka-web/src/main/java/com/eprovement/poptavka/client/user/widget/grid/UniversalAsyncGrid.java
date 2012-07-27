@@ -2,9 +2,11 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
+import com.eprovement.poptavka.client.user.widget.grid.cell.OfferStateImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
@@ -290,17 +292,32 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
-     * Creates star-column depending on messages' isRead value. By clicking this cell, STAR attribute is immediately
-     * updated in database.
+     * Creates offer state image column.
      *
-     * NOTE:
-     * Sorting is not implemented now.
-     * //TODO
-     * Implement sorting according to star status
-     *
-     * @return star column
+     * @return created offer state image column
      */
-    public Column<T, DemandStatus> addStatusColumn(String headerText) {
+    public Column<T, OfferStateType> addOfferStateColumn(String headerText) {
+        Column<T, OfferStateType> col = new Column<T, OfferStateType>(new OfferStateImageCell()) {
+
+            @Override
+            public OfferStateType getValue(T object) {
+                TableDisplay obj = (TableDisplay) object;
+                return obj.getOfferState();
+            }
+        };
+        //set column style
+        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
+        addColumn(col, headerText);
+        setColumnWidth(col, STATUS_COLUMN_WIDTH, Unit.PX);
+        return col;
+    }
+
+    /**
+     * Creates demand status image column.
+     *
+     * @return created demands status image column
+     */
+    public Column<T, DemandStatus> addDemandStatusColumn(String headerText) {
         Column<T, DemandStatus> col = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
 
             @Override

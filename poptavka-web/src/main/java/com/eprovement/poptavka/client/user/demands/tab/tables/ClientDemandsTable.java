@@ -28,10 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class represents table with asynchronous data provider and sort handler.
- * Class not used yet.
- *
- * TODO: implement lines: 76, 101, 148
+ * TODO DELETE in separate commit
  *
  * @author Mato
  */

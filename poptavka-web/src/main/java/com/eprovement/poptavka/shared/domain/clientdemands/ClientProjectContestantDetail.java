@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -176,4 +177,11 @@ public class ClientProjectContestantDetail implements Serializable, TableDisplay
     public void setDemandStatus(DemandStatus demandStatus) {
         this.demandStatus = demandStatus;
     }
+
+    @Override
+    public OfferStateType getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }

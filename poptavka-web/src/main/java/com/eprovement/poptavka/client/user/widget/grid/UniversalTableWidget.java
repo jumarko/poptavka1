@@ -2,8 +2,9 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -51,19 +52,20 @@ public class UniversalTableWidget extends Composite {
     /**************************************************************************/
     //table definition
     @UiField(provided = true)
-    UniversalAsyncGrid<SupplierPotentialProjectDetail> grid;
+    UniversalAsyncGrid<FullOfferDetail> grid;
     //table columns
     private Header checkHeader;
-    private Column<SupplierPotentialProjectDetail, Boolean> checkColumn;
-    private Column<SupplierPotentialProjectDetail, Boolean> starColumn;
-    private Column<SupplierPotentialProjectDetail, String> clientNameColumn;
-    private Column<SupplierPotentialProjectDetail, String> supplierNameColumn;
-    private Column<SupplierPotentialProjectDetail, String> demandTitleColumn;
-    private Column<SupplierPotentialProjectDetail, String> ratingColumn;
-    private Column<SupplierPotentialProjectDetail, String> priceColumn;
-    private Column<SupplierPotentialProjectDetail, Date> urgencyColumn;
-    private Column<SupplierPotentialProjectDetail, String> receiveDateColumn;
-    private Column<SupplierPotentialProjectDetail, String> deliveryDateColumn;
+    private Column<FullOfferDetail, Boolean> checkColumn;
+    private Column<FullOfferDetail, Boolean> starColumn;
+    private Column<FullOfferDetail, OfferStateType> offerStateColumn;
+    private Column<FullOfferDetail, String> clientNameColumn;
+    private Column<FullOfferDetail, String> supplierNameColumn;
+    private Column<FullOfferDetail, String> demandTitleColumn;
+    private Column<FullOfferDetail, String> ratingColumn;
+    private Column<FullOfferDetail, String> priceColumn;
+    private Column<FullOfferDetail, Date> urgencyColumn;
+    private Column<FullOfferDetail, String> receiveDateColumn;
+    private Column<FullOfferDetail, String> deliveryDateColumn;
     //table column width constatnts
     private static final int NAME_COL_WIDTH = 20;
     private static final int DEMAND_TITLE_COL_WIDTH = 30;
@@ -149,17 +151,17 @@ public class UniversalTableWidget extends Composite {
      */
     private void initTable() {
         // Create a CellTable.
-        grid = new UniversalAsyncGrid<SupplierPotentialProjectDetail>(gridColumns);
+        grid = new UniversalAsyncGrid<FullOfferDetail>(gridColumns);
         grid.setWidth("800px");
         grid.setHeight("500px");
 
 
         // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
-        final SelectionModel<SupplierPotentialProjectDetail> selectionModel =
-                new MultiSelectionModel<SupplierPotentialProjectDetail>(SupplierPotentialProjectDetail.KEY_PROVIDER);
+        final SelectionModel<FullOfferDetail> selectionModel =
+                new MultiSelectionModel<FullOfferDetail>();
         grid.setSelectionModel(
-                selectionModel, DefaultSelectionEventManager.<SupplierPotentialProjectDetail>createCheckboxManager());
+                selectionModel, DefaultSelectionEventManager.<FullOfferDetail>createCheckboxManager());
 
         initPager();
         initTableColumns();
@@ -245,6 +247,8 @@ public class UniversalTableWidget extends Composite {
         checkColumn = grid.addCheckboxColumn(checkHeader);
         // Star Column - always create this column
         starColumn = grid.addStarColumn();
+        // Offer state column - always create this column
+        offerStateColumn = grid.addOfferStateColumn(Storage.MSGS.state());
 
         // Client name column
         if (gridColumns.contains(CLIENT_NAME_COLUMN)) {
@@ -254,9 +258,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
-                            return SupplierPotentialProjectDetail.displayHtml(
-                                    detail.getClientName(), detail.isRead());
+                            FullOfferDetail detail = (FullOfferDetail) object;
+                            return FullOfferDetail.displayHtml(
+                                    detail.getOfferDetail().getClientName(), detail.isRead());
                         }
                     });
         }
@@ -268,9 +272,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
-                            return SupplierPotentialProjectDetail.displayHtml(
-                                    detail.getSupplierName(), detail.isRead());
+                            FullOfferDetail detail = (FullOfferDetail) object;
+                            return FullOfferDetail.displayHtml(
+                                    detail.getOfferDetail().getSupplierName(), detail.isRead());
                         }
                     });
         }
@@ -282,9 +286,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
-                            return SupplierPotentialProjectDetail.displayHtml(
-                                    detail.getDemandTitle(), detail.isRead());
+                            FullOfferDetail detail = (FullOfferDetail) object;
+                            return FullOfferDetail.displayHtml(
+                                    detail.getOfferDetail().getDemandTitle(), detail.isRead());
                         }
                     });
         }
@@ -296,9 +300,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
+                            FullOfferDetail detail = (FullOfferDetail) object;
                             return ClientProjectDetail.displayHtml(
-                                    Integer.toString(detail.getRating()),
+                                    Integer.toString(detail.getOfferDetail().getRating()),
                                     detail.isRead());
                         }
                     });
@@ -311,9 +315,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
-                            return SupplierPotentialProjectDetail.displayHtml(
-                                    detail.getPrice(), detail.isRead());
+                            FullOfferDetail detail = (FullOfferDetail) object;
+                            return FullOfferDetail.displayHtml(
+                                    detail.getOfferDetail().getPrice().toString(), detail.isRead());
                         }
                     });
         }
@@ -329,9 +333,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
+                            FullOfferDetail detail = (FullOfferDetail) object;
                             return ClientProjectDetail.displayHtml(
-                                    formatter.format(detail.getReceivedDate()),
+                                    formatter.format(detail.getOfferDetail().getCreatedDate()),
                                     detail.isRead());
                         }
                     });
@@ -344,9 +348,9 @@ public class UniversalTableWidget extends Composite {
 
                         @Override
                         public String getValue(Object object) {
-                            SupplierPotentialProjectDetail detail = (SupplierPotentialProjectDetail) object;
+                            FullOfferDetail detail = (FullOfferDetail) object;
                             return ClientProjectDetail.displayHtml(
-                                    formatter.format(detail.getDeliveryDate()),
+                                    formatter.format(detail.getOfferDetail().getFinishDate()),
                                     detail.isRead());
                         }
                     });
@@ -357,48 +361,48 @@ public class UniversalTableWidget extends Composite {
     /* Getters                                                                */
     /**************************************************************************/
     //Table
-    public UniversalAsyncGrid<SupplierPotentialProjectDetail> getGrid() {
+    public UniversalAsyncGrid<FullOfferDetail> getGrid() {
         return grid;
     }
 
     //Columns
-    public Column<SupplierPotentialProjectDetail, Boolean> getCheckColumn() {
+    public Column<FullOfferDetail, Boolean> getCheckColumn() {
         return checkColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, Boolean> getStarColumn() {
+    public Column<FullOfferDetail, Boolean> getStarColumn() {
         return starColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getClientNameColumn() {
+    public Column<FullOfferDetail, String> getClientNameColumn() {
         return clientNameColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getSupplierNameColumn() {
+    public Column<FullOfferDetail, String> getSupplierNameColumn() {
         return supplierNameColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getDemandTitleColumn() {
+    public Column<FullOfferDetail, String> getDemandTitleColumn() {
         return demandTitleColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getPriceColumn() {
+    public Column<FullOfferDetail, String> getPriceColumn() {
         return priceColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getReceivedColumn() {
+    public Column<FullOfferDetail, String> getReceivedColumn() {
         return receiveDateColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getDeliveryColumn() {
+    public Column<FullOfferDetail, String> getDeliveryColumn() {
         return deliveryDateColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, String> getRatingColumn() {
+    public Column<FullOfferDetail, String> getRatingColumn() {
         return ratingColumn;
     }
 
-    public Column<SupplierPotentialProjectDetail, Date> getUrgencyColumn() {
+    public Column<FullOfferDetail, Date> getUrgencyColumn() {
         return urgencyColumn;
     }
 
@@ -412,9 +416,9 @@ public class UniversalTableWidget extends Composite {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Set<SupplierPotentialProjectDetail> getSelectedMessageList() {
-        MultiSelectionModel<SupplierPotentialProjectDetail> model =
-                (MultiSelectionModel<SupplierPotentialProjectDetail>) grid.getSelectionModel();
+    public Set<FullOfferDetail> getSelectedMessageList() {
+        MultiSelectionModel<FullOfferDetail> model =
+                (MultiSelectionModel<FullOfferDetail>) grid.getSelectionModel();
         return model.getSelectedSet();
     }
 
@@ -424,10 +428,10 @@ public class UniversalTableWidget extends Composite {
      */
     public List<Long> getSelectedIdList() {
         List<Long> idList = new ArrayList<Long>();
-        Set<SupplierPotentialProjectDetail> set = getSelectedMessageList();
-        Iterator<SupplierPotentialProjectDetail> it = set.iterator();
+        Set<FullOfferDetail> set = getSelectedMessageList();
+        Iterator<FullOfferDetail> it = set.iterator();
         while (it.hasNext()) {
-            idList.add(it.next().getUserMessageId());
+            idList.add(it.next().getMessageDetail().getUserMessageId());
         }
         return idList;
     }

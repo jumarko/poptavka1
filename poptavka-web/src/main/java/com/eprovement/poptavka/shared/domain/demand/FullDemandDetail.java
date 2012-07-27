@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -269,24 +270,34 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         this.userMessageId = userMessageId;
     }
 
+    @Override
     public boolean isRead() {
         return read;
     }
 
+    @Override
     public void setRead(boolean read) {
         this.read = read;
     }
 
+    @Override
     public boolean isStarred() {
         return starred;
     }
 
+    @Override
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
 
+    @Override
     public Date getEndDate() {
         return endDate;
+    }
+
+    @Override
+    public OfferStateType getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setEndDate(Date endDate) {

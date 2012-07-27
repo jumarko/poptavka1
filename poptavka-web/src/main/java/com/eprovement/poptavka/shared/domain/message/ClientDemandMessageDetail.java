@@ -4,10 +4,10 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.domain.enums.OfferStateType;
 import java.io.Serializable;
 
 import com.google.gwt.view.client.ProvidesKey;
-
 
 /**
  *
@@ -22,7 +22,6 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
     private static final long serialVersionUID = 1L;
     private String clientName;
     private int clientRating;
-
 
     @Override
     public String toString() {
@@ -60,5 +59,10 @@ public class ClientDemandMessageDetail extends DemandMessageDetail
 
     public void setClientRating(int clientRating) {
         this.clientRating = clientRating;
+    }
+
+    @Override
+    public OfferStateType getOfferState() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

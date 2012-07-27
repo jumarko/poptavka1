@@ -7,8 +7,7 @@ import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCServiceAs
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialProjectDetail;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.Window;
@@ -86,7 +85,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         supplierDemandsService.getSupplierPotentialProjects(
                 Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<SupplierPotentialProjectDetail>>() {
+                new AsyncCallback<List<FullOfferDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -94,8 +93,9 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
                     }
 
                     @Override
-                    public void onSuccess(List<SupplierPotentialProjectDetail> result) {
-                        eventBus.displaySupplierPotentialProjects(result);
+                    public void onSuccess(List<FullOfferDetail> result) {
+//                        eventBus.displaySupplierPotentialProjects(result);
+                        eventBus.displaySupplierDemandsData(result);
                     }
                 });
     }
@@ -122,7 +122,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         supplierDemandsService.getSupplierContests(
                 Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<ClientProjectContestantDetail>>() {
+                new AsyncCallback<List<FullOfferDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -130,8 +130,8 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
                     }
 
                     @Override
-                    public void onSuccess(List<ClientProjectContestantDetail> result) {
-//                        eventBus.displaySupplierProjectContests(result);
+                    public void onSuccess(List<FullOfferDetail> result) {
+                        eventBus.displaySupplierDemandsData(result);
                     }
                 });
     }
@@ -158,7 +158,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         supplierDemandsService.getSupplierAssignedProjects(
                 Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<ClientProjectContestantDetail>>() {
+                new AsyncCallback<List<FullOfferDetail>>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
@@ -166,8 +166,8 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
                     }
 
                     @Override
-                    public void onSuccess(List<ClientProjectContestantDetail> result) {
-//                        eventBus.displaySupplierAssignedProjects(result);
+                    public void onSuccess(List<FullOfferDetail> result) {
+                        eventBus.displaySupplierDemandsData(result);
                     }
                 });
     }
