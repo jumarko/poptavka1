@@ -84,7 +84,7 @@ public class SupplierCreationPresenter
                 if (view.getMainPanel().getVisibleIndex() < eventItem) {
                     boolean result = canContinue(eventItem);
                     view.getStatusLabel(eventItem).setPassedSmall(result);
-                    if (!canContinue(eventItem)) {
+                    if (!result) {
                         event.cancel();
                     }
                 }

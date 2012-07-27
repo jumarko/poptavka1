@@ -118,7 +118,7 @@ public class AddressSelectorView extends Composite
             valid.add(item);
         } else {
             setError(item, NORMAL_STYLE, "");
-            valid.add(item);
+            valid.remove(item);
         }
     }
 

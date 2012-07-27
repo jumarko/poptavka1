@@ -157,7 +157,7 @@ public class FormDemandBasicView extends Composite
         validateEndDate();
         validateValidToDate();
         validateDescription(null);
-        return valid.size() == 0;
+        return valid.isEmpty();
     }
 
     @Override
