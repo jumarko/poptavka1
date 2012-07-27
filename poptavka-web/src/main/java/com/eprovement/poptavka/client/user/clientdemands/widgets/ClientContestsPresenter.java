@@ -10,11 +10,13 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
+import com.eprovement.poptavka.shared.domain.message.TableDisplay;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -24,11 +26,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 import java.util.List;
 
 @Presenter(view = ClientContestsView.class)
@@ -148,7 +152,7 @@ public class ClientContestsPresenter
         view.getDemandGrid().updateRowData(data);
     }
 
-    public void onDisplayClientProjectContestants(List<ClientProjectContestantDetail> data) {
+    public void onDisplayClientProjectContestants(List<FullOfferDetail> data) {
         GWT.log("++ onResponseClientsProjectContestants");
 
         //TODO - ked vymeneny detail objekt v UniversalTableWIdgete tak odkomentovat
@@ -162,7 +166,7 @@ public class ClientContestsPresenter
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(ClientProjectContestantDetail detail) {
+    public void displayDetailContent(FullOfferDetail detail) {
 //        detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestDemandDetail(123L, type);
 
@@ -182,42 +186,40 @@ public class ClientContestsPresenter
     /**************************************************************************/
     // Field Updaters
     public void addCheckHeaderUpdater() {
-        //TODO odkomentovat ak vymeneny detail
-//        view.getContestGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
-//
-//            @Override
-//            public void update(Boolean value) {
-//                List<ClientProjectContestantDetail> rows = view.getContestGrid().getVisibleItems();
-//                for (ClientProjectContestantDetail row : rows) {
-//                    ((MultiSelectionModel) view.getContestGrid().getSelectionModel()).setSelected(row, value);
-//                }
-//            }
-//        });
+        view.getContestGrid().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+
+            @Override
+            public void update(Boolean value) {
+                List<FullOfferDetail> rows = view.getContestGrid().getGrid().getVisibleItems();
+                for (FullOfferDetail row : rows) {
+                    ((MultiSelectionModel) view.getContestGrid().getGrid().getSelectionModel()).setSelected(row, value);
+                }
+            }
+        });
     }
 
     public void addStarColumnFieldUpdater() {
-        //TODO odkomentovat ak vymeneny detail
-//        view.getContestGrid().getStarColumn().setFieldUpdater(
-//        new FieldUpdater<ClientProjectContestantDetail, Boolean>() {
-//
-//            @Override
-//            public void update(int index, ClientProjectContestantDetail object, Boolean value) {
-////              TableDisplay obj = (TableDisplay) object;
-//                object.setStarred(!value);
-//                view.getContestGrid().redraw();
-//                Long[] item = new Long[]{object.getUserMessageId()};
-//                eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
-//            }
-//        });
+        view.getContestGrid().getStarColumn().setFieldUpdater(
+                new FieldUpdater<FullOfferDetail, Boolean>() {
+
+                    @Override
+                    public void update(int index, FullOfferDetail object, Boolean value) {
+                        TableDisplay obj = (TableDisplay) object;
+                        object.setStarred(!value);
+                        view.getContestGrid().getGrid().redraw();
+                        Long[] item = new Long[]{object.getMessageDetail().getUserMessageId()};
+                        eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
+                    }
+                });
     }
 
     public void addTextColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<ClientProjectContestantDetail, String>() {
+        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
 
             @Override
-            public void update(int index, ClientProjectContestantDetail object, String value) {
-                if (lastOpenedProjectContest != object.getUserMessageId()) {
-                    lastOpenedProjectContest = object.getUserMessageId();
+            public void update(int index, FullOfferDetail object, String value) {
+                if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
+                    lastOpenedProjectContest = object.getMessageDetail().getUserMessageId();
                     object.setRead(true);
                     view.getContestGrid().getGrid().redraw();
                     displayDetailContent(object);

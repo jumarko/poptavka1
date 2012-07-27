@@ -8,8 +8,8 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsEventBus;
 import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalTableWidget;
+import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -19,8 +19,6 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
@@ -31,7 +29,6 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Presenter(view = ClientAssignedProjectsView.class)
 public class ClientAssignedProjectsPresenter extends LazyPresenter<
@@ -40,25 +37,7 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
     public interface ClientAssignedProjectsLayoutInterface extends LazyView, IsWidget {
 
         //Table
-        UniversalAsyncGrid<ClientProjectContestantDetail> getContestantsGrid();
-
-        //Columns
-        Column<ClientProjectContestantDetail, Boolean> getCheckColumn();
-
-        Column<ClientProjectContestantDetail, Boolean> getStarColumn();
-
-        Column<ClientProjectContestantDetail, String> getSupplierNameColumn();
-
-        Column<ClientProjectContestantDetail, String> getPriceColumn();
-
-        Column<ClientProjectContestantDetail, String> getReceivedColumn();
-
-        Column<ClientProjectContestantDetail, String> getRatingColumn();
-
-        Column<ClientProjectContestantDetail, String> getAcceptedColumn();
-
-        //Header
-        Header getCheckHeader();
+        UniversalTableWidget getTableWidget();
 
         //Buttons
         Button getCloseBtn();
@@ -69,12 +48,6 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
         ListBox getActions();
 
         //Other
-        int getContestPageSize();
-
-        List<Long> getSelectedIdList();
-
-        Set<ClientProjectContestantDetail> getSelectedMessageList();
-
         SimplePanel getWrapperPanel();
 
         IsWidget getWidgetView();
@@ -122,7 +95,7 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
     public void onInitClientAssignedProjects(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_PROJECTS);
         searchDataHolder = filter;
-        view.getContestantsGrid().getDataCount(eventBus, searchDataHolder);
+        view.getTableWidget().getGrid().getDataCount(eventBus, searchDataHolder);
 
         view.getWidgetView().asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.displayView(view.getWidgetView());
@@ -157,10 +130,10 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientAssignedProjects(List<ClientProjectContestantDetail> data) {
+    public void onDisplayClientAssignedProjects(List<FullOfferDetail> data) {
         GWT.log("++ onResponseClientsOfferedProjects");
 
-        view.getContestantsGrid().updateRowData(data);
+        view.getTableWidget().getGrid().updateRowData(data);
     }
 
     /**
@@ -170,7 +143,7 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
      * @param messageId ID for demand related contest
      * @param userMessageId ID for demand related contest
      */
-    public void displayDetailContent(ClientProjectContestantDetail detail) {
+    public void displayDetailContent(FullOfferDetail detail) {
 //        detailSection.requestDemandDetail(detail.getDemandId(), type);
         detailSection.requestDemandDetail(123L, type);
 
@@ -190,50 +163,49 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
     /**************************************************************************/
     // Field Updaters
     public void addCheckHeaderUpdater() {
-        view.getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
+        view.getTableWidget().getCheckHeader().setUpdater(new ValueUpdater<Boolean>() {
 
             @Override
             public void update(Boolean value) {
-                List<ClientProjectContestantDetail> rows = view.getContestantsGrid().getVisibleItems();
-                for (ClientProjectContestantDetail row : rows) {
-                    ((MultiSelectionModel) view.getContestantsGrid().getSelectionModel()).setSelected(row, value);
+                List<FullOfferDetail> rows = view.getTableWidget().getGrid().getVisibleItems();
+                for (FullOfferDetail row : rows) {
+                    ((MultiSelectionModel) view.getTableWidget().getGrid().getSelectionModel()).setSelected(row, value);
                 }
             }
         });
     }
 
     public void addStarColumnFieldUpdater() {
-        view.getStarColumn().setFieldUpdater(new FieldUpdater<ClientProjectContestantDetail, Boolean>() {
+        view.getTableWidget().getStarColumn().setFieldUpdater(new FieldUpdater<FullOfferDetail, Boolean>() {
 
             @Override
-            public void update(int index, ClientProjectContestantDetail object, Boolean value) {
-//              TableDisplay obj = (TableDisplay) object;
+            public void update(int index, FullOfferDetail object, Boolean value) {
                 object.setStarred(!value);
-                view.getContestantsGrid().redraw();
-                Long[] item = new Long[]{object.getUserMessageId()};
+                view.getTableWidget().getGrid().redraw();
+                Long[] item = new Long[]{object.getMessageDetail().getUserMessageId()};
                 eventBus.requestStarStatusUpdate(Arrays.asList(item), !value);
             }
         });
     }
 
     public void addTextColumnFieldUpdaters() {
-        FieldUpdater textFieldUpdater = new FieldUpdater<ClientProjectContestantDetail, String>() {
+        FieldUpdater textFieldUpdater = new FieldUpdater<FullOfferDetail, String>() {
 
             @Override
-            public void update(int index, ClientProjectContestantDetail object, String value) {
-                if (lastOpenedProjectContest != object.getUserMessageId()) {
-                    lastOpenedProjectContest = object.getUserMessageId();
+            public void update(int index, FullOfferDetail object, String value) {
+                if (lastOpenedProjectContest != object.getMessageDetail().getUserMessageId()) {
+                    lastOpenedProjectContest = object.getMessageDetail().getUserMessageId();
                     object.setRead(true);
-                    view.getContestantsGrid().redraw();
+                    view.getTableWidget().getGrid().redraw();
                     displayDetailContent(object);
                 }
             }
         };
-        view.getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
-        view.getPriceColumn().setFieldUpdater(textFieldUpdater);
-        view.getRatingColumn().setFieldUpdater(textFieldUpdater);
-        view.getAcceptedColumn().setFieldUpdater(textFieldUpdater);
-        view.getReceivedColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getSupplierNameColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getPriceColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getRatingColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getDeliveryColumn().setFieldUpdater(textFieldUpdater);
+        view.getTableWidget().getReceivedColumn().setFieldUpdater(textFieldUpdater);
     }
 
     private void addActionChangeHandler() {
@@ -243,16 +215,16 @@ public class ClientAssignedProjectsPresenter extends LazyPresenter<
             public void onChange(ChangeEvent event) {
                 switch (view.getActions().getSelectedIndex()) {
                     case 1:
-                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), true);
+                        eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
                     case 2:
-                        eventBus.requestReadStatusUpdate(view.getSelectedIdList(), false);
+                        eventBus.requestReadStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
                     case 3:
-                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), true);
+                        eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), true);
                         break;
                     case 4:
-                        eventBus.requestStarStatusUpdate(view.getSelectedIdList(), false);
+                        eventBus.requestStarStatusUpdate(view.getTableWidget().getSelectedIdList(), false);
                         break;
                     default:
                         break;
