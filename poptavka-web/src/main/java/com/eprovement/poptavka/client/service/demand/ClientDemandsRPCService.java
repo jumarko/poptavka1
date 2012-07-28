@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -187,4 +188,6 @@ public interface ClientDemandsRPCService extends RemoteService {
     /* Messages methods                                                       */
     /**************************************************************************/
     MessageDetail sendQueryToPotentialDemand(MessageDetail messageToSend) throws RPCException;
+
+    OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException;
 }

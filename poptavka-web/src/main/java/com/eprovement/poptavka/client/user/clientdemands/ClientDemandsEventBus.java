@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
@@ -115,7 +116,7 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     void displayClientAssignedProjects(List<ClientProjectContestantDetail> result);
 
     /**************************************************************************/
-    /* Business events handled by Handlers. */
+    /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = ClientDemandsHandler.class)
     void requestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus);
@@ -134,4 +135,10 @@ public interface ClientDemandsEventBus extends EventBus, IEventBusData {
     @Override
     @Event(handlers = ClientDemandsHandler.class)
     void getData(int start, int count, SearchModuleDataHolder detail, Map<String, OrderType> orderColumns);
+
+    /**************************************************************************/
+    /* Button actions - messaging.                                            */
+    /**************************************************************************/
+    @Event(handlers = ClientDemandsHandler.class)
+    void getOfferStatusChange(OfferDetail offerDetail);
 }

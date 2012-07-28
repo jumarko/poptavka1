@@ -4,14 +4,17 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsRPCServiceAsync;
+import com.eprovement.poptavka.client.user.handler.MessageHandler;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectDetail;
 import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -268,9 +271,9 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
                     }
                 });
     }
-    //*************************************************************************/
-    // Other                                                                    */
-    //*************************************************************************/
+    /**************************************************************************/
+    /* Other                                                                  */
+    /**************************************************************************/
 
     /**
      * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
@@ -318,6 +321,30 @@ public class ClientDemandsHandler extends BaseEventHandler<ClientDemandsEventBus
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /* Button actions - messaging.                                            */
+    /**************************************************************************/
+    public void onGetOfferStatusChange(OfferDetail offerDetail) {
+        GWT.log("STATE: " + offerDetail.getState());
+        clientDemandsService.changeOfferState(offerDetail, new AsyncCallback<OfferDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
+                }
+                Window.alert(MessageHandler.class.getName() + " at onGetOfferStatusChange\n\n" + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(OfferDetail result) {
+                //TODO zistit ci bude treba nejaky refresh aj ked mame asyynchDataProvider, asi hej
+                //skusit najpr redreaw na gride
+//                eventBus.setOfferDetailChange(result);
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.OrderType;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -80,4 +81,6 @@ public interface ClientDemandsRPCServiceAsync {
     /* Messages methods                                                       */
     /**************************************************************************/
     void sendQueryToPotentialDemand(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+
+    void changeOfferState(OfferDetail offerDetail, AsyncCallback<OfferDetail> callback);
 }

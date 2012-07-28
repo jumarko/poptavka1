@@ -10,6 +10,8 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.offer.Offer;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.MessageException;
@@ -18,7 +20,9 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.server.service.demands.DemandsRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectContestantDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientProjectConversationDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -52,6 +56,7 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     //Services
     private GeneralService generalService;
+    private OfferService offerService;
     private UserMessageService userMessageService;
     private MessageService messageService;
     //Converters
@@ -71,6 +76,16 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
+    }
+
+    @Autowired
+    public void setOfferService(OfferService offerService) {
+        this.offerService = offerService;
+    }
+
+    @Autowired
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
     }
 
     //Converters
@@ -388,5 +403,16 @@ public class ClientDemandsRPCServiceImpl extends AutoinjectingRemoteService
             Logger.getLogger(DemandsRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+
+    @Override
+    public OfferDetail changeOfferState(OfferDetail offerDetail) throws RPCException {
+        Offer offer = this.generalService.find(Offer.class, offerDetail.getId());
+
+        OfferState offerState = offerService.getOfferState(offerDetail.getState().getValue());
+        offer.setState(offerState);
+        offer = (Offer) this.generalService.save(offer);
+        offerDetail.setState(offer.getState().getType());
+        return offerDetail;
     }
 }
