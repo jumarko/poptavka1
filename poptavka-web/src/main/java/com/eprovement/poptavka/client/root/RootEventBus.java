@@ -261,6 +261,9 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
+    @Event(handlers = LoginPopupPresenter.class)
+    void logout();
+
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
 

@@ -52,6 +52,8 @@ public class PoptavkaAuthListener implements ApplicationListener<AbstractAuthent
                 username = (String) logoutEvent.getSession().getAttribute("SPRING_SECURITY_LAST_USERNAME");
                 WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) securityContext.
                         getAuthentication().getDetails();
+                LOGGER.warn("applicationEvent is HttpSessionDestroyedEvent, username="
+                        + username + ", remoteAddress=" + remoteAddress + ", securityContext!=null");
                 if (webAuthenticationDetails != null) {
                     remoteAddress = webAuthenticationDetails.getRemoteAddress();
                 }

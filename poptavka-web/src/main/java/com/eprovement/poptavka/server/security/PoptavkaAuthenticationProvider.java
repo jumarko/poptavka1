@@ -45,7 +45,7 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
     @Override
     @Transactional(readOnly = true)
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        LOGGER.info("authentication");
+        LOGGER.info("authenticate");
         String username = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
@@ -57,6 +57,7 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Password not provided");
         }
 
+        LOGGER.info("authenticate calls loginService");
         final User loggedUser = this.loginService.loginUser(username, password);
 
         if (loggedUser == null) {

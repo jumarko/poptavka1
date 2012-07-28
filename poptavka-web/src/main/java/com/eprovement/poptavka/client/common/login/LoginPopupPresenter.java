@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.common.login;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -10,7 +9,6 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -61,7 +59,9 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         LOGGER.info("++ Login Popup Widget initialized ++");
     }
 
-    /** Real html login. SHOULD/WILL be used in prod */
+    /**
+     * Real html login. SHOULD/WILL be used in prod
+     */
     public void doLogin() {
         if (view.isValid()) {
             view.setLoadingStatus();
@@ -168,11 +168,45 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         view.hidePopup();
     }
 
-    /** Sets session ID **/
+    /**
+     * Sets session ID *
+     */
     private void setSessionID(String sessionId) {
-        LOGGER.fine("Setting SID cookie");
-        int cookieTimeout = COOKIE_TIMEOUT;
-        Date expires = new Date((new Date()).getTime() + cookieTimeout);
-        Cookies.setCookie("sid", sessionId);
+//        LOGGER.fine("Setting SID cookie");
+//        int cookieTimeout = COOKIE_TIMEOUT;
+//        Date expires = new Date((new Date()).getTime() + cookieTimeout);
+//        Cookies.setCookie("sid", sessionId);
+    }
+
+    /**
+     * Method logs out the user via RequestBuilder request. Session should be
+     * invalidated here.
+     */
+    public void onLogout() {
+        GWT.log("logout");
+        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+                URL.encode("/poptavka/j_spring_security_logout"));
+        builder.setHeader("Content-type", "application/x-www-form-urlencoded");
+        //remove user from session management to force user input login information
+        Storage.setUser(null);
+        try {
+            Request request = builder.sendRequest(null,
+                    new RequestCallback() {
+
+                        public void onError(Request request,
+                                Throwable exception) {
+                        }
+
+                        public void onResponseReceived(Request request,
+                                Response response) {
+                            GWT.log("user has loged out after receiving response");
+                            hideView();
+                        }
+                    });
+        } catch (RequestException e) {
+            // Couldn't connect to server
+            GWT.log("exception during login");
+        }
+        GWT.log("User has logged out");
     }
 }

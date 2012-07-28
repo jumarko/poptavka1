@@ -25,7 +25,7 @@ public class PoptavkaAuthenticationEntryPoint implements AuthenticationEntryPoin
 
         // TODO redirect to login page
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.sendRedirect("/poptavka/login.jsp");
+        httpResponse.sendRedirect("/poptavka/j_spring_security_check");
 
 
 //        httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication required");

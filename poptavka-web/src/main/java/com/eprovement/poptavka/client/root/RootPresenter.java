@@ -4,12 +4,6 @@ import com.eprovement.poptavka.client.common.LoadingPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -138,28 +132,29 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     public void onAtHome() {
-        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
-                URL.encode("/poptavka/j_spring_security_logout"));
-        builder.setHeader("Content-type", "application/x-www-form-urlencoded");
-        //remove user from session management to force user input login information
+        // TODO praso - logout request was moved to loginpopuppresenter. Delete these commented lines
+//        RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+//                URL.encode("/poptavka/j_spring_security_logout"));
+//        builder.setHeader("Content-type", "application/x-www-form-urlencoded");
+//        //remove user from session management to force user input login information
 //        Storage.setUser(null);
-        try {
-            Request request = builder.sendRequest(null,
-                    new RequestCallback() {
-
-                        public void onError(Request request,
-                                Throwable exception) {
-                        }
-
-                        public void onResponseReceived(Request request,
-                                Response response) {
-                        }
-                    });
-        } catch (RequestException e) {
-            // Couldn't connect to server
-            GWT.log("exception during login");
-        }
-        GWT.log("User has logged out");
+//        try {
+//            Request request = builder.sendRequest(null,
+//                    new RequestCallback() {
+//
+//                        public void onError(Request request,
+//                                Throwable exception) {
+//                        }
+//
+//                        public void onResponseReceived(Request request,
+//                                Response response) {
+//                        }
+//                    });
+//        } catch (RequestException e) {
+//            // Couldn't connect to server
+//            GWT.log("exception during login");
+//        }
+//        GWT.log("User has logged out");
     }
 
     /**************************************************************************/
