@@ -83,7 +83,7 @@ public class OldDetailWrapperPresenter extends
     }
 
     public void onSetBaseDemandDetail(BaseDemandDetail detail) {
-        view.setDetail(new DemandDetailView(detail));
+//        view.setDetail(new DemandDetailView(detail));
         // GUI visual event
         toggleDetailLoading();
     }

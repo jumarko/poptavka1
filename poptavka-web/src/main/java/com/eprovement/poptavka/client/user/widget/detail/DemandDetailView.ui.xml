@@ -1,10 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-    xmlns:g="urn:import:com.google.gwt.user.client.ui">
-        
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
     <ui:with field='res'
-        type='com.eprovement.poptavka.client.resources.StyleResource' />
-    
+             type='com.eprovement.poptavka.client.resources.StyleResource' />
+
     <g:HTMLPanel ui:field="detail">
         <table class="{res.detailViews.demandDetailSectionHeader}">
             <tr>
@@ -32,7 +32,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="demandName" />
+                            <g:TextBox ui:field="demandName" />
                         </td>
                     </tr>
                     <tr>
@@ -42,7 +42,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="price" />
+                            <g:TextBox ui:field="price" />
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +52,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="endDate" />
+                            <g:TextBox ui:field="endDate" />
                         </td>
                     </tr>
                     <tr>
@@ -62,7 +62,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="validTo" />
+                            <g:TextBox ui:field="validTo" />
                         </td>
                     </tr>
                     <tr>
@@ -72,7 +72,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="type" />
+                            <g:TextBox ui:field="type" />
                         </td>
                     </tr>
                     <tr>
@@ -113,7 +113,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="maxNumberOfSuppliers" />
+                            <g:TextBox ui:field="maxNumberOfSuppliers" />
                         </td>
                     </tr>
                     <tr>
@@ -123,7 +123,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="minSupplierRating" />
+                            <g:TextBox ui:field="minSupplierRating" />
                         </td>
                     </tr>
                     <tr>
@@ -133,7 +133,7 @@
                             </g:Label>
                         </td>
                         <td>
-                            <g:Label ui:field="excludedSuppliers" />
+                            <g:TextBox ui:field="excludedSuppliers" />
                         </td>
                     </tr>
                     <tr>
@@ -145,7 +145,19 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <g:Label ui:field="description" />
+                            <g:TextBox ui:field="description" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <g:HTMLPanel ui:field ="choiceButtonsPanel">
+                                <g:Button ui:field = "editDemandButton" >Edit demand</g:Button>
+                                <g:Button ui:field = "deleteDemandButton" >Delete demand</g:Button>
+                            </g:HTMLPanel>
+                            <g:HTMLPanel ui:field="editButtonsPanel">
+                                <g:Button ui:field = "submitButton" >Submit</g:Button>
+                                <g:Button ui:field = "cancelButton" >Cancel</g:Button>
+                            </g:HTMLPanel>
                         </td>
                     </tr>
                 </table>

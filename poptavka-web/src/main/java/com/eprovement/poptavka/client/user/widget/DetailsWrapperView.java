@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.widget;
 
-
 import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
 import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
@@ -23,27 +22,31 @@ import java.util.List;
  * @author Martin
  */
 public class DetailsWrapperView extends Composite
-    implements DetailsWrapperPresenter.IDetailWrapper {
+        implements DetailsWrapperPresenter.IDetailWrapper {
 
     private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
-    interface DetailsWrapperViewUiBinder extends UiBinder<Widget, DetailsWrapperView> {   }
 
-    @UiField TabLayoutPanel container;
-    @UiField DemandDetailView demandDetail;
-    @UiField SupplierDetailView supplierDetail;
-    @UiField UserConversationPanel conversationPanel;
-    @UiField DevelOfferQuestionWindow replyHolder;
+    interface DetailsWrapperViewUiBinder extends UiBinder<Widget, DetailsWrapperView> {
+    }
+    @UiField
+    TabLayoutPanel container;
+    @UiField
+    DemandDetailView demandDetail;
+    @UiField
+    SupplierDetailView supplierDetail;
+    @UiField
+    UserConversationPanel conversationPanel;
+    @UiField
+    DevelOfferQuestionWindow replyHolder;
 
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
     @Override
     public void setDemandDetail(FullDemandDetail demand) {
         demandDetail.setDemanDetail(demand);
@@ -54,16 +57,6 @@ public class DetailsWrapperView extends Composite
     public void setSupplierDetail(FullSupplierDetail supplier) {
         supplierDetail.setSupplierDetail(supplier);
         //supplierHeader.toggleLoading();
-    }
-
-    @Override
-    public UserConversationPanel getConversationPanel() {
-        return conversationPanel;
-    }
-
-    @Override
-    public DevelOfferQuestionWindow getReplyHolder() {
-        return replyHolder;
     }
 
     @Override
@@ -93,4 +86,21 @@ public class DetailsWrapperView extends Composite
         //conversationHeader.toggleLoading();
     }
 
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    @Override
+    public UserConversationPanel getConversationPanel() {
+        return conversationPanel;
+    }
+
+    @Override
+    public DevelOfferQuestionWindow getReplyHolder() {
+        return replyHolder;
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
 }

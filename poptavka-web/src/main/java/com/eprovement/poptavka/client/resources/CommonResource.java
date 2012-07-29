@@ -40,4 +40,7 @@ public interface CommonResource extends CssResource {
 
     @ClassName("empty_style")
     String emptyStyle();
+
+    @ClassName("textBoxAsLabel")
+    String textBoxAsLabel();
 }

@@ -106,12 +106,13 @@ public class SupplierProjectsPresenter
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter */
+    /* Business events handled by presenter                                   */
     /**************************************************************************/
     public void onResponseDetailWrapperPresenter(DetailsWrapperPresenter detailSection) {
         if (this.detailSection == null) {
             this.detailSection = detailSection;
             this.detailSection.initDetailWrapper(view.getDetailPanel(), type);
+            this.detailSection.getView().getReplyHolder().getOfferReplyBtn().setVisible(true);
         }
     }
 

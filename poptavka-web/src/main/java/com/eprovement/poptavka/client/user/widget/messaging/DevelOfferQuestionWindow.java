@@ -56,6 +56,7 @@ public class DevelOfferQuestionWindow extends Composite {
     public DevelOfferQuestionWindow() {
         CSS.message().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
+        offerReplyBtn.setVisible(false);
     }
 
     //rozdiel medzi uiBinderHandlerom a onLoad???
@@ -167,6 +168,10 @@ public class DevelOfferQuestionWindow extends Composite {
     /**************************************************************************/
     /* GETTER                                                                 */
     /**************************************************************************/
+    public Anchor getOfferReplyBtn() {
+        return offerReplyBtn;
+    }
+
     public Anchor getSubmitBtn() {
         return submitBtn;
     }
@@ -175,7 +180,7 @@ public class DevelOfferQuestionWindow extends Composite {
         return selectedResponse;
     }
 
-     //Zrobit bean validaciu?? .. asi netreba
+    //Zrobit bean validaciu?? .. asi netreba
     public boolean isValid() {
         int errorCount = 0;
         errorCount += (replyTextArea.getText().isEmpty() ? 1 : 0);
