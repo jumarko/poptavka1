@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.dom.client.Style;
@@ -131,8 +132,8 @@ public class SupplierDetailView extends Composite {
         }
         localities.setText(localitiesBuilder.toString());
         StringBuilder categoriesBuilder = new StringBuilder();
-        for (String s : userDetail.getSupplier().getCategories()) {
-            categoriesBuilder.append(s);
+        for (CategoryDetail s : userDetail.getSupplier().getCategories()) {
+            categoriesBuilder.append(s.getName());
             categoriesBuilder.append("\n");
         }
         categories.setText(categoriesBuilder.toString());

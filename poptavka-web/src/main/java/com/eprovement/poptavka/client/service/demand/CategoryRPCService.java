@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -16,11 +15,11 @@ public interface CategoryRPCService extends RemoteService {
 
     CategoryDetail getCategory(long id) throws RPCException;
 
-    ArrayList<CategoryDetail> getCategories() throws RPCException;
+    List<CategoryDetail> getCategories() throws RPCException;
 
-    ArrayList<CategoryDetail> getCategoryParents(Long category) throws RPCException;
+    List<CategoryDetail> getCategoryParents(Long category) throws RPCException;
 
-    ArrayList<CategoryDetail> getCategoryChildren(Long category) throws RPCException;
+    List<CategoryDetail> getCategoryChildren(Long category) throws RPCException;
 
     List<CategoryDetail> getAllRootCategories() throws RPCException;
 }

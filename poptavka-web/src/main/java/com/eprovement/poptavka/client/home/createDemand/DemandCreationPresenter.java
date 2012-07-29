@@ -30,11 +30,8 @@ import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.
 import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import java.util.HashMap;
-import java.util.Map;
 
 @Presenter(view = DemandCreationView.class)
 public class DemandCreationPresenter
@@ -174,11 +171,7 @@ public class DemandCreationPresenter
         demand.setLocalities(localityValues.getCellListDataProvider().getList());
 
         //categories
-        Map<Long, String> categories = new HashMap<Long, String>();
-        for (CategoryDetail catDetail: categoryValues.getDataProvider().getList()) {
-            categories.put(catDetail.getId(), catDetail.getName());
-        }
-        demand.setCategories(categories);
+        demand.setCategories(categoryValues.getCellListDataProvider().getList());
 
         demand.setAdvInfo(advValues.getValues());
         eventBus.createDemand(demand, client.getClientId());

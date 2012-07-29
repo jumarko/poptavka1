@@ -18,6 +18,7 @@ public class CategoryDetail implements Serializable {
     //if parent = false, no child category exists;
     private boolean parent = false;
     private String parentName = "";
+    private boolean isLast = false;
 
     public CategoryDetail() {
     }
@@ -81,6 +82,14 @@ public class CategoryDetail implements Serializable {
         if (parent) {
             this.parentName = " >";
         }
+    }
+
+    public boolean isLast() {
+        return isLast;
+    }
+
+    public void setIsLast(boolean isLast) {
+        this.isLast = isLast;
     }
 
     @Override

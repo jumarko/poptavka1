@@ -302,7 +302,7 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
         filters.getCategories().clear();
         CategorySelectorInterface categoryValues = (CategorySelectorInterface) popupPanel.getWidget();
 
-        filters.getCategories().addAll(categoryValues.getDataProvider().getList());
+        filters.getCategories().addAll(categoryValues.getCellListDataProvider().getList());
     }
 
     /**

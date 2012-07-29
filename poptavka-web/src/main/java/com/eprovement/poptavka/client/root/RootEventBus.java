@@ -17,7 +17,6 @@ import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
-import com.eprovement.poptavka.client.home.widget.category.CategoryDisplayPresenter;
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
@@ -43,7 +42,6 @@ import com.eprovement.poptavka.shared.domain.type.ViewType;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
 import com.mvp4g.client.annotation.Debug;
@@ -57,7 +55,6 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBus;
-import java.util.ArrayList;
 import java.util.List;
 
 @Events(startPresenter = RootPresenter.class)
@@ -253,42 +250,51 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = RootPresenter.class)
     void notFound();
 
-//    @Event(handlers = RootPresenter.class)
-//    void setUser(BusinessUserDetail user);
+    /**************************************************************************/
+    /* LOGIN - LOGOUT.                                                        */
+    /**************************************************************************/
     // TODO Praso - mozeme odstranit? No usage
     // Martin - ano moze, pouziva ale priamo volane z prezentera
     @Event(handlers = LoginPopupPresenter.class)
     void login();
 
+    @Event(handlers = RootHandler.class)
+    void getUser(long userId);
+
     @Event(handlers = LoginPopupPresenter.class)
     void logout();
 
+    /**************************************************************************/
+    /* LOADING.                                                                 */
+    /**************************************************************************/
     @Event(handlers = RootPresenter.class)
     void loadingShow(String loadingMessage);
-
-    // TODO Praso - mozeme odstranit? No usage
-    @Event(handlers = RootPresenter.class)
-    void loadingShowWithAnchor(String progressGettingDemandDataring,
-            Widget anchor);
 
     // TODO praso - zakomentoval som tieto dve metody na loadovanie cakacieho popupu
     // Chcem pouzit standardnu funkciu cez onBefore, onAfter
     @Event(handlers = RootPresenter.class)
     void loadingHide();
-    // Afer login
 
-    // TODO Praso - mozeme odstranit? No usage
-    @Event(handlers = RootPresenter.class)
-    void initDemandAdvForm(SimplePanel holderWidget);
-
+    /**************************************************************************/
+    /* CATEGORY SELECTOR WIDGET.                                              */
+    /**************************************************************************/
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
     void initCategoryWidget(SimplePanel embedToWidget);
 
     @Event(handlers = CategorySelectorPresenter.class)
-    void setCategoryListData(int newListPosition, List<CategoryDetail> list);
+    void setCategoryData(List<CategoryDetail> list);
 
+    @Event(handlers = RootHandler.class)
+    void getRootCategories(AsyncDataProvider dataProvider);
+
+    @Event(handlers = RootHandler.class)
+    void getChildCategories(long categoryId, ListDataProvider dataProvider);
+
+    /**************************************************************************/
+    /* LOCALITY SELECTOR WIDGET.                                              */
+    /**************************************************************************/
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** LocalitySelector section. **/
     @Event(handlers = RootPresenter.class)
@@ -299,12 +305,22 @@ public interface RootEventBus extends EventBus {
     @Event(activate = LocalitySelectorPresenter.class, deactivate = AddressSelectorPresenter.class)
     void activateLocalityWidgetPresenter();
 
+    @Event(handlers = RootHandler.class)
+    void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
+
+    @Event(handlers = RootHandler.class)
+    void getChildLocalities(final LocalityType localityType, String locCode, ListDataProvider dataProvider);
+
+    /**************************************************************************/
+    /* ADDRESS SELECTOR WIDGET.                                               */
+    /**************************************************************************/
     @Event(handlers = RootPresenter.class)
     void initAddressWidget(SimplePanel embedToWidget);
 
     @Event(activate = AddressSelectorPresenter.class, deactivate = LocalitySelectorPresenter.class)
     void activateAddressWidgetPresenter();
 
+    //Common Locality & Address selector widget
     /**
      * Decide which presenter to use according to previous calls of initLocalityWidget and initAddressWidget methods.
      * @param localityType
@@ -313,43 +329,9 @@ public interface RootEventBus extends EventBus {
     @Event(handlers = {LocalitySelectorPresenter.class, AddressSelectorPresenter.class })
     void setLocalityData(LocalityType localityType, List<LocalityDetail> localityList);
 
-    // TODO Praso - mozeme odstranit? No usage
-    /** Demand Creation common method calls. */
-    @Event(handlers = RootPresenter.class)
-    void initDemandBasicForm(SimplePanel holderWidget);
-
-    // TODO Praso - mozeme odstranit? No usage
-    /** Home category display widget and related call. */
-    @Event(handlers = CategoryDisplayPresenter.class)
-    void initCategoryDisplay(SimplePanel holderWidget);
-
-    // TODO Praso - mozeme odstranit? No usage
-    @Event(handlers = CategoryDisplayPresenter.class)
-    void displayRootCategories(ArrayList<CategoryDetail> list);
-
-    // TODO Praso - mozeme odstranit? No usage
-    @Event(handlers = CategoryDisplayPresenter.class)
-    void setCategoryDisplayData(ArrayList<CategoryDetail> list);
-
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
-    @Event(handlers = RootHandler.class)
-    void getUser(long userId);
-
-    @Event(handlers = RootHandler.class)
-    void getRootCategories();
-
-    @Event(handlers = RootHandler.class)
-    void getChildListCategories(int newListPosition, String categoryId);
-
-    @Event(handlers = RootHandler.class)
-//    void getChildLocalities(final LocalityType localityType, String locCode);
-    void getChildLocalities(final LocalityType localityType, String locCode, ListDataProvider dataProvider);
-
-    @Event(handlers = RootHandler.class)
-//    void getLocalities(final LocalityType localityType);
-    void getLocalities(final LocalityType localityType, AsyncDataProvider dataProvider);
 
     /**************************************************************************/
     /* Business events handled by MenuPresenter --- HOME MENU                 */

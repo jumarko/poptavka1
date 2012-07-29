@@ -2,6 +2,7 @@ package com.eprovement.poptavka.shared.domain.demand;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
@@ -39,7 +39,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
     private List<LocalityDetail> localities;
-    private Map<Long, String> categories;
+    private List<CategoryDetail> categories;
     private long clientId;
     private int maxOffers;
     private int minRating;
@@ -113,10 +113,8 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         maxOffers = demand.getMaxOffers();
         minRating = demand.getMinRating();
         //categories
-        categories = new HashMap<Long, String>();
-        for (Long catId : demand.getCategories().keySet()) {
-            categories.put(catId, demand.getCategories().get(catId));
-        }
+        categories = new ArrayList<CategoryDetail>(demand.getCategories());
+
         //localities
         localities = new ArrayList<LocalityDetail>(demand.getLocalities());
 
@@ -130,33 +128,14 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         }
     }
 
-    public Map<Long, String> getCategories() {
+    public List<CategoryDetail> getCategories() {
         return categories;
     }
 
-    public void setCategories(Map<Long, String> categories) {
+    public void setCategories(List<CategoryDetail> categories) {
         this.categories = categories;
     }
 
-    public void addCategory(Long id, String value) {
-        if (categories == null) {
-            categories = new HashMap<Long, String>();
-        }
-        categories.put(id, value);
-    }
-
-    //    public void setCategories(CategorySelectorInterface categorySelector) {
-//        if (categories == null) {
-//            categories = new HashMap<Long, String>();
-//        }
-//        for (int i = 0; i < categorySelector.getSelectedList().getItemCount(); i++) {
-//            this.categories.put(Long.valueOf(
-//                    categorySelector.getSelectedList().getValue(i)),
-//                    //                    categorySelector.getSelectedCategoryCodes().get(i)),
-//                    categorySelector.getSelectedList().getItemText(i));
-//        }
-//        LOGGER.info("XXX: " + categories.toString());
-//    }
     public List<LocalityDetail> getLocalities() {
         return localities;
     }

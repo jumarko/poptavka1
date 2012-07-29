@@ -29,7 +29,7 @@ public class CategoryDisplayPresenter
     private static final Logger LOGGER = Logger.getLogger(CategoryDisplayPresenter.class.getName());
 
     public void onInitCategoryDisplay(SimplePanel holderWidget) {
-        eventBus.getRootCategories();
+//        eventBus.getRootCategories();
         holderWidget.setWidget(view.getWidgetView());
     }
 

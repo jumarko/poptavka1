@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
@@ -245,8 +246,8 @@ public class AdminDemandInfoView extends Composite implements
 
             categoryList.clear();
             if (contact.getCategories() != null) {
-                for (String cat : contact.getCategories().values()) {
-                    categoryList.addItem(cat);
+                for (CategoryDetail cat : contact.getCategories()) {
+                    categoryList.addItem(cat.getName());
                 }
 
             }

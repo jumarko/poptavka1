@@ -77,10 +77,10 @@ public class LocalitySelectorPresenter
     }
 
     public void initLocalityWidget(SimplePanel embedWidget) {
-//        eventBus.getLocalities(LocalityType.REGION, null);
         embedWidget.setWidget(view.getWidgetView());
     }
 
+    //TODO premenovat
     public void onSetLocalityData(LocalityType localityType, List<LocalityDetail> list) {
         switch (localityType) {
             case DISTRICT:

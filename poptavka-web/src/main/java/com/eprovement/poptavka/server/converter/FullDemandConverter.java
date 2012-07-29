@@ -7,13 +7,12 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +21,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
 
     private static Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
 
     private FullDemandConverter(Converter<Supplier, FullSupplierDetail> supplierConverter) {
         // Spring instantiates converters - see converters.xml
@@ -30,9 +30,15 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     }
 
     @Autowired
-    public void setFullDemandConverter(
+    public void setLocalityConverter(
             @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
         this.localityConverter = localityConverter;
+    }
+
+    @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
     }
 
     @Override
@@ -48,11 +54,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         detail.setMaxOffers(source.getMaxSuppliers() == null ? 0 : source.getMaxSuppliers());
         detail.setMinRating(source.getMinRating() == null ? 0 : source.getMinRating());
         //categories
-        Map<Long, String> catMap = new HashMap<Long, String>();
-        for (Category cat : source.getCategories()) {
-            catMap.put(cat.getId(), cat.getName());
-        }
-        detail.setCategories(catMap);
+        detail.setCategories(categoryConverter.convertToTargetList(source.getCategories()));
         //localities
         detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities()));
 

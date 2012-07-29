@@ -88,6 +88,7 @@ public class LocalitySelectorView extends Composite
         return cellListSelectionModel;
     }
 
+    @Override
     public ListDataProvider<LocalityDetail> getCellListDataProvider() {
         return cellListDataProvider;
     }

@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.server.service.category;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -14,6 +13,7 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import java.util.ArrayList;
 
 @Component(CategoryRPCService.URL)
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
@@ -39,12 +39,12 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public ArrayList<CategoryDetail> getAllRootCategories() throws RPCException {
+    public List<CategoryDetail> getAllRootCategories() throws RPCException {
         return createCategoryDetailList(categoryService.getRootCategories());
     }
 
     @Override
-    public ArrayList<CategoryDetail> getCategories() throws RPCException {
+    public List<CategoryDetail> getCategories() throws RPCException {
         final List<Category> categories = categoryService.getRootCategories();
         return createCategoryDetailList(categories);
     }
@@ -55,7 +55,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
      * @return list of parents and given category
      */
     @Override
-    public ArrayList<CategoryDetail> getCategoryParents(Long category) throws RPCException {
+    public List<CategoryDetail> getCategoryParents(Long category) throws RPCException {
         System.out.println("Getting parent categories");
         Category cat = categoryService.getById(category);
         List<Category> parents = new ArrayList<Category>();
@@ -70,7 +70,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Override
-    public ArrayList<CategoryDetail> getCategoryChildren(Long category) throws RPCException {
+    public List<CategoryDetail> getCategoryChildren(Long category) throws RPCException {
         System.out.println("Getting children categories");
         try {
             if (category != null) {
@@ -86,8 +86,8 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /** Inner method for transforming domain Entity to front-end representation. **/
-    private ArrayList<CategoryDetail> createCategoryDetailList(List<Category> categories) {
-        final ArrayList<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
+    private List<CategoryDetail> createCategoryDetailList(List<Category> categories) {
+        final List<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
 
         for (Category cat : categories) {
             categoryDetails.add(createCategoryDetail(cat));

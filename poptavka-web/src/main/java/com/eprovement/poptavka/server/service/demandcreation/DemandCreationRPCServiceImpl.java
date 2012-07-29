@@ -24,6 +24,7 @@ import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -53,6 +54,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -87,9 +89,15 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Autowired
-    public void setFullDemandConverter(
+    public void setLocalityConverter(
             @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
         this.localityConverter = localityConverter;
+    }
+
+    @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
     }
 
     /**
@@ -120,11 +128,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         /** localities **/
         demand.setLocalities(localityConverter.convertToSourceList(detail.getLocalities()));
         /** categories **/
-        List<Category> categories = new ArrayList<Category>();
-        for (Long categoryID : detail.getCategories().keySet()) {
-            categories.add(getCategory(categoryID));
-        }
-        demand.setCategories(categories);
+        demand.setCategories(categoryConverter.convertToSourceList(detail.getCategories()));
 
         Demand newDemandFromDB = demandService.create(demand);
         sendDemandToSuppliers(newDemandFromDB);

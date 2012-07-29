@@ -226,7 +226,7 @@ public class SupplierCreationPresenter
 
         BusinessUserDetail newSupplier = info.createSupplier();
         newSupplier.getSupplier().setLocalities(locs.getCellListDataProvider().getList());
-        newSupplier.getSupplier().setCategories(cats.getSelectedCategoryCodes());
+        newSupplier.getSupplier().setCategories(cats.getCellListDataProvider().getList());
         newSupplier.getSupplier().addService(service.getSelectedService());
 
         eventBus.registerSupplier(newSupplier);

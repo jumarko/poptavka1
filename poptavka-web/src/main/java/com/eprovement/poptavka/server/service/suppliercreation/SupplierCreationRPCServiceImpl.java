@@ -30,6 +30,7 @@ import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -53,6 +54,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private LocalityService localityService;
     private CategoryService categoryService;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -83,6 +85,12 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     public void setBusinessUserConverter(@Qualifier("businessUserConverter") Converter<BusinessUser,
             BusinessUserDetail> businessUserConverter) {
         this.businessUserConverter = businessUserConverter;
+    }
+
+    @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
     }
 
 
@@ -178,11 +186,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     }
 
     private void setNewSupplierCategories(BusinessUserDetail supplier, Supplier newSupplier) {
-        final List<Category> categories = new ArrayList<Category>();
-        for (String categoryId : supplier.getSupplier().getCategories()) {
-            categories.add(this.getCategory(categoryId));
-        }
-        newSupplier.setCategories(categories);
+        newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getSupplier().getCategories()));
     }
 
     private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {

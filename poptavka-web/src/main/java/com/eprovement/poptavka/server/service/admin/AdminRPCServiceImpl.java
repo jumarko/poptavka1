@@ -48,6 +48,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
@@ -94,6 +95,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Problem, ProblemDetail> problemConverter;
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<Locality, LocalityDetail> localityConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) throws RPCException {
@@ -185,6 +187,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
+    }
+
+    @Autowired
     public void setProblemConverter(@Qualifier("problemConverter") Converter<Problem, ProblemDetail> problemConverter) {
         this.problemConverter = problemConverter;
     }
@@ -257,14 +265,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (!demand.getType().getDescription().equals(fullDemandDetail.getDemandType())) {
             demand.setType(demandService.getDemandType(fullDemandDetail.getDemandType()));
         }
-        List<Category> categories = new ArrayList<Category>();
-        for (long catIds : fullDemandDetail.getCategories().keySet()) {
-            categories.add(categoryService.getById(catIds));
-        }
         //Treba zistovat ci sa kategorie zmenili? Ak ano, ako aby to nebolo narocne?
-        if (!demand.getCategories().containsAll(categories)) {
-            demand.setCategories(categories);
-        }
+        demand.setCategories(categoryConverter.convertToSourceList(fullDemandDetail.getCategories()));
         //Treba zistovat ci sa lokality zmenili? Ak ano, ako aby to nebolo narocne?
         demand.setLocalities(localityConverter.convertToSourceList(fullDemandDetail.getLocalities()));
 

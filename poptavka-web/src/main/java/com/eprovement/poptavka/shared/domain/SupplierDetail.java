@@ -17,7 +17,7 @@ public class SupplierDetail implements Serializable {
     private boolean certified;
     private String description;
     private List<LocalityDetail> localities;
-    private ArrayList<String> categories;
+    private List<CategoryDetail> categories;
     private ArrayList<Integer> services = new ArrayList<Integer>();
 
     public SupplierDetail() {
@@ -47,11 +47,11 @@ public class SupplierDetail implements Serializable {
         this.localities = localities;
     }
 
-    public ArrayList<String> getCategories() {
+    public List<CategoryDetail> getCategories() {
         return categories;
     }
 
-    public void setCategories(ArrayList<String> categories) {
+    public void setCategories(List<CategoryDetail> categories) {
         this.categories = categories;
     }
     public String getDescription() {

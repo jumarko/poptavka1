@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -96,8 +97,8 @@ public class DemandDetailView extends Composite {
         validTo.setText(demandDetail.getValidToDate().toString());
         type.setText(demandDetail.getDetailType().getValue());
         StringBuilder categoriesBuilder = new StringBuilder();
-        for (String s : demandDetail.getCategories().values()) {
-            categoriesBuilder.append(s);
+        for (CategoryDetail s : demandDetail.getCategories()) {
+            categoriesBuilder.append(s.getName());
             categoriesBuilder.append("\n");
         }
         categories.setText(categoriesBuilder.toString());

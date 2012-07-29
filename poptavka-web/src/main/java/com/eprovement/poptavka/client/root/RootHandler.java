@@ -84,7 +84,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /**************************************************************************/
     /* Categories methods                                                     */
     /**************************************************************************/
-    public void onGetRootCategories() {
+    public void onGetRootCategories(final AsyncDataProvider dataProvider) {
         rootService.getCategories(new AsyncCallback<List<CategoryDetail>>() {
 
             @Override
@@ -96,52 +96,33 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
 
             @Override
             public void onSuccess(List<CategoryDetail> list) {
-                // eventBus.setCategoryDisplayData(CategoryType.ROOT,
-                // list);
-                Window.alert("fix this method return value"
-                        + "onGetRootCategories() - MainHandler.class");
+                if (dataProvider != null) {
+                    dataProvider.updateRowData(0, list);
+                }
+                eventBus.setCategoryData(list);
             }
         });
     }
 
-    public void onGetChildListCategories(final int newListPosition,
-            String categoryId) {
-        LOGGER.info("starting category service call");
-        if (categoryId.equals("ALL_CATEGORIES")) {
-            LOGGER.info(" --> root categories");
-            rootService.getCategories(new AsyncCallback<List<CategoryDetail>>() {
+    public void onGetChildCategories(long categoryId, final ListDataProvider dataProvider) {
+        rootService.getCategoryChildren(categoryId,
+                new AsyncCallback<List<CategoryDetail>>() {
 
-                @Override
-                public void onFailure(Throwable caught) {
-                    if (caught instanceof RPCException) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
+                    @Override
+                    public void onSuccess(List<CategoryDetail> list) {
+                        if (dataProvider != null) {
+                            dataProvider.setList(list);
+                        }
+                        eventBus.setCategoryData(list);
                     }
-                }
 
-                @Override
-                public void onSuccess(List<CategoryDetail> list) {
-                    eventBus.setCategoryListData(newListPosition, list);
-                }
-            });
-        } else {
-            LOGGER.info(" --> child categories");
-            rootService.getCategoryChildren(Long.valueOf(categoryId),
-                    new AsyncCallback<List<CategoryDetail>>() {
-
-                        @Override
-                        public void onSuccess(List<CategoryDetail> list) {
-                            eventBus.setCategoryListData(newListPosition, list);
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        if (caught instanceof RPCException) {
+                            ExceptionUtils.showErrorDialog(errorDialog, caught);
                         }
-
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            if (caught instanceof RPCException) {
-                                ExceptionUtils.showErrorDialog(errorDialog, caught);
-                            }
-                        }
-                    });
-        }
-        LOGGER.info("ending category service call");
+                    }
+                });
     }
 
     /**************************************************************************/

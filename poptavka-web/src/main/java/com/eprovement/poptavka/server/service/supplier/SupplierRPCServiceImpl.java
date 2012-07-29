@@ -67,6 +67,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     private CategoryService categoryService;
     private TreeItemService treeItemService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
 
     @Autowired
     public void setClientService(ClientService clientService) {
@@ -102,6 +103,12 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     public void setSupplierConverter(
             @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
         this.supplierConverter = supplierConverter;
+    }
+
+    @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
     }
 
     /**
@@ -201,11 +208,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     private void setNewSupplierCategories(BusinessUserDetail supplier, Supplier newSupplier) {
-        final List<Category> categories = new ArrayList<Category>();
-        for (String categoryId : supplier.getSupplier().getCategories()) {
-            categories.add(this.getCategory(categoryId));
-        }
-        newSupplier.setCategories(categories);
+        newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getSupplier().getCategories()));
     }
 
     private void setNewSupplierLocalities(BusinessUserDetail supplier, Supplier newSupplier) {
@@ -462,7 +465,7 @@ public class SupplierRPCServiceImpl extends AutoinjectingRemoteService implement
                 for (Category cat : cats) {
                     categories.add(cat.getId() + "");
                 }
-                supplierDetail.setCategories(categories);
+                //supplierDetail.setCategories(categories);
 
                 // localities
                 ArrayList<String> localities = new ArrayList<String>();

@@ -31,7 +31,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -212,7 +211,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminDemandSubCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -220,14 +219,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<CategoryDetail> result) {
+            public void onSuccess(List<CategoryDetail> result) {
                 eventBus.displayAdminDemandCategories(result);
             }
         });
     }
 
     public void onGetAdminDemandParentCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -235,7 +234,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<CategoryDetail> result) {
+            public void onSuccess(List<CategoryDetail> result) {
                 eventBus.doBackDemandCategories(result);
             }
         });
@@ -354,7 +353,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminSupplierSubCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -362,14 +361,14 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<CategoryDetail> result) {
+            public void onSuccess(List<CategoryDetail> result) {
                 eventBus.displayAdminSupplierCategories(result);
             }
         });
     }
 
     public void onGetAdminSupplierParentCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<ArrayList<CategoryDetail>>() {
+        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onFailure(Throwable caught) {
                 if (caught instanceof RPCException) {
@@ -377,7 +376,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 }
             }
             @Override
-            public void onSuccess(ArrayList<CategoryDetail> result) {
+            public void onSuccess(List<CategoryDetail> result) {
                 eventBus.doBackSupplierCategories(result);
             }
         });

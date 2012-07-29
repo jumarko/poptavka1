@@ -11,6 +11,7 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 
@@ -140,8 +141,8 @@ public class SettingsPresenter
 
         StringBuilder categoryBuilder = new StringBuilder();
         if (detail.getSupplier() != null) {
-            for (String category : detail.getSupplier().getCategories()) {
-                categoryBuilder.append(category);
+            for (CategoryDetail category : detail.getSupplier().getCategories()) {
+                categoryBuilder.append(category.getName());
                 categoryBuilder.append("\n");
             }
         }

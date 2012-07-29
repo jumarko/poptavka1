@@ -22,6 +22,7 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
@@ -33,23 +34,28 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
 
     private static final long serialVersionUID = 113266708108432157L;
-
     private GeneralService generalService;
     private Converter<Locality, LocalityDetail> localityConverter;
+    private Converter<Category, CategoryDetail> categoryConverter;
 
     @Autowired
-    public void setFullDemandConverter(
+    public void setLocalityConverter(
             @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
         this.localityConverter = localityConverter;
+    }
+
+    @Autowired
+    public void setCategoryConverter(
+            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
     }
 
     //TODO Nahradit konverterom???
     @Override
     public SettingsDetail getUserSettings(long userId) throws RPCException {
         GWT.log("Getting user settings for user:" + userId);
-        final BusinessUser user = (BusinessUser) generalService
-                .searchUnique(new Search(User.class).addFilterEqual("id",
-                        userId));
+        final BusinessUser user = (BusinessUser) generalService.searchUnique(new Search(User.class).addFilterEqual("id",
+                userId));
 
         SettingsDetail settingsDetail = new SettingsDetail();
 
@@ -70,26 +76,17 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
                     supplierDetail.setOverallRating(supplier.getOveralRating());
                 }
                 supplierDetail.setLocalities(localityConverter.convertToTargetList(supplier.getLocalities()));
-                ArrayList<String> categories = new ArrayList<String>();
-                for (Category category : supplier.getCategories()) {
-                    categories.add(category.getName());
-                }
-                supplierDetail.setCategories(categories);
+                supplierDetail.setCategories(categoryConverter.convertToTargetList(supplier.getCategories()));
                 settingsDetail.setSupplier(supplierDetail);
             }
 
         }
-        settingsDetail.setFirstName(user.getBusinessUserData()
-                .getPersonFirstName());
-        settingsDetail.setLastName(user.getBusinessUserData()
-                .getPersonLastName());
+        settingsDetail.setFirstName(user.getBusinessUserData().getPersonFirstName());
+        settingsDetail.setLastName(user.getBusinessUserData().getPersonLastName());
         settingsDetail.setPhone(user.getBusinessUserData().getPhone());
-        settingsDetail.setIdentificationNumber(user.getBusinessUserData()
-                .getIdentificationNumber());
-        settingsDetail.setCompanyName(user.getBusinessUserData()
-                .getCompanyName());
-        settingsDetail.setDescription(user.getBusinessUserData()
-                .getDescription());
+        settingsDetail.setIdentificationNumber(user.getBusinessUserData().getIdentificationNumber());
+        settingsDetail.setCompanyName(user.getBusinessUserData().getCompanyName());
+        settingsDetail.setDescription(user.getBusinessUserData().getDescription());
         settingsDetail.setTaxId(user.getBusinessUserData().getTaxId());
         List<AddressDetail> addresses = new ArrayList<AddressDetail>();
         for (Address address : user.getAddresses()) {
@@ -110,5 +107,4 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
     }
-
 }
