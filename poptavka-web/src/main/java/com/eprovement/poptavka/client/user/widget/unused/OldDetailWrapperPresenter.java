@@ -22,7 +22,6 @@ import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPane
 import com.eprovement.poptavka.shared.domain.demand.BaseDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
 
@@ -233,27 +232,27 @@ public class OldDetailWrapperPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
-                if (potentialViewReplyWiget.isMessageValid()) {
-                    // distinguish what kind of message should be sent
-                    if (potentialViewReplyWiget.hasResponseQuestion()) {
-                        MessageDetail messageToSend = potentialViewReplyWiget
-                                .getCreatedMessage();
-                        messageToSend = view.getConversationPanel()
-                                .updateSendingMessage(messageToSend);
-                        eventBus.bubbleMessageSending(messageToSend, type);
-                    } else {
-                        // TODO finish sending of
-                        OfferMessageDetail offer = new OfferMessageDetail();
-                        offer = (OfferMessageDetail) view
-                                .getConversationPanel().updateSendingOfferMessage(
-                                        offer);
-                        MessageDetail offerMessage = potentialViewReplyWiget
-                                .getCreatedMessage();
-                        offer.setBody(offerMessage.getBody());
-                        //offer.setDemandId(offerMessage.getDemandId());
-                        eventBus.bubbleOfferSending(offer);
-                    }
-                }
+//                if (potentialViewReplyWiget.isMessageValid()) {
+//                    // distinguish what kind of message should be sent
+//                    if (potentialViewReplyWiget.hasResponseQuestion()) {
+//                        MessageDetail messageToSend = potentialViewReplyWiget
+//                                .getCreatedMessage();
+//                        messageToSend = view.getConversationPanel()
+//                                .updateSendingMessage(messageToSend);
+//                        eventBus.bubbleMessageSending(messageToSend, type);
+//                    } else {
+//                        // TODO finish sending of
+//                        OfferMessageDetail offer = new OfferMessageDetail();
+//                        offer = (OfferMessageDetail) view
+//                                .getConversationPanel().updateSendingOfferMessage(
+//                                        offer);
+//                        MessageDetail offerMessage = potentialViewReplyWiget
+//                                .getCreatedMessage();
+//                        offer.setBody(offerMessage.getBody());
+//                        //offer.setDemandId(offerMessage.getDemandId());
+//                        eventBus.bubbleOfferSending(offer);
+//                    }
+//                }
             }
         };
     }
@@ -273,14 +272,14 @@ public class OldDetailWrapperPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 // sending message only when valid
-                if (myDemandsViewReplyWiget.isMessageValid()) {
-                    // distinguish what kind of message should be sent
-                    MessageDetail messageToSend = myDemandsViewReplyWiget
-                            .getCreatedMessage();
-                    messageToSend = view.getConversationPanel()
-                            .updateSendingMessage(messageToSend);
-                    eventBus.bubbleMessageSending(messageToSend, type);
-                }
+//                if (myDemandsViewReplyWiget.isMessageValid()) {
+//                    // distinguish what kind of message should be sent
+//                    MessageDetail messageToSend = myDemandsViewReplyWiget
+//                            .getCreatedMessage();
+//                    messageToSend = view.getConversationPanel()
+//                            .updateSendingMessage(messageToSend);
+//                    eventBus.bubbleMessageSending(messageToSend, type);
+//                }
             }
         };
     }

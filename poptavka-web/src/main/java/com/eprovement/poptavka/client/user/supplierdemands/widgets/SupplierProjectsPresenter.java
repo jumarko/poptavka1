@@ -116,17 +116,6 @@ public class SupplierProjectsPresenter
     }
 
     /**
-     * DEVEL METHOD
-     *
-     * Used for JRebel correct refresh. It is called from DemandModulePresenter, when removing instance of
-     * SupplierListPresenter. it has to remove it's detailWrapper first.
-     */
-    public void develRemoveDetailWrapper() {
-        detailSection.develRemoveReplyWidget();
-        eventBus.removeHandler(detailSection);
-    }
-
-    /**
      * Response method for onInitSupplierList()
      * @param data
      */

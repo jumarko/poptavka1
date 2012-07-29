@@ -10,35 +10,17 @@
  */
 package com.eprovement.poptavka.client.root;
 
-import java.util.ArrayList;
-
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
-import com.mvp4g.client.annotation.Debug;
-import com.mvp4g.client.annotation.Event;
-import com.mvp4g.client.annotation.Events;
-import com.mvp4g.client.annotation.InitHistory;
-import com.mvp4g.client.annotation.NotFoundHistory;
-import com.mvp4g.client.annotation.Start;
-import com.mvp4g.client.annotation.module.ChildModule;
-import com.mvp4g.client.annotation.module.ChildModules;
-import com.mvp4g.client.annotation.module.DisplayChildModuleView;
-import com.mvp4g.client.annotation.module.LoadChildModuleError;
-import com.mvp4g.client.event.EventBus;
-
+import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
+import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
+import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
+import com.eprovement.poptavka.client.common.search.SearchModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
 import com.eprovement.poptavka.client.home.widget.category.CategoryDisplayPresenter;
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
-import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter;
-import com.eprovement.poptavka.client.common.search.SearchModule;
-import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.common.login.LoginPopupPresenter;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.menu.MenuPresenter;
@@ -55,10 +37,27 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
+import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
+import com.mvp4g.client.annotation.Debug;
+import com.mvp4g.client.annotation.Event;
+import com.mvp4g.client.annotation.Events;
+import com.mvp4g.client.annotation.InitHistory;
+import com.mvp4g.client.annotation.NotFoundHistory;
+import com.mvp4g.client.annotation.Start;
+import com.mvp4g.client.annotation.module.ChildModule;
+import com.mvp4g.client.annotation.module.ChildModules;
+import com.mvp4g.client.annotation.module.DisplayChildModuleView;
+import com.mvp4g.client.annotation.module.LoadChildModuleError;
+import com.mvp4g.client.event.EventBus;
+import java.util.ArrayList;
 import java.util.List;
 
 @Events(startPresenter = RootPresenter.class)
@@ -422,8 +421,10 @@ public interface RootEventBus extends EventBus {
      * @param type type of handling view
      */
     @Event(handlers = RootHandler.class)
-    void sendMessage(MessageDetail messageToSend, ViewType type);
-    //IMPORTANT: all view-resenters have to handle this method, if view handles conversation displaying
+    void sendQuestionMessage(MessageDetail messageToSend, ViewType type);
+
+    @Event(handlers = RootHandler.class)
+    void sendOfferMessage(OfferMessageDetail offerMessageToSend, ViewType type);
 
     @Event(handlers = DetailsWrapperPresenter.class, passive = true)
     void addConversationMessage(MessageDetail sentMessage, ViewType handlingType);

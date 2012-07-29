@@ -173,6 +173,7 @@ public class ConversationWrapperPresenter
      *
      * @return
      */
+    //TODO Martin cele zrevidovat
     private ClickHandler bindReplyWindowAction() {
         return new ClickHandler() {
 
@@ -183,7 +184,7 @@ public class ConversationWrapperPresenter
                     // distinguish what kind of message should be sent
                     if (offerQuestionReply.hasResponseQuestion()) {
                         MessageDetail messageToSend = offerQuestionReply.getCreatedMessage();
-                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
+//                        messageToSend = view.getConversationPanel().updateSendingMessage(messageToSend);
                         messageToSend.setSenderId(Storage.getUser().getUserId());
                         eventBus.sendMessage(messageToSend, "composeReply");
 //                        Window.alert(messageToSend.getMessageId() + "");

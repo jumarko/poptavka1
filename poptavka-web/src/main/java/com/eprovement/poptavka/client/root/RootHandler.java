@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -254,8 +255,8 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param messageToSend
      * @param type
      */
-    public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
-        rootService.sendMessage(messageToSend, new AsyncCallback<MessageDetail>() {
+    public void onSendQuestionMessage(MessageDetail messageToSend, final ViewType type) {
+        rootService.sendQuestionMessage(messageToSend, new AsyncCallback<MessageDetail>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -269,6 +270,27 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.addConversationMessage(sentMessage, type);
+            }
+        });
+    }
+
+    public void onSendOfferMessage(OfferMessageDetail offerMessageToSend, final ViewType type) {
+        rootService.sendOfferMessage(offerMessageToSend, new AsyncCallback<OfferMessageDetail>() {
+
+            @Override
+            public void onFailure(Throwable caught) {
+                if (caught instanceof RPCException) {
+                    ExceptionUtils.showErrorDialog(errorDialog, caught);
+                }
+                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
+                        + caught.getMessage());
+            }
+
+            @Override
+            public void onSuccess(OfferMessageDetail sentMessage) {
+                //Zobrazit offer spravu tiez v konverzacii, alebo ta sa zobrazli
+                //len v SupplierContests???
+//                eventBus.addConversationMessage(sentMessage, type);
             }
         });
     }

@@ -1,20 +1,19 @@
 package com.eprovement.poptavka.client.user.widget;
 
 
+import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
+import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
+import com.eprovement.poptavka.client.user.widget.messaging.DevelOfferQuestionWindow;
+import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
-
-import com.eprovement.poptavka.client.user.widget.detail.DemandDetailView;
-import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
-import com.eprovement.poptavka.client.user.widget.messaging.UserConversationPanel;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 import java.util.List;
 
 /**
@@ -33,7 +32,7 @@ public class DetailsWrapperView extends Composite
     @UiField DemandDetailView demandDetail;
     @UiField SupplierDetailView supplierDetail;
     @UiField UserConversationPanel conversationPanel;
-    @UiField SimplePanel replyHolder;
+    @UiField DevelOfferQuestionWindow replyHolder;
 
     @Override
     public void createView() {
@@ -63,7 +62,7 @@ public class DetailsWrapperView extends Composite
     }
 
     @Override
-    public SimplePanel getReplyHolder() {
+    public DevelOfferQuestionWindow getReplyHolder() {
         return replyHolder;
     }
 

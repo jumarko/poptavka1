@@ -33,7 +33,7 @@
             </g:header>
             <g:VerticalPanel>
                 <d:UserConversationPanel ui:field="conversationPanel" styleName="{style.relative}"/>
-                <g:SimplePanel ui:field="replyHolder" />
+                <d:DevelOfferQuestionWindow ui:field="replyHolder" />
             </g:VerticalPanel>
         </g:tab>
     </g:TabLayoutPanel>

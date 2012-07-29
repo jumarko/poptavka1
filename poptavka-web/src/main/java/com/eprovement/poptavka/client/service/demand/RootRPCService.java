@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -67,5 +68,7 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException;
 
-    MessageDetail sendMessage(MessageDetail messageToSend) throws RPCException;
+    MessageDetail sendQuestionMessage(MessageDetail messageToSend) throws RPCException;
+
+    OfferMessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException;
 }

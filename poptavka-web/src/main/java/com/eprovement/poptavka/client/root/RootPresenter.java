@@ -306,9 +306,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         userInfoPanel.show();
     }
 
+    /**
+     * Request RootEventBus to create DetailWrapperPresenter.
+     */
     public void onRequestDetailWrapperPresenter() {
         DetailsWrapperPresenter detailSection = eventBus.addHandler(DetailsWrapperPresenter.class);
-        detailSection.initReplyWidget(eventBus);
         eventBus.responseDetailWrapperPresenter(detailSection);
     }
 }

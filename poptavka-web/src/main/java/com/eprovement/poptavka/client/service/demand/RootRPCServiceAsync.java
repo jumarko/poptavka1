@@ -6,6 +6,7 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
@@ -50,5 +51,7 @@ public interface RootRPCServiceAsync {
     /**************************************************************************/
     void setMessageReadStatus(List<Long> userMessageIds, boolean isRead, AsyncCallback<Void> callback);
 
-    void sendMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+    void sendQuestionMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
+
+    void sendOfferMessage(OfferMessageDetail offerMessageToSend, AsyncCallback<OfferMessageDetail> callback);
 }

@@ -1,7 +1,8 @@
 package com.eprovement.poptavka.client.user.widget.messaging;
 
-import java.math.BigDecimal;
-
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Display;
@@ -17,55 +18,54 @@ import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import java.math.BigDecimal;
 
 /**
  * Mixed widget for sending offer as well for asking questions.
  *
  * @author Beho
+ * @author Martin Slavkovsky
  */
-public class DevelOfferQuestionWindow extends Composite implements DevelOfferQuestionPresenter.ReplyInterface {
+public class DevelOfferQuestionWindow extends Composite {
 
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
     private static ReplyWindowUiBinder uiBinder = GWT.create(ReplyWindowUiBinder.class);
-    interface ReplyWindowUiBinder extends UiBinder<Widget, DevelOfferQuestionWindow> {   }
 
+    interface ReplyWindowUiBinder extends UiBinder<Widget, DevelOfferQuestionWindow> {
+    }
     private static final StyleResource CSS = GWT.create(StyleResource.class);
-
-    private static final String RESPONSE_OFFER = "offer";
-    private static final String RESPONSE_QUESTION = "question";
-
+    //Constants
+    public static final int RESPONSE_OFFER = 0;
+    public static final int RESPONSE_QUESTION = 1;
+    //UiBinder attributes
     @UiField Element header;
-    @UiField Anchor offerReplyBtn;
-    @UiField Anchor questionReplyBtn;
+    @UiField Anchor offerReplyBtn, questionReplyBtn;
+    @UiField Anchor submitBtn, cancelBtn;
     @UiField TextArea replyTextArea;
     @UiField TextBox priceBox;
     @UiField DateBox dateBox;
-    @UiField Anchor submitBtn;
-    @UiField Anchor cancelBtn;
     //main widget part is hidden
     private boolean hiddenReplyBody = true;
+    private int selectedResponse;
 
-    private String selectedResponse = null;
-    private HandlerRegistration submitHandlerRegistration = null;
-
-    private long demandId = 0;
-
-    @Override
-    public void createView() {
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
+    public DevelOfferQuestionWindow() {
         CSS.message().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    //rozdiel medzi uiBinderHandlerom a onLoad???
     @Override
     protected void onLoad() {
 //        com.google.gwt.user.client.Element castedElement = castElement(header);
 //        DOM.sinkEvents(castedElement, Event.ONCLICK);
 //        DOM.setEventListener(castedElement, new MessageToggleHangler());
         offerReplyBtn.addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 selectedResponse = RESPONSE_OFFER;
@@ -75,6 +75,7 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
             }
         });
         questionReplyBtn.addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 GWT.log(" CLICK casted");
@@ -85,6 +86,7 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
             }
         });
         cancelBtn.addClickHandler(new ClickHandler() {
+
             @Override
             public void onClick(ClickEvent event) {
                 toggleWidget();
@@ -93,6 +95,36 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
         });
     }
 
+    @Override
+    protected void onUnload() {
+        super.onUnload();
+        DOM.setEventListener(castElement(header), null);
+    }
+
+    //Martin - neviem co to znamena, pouziva pri DOM.setEventListener
+    //vyhnem sa tomu ak pouzijem uiBinderHandler??
+    private com.google.gwt.user.client.Element castElement(Element elem) {
+        return (com.google.gwt.user.client.Element) elem;
+    }
+
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    public void setSendingStyle() {
+        // display sending message window, some loader or whatever
+        header.getStyle().setDisplay(Display.NONE);
+        header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+    }
+
+    public void setNormalStyle() {
+        // display sending message window, whatever
+        header.getStyle().setDisplay(Display.BLOCK);
+        header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+        hiddenReplyBody = true;
+        replyTextArea.setText("");
+    }
+
+    //Martin - tiez neviem co presne to robi, pouziva pri akciach, vid onLoad
     public void toggleWidget() {
         if (hiddenReplyBody) {
             header.getStyle().setDisplay(Display.NONE);
@@ -109,91 +141,15 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
         hiddenReplyBody = !hiddenReplyBody;
     }
 
-    @Override
-    protected void onUnload() {
-        super.onUnload();
-        DOM.setEventListener(castElement(header), null);
-    }
-
-    private com.google.gwt.user.client.Element castElement(Element elem) {
-        return (com.google.gwt.user.client.Element) elem;
-    }
-
-    /**
-     * Add ClickHandler to submitButton and demandId of demand user is replying to. Initially assigned to attribute,
-     * to prevent multiple clickHandlers on one widget. Because this widget is not instancialized multiple times.
-     *
-     * @param submitButtonHandler
-     * @param selectedDemandId
-     */
-    public void addClickHandler(ClickHandler submitButtonHandler) {
-        if (submitHandlerRegistration == null) {
-            submitHandlerRegistration = submitBtn.addClickHandler(submitButtonHandler);
-        } else {
-            submitHandlerRegistration.removeHandler();
-            submitHandlerRegistration = submitBtn.addClickHandler(submitButtonHandler);
-        }
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
+    /**************************************************************************/
+    /* GETTER of created messages.                                            */
+    /**************************************************************************/
     public MessageDetail getCreatedMessage() {
-        MessageDetail message = null;
-        message = new MessageDetail();
+        MessageDetail message = new MessageDetail();
         message.setBody(replyTextArea.getText());
         return message;
     }
 
-    @Override
-    public boolean isValid() {
-        int errorCount = 0;
-        errorCount += (replyTextArea.getText().equals("") ? 1 : 0);
-        if (selectedResponse.equals(RESPONSE_OFFER)) {
-            errorCount += (priceBox.getText().equals("") ? 1 : 0);
-            try {
-                Long.valueOf(priceBox.getValue());
-            } catch (Exception ex) {
-                errorCount++;
-            }
-            errorCount += (dateBox.getValue() == null ? 1 : 0);
-        }
-        // TODO error display
-        return errorCount == 0;
-    }
-
-    @Override
-    public void setSendingStyle() {
-        // display sending message window, some loader or whatever
-        header.getStyle().setDisplay(Display.NONE);
-        header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
-    }
-
-    @Override
-    public void setNormalStyle() {
-        // display sending message window, whatever
-        header.getStyle().setDisplay(Display.BLOCK);
-        header.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
-        hiddenReplyBody = true;
-        replyTextArea.setText("");
-    }
-
-    // TODO maybe not necessary, check
-    @Override
-    public boolean isResponseQuestion() {
-        return selectedResponse == RESPONSE_QUESTION;
-    }
-
-    // TODO maybe not necessary, check
-    @Override
-    public void setResponseToQuestion() {
-        selectedResponse = RESPONSE_QUESTION;
-    }
-
-    @Override
     public OfferMessageDetail getCreatedOfferMessage() {
         OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
         Long price = null;
@@ -208,4 +164,35 @@ public class DevelOfferQuestionWindow extends Composite implements DevelOfferQue
         return offerMessageDetailImpl;
     }
 
+    /**************************************************************************/
+    /* GETTER                                                                 */
+    /**************************************************************************/
+    public Anchor getSubmitBtn() {
+        return submitBtn;
+    }
+
+    public int getSelectedResponse() {
+        return selectedResponse;
+    }
+
+     //Zrobit bean validaciu?? .. asi netreba
+    public boolean isValid() {
+        int errorCount = 0;
+        errorCount += (replyTextArea.getText().isEmpty() ? 1 : 0);
+        if (selectedResponse == RESPONSE_OFFER) {
+            errorCount += (priceBox.getText().isEmpty() ? 1 : 0);
+            try {
+                Long.valueOf(priceBox.getValue());
+            } catch (Exception ex) {
+                errorCount++;
+            }
+            errorCount += (dateBox.getValue() == null ? 1 : 0);
+        }
+        // TODO error display
+        return errorCount == 0;
+    }
+
+    public Widget getWidgetView() {
+        return this;
+    }
 }

@@ -28,6 +28,7 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
@@ -241,7 +242,7 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
      * @return message
      */
     @Override
-    public MessageDetail sendMessage(MessageDetail messageDetailImpl) throws RPCException {
+    public MessageDetail sendQuestionMessage(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
                     messageDetailImpl.getThreadRootId()),
@@ -255,5 +256,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService
             Logger.getLogger(DemandsRPCServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+
+    @Override
+    public OfferMessageDetail sendOfferMessage(OfferMessageDetail offerMessageDetail) throws RPCException {
+        //Implement sending offer
+        return new OfferMessageDetail();
     }
 }
