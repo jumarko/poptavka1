@@ -828,19 +828,23 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <complianceLevel>${maven.compiler.source}</complianceLevel>
-                    <XnoInline>true</XnoInline>
+                    <!--<XnoInline>true</XnoInline>-->
                     <aspectLibraries>
                         <aspectLibrary>
                             <groupId>org.springframework</groupId>
                             <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                        <aspectLibrary>
+                            <groupId>org.springframework.security</groupId>
+                            <artifactId>spring-security-aspects</artifactId>
                         </aspectLibrary>
                     </aspectLibraries>
                     <showWeaveInfo>true</showWeaveInfo>
                     <proceedOnError>false</proceedOnError>
                     <verbose>true</verbose>
                     <encoding>UTF-8</encoding>
-                    <outxml>true</outxml>
-                    <outxmlfile>META-INF/aop.xml</outxmlfile>
+                    <!--<outxml>true</outxml>-->
+                    <!--<outxmlfile>META-INF/aop.xml</outxmlfile>-->
 
                 </configuration>
                 <dependencies>
