@@ -124,8 +124,8 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
         // Create a CellTable.
         dataGrid = new UniversalAsyncGrid<FullDemandDetail>(gridColumns);
         dataGrid.setEmptyTableWidget(new Label(Storage.MSGS.noData()));
-        dataGrid.setWidth("800px");
-        dataGrid.setHeight("500px");
+        //dataGrid.setWidth("800px");
+        //dataGrid.setHeight("500px");
         // Selection handler
         dataGrid.setSelectionModel(new SingleSelectionModel<FullDemandDetail>());
 
