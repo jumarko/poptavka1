@@ -76,7 +76,7 @@
     <!-- Ensures transparent exceptions' translation -->
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="transactionManager" mode="aspectj"/>
 
 
     <!-- General Dao -->

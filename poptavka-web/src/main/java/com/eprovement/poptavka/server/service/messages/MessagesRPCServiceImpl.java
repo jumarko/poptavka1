@@ -27,7 +27,6 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,7 +88,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return message
      */
     @Override
-    @Secured("user")
     public MessageDetail sendInternalMessage(MessageDetail messageDetailImpl) throws RPCException {
         try {
             Message m = messageService.newReply(this.messageService.getById(
@@ -107,7 +105,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    @Secured("user")
     public void deleteMessages(List<Long> messagesIds) throws RPCException {
         Search searchMsgs = new Search(Message.class);
         searchMsgs.addFilterIn("id", messagesIds);
@@ -124,7 +121,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    @Secured("user")
     public List<UserMessageDetail> getInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder)
         throws RPCException {
         return this.getMessages(recipientId, searchDataHolder, Arrays.asList(
@@ -132,7 +128,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    @Secured("user")
     public List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
         throws RPCException {
         User sender = generalService.find(User.class, senderId);
@@ -224,7 +219,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * @return conversation list
      */
     @Override
-    @Secured("user")
     public ArrayList<MessageDetail> getConversationMessages(long threadRootId,
             long subRootId) throws RPCException {
 //        Message root = messageService.getById(threadRootId);
@@ -247,7 +241,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    @Secured("user")
     public void setMessageReadStatus(List<Long> userMessageIds,
             boolean isRead) throws RPCException {
         for (Long userMessageId : userMessageIds) {
@@ -262,7 +255,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
      * Change 'star' status of sent messages to chosen value
      */
     @Override
-    @Secured("user")
     public void setMessageStarStatus(List<Long> userMessageIds,
             boolean isStarred) throws RPCException {
         for (Long userMessageId : userMessageIds) {
@@ -273,7 +265,6 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     @Override
-    @Secured("user")
     public List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
         throws RPCException {
         Search messageSearch = new Search(Message.class);
