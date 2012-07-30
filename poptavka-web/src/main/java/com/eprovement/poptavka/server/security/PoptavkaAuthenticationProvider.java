@@ -49,6 +49,7 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         String username = (String) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
 
+        // refactor this with StringUtils.isEmpty
         if (username == null || username.isEmpty()) {
             throw new UsernameNotFoundException("Username not provided");
         }
@@ -59,10 +60,6 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
 
         LOGGER.info("authenticate calls loginService");
         final User loggedUser = this.loginService.loginUser(username, password);
-
-        if (loggedUser == null) {
-            throw new BadCredentialsException("Bad credentials");
-        }
 
         Authentication customAuthentication = new PoptavkaUserAuthentication(loggedUser, authentication);
         customAuthentication.setAuthenticated(true);

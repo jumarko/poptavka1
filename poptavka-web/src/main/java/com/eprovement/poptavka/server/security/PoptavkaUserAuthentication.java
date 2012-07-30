@@ -2,14 +2,16 @@ package com.eprovement.poptavka.server.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 /**
  * This class represents authenticated user.
  * @author kolkar
@@ -21,24 +23,22 @@ public class PoptavkaUserAuthentication implements Authentication {
 
     private boolean authenticated;
 
-    private List<GrantedAuthority> grantedAuthority;
-    private Authentication authentication;
+    private final List<GrantedAuthority> grantedAuthority = new ArrayList<GrantedAuthority>();
+    private final Authentication authentication;
+    private final User loggedUser;
 
     public PoptavkaUserAuthentication(User loggedUser, Authentication authentication) {
         this.grantedAuthority = new ArrayList<GrantedAuthority>();
         for (AccessRole role : loggedUser.getAccessRoles()) {
-            this.grantedAuthority.add(new GrantedAuthorityImpl(role.getName()));
+            this.grantedAuthority.add(new SimpleGrantedAuthority(role.getCode()));
         }
         this.authentication = authentication;
+        this.loggedUser = loggedUser;
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        if (grantedAuthority != null) {
-            authorities.addAll(grantedAuthority);
-        }
-        return authorities;
+        return Collections.unmodifiableCollection(grantedAuthority);
     }
 
     @Override
