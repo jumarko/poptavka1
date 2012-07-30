@@ -60,7 +60,7 @@ import org.springframework.security.access.annotation.Secured;
  *
  * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
-@Configurable(HomeDemandsRPCService.URL)
+@Configurable
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HomeDemandsRPCServiceImpl.class);

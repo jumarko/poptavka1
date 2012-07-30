@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
@@ -29,7 +29,7 @@ import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-@Configurable(SettingsRPCService.URL)
+@Component(SettingsRPCService.URL)
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
 

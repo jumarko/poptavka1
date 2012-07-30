@@ -25,10 +25,10 @@ import org.springframework.security.core.AuthenticationException;
 @Aspect
 public class SecurityExceptionAspect {
 
-    @Pointcut("execution(* *(..)) && @annotation(GwtMethod)")
-    private void executionOfGwtMethod()  { }
+    @Pointcut("execution(public * com.eprovement.poptavka..*RPCServiceImpl.*(..))")
+    private void executionOfRpcMethod()  { }
 
-    @Around("executionOfGwtMethod()")
+    @Around("executionOfRpcMethod()")
     public Object translateSecurityException(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         try {
             return proceedingJoinPoint.proceed();
