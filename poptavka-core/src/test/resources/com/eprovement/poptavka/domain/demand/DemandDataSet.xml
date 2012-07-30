@@ -2,14 +2,15 @@
 
 <dataset>
     <!--############################################ demands ########################################################-->
-    <DEMANDTYPE ID="1" CODE="normal" />
-    <DEMANDTYPE ID="2" CODE="attractive" />
-    <DEMANDTYPE ID="3" CODE="all" />
 
     <DEMANDORIGIN ID="1" CODE="epoptavka.cz" DESCRIPTION="poptavky povodom z epoptavka.cz" NAME="epoptavka.cz" URL="http://epoptavka.cz"/>
     <DEMANDORIGIN ID="2" CODE="poptavam.com" DESCRIPTION="Poptavky povodom z poptavam.com" NAME="poptavam.com" URL="http://poptavam.com"/>
     <DEMANDORIGIN ID="3" CODE="isvzus.cz" DESCRIPTION="Poptavky z verejneho  informacneho portalu" NAME="isvzus.cz" URL="http://www.isvzus.cz"/>
 
+
+    <DEMANDTYPE ID="1" CODE="normal" />
+    <DEMANDTYPE ID="2" CODE="attractive" />
+    <DEMANDTYPE ID="3" CODE="all" />
 
     <DEMAND ID="1" TYPE_ID="1" TITLE="Demand 1" DESCRIPTION="1: Normal request for java application."        PRICE="10000"
             STATUS="NEW" RATING_ID="1" CLIENT_ID="111111111" CREATEDDATE="2011-11-01 13:33:33" />

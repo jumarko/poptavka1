@@ -7,5 +7,6 @@
 
     <beans:import resource="classpath:security-web.xml"/>
     <beans:import resource="classpath:converters-web.xml"/>
+    <beans:import resource="aspects-web.xml" />
 
 </beans:beans>

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -11,5 +12,5 @@ public interface SettingsRPCService extends RemoteService {
 
     String URL = "service/settings";
 
-    SettingsDetail getUserSettings(long userId) throws RPCException;
+    SettingsDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException;
 }

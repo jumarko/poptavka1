@@ -22,7 +22,16 @@
 
     <!-- Service -->
     <context:annotation-config/>
+    <context:spring-configured/>
     <context:component-scan base-package="com.eprovement.poptavka.server.service"/>
+
+    <security:global-method-security secured-annotations="enabled"/>
+
+    <!--forceEagerSessionCreation is resource intensive ?-->
+    <!--<bean id="securityContextPersistenceFilter"-->
+          <!--class="org.springframework.security.web.context.SecurityContextPersistenceFilter">-->
+        <!--<property name="forceEagerSessionCreation" value="true"/>-->
+    <!--</bean>-->
 
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider ref="customAuthenticationProvider"/>

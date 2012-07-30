@@ -1,9 +1,11 @@
 package com.eprovement.poptavka.server.service.settings;
 
+import com.eprovement.poptavka.application.security.GwtMethod;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import com.google.gwt.core.client.GWT;
@@ -52,6 +54,8 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
     //TODO Nahradit konverterom???
     @Override
+    @Secured({"client", "supplier" })
+    @GwtMethod
     public SettingsDetail getUserSettings(long userId) throws RPCException {
         GWT.log("Getting user settings for user:" + userId);
         final BusinessUser user = (BusinessUser) generalService.searchUnique(new Search(User.class).addFilterEqual("id",
