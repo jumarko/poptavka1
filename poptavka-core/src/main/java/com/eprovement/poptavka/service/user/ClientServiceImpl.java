@@ -17,7 +17,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.util.notification.NotificationUtils;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
@@ -29,11 +29,16 @@ import org.apache.commons.lang.Validate;
 public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, ClientDao> implements ClientService {
 
     private final NotificationUtils notificationUtils;
+    private final List<AccessRole> clientAccessRoles;
 
     public ClientServiceImpl(GeneralService generalService, RegisterService registerService,
             BusinessUserVerificationService userVerificationService) {
         super(generalService, registerService, userVerificationService);
         this.notificationUtils = new NotificationUtils(registerService);
+        this.clientAccessRoles = Arrays.asList(
+                getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class),
+                getRegisterService().getValue(CommonAccessRoles.USER_ACCESS_ROLE_CODE, AccessRole.class));
+
     }
 
     @Cacheable(cacheName = "cache5min")
@@ -63,8 +68,7 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
         Validate.notNull(businessUserRole);
         Preconditions.checkNotNull(businessUserRole.getBusinessUser(), "Client.businessUser must not be null!");
         if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
-            businessUserRole.getBusinessUser().setAccessRoles(Collections.singletonList(
-                    getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class)));
+            businessUserRole.getBusinessUser().setAccessRoles(clientAccessRoles);
         }
 
     }

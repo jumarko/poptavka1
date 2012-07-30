@@ -28,7 +28,6 @@ public class PoptavkaUserAuthentication implements Authentication {
     private final User loggedUser;
 
     public PoptavkaUserAuthentication(User loggedUser, Authentication authentication) {
-        this.grantedAuthority = new ArrayList<GrantedAuthority>();
         for (AccessRole role : loggedUser.getAccessRoles()) {
             this.grantedAuthority.add(new SimpleGrantedAuthority(role.getCode()));
         }

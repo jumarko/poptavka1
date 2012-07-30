@@ -14,6 +14,7 @@ public final class CommonAccessRoles {
         // only wrapper for access role codes
     }
 
+    public static final String USER_ACCESS_ROLE_CODE = "user";
     public static final String CLIENT_ACCESS_ROLE_CODE = "client";
     public static final String SUPPLIER_ACCESS_ROLE_CODE = "supplier";
 
