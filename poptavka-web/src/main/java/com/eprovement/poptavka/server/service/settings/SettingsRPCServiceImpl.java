@@ -1,12 +1,10 @@
 package com.eprovement.poptavka.server.service.settings;
 
-import com.eprovement.poptavka.application.security.GwtMethod;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import com.google.gwt.core.client.GWT;
 import com.googlecode.genericdao.search.Search;
@@ -31,7 +29,7 @@ import com.eprovement.poptavka.shared.domain.settings.SettingsDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-@Component(SettingsRPCService.URL)
+@Configurable(SettingsRPCService.URL)
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
 
@@ -54,8 +52,6 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
     //TODO Nahradit konverterom???
     @Override
-    @Secured({"client", "supplier" })
-    @GwtMethod
     public SettingsDetail getUserSettings(long userId) throws RPCException {
         GWT.log("Getting user settings for user:" + userId);
         final BusinessUser user = (BusinessUser) generalService.searchUnique(new Search(User.class).addFilterEqual("id",

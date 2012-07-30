@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.server.service.homedemands;
 
+import com.eprovement.poptavka.application.security.GwtMethod;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
@@ -37,8 +38,9 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import org.springframework.security.access.annotation.Secured;
 
 /**
  * <b>HomeDemandsRPCServiceImpl</b> is RPC service for HomeDemands module. It
@@ -58,7 +60,7 @@ import org.springframework.stereotype.Component;
  *
  * TODO Praso - doplnit komentare k metodam a optimalizovat na stranke backendu
  */
-@Component(HomeDemandsRPCService.URL)
+@Configurable(HomeDemandsRPCService.URL)
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HomeDemandsRPCServiceImpl.class);
@@ -130,6 +132,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @throws RPCException
      */
     @Override
+    @Secured({"client", "supplier" })
+    @GwtMethod
     public long getDemandsCount(SearchModuleDataHolder detail) throws RPCException {
         if (detail == null) {
             return filterWithoutAttributesCount(null);
