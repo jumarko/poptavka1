@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -32,7 +31,6 @@ public class FullDemandDetail implements Serializable, TableDisplay {
      * Generated serialVersionUID.
      */
     private static final long serialVersionUID = -530982467233195456L;
-    private final static Logger LOGGER = Logger.getLogger("FullDemandDetail");
 
     public enum DemandField {
 
