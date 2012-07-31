@@ -15,7 +15,10 @@ public final class CommonAccessRoles {
     private CommonAccessRoles() {
     }
 
-    public static final AccessRoleDetail ADMIN = new AccessRoleDetail("admin");
-    public static final AccessRoleDetail CLIENT = new AccessRoleDetail("client");
-    public static final AccessRoleDetail SUPPLIER = new AccessRoleDetail("supplier");
+    public static final AccessRoleDetail ADMIN = new AccessRoleDetail(
+            com.eprovement.poptavka.domain.enums.CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE);
+    public static final AccessRoleDetail CLIENT = new AccessRoleDetail(
+            com.eprovement.poptavka.domain.enums.CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE);
+    public static final AccessRoleDetail SUPPLIER = new AccessRoleDetail(
+            com.eprovement.poptavka.domain.enums.CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE);
 }
