@@ -71,6 +71,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
 
@@ -89,6 +90,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
 
@@ -108,6 +110,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
 
@@ -126,6 +129,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
 
@@ -144,6 +148,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
 
@@ -162,6 +167,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ExceptionUtils.showErrorDialog(errorDialog, caught);
                         throw new UnsupportedOperationException("Not supported yet.");
                     }
 

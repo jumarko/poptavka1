@@ -7,7 +7,9 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.DeclarePrecedence;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 
 /**
@@ -23,6 +25,7 @@ import org.springframework.security.core.AuthenticationException;
  * @see ApplicationSecurityException
  */
 @Aspect
+@DeclarePrecedence("SecurityExceptionAspect, *")
 public class SecurityExceptionAspect {
 
     @Pointcut("execution(public * com.eprovement.poptavka..*RPCServiceImpl.*(..))")
@@ -32,9 +35,12 @@ public class SecurityExceptionAspect {
     public Object translateSecurityException(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         try {
             return proceedingJoinPoint.proceed();
-        } catch (AuthenticationException e) {
+        } catch (AuthenticationException ae) {
             throw new ApplicationSecurityException("Unauthorized access to method="
-                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), e);
+                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), ae);
+        } catch (AccessDeniedException ade) {
+            throw new ApplicationSecurityException("Access denied to method="
+                    + proceedingJoinPoint.getClass() + ":" + proceedingJoinPoint.getSignature(), ade);
         }
     }
 }

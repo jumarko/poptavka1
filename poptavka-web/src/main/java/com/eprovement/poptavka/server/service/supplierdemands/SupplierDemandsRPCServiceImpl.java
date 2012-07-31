@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.supplierdemands;
 
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.domain.message.Message;
@@ -21,6 +22,7 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,7 +100,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter) {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public long getSupplierPotentialProjectsCount(long supplierID, SearchModuleDataHolder filter)
+        throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -117,8 +122,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getSupplierPotentialProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -135,7 +141,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter) {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public long getSupplierContestsCount(long supplierID, SearchModuleDataHolder filter)
+        throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -153,8 +161,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getSupplierContests(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -170,7 +179,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter) {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public long getSupplierAssignedProjectsCount(long supplierID, SearchModuleDataHolder filter)
+        throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return 1L;
     }
@@ -188,8 +199,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public List<FullOfferDetail> getSupplierAssignedProjects(long supplierID, int start, int maxResult,
-            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) {
+            SearchModuleDataHolder filter, Map<String, OrderType> orderColumns) throws ApplicationSecurityException {
         //TODO Martin - implement when implemented on backend
         return getFakeData();
     }
@@ -198,19 +210,22 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
     /* Other getter methods                                                         */
     /**************************************************************************/
     @Override
-    public FullDemandDetail getFullDemandDetail(long demandId) {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public FullDemandDetail getFullDemandDetail(long demandId) throws ApplicationSecurityException {
         return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
     }
 
     @Override
-    public FullSupplierDetail getFullSupplierDetail(long supplierId) {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public FullSupplierDetail getFullSupplierDetail(long supplierId) throws ApplicationSecurityException {
         return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
     }
 
     @Override
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     // TODO call setMessageReadStatus in body
     public ArrayList<MessageDetail> getSuppliersPotentialDemandConversation(
-            long threadId, long userId, long userMessageId) throws RPCException {
+            long threadId, long userId, long userMessageId) throws RPCException, ApplicationSecurityException {
         Message threadRoot = messageService.getById(threadId);
 
         setMessageReadStatus(Arrays.asList(new Long[]{userMessageId}), true);
@@ -234,7 +249,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead) throws RPCException {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public void setMessageReadStatus(List<Long> userMessageIds, boolean isRead)
+        throws RPCException, ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setRead(isRead);
@@ -247,7 +264,9 @@ public class SupplierDemandsRPCServiceImpl extends AutoinjectingRemoteService
      * Change 'star' status of sent messages to chosen value
      */
     @Override
-    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
+    public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred)
+        throws RPCException, ApplicationSecurityException {
         for (Long userMessageId : userMessageIds) {
             UserMessage userMessage = this.generalService.find(UserMessage.class, userMessageId);
             userMessage.setStarred(isStarred);

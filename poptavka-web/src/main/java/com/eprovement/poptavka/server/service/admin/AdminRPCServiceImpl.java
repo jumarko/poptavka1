@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.server.service.admin;
 
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
+import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Problem;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import com.googlecode.genericdao.search.Search;
@@ -209,6 +211,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminDemandsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -220,6 +223,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<FullDemandDetail> getAdminDemands(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Demand.class);
@@ -233,6 +237,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateDemand(FullDemandDetail fullDemandDetail) throws RPCException {
         Demand demand = demandService.getById(fullDemandDetail.getDemandId());
         if (!demand.getMaxSuppliers().equals(fullDemandDetail.getMaxOffers())) {
@@ -280,6 +285,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminClientsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -291,6 +297,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ClientDetail> getAdminClients(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Client.class);
@@ -304,6 +311,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateClient(ClientDetail clientDetail) throws RPCException {
         Client client = generalService.find(Client.class, clientDetail.getId());
         if (client.getOveralRating() != clientDetail.getOveralRating()) {
@@ -321,6 +329,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminSuppliersCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -332,6 +341,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<FullSupplierDetail> getAdminSuppliers(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Supplier.class);
@@ -345,6 +355,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateSupplier(FullSupplierDetail supplierDetail) throws RPCException {
         Supplier supplier = generalService.find(Supplier.class, supplierDetail.getSupplierId());
         generalService.merge(supplier);
@@ -357,6 +368,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminOffersCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -368,6 +380,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<OfferDetail> getAdminOffers(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Offer.class);
@@ -381,6 +394,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateOffer(OfferDetail offerDetail) {
         Offer offer = generalService.find(Offer.class, offerDetail.getId());
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
@@ -410,6 +424,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminAccessRolesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -421,6 +436,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<AccessRoleDetail> getAdminAccessRoles(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(AccessRole.class);
@@ -434,6 +450,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateAccessRole(AccessRoleDetail accessRoleDetail) throws RPCException {
         AccessRole accessRole = generalService.find(AccessRole.class, accessRoleDetail.getId());
         if (!accessRole.getName().equals(accessRoleDetail.getName())) {
@@ -456,6 +473,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminEmailsActivationCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -467,6 +485,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ActivationEmailDetail> getAdminEmailsActivation(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(ActivationEmail.class);
@@ -480,6 +499,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateEmailActivation(ActivationEmailDetail emailActivationDetail) {
         ActivationEmail emailActivation = generalService.find(ActivationEmail.class, emailActivationDetail.getId());
         if (!emailActivation.getActivationLink().equals(emailActivationDetail.getActivationLink())) {
@@ -498,6 +518,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminInvoicesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -509,6 +530,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<InvoiceDetail> getAdminInvoices(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Invoice.class);
@@ -522,6 +544,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateInvoice(InvoiceDetail invoiceDetail) throws RPCException {
         Invoice invoice = generalService.find(Invoice.class, invoiceDetail.getId());
         if (!invoice.getInvoiceNumber().equals(invoiceDetail.getInvoiceNumber())) {
@@ -577,6 +600,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminMessagesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -588,6 +612,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<MessageDetail> getAdminMessages(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Message.class);
@@ -602,6 +627,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateMessage(MessageDetail messageDetail) throws RPCException {
         Message message = generalService.find(Message.class, messageDetail.getMessageId());
         try {
@@ -635,6 +661,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminOurPaymentDetailsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -646,6 +673,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentDetail> getAdminOurPaymentDetails(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(OurPaymentDetails.class);
@@ -659,6 +687,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateOurPaymentDetail(PaymentDetail paymentDetail) throws RPCException {
         OurPaymentDetails ourPaymentDetails = generalService.find(OurPaymentDetails.class, paymentDetail.getId());
         if (!ourPaymentDetails.getBankAccount().equals(paymentDetail.getBankAccount())) {
@@ -710,6 +739,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPaymentMethodsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -721,6 +751,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentMethodDetail> getAdminPaymentMethods(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(PaymentMethod.class);
@@ -734,6 +765,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentMethodDetail> getAdminPaymentMethods() {
         final Search search = new Search(PaymentMethod.class);
         search.addSort("id", false);
@@ -741,6 +773,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updatePaymentMethod(PaymentMethodDetail paymentMethodDetail) throws RPCException {
         PaymentMethod paymentMethod = generalService.find(PaymentMethod.class, paymentMethodDetail.getId());
         if (!paymentMethod.getName().equals(paymentMethodDetail.getName())) {
@@ -759,6 +792,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPermissionsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -770,6 +804,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PermissionDetail> getAdminPermissions(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Permission.class);
@@ -783,6 +818,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updatePermission(PermissionDetail permissionDetail) throws RPCException {
         Permission permission = generalService.find(Permission.class, permissionDetail.getId());
         if (!permission.getName().equals(permissionDetail.getName())) {
@@ -804,6 +840,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPreferencesCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -815,6 +852,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PreferenceDetail> getAdminPreferences(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Preference.class);
@@ -828,6 +866,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updatePreference(PreferenceDetail preferenceDetail) throws RPCException {
         Preference preference = generalService.find(Preference.class, preferenceDetail.getId());
         if (!preference.getKey().equals(preferenceDetail.getKey())) {
@@ -849,6 +888,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      *********************************************************************************************
      */
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminProblemsCount(SearchModuleDataHolder searchDataHolder) throws RPCException {
         Search search = null;
         if (searchDataHolder == null) {
@@ -860,6 +900,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ProblemDetail> getAdminProblems(int start, int count,
             SearchModuleDataHolder searchDataHolder, Map<String, OrderType> orderColumns) throws RPCException {
         Search search = new Search(Problem.class);
@@ -873,6 +914,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void updateProblem(ProblemDetail problemDetail) throws RPCException {
         Problem problem = generalService.find(Problem.class, problemDetail.getId());
         if (!problem.getText().equals(problemDetail.getText())) {
