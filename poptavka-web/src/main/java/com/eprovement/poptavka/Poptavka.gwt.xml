@@ -31,6 +31,7 @@
 
     <inherits name='com.eprovement.poptavka.DomainEnums' />
     <inherits name='com.eprovement.poptavka.Exception' />
+    <inherits name='com.googlecode.genericdao.search.GenericDao' />
 
     <entry-point class="com.eprovement.poptavka.client.Poptavka"/>
 

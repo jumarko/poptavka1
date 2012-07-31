@@ -243,6 +243,14 @@
             <classifier>sources</classifier>
         </dependency>
 
+        <!--To be able to share some POJOs from generic dao on client, we must add its sources-->
+        <dependency>
+            <groupId>com.googlecode.genericdao</groupId>
+            <artifactId>search</artifactId>
+            <version>${genericdao.version}</version>
+            <classifier>sources</classifier>
+        </dependency>
+
     <!-- Required by Hibernate validator because slf4j-log4j is
          optional in the hibernate-validator POM
      -->
