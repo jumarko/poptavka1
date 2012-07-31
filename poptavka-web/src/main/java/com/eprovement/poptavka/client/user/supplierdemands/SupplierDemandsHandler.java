@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
@@ -8,10 +9,6 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -65,17 +62,8 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     //*************************************************************************/
 
     private void getSupplierPotentialProjectsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
-        supplierDemandsService.getSupplierPotentialProjectsCount(
-                Storage.getUser().getUserId(), detail,
-                new AsyncCallback<Long>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
-                    @Override
+        supplierDemandsService.getSupplierPotentialProjectsCount(Storage.getUser().getUserId(), detail,
+                new SecuredAsyncCallback<Long>() {
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
                     }
@@ -86,14 +74,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         supplierDemandsService.getSupplierPotentialProjects(
                 Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<FullOfferDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
+                new SecuredAsyncCallback<List<FullOfferDetail>>() {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
 //                        eventBus.displaySupplierPotentialProjects(result);
@@ -105,15 +86,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
 
     private void getSupplierContestsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
         supplierDemandsService.getSupplierContestsCount(
-                Storage.getUser().getUserId(), detail,
-                new AsyncCallback<Long>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
+                Storage.getUser().getUserId(), detail, new SecuredAsyncCallback<Long>() {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -125,14 +98,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         supplierDemandsService.getSupplierContests(
                 Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<FullOfferDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
+                new SecuredAsyncCallback<List<FullOfferDetail>>() {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displaySupplierDemandsData(result);
@@ -144,14 +110,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
     private void getSupplierAssignedProjectsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
         supplierDemandsService.getSupplierAssignedProjectsCount(
                 Storage.getUser().getUserId(), detail,
-                new AsyncCallback<Long>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
+                new SecuredAsyncCallback<Long>() {
                     @Override
                     public void onSuccess(Long result) {
                         grid.createAsyncDataProvider(result.intValue());
@@ -163,14 +122,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
             SearchModuleDataHolder detail, Map<String, OrderType> orderColumns) {
         supplierDemandsService.getSupplierAssignedProjects(
                 Storage.getUser().getUserId(), start, maxResults, detail, orderColumns,
-                new AsyncCallback<List<FullOfferDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-
+                new SecuredAsyncCallback<List<FullOfferDetail>>() {
                     @Override
                     public void onSuccess(List<FullOfferDetail> result) {
                         eventBus.displaySupplierDemandsData(result);
@@ -188,17 +140,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        supplierDemandsService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error in MessageHandler in method: onRequestReadStatusUpdate"
-                        + caught.getMessage());
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        supplierDemandsService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -213,17 +155,7 @@ public class SupplierDemandsHandler extends BaseEventHandler<SupplierDemandsEven
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        supplierDemandsService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error in MessageHandler in method: onRequestStarStatusUpdate"
-                        + caught.getMessage());
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        supplierDemandsService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default

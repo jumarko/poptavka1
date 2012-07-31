@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -11,8 +11,6 @@ import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
  * Handler for RPC calls for localities & categories.
@@ -40,14 +38,12 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     }
 
     public void onRegisterSupplier(BusinessUserDetail newSupplier) {
-        supplierCreationService.createNewSupplier(newSupplier, new AsyncCallback<BusinessUserDetail>() {
+        supplierCreationService.createNewSupplier(newSupplier, new SecuredAsyncCallback<BusinessUserDetail>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            protected void onServiceFailure(Throwable caught) {
+                // TODO: this failure handling code
                 eventBus.loadingHide();
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
             }
 
             @Override
@@ -59,15 +55,7 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
     }
 
     public void onCheckFreeEmail(String email) {
-        userRpcService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);

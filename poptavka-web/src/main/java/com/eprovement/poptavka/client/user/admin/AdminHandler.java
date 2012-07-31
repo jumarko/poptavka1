@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -25,9 +26,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -145,15 +143,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  DEMAND SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminDemandsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminDemandsCount(searchDataHolder, new AsyncCallback<Long>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        generalService.getAdminDemandsCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -164,13 +154,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminDemands(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminDemands(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<FullDemandDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<FullDemandDetail>>() {
                     @Override
                     public void onSuccess(List<FullDemandDetail> result) {
                         eventBus.displayAdminTabDemands(result);
@@ -179,14 +163,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateDemand(FullDemandDetail demand) {
-        generalService.updateDemand(demand, new AsyncCallback<FullDemandDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        generalService.updateDemand(demand, new SecuredAsyncCallback<FullDemandDetail>() {
             @Override
             public void onSuccess(FullDemandDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -196,13 +173,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     //------------------- DEMAND SECTION - CATEGORY SECTION. -------------------------------
     public void onGetAdminDemandRootCategories() {
-        categoryService.getAllRootCategories(new AsyncCallback<List<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        categoryService.getAllRootCategories(new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> result) {
                 eventBus.displayAdminDemandCategories(result);
@@ -211,13 +182,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminDemandSubCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> result) {
                 eventBus.displayAdminDemandCategories(result);
@@ -226,13 +191,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminDemandParentCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> result) {
                 eventBus.doBackDemandCategories(result);
@@ -242,13 +201,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     //------------------- DEMAND SECTION - LOCALITY SECTION. -------------------------------
     public void onGetAdminDemandRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<List<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        localityService.getLocalities(LocalityType.REGION, new SecuredAsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminDemandLocalities(result);
@@ -257,13 +210,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminDemandSubLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminDemandLocalities(result);
@@ -272,13 +219,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminDemandParentLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onSuccess(List<LocalityDetail> result) {
                 eventBus.doBackDemandLocalities(result);
@@ -290,13 +231,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  SUPPLIER SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminSuppliersCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminSuppliersCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminSuppliersCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -307,13 +242,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminSuppliers(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminSuppliers(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<FullSupplierDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<FullSupplierDetail>>() {
                     @Override
                     public void onSuccess(List<FullSupplierDetail> result) {
                         eventBus.displayAdminTabSuppliers(result);
@@ -322,13 +251,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateSupplier(FullSupplierDetail supplier) {
-        generalService.updateSupplier(supplier, new AsyncCallback<FullSupplierDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updateSupplier(supplier, new SecuredAsyncCallback<FullSupplierDetail>() {
             @Override
             public void onSuccess(FullSupplierDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -338,13 +261,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     //----------------------- SUPPLIER SECTION - CATEGORY SECTION. ---------------------------------
     public void onGetAdminSupplierRootCategories() {
-        categoryService.getAllRootCategories(new AsyncCallback<List<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        categoryService.getAllRootCategories(new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> result) {
                 eventBus.displayAdminSupplierCategories(result);
@@ -353,13 +270,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminSupplierSubCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> result) {
                 eventBus.displayAdminSupplierCategories(result);
@@ -368,13 +279,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminSupplierParentCategories(Long catId) {
-        categoryService.getCategoryChildren(catId, new AsyncCallback<List<CategoryDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        categoryService.getCategoryChildren(catId, new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> result) {
                 eventBus.doBackSupplierCategories(result);
@@ -384,13 +289,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
     //-------------------------- SUPPLIER SECTION - LOCALITY SECTION. -----------------------------
     public void onGetAdminSupplierRootLocalities() {
-        localityService.getLocalities(LocalityType.REGION, new AsyncCallback<List<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        localityService.getLocalities(LocalityType.REGION, new SecuredAsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminDemandLocalities(result);
@@ -399,13 +298,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminSupplierSubLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onSuccess(List<LocalityDetail> result) {
                 eventBus.displayAdminSupplierLocalities(result);
@@ -414,13 +307,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onGetAdminSupplierParentLocalities(String locCode) {
-        localityService.getLocalities(locCode, new AsyncCallback<List<LocalityDetail>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        localityService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>() {
             @Override
             public void onSuccess(List<LocalityDetail> result) {
                 eventBus.doBackSupplierLocalities(result);
@@ -432,13 +319,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  OFFER SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminOffersCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminOffersCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminOffersCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -449,13 +330,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminOffers(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminOffers(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<OfferDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<OfferDetail>>() {
                     @Override
                     public void onSuccess(List<OfferDetail> result) {
                         eventBus.displayAdminTabOffers(result);
@@ -464,17 +339,10 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateOffer(OfferDetail offer) {
-        generalService.updateOffer(offer, new AsyncCallback<OfferDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    RPCException commonException = (RPCException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
-                }
-            }
+        generalService.updateOffer(offer, new SecuredAsyncCallback<OfferDetail>() {
             @Override
             public void onSuccess(OfferDetail result) {
+                // TODO: what's wrong with this ?
 //                eventBus.refreshUpdatedOffer(result);
             }
         });
@@ -484,15 +352,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  CLIENT SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminClientsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminClientsCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    RPCException commonException = (RPCException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
-                }
-            }
+        generalService.getAdminClientsCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -503,15 +363,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminClients(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminClients(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<ClientDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            RPCException commonException = (RPCException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
-                        }
-                    }
+                new SecuredAsyncCallback<List<ClientDetail>>() {
                     @Override
                     public void onSuccess(List<ClientDetail> result) {
                         eventBus.displayAdminTabClients(result);
@@ -520,16 +372,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateClient(ClientDetail client) {
-        generalService.updateClient(client, new AsyncCallback<ClientDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updateClient(client, new SecuredAsyncCallback<ClientDetail>() {
             @Override
             public void onSuccess(ClientDetail result) {
-//                eventBus.refreshUpdatedDemand(result);
+                // TODO: what's wrong with this ?
+                //                eventBus.refreshUpdatedDemand(result);
             }
         });
     }
@@ -538,15 +385,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  ACCESS ROLE SECTION. *************************************************
      **********************************************************************************************/
     public void getAdminAccessRolesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminAccessRolesCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    RPCException commonException = (RPCException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
-                }
-            }
+        generalService.getAdminAccessRolesCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -557,15 +396,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminAccessRoles(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminAccessRoles(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<AccessRoleDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            RPCException commonException = (RPCException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
-                        }
-                    }
+                new SecuredAsyncCallback<List<AccessRoleDetail>>() {
                     @Override
                     public void onSuccess(List<AccessRoleDetail> result) {
                         eventBus.displayAdminTabAccessRoles(result);
@@ -574,15 +405,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateAccessRole(AccessRoleDetail role) {
-        generalService.updateAccessRole(role, new AsyncCallback<AccessRoleDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    RPCException commonException = (RPCException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
-                }
-            }
+        generalService.updateAccessRole(role, new SecuredAsyncCallback<AccessRoleDetail>() {
             @Override
             public void onSuccess(AccessRoleDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -594,15 +417,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  EMAIL ACTIVATION SECTION.*********************************************
      **********************************************************************************************/
     public void getAdminEmailsActivationCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminEmailsActivationCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    RPCException commonException = (RPCException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
-                }
-            }
+        generalService.getAdminEmailsActivationCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -613,15 +428,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminEmailsActivation(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminEmailsActivation(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<ActivationEmailDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            RPCException commonException = (RPCException) caught;
-                            errorDialog = new ErrorDialogPopupView();
-                            errorDialog.show(commonException.getSymbol());
-                        }
-                    }
+                new SecuredAsyncCallback<List<ActivationEmailDetail>>() {
                     @Override
                     public void onSuccess(List<ActivationEmailDetail> result) {
                         eventBus.displayAdminTabEmailsActivation(result);
@@ -630,15 +437,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateEmailActivation(ActivationEmailDetail client) {
-        generalService.updateEmailActivation(client, new AsyncCallback<ActivationEmailDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    RPCException commonException = (RPCException) caught;
-                    errorDialog = new ErrorDialogPopupView();
-                    errorDialog.show(commonException.getSymbol());
-                }
-            }
+        generalService.updateEmailActivation(client, new SecuredAsyncCallback<ActivationEmailDetail>() {
             @Override
             public void onSuccess(ActivationEmailDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -650,13 +449,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  INVOICE SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminInvoicesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminInvoicesCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminInvoicesCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -667,13 +460,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminInvoices(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminInvoices(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<InvoiceDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<InvoiceDetail>>() {
                     @Override
                     public void onSuccess(List<InvoiceDetail> result) {
                         eventBus.displayAdminTabInvoices(result);
@@ -682,13 +469,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateInvoice(InvoiceDetail client) {
-        generalService.updateInvoice(client, new AsyncCallback<InvoiceDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updateInvoice(client, new SecuredAsyncCallback<InvoiceDetail>() {
             @Override
             public void onSuccess(InvoiceDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -700,13 +481,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  Message SECTION. *****************************************************
      **********************************************************************************************/
     public void getAdminMessagesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminMessagesCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminMessagesCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -717,13 +492,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminMessages(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminMessages(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<MessageDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<MessageDetail>>() {
                     @Override
                     public void onSuccess(List<MessageDetail> result) {
                         eventBus.displayAdminTabMessages(result);
@@ -732,13 +501,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateMessage(MessageDetail client) {
-        generalService.updateMessage(client, new AsyncCallback<MessageDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updateMessage(client, new SecuredAsyncCallback<MessageDetail>() {
             @Override
             public void onSuccess(MessageDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -750,13 +513,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  OUR PAYMENT DETAILS SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminOurPaymentDetailsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminOurPaymentDetailsCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminOurPaymentDetailsCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -767,13 +524,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminOurPaymentDetails(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminOurPaymentDetails(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<PaymentDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<PaymentDetail>>() {
                     @Override
                     public void onSuccess(List<PaymentDetail> result) {
                         eventBus.displayAdminTabOurPaymentDetails(result);
@@ -782,13 +533,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateOurPaymentDetail(PaymentDetail client) {
-        generalService.updateOurPaymentDetail(client, new AsyncCallback<PaymentDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updateOurPaymentDetail(client, new SecuredAsyncCallback<PaymentDetail>() {
             @Override
             public void onSuccess(PaymentDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -800,13 +545,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PAYMENT METHOD SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminPaymentMethodsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminPaymentMethodsCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminPaymentMethodsCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -817,13 +556,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminPaymentMethods(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminPaymentMethods(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<PaymentMethodDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<PaymentMethodDetail>>() {
                     @Override
                     public void onSuccess(List<PaymentMethodDetail> result) {
                         eventBus.displayAdminTabPaymentMethods(result);
@@ -832,13 +565,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdatePaymentMethod(PaymentMethodDetail paymentMethods) {
-        generalService.updatePaymentMethod(paymentMethods, new AsyncCallback<PaymentMethodDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updatePaymentMethod(paymentMethods, new SecuredAsyncCallback<PaymentMethodDetail>() {
             @Override
             public void onSuccess(PaymentMethodDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -850,13 +577,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PERMISSIONS SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminPermissionsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminPermissionsCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminPermissionsCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -867,13 +588,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminPermissions(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminPermissions(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<PermissionDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<PermissionDetail>>() {
                     @Override
                     public void onSuccess(List<PermissionDetail> result) {
                         eventBus.displayAdminTabPermissions(result);
@@ -882,13 +597,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdatePermission(PermissionDetail permissions) {
-        generalService.updatePermission(permissions, new AsyncCallback<PermissionDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updatePermission(permissions, new SecuredAsyncCallback<PermissionDetail>() {
             @Override
             public void onSuccess(PermissionDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -900,13 +609,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PREFERENCES SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminPreferencesCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminPreferencesCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminPreferencesCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -917,13 +620,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminPreferences(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminPreferences(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<PreferenceDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<PreferenceDetail>>() {
                     @Override
                     public void onSuccess(List<PreferenceDetail> result) {
                         eventBus.displayAdminTabPreferences(result);
@@ -932,13 +629,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdatePreference(PreferenceDetail client) {
-        generalService.updatePreference(client, new AsyncCallback<PreferenceDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updatePreference(client, new SecuredAsyncCallback<PreferenceDetail>() {
             @Override
             public void onSuccess(PreferenceDetail result) {
 //                eventBus.refreshUpdatedDemand(result);
@@ -950,13 +641,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  PROBLEM SECTION. *****************************************
      **********************************************************************************************/
     public void getAdminProblemsCount(final UniversalAsyncGrid grid, SearchModuleDataHolder searchDataHolder) {
-        generalService.getAdminProblemsCount(searchDataHolder, new AsyncCallback<Long>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.getAdminProblemsCount(searchDataHolder, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -967,13 +652,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     public void getAdminProblems(int start, int count, SearchModuleDataHolder searchDataHolder,
             Map<String, OrderType> orderColumns) {
         generalService.getAdminProblems(start, count, searchDataHolder, orderColumns,
-                new AsyncCallback<List<ProblemDetail>>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
+                new SecuredAsyncCallback<List<ProblemDetail>>() {
                     @Override
                     public void onSuccess(List<ProblemDetail> result) {
                         eventBus.displayAdminTabProblems(result);
@@ -982,13 +661,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void onUpdateProblem(ProblemDetail client) {
-        generalService.updateProblem(client, new AsyncCallback<ProblemDetail>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
+        generalService.updateProblem(client, new SecuredAsyncCallback<ProblemDetail>() {
             @Override
             public void onSuccess(ProblemDetail result) {
 //                eventBus.refreshUpdatedDemand(result);

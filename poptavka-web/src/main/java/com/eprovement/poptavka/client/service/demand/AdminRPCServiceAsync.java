@@ -1,9 +1,9 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.domain.enums.OrderType;

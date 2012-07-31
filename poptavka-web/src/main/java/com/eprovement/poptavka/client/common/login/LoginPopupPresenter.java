@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.login;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
@@ -10,7 +11,6 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -23,8 +23,6 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 @Presenter(view = LoginPopupView.class, multiple = true)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, RootEventBus> {
@@ -100,13 +98,11 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
                 GWT.log("exception during login");
             }
             //DEVEL ONLY FOR FAST LOGIN
-            userService.loginUser(username, password, new AsyncCallback<UserDetail>() {
+            userService.loginUser(username, password, new SecuredAsyncCallback<UserDetail>() {
 
                 @Override
-                public void onFailure(Throwable caught) {
-                    if (caught instanceof RPCException) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                    }
+                protected void onServiceFailure(Throwable caught) {
+                    // TODO: review this failure handling code
                     view.setUnknownError();
                 }
 

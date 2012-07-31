@@ -1,9 +1,10 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -14,8 +15,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.List;
 import java.util.Map;
@@ -51,15 +50,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * @return list of parents and given category
      */
     public void onGetCategoryParents(Long categoryId) {
-        homeSuppliersService.getCategoryParents(categoryId, new AsyncCallback<ArrayList<CategoryDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        homeSuppliersService.getCategoryParents(categoryId, new SecuredAsyncCallback<ArrayList<CategoryDetail>>() {
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
                 eventBus.updatePath(result);
@@ -71,34 +62,16 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * Get all categories. Used for display in listBox categories.
      */
     public void onGetCategories() {
-        homeSuppliersService.getCategories(
-                new AsyncCallback<ArrayList<CategoryDetail>>() {
-
-                    @Override
-                    public void onSuccess(ArrayList<CategoryDetail> list) {
-                        eventBus.displayRootcategories(list);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        LOGGER.info("onFailureCategory");
-                    }
-                });
+        homeSuppliersService.getCategories(new SecuredAsyncCallback<ArrayList<CategoryDetail>>() {
+            @Override
+            public void onSuccess(ArrayList<CategoryDetail> list) {
+                eventBus.displayRootcategories(list);
+            }
+        });
     }
 
     public void onGetSubCategories(final Long category) {
-        homeSuppliersService.getCategoryChildren(category, new AsyncCallback<ArrayList<CategoryDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        homeSuppliersService.getCategoryChildren(category, new SecuredAsyncCallback<ArrayList<CategoryDetail>>() {
             @Override
             public void onSuccess(ArrayList<CategoryDetail> result) {
                 LOGGER.info("Found subcategories: " + result.size());
@@ -109,15 +82,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
 
     //*************** GET SUPPLIERS DATA *********************
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchModuleDataHolder detail) {
-        homeSuppliersService.getSuppliersCount(detail, new AsyncCallback<Long>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        homeSuppliersService.getSuppliersCount(detail, new SecuredAsyncCallback<Long>() {
             @Override
             public void onSuccess(Long result) {
                 grid.createAsyncDataProvider(result.intValue());
@@ -128,15 +93,7 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
     public void onGetData(int start, int count, SearchModuleDataHolder search,
             Map<String, OrderType> orderColumns) {
         homeSuppliersService.getSuppliers(start, count, search, orderColumns,
-                new AsyncCallback<List<FullSupplierDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
-
+                new SecuredAsyncCallback<List<FullSupplierDetail>>() {
                     @Override
                     public void onSuccess(List<FullSupplierDetail> result) {
                         eventBus.displaySuppliers(result);

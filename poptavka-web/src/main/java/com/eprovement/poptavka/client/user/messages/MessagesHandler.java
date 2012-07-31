@@ -1,10 +1,8 @@
 package com.eprovement.poptavka.client.user.messages;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.google.gwt.core.client.GWT;
 import java.util.ArrayList;
-
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -18,8 +16,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 import java.util.List;
 
@@ -44,17 +40,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param type
      */
     public void onSendMessage(MessageDetail messageToSend, final String action) {
-        messagesService.sendInternalMessage(messageToSend, new AsyncCallback<MessageDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
-                        + caught.getMessage());
-            }
-
+        messagesService.sendInternalMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 if (action.equals("composeNewForwarded")) {
@@ -74,67 +60,38 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onGetInboxMessages(Long recipientId, SearchModuleDataHolder searchDataHolder) {
-        messagesService.getInboxMessages(recipientId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
-            @Override
-            public void onSuccess(List<UserMessageDetail> result) {
-                eventBus.displayMessages(result);
-            }
-        });
+        messagesService.getInboxMessages(recipientId, searchDataHolder,
+                new SecuredAsyncCallback<List<UserMessageDetail>>() {
+                    @Override
+                    public void onSuccess(List<UserMessageDetail> result) {
+                        eventBus.displayMessages(result);
+                    }
+                });
     }
 
     public void onGetSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder) {
-        messagesService.getSentMessages(senderId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
-            @Override
-            public void onSuccess(List<UserMessageDetail> result) {
-                eventBus.displayMessages(result);
-            }
-        });
+        messagesService.getSentMessages(senderId, searchDataHolder,
+                new SecuredAsyncCallback<List<UserMessageDetail>>() {
+                    @Override
+                    public void onSuccess(List<UserMessageDetail> result) {
+                        eventBus.displayMessages(result);
+                    }
+                });
     }
 
     public void onGetDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder) {
-        messagesService.getDeletedMessages(userId, searchDataHolder, new AsyncCallback<List<UserMessageDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
-            @Override
-            public void onSuccess(List<UserMessageDetail> result) {
-                eventBus.displayMessages(result);
-            }
-        });
+        messagesService.getDeletedMessages(userId, searchDataHolder,
+                new SecuredAsyncCallback<List<UserMessageDetail>>() {
+                    @Override
+                    public void onSuccess(List<UserMessageDetail> result) {
+                        eventBus.displayMessages(result);
+                    }
+                });
     }
 
     public void onRequestConversation(Long threadRootId, Long subRootId) {
         messagesService.getConversationMessages(threadRootId, subRootId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
-
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
                         eventBus.responseConversation(result, ViewType.EDITABLE);
@@ -149,17 +106,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param newStatus of demandList
      */
     public void onRequestReadStatusUpdate(List<Long> selectedIdList, boolean newStatus) {
-        messagesService.setMessageReadStatus(selectedIdList, newStatus, new AsyncCallback<Void>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("Error in MessageHandler in method: onRequestReadStatusUpdate"
-                        + caught.getMessage());
-            }
-
+        messagesService.setMessageReadStatus(selectedIdList, newStatus, new SecuredAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -174,17 +121,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param newStatus of demandList
      */
     public void onRequestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus) {
-        messagesService.setMessageStarStatus(userMessageIdList, newStatus, new AsyncCallback<Void>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("Error in MessageHandler in method: onRequestStarStatusUpdate"
-                        + caught.getMessage());
-            }
-
+        messagesService.setMessageStarStatus(userMessageIdList, newStatus, new SecuredAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 //Empty by default
@@ -193,15 +130,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onDeleteMessages(List<Long> messagesIds) {
-        messagesService.deleteMessages(messagesIds, new AsyncCallback<List<UserMessageDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        messagesService.deleteMessages(messagesIds, new SecuredAsyncCallback<List<UserMessageDetail>>() {
             @Override
             public void onSuccess(List<UserMessageDetail> result) {
                 GWT.log("Messages deleted.");
@@ -210,15 +139,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     }
 
     public void onRequestUserInfo(Long recipientId) {
-        userService.getUserById(recipientId, new AsyncCallback<BusinessUserDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        userService.getUserById(recipientId, new SecuredAsyncCallback<BusinessUserDetail>() {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.responseUserInfo(result);

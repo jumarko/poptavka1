@@ -1,12 +1,12 @@
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -21,8 +21,6 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.History;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
@@ -39,61 +37,36 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /* Localities methods                                                     */
     /**************************************************************************/
     public void onGetLocalities(final LocalityType localityType, final AsyncDataProvider dataProvider) {
-        rootService.getLocalities(localityType,
-                new AsyncCallback<List<LocalityDetail>>() {
+        rootService.getLocalities(localityType, new SecuredAsyncCallback<List<LocalityDetail>>() {
 
-                    @Override
-                    public void onSuccess(List<LocalityDetail> list) {
-                        if (dataProvider != null) {
-                            dataProvider.updateRowData(0, list);
-                        }
-                        eventBus.setLocalityData(localityType, list);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
-                });
+            @Override
+            public void onSuccess(List<LocalityDetail> list) {
+                if (dataProvider != null) {
+                    dataProvider.updateRowData(0, list);
+                }
+                eventBus.setLocalityData(localityType, list);
+            }
+        });
     }
 
     public void onGetChildLocalities(final LocalityType localityType, String locCode,
             final ListDataProvider dataProvider) {
-        rootService.getLocalities(locCode,
-                new AsyncCallback<List<LocalityDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
-
-                    @Override
-                    public void onSuccess(List<LocalityDetail> list) {
-                        if (dataProvider != null) {
-                            dataProvider.setList(list);
-                        }
-                        eventBus.setLocalityData(localityType, list);
-                    }
-                });
+        rootService.getLocalities(locCode, new SecuredAsyncCallback<List<LocalityDetail>>() {
+            @Override
+            public void onSuccess(List<LocalityDetail> list) {
+                if (dataProvider != null) {
+                    dataProvider.setList(list);
+                }
+                eventBus.setLocalityData(localityType, list);
+            }
+        });
     }
 
     /**************************************************************************/
     /* Categories methods                                                     */
     /**************************************************************************/
     public void onGetRootCategories(final AsyncDataProvider dataProvider) {
-        rootService.getCategories(new AsyncCallback<List<CategoryDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        rootService.getCategories(new SecuredAsyncCallback<List<CategoryDetail>>() {
             @Override
             public void onSuccess(List<CategoryDetail> list) {
                 if (dataProvider != null) {
@@ -105,24 +78,16 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onGetChildCategories(long categoryId, final ListDataProvider dataProvider) {
-        rootService.getCategoryChildren(categoryId,
-                new AsyncCallback<List<CategoryDetail>>() {
+        rootService.getCategoryChildren(categoryId, new SecuredAsyncCallback<List<CategoryDetail>>() {
 
-                    @Override
-                    public void onSuccess(List<CategoryDetail> list) {
-                        if (dataProvider != null) {
-                            dataProvider.setList(list);
-                        }
-                        eventBus.setCategoryData(list);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                    }
-                });
+            @Override
+            public void onSuccess(List<CategoryDetail> list) {
+                if (dataProvider != null) {
+                    dataProvider.setList(list);
+                }
+                eventBus.setCategoryData(list);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -132,10 +97,11 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * Get User according to stored sessionID from DB after login.
      */
     public void onGetUser(long userId) {
-        rootService.getUserById(userId, new AsyncCallback<BusinessUserDetail>() {
+        rootService.getUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>() {
 
             @Override
-            public void onFailure(Throwable caught) {
+            protected void onServiceFailure(Throwable caught) {
+                // TODO: review this failure handling code
                 eventBus.loadingHide();
                 Window.alert("Error during getting logged User detail\n"
                         + caught.getMessage());
@@ -143,9 +109,6 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
                 //TODO Martin - not good aproach in my opinion, onAccount method
                 //should first try to login and then change layouts
                 History.back();
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
             }
 
             @Override
@@ -162,17 +125,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     /* DevelDetailWrapper widget methods                                      */
     /**************************************************************************/
     public void onRequestDemandDetail(Long demandId, final ViewType type) {
-        rootService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
-                        + caught.getMessage());
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        rootService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>() {
             @Override
             public void onSuccess(FullDemandDetail result) {
                 eventBus.responseDemandDetail(result, type);
@@ -181,17 +134,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onRequestSupplierDetail(Long supplierId, final ViewType type) {
-        rootService.getFullSupplierDetail(supplierId, new AsyncCallback<FullSupplierDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                Window.alert("Error in DemandModuleHandler in method: onRequestDemandDetail"
-                        + caught.getMessage());
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        rootService.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>() {
             @Override
             public void onSuccess(FullSupplierDetail result) {
                 eventBus.responseSupplierDetail(result, type);
@@ -207,23 +150,12 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param userId
      */
     public void onRequestConversation(long messageId, Long userMessageId, Long userId) {
-        rootService.getConversation(messageId, userId, userMessageId,
-                new AsyncCallback<List<MessageDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        Window.alert("DemandModuleMessageHandler: onRequestConversationForSupplierList:\n\n"
-                                + caught.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(List<MessageDetail> result) {
-                        eventBus.responseConversation(result, ViewType.POTENTIAL);
-                    }
-                });
+        rootService.getConversation(messageId, userId, userMessageId, new SecuredAsyncCallback<List<MessageDetail>>() {
+            @Override
+            public void onSuccess(List<MessageDetail> result) {
+                eventBus.responseConversation(result, ViewType.POTENTIAL);
+            }
+        });
     }
 
     /**************************************************************************/
@@ -237,17 +169,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
      * @param type
      */
     public void onSendQuestionMessage(MessageDetail messageToSend, final ViewType type) {
-        rootService.sendQuestionMessage(messageToSend, new AsyncCallback<MessageDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
-                        + caught.getMessage());
-            }
-
+        rootService.sendQuestionMessage(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.addConversationMessage(sentMessage, type);
@@ -256,17 +178,7 @@ public class RootHandler extends BaseEventHandler<RootEventBus> {
     }
 
     public void onSendOfferMessage(OfferMessageDetail offerMessageToSend, final ViewType type) {
-        rootService.sendOfferMessage(offerMessageToSend, new AsyncCallback<OfferMessageDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
-                        + caught.getMessage());
-            }
-
+        rootService.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<OfferMessageDetail>() {
             @Override
             public void onSuccess(OfferMessageDetail sentMessage) {
                 //Zobrazit offer spravu tiez v konverzacii, alebo ta sa zobrazli

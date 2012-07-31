@@ -1,8 +1,8 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import java.util.logging.Logger;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -13,8 +13,6 @@ import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
  * Handler for RPC calls for DemandCreationModule
@@ -50,26 +48,19 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      */
     public void onVerifyExistingClient(String email, String password) {
         LOGGER.fine("verify start");
-        userRpcService.loginUser(email, password, new AsyncCallback<UserDetail>() {
+        userRpcService.loginUser(email, password, new SecuredAsyncCallback<UserDetail>() {
+
             @Override
-            public void onFailure(Throwable loginException) {
-                LOGGER.info("login error:" + loginException.getMessage());
+            protected void onServiceFailure(Throwable caught) {
+                // TODO: review this failure handling code
+//                LOGGER.info("login error:" + loginException.getMessage());
                 eventBus.loadingHide();
                 eventBus.loginError();
             }
 
             @Override
             public void onSuccess(final UserDetail loggedUser) {
-                userRpcService.getUserById(loggedUser.getUserId(), new AsyncCallback<BusinessUserDetail>() {
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        // TODO
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        throw new IllegalStateException("Cannot get business user for user id="
-                                + loggedUser.getUserId());
-                    }
+                userRpcService.getUserById(loggedUser.getUserId(), new SecuredAsyncCallback<BusinessUserDetail>() {
 
                     @Override
                     public void onSuccess(BusinessUserDetail businessUserDetail) {
@@ -86,15 +77,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      * @param client newly created client
      */
     public void onRegisterNewClient(BusinessUserDetail client) {
-        demandCreationService.createNewClient(client, new AsyncCallback<BusinessUserDetail>() {
-
-            @Override
-            public void onFailure(Throwable arg0) {
-                if (arg0 instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, arg0);
-                }
-            }
-
+        demandCreationService.createNewClient(client, new SecuredAsyncCallback<BusinessUserDetail>() {
             @Override
             public void onSuccess(BusinessUserDetail client) {
                 if (client.getClientId() != -1) {
@@ -114,14 +97,11 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
      */
     public void onCreateDemand(FullDemandDetail detail, Long clientId) {
         demandCreationService.createNewDemand(detail, clientId,
-                new AsyncCallback<FullDemandDetail>() {
-
+                new SecuredAsyncCallback<FullDemandDetail>() {
                     @Override
-                    public void onFailure(Throwable caught) {
+                    protected void onServiceFailure(Throwable caught) {
+                        // TODO: this failure handling code
                         eventBus.loadingHide();
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
                     }
 
                     @Override
@@ -136,15 +116,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
     }
 
     public void onCheckFreeEmail(String email) {
-        userRpcService.checkFreeEmail(email, new AsyncCallback<Boolean>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-            }
-
+        userRpcService.checkFreeEmail(email, new SecuredAsyncCallback<Boolean>() {
             @Override
             public void onSuccess(Boolean result) {
                 LOGGER.fine("result of compare " + result);

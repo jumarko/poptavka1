@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.exceptions;
 
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PopupPanel;
 
 public final class ExceptionUtils {
 
@@ -8,9 +9,15 @@ public final class ExceptionUtils {
         super();
     }
 
-    public static void showErrorDialog(ErrorDialogPopupView errorDialog, Throwable caught) {
-        RPCException commonException = (RPCException) caught;
-        errorDialog = new ErrorDialogPopupView();
-        errorDialog.show(commonException.getSymbol());
+    public static void showErrorDialog(String errorTitle, String errorMessage) {
+
+
+        // TODO: show more handy popup
+        final PopupPanel errorPanel = new PopupPanel(true, true);
+        errorPanel.setWidget(new HTML(errorMessage));
+        errorPanel.center();
+        errorPanel.show();
+
     }
+
 }

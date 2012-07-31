@@ -1,9 +1,8 @@
 package com.eprovement.poptavka.client.user.demands.handler;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import java.util.ArrayList;
 
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -13,8 +12,6 @@ import com.eprovement.poptavka.client.service.demand.DemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.demands.DemandEventBus;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
  * TODO Praso - Preco mame dve Handler triedy pre modul Demands?
@@ -43,17 +40,7 @@ public class DemandMessageHandler extends BaseEventHandler<DemandEventBus> {
      */
     public void onRequestChatForSupplierList(long messageId, Long userMessageId, Long userId) {
         demandsService.loadSuppliersPotentialDemandConversation(messageId, userId, userMessageId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
-
-                @Override
-                public void onFailure(Throwable caught) {
-                    if (caught instanceof RPCException) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                    }
-                    Window.alert("DemandModuleMessageHandler: onRequestConversationForSupplierList:\n\n"
-                            + caught.getMessage());
-                }
-
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
                 @Override
                 public void onSuccess(ArrayList<MessageDetail> result) {
 //                    eventBus.responseChatForSupplierList(result, ViewType.POTENTIAL);
@@ -70,17 +57,7 @@ public class DemandMessageHandler extends BaseEventHandler<DemandEventBus> {
      * @param type
      */
     public void onSendMessage(MessageDetail messageToSend, final ViewType type) {
-        demandsService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("DemandModuleMessageHandler: onSendMessage:\n\n"
-                        + caught.getMessage());
-            }
-
+        demandsService.sendQueryToPotentialDemand(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 eventBus.sendMessageResponse(sentMessage, type);

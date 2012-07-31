@@ -1,10 +1,10 @@
 package com.eprovement.poptavka.client.user.handler;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -20,8 +20,6 @@ import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.PotentialDemandMessage;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 @EventHandler
 public class MessageHandler extends BaseEventHandler<UserEventBus> {
@@ -34,12 +32,8 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // Beho: ??? needed ???
     public void onGetClientDemands(Long userId, int fakeParameter) {
-//        messageService.getClientDemands(userId, fakeParameter, new AsyncCallback<ArrayList<ClientDemandDetail>>() {
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                Window.alert("MessageHandler: onGetClientDemands:\n\n" + caught.getMessage());
-//            }
-//
+//        messageService.getClientDemands(userId, fakeParameter,
+// new SecuredAsyncCallback<ArrayList<ClientDemandDetail>>() {
 //            @Override
 //            public void onSuccess(ArrayList<ClientDemandDetail> result) {
 ////                eventBus.responseClientDemands(result);
@@ -50,16 +44,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetClientDemandWithConversations(Long userId, Long clientId) {
         messageService.getListOfClientDemandMessages(userId, clientId,
-                new AsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
-
-                @Override
-                public void onFailure(Throwable caught) {
-                    if (caught instanceof RPCException) {
-                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-                    }
-                    Window.alert("MessageHandler: onGetClientDemandCOnversations:\n\n" + caught.getMessage());
-                }
-
+                new SecuredAsyncCallback<ArrayList<ClientDemandMessageDetail>>() {
                 @Override
                 public void onSuccess(ArrayList<ClientDemandMessageDetail> result) {
                     eventBus.setClientDemandWithConversations(result);
@@ -69,16 +54,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestDemandConversations(long messageId) {
-        messageService.getClientDemandConversations(messageId, new AsyncCallback<ArrayList<MessageDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("MessageHandler: onRequestDemandConversations:\n\n" + caught.getMessage());
-            }
-
+        messageService.getClientDemandConversations(messageId, new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
             @Override
             public void onSuccess(ArrayList<MessageDetail> conversations) {
                 eventBus.setDemandConversations(conversations);
@@ -89,16 +65,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestSingleConversation(long threadRootId, long messageId) {
         messageService.getConversationMessages(threadRootId, messageId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        Window.alert("MessageHandler: onRequestSingleConversation:\n\n" + caught.getMessage());
-                    }
-
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> result) {
                         eventBus.setSingleDemandConversation(result);
@@ -109,16 +76,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetPotentialDemandConversation(long messageId, long businessUserId, long userMessageId) {
         messageService.loadSuppliersPotentialDemandConversation(messageId, businessUserId, userMessageId,
-                new AsyncCallback<ArrayList<MessageDetail>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        Window.alert("MessageHandler: onGetPotentialDemandConversation:\n\n" + caught.getMessage());
-                    }
-
+                new SecuredAsyncCallback<ArrayList<MessageDetail>>() {
                     @Override
                     public void onSuccess(ArrayList<MessageDetail> messageList) {
                         GWT.log("Conversation size: " + messageList.size());
@@ -134,17 +92,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
 
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onSendMessageToPotentialDemand(MessageDetail messageToSend, final ViewType viewType) {
-        messageService.sendQueryToPotentialDemand(messageToSend, new AsyncCallback<MessageDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert(MessageHandler.class.getName() + " at onSendQueryToPotentialDemand\n\n"
-                        + caught.getMessage());
-            }
-
+        messageService.sendQueryToPotentialDemand(messageToSend, new SecuredAsyncCallback<MessageDetail>() {
             @Override
             public void onSuccess(MessageDetail result) {
                 eventBus.addMessageToPotentailDemandConversation(result, viewType);
@@ -155,13 +103,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     public void onSendDemandOffer(OfferMessageDetail offerToSend) {
         GWT.log(" ** Offer demand ID: " + offerToSend.getDemandId());
         Window.alert("* * * DEMAND OFFER CREATED * * *\n\n" + offerToSend.toString());
-//        messageService.sendOffer(offerToSend, new AsyncCallback<OfferMessageDetail>() {
-//            @Override
-//            public void onFailure(Throwable caught) {
-//                // TODO Auto-generated method stub
-//                Window.alert(MessageHandler.class.getName() + " at onSendDemandOffer\n\n" + caught.getMessage());
-//            }
-//
+//        messageService.sendOffer(offerToSend, new SecuredAsyncCallback<OfferMessageDetail>() {
 //            @Override
 //            public void onSuccess(OfferMessageDetail result) {
 //                Window.alert("Offer Success");
@@ -170,17 +112,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     }
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onRequestPotentialDemandReadStatusChange(ArrayList<Long> messagesId, boolean isRead) {
-        messageService.setMessageReadStatus(messagesId, isRead, new AsyncCallback<Void>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert(MessageHandler.class.getName() + " at onRequestPotentialDemandReadStatusChange\n\n"
-                        + caught.getMessage());
-            }
-
+        messageService.setMessageReadStatus(messagesId, isRead, new SecuredAsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 // there is nothing to do
@@ -190,16 +122,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetOfferStatusChange(OfferDetail offerDetail) {
         GWT.log("STATE: " + offerDetail.getState());
-        offerService.changeOfferState(offerDetail, new AsyncCallback<OfferDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert(MessageHandler.class.getName() + " at onGetOfferStatusChange\n\n" + caught.getMessage());
-            }
-
+        offerService.changeOfferState(offerDetail, new SecuredAsyncCallback<OfferDetail>() {
             @Override
             public void onSuccess(OfferDetail result) {
                 eventBus.setOfferDetailChange(result);
@@ -215,17 +138,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetPotentialDemands(long businessUserId) {
         messageService.getPotentialDemands(businessUserId,
-                new AsyncCallback<ArrayList<PotentialDemandMessage>>() {
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        if (caught instanceof RPCException) {
-                            ExceptionUtils.showErrorDialog(errorDialog, caught);
-                        }
-                        Window.alert("Error in MessageHandler in method: onGetPotentialDemandsList"
-                                + caught.getMessage());
-                    }
-
+                new SecuredAsyncCallback<ArrayList<PotentialDemandMessage>>() {
                     @Override
                     public void onSuccess(
                             ArrayList<PotentialDemandMessage> result) {
@@ -242,16 +155,7 @@ public class MessageHandler extends BaseEventHandler<UserEventBus> {
      */
     // TODO Praso - tato metoda sa pouziva v starom UserEventBus. Mozeme ju vyuzit znovu pre novy DemandsModule
     public void onGetClientDemandsWithOffers(Long businessUserId) {
-        messageService.getOfferDemands(businessUserId, new AsyncCallback<ArrayList<OfferDemandMessage>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("MessageHandler at onGetClientDemandsWithOffers exception:\n\n" + caught.getMessage());
-            }
-
+        messageService.getOfferDemands(businessUserId, new SecuredAsyncCallback<ArrayList<OfferDemandMessage>>() {
             @Override
             public void onSuccess(ArrayList<OfferDemandMessage> result) {
                 eventBus.responseClientDemandsWithOffers(result);

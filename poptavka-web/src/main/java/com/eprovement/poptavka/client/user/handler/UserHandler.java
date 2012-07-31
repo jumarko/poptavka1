@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.handler;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
 import com.eprovement.poptavka.client.service.demand.OfferRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
@@ -7,12 +8,8 @@ import com.eprovement.poptavka.client.user.UserEventBus;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.type.ViewType;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
@@ -33,18 +30,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
      * Get User according to stored sessionID from DB after login.
      */
     public void onGetUser(long userId) {
-        userService.getUserById(userId, new AsyncCallback<BusinessUserDetail>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                eventBus.loadingHide();
-                Window.alert("Error during getting logged User detail\n"
-                        + caught.getMessage());
-            }
-
+        userService.getUserById(userId, new SecuredAsyncCallback<BusinessUserDetail>() {
             @Override
             public void onSuccess(BusinessUserDetail result) {
                 eventBus.loadingShow(MSGS.progressCreatingUserInterface());
@@ -59,16 +45,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     public void onGetDemandDetail(Long demandId, final ViewType typeOfDetail) {
         if (typeOfDetail.equals(ViewType.EDITABLE)) {
             // TODO Martin check and remove
-//            demandService.getFullDemandDetail(demandId, new AsyncCallback<FullDemandDetail>() {
-//
-//                @Override
-//                public void onFailure(Throwable caught) {
-//                    if (caught instanceof RPCException) {
-//                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-//                    }
-//                    Window.alert(caught.getMessage());
-//                }
-//
+//            demandService.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>() {
 //                @Override
 //                public void onSuccess(FullDemandDetail result) {
 //                    eventBus.setFullDemandDetail(result);
@@ -78,16 +55,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
 
         if (typeOfDetail.equals(ViewType.POTENTIAL)) {
             // TODO Martin check and remove
-//            demandService.getBaseDemandDetail(demandId, new AsyncCallback<BaseDemandDetail>() {
-//
-//                @Override
-//                public void onFailure(Throwable caught) {
-//                    if (caught instanceof RPCException) {
-//                        ExceptionUtils.showErrorDialog(errorDialog, caught);
-//                    }
-//                    Window.alert(caught.getMessage());
-//                }
-//
+//            demandService.getBaseDemandDetail(demandId, new SecuredAsyncCallback<BaseDemandDetail>() {
 //                @Override
 //                public void onSuccess(BaseDemandDetail result) {
 //                    eventBus.setBaseDemandDetail(result);
@@ -97,16 +65,7 @@ public class UserHandler extends BaseEventHandler<UserEventBus> {
     }
 
     public void onGetDemandOffers(long demandId, long threadRootId) {
-        offerService.getDemandOffers(demandId, threadRootId, new AsyncCallback<ArrayList<FullOfferDetail>>() {
-
-            @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
-                Window.alert("UserHandler at getDemandOffers exception:\n\n" + caught.getMessage());
-            }
-
+        offerService.getDemandOffers(demandId, threadRootId, new SecuredAsyncCallback<ArrayList<FullOfferDetail>>() {
             @Override
             public void onSuccess(ArrayList<FullOfferDetail> offers) {
                 eventBus.setDemandOffers(offers);

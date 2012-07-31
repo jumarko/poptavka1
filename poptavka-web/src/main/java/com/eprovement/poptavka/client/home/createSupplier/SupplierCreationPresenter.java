@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
+import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -13,7 +14,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
@@ -36,8 +36,6 @@ import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.exceptions.ExceptionUtils;
-import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 
@@ -271,17 +269,15 @@ public class SupplierCreationPresenter
     }
 
     private void initServices() {
-        supplierCreationRpcService.getSupplierServices(new AsyncCallback<ArrayList<ServiceDetail>>() {
+        supplierCreationRpcService.getSupplierServices(new SecuredAsyncCallback<ArrayList<ServiceDetail>>() {
 
             @Override
-            public void onFailure(Throwable caught) {
-                if (caught instanceof RPCException) {
-                    ExceptionUtils.showErrorDialog(errorDialog, caught);
-                }
+            protected void onServiceFailure(Throwable caught) {
+                // TODO: review this failure handling code
                 // TODO create some good explanation with contact formular
                 SimpleIconLabel errorMsg =
                         new SimpleIconLabel("Unexpected Error occurred", "Something terrible happened during "
-                        + "supplierService table initialization");
+                                + "supplierService table initialization");
                 errorMsg.setImageResource(StyleResource.INSTANCE.images().errorIcon24());
                 view.getServiceHolder().setWidget(errorMsg);
             }
