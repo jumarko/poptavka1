@@ -36,8 +36,8 @@ public class FullDemandDetail implements Serializable, TableDisplay {
 
         TITLE, DESCRIPTION, PRICE, FINISH_DATE, VALID_TO_DATE, MAX_OFFERS, MIN_RATING, DEMAND_TYPE
     }
-    private List<LocalityDetail> localities;
-    private List<CategoryDetail> categories;
+    private ArrayList<LocalityDetail> localities;
+    private ArrayList<CategoryDetail> categories;
     private long clientId;
     private int maxOffers;
     private int minRating;
@@ -130,7 +130,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         return categories;
     }
 
-    public void setCategories(List<CategoryDetail> categories) {
+    public void setCategories(ArrayList<CategoryDetail> categories) {
         this.categories = categories;
     }
 
@@ -138,7 +138,7 @@ public class FullDemandDetail implements Serializable, TableDisplay {
         return localities;
     }
 
-    public void setLocalities(List<LocalityDetail> localities) {
+    public void setLocalities(ArrayList<LocalityDetail> localities) {
         this.localities = localities;
     }
 

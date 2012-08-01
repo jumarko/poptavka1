@@ -4,9 +4,18 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public final class CategoryConverter extends AbstractConverter<Category, CategoryDetail> {
+
+    private CategoryService categoryService;
+
+    @Autowired
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     private CategoryConverter() {
         // Spring instantiates converters - see converters.xml
@@ -24,7 +33,6 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
 
     @Override
     public Category converToSource(CategoryDetail categoryDetail) {
-        throw new UnsupportedOperationException("Conversion from AddressDetail to domain object Address "
-                + "is not implemented yet!");
+        return categoryService.getById(categoryDetail.getId());
     }
 }

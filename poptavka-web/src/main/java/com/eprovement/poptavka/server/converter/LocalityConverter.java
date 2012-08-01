@@ -4,9 +4,18 @@
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public final class LocalityConverter extends AbstractConverter<Locality, LocalityDetail> {
+
+    private LocalityService localityService;
+
+    @Autowired
+    public void setLocalityService(LocalityService localityService) {
+        this.localityService = localityService;
+    }
 
     private LocalityConverter() {
         // Spring instantiates converters - see converters.xml
@@ -25,7 +34,6 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
 
     @Override
     public Locality converToSource(LocalityDetail localityDetail) {
-        throw new UnsupportedOperationException("Conversion from AddressDetail to domain object Address "
-                + "is not implemented yet!");
+        return localityService.getLocality(localityDetail.getCode());
     }
 }
