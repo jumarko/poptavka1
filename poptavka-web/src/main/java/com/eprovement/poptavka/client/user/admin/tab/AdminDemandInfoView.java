@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
-import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -230,11 +229,11 @@ public class AdminDemandInfoView extends Composite implements
 
             // demand status settings
             // Add the statuses to the status box.
-            final DemandStatusType[] statuses = DemandStatusType.values();
+            final DemandStatus[] statuses = DemandStatus.values();
             i = 0;
             j = 0;
             demandStatus.clear();
-            for (DemandStatusType status : statuses) {
+            for (DemandStatus status : statuses) {
                 demandStatus.addItem(status.getValue());
                 if (contact.getDemandStatus() != null
                         && contact.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {

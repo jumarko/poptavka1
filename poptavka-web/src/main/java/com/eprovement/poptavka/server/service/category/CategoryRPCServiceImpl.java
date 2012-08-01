@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 
 import com.eprovement.poptavka.client.service.demand.CategoryRPCService;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @Component(CategoryRPCService.URL)
 public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
@@ -21,6 +23,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
 
     private CategoryService categoryService;
     private SupplierService supplierService;
+    private Converter<Category, CategoryDetail> categoryConverter;
     private static final Logger LOGGER = Logger.getLogger("CategoryRPCServiceImpl");
 
     @Autowired
@@ -28,9 +31,15 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
         this.categoryService = categoryService;
     }
 
+    @Autowired
+    public void setClientDemandMessageConverter(@Qualifier("categoryConverter")
+            Converter<Category, CategoryDetail> categoryConverter) {
+        this.categoryConverter = categoryConverter;
+    }
+
     @Override
     public CategoryDetail getCategory(long id) throws RPCException {
-        return createCategoryDetail(categoryService.getById(id));
+        return categoryConverter.convertToTarget(categoryService.getById(id));
     }
 
     @Autowired
@@ -40,13 +49,12 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
 
     @Override
     public List<CategoryDetail> getAllRootCategories() throws RPCException {
-        return createCategoryDetailList(categoryService.getRootCategories());
+        return categoryConverter.convertToTargetList(categoryService.getRootCategories());
     }
 
     @Override
     public List<CategoryDetail> getCategories() throws RPCException {
-        final List<Category> categories = categoryService.getRootCategories();
-        return createCategoryDetailList(categories);
+        return categoryConverter.convertToTargetList(categoryService.getRootCategories());
     }
 
     /**
@@ -66,7 +74,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
             cat = cat.getParent();
         }
 
-        return createCategoryDetailList(parents);
+        return categoryConverter.convertToTargetList(parents);
     }
 
     @Override
@@ -76,7 +84,7 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
             if (category != null) {
                 final Category cat = categoryService.getById(category);
                 if (cat != null) {
-                    return createCategoryDetailList(cat.getChildren());
+                    return categoryConverter.convertToTargetList(cat.getChildren());
                 }
             }
         } catch (NullPointerException ex) {
@@ -86,27 +94,27 @@ public class CategoryRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /** Inner method for transforming domain Entity to front-end representation. **/
-    private List<CategoryDetail> createCategoryDetailList(List<Category> categories) {
-        final List<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
+//    private List<CategoryDetail> createCategoryDetailList(List<Category> categories) {
+//        final List<CategoryDetail> categoryDetails = new ArrayList<CategoryDetail>();
+//
+//        for (Category cat : categories) {
+//            categoryDetails.add(createCategoryDetail(cat));
+//        }
+//
+//        return categoryDetails;
+//    }
 
-        for (Category cat : categories) {
-            categoryDetails.add(createCategoryDetail(cat));
-        }
-
-        return categoryDetails;
-    }
-
-    private CategoryDetail createCategoryDetail(Category category) {
-        long suppliersCount = supplierService.getSuppliersCountQuick(category);
-        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
+//    private CategoryDetail createCategoryDetail(Category category) {
+//        long suppliersCount = supplierService.getSuppliersCountQuick(category);
+//        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
         // TODO uncomment, when implemented
 //        CategoryDetail detail = new CategoryDetail(cat.getId(), cat.getName(),
 //              cat.getAdditionalInfo().getDemandsCount(), cat.getAdditionalInfo().getSuppliersCount());
-        if (category.getChildren().size() != 0) {
-            detail.setParent(true);
-        } else {
-            detail.setParent(false);
-        }
-        return detail;
-    }
+//        if (category.getChildren().size() != 0) {
+//            detail.setParent(true);
+//        } else {
+//            detail.setParent(false);
+//        }
+//        return detail;
+//    }
 }

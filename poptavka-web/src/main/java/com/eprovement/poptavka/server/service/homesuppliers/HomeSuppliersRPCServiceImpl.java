@@ -533,9 +533,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         CategoryDetail detail = new CategoryDetail(category.getId(), category.getName(), 0, suppliersCount);
 
         if (category.getChildren().isEmpty()) {
-            detail.setParent(false);
+            detail.setLeaf(false);
         } else {
-            detail.setParent(true);
+            detail.setLeaf(true);
         }
         return detail;
     }

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.common.category;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.resources.client.ClientBundle;
@@ -42,17 +43,12 @@ public class CategoryTreeViewModel implements TreeViewModel {
         /**
          * The html of the image used for contacts.
          */
-//        private final String imageHtml;
         public CategoryCell() {
         }
 
-//        public CategoryCell(ImageResource image) {
-//            this.imageHtml = AbstractmagePrototype.create(image).getHTML();
-//        }
         @Override
         public void render(Context context, CategoryDetail value, SafeHtmlBuilder sb) {
             if (value != null) {
-//                sb.append(imageHtml).append(" ");
                 sb.appendEscaped(value.getName());
             }
         }
@@ -80,6 +76,7 @@ public class CategoryTreeViewModel implements TreeViewModel {
             this.count = 1;
         }
 
+        @Override
         public int compareTo(LetterCount o) {
             return (o == null) ? -1 : (firstLetter - o.firstLetter);
         }
@@ -118,46 +115,57 @@ public class CategoryTreeViewModel implements TreeViewModel {
     /**
      * The static images used in this model.
      */
-    private static Images images;
     private Cell<CategoryDetail> categoryCell = null;
     private final SelectionModel<CategoryDetail> selectionModel;
     private final DefaultSelectionEventManager<CategoryDetail> selectionManager =
             DefaultSelectionEventManager.createCheckboxManager();
     private CategoryRPCServiceAsync categoryService;
+    /**
+     * Check boxes usage.
+     * True - all levels use check box for item selection
+     * False - only last level use check box for item selection
+     */
+    private int checkboxes = -1;
 
     public CategoryTreeViewModel(final SelectionModel<CategoryDetail> selectionModel,
-            CategoryRPCServiceAsync categoryService) {
+            CategoryRPCServiceAsync categoryService, int checkboxesUsage) {
         this.selectionModel = selectionModel;
         this.categoryService = categoryService;
+        this.checkboxes = checkboxesUsage;
+
         List<HasCell<CategoryDetail, ?>> hasCells = new ArrayList<HasCell<CategoryDetail, ?>>();
         hasCells.add(new HasCell<CategoryDetail, Boolean>() {
-
             private CheckboxCell cell = new CheckboxCell(true, false);
 
+            @Override
             public Cell<Boolean> getCell() {
                 return cell;
             }
 
+            @Override
             public FieldUpdater<CategoryDetail, Boolean> getFieldUpdater() {
                 return null;
             }
 
+            @Override
             public Boolean getValue(CategoryDetail object) {
                 return selectionModel.isSelected(object);
             }
         });
         hasCells.add(new HasCell<CategoryDetail, CategoryDetail>() {
-
             private CategoryCell cell = new CategoryCell();
 
+            @Override
             public Cell<CategoryDetail> getCell() {
                 return cell;
             }
 
+            @Override
             public FieldUpdater<CategoryDetail, CategoryDetail> getFieldUpdater() {
                 return null;
             }
 
+            @Override
             public CategoryDetail getValue(CategoryDetail object) {
                 return object;
             }
@@ -177,12 +185,31 @@ public class CategoryTreeViewModel implements TreeViewModel {
                 return parent.getFirstChildElement().getFirstChildElement().getFirstChildElement();
             }
 
+            /**
+             * Render items of hashcell. Define whether to render also checkbox or
+             * only text.
+             */
             @Override
             protected <X> void render(Context context, CategoryDetail value,
                     SafeHtmlBuilder sb, HasCell<CategoryDetail, X> hasCell) {
                 Cell<X> cell = hasCell.getCell();
                 sb.appendHtmlConstant("<td>");
-                cell.render(context, hasCell.getValue(value), sb);
+                switch (checkboxes) {
+                    case Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS:
+                        if (cell instanceof CheckboxCell) {
+                            //Ak je checkbox, renderuj, len ak je to list
+                            if (value.isLeaf()) {
+                                cell.render(context, hasCell.getValue(value), sb);
+                            }
+                        } else {
+                            cell.render(context, hasCell.getValue(value), sb);
+                        }
+                        break;
+                    default:
+                        cell.render(context, hasCell.getValue(value), sb);
+                        break;
+
+                }
                 sb.appendHtmlConstant("</td>");
             }
         };
@@ -190,8 +217,9 @@ public class CategoryTreeViewModel implements TreeViewModel {
 
     /**
      * Then inside getNodeInfo(T value) of your TreeViewModel just return a new
-     * DeafultNodeInfo with a new MyDataProvider. In this way your NodeInfo is returned
-     * syncronously, but the data provider updates itself asyncronously. For exampe:
+     * DeafultNodeInfo with a new MyDataProvider. It defines type what cells to use
+     * in each level. In this way NodeInfo is returned synchronously, but the data provider
+     * updates itself asynchronously.
      * @param <T>
      * @param value
      * @return
@@ -199,20 +227,25 @@ public class CategoryTreeViewModel implements TreeViewModel {
     @Override
     public <T> NodeInfo<?> getNodeInfo(T value) {
         CategoryDetail detail = (CategoryDetail) value;
-        if (detail == null) {
-            CategoryDataProvider dataProvider1 = new CategoryDataProvider(detail, categoryService);
-            return new DefaultNodeInfo(dataProvider1, new CategoryCell());
-        } else {
-            CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService);
-            return new DefaultNodeInfo(dataProvider2, categoryCell, selectionModel, selectionManager, null);
+        switch (checkboxes) {
+            case Constants.WITH_CHECK_BOXES:
+                CategoryDataProvider dataProvider = new CategoryDataProvider(detail, categoryService);
+                return new DefaultNodeInfo(dataProvider, categoryCell, selectionModel, selectionManager, null);
+            case Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS:
+                CategoryDataProvider dataProvider1 = new CategoryDataProvider(detail, categoryService);
+                return new DefaultNodeInfo(dataProvider1, categoryCell, selectionModel, selectionManager, null);
+            default:
+                CategoryDataProvider dataProvider2 = new CategoryDataProvider(detail, categoryService);
+                return new DefaultNodeInfo(dataProvider2, new CategoryCell());
         }
-        // Unhandled type.
-//        String type = value.getClass().getName();
-//        throw new IllegalArgumentException("Unsupported object type: " + type);
     }
 
     @Override
     public boolean isLeaf(Object value) {
-        return ((CategoryDetail) value).isLast();
+        if (value == null) {
+            return false;
+        } else {
+            return ((CategoryDetail) value).isLeaf();
+        }
     }
 }

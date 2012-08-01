@@ -62,7 +62,7 @@ public interface SupplierCreationEventBus extends EventBus {
     void loadingHide();
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderWidget);
+    void initCategoryWidget(SimplePanel holderWidget, int checkboxes);
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel holderWidget);

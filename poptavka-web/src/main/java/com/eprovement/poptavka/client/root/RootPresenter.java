@@ -194,12 +194,12 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /** multiple presenters handling methods **/
-    public void onInitCategoryWidget(SimplePanel holderPanel) {
+    public void onInitCategoryWidget(SimplePanel holderPanel, int checkboxes) {
         if (categorySelector != null) {
             eventBus.removeHandler(categorySelector);
         }
         categorySelector = eventBus.addHandler(CategorySelectorPresenter.class);
-        categorySelector.initCategoryWidget(holderPanel);
+        categorySelector.initCategoryWidget(holderPanel, checkboxes);
     }
 
     public void onInitLocalityWidget(SimplePanel holderPanel) {

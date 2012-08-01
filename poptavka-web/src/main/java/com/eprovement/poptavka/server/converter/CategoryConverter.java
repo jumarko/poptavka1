@@ -17,7 +17,7 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
         CategoryDetail detail = new CategoryDetail();
         detail.setId(category.getId());
         detail.setName(category.getName());
-        detail.setIsLast(category.getChildren().isEmpty());
+        detail.setLeaf(category.getChildren().isEmpty());
         return detail;
 
     }

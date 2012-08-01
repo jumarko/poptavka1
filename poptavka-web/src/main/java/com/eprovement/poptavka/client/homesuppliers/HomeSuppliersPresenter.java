@@ -24,10 +24,12 @@ import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +87,13 @@ public class HomeSuppliersPresenter
     //columns number of root chategories in parent widget
     private static final int COLUMNS = 4;
     private SearchModuleDataHolder searchDataHolder = null;
+
+    @Inject
+    private CategoryRPCServiceAsync categoryService;
+
+    public CategoryRPCServiceAsync getCategoryService() {
+        return categoryService;
+    }
 
     /**************************************************************************/
     /* General Module events                                                  */

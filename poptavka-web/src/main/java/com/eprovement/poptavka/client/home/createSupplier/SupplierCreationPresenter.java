@@ -3,18 +3,33 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.common.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.StatusIconLabel;
-import com.google.gwt.user.client.ui.IsWidget;
-import java.util.ArrayList;
-import java.util.logging.Logger;
+import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
+import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
+import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.common.session.Constants;
 
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
+import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter.SupplierServiceInterface;
+import com.eprovement.poptavka.client.resources.StyleResource;
+import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -22,22 +37,8 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierInfoPresenter.SupplierInfoInterface;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter;
-import com.eprovement.poptavka.client.home.createSupplier.widget.SupplierServicePresenter.SupplierServiceInterface;
-import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
-import com.eprovement.poptavka.client.home.createSupplier.widget.ServiceWidget;
-import com.eprovement.poptavka.client.common.errorDialog.ErrorDialogPopupView;
-import com.eprovement.poptavka.client.resources.StyleResource;
-import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
@@ -105,7 +106,8 @@ public class SupplierCreationPresenter
                     case 1:
                         LOGGER.info(" -> Category Widget");
                         if (!(view.getMainPanel().getWidget(1) instanceof CategorySelectorInterface)) {
-                            eventBus.initCategoryWidget(view.getCategoryHolder());
+                            eventBus.initCategoryWidget(
+                                    view.getCategoryHolder(), Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS);
                         }
                         break;
                     case 2:
@@ -175,6 +177,7 @@ public class SupplierCreationPresenter
      * ***********************************************************************
      */
     public void onGoToCreateSupplierModule() {
+        Storage.setCurrentlyLoadedView(Constants.HOME_CREATE_SUPPLIERS);
         LOGGER.info("SupplierCreationPresenter loaded");
         LOGGER.info(" -> Supplier Info Form");
         eventBus.initSupplierForm(view.getSupplierInfoHolder());

@@ -8,7 +8,7 @@
 
     <g:VerticalPanel>
         <g:HorizontalPanel>
-            <c:CellBrowser ui:field="cellBrowser"/>
+            <g:SimplePanel ui:field="cellBrowserHolder"/>
             <g:HTML ui:field='loader' visible='false' styleName='{res.common.smallLoader}' />
         </g:HorizontalPanel>
         <g:HorizontalPanel>

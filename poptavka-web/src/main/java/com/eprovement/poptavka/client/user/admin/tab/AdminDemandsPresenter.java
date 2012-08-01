@@ -12,7 +12,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
-import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -225,7 +224,7 @@ public class AdminDemandsPresenter
 
             @Override
             public void update(int index, FullDemandDetail object, String value) {
-                for (DemandStatusType demandStatusType : DemandStatusType.values()) {
+                for (DemandStatus demandStatusType : DemandStatus.values()) {
                     if (demandStatusType.getValue().equals(value)) {
                         if (!object.getDemandStatus().equals(demandStatusType.name())) {
                             if (!originalData.containsKey(object.getDemandId())) {

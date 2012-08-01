@@ -35,7 +35,7 @@ public interface SearchModuleEventBus extends EventBus {
     void goToMessagesModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holder);
+    void initCategoryWidget(SimplePanel holder, int checkboxes);
 
     @Event(forwardToParent = true)
     void initLocalityWidget(SimplePanel embedWidget);

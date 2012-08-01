@@ -51,6 +51,8 @@ public final class Constants {
     public static final int HOME_DEMANDS = 8;
     /* Home suppliers module */
     public static final int HOME_SUPPLIERS = 9;
+    public static final int HOME_CREATE_SUPPLIERS = 1;
+    public static final int HOME_CREATE_DEMAND = 2;
 
     /* Demands module */
     // Client
@@ -152,4 +154,11 @@ public final class Constants {
         admins.add(ADMIN_SUPPLIERS);
         return admins;
     }
+
+    /**************************************************************************/
+    /* Category tree view Model                                               */
+    /**************************************************************************/
+    public static final int WITHOUT_CHECK_BOXES = 1000;
+    public static final int WITH_CHECK_BOXES = 1001;
+    public static final int WITH_CHECK_BOXES_ONLY_ON_LEAFS = 1002;
 }

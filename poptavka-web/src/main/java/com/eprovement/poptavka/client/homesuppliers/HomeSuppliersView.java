@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.client.user.widget.detail.SupplierDetailView;
@@ -16,6 +18,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
@@ -28,15 +31,27 @@ import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.mvp4g.client.view.ReverseViewInterface;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class HomeSuppliersView extends OverflowComposite
-        implements HomeSuppliersPresenter.SuppliersViewInterface {
+        implements ReverseViewInterface<HomeSuppliersPresenter>, HomeSuppliersPresenter.SuppliersViewInterface {
 
     private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
+    private HomeSuppliersPresenter homeSuppliersPresenter;
+
+    @Override
+    public void setPresenter(HomeSuppliersPresenter presenter) {
+        this.homeSuppliersPresenter = presenter;
+    }
+
+    @Override
+    public HomeSuppliersPresenter getPresenter() {
+        return homeSuppliersPresenter;
+    }
 
     interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
     }
@@ -48,8 +63,10 @@ public class HomeSuppliersView extends OverflowComposite
     private static final int TABLE_HEIGHT = 300;
     //
     private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-    @UiField(provided = true)
+//    @UiField(provided = true)
     CellList categoriesList;
+    @UiField(provided = true)
+    CellTree cellTree;
     @UiField(provided = true)
     UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField(provided = true)
@@ -80,7 +97,6 @@ public class HomeSuppliersView extends OverflowComposite
      * The key provider that provides the unique ID of a FullSupplierDetail.
      */
     private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
-
         @Override
         public Object getKey(FullSupplierDetail item) {
             return item == null ? null : item.getSupplierId();
@@ -91,18 +107,29 @@ public class HomeSuppliersView extends OverflowComposite
     public void createView() {
         pageSizeCombo = new ListBox();
         pageSizeCombo.addItem("10");
-        pageSizeCombo.addItem("15");
         pageSizeCombo.addItem("20");
-        pageSizeCombo.addItem("25");
         pageSizeCombo.addItem("30");
         pageSizeCombo.setSelectedIndex(0);
+
         initDataGrid();
+        initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
+
         path.setStyleName(StyleResource.INSTANCE.common().hyperlinkInline());
         reklama.setVisible(true);
 
         detail.setVisible(false);
         LOGGER.info("CreateView pre DisplaySuppliers");
+    }
+
+    public void initCellTree() {
+        cellTree = new CellTree(new CategoryTreeViewModel(
+                selectionCategoryModel,
+                homeSuppliersPresenter.getCategoryService(),
+                Constants.WITHOUT_CHECK_BOXES), null);
+        cellTree.setSize("300px", "100px");
+        cellTree.setAnimationEnabled(true);
+
     }
 
     @Override
@@ -277,7 +304,6 @@ public class HomeSuppliersView extends OverflowComposite
         // Company name.
         dataGrid.addColumn(new TextCell(), Storage.MSGS.supplierName(), true, SUPPLIER_NAME_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue<String>() {
-
                     @Override
                     public String getValue(Object object) {
                         return ((FullSupplierDetail) object).getCompanyName();
@@ -287,7 +313,6 @@ public class HomeSuppliersView extends OverflowComposite
         // SupplierRating.
         dataGrid.addColumn(new TextCell(), Storage.MSGS.rating(), true, RATING_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue() {
-
                     @Override
                     public String getValue(Object object) {
                         if (((FullSupplierDetail) object).getOverallRating() == -1) {
@@ -301,7 +326,6 @@ public class HomeSuppliersView extends OverflowComposite
         // Address.
         dataGrid.addColumn(new TextCell(), Storage.MSGS.address(), false, ADDRESS_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue() {
-
                     @Override
                     public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();
@@ -319,7 +343,6 @@ public class HomeSuppliersView extends OverflowComposite
         // Locality.
         dataGrid.addColumn(new TextCell(), Storage.MSGS.locality(), false, LOCALITY_COL_WIDTH,
                 new UniversalAsyncGrid.GetValue() {
-
                     @Override
                     public String getValue(Object object) {
                         StringBuilder str = new StringBuilder();

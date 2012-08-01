@@ -1,32 +1,32 @@
 package com.eprovement.poptavka.client.common.category;
 
+import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
+import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import com.eprovement.poptavka.client.root.RootEventBus;
-import com.eprovement.poptavka.client.service.demand.CategoryRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 @Presenter(view = CategorySelectorView.class, multiple = true)
 public class CategorySelectorPresenter
-    extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, RootEventBus> {
+        extends LazyPresenter<CategorySelectorPresenter.CategorySelectorInterface, RootEventBus> {
 
     @Inject
     private CategoryRPCServiceAsync categoryService;
 
-//    private static final String NONLEAF_SUFFIX = " >";
-
     public interface CategorySelectorInterface extends LazyView {
+
+        void createCellBrowser(int checkboxes);
 
         ListDataProvider<CategoryDetail> getCellListDataProvider();
 
@@ -47,7 +47,6 @@ public class CategorySelectorPresenter
     @Override
     public void bindView() {
         view.getCellBrowserSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 List<CategoryDetail> selectedList = new ArrayList<CategoryDetail>(
@@ -56,7 +55,6 @@ public class CategorySelectorPresenter
             }
         });
         view.getCellListSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 view.getCellBrowserSelectionModel().setSelected(
@@ -72,7 +70,8 @@ public class CategorySelectorPresenter
         return categoryService;
     }
 
-    public void initCategoryWidget(SimplePanel embedWidget) {
+    public void initCategoryWidget(SimplePanel embedWidget, int checkboxes) {
+        view.createCellBrowser(checkboxes);
         embedWidget.setWidget(view.getWidgetView());
     }
 
@@ -80,7 +79,6 @@ public class CategorySelectorPresenter
 //        view.showLoader(index);
 //        eventBus.getChildListCategories(index, category);
 //    }
-
     //premenovat
     public void onSetCategoryData(List<CategoryDetail> list) {
 //        ListBox listBox = view.createListAtIndex(newListPosition);
@@ -134,7 +132,6 @@ public class CategorySelectorPresenter
 //    private boolean isLeaf(String text) {
 //        return ! text.contains(" >");
 //    }
-
     public void getRootCategories(AsyncDataProvider dataProvider) {
         eventBus.getRootCategories(dataProvider);
     }

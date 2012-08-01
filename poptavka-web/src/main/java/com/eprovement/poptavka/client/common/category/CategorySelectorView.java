@@ -18,14 +18,18 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.google.gwt.user.cellview.client.CellBrowser;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.view.ReverseViewInterface;
 
 public class CategorySelectorView extends Composite
-    implements ProvidesValidate, ReverseViewInterface<CategorySelectorPresenter>, CategorySelectorInterface {
+        implements ProvidesValidate, ReverseViewInterface<CategorySelectorPresenter>, CategorySelectorInterface {
 
     private static CategorySelectorUiBinder uiBinder = GWT.create(CategorySelectorUiBinder.class);
-    interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {    }
+
+    interface CategorySelectorUiBinder extends UiBinder<Widget, CategorySelectorView> {
+    }
+
     /**************************************************************************/
     /* PRESENTER                                                              */
     /**************************************************************************/
@@ -46,8 +50,9 @@ public class CategorySelectorView extends Composite
     @UiField
     HTML loader;
     //Cell Brower
-    @UiField(provided = true)
-    CellBrowser cellBrowser;
+    @UiField//(provided = true)
+//    CellBrowser cellBrowser;
+    SimplePanel cellBrowserHolder;
     //Cell List
     @UiField(provided = true)
     CellList<CategoryDetail> cellList;
@@ -62,17 +67,22 @@ public class CategorySelectorView extends Composite
     /**************************************************************************/
     @Override
     public void createView() {
-        cellBrowser = new CellBrowser(new CategoryTreeViewModel(
-                cellBrowserSelectionModel,
-                categorySelectorPresenter.getCategoryService()), null);
-        cellBrowser.setSize("500px", "200px");
-        cellBrowser.setAnimationEnabled(true);
-
         cellList = new CellList<CategoryDetail>(new ItemCell());
         cellList.setSelectionModel(cellListSelectionModel);
         cellListDataProvider.addDataDisplay(cellList);
 
         initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    @Override
+    public void createCellBrowser(int checkboxes) {
+        CellBrowser cellBrowser = new CellBrowser(new CategoryTreeViewModel(
+                cellBrowserSelectionModel,
+                categorySelectorPresenter.getCategoryService(),
+                checkboxes), null);
+        cellBrowser.setSize("500px", "200px");
+        cellBrowser.setAnimationEnabled(true);
+        cellBrowserHolder.setWidget(cellBrowser);
     }
 
     /**************************************************************************/

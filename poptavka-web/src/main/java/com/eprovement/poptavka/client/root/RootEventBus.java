@@ -281,7 +281,7 @@ public interface RootEventBus extends EventBus {
     // TODO Praso - tuto metodu vola sibling module DemandCreationModule a SupplierCreationModule
     /** CategorySelection section. **/
     @Event(handlers = RootPresenter.class)
-    void initCategoryWidget(SimplePanel embedToWidget);
+    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes);
 
     @Event(handlers = CategorySelectorPresenter.class)
     void setCategoryData(List<CategoryDetail> list);

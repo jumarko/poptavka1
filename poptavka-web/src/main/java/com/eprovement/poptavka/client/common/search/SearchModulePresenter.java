@@ -81,7 +81,7 @@ public class SearchModulePresenter
             public void onClick(ClickEvent event) {
                 //If not yet initialized, do it
                 if (view.getCategorySelector() == null) {
-                    eventBus.initCategoryWidget(view.getPopupPanel());
+                    eventBus.initCategoryWidget(view.getPopupPanel(), Constants.WITH_CHECK_BOXES);
                 }
                 showPopupPanel();
             }

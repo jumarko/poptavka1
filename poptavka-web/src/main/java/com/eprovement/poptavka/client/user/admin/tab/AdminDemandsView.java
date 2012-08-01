@@ -7,6 +7,7 @@ package com.eprovement.poptavka.client.user.admin.tab;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
@@ -29,7 +30,6 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
-import com.eprovement.poptavka.shared.domain.type.DemandStatusType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -189,7 +189,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
         // DemandStatus.
         List<String> demandStatusNames = new ArrayList<String>();
-        for (DemandStatusType demandStatusType : DemandStatusType.values()) {
+        for (DemandStatus demandStatusType : DemandStatus.values()) {
             demandStatusNames.add(demandStatusType.getValue());
         }
         statusColumn = dataGrid.addColumn(

@@ -16,9 +16,7 @@ public class CategoryDetail implements Serializable {
     //vyjadruje pocet alebo ID???
     private long suppliers;
     //if parent = false, no child category exists;
-    private boolean parent = false;
-    private String parentName = "";
-    private boolean isLast = false;
+    private boolean leaf = false;
 
     public CategoryDetail() {
     }
@@ -50,10 +48,6 @@ public class CategoryDetail implements Serializable {
         return name;
     }
 
-    public String getParentName() {
-        return name + parentName;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -73,23 +67,12 @@ public class CategoryDetail implements Serializable {
         this.suppliers = suppliers;
     }
 
-    public boolean isParent() {
-        return parent;
+    public boolean isLeaf() {
+        return leaf;
     }
 
-    public void setParent(boolean isParent) {
-        this.parent = isParent;
-        if (parent) {
-            this.parentName = " >";
-        }
-    }
-
-    public boolean isLast() {
-        return isLast;
-    }
-
-    public void setIsLast(boolean isLast) {
-        this.isLast = isLast;
+    public void setLeaf(boolean isLeaf) {
+        this.leaf = isLeaf;
     }
 
     @Override
