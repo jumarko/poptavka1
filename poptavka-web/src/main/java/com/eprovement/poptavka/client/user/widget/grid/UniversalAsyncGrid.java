@@ -92,7 +92,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     private static final int CHECKBOX_COLUMN_WIDTH = 10;
     private static final int STAR_COLUMN_WIDTH = 10;
     private static final int STATUS_COLUMN_WIDTH = 10;
-    private static final int URGENCY_COLUMN_WIDTH = 10;
+    private static final int URGENCY_COLUMN_WIDTH = 70;
     /**
      * Asynchronous Data Provider. When all data count is known, asynchronous
      * data provider is created {@link #createAsyncDataProvider(final int resultCount)}.

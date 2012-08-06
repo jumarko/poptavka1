@@ -21,16 +21,26 @@
 			width: 100px;
 		}
 		
-		.homeDemands {
-			padding: 0px 20px;
-			width: 1035px;
-		}
 	</ui:style>
 
-	<g:HTMLPanel styleName='{res.layout.bodyContainer} {style.homeDemands}'>
+	<g:HTMLPanel styleName='{res.layout.bodyFullContainer}'>
 		<g:SplitLayoutPanel height="100%">
-			<g:west size="800">
 
+			<g:east size="400">
+				<g:ScrollPanel>
+					<g:HTMLPanel>
+						<g:VerticalPanel>
+							<g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
+							<g:SimplePanel ui:field="demandDetailPanel">
+								<d:DemandDetailView ui:field="demandDetail" />
+							</g:SimplePanel>
+							<g:Button ui:field="offerBtn">Send Offer</g:Button>
+						</g:VerticalPanel>
+					</g:HTMLPanel>
+				</g:ScrollPanel>
+			</g:east>
+
+			<g:center>
 				<g:DockLayoutPanel unit="PX">
 					<g:south size="50">
 						<g:HTMLPanel>
@@ -48,20 +58,8 @@
 					<ug:UniversalAsyncGrid ui:field='dataGrid' /> </g:ScrollPanel> </td> </tr> 
 					<tr> <td align="center"> <c:SimplePager ui:field='pager' /> <g:ListBox ui:field='pageSize' 
 					/> </td> </tr> </table> </g:HTMLPanel> </g:ScrollPanel> -->
-			</g:west>
-			<g:center>
-				<g:ScrollPanel>
-					<g:HTMLPanel>
-						<g:VerticalPanel>
-							<g:Label ui:field="bannerLabel">Tu bude banner :)</g:Label>
-							<g:SimplePanel ui:field="demandDetailPanel">
-								<d:DemandDetailView ui:field="demandDetail" />
-							</g:SimplePanel>
-							<g:Button ui:field="offerBtn">Send Offer</g:Button>
-						</g:VerticalPanel>
-					</g:HTMLPanel>
-				</g:ScrollPanel>
 			</g:center>
+
 		</g:SplitLayoutPanel>
 	</g:HTMLPanel>
 

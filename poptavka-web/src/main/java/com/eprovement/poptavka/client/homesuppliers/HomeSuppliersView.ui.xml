@@ -9,7 +9,7 @@
 	<!-- <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages'
 		/> -->
 
-	<g:HTMLPanel styleName='{res.layout.bodyContainer}'>
+	<g:HTMLPanel styleName='{res.layout.bodyFullContainer}'>
 		<g:VerticalPanel>
 			<g:HorizontalPanel ui:field="root" />
 			<g:HTMLPanel ui:field="child">

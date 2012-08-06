@@ -43,11 +43,11 @@ public class HomeDemandsView extends OverflowComposite implements HomeDemandsPre
     interface HomeDemandsViewUiBinder extends UiBinder<Widget, HomeDemandsView> {
     }
     //Table constants
-    private static final int CREATED_DATE_COL_WIDTH = 35;
-    private static final int CATEGORY_COL_WIDTH = 60;
-    private static final int TITLE_COL_WIDTH = 100;
-    private static final int LOCALITY_COL_WIDTH = 60;
-    private static final int PRICE_WIDTH = 40;
+    private static final int CREATED_DATE_COL_WIDTH = 90;
+    private static final int CATEGORY_COL_WIDTH = 130;
+    private static final int TITLE_COL_WIDTH = 200;
+    private static final int LOCALITY_COL_WIDTH = 150;
+    private static final int PRICE_WIDTH = 80;
     // Table definitions
     @UiField(provided = true)
     UniversalAsyncGrid<FullDemandDetail> dataGrid;
