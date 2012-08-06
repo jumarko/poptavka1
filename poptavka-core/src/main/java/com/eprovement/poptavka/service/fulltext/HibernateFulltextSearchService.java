@@ -6,6 +6,8 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -22,6 +24,8 @@ import java.util.List;
  */
 @Transactional(readOnly = true)
 public class HibernateFulltextSearchService implements FulltextSearchService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateFulltextSearchService.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -54,10 +58,13 @@ public class HibernateFulltextSearchService implements FulltextSearchService {
      */
     @Override
     public void createInitialFulltextIndex() {
+        LOGGER.info("Action=createFulltextIndex status=start");
         final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(this.entityManager);
         try {
             fullTextEntityManager.createIndexer().startAndWait();
+            LOGGER.info("Action=createFulltextIndex status=finish");
         } catch (InterruptedException e) {
+            LOGGER.info("Action=createFulltextIndex status=error exception={}", e);
             throw new FulltextInitializationException("Error in fulltext index initialization: "
                     + e.getLocalizedMessage());
         }

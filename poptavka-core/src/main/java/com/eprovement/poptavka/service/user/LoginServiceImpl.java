@@ -2,6 +2,8 @@ package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.exception.LoginUserNotExistException;
 import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
@@ -27,6 +29,8 @@ public class LoginServiceImpl implements LoginService {
      * TODO: remove this.
      */
     private static final long LOGGED_USER_ID = 1L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginServiceImpl.class);
 
 
     private final GeneralService generalService;
@@ -62,6 +66,7 @@ public class LoginServiceImpl implements LoginService {
         Validate.notEmpty(email);
         Validate.notEmpty(password);
 
+        LOGGER.debug("action=login_user status=start login={}", email);
         final Search searchByEmail = new Search(User.class);
         searchByEmail.addFilterEqual("email", email.trim());
 
@@ -81,6 +86,7 @@ public class LoginServiceImpl implements LoginService {
         }
 
         // everything is OK
+        LOGGER.debug("action=login_user status=finish login={}", email);
         return user;
     }
 }

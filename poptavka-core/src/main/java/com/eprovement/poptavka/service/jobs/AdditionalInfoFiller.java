@@ -42,26 +42,20 @@ public class AdditionalInfoFiller implements JobTask {
     @Scheduled(cron = EVERY_MIDNIGHT)
     @Transactional
     public void execute() {
-        LOGGER.info("Job AdditionalInfoFiller is being executed...");
-
-//        // fill localities' info
-        LOGGER.info("Localities additional info filling starting...");
+        LOGGER.info("Localities additional info filling status=start");
         final long localitiesFillStartTime = System.currentTimeMillis();
         setAdditionalInfoForAllItems(this.demandService.getDemandsCountForAllLocalities(),
                 this.supplierService.getSuppliersCountForAllLocalities());
-        LOGGER.info("Localities additional info filling finished in ["
+        LOGGER.info("Localities additional info filling status=finish duration=["
                 + (System.currentTimeMillis() - localitiesFillStartTime) + "] ms.");
 
         // fill categories' info
-        LOGGER.info("Categories additional info filling starting...");
+        LOGGER.info("Categories additional info filling status=start");
         final long categoriesFillStartTime = System.currentTimeMillis();
         setAdditionalInfoForAllItems(this.demandService.getDemandsCountForAllCategories(),
                 this.supplierService.getSuppliersCountForAllCategories());
-        LOGGER.info("Categories additional info filling finished in ["
+        LOGGER.info("Categories additional info filling status=finish duration=["
                         + (System.currentTimeMillis() - categoriesFillStartTime) + "] ms.");
-
-
-        LOGGER.info("Job AdditionalInfoFiller has finished.");
     }
 
 

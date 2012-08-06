@@ -21,12 +21,16 @@ import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Excalibur
  * @author Juraj Martinka
  */
 public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, ClientDao> implements ClientService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceImpl.class);
 
     private final NotificationUtils notificationUtils;
     private final List<AccessRole> clientAccessRoles;
@@ -50,6 +54,8 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
     public Client create(Client businessUserRole) {
         /** Set service for new client **/
 
+        LOGGER.info("action=create_client status=start client={}", businessUserRole);
+
         // TODO ivlcek - nastavit datum vytvorenia UserService aby sme mohli
         // objednannu service zrusit ak client neaktivuje svoj ucet do 14 dni
         // budeme to ziskavat cez AUD entitu alebo novy atribut. AUD entitu pre
@@ -61,16 +67,19 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
 
         /** TODO ivlcek - email activation. **/
 
-        return super.create(businessUserRole);
+        final Client createdClient = super.create(businessUserRole);
+        LOGGER.info("action=create_client status=finish client={}", createdClient);
+        return createdClient;
     }
 
     private void createDefaultAccessRole(Client businessUserRole) {
         Validate.notNull(businessUserRole);
         Preconditions.checkNotNull(businessUserRole.getBusinessUser(), "Client.businessUser must not be null!");
         if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
+            LOGGER.info("action=client_create_default_access_roles client={} roles={}",
+                    businessUserRole, clientAccessRoles);
             businessUserRole.getBusinessUser().setAccessRoles(clientAccessRoles);
         }
-
     }
 
     private void createDefaultNotifications(Client businessUserRole) {
@@ -87,6 +96,8 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
                 this.notificationUtils.createInstantNotificationItem(
                         Registers.Notification.CLIENT_DEMAND_STATUS_CHANGED, false));
 
+        LOGGER.info("action=client_create_default_notifications client={} notifications={}",
+                businessUserRole, notificationItems);
         businessUserRole.getBusinessUser().getSettings().setNotificationItems(notificationItems);
     }
 

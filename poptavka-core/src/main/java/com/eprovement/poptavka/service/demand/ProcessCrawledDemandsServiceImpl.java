@@ -29,10 +29,12 @@ public class ProcessCrawledDemandsServiceImpl implements ProcessCrawledDemandsSe
     public void processCrawledDemands(Demand[] newCrawledDemands) {
         try {
             for (Demand newCrawledDemand : newCrawledDemands) {
+                LOGGER.debug("Action=crawled_demand_process status=start demand=" + newCrawledDemand);
                 final com.eprovement.poptavka.domain.demand.Demand newDomainDemand =
                         this.demandConverter.convert(newCrawledDemand);
                 // store new demand
                 this.demandService.create(newDomainDemand);
+                LOGGER.debug("Action=crawled_demand_process status=finish(created) demand=" + newCrawledDemand);
             }
 
         } catch (Exception e) {

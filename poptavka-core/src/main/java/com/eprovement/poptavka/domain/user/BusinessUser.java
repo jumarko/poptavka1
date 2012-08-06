@@ -130,6 +130,7 @@ public class BusinessUser extends User {
         final StringBuilder sb = new StringBuilder();
         sb.append("BusinessUser");
         sb.append("{id=").append(getId());
+        sb.append(", email=").append(getEmail());
         sb.append(", businessUserData=").append(ToStringUtils.printId(businessUserData));
         sb.append('}');
         return sb.toString();

@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Juraj Martinka
@@ -25,6 +27,7 @@ import java.util.TreeSet;
  */
 public class NaiveSuppliersSelection implements SuppliersSelection {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(NaiveSuppliersSelection.class);
     private SupplierService supplierService;
 
     @Override
@@ -36,12 +39,21 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(demand.getLocalities()),
                 "Demand must have at least one locality assigned.");
 
-        // find all possible suppliers
+        LOGGER.debug("action=get_potential_suppliers status=start demand={}. Find all possible suppliers for demand",
+                demand);
         final Set<Supplier> suppliers = new HashSet<Supplier>(100);
-        suppliers.addAll(supplierService.getSuppliers(demand.getCategories().
-                toArray(new Category[demand.getCategories().size()])));
-        suppliers.addAll(supplierService.getSuppliers(demand.getLocalities().
-                toArray(new Locality[demand.getLocalities().size()])));
+        final Set<Supplier> suppliersForCategories = supplierService.getSuppliers(demand.getCategories().
+                toArray(new Category[demand.getCategories().size()]));
+        LOGGER.debug("action=get_potential_suppliers status=got_suppliers_for_categories demand={} categories_count={}"
+                + " suppliers_count={} ",
+                new Object[] {demand, demand.getCategories().size(), suppliersForCategories.size()});
+        suppliers.addAll(suppliersForCategories);
+        final Set<Supplier> suppliersForLocalities = supplierService.getSuppliers(demand.getLocalities().
+                toArray(new Locality[demand.getLocalities().size()]));
+        suppliers.addAll(suppliersForLocalities);
+        LOGGER.debug("action=get_potential_suppliers status=got_suppliers_for_localities demand={} localities_count={}"
+                + " suppliers_count={} ",
+                new Object[] {demand, demand.getLocalities().size(), suppliersForLocalities.size()});
 
 
         // TODO 1) client city can be used as some indicator
@@ -79,6 +91,9 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
             // number of elements that have to be removed
             final int overflowElementsCount = potentialSupplierSet.size() - demand.getMaxSuppliers();
+            LOGGER.debug("action=remove_suppliers_beyond_max status=start demand={} number_of_potential_suppliers={}"
+                    + " number_of_suppliers_to_be_removed={}",
+                    new Object[] {demand, potentialSupplierSet.size(), overflowElementsCount});
 
             // number of elements that alread have been removed
             int numberOfRemovedElements = 0;
@@ -92,6 +107,10 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
                     numberOfRemovedElements++;
                 }
             }
+
+            LOGGER.debug("action=remove_suppliers_beyond_max status=finish demand={} number_of_potential_suppliers={}"
+                    + " number_of_suppliers_removed={}",
+                    new Object[] {demand, potentialSupplierSet.size(), numberOfRemovedElements});
         }
     }
 
@@ -135,6 +154,9 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
     private void removeLowRatingSuppliers(final Demand demand, Set<Supplier> suppliers) {
         if (demand.getMinRating() != null) {
+            int suppliersNumber = suppliers.size();
+            LOGGER.debug("action=remove_low_rating_suppliers status=start demand={} original_suppliers_count={}",
+                    demand, suppliersNumber);
             CollectionUtils.filter(suppliers, new Predicate() {
                 @Override
                 public boolean evaluate(Object o) {
@@ -144,17 +166,24 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
                 }
             });
+            LOGGER.debug("action=remove_low_rating_suppliers status=finish demand={} number_of_low_rating_suppliers={}",
+                    demand, suppliersNumber - suppliers.size());
+
         }
     }
 
     private void removeExcludedSuppliers(final Demand demand, Set<Supplier> suppliers) {
         if (CollectionUtils.isNotEmpty(demand.getExcludedSuppliers())) {
+            LOGGER.debug("action=remove_excluded_suppliers status=start number_of_excluded_suppliers={}",
+                    demand.getExcludedSuppliers().size());
             CollectionUtils.filter(suppliers, new Predicate() {
                 @Override
                 public boolean evaluate(Object o) {
                     return demand.getExcludedSuppliers().contains(o);
                 }
             });
+            LOGGER.debug("action=remove_excluded_suppliers status=finish number_of_excluded_suppliers={}",
+                    demand.getExcludedSuppliers().size());
         }
     }
 

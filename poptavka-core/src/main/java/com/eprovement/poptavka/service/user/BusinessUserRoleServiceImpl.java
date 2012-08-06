@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +48,8 @@ import com.googlecode.genericdao.search.Search;
 public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, BURDao extends BusinessUserRoleDao<BUR>>
         extends GenericServiceImpl<BUR, BURDao>
         implements BusinessUserRoleService<BUR, BURDao> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BusinessUserRoleServiceImpl.class);
 
     private final GeneralService generalService;
     private final RegisterService registerService;
@@ -86,6 +90,8 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     public BUR create(BUR businessUserRole) {
         Preconditions.checkNotNull(businessUserRole, "Null client cannot be created.");
 
+        LOGGER.info("action=create_new_business_user_role status=start businuessUser={}",
+                businessUserRole.getBusinessUser());
         // set common stuff when creating new business user
         final UserService classicClient = new UserService();
         classicClient.setUser(businessUserRole.getBusinessUser());
@@ -105,12 +111,17 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         final String activationLink =
                 userVerificationService.generateActivationLink(businessUserRole.getBusinessUser());
         if (mailService != null) {
+            LOGGER.info("action=create_new_business_user status=send_activation_email email={} businuessUser={}",
+                    businessUserRole.getBusinessUser().getEmail(), businessUserRole.getBusinessUser());
             mailService.sendAsync(
                     createActivationMailMessage(businessUserRole.getBusinessUser().getEmail(), activationLink));
         }
 
         createBusinessUserIfNotExist(businessUserRole);
-        return super.create(businessUserRole);
+        final BUR createdBusinessUserRole = super.create(businessUserRole);
+        LOGGER.info("action=create_new_business_user_role status=finish businuessUser={}",
+                businessUserRole.getBusinessUser());
+        return createdBusinessUserRole;
     }
 
     private SimpleMailMessage createActivationMailMessage(String userMail, String activationLink) {
@@ -165,8 +176,9 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         Validate.notEmpty(email, "Empty email does not mail sense)");
         final Search freeMailCheck = new Search(User.class);
         freeMailCheck.addFilterEqual("email", email);
-        final int count = getGeneralService().count(freeMailCheck);
-        return count == 0;
+        final boolean isFree = getGeneralService().count(freeMailCheck) == 0;
+
+        return isFree;
     }
 
 

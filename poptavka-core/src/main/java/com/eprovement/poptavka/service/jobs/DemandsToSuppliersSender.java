@@ -23,7 +23,9 @@ public class DemandsToSuppliersSender implements JobTask {
     @Scheduled(cron = EVERY_MIDNIGHT)
     @Transactional
     public void execute() {
+        LOGGER.info("DemandsToSuppliersSender status=start");
         this.demandService.sendDemandsToSuppliers();
+        LOGGER.info("DemandsToSuppliersSender status=finish");
     }
 
     public void setDemandService(DemandService demandService) {

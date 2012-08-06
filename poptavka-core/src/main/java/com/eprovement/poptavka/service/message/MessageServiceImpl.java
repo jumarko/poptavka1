@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -28,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> implements MessageService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageServiceImpl.class);
+
     private GeneralService generalService;
     private UserMessageService userMessageService;
 
@@ -43,6 +46,7 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
     @Override
     public Message newThreadRoot(User user) {
         try {
+            LOGGER.debug("action=new_thread_root_async status=start user={}");
             Message message = new Message();
             message.setMessageState(MessageState.COMPOSED);
             message.setCreated(new Date());
@@ -55,9 +59,10 @@ public class MessageServiceImpl extends GenericServiceImpl<Message, MessageDao> 
             userMessage.setUser(user);
             userMessage.setRead(true);
             userMessageService.create(userMessage);
+            LOGGER.debug("action=new_thread_root_async status=finish user={} message={}", user, message);
             return message;
         } catch (MessageException ex) {
-            Logger.getLogger(MessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error(ex.getMessage(), ex);
             return null;
         }
     }

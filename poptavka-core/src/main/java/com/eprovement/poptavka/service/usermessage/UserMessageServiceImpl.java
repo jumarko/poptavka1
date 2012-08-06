@@ -18,10 +18,10 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.eprovement.poptavka.util.search.SearcherException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, UserMessageDao>
         implements UserMessageService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserMessageServiceImpl.class);
     private GeneralService generalService;
 
     public UserMessageServiceImpl(UserMessageDao userMessageDao, GeneralService generalService) {
@@ -64,12 +65,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
                 supplier.getId());
 
+        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
         final Search potentialDemandsSearch = new Search(UserMessage.class);
         potentialDemandsSearch.addFilterEqual("supplier", supplier);
         potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
         potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
 
-        return getDao().getPotentialDemands(supplier);
+        final List<UserMessage> potentialDemands = getDao().getPotentialDemands(supplier);
+        LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
+                supplier, potentialDemands.size());
+        return potentialDemands;
     }
 
     /**
@@ -81,13 +86,18 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public List<UserMessage> getPotentialDemands(BusinessUser supplier, Search search) {
+        Preconditions.checkNotNull("Search object must be specified.", search);
         try {
-            Preconditions.checkNotNull("Search object must be specified.", search);
-            return Searcher.searchCollection(getPotentialDemands(supplier), search);
+            LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{}", supplier);
+            final List<UserMessage> potentialDemands = Searcher.searchCollection(getPotentialDemands(supplier), search);
+            LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{} "
+                    + "potential_demands_size={}", supplier, potentialDemands.size());
+            return potentialDemands;
+
         } catch (SearcherException ex) {
-            Logger.getLogger(UserMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("action=get_potential_demands_supplier_search status=error supplier{}", ex);
         }
-        return new ArrayList();
+        return Collections.EMPTY_LIST;
     }
 
     @Override
@@ -109,9 +119,9 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
             Preconditions.checkNotNull("Search object must be specified.", search);
             return Searcher.searchCollection(getInbox(user), search);
         } catch (SearcherException ex) {
-            Logger.getLogger(UserMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("action=get_user_inbox_messages status=cannot_find", ex);
         }
-        return new ArrayList();
+        return Collections.EMPTY_LIST;
     }
 
 
@@ -134,9 +144,9 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
             Preconditions.checkNotNull("Search object must be specified.", search);
             return Searcher.searchCollection(getSentItems(user), search);
         } catch (SearcherException ex) {
-            Logger.getLogger(UserMessageServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("action=get_sent_items status=cannot_find", ex);
         }
-        return new ArrayList();
+        return Collections.EMPTY_LIST;
     }
 
 }

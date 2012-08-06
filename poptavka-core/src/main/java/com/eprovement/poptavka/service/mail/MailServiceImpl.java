@@ -34,9 +34,11 @@ public class MailServiceImpl implements MailService {
     public void send(MimeMessage... message) {
         try {
             Preconditions.checkNotNull(javaMailSender);
+            LOGGER.info("action=send_mails status=start messages=" + message);
             this.javaMailSender.send(message);
+            LOGGER.info("action=send_mails status=finish messages=" + message);
         } catch (Exception e) {
-            LOGGER.error("An exception occured while trying to send an email", e);
+            LOGGER.error("action=send_mails status=error messages=" + message, e);
         }
     }
 
@@ -44,9 +46,11 @@ public class MailServiceImpl implements MailService {
     public void send(SimpleMailMessage... message) {
         try {
             Preconditions.checkNotNull(javaMailSender);
+            LOGGER.info("action=send_mail status=start messages=" + message);
             this.javaMailSender.send(message);
+            LOGGER.info("action=send_mail status=finish messages=" + message);
         } catch (Exception e) {
-            LOGGER.error("An exception occured while trying to send an email", e);
+            LOGGER.error("action=send_mail status=error messages=" + message, e);
         }
     }
 
@@ -56,9 +60,11 @@ public class MailServiceImpl implements MailService {
     public void sendAsync(MimeMessage... message) {
         try {
             Preconditions.checkNotNull(javaMailSender);
+            LOGGER.info("action=send_mail_async status=start messages=" + message);
             this.javaMailSender.send(message);
+            LOGGER.info("action=send_mail_async status=finish messages=" + message);
         } catch (Exception e) {
-            LOGGER.error("An exception occured while trying to send an email", e);
+            LOGGER.info("action=send_mail_async status=error messages=" + message, e);
         }
     }
 
@@ -67,9 +73,11 @@ public class MailServiceImpl implements MailService {
     public void sendAsync(SimpleMailMessage... message) {
         try {
             Preconditions.checkNotNull(javaMailSender);
+            LOGGER.info("action=send_mail_async status=start messages=" + message);
             this.javaMailSender.send(message);
+            LOGGER.info("action=send_mail_async status=finish messages=" + message);
         } catch (Exception e) {
-            LOGGER.error("An exception occured while trying to send an email", e);
+            LOGGER.error("action=send_mail_async status=error messages=" + message);
         }
     }
 }

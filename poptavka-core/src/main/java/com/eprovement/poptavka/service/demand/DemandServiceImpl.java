@@ -77,18 +77,22 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional
     public Demand create(Demand demand) {
+        LOGGER.info("Action=demand_create status=start demand={}", demand);
         if (demand.getType() == null) {
-            // default demand type is "normal"
+            LOGGER.debug("Action=demand_create No demand type specified. Setting demand type  to default NORMAL");
             demand.setType(getDemandType(DemandTypeType.NORMAL.getValue()));
         }
 
         if (isNewClient(demand)) {
+            LOGGER.info("Action=demand_create demand={} creating new client={}", demand.getClient().getId());
             this.clientService.create(demand.getClient());
         }
 
         createSuppliersIfNecessary(demand);
 
-        return super.create(demand);
+        final Demand createdDemand = super.create(demand);
+        LOGGER.info("Action=demand_create status=finish demand={}", demand);
+        return createdDemand;
     }
 
     //----------------------------------  Methods for DemandType-s -----------------------------------------------------
@@ -249,7 +253,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional
     public void sendDemandToSuppliers(Demand demand) throws MessageException {
-
+        LOGGER.info("Action=demand_send_to_suppliers status=start demand=" + demand);
         fillDefaultValues(demand);
 
         // TODO ivlcek - do tejto message nemusime vyplnat vsetky udaje. Pretoze message samotna je hlavne
@@ -284,9 +288,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         message.setMessageState(MessageState.COMPOSED);
 
+        LOGGER.debug("Action=demand_send_to_suppliers status=finish demand={} message={} roles={}",
+                new Object[] {demand, message, message.getRoles()});
+
         message = messageService.create(message);
 
         messageService.send(message);
+        LOGGER.info("Action=demand_send_to_suppliers status=finish demand=" + demand);
     }
 
     private void fillDefaultValues(Demand demand) {
@@ -356,6 +364,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         if (CollectionUtils.isNotEmpty(demand.getSuppliers())) {
             for (Supplier supplier : demand.getSuppliers()) {
                 if (supplier.getId() == null) {
+                    LOGGER.info("Action=demand_create creating new supplier=" + supplier.getId());
                     this.supplierService.create(supplier);
                 }
             }
